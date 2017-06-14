@@ -69,6 +69,9 @@ def make(name):
 
     return wrapped
 
+
+lib.p_init()
+
 pr       = make("print")
 low      = make("lowercase")
 ds       = make("describe")
