@@ -56,14 +56,14 @@ def make(name):
         #if err:
         #   throw Exce....
 
-        rt = lib.p_result_type().decode('utf-8')
+        rt = lib.p_result_type()
 
         if rt == "string":
-            return lib.p_result_as_string().decode('utf-8')
+            return lib.p_result_as_string()
         elif rt == "number":
             return lib.p_result_as_number()
         elif rt == "grib":
-            return lib.p_result_as_grib_path().decode('utf-8')
+            return lib.p_result_as_grib_path()
         else:
             return 0
 
