@@ -3,14 +3,14 @@ from ._metview import ffi, lib
 print('ciao')
 
 def dict_to_request(verb, d):
-    r = p_new_request(verb)
+    r = lib.p_new_request(verb.encode('utf-8'))
     for k, v in d.items():
         print(k, v)
         if isinstance(v, list):
             for v1 in v:
-                lib.p_add_value(r, k, v1)
+                lib.p_add_value(r, k.encode('utf-8'), v1.encode('utf-8'))
         else:
-            lib.p_set_value(r, k, v)
+            lib.p_set_value(r, k.encode('utf-8'), v.encode('utf-8'))
     return r
 
 
@@ -56,7 +56,7 @@ def make(name):
         #if err:
         #   throw Exce....
 
-        rt = lib.p_result_type()
+        rt = lib.p_result_type().decode('utf-8')
 
         if rt == "string":
             return lib.p_result_as_string().decode('utf-8')
