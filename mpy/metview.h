@@ -6,6 +6,7 @@ const char* p_call_function(const char* name, int arity);
 void p_push_number(int n);
 void p_push_string(const char *str);
 void p_push_request(void *req);
+void p_push_grib(const char *filename);
 int p_result_type(void);
 char *p_result_as_string(void);
 char *p_result_as_grib_path(void);

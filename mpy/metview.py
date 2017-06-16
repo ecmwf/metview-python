@@ -97,6 +97,11 @@ regidded_grib = shutil.copyfile(gg, 'test_gg_grid.grib')
 grib_path = read(regidded_grib)
 print('Regridded grib file path: %s\n' % grib_path)
 
+lib.p_push_grib(grib_path.encode('utf-8'))
+lib.p_call_function('plot'.encode('utf-8'), 1)
+
+
+
 
 # perform a MARS retrieval
 # - defined a request
