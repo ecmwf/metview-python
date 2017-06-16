@@ -92,8 +92,8 @@ a = low('MetViEw')
 print('output LOWERCASE function: %s\n' % a)
 
 
-gg = read({'SOURCE' : '../t2_for_UC-04.grib', 'GRID' : '80'})
-regidded_grib = shutil.copyfile(gg, '../t2_for_UC-04_gg_grid.grib')
+gg = read({'SOURCE' : 'test.grib', 'GRID' : '80'})
+regidded_grib = shutil.copyfile(gg, 'test_gg_grid.grib')
 grib_path = read(regidded_grib)
 print('Regridded grib file path: %s\n' % grib_path)
 
