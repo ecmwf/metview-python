@@ -16,10 +16,10 @@ ffibuilder.set_source('mpy._metview', '',
     libraries=['MvMacro'],
     library_dirs=os.environ['LD_LIBRARY_PATH'].split(':'),
     include_dirs=[
-        '/home/dibari/Progetti/metview_api_python/MetviewBundle-2017.05.0-Source_with_tarball/metview/src/Macro/include',
-        '/home/dibari/Progetti/metview_api_python/MetviewBundle-2017.05.0-Source_with_tarball/metview/src/libUtil',
-        '/home/dibari/Progetti/metview_api_python/MetviewBundle-2017.05.0-Source_with_tarball/mars-client/src',
-        '/home/dibari/Progetti/metview_api_python/MetviewBundle-2017.05.0_Build_with_tarball/metview/src/libMars',
+        os.path.join(os.environ['METVIEW_DIR'], 'metview/src/Macro/include'),
+        os.path.join(os.environ['METVIEW_DIR'], 'metview/src/libUtil'),
+        os.path.join(os.environ['METVIEW_DIR'], 'mars-client/src'),
+        os.path.join(os.environ['METVIEW_DIR'], 'metview/src/libMars'),
     ],
 )
 ffibuilder.cdef(read('mpy/metview.h'))
