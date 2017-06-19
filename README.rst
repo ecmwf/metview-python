@@ -1,12 +1,22 @@
 
 
-Metview Macro C/Python bindings with CFFI
-=========================================
+Metview Python bindings
+=======================
+
+
+Create a virtual environment
+----------------------------
+
+Create and activate a new virtualenv::
+
+    python3 -m venv <folder>
+    source <folder>/bin/activate
+
 
 Install
 -------
 
-Source install with::
+From the mpy folder install with::
 
     pip install -e .
 
@@ -14,6 +24,6 @@ Source install with::
 Test
 ----
 
-Launch tests::
+Launch tests with::
 
     pytest -v tests
