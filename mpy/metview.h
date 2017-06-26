@@ -1,7 +1,7 @@
 
 struct MvRequest;
 
-typedef struct MvRequest MvRequest;
+typedef struct MvRequest* MvRequest_p;
 
 
 int mp_init(int argc, char **argv);
@@ -16,6 +16,6 @@ int p_result_type(void);
 char *p_result_as_string(void);
 char *p_result_as_grib_path(void);
 double p_result_as_number(void);
-MvRequest* p_new_request(const char *verb);
-void p_set_value(MvRequest *req, const char *param, const char *value);
-void p_add_value(MvRequest *req, const char *param, const char *value);
+MvRequest_p p_new_request(const char *verb);
+void p_set_value(MvRequest_p req, const char *param, const char *value);
+void p_add_value(MvRequest_p req, const char *param, const char *value);
