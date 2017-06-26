@@ -3,7 +3,32 @@ import shutil
 from ._metview import ffi, lib
 
 
-def dict_to_request(verb, d):
+
+class Request(dict):
+    verb = "UNKNOWN"
+
+    def __init__(self, req):
+        self.verb = ffi.string(lib.p_get_req_verb(req)).decode('utf-8')
+        n = lib.p_get_req_num_params(req)
+        for i in range(0,n):
+            param = ffi.string(lib.p_get_req_param(req, i)).decode('utf-8')
+            val   = ffi.string(lib.p_get_req_value(req, param.encode('utf-8'))).decode('utf-8')
+            self[param] = val
+        #self['_MACRO'] = 'BLANK'
+        #self['_PATH']  = 'BLANK'
+        #print(self)
+
+    def __str__(self):
+        return "VERB: " + self.verb + super().__str__()
+
+    
+
+def dict_to_request(d, verb='NONE'):
+
+    # get the verb from the request if not supplied by the caller
+    if verb=='NONE' and isinstance(d, Request):
+        verb = d.verb
+
     r = lib.p_new_request(verb.encode('utf-8'))
     for k, v in d.items():
         if isinstance(v, list):
@@ -18,11 +43,14 @@ def dict_to_request(verb, d):
     return r
 
 
+
+
 # we can actually get these from Metview, but for testing we just have a dict
 service_function_verbs = {
-    'retrieve': 'RETRIEVE',
-    'mcoast': 'MCOAST',
-    'read': 'READ',
+    'retrieve' : 'RETRIEVE',
+    'mcoast'   : 'MCOAST',
+    'mcont'    : 'MCONT',
+    'read'     : 'READ',
 }
 
 
@@ -41,7 +69,7 @@ def _call_function(name, *args):
         if isinstance(n, str):
             push_str(n)
         if isinstance(n, dict):
-            lib.p_push_request(dict_to_request(service_function_verbs[name], n))
+            lib.p_push_request(dict_to_request(n, service_function_verbs[name]))
     lib.p_call_function(name.encode('utf-8'), len(args))
 
 
@@ -59,6 +87,9 @@ def make(name):
             return ffi.string(lib.p_result_as_string()).decode('utf-8')
         elif rt == 2:
             return ffi.string(lib.p_result_as_grib_path()).decode('utf-8')
+        elif rt == 3:
+            return_req = lib.p_result_as_request()
+            return Request(return_req)
         else:
             return None
 
@@ -67,7 +98,6 @@ def make(name):
 
 lib.p_init()
 
-
 pr       = make('print')
 low      = make('lowercase')
 ds       = make('describe')
@@ -75,6 +105,7 @@ waitmode = make('waitmode')
 plot     = make('plot')
 retrieve = make('retrieve')
 read     = make('read')
+mcont    = make('mcont')
 
 
 ####################### User Program ###############
