@@ -41,6 +41,16 @@ def dict_to_request(d, verb='NONE'):
     return r
 
 
+
+class Fieldset:
+
+    def __init__(self, url):
+        self.url = url
+
+    def push(self):
+        return self.url.encode('utf-8')
+
+
 # we can actually get these from Metview, but for testing we just have a dict
 service_function_verbs = {
     'retrieve': 'RETRIEVE',
@@ -68,17 +78,12 @@ def _call_function(name, *args):
         if isinstance(n, str):
             push_str(n)
         if isinstance(n, dict):
-            lib.p_push_request(dict_to_request(n, service_function_verbs[name]))
+            lib.p_push_request(dict_to_request(n, service_function_verbs.get(name, 'NONE')))
+        if isinstance(n, Fieldset):
+            lib.p_push_grib(n.push())
     lib.p_call_function(name.encode('utf-8'), len(args))
 
 
-class Fieldset:
-
-    def __init__(self, url):
-        self.url = url
-
-    def push(self):
-        return self.url.encode('utf-8')
 
 
 def make(name):

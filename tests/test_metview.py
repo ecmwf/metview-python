@@ -21,17 +21,15 @@ def test_read():
     gg = read({'SOURCE' : os.path.join(path, 'test.grib'), 'GRID' : '80'})
     regidded_grib = shutil.copyfile(gg.url, os.path.join(path, 'test_gg_grid.grib'))
     grib_path = read(regidded_grib)
-    
+
 def test_plot():
-    grib_path = Fieldset(os.path.join(os.path.dirname(__file__), 'test_gg_grid.grib'))
-    contour = mcont({
-        'CONTOUR_LINE_COLOUR': 'PURPLE',
-        'CONTOUR_LINE_THICKNESS': '3',
-        'CONTOUR_HIGHLIGHT': 'OFF'
+    grib = Fieldset(os.path.join(os.path.dirname(__file__), 'test_gg_grid.grib'))
+    contour = mcont(
+    {
+        'CONTOUR_LINE_COLOUR'    : 'PURPLE',
+        'CONTOUR_LINE_THICKNESS' : '3',
+        'CONTOUR_HIGHLIGHT'      : 'OFF'
     })
     coast = mcoast({'MAP_COASTLINE_LAND_SHADE': 'ON'})
-    lib.p_push_grib(grib_path.push())
-    lib.p_push_request(dict_to_request(contour))
-    lib.p_push_request(dict_to_request(coast))
-    lib.p_call_function('plot'.encode('utf-8'), 3)
+    plot(grib, contour, coast)
     os.remove(grib_path.url)
