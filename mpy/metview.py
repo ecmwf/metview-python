@@ -3,14 +3,13 @@ import shutil
 from ._metview import ffi, lib
 
 
-
 class Request(dict):
     verb = "UNKNOWN"
 
     def __init__(self, req):
         self.verb = ffi.string(lib.p_get_req_verb(req)).decode('utf-8')
         n = lib.p_get_req_num_params(req)
-        for i in range(0,n):
+        for i in range(0, n):
             param = ffi.string(lib.p_get_req_param(req, i)).decode('utf-8')
             val   = ffi.string(lib.p_get_req_value(req, param.encode('utf-8'))).decode('utf-8')
             self[param] = val
@@ -21,7 +20,6 @@ class Request(dict):
     def __str__(self):
         return "VERB: " + self.verb + super().__str__()
 
-    
 
 def dict_to_request(d, verb='NONE'):
 
@@ -43,14 +41,15 @@ def dict_to_request(d, verb='NONE'):
     return r
 
 
-
-
 # we can actually get these from Metview, but for testing we just have a dict
 service_function_verbs = {
-    'retrieve' : 'RETRIEVE',
-    'mcoast'   : 'MCOAST',
-    'mcont'    : 'MCONT',
-    'read'     : 'READ',
+    'retrieve': 'RETRIEVE',
+    'mcoast': 'MCOAST',
+    'mcont': 'MCONT',
+    'read': 'READ',
+    'geoview': 'GEOVIEW',
+    'mtext': 'MTEXT',
+    'ps_output': 'PS_OUTPUT',
 }
 
 
@@ -73,6 +72,15 @@ def _call_function(name, *args):
     lib.p_call_function(name.encode('utf-8'), len(args))
 
 
+class Fieldset:
+
+    def __init__(self, url):
+        self.url = url
+
+    def push(self):
+        return self.url.encode('utf-8')
+
+
 def make(name):
 
     def wrapped(*args):
@@ -81,12 +89,16 @@ def make(name):
         #   throw Exce....
 
         rt = lib.p_result_type()
+        # Number
         if rt == 0: 
             return lib.p_result_as_number()
+        # String
         elif rt == 1:
             return ffi.string(lib.p_result_as_string()).decode('utf-8')
+        # Fieldset
         elif rt == 2:
-            return ffi.string(lib.p_result_as_grib_path()).decode('utf-8')
+            return Fieldset(ffi.string(lib.p_result_as_grib_path()).decode('utf-8'))
+        # Request dictionary
         elif rt == 3:
             return_req = lib.p_result_as_request()
             return Request(return_req)
@@ -98,14 +110,19 @@ def make(name):
 
 lib.p_init()
 
-pr       = make('print')
-low      = make('lowercase')
-ds       = make('describe')
-waitmode = make('waitmode')
-plot     = make('plot')
+ds = make('describe')
+low = make('lowercase')
+mcoast = make('mcoast')
+mcont = make('mcont')
+plot = make('plot')
+pr = make('print')
+read = make('read')
 retrieve = make('retrieve')
-read     = make('read')
-mcont    = make('mcont')
+waitmode = make('waitmode')
+geoview = make('geoview')
+mtext = make('mtext')
+ps_output = make('ps_output')
+
 
 
 ####################### User Program ###############
