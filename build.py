@@ -11,9 +11,5 @@ def read(fname):
 
 
 ffibuilder = FFI()
-ffibuilder.set_source('mpy._metview', '',
-    libraries=['MvMacro'],
-    library_dirs=os.environ.get('LD_LIBRARY_PATH', '').split(':'),
-    include_dirs=[],
-)
+ffibuilder.set_source('mpy._metview', None,)
 ffibuilder.cdef(read('mpy/metview.h'))

@@ -1,6 +1,8 @@
-import os
-import shutil
-from ._metview import ffi, lib
+
+from ._metview import ffi
+
+
+lib = ffi.dlopen('libMvMacro.so')
 
 
 class Request(dict):
@@ -11,11 +13,11 @@ class Request(dict):
         n = lib.p_get_req_num_params(req)
         for i in range(0, n):
             param = ffi.string(lib.p_get_req_param(req, i)).decode('utf-8')
-            val   = ffi.string(lib.p_get_req_value(req, param.encode('utf-8'))).decode('utf-8')
+            val = ffi.string(lib.p_get_req_value(req, param.encode('utf-8'))).decode('utf-8')
             self[param] = val
-        #self['_MACRO'] = 'BLANK'
-        #self['_PATH']  = 'BLANK'
-        #print(self)
+        # self['_MACRO'] = 'BLANK'
+        # self['_PATH']  = 'BLANK'
+        # print(self)
 
     def __str__(self):
         return "VERB: " + self.verb + super().__str__()
@@ -24,7 +26,7 @@ class Request(dict):
 def dict_to_request(d, verb='NONE'):
 
     # get the verb from the request if not supplied by the caller
-    if verb=='NONE' and isinstance(d, Request):
+    if verb == 'NONE' and isinstance(d, Request):
         verb = d.verb
 
     r = lib.p_new_request(verb.encode('utf-8'))
@@ -39,7 +41,6 @@ def dict_to_request(d, verb='NONE'):
         else:
             lib.p_set_value(r, k.encode('utf-8'), v)
     return r
-
 
 
 class Fieldset:
@@ -84,8 +85,6 @@ def _call_function(name, *args):
     lib.p_call_function(name.encode('utf-8'), len(args))
 
 
-
-
 def make(name):
 
     def wrapped(*args):
@@ -128,9 +127,6 @@ geoview = make('geoview')
 mtext = make('mtext')
 ps_output = make('ps_output')
 
-
-
-####################### User Program ###############
 
 # perform a MARS retrieval
 # - defined a request
