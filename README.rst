@@ -35,6 +35,19 @@ Create and activate a new virtualenv::
     source <folder>/bin/activate
 
 
+Export LD_LIBRARY_PATH variable
+-------------------------------
+
+Add these paths to the LD_LIBRARY_PATH variable typing the following command line::
+
+    export LD_LIBRARY_PATH=\
+        <build_dir>/metview/src/Macro:\
+        <build_dir>/metview/src/libMetview:\
+        <build_dir>/metview/src/libFTimeUtil:\
+        <build_dir>/metview/src/libUtil:<build_dir>/lib:\
+        <source_bundle_dir>/metview/src/Macro/include
+
+
 Install
 -------
 
