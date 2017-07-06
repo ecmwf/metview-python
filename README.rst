@@ -44,7 +44,8 @@ Add these paths to the LD_LIBRARY_PATH variable typing the following command lin
         <build_dir>/metview/src/Macro:\
         <build_dir>/metview/src/libMetview:\
         <build_dir>/metview/src/libFTimeUtil:\
-        <build_dir>/metview/src/libUtil:<build_dir>/lib:\
+        <build_dir>/metview/src/libUtil:\
+        <build_dir>/lib:\
         <source_bundle_dir>/metview/src/Macro/include
 
 
