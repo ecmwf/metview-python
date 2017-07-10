@@ -38,6 +38,11 @@ def dict_to_request(d, verb='NONE'):
                 lib.p_add_value(r, k.encode('utf-8'), v1)
         elif isinstance(v, str):
             lib.p_set_value(r, k.encode('utf-8'), v.encode('utf-8'))
+        elif isinstance(v, bool):
+            conversion_dict = {True: 'on', False: 'off'}
+            lib.p_set_value(r, k.encode('utf-8'), conversion_dict[v].encode('utf-8'))
+        elif isinstance(v, int) or isinstance(v, float):
+            lib.p_set_value(r, k.encode('utf-8'), str(v).encode('utf-8'))
         else:
             lib.p_set_value(r, k.encode('utf-8'), v)
     return r
@@ -50,6 +55,21 @@ class Fieldset:
 
     def push(self):
         return self.url.encode('utf-8')
+
+    def __add__(self, other):
+        return add(self, other)
+
+    def __sub__(self, other):
+        return sub(self, other)
+
+    def __mul__(self, other):
+        return prod(self, other)
+
+    def __truediv__(self, other):
+        return div(self, other)
+
+    def __pow__(self, other):
+        return power(self, other)
 
 
 # we can actually get these from Metview, but for testing we just have a dict
@@ -118,14 +138,37 @@ ds = make('describe')
 low = make('lowercase')
 mcoast = make('mcoast')
 mcont = make('mcont')
-plot = make('plot')
+met_plot = make('plot')
 pr = make('print')
 read = make('read')
+write = make('write')
 retrieve = make('retrieve')
 waitmode = make('waitmode')
 geoview = make('geoview')
 mtext = make('mtext')
 ps_output = make('ps_output')
+png_output = make('png_output')
+set_output = make('setoutput')
+maxvalue = make('maxvalue')
+add = make('+')
+sub = make('-')
+prod = make('*')
+div = make('/')
+power = make('^')
+grib_get_string = make('grib_get_string')
+
+
+def plot(*args, **kwargs):
+    map_outputs = {
+        'png': png_output,
+        'ps': ps_output,
+    }
+    if 'output_type' in kwargs:
+        output_function = map_outputs[kwargs['output_type']]
+        kwargs.pop('output_type')
+        return met_plot(output_function(kwargs), *args)
+    else:
+        return met_plot(*args)
 
 
 # perform a MARS retrieval
