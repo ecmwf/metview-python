@@ -164,7 +164,7 @@ def plot(*args, **kwargs):
         'ps': ps_output,
     }
     if 'output_type' in kwargs:
-        output_function = map_outputs[kwargs['output_type']]
+        output_function = map_outputs[kwargs['output_type'].lower()]
         kwargs.pop('output_type')
         return met_plot(output_function(kwargs), *args)
     else:
