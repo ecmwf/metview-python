@@ -7,6 +7,7 @@ from mpy.metview import *
 
 PATH = os.path.dirname(__file__)
 MAX_VALUE = 316.09642028808594
+GG_FIELDSET = Fieldset(os.path.join(PATH, 'test_gg_grid.grib'))
 
 
 def test_push_number():
@@ -37,76 +38,72 @@ def test_lowercase():
 
 
 def test_read():
-    gg = read({'SOURCE': os.path.join(PATH, 'test.grib'), 'GRID': '80'})
+    gg = read({'SOURCE': os.path.join(PATH, 'test.grib'), 'GRID': 80})
     assert grib_get_string(gg, 'typeOfGrid') == 'regular_gg'
 
 
 def test_write():
-    gg = read({'SOURCE': os.path.join(PATH, 'test.grib'), 'GRID': '80'})
+    gg = read({'SOURCE': os.path.join(PATH, 'test.grib'), 'GRID': 80})
     regridded_grib = write(os.path.join(PATH, 'test_gg_grid.grib'), gg)
     assert regridded_grib == 0
 
 
 def test_maxvalue():
-    grib = Fieldset(os.path.join(PATH, 'test_gg_grid.grib'))
-    maximum = maxvalue(grib)
+    maximum = maxvalue(GG_FIELDSET)
     assert np.isclose(maximum, MAX_VALUE)
 
 
 def test_add():
-    grib = Fieldset(os.path.join(PATH, 'test_gg_grid.grib'))
-    plus_two = grib + 2
+    plus_two = GG_FIELDSET + 2
     maximum = maxvalue(plus_two)
     assert np.isclose(maximum, MAX_VALUE + 2)
 
 
 def test_product():
-    grib = Fieldset(os.path.join(PATH, 'test_gg_grid.grib'))
-    times_two = grib * 2
+    times_two = GG_FIELDSET * 2
     maximum = maxvalue(times_two)
     assert np.isclose(maximum, MAX_VALUE * 2)
 
 
 def test_division():
-    grib = Fieldset(os.path.join(PATH, 'test_gg_grid.grib'))
-    divided_two = grib / 2
+    divided_two = GG_FIELDSET / 2
     maximum = maxvalue(divided_two)
     assert np.isclose(maximum, MAX_VALUE / 2)
 
 
 def test_power():
-    grib = Fieldset(os.path.join(PATH, 'test_gg_grid.grib'))
-    raised_two = grib ** 2
+    raised_two = GG_FIELDSET ** 2
     maximum = maxvalue(raised_two)
     assert np.isclose(maximum, MAX_VALUE ** 2)
 
 
 def test_met_plot():
-    grib = Fieldset(os.path.join(PATH, 'test_gg_grid.grib'))
     contour = mcont(
         {
             'CONTOUR_LINE_COLOUR': 'PURPLE',
-            'CONTOUR_LINE_THICKNESS': '3',
+            'CONTOUR_LINE_THICKNESS': 3,
             'CONTOUR_HIGHLIGHT': False
         })
     coast = mcoast({'MAP_COASTLINE_LAND_SHADE': True})
-    met_plot(grib, contour, coast)
+    met_plot(GG_FIELDSET, contour, coast)
 
 
 def test_plot():
-    grib = Fieldset(os.path.join(PATH, 'test_gg_grid.grib'))
-    contour = mcont(
-        {
-            'CONTOUR_LINE_COLOUR': 'PURPLE',
-            'CONTOUR_LINE_THICKNESS': '3',
-            'CONTOUR_HIGHLIGHT': False
-        })
-    coast = mcoast({'MAP_COASTLINE_LAND_SHADE': True})
     png_output = {
-        'output_type': 'png',
+        'output_type': 'PnG',
         'output_width': 1200,
         'output_name': os.path.join(PATH, 'test_plot')
     }
-    plot(grib, contour, coast, **png_output)
-    os.remove(grib.url)
+    grid_shade = {
+        'legend': True,
+        'contour': False,
+        'contour_highlight': True,
+        'contour_shade': True,
+        'contour_shade_technique': 'grid_shading',
+        'contour_shade_max_level_colour': 'red',
+        'contour_shade_min_level_colour': 'blue',
+        'contour_shade_colour_direction': 'clockwise',
+    }
+    plot(GG_FIELDSET, grid_shade, **png_output)
+    os.remove(GG_FIELDSET.url)
     os.remove(os.path.join(PATH, 'test_plot.1.png'))
