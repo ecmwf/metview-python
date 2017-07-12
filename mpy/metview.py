@@ -31,11 +31,10 @@ def dict_to_request(d, verb='NONE'):
 
     r = lib.p_new_request(verb.encode('utf-8'))
     for k, v in d.items():
-        if isinstance(v, list):
-            for v1 in v:
-                if isinstance(v1, str):
-                    v1 = v1.encode('utf-8')
-                lib.p_add_value(r, k.encode('utf-8'), v1)
+        if isinstance(v, list) or isinstance(v, tuple):
+            for v_i in v:
+                v_i = str(v_i).encode('utf-8')
+                lib.p_add_value(r, k.encode('utf-8'), v_i)
         elif isinstance(v, str):
             lib.p_set_value(r, k.encode('utf-8'), v.encode('utf-8'))
         elif isinstance(v, bool):
@@ -155,6 +154,8 @@ sub = make('-')
 prod = make('*')
 div = make('/')
 power = make('^')
+interpolate = make('interpolate')
+mcross_sect = make('mcross_sect')
 grib_get_string = make('grib_get_string')
 
 
