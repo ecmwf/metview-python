@@ -71,6 +71,16 @@ class Fieldset:
         return power(self, other)
 
 
+class Bufr:
+
+    def __init__(self, url):
+        self.url = url
+
+    def push(self):
+        return self.url.encode('utf-8')
+
+
+
 # we can actually get these from Metview, but for testing we just have a dict
 service_function_verbs = {
     'retrieve': 'RETRIEVE',
@@ -101,6 +111,8 @@ def _call_function(name, *args):
             lib.p_push_request(dict_to_request(n, service_function_verbs.get(name, 'NONE')))
         if isinstance(n, Fieldset):
             lib.p_push_grib(n.push())
+        if isinstance(n, Bufr):
+            lib.p_push_bufr(n.push())
     lib.p_call_function(name.encode('utf-8'), len(args))
 
 
@@ -125,6 +137,9 @@ def make(name):
         elif rt == 3:
             return_req = lib.p_result_as_request()
             return Request(return_req)
+        # Bufr
+        elif rt == 4:
+            return Bufr(ffi.string(lib.p_result_as_bufr_path()).decode('utf-8'))
         else:
             return None
 
@@ -157,6 +172,7 @@ power = make('^')
 interpolate = make('interpolate')
 mcross_sect = make('mcross_sect')
 grib_get_string = make('grib_get_string')
+type = make('type')
 
 
 def plot(*args, **kwargs):

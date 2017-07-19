@@ -77,6 +77,11 @@ def test_power():
     assert np.isclose(maximum, MAX_VALUE ** 2)
 
 
+def test_read_bufr():
+    bufr = read('obs_3day.bufr')
+    assert(type(bufr) == 'observations')
+
+
 def test_met_plot():
     contour = mcont(
         {
@@ -107,3 +112,4 @@ def test_plot():
     plot(GG_FIELDSET, grid_shade, **png_output)
     os.remove(GG_FIELDSET.url)
     os.remove(os.path.join(PATH, 'test_plot.1.png'))
+
