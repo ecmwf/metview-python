@@ -10,6 +10,10 @@ MAX_VALUE = 316.09642028808594
 GG_FIELDSET = Fieldset(os.path.join(PATH, 'test_gg_grid.grib'))
 
 
+def file_in_testdir(filename):
+    return os.path.join(PATH, filename)
+
+
 def test_push_number():
     lib.p_push_number(5)
     lib.p_push_number(4)
@@ -38,13 +42,13 @@ def test_lowercase():
 
 
 def test_read():
-    gg = read({'SOURCE': os.path.join(PATH, 'test.grib'), 'GRID': 80})
+    gg = read({'SOURCE': file_in_testdir('test.grib'), 'GRID': 80})
     assert grib_get_string(gg, 'typeOfGrid') == 'regular_gg'
 
 
 def test_write():
-    gg = read({'SOURCE': os.path.join(PATH, 'test.grib'), 'GRID': 80})
-    regridded_grib = write(os.path.join(PATH, 'test_gg_grid.grib'), gg)
+    gg = read({'SOURCE': file_in_testdir('test.grib'), 'GRID': 80})
+    regridded_grib = write(file_in_testdir('test_gg_grid.grib'), gg)
     assert regridded_grib == 0
 
 
@@ -78,12 +82,12 @@ def test_power():
 
 
 def test_read_bufr():
-    bufr = read('obs_3day.bufr')
+    bufr = read(file_in_testdir('obs_3day.bufr'))
     assert(type(bufr) == 'observations')
 
 
 def test_read_gpt():
-    gpt = read('t2m_3day.gpt')
+    gpt = read(file_in_testdir('t2m_3day.gpt'))
     assert(type(gpt) == 'geopoints')
     assert(count(gpt) == 45)
 
