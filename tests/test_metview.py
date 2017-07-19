@@ -82,6 +82,13 @@ def test_read_bufr():
     assert(type(bufr) == 'observations')
 
 
+def test_read_gpt():
+    gpt = read('t2m_3day.gpt')
+    assert(type(gpt) == 'geopoints')
+    assert(count(gpt) == 45)
+
+
+
 def test_met_plot():
     contour = mcont(
         {

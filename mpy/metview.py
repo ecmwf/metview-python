@@ -80,6 +80,15 @@ class Bufr:
         return self.url.encode('utf-8')
 
 
+class Geopoints:
+
+    def __init__(self, url):
+        self.url = url
+
+    def push(self):
+        return self.url.encode('utf-8')
+
+
 
 # we can actually get these from Metview, but for testing we just have a dict
 service_function_verbs = {
@@ -113,6 +122,8 @@ def _call_function(name, *args):
             lib.p_push_grib(n.push())
         if isinstance(n, Bufr):
             lib.p_push_bufr(n.push())
+        if isinstance(n, Geopoints):
+            lib.p_push_geopoints(n.push())
     lib.p_call_function(name.encode('utf-8'), len(args))
 
 
@@ -137,9 +148,12 @@ def make(name):
         elif rt == 3:
             return_req = lib.p_result_as_request()
             return Request(return_req)
-        # Bufr
+        # BUFR
         elif rt == 4:
             return Bufr(ffi.string(lib.p_result_as_bufr_path()).decode('utf-8'))
+        # Geopoints
+        elif rt == 5:
+            return Geopoints(ffi.string(lib.p_result_as_geopoints_path()).decode('utf-8'))
         else:
             return None
 
@@ -172,7 +186,9 @@ power = make('^')
 interpolate = make('interpolate')
 mcross_sect = make('mcross_sect')
 grib_get_string = make('grib_get_string')
+obsfilter = make('obsfilter')
 type = make('type')
+count = make('count')
 
 
 def plot(*args, **kwargs):
