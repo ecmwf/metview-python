@@ -63,6 +63,12 @@ def test_add():
     assert np.isclose(maximum, MAX_VALUE + 2)
 
 
+def test_sub():
+    minus_two = GG_FIELDSET - 2
+    maximum = maxvalue(minus_two)
+    assert np.isclose(maximum, MAX_VALUE - 2)
+
+
 def test_product():
     times_two = GG_FIELDSET * 2
     maximum = maxvalue(times_two)
@@ -90,7 +96,6 @@ def test_read_gpt():
     gpt = read(file_in_testdir('t2m_3day.gpt'))
     assert(type(gpt) == 'geopoints')
     assert(count(gpt) == 45)
-
 
 
 def test_met_plot():
@@ -123,4 +128,3 @@ def test_plot():
     plot(GG_FIELDSET, grid_shade, **png_output)
     os.remove(GG_FIELDSET.url)
     os.remove(os.path.join(PATH, 'test_plot.1.png'))
-
