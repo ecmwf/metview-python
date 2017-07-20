@@ -31,16 +31,18 @@ def dict_to_request(d, verb='NONE'):
 
     r = lib.p_new_request(verb.encode('utf-8'))
     for k, v in d.items():
-        if isinstance(v, list) or isinstance(v, tuple):
+        if isinstance(v, (list, tuple)):
             for v_i in v:
                 v_i = str(v_i).encode('utf-8')
                 lib.p_add_value(r, k.encode('utf-8'), v_i)
+        elif isinstance(v, (Fieldset, Bufr, Geopoints)):
+            lib.p_set_value(r, k.encode('utf-8'), v.push())
         elif isinstance(v, str):
             lib.p_set_value(r, k.encode('utf-8'), v.encode('utf-8'))
         elif isinstance(v, bool):
             conversion_dict = {True: 'on', False: 'off'}
             lib.p_set_value(r, k.encode('utf-8'), conversion_dict[v].encode('utf-8'))
-        elif isinstance(v, int) or isinstance(v, float):
+        elif isinstance(v, (int, float)):
             lib.p_set_value(r, k.encode('utf-8'), str(v).encode('utf-8'))
         else:
             lib.p_set_value(r, k.encode('utf-8'), v)
@@ -95,10 +97,13 @@ service_function_verbs = {
     'retrieve': 'RETRIEVE',
     'mcoast': 'MCOAST',
     'mcont': 'MCONT',
+    'mobs': 'MOBS',
+    'msymb': 'MSYMB',
     'read': 'READ',
     'geoview': 'GEOVIEW',
     'mtext': 'MTEXT',
     'ps_output': 'PS_OUTPUT',
+    'obsfilter': 'OBSFILTER',
 }
 
 
@@ -166,6 +171,8 @@ ds = make('describe')
 low = make('lowercase')
 mcoast = make('mcoast')
 mcont = make('mcont')
+mobs = make('mobs')
+msymb = make('msymb')
 met_plot = make('plot')
 pr = make('print')
 read = make('read')
