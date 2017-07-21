@@ -7,7 +7,7 @@ from mpy.metview import *
 
 PATH = os.path.dirname(__file__)
 MAX_VALUE = 316.09642028808594
-GG_FIELDSET = Fieldset(os.path.join(PATH, 'test_gg_grid.grib'))
+GG_FIELDSET = read(os.path.join(PATH, 'test_gg_grid.grib'))
 
 
 def file_in_testdir(filename):
@@ -122,6 +122,18 @@ def test_read_gpt():
     assert(count(gpt) == 45)
 
 
+def test_obsfilter():
+    bufr = read(file_in_testdir('obs_3day.bufr'))
+
+    # test two styles of passing parameters
+    gpt1 = obsfilter({'data': bufr, 'parameter' : '012004', 'output' : "geopoints"})
+    gpt2 = obsfilter(data = bufr, parameter = '012004', output = "geopoints")
+    assert(type(gpt1) == 'geopoints')
+    assert(count(gpt1) == 45)
+    assert(type(gpt2) == 'geopoints')
+    assert(count(gpt2) == 45)
+
+
 def test_met_plot():
     contour = mcont(
         {
@@ -152,3 +164,4 @@ def test_plot():
     plot(GG_FIELDSET, grid_shade, **png_output)
     os.remove(GG_FIELDSET.url)
     os.remove(os.path.join(PATH, 'test_plot.1.png'))
+

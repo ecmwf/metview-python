@@ -9,53 +9,148 @@ class Request(dict):
     verb = "UNKNOWN"
 
     def __init__(self, req):
-        self.verb = ffi.string(lib.p_get_req_verb(req)).decode('utf-8')
-        n = lib.p_get_req_num_params(req)
-        for i in range(0, n):
-            param = ffi.string(lib.p_get_req_param(req, i)).decode('utf-8')
-            val = ffi.string(lib.p_get_req_value(req, param.encode('utf-8'))).decode('utf-8')
-            self[param] = val
-        # self['_MACRO'] = 'BLANK'
-        # self['_PATH']  = 'BLANK'
-        # print(self)
+        if isinstance(req, dict):
+            self.update(req)
+            self.to_metview_style()
+            if isinstance(req, Request):
+                self.verb = req.verb
+        else:
+            self.verb = ffi.string(lib.p_get_req_verb(req)).decode('utf-8')
+            n = lib.p_get_req_num_params(req)
+            for i in range(0, n):
+                param = ffi.string(lib.p_get_req_param(req, i)).decode('utf-8')
+                val = ffi.string(lib.p_get_req_value(req, param.encode('utf-8'))).decode('utf-8')
+                self[param] = val
+            # self['_MACRO'] = 'BLANK'
+            # self['_PATH']  = 'BLANK'
 
     def __str__(self):
         return "VERB: " + self.verb + super().__str__()
 
 
-def dict_to_request(d, verb='NONE'):
+    # translate Python classes into Metview ones where needed
+    def to_metview_style(self):
+        for k, v in self.items():
 
-    # get the verb from the request if not supplied by the caller
-    if verb == 'NONE' and isinstance(d, Request):
-        verb = d.verb
+            #if isinstance(v, (list, tuple)):
+            #    for v_i in v:
+            #        v_i = str(v_i).encode('utf-8')
+            #        lib.p_add_value(r, k.encode('utf-8'), v_i)
 
-    r = lib.p_new_request(verb.encode('utf-8'))
+            if isinstance(v, bool):
+                conversion_dict = {True: 'on', False: 'off'}
+                self[k] = conversion_dict[v]
+
+
+    def push(self):
+        r = lib.p_new_request(self.verb.encode('utf-8'))
+
+        # to populate a request on the Macro side, we push each
+        # value onto its stack, and then tell it to create a new
+        # parameter with that name for the request. This allows us to
+        # use Macro to handle the addition of complex data types to
+        # a request
+        for k, v in self.items():
+            push_arg(v, 'NONAME')
+            lib.p_set_request_value_from_pop(r, k.encode('utf-8'))
+
+        lib.p_push_request(r)
+
+
+#def dict_to_request(d, verb='NONE'):
+#    # get the verb from the request if not supplied by the caller
+#    if verb == 'NONE' and isinstance(d, Request):
+#        verb = d.verb
+#
+#    r = lib.p_new_request(verb.encode('utf-8'))
+#    for k, v in d.items():
+#        if isinstance(v, (list, tuple)):
+#            for v_i in v:
+#                v_i = str(v_i).encode('utf-8')
+#                lib.p_add_value(r, k.encode('utf-8'), v_i)
+#        elif isinstance(v, (Fieldset, Bufr, Geopoints)):
+#            lib.p_set_value(r, k.encode('utf-8'), v.push())
+#        elif isinstance(v, str):
+#            lib.p_set_value(r, k.encode('utf-8'), v.encode('utf-8'))
+#        elif isinstance(v, bool):
+#            conversion_dict = {True: 'on', False: 'off'}
+#            lib.p_set_value(r, k.encode('utf-8'), conversion_dict[v].encode('utf-8'))
+#        elif isinstance(v, (int, float)):
+#            lib.p_set_value(r, k.encode('utf-8'), str(v).encode('utf-8'))
+#        else:
+#            lib.p_set_value(r, k.encode('utf-8'), v)
+#    return r
+
+
+#def push_dict(d, verb='NONE'):
+#
+#    for k, v in d.items():
+#        if isinstance(v, (list, tuple)):
+#            for v_i in v:
+#                v_i = str(v_i).encode('utf-8')
+#                lib.p_add_value(r, k.encode('utf-8'), v_i)
+#        elif isinstance(v, (Fieldset, Bufr, Geopoints)):
+#            lib.p_set_value(r, k.encode('utf-8'), v.push())
+#        elif isinstance(v, str):
+#            lib.p_set_value(r, k.encode('utf-8'), v.encode('utf-8'))
+#        elif isinstance(v, bool):
+#            conversion_dict = {True: 'on', False: 'off'}
+#            lib.p_set_value(r, k.encode('utf-8'), conversion_dict[v].encode('utf-8'))
+#        elif isinstance(v, (int, float)):
+#            lib.p_set_value(r, k.encode('utf-8'), str(v).encode('utf-8'))
+#        else:
+#            lib.p_set_value(r, k.encode('utf-8'), v)
+#    return r
+
+
+
+def push_bytes(b):
+    lib.p_push_string(b)
+
+
+def push_str(s):
+    push_bytes(s.encode('utf-8'))
+
+
+
+
+def push_arg(n, name):
+
+    nargs = 1
+
+    if isinstance(n, int):
+        lib.p_push_number(n)
+    if isinstance(n, str):
+        push_str(n)
+    if isinstance(n, dict):
+        Request(n).push()
+    if isinstance(n, Fieldset):
+        lib.p_push_grib(n.push())
+    if isinstance(n, Bufr):
+        lib.p_push_bufr(n.push())
+    if isinstance(n, Geopoints):
+        lib.p_push_geopoints(n.push())
+
+    return nargs
+
+
+def dict_to_pushed_args(d):
+
+    # push each key and value onto the argument stack
     for k, v in d.items():
-        if isinstance(v, (list, tuple)):
-            for v_i in v:
-                v_i = str(v_i).encode('utf-8')
-                lib.p_add_value(r, k.encode('utf-8'), v_i)
-        elif isinstance(v, (Fieldset, Bufr, Geopoints)):
-            lib.p_set_value(r, k.encode('utf-8'), v.push())
-        elif isinstance(v, str):
-            lib.p_set_value(r, k.encode('utf-8'), v.encode('utf-8'))
-        elif isinstance(v, bool):
-            conversion_dict = {True: 'on', False: 'off'}
-            lib.p_set_value(r, k.encode('utf-8'), conversion_dict[v].encode('utf-8'))
-        elif isinstance(v, (int, float)):
-            lib.p_set_value(r, k.encode('utf-8'), str(v).encode('utf-8'))
-        else:
-            lib.p_set_value(r, k.encode('utf-8'), v)
-    return r
+        push_str(k)
+        push_arg(v, 'NONE')
+        
+    return 2 * len(d)  # return the number of arguments generated
 
 
 class Fieldset:
 
-    def __init__(self, url):
-        self.url = url
+    def __init__(self, fs):
+        self.fs = fs
 
     def push(self):
-        return self.url.encode('utf-8')
+        return self.fs
 
     def __add__(self, other):
         return add(self, other)
@@ -75,20 +170,22 @@ class Fieldset:
 
 class Bufr:
 
-    def __init__(self, url):
-        self.url = url
+    def __init__(self, bufr):
+        self.bufr = bufr
 
     def push(self):
-        return self.url.encode('utf-8')
+        return self.bufr
 
 
 class Geopoints:
 
-    def __init__(self, url):
-        self.url = url
+    def __init__(self, gpts):
+        self.gpts = gpts
+        #print('GC: ', self.url)
 
     def push(self):
-        return self.url.encode('utf-8')
+        #print('GP: ', self.url)
+        return self.gpts
 
 
 
@@ -107,35 +204,30 @@ service_function_verbs = {
 }
 
 
-def push_bytes(b):
-    lib.p_push_string(b)
 
+def _call_function(name, *args, **kwargs):
 
-def push_str(s):
-    push_bytes(s.encode('utf-8'))
+    nargs = 0
 
-
-def _call_function(name, *args):
     for n in args:
-        if isinstance(n, int):
-            lib.p_push_number(n)
-        if isinstance(n, str):
-            push_str(n)
-        if isinstance(n, dict):
-            lib.p_push_request(dict_to_request(n, service_function_verbs.get(name, 'NONE')))
-        if isinstance(n, Fieldset):
-            lib.p_push_grib(n.push())
-        if isinstance(n, Bufr):
-            lib.p_push_bufr(n.push())
-        if isinstance(n, Geopoints):
-            lib.p_push_geopoints(n.push())
-    lib.p_call_function(name.encode('utf-8'), len(args))
+        actual_n_args = push_arg(n, name)
+        nargs += actual_n_args
+
+
+    merged_dict = {}
+    merged_dict.update(kwargs)
+    if len(merged_dict) > 0:
+        dn = dict_to_pushed_args(Request(merged_dict))
+        nargs += dn
+
+    lib.p_call_function(name.encode('utf-8'), nargs)
+
 
 
 def make(name):
 
-    def wrapped(*args):
-        err = _call_function(name, *args)
+    def wrapped(*args, **kwargs):
+        err = _call_function(name, *args, **kwargs)
         #if err:
         #   throw Exce....
 
@@ -148,17 +240,17 @@ def make(name):
             return ffi.string(lib.p_result_as_string()).decode('utf-8')
         # Fieldset
         elif rt == 2:
-            return Fieldset(ffi.string(lib.p_result_as_grib_path()).decode('utf-8'))
+            return Fieldset(lib.p_result_as_grib())
         # Request dictionary
         elif rt == 3:
             return_req = lib.p_result_as_request()
             return Request(return_req)
         # BUFR
         elif rt == 4:
-            return Bufr(ffi.string(lib.p_result_as_bufr_path()).decode('utf-8'))
+            return Bufr(lib.p_result_as_bufr())
         # Geopoints
         elif rt == 5:
-            return Geopoints(ffi.string(lib.p_result_as_geopoints_path()).decode('utf-8'))
+            return Geopoints(lib.p_result_as_geopoints())
         else:
             return None
 
