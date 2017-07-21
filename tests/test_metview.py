@@ -63,10 +63,22 @@ def test_add():
     assert np.isclose(maximum, MAX_VALUE + 2)
 
 
+def test_add_fieldsets():
+    sum = GG_FIELDSET + GG_FIELDSET
+    maximum = maxvalue(sum)
+    assert np.isclose(maximum, MAX_VALUE + MAX_VALUE)
+
+
 def test_sub():
     minus_two = GG_FIELDSET - 2
     maximum = maxvalue(minus_two)
     assert np.isclose(maximum, MAX_VALUE - 2)
+
+
+def test_sub_fieldsets():
+    sub = GG_FIELDSET - GG_FIELDSET
+    maximum = maxvalue(sub)
+    assert np.isclose(maximum, 0)
 
 
 def test_product():
@@ -75,10 +87,22 @@ def test_product():
     assert np.isclose(maximum, MAX_VALUE * 2)
 
 
+def test_product_fieldsets():
+    prod = GG_FIELDSET * GG_FIELDSET
+    maximum = maxvalue(prod)
+    assert np.isclose(maximum, MAX_VALUE * MAX_VALUE)
+
+
 def test_division():
     divided_two = GG_FIELDSET / 2
     maximum = maxvalue(divided_two)
     assert np.isclose(maximum, MAX_VALUE / 2)
+
+
+def test_division_fieldsets():
+    div = GG_FIELDSET / GG_FIELDSET
+    maximum = maxvalue(div)
+    assert np.isclose(maximum, 1)
 
 
 def test_power():
