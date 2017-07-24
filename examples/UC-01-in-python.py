@@ -21,11 +21,6 @@ derived = mydata * 2 + 5
 
 mpy.write('derived_data.grib', derived)
 
-# I'm forced to read the just created file. "derived" variable inside the plot
-# function generates a Segfault error if it is used after write command. If it is
-# used before writing the plot window is opened and closed immediately.
-dd = mpy.read('derived_data.grib')
-
 grid_shade = {
     'legend': True,
     'contour': False,
@@ -40,7 +35,7 @@ grid_shade = {
 # Macro-like PNG creation:
 png = mpy.png_output({'output_width': 1200, 'output_name': 'myplot'})
 
-mpy.plot(png, dd, grid_shade)
+mpy.plot(png, derived, grid_shade)
 
 
 # Using a different notation:
@@ -50,4 +45,4 @@ png_output = {
     'output_name': 'myplot'
 }
 
-mpy.plot(dd, grid_shade, **png_output)
+mpy.plot(derived, grid_shade, **png_output)
