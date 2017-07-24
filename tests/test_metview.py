@@ -82,6 +82,12 @@ def test_sub_fieldsets():
     assert np.isclose(maximum, 0)
 
 
+def test_sqrt():
+    sqrt_fd = sqrt(TEST_FIELDSET)
+    maximum = maxvalue(sqrt_fd)
+    assert np.isclose(maximum, np.sqrt(MAX_VALUE))
+
+
 def test_product():
     times_two = TEST_FIELDSET * 2
     maximum = maxvalue(times_two)
