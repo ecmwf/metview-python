@@ -6,8 +6,8 @@ from mpy.metview import *
 
 
 PATH = os.path.dirname(__file__)
-MAX_VALUE = 316.09642028808594
-GG_FIELDSET = read(os.path.join(PATH, 'test_gg_grid.grib'))
+MAX_VALUE = 316.06060791015625
+TEST_FIELDSET = read(os.path.join(PATH, 'test.grib'))
 
 
 def file_in_testdir(filename):
@@ -19,7 +19,7 @@ def test_push_number():
     lib.p_push_number(4)
 
 
-def test_dict_to_request():
+def test_dict_to_pushed_request():
     dict = {
         'param1': True,
         'param2': False,
@@ -28,7 +28,7 @@ def test_dict_to_request():
         'param5': 'metview',
         'param6': ['1', '2', '3']
     }
-    dict_to_request(dict)
+    dict_to_pushed_args(dict)
 
 
 def test_print():
@@ -50,63 +50,64 @@ def test_write():
     gg = read({'SOURCE': file_in_testdir('test.grib'), 'GRID': 80})
     regridded_grib = write(file_in_testdir('test_gg_grid.grib'), gg)
     assert regridded_grib == 0
+    os.remove(file_in_testdir('test_gg_grid.grib'))
 
 
 def test_maxvalue():
-    maximum = maxvalue(GG_FIELDSET)
+    maximum = maxvalue(TEST_FIELDSET)
     assert np.isclose(maximum, MAX_VALUE)
 
 
 def test_add():
-    plus_two = GG_FIELDSET + 2
+    plus_two = TEST_FIELDSET + 2
     maximum = maxvalue(plus_two)
     assert np.isclose(maximum, MAX_VALUE + 2)
 
 
 def test_add_fieldsets():
-    sum = GG_FIELDSET + GG_FIELDSET
+    sum = TEST_FIELDSET + TEST_FIELDSET
     maximum = maxvalue(sum)
     assert np.isclose(maximum, MAX_VALUE + MAX_VALUE)
 
 
 def test_sub():
-    minus_two = GG_FIELDSET - 2
+    minus_two = TEST_FIELDSET - 2
     maximum = maxvalue(minus_two)
     assert np.isclose(maximum, MAX_VALUE - 2)
 
 
 def test_sub_fieldsets():
-    sub = GG_FIELDSET - GG_FIELDSET
+    sub = TEST_FIELDSET - TEST_FIELDSET
     maximum = maxvalue(sub)
     assert np.isclose(maximum, 0)
 
 
 def test_product():
-    times_two = GG_FIELDSET * 2
+    times_two = TEST_FIELDSET * 2
     maximum = maxvalue(times_two)
     assert np.isclose(maximum, MAX_VALUE * 2)
 
 
 def test_product_fieldsets():
-    prod = GG_FIELDSET * GG_FIELDSET
+    prod = TEST_FIELDSET * TEST_FIELDSET
     maximum = maxvalue(prod)
     assert np.isclose(maximum, MAX_VALUE * MAX_VALUE)
 
 
 def test_division():
-    divided_two = GG_FIELDSET / 2
+    divided_two = TEST_FIELDSET / 2
     maximum = maxvalue(divided_two)
     assert np.isclose(maximum, MAX_VALUE / 2)
 
 
 def test_division_fieldsets():
-    div = GG_FIELDSET / GG_FIELDSET
+    div = TEST_FIELDSET / TEST_FIELDSET
     maximum = maxvalue(div)
     assert np.isclose(maximum, 1)
 
 
 def test_power():
-    raised_two = GG_FIELDSET ** 2
+    raised_two = TEST_FIELDSET ** 2
     maximum = maxvalue(raised_two)
     assert np.isclose(maximum, MAX_VALUE ** 2)
 
@@ -142,14 +143,14 @@ def test_met_plot():
             'CONTOUR_HIGHLIGHT': False
         })
     coast = mcoast({'MAP_COASTLINE_LAND_SHADE': True})
-    met_plot(GG_FIELDSET, contour, coast)
+    met_plot(TEST_FIELDSET, contour, coast)
 
 
 def test_plot():
     png_output = {
         'output_type': 'PnG',
         'output_width': 1200,
-        'output_name': os.path.join(PATH, 'test_plot')
+        'output_name': file_in_testdir('test_plot')
     }
     grid_shade = {
         'legend': True,
@@ -161,7 +162,5 @@ def test_plot():
         'contour_shade_min_level_colour': 'blue',
         'contour_shade_colour_direction': 'clockwise',
     }
-    plot(GG_FIELDSET, grid_shade, **png_output)
-    os.remove(GG_FIELDSET.url)
-    os.remove(os.path.join(PATH, 'test_plot.1.png'))
-
+    plot(TEST_FIELDSET, grid_shade, **png_output)
+    os.remove(file_in_testdir('test_plot.1.png'))
