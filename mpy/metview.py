@@ -182,6 +182,21 @@ class Geopoints:
         #print('GP: ', self.url)
         return self.gpts
 
+    def __mul__(self, other):
+        return prod(self, other)
+
+    def __ge__(self, other):
+        return greater_equal_than(self, other)
+
+    def __gt__(self, other):
+        return greater_than(self, other)
+
+    def __le__(self, other):
+        return lower_equal_than(self, other)
+
+    def __lt__(self, other):
+        return lower_than(self, other)
+
 
 # we can actually get these from Metview, but for testing we just have a dict
 service_function_verbs = {
@@ -195,6 +210,7 @@ service_function_verbs = {
     'mtext': 'MTEXT',
     'ps_output': 'PS_OUTPUT',
     'obsfilter': 'OBSFILTER',
+    'filter': 'FILTER'
 }
 
 
@@ -278,6 +294,11 @@ interpolate = make('interpolate')
 mcross_sect = make('mcross_sect')
 grib_get_string = make('grib_get_string')
 obsfilter = make('obsfilter')
+filter = make('filter')
+greater_equal_than = make('>=')
+greater_than = make('>')
+lower_equal_than = make('<=')
+lower_than = make('<')
 type = make('type')
 count = make('count')
 

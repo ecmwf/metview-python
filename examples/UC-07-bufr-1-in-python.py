@@ -50,40 +50,36 @@ diff_symb = mpy.msymb({
     'legend': True,
     'symbol_type': 'marker',
     'symbol_table_mode': 'advanced',
-    #'symbol_advanced_table_selection_type': 'list',
-    #'symbol_advanced_table_level_list': [-1000,-1,1,1000],
-    # 'symbol_advanced_table_colour_method': 'list',
-    #'symbol_advanced_table_colour_list': ['blue','grey','red']
 })
 
 mpy.plot(diff, diff_symb)
 
-# diff_symb_cold = mpy.msymb({
-#     'legend': True,
-#     'symbol_type': 'marker',
-#     'symbol_table_mode': 'advanced',
-#     'symbol_advanced_table_selection_type' : 'list',
-#     'symbol_advanced_table_level_list': [-15, -10, -5, -1, 0],
-#     'symbol_advanced_table_colour_method': 'list',
-#     'symbol_advanced_table_colour_list': ['blue','sky', 'rgb(0.82, 0.85, 1)', 'white'],
-#     'symbol_advanced_table_height_list': [0.6, 0.5, 0.4],
-#     'symbol_outline': True,
-#     'symbol_outline_colour': 'charcoal',
-# })
-#
-# diff_symb_hot = mpy.symb({
-#     'legend': True,
-#     'symbol_type': 'marker',
-#     'symbol_table_mode': 'advanced',
-#     'symbol_advanced_table_selection_type': 'list',
-#     'symbol_advanced_table_level_list': (0, 1, 5, 10, 15),
-#     'symbol_advanced_table_max_level_colour': 'red',
-#     'symbol_advanced_table_min_level_colour': 'white',
-#     'symbol_advanced_table_colour_direction': 'clockwise',
-#     'symbol_advanced_table_marker_list': 15,
-#     'symbol_advanced_table_height_list': (0.4, 0.5, 0.6),
-#     'symbol_outline': True,
-#     'symbol_outline_colour': 'charcoal',
-# })
 
-#mpy.plot(diff, diff_symb_cold, diff, diff_symb_hot)
+# Extract geopoints that are hotter by 1 deg or more
+hotter = mpy.filter(diff, diff >= 1)
+
+# Extract geopoints that are colder by 1 deg or more
+colder = mpy.filter(diff, diff <= -1)
+
+# Get geopoints that are within +/-1
+exact  = mpy.filter(diff, (diff > -1) * (diff < 1))
+
+# Symbol visdefs for each classification
+red = mpy.msymb({
+    'symbol_type': 'marker',
+    'symbol_colour': 'red'
+
+})
+
+blue  = mpy.msymb({
+    'symbol_type': 'marker',
+    'symbol_colour': 'blue'
+})
+
+grey  = mpy.msymb({
+    'symbol_type': 'marker',
+    'symbol_colour': 'grey'
+})
+
+# plot the 'exact' data set with visdef 'grey', 'hotter' with 'red', etc.
+mpy.plot(exact, grey, hotter, red, colder, blue)
