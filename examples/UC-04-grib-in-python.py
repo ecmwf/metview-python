@@ -33,22 +33,10 @@ t2 = mpy.read('./examples/t2_for_UC-04.grib')
 # retrieve geopotential
 z = mpy.read('./examples/z_for_UC-04.grib')
 
-# t_shade_c = {
-#     'legend': True,
-#     'contour_highlight': False,
-#     'contour_level_selection_type': 'level_list',
-#     'contour_level_list': (-80, -30, -10, -5, 0, 5, 10, 15, 20, 30, 40, 80),
-#     'contour_shade': True,
-#     'contour_shade_method': 'area_fill',
-#     'contour_shade_max_level_colour': 'red',
-#     'contour_shade_min_level_colour': 'blue',
-#     'contour_shade_colour_direction': 'clockwise',
-# }
 t_shade_c = mpy.mcont({
     'legend': True,
     'contour_highlight': False,
      'contour_level_selection_type': "interval",
-     #'contour_level_list': [-80,-30,-10,-5,0,5,10,15,20,30,40,80],
     'contour_interval': 10,
     'contour_shade': True,
     'contour_shade_max_level': 60,
