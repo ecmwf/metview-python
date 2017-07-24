@@ -7,6 +7,7 @@ from mpy.metview import *
 
 PATH = os.path.dirname(__file__)
 MAX_VALUE = 316.06060791015625
+SEMI_EQUATOR = 20001600.0
 TEST_FIELDSET = read(os.path.join(PATH, 'test.grib'))
 
 
@@ -116,6 +117,14 @@ def test_power():
     raised_two = TEST_FIELDSET ** 2
     maximum = maxvalue(raised_two)
     assert np.isclose(maximum, MAX_VALUE ** 2)
+
+
+def test_distance():
+    dist = distance(TEST_FIELDSET, 0, 0)
+    minimum = minvalue(dist)
+    maximum = maxvalue(dist)
+    assert np.isclose(minimum, 0.0)
+    assert np.isclose(maximum, SEMI_EQUATOR)
 
 
 def test_read_bufr():

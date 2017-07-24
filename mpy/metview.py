@@ -202,19 +202,19 @@ class Geopoints:
 
 
 # we can actually get these from Metview, but for testing we just have a dict
-service_function_verbs = {
-    'retrieve': 'RETRIEVE',
-    'mcoast': 'MCOAST',
-    'mcont': 'MCONT',
-    'mobs': 'MOBS',
-    'msymb': 'MSYMB',
-    'read': 'READ',
-    'geoview': 'GEOVIEW',
-    'mtext': 'MTEXT',
-    'ps_output': 'PS_OUTPUT',
-    'obsfilter': 'OBSFILTER',
-    'filter': 'FILTER'
-}
+# service_function_verbs = {
+#     'retrieve': 'RETRIEVE',
+#     'mcoast': 'MCOAST',
+#     'mcont': 'MCONT',
+#     'mobs': 'MOBS',
+#     'msymb': 'MSYMB',
+#     'read': 'READ',
+#     'geoview': 'GEOVIEW',
+#     'mtext': 'MTEXT',
+#     'ps_output': 'PS_OUTPUT',
+#     'obsfilter': 'OBSFILTER',
+#     'filter': 'FILTER'
+# }
 
 
 def _call_function(name, *args, **kwargs):
@@ -287,6 +287,7 @@ ps_output = make('ps_output')
 png_output = make('png_output')
 set_output = make('setoutput')
 maxvalue = make('maxvalue')
+minvalue = make('minvalue')
 add = make('+')
 sub = make('-')
 prod = make('*')
@@ -304,6 +305,7 @@ lower_equal_than = make('<=')
 lower_than = make('<')
 type = make('type')
 count = make('count')
+distance = make('distance')
 
 
 def plot(*args, **kwargs):
