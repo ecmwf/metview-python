@@ -27,7 +27,6 @@ class Request(dict):
     def __str__(self):
         return "VERB: " + self.verb + super().__str__()
 
-
     # translate Python classes into Metview ones where needed
     def to_metview_style(self):
         for k, v in self.items():
@@ -40,7 +39,6 @@ class Request(dict):
             if isinstance(v, bool):
                 conversion_dict = {True: 'on', False: 'off'}
                 self[k] = conversion_dict[v]
-
 
     def push(self):
         r = lib.p_new_request(self.verb.encode('utf-8'))
@@ -103,15 +101,12 @@ class Request(dict):
 #    return r
 
 
-
 def push_bytes(b):
     lib.p_push_string(b)
 
 
 def push_str(s):
     push_bytes(s.encode('utf-8'))
-
-
 
 
 def push_arg(n, name):
@@ -188,7 +183,6 @@ class Geopoints:
         return self.gpts
 
 
-
 # we can actually get these from Metview, but for testing we just have a dict
 service_function_verbs = {
     'retrieve': 'RETRIEVE',
@@ -204,7 +198,6 @@ service_function_verbs = {
 }
 
 
-
 def _call_function(name, *args, **kwargs):
 
     nargs = 0
@@ -213,7 +206,6 @@ def _call_function(name, *args, **kwargs):
         actual_n_args = push_arg(n, name)
         nargs += actual_n_args
 
-
     merged_dict = {}
     merged_dict.update(kwargs)
     if len(merged_dict) > 0:
@@ -221,7 +213,6 @@ def _call_function(name, *args, **kwargs):
         nargs += dn
 
     lib.p_call_function(name.encode('utf-8'), nargs)
-
 
 
 def make(name):
