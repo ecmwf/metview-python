@@ -56,19 +56,21 @@ mpy.plot(diff, diff_symb)
 
 
 # Extract geopoints that are hotter by 1 deg or more
-hotter = mpy.filter(diff, diff >= 1)
+#hotter = mpy.filter(diff, diff >= 1)
+hotter = diff.filter(diff >= 1)
 
 # Extract geopoints that are colder by 1 deg or more
-colder = mpy.filter(diff, diff <= -1)
+#colder = mpy.filter(diff, diff <= -1)
+colder = diff.filter(diff <= -1)
 
 # Get geopoints that are within +/-1
-exact  = mpy.filter(diff, (diff > -1) * (diff < 1))
+#exact = mpy.filter(diff, (diff > -1) * (diff < 1))
+exact = diff.filter((diff > -1) * (diff < 1))
 
 # Symbol visdefs for each classification
 red = mpy.msymb({
     'symbol_type': 'marker',
     'symbol_colour': 'red'
-
 })
 
 blue  = mpy.msymb({

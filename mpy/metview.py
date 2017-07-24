@@ -197,6 +197,9 @@ class Geopoints:
     def __lt__(self, other):
         return lower_than(self, other)
 
+    def filter(self, other):
+        return filter(self, other)
+
 
 # we can actually get these from Metview, but for testing we just have a dict
 service_function_verbs = {
