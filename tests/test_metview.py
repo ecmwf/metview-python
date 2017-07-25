@@ -8,8 +8,8 @@ from mpy.metview import *
 PATH = os.path.dirname(__file__)
 MAX_VALUE = 316.06060791015625
 SEMI_EQUATOR = 20001600.0
-TEST_FIELDSET = read(os.path.join(PATH, 'test.grib'))
-TEST_ALL_MISSING_VAL = read(os.path.join(PATH, 'all_missing_vals.grib'))
+MAX_SQRT_GPT = 16.867127793433
+MAX_GPT = 284.5
 
 
 def file_in_testdir(filename):
@@ -24,6 +24,10 @@ def test_push_number():
 def test_version_info():
     out = version_info()
     assert 'metview_version' in out
+
+
+def test_describe():
+    describe('type')
 
 
 def test_dict_to_pushed_request():
@@ -60,13 +64,27 @@ def test_write():
     os.remove(file_in_testdir('test_gg_grid.grib'))
 
 
+TEST_FIELDSET = read(os.path.join(PATH, 'test.grib'))
+
+
+def test_type():
+    out = type(TEST_FIELDSET)
+    assert out == 'fieldset'
+
+
+def test_count():
+    out = count(TEST_FIELDSET)
+    assert out == 1
+
+
 def test_maxvalue():
     maximum = maxvalue(TEST_FIELDSET)
     assert np.isclose(maximum, MAX_VALUE)
 
 
 def test_accumulate():
-    out = accumulate(TEST_ALL_MISSING_VAL)
+    all_missing = read(file_in_testdir('all_missing_vals.grib'))
+    out = accumulate(all_missing)
     assert out is None
 
 
@@ -147,6 +165,44 @@ def test_read_gpt():
     gpt = read(file_in_testdir('t2m_3day.gpt'))
     assert(type(gpt) == 'geopoints')
     assert(count(gpt) == 45)
+
+
+TEST_GEOPOINTS = read(os.path.join(PATH, 't2m_3day.gpt'))
+
+
+def test_filter_gpt():
+    filter_out = TEST_GEOPOINTS.filter(TEST_GEOPOINTS >=1)
+    assert type(filter_out) == 'geopoints'
+
+
+def test_sqrt_geopoints():
+    sqrt_out = sqrt(TEST_GEOPOINTS)
+    maximum = maxvalue(sqrt_out)
+    assert type(sqrt_out) == 'geopoints'
+    assert np.isclose(maximum, MAX_SQRT_GPT)
+
+
+def test_add_geopoints():
+    add = TEST_GEOPOINTS + TEST_GEOPOINTS
+    maximum = maxvalue(add)
+    assert np.isclose(maximum, MAX_GPT + MAX_GPT)
+
+
+def test_prod_geopoints():
+    prod = TEST_GEOPOINTS * TEST_GEOPOINTS
+    maximum = maxvalue(prod)
+    assert np.isclose(maximum, MAX_GPT * MAX_GPT)
+
+
+def test_relational_operator():
+    lt = TEST_GEOPOINTS < 1
+    le = TEST_GEOPOINTS <= 1
+    gt = TEST_GEOPOINTS > 100
+    ge = TEST_GEOPOINTS >= 100
+    assert maxvalue(lt) == 0
+    assert maxvalue(le) == 0
+    assert maxvalue(gt) == 1
+    assert maxvalue(ge) == 1
 
 
 def test_obsfilter():

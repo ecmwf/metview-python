@@ -211,6 +211,12 @@ class Geopoints:
     def __lt__(self, other):
         return lower_than(self, other)
 
+    def __add__(self, other):
+        return add(self, other)
+
+    def __mul__(self, other):
+        return prod(self, other)
+
     def filter(self, other):
         return filter(self, other)
 
