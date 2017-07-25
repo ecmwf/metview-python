@@ -27,6 +27,6 @@ uv = mpy.read('./examples/uv.grib')
 u = mpy.read({'data':uv, 'param': 'u'})
 v = mpy.read({'data': uv, 'param': 'v'})
 
-wind_speed = mpy.sqrt(u ^ 2 + v ^ 2)
+wind_speed = mpy.sqrt(u ** 2 + v ** 2)
 
 mpy.plot(wind_speed)
