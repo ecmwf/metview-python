@@ -1,8 +1,22 @@
 
-from ._metview import ffi
+import io
+import os.path
+
+from cffi import FFI
 
 
-lib = ffi.dlopen('libMvMacro.so')
+def read(fname):
+    file_path = os.path.join(os.path.dirname(__file__), fname)
+    return io.open(file_path, encoding='utf-8').read()
+
+
+try:
+    ffi = FFI()
+    ffi.cdef(read('metview.h'))
+    lib = ffi.dlopen('libMvMacro.so')
+    lib.p_init()
+except:
+    pass
 
 
 class Request(dict):
@@ -266,8 +280,6 @@ def make(name):
 
     return wrapped
 
-
-lib.p_init()
 
 ds = make('describe')
 version_info = make('version_info')
