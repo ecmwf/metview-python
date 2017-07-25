@@ -1,3 +1,4 @@
+# file needed in CFFI API mode
 
 import io
 import os

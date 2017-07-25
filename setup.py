@@ -26,12 +26,13 @@ setuptools.setup(
     license='Apache License Version 2.0',
     packages=setuptools.find_packages(),
     include_package_data=True,
-    cffi_modules=["build.py:ffibuilder"],
+    # cffi_modules=["build.py:ffibuilder"],  # needed in CFFI API mode
     setup_requires=[
-        "cffi>=1.0.0",
+        # "cffi>=1.0.0",  # needed in CFFI API mode
         'pytest-runner',
     ],
     install_requires=[
+        'cffi',
         'xarray',
     ],
     tests_require=[
