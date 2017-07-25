@@ -21,7 +21,7 @@ derived = mydata * 2 + 5
 
 mpy.write('derived_data.grib', derived)
 
-grid_shade = {
+grid_shade = mpy.mcont({
     'legend': True,
     'contour': False,
     'contour_highlight': True,
@@ -30,7 +30,7 @@ grid_shade = {
     'contour_shade_max_level_colour': 'red',
     'contour_shade_min_level_colour': 'blue',
     'contour_shade_colour_direction': 'clockwise',
-}
+})
 
 # Macro-like PNG creation:
 png = mpy.png_output({'output_width': 1200, 'output_name': 'myplot'})
