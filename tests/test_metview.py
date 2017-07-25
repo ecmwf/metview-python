@@ -211,7 +211,7 @@ def test_prod_geopoints():
     assert np.isclose(maximum, MAX_GPT * MAX_GPT)
 
 
-def test_relational_operator():
+def test_geopoints_relational_operator():
     lt = TEST_GEOPOINTS < 1
     le = TEST_GEOPOINTS <= 1
     gt = TEST_GEOPOINTS > 100
