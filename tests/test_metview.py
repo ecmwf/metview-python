@@ -42,6 +42,23 @@ def test_dict_to_pushed_request():
     dict_to_pushed_args(dict)
 
 
+def test_definitions():
+    mcont_def = mcont({'legend': True})
+    msymb_def = msymb({'symbol_type': 'marker'})
+    mcoast_def = mcoast({'map_coastline_land_shade': True})
+    mobs_def = mobs({'obs_temperature': False})
+    mtext_def = mtext({'text_font_size': '0.80'})
+    geoview_def = geoview({'map_projection': 'polar_stereographic'})
+    ps_output_def = ps_output({'output_name': 'test'})
+    assert mcont_def['LEGEND'] == 'ON'
+    assert msymb_def['SYMBOL_TYPE'] == 'MARKER'
+    assert mcoast_def['MAP_COASTLINE_LAND_SHADE'] == 'ON'
+    assert mobs_def['OBS_TEMPERATURE'] == 'OFF'
+    assert mtext_def['TEXT_FONT_SIZE'] == '0.80'
+    assert geoview_def['MAP_PROJECTION'] == 'POLAR_STEREOGRAPHIC'
+    assert ps_output_def['OUTPUT_NAME'] == 'test'
+
+
 def test_print():
     pr('Start ', 7, 1, 3, ' Finished!')
     pr(6, 2, ' Middle ', 6)
