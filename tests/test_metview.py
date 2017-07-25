@@ -9,6 +9,7 @@ PATH = os.path.dirname(__file__)
 MAX_VALUE = 316.06060791015625
 SEMI_EQUATOR = 20001600.0
 TEST_FIELDSET = read(os.path.join(PATH, 'test.grib'))
+TEST_ALL_MISSING_VAL = read(os.path.join(PATH, 'all_missing_vals.grib'))
 
 
 def file_in_testdir(filename):
@@ -18,6 +19,11 @@ def file_in_testdir(filename):
 def test_push_number():
     lib.p_push_number(5)
     lib.p_push_number(4)
+
+
+def test_version_info():
+    out = version_info()
+    assert 'metview_version' in out
 
 
 def test_dict_to_pushed_request():
@@ -57,6 +63,11 @@ def test_write():
 def test_maxvalue():
     maximum = maxvalue(TEST_FIELDSET)
     assert np.isclose(maximum, MAX_VALUE)
+
+
+def test_accumulate():
+    out = accumulate(TEST_ALL_MISSING_VAL)
+    assert out is None
 
 
 def test_add():
@@ -151,12 +162,11 @@ def test_obsfilter():
 
 
 def test_met_plot():
-    contour = mcont(
-        {
+    contour = mcont({
             'CONTOUR_LINE_COLOUR': 'PURPLE',
             'CONTOUR_LINE_THICKNESS': 3,
             'CONTOUR_HIGHLIGHT': False
-        })
+    })
     coast = mcoast({'MAP_COASTLINE_LAND_SHADE': True})
     met_plot(TEST_FIELDSET, contour, coast)
 
