@@ -33,7 +33,7 @@ grid_shade = mpy.mcont({
 })
 
 # Macro-like PNG creation:
-png = mpy.png_output({'output_width': 1200, 'output_name': 'myplot'})
+png = mpy.png_output({'output_width': 1200, 'output_name': './examples/myplot'})
 
 mpy.plot(png, derived, grid_shade)
 
@@ -42,7 +42,7 @@ mpy.plot(png, derived, grid_shade)
 png_output = {
     'output_type': 'png',
     'output_width': 1200,
-    'output_name': 'myplot'
+    'output_name': './examples/myplot'
 }
 
 mpy.plot(derived, grid_shade, **png_output)
