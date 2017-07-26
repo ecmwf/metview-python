@@ -15,8 +15,9 @@ try:
     ffi.cdef(read('metview.h'))
     lib = ffi.dlopen('libMvMacro.so')
     lib.p_init()
-except:
-    pass
+except Exception as exp:
+    print('Error loading Metview package')
+    raise exp
 
 
 class Request(dict):
