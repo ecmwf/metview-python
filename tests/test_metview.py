@@ -226,6 +226,11 @@ def test_geopoints_relational_operator():
     assert maxvalue(ge) == 1
 
 
+def test_geopoints_fieldset_operator():
+    diff = TEST_FIELDSET - TEST_GEOPOINTS
+    assert type(diff) == 'geopoints'
+
+
 def test_obsfilter():
     bufr = read(file_in_testdir('obs_3day.bufr'))
 
