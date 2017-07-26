@@ -19,7 +19,7 @@ mydata = mpy.read('tests/test.grib')
 
 derived = mydata * 2 + 5
 
-mpy.write('derived_data.grib', derived)
+mpy.write('./examples/derived_data.grib', derived)
 
 grid_shade = mpy.mcont({
     'legend': True,
