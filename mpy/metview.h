@@ -17,7 +17,7 @@ int mp_init(int argc, char **argv);
 void p_init();
 const char* p_hello_world(int argc);
 const char* p_call_function(const char* name, int arity);
-void p_push_number(int n);
+void p_push_number(double n);
 void p_push_string(const char *str);
 void p_push_request(void *req);
 void p_push_grib(CGrib_p fs);

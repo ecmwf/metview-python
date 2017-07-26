@@ -68,6 +68,10 @@ def test_lowercase():
     a = low('MetViEw')
     assert a == 'metview'
 
+##def test_lists_as_input():
+##    my_list = [1, 5, 6]
+##    print(count(my_list))
+
 
 def test_read():
     gg = read({'SOURCE': file_in_testdir('test.grib'), 'GRID': 80})

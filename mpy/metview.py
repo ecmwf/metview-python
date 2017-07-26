@@ -122,12 +122,17 @@ def push_bytes(b):
 def push_str(s):
     push_bytes(s.encode('utf-8'))
 
+def push_list(lst):
+    for n in lst:
+        push_arg(n, 'NONE')
+    lib.p_call_function('list'.encode('utf-8'), len(lst))
+
 
 def push_arg(n, name):
 
     nargs = 1
 
-    if isinstance(n, int):
+    if isinstance(n, (int, float)):
         lib.p_push_number(n)
     if isinstance(n, str):
         push_str(n)
@@ -139,6 +144,8 @@ def push_arg(n, name):
         lib.p_push_bufr(n.push())
     if isinstance(n, Geopoints):
         lib.p_push_geopoints(n.push())
+    if isinstance(n, (list, tuple)):
+        push_list(n)
 
     return nargs
 
@@ -281,6 +288,9 @@ def make(name):
         # Geopoints
         elif rt == 5:
             return Geopoints(lib.p_result_as_geopoints())
+        # list
+        elif rt == 6:
+            pass
         else:
             return None
 
