@@ -1,8 +1,10 @@
 
 import io
 import os.path
+import tempfile
 
-from cffi import FFI
+import cffi
+import pandas as pd
 
 
 def read(fname):
@@ -11,7 +13,7 @@ def read(fname):
 
 
 try:
-    ffi = FFI()
+    ffi = cffi.FFI()
     ffi.cdef(read('metview.h'))
     lib = ffi.dlopen('libMvMacro.so')
     lib.p_init()
@@ -157,7 +159,7 @@ def dict_to_pushed_args(d):
     for k, v in d.items():
         push_str(k)
         push_arg(v, 'NONE')
-        
+
     return 2 * len(d)  # return the number of arguments generated
 
 
@@ -165,6 +167,8 @@ class Fieldset:
 
     def __init__(self, fs):
         self.fs = fs
+        self.url = tempfile.NamedTemporaryFile(delete=False).name
+        write(self.url, self)
 
     def push(self):
         return self.fs
@@ -198,7 +202,8 @@ class Geopoints:
 
     def __init__(self, gpts):
         self.gpts = gpts
-        #print('GC: ', self.url)
+        self.url = tempfile.NamedTemporaryFile(delete=False).name
+        write(self.url, self)
 
     def push(self):
         #print('GP: ', self.url)
@@ -224,6 +229,9 @@ class Geopoints:
 
     def filter(self, other):
         return filter(self, other)
+
+    def to_dataframe(self):
+        return pd.read_table(self.url, skiprows=3)
 
 
 # we can actually get these from Metview, but for testing we just have a dict
