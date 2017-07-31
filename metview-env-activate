@@ -1,0 +1,2 @@
+
+export LD_LIBRARY_PATH=$METVIEW_DIR_DEV/metview/src/Macro:$METVIEW_DIR_DEV/metview/src/libMetview:$METVIEW_DIR_DEV/metview/src/libFTimeUtil:$METVIEW_DIR_DEV/metview/src/libUtil:$METVIEW_DIR_DEV/lib
