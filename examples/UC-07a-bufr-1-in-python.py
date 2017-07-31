@@ -33,13 +33,12 @@ framework to extract a particular parameter to a tabular format (geopoints)
 
 import mpy.metview as mpy
 
-
 t2m_grib = mpy.read('./examples/t2m_grib.grib')
 
 obs_3day = mpy.read('./examples/obs_3day.bufr')
 
 t2m_gpt = mpy.obsfilter(
-    parameter = '012004',   # 012004 -> dry bulb temperature at 2m
+    parameter = '012004',
     output = 'geopoints',
     data = obs_3day
 )
