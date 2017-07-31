@@ -2,7 +2,7 @@
 import os
 import numpy as np
 
-from mpy.metview import *
+import mpy.metview as mpy
 
 
 PATH = os.path.dirname(__file__)
@@ -17,17 +17,17 @@ def file_in_testdir(filename):
 
 
 def test_push_number():
-    lib.p_push_number(5)
-    lib.p_push_number(4)
+    mpy.lib.p_push_number(5)
+    mpy.lib.p_push_number(4)
 
 
 def test_version_info():
-    out = version_info()
+    out = mpy.version_info()
     assert 'metview_version' in out
 
 
 def test_describe():
-    describe('type')
+    mpy.describe('type')
 
 
 def test_dict_to_pushed_request():
@@ -39,17 +39,17 @@ def test_dict_to_pushed_request():
         'param5': 'metview',
         'param6': ['1', '2', '3']
     }
-    dict_to_pushed_args(dict)
+    mpy.dict_to_pushed_args(dict)
 
 
 def test_definitions():
-    mcont_def = mcont({'legend': True})
-    msymb_def = msymb({'symbol_type': 'marker'})
-    mcoast_def = mcoast({'map_coastline_land_shade': True})
-    mobs_def = mobs({'obs_temperature': False})
-    mtext_def = mtext({'text_font_size': '0.80'})
-    geoview_def = geoview({'map_projection': 'polar_stereographic'})
-    ps_output_def = ps_output({'output_name': 'test'})
+    mcont_def = mpy.mcont({'legend': True})
+    msymb_def = mpy.msymb({'symbol_type': 'marker'})
+    mcoast_def = mpy.mcoast({'map_coastline_land_shade': True})
+    mobs_def = mpy.mobs({'obs_temperature': False})
+    mtext_def = mpy.mtext({'text_font_size': '0.80'})
+    geoview_def = mpy.geoview({'map_projection': 'polar_stereographic'})
+    ps_output_def = mpy.ps_output({'output_name': 'test'})
     assert mcont_def['LEGEND'] == 'ON'
     assert msymb_def['SYMBOL_TYPE'] == 'MARKER'
     assert mcoast_def['MAP_COASTLINE_LAND_SHADE'] == 'ON'
@@ -60,12 +60,12 @@ def test_definitions():
 
 
 def test_print():
-    pr('Start ', 7, 1, 3, ' Finished!')
-    pr(6, 2, ' Middle ', 6)
+    mpy.pr('Start ', 7, 1, 3, ' Finished!')
+    mpy.pr(6, 2, ' Middle ', 6)
 
 
 def test_lowercase():
-    a = low('MetViEw')
+    a = mpy.low('MetViEw')
     assert a == 'metview'
 
 ##def test_lists_as_input():
@@ -74,144 +74,153 @@ def test_lowercase():
 
 
 def test_read():
-    gg = read({'SOURCE': file_in_testdir('test.grib'), 'GRID': 80})
-    assert grib_get_string(gg, 'typeOfGrid') == 'regular_gg'
+    gg = mpy.read({'SOURCE': file_in_testdir('test.grib'), 'GRID': 80})
+    assert mpy.grib_get_string(gg, 'typeOfGrid') == 'regular_gg'
 
 
 def test_write():
-    gg = read({'SOURCE': file_in_testdir('test.grib'), 'GRID': 80})
-    regridded_grib = write(file_in_testdir('test_gg_grid.grib'), gg)
+    gg = mpy.read({'SOURCE': file_in_testdir('test.grib'), 'GRID': 80})
+    regridded_grib = mpy.write(file_in_testdir('test_gg_grid.grib'), gg)
     assert regridded_grib == 0
     os.remove(file_in_testdir('test_gg_grid.grib'))
 
 
-TEST_FIELDSET = read(os.path.join(PATH, 'test.grib'))
+TEST_FIELDSET = mpy.read(os.path.join(PATH, 'test.grib'))
 
 
 def test_type():
-    out = type(TEST_FIELDSET)
+    out = mpy.type(TEST_FIELDSET)
     assert out == 'fieldset'
 
 
+# def test_retrieve():
+#     tccp = mpy.retrieve({
+#         'levtype': 'sfc',
+#         'param': 'tccp',
+#         'grid': 'o640'  # octahedral grid (a specific form of a reduced Gaussian grid)
+#     })
+#     assert mpy.type(tccp)== 'fieldset'
+
+
 def test_count():
-    out = count(TEST_FIELDSET)
+    out = mpy.count(TEST_FIELDSET)
     assert out == 1
 
 
 def test_maxvalue():
-    maximum = maxvalue(TEST_FIELDSET)
+    maximum = mpy.maxvalue(TEST_FIELDSET)
     assert np.isclose(maximum, MAX_VALUE)
 
 
 def test_accumulate():
-    all_missing = read(file_in_testdir('all_missing_vals.grib'))
-    out = accumulate(all_missing)
+    all_missing = mpy.read(file_in_testdir('all_missing_vals.grib'))
+    out = mpy.accumulate(all_missing)
     assert out is None
 
 
 def test_add():
     plus_two = TEST_FIELDSET + 2
-    maximum = maxvalue(plus_two)
+    maximum = mpy.maxvalue(plus_two)
     assert np.isclose(maximum, MAX_VALUE + 2)
 
 
 def test_add_fieldsets():
     sum = TEST_FIELDSET + TEST_FIELDSET
-    maximum = maxvalue(sum)
+    maximum = mpy.maxvalue(sum)
     assert np.isclose(maximum, MAX_VALUE + MAX_VALUE)
 
 
 def test_sub():
     minus_two = TEST_FIELDSET - 2
-    maximum = maxvalue(minus_two)
+    maximum = mpy.maxvalue(minus_two)
     assert np.isclose(maximum, MAX_VALUE - 2)
 
 
 def test_sub_fieldsets():
     sub = TEST_FIELDSET - TEST_FIELDSET
-    maximum = maxvalue(sub)
+    maximum = mpy.maxvalue(sub)
     assert np.isclose(maximum, 0)
 
 
 def test_sqrt():
-    sqrt_fd = sqrt(TEST_FIELDSET)
-    maximum = maxvalue(sqrt_fd)
+    sqrt_fd = mpy.sqrt(TEST_FIELDSET)
+    maximum = mpy.maxvalue(sqrt_fd)
     assert np.isclose(maximum, np.sqrt(MAX_VALUE))
 
 
 def test_product():
     times_two = TEST_FIELDSET * 2
-    maximum = maxvalue(times_two)
+    maximum = mpy.maxvalue(times_two)
     assert np.isclose(maximum, MAX_VALUE * 2)
 
 
 def test_product_fieldsets():
     prod = TEST_FIELDSET * TEST_FIELDSET
-    maximum = maxvalue(prod)
+    maximum = mpy.maxvalue(prod)
     assert np.isclose(maximum, MAX_VALUE * MAX_VALUE)
 
 
 def test_division():
     divided_two = TEST_FIELDSET / 2
-    maximum = maxvalue(divided_two)
+    maximum = mpy.maxvalue(divided_two)
     assert np.isclose(maximum, MAX_VALUE / 2)
 
 
 def test_division_fieldsets():
     div = TEST_FIELDSET / TEST_FIELDSET
-    maximum = maxvalue(div)
+    maximum = mpy.maxvalue(div)
     assert np.isclose(maximum, 1)
 
 
 def test_power():
     raised_two = TEST_FIELDSET ** 2
-    maximum = maxvalue(raised_two)
+    maximum = mpy.maxvalue(raised_two)
     assert np.isclose(maximum, MAX_VALUE ** 2)
 
 
 def test_distance():
-    dist = distance(TEST_FIELDSET, 0, 0)
-    minimum = minvalue(dist)
-    maximum = maxvalue(dist)
+    dist = mpy.distance(TEST_FIELDSET, 0, 0)
+    minimum = mpy.minvalue(dist)
+    maximum = mpy.maxvalue(dist)
     assert np.isclose(minimum, 0.0)
     assert np.isclose(maximum, SEMI_EQUATOR)
 
 
 def test_read_bufr():
-    bufr = read(file_in_testdir('obs_3day.bufr'))
-    assert(type(bufr) == 'observations')
+    bufr = mpy.read(file_in_testdir('obs_3day.bufr'))
+    assert(mpy.type(bufr) == 'observations')
 
 
 def test_read_gpt():
-    gpt = read(file_in_testdir('t2m_3day.gpt'))
-    assert(type(gpt) == 'geopoints')
-    assert(count(gpt) == 45)
+    gpt = mpy.read(file_in_testdir('t2m_3day.gpt'))
+    assert(mpy.type(gpt) == 'geopoints')
+    assert(mpy.count(gpt) == 45)
 
 
-TEST_GEOPOINTS = read(os.path.join(PATH, 't2m_3day.gpt'))
+TEST_GEOPOINTS = mpy.read(os.path.join(PATH, 't2m_3day.gpt'))
 
 
 def test_filter_gpt():
     filter_out = TEST_GEOPOINTS.filter(TEST_GEOPOINTS >=1)
-    assert type(filter_out) == 'geopoints'
+    assert mpy.type(filter_out) == 'geopoints'
 
 
 def test_sqrt_geopoints():
-    sqrt_out = sqrt(TEST_GEOPOINTS)
-    maximum = maxvalue(sqrt_out)
-    assert type(sqrt_out) == 'geopoints'
+    sqrt_out = mpy.sqrt(TEST_GEOPOINTS)
+    maximum = mpy.maxvalue(sqrt_out)
+    assert mpy.type(sqrt_out) == 'geopoints'
     assert np.isclose(maximum, MAX_SQRT_GPT)
 
 
 def test_add_geopoints():
     add = TEST_GEOPOINTS + TEST_GEOPOINTS
-    maximum = maxvalue(add)
+    maximum = mpy.maxvalue(add)
     assert np.isclose(maximum, MAX_GPT + MAX_GPT)
 
 
 def test_prod_geopoints():
     prod = TEST_GEOPOINTS * TEST_GEOPOINTS
-    maximum = maxvalue(prod)
+    maximum = mpy.maxvalue(prod)
     assert np.isclose(maximum, MAX_GPT * MAX_GPT)
 
 
@@ -220,37 +229,37 @@ def test_geopoints_relational_operator():
     le = TEST_GEOPOINTS <= 1
     gt = TEST_GEOPOINTS > 100
     ge = TEST_GEOPOINTS >= 100
-    assert maxvalue(lt) == 0
-    assert maxvalue(le) == 0
-    assert maxvalue(gt) == 1
-    assert maxvalue(ge) == 1
+    assert mpy.maxvalue(lt) == 0
+    assert mpy.maxvalue(le) == 0
+    assert mpy.maxvalue(gt) == 1
+    assert mpy.maxvalue(ge) == 1
 
 
 def test_geopoints_fieldset_operator():
     diff = TEST_FIELDSET - TEST_GEOPOINTS
-    assert type(diff) == 'geopoints'
+    assert mpy.type(diff) == 'geopoints'
 
 
 def test_obsfilter():
-    bufr = read(file_in_testdir('obs_3day.bufr'))
+    bufr = mpy.read(file_in_testdir('obs_3day.bufr'))
 
     # test two styles of passing parameters
-    gpt1 = obsfilter({'data': bufr, 'parameter' : '012004', 'output' : "geopoints"})
-    gpt2 = obsfilter(data = bufr, parameter = '012004', output = "geopoints")
-    assert(type(gpt1) == 'geopoints')
-    assert(count(gpt1) == 45)
-    assert(type(gpt2) == 'geopoints')
-    assert(count(gpt2) == 45)
+    gpt1 = mpy.obsfilter({'data': bufr, 'parameter' : '012004', 'output' : "geopoints"})
+    gpt2 = mpy.obsfilter(data = bufr, parameter = '012004', output = "geopoints")
+    assert(mpy.type(gpt1) == 'geopoints')
+    assert(mpy.count(gpt1) == 45)
+    assert(mpy.type(gpt2) == 'geopoints')
+    assert(mpy.count(gpt2) == 45)
 
 
 def test_met_plot():
-    contour = mcont({
+    contour = mpy.mcont({
             'CONTOUR_LINE_COLOUR': 'PURPLE',
             'CONTOUR_LINE_THICKNESS': 3,
             'CONTOUR_HIGHLIGHT': False
     })
-    coast = mcoast({'MAP_COASTLINE_LAND_SHADE': True})
-    met_plot(TEST_FIELDSET, contour, coast)
+    coast = mpy.mcoast({'MAP_COASTLINE_LAND_SHADE': True})
+    mpy.met_plot(TEST_FIELDSET, contour, coast)
 
 
 def test_plot():
@@ -269,5 +278,5 @@ def test_plot():
         'contour_shade_min_level_colour': 'blue',
         'contour_shade_colour_direction': 'clockwise',
     }
-    plot(TEST_FIELDSET, grid_shade, **png_output)
+    mpy.plot(TEST_FIELDSET, grid_shade, **png_output)
     os.remove(file_in_testdir('test_plot.1.png'))
