@@ -282,6 +282,23 @@ def test_obsfilter():
     assert(mpy.count(gpt2) == 45)
 
 
+# this tests the calling of the Cross Section module, but also the
+# return of netCDF data and also that we can perform operations on it
+# as input and output
+def test_cross_section_data():
+    grib = mpy.read(os.path.join(PATH, 't_for_xs.grib'))
+    xs_data = mpy.mcross_sect(
+        line = [59.9,-180,-13.5,158.08],
+        data = grib)
+    # the result of this should be a netCDF variable
+    assert mpy.type(xs_data) == 'netcdf'
+    mpy.setcurrent(xs_data, 't')
+    assert mpy.dimension_names(xs_data) == ['time', 'nlev', 'lon']
+    assert np.isclose(mpy.value(xs_data, 1), 230.39156)
+    xs_data_x2 = xs_data * 2
+    assert np.isclose(mpy.value(xs_data_x2, 1), 460.7831)
+
+
 def test_met_plot():
     contour = mpy.mcont({
             'CONTOUR_LINE_COLOUR': 'PURPLE',

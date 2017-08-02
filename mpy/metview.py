@@ -155,6 +155,8 @@ def push_arg(n, name):
         lib.p_push_value(n.push())
     elif isinstance(n, Geopoints):
         lib.p_push_value(n.push())
+    elif isinstance(n, NetCDF):
+        lib.p_push_value(n.push())
     elif isinstance(n, (list, tuple)):
         push_list(n)
     else:
@@ -250,6 +252,25 @@ class Geopoints(FileBackedValue):
         return pd.read_table(self.url, skiprows=3)
 
 
+class NetCDF(FileBackedValue):
+    def __init__(self, val_pointer):
+        FileBackedValue.__init__(self, val_pointer)
+
+    def __add__(self, other):
+        return add(self, other)
+
+    def __sub__(self, other):
+        return sub(self, other)
+
+    def __mul__(self, other):
+        return prod(self, other)
+
+    def __truediv__(self, other):
+        return div(self, other)
+
+    def __pow__(self, other):
+        return power(self, other)
+
 
 def list_from_metview(mlist):
 
@@ -320,9 +341,10 @@ def value_from_metview(val):
     # list
     elif rt == 6:
         return list_from_metview(lib.p_value_as_list(val))
-        #return MpyList(lib.p_result_as_list())
-#        return MpyList(lib.p_result_as_list()).get_list()
+    # netCDF
     elif rt == 7:
+        return NetCDF(val)
+    elif rt == 8:
         return None
     else:
         raise Exception('value_from_metview got an unhandled return type')
@@ -383,6 +405,10 @@ count = make('count')
 distance = make('distance')
 makelist = make('list')
 unique = make('unique')
+mcross_sect = make('mcross_sect')
+dimension_names = make('dimension_names')
+value = make('value')
+setcurrent = make('setcurrent')
 
 
 def plot(*args, **kwargs):
