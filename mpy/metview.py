@@ -2,6 +2,8 @@
 import io
 import os.path
 import tempfile
+import builtins
+
 
 import cffi
 import pandas as pd
@@ -126,9 +128,15 @@ def push_str(s):
     push_bytes(s.encode('utf-8'))
 
 def push_list(lst):
-    for n in lst:
-        push_arg(n, 'NONE')
-    lib.p_call_function('list'.encode('utf-8'), len(lst))
+    # ask Metview to create a new list, then add each element by
+    # pusing it onto the stack and asking Metview to pop it off
+    # and add it to the list
+    mlist = lib.p_new_list(len(lst))
+    for i, val in enumerate(lst):
+        push_arg(val, 'NONE')
+        lib.p_add_value_from_pop_to_list(mlist, i)
+    lib.p_push_list(mlist)
+
 
 
 def push_arg(n, name):
@@ -137,18 +145,23 @@ def push_arg(n, name):
 
     if isinstance(n, (int, float)):
         lib.p_push_number(n)
-    if isinstance(n, str):
+    elif isinstance(n, str):
         push_str(n)
-    if isinstance(n, dict):
+    elif isinstance(n, dict):
         Request(n).push()
-    if isinstance(n, Fieldset):
-        lib.p_push_grib(n.push())
-    if isinstance(n, Bufr):
-        lib.p_push_bufr(n.push())
-    if isinstance(n, Geopoints):
-        lib.p_push_geopoints(n.push())
-    if isinstance(n, (list, tuple)):
+    elif isinstance(n, Fieldset):
+        lib.p_push_value(n.push())
+    elif isinstance(n, Bufr):
+        lib.p_push_value(n.push())
+    elif isinstance(n, Geopoints):
+        lib.p_push_value(n.push())
+    elif isinstance(n, NetCDF):
+        lib.p_push_value(n.push())
+    elif isinstance(n, (list, tuple)):
         push_list(n)
+    else:
+        raise TypeError('Cannot push this type of argument to Metview: ' , builtins.type(n))
+
 
     return nargs
 
@@ -163,15 +176,29 @@ def dict_to_pushed_args(d):
     return 2 * len(d)  # return the number of arguments generated
 
 
-class Fieldset:
 
-    def __init__(self, fs):
-        self.fs = fs
+class Value:
+
+    def __init__(self, val_pointer):
+        self.val_pointer = val_pointer
+
+    def push(self):
+        return self.val_pointer
+
+
+class FileBackedValue(Value):
+
+    def __init__(self, val_pointer):
+        Value.__init__(self, val_pointer)
+        # XXX - we should ask Metview for a temporary file - it may already be on disk
         self.url = tempfile.NamedTemporaryFile(delete=False).name
         write(self.url, self)
 
-    def push(self):
-        return self.fs
+
+class Fieldset(FileBackedValue):
+
+    def __init__(self, val_pointer):
+        FileBackedValue.__init__(self, val_pointer)
 
     def __add__(self, other):
         return add(self, other)
@@ -189,25 +216,16 @@ class Fieldset:
         return power(self, other)
 
 
-class Bufr:
+class Bufr(FileBackedValue):
 
-    def __init__(self, bufr):
-        self.bufr = bufr
-
-    def push(self):
-        return self.bufr
+    def __init__(self, val_pointer):
+        FileBackedValue.__init__(self, val_pointer)
 
 
-class Geopoints:
+class Geopoints(FileBackedValue):
 
-    def __init__(self, gpts):
-        self.gpts = gpts
-        self.url = tempfile.NamedTemporaryFile(delete=False).name
-        write(self.url, self)
-
-    def push(self):
-        #print('GP: ', self.url)
-        return self.gpts
+    def __init__(self, val_pointer):
+        FileBackedValue.__init__(self, val_pointer)
 
     def __mul__(self, other):
         return prod(self, other)
@@ -232,6 +250,38 @@ class Geopoints:
 
     def to_dataframe(self):
         return pd.read_table(self.url, skiprows=3)
+
+
+class NetCDF(FileBackedValue):
+    def __init__(self, val_pointer):
+        FileBackedValue.__init__(self, val_pointer)
+
+    def __add__(self, other):
+        return add(self, other)
+
+    def __sub__(self, other):
+        return sub(self, other)
+
+    def __mul__(self, other):
+        return prod(self, other)
+
+    def __truediv__(self, other):
+        return div(self, other)
+
+    def __pow__(self, other):
+        return power(self, other)
+
+
+def list_from_metview(mlist):
+
+    result = []
+    n = lib.p_list_count(mlist)
+    for i in range(0, n):
+        mval = lib.p_list_element_as_value(mlist, i)
+        v = value_from_metview(mval)
+        result.append(v)
+    return result
+
 
 
 # we can actually get these from Metview, but for testing we just have a dict
@@ -267,6 +317,40 @@ def _call_function(name, *args, **kwargs):
     lib.p_call_function(name.encode('utf-8'), nargs)
 
 
+def value_from_metview(val):
+    rt = lib.p_value_type(val)
+    # Number
+    if rt == 0: 
+        return lib.p_value_as_number(val)
+    # String
+    elif rt == 1:
+        return ffi.string(lib.p_value_as_string(val)).decode('utf-8')
+    # Fieldset
+    elif rt == 2:
+        return Fieldset(val)
+    # Request dictionary
+    elif rt == 3:
+        return_req = lib.p_value_as_request(val)
+        return Request(return_req)
+    # BUFR
+    elif rt == 4:
+        return Bufr(val)
+    # Geopoints
+    elif rt == 5:
+        return Geopoints(val)
+    # list
+    elif rt == 6:
+        return list_from_metview(lib.p_value_as_list(val))
+    # netCDF
+    elif rt == 7:
+        return NetCDF(val)
+    elif rt == 8:
+        return None
+    else:
+        raise Exception('value_from_metview got an unhandled return type')
+
+
+
 def make(name):
 
     def wrapped(*args, **kwargs):
@@ -274,31 +358,8 @@ def make(name):
         #if err:
         #   throw Exce....
 
-        rt = lib.p_result_type()
-        # Number
-        if rt == 0: 
-            return lib.p_result_as_number()
-        # String
-        elif rt == 1:
-            return ffi.string(lib.p_result_as_string()).decode('utf-8')
-        # Fieldset
-        elif rt == 2:
-            return Fieldset(lib.p_result_as_grib())
-        # Request dictionary
-        elif rt == 3:
-            return_req = lib.p_result_as_request()
-            return Request(return_req)
-        # BUFR
-        elif rt == 4:
-            return Bufr(lib.p_result_as_bufr())
-        # Geopoints
-        elif rt == 5:
-            return Geopoints(lib.p_result_as_geopoints())
-        # list
-        elif rt == 6:
-            pass
-        else:
-            return None
+        val = lib.p_result_as_value()
+        return value_from_metview(val)
 
     return wrapped
 
@@ -342,6 +403,12 @@ lower_than = make('<')
 type = make('type')
 count = make('count')
 distance = make('distance')
+makelist = make('list')
+unique = make('unique')
+mcross_sect = make('mcross_sect')
+dimension_names = make('dimension_names')
+value = make('value')
+setcurrent = make('setcurrent')
 
 
 def plot(*args, **kwargs):
