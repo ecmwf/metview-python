@@ -12,3 +12,4 @@ apt-get -y build-dep emoslib
 apt-get -y --no-install-recommends install liblapack-dev libncurses-dev libqt4-dev git x11-utils xterm
 
 python3 -m venv cpython3
+./cpython3/bin/pip install -U setuptools pip wheel
