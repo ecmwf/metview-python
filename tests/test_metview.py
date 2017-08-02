@@ -80,17 +80,28 @@ def test_create_list():
     outlist = mpy.makelist(*inlist)
     assert outlist == inlist
 
+def test_create_list_from_tuple():
+    intuple = (10, 50, 60, 50, 1.1, 90)
+    outlist = mpy.makelist(*intuple)
+    assert outlist == list(intuple)
 
 def test_list_unique():
     inlist = [1, 5, 6, 5, 1, 9]
     ulist = mpy.unique(inlist)
     assert ulist == [1, 5, 6, 9]
 
+def test_tuple_unique():
+    intuple = (3, 2, 2, 7, 3, 1.2, 2.1, 1.2)
+    ulist = mpy.unique(intuple)
+    assert ulist == [3, 2, 7, 1.2, 2.1]
 
 def test_lists_as_input():
     my_list = [1, 5, 6]
     assert mpy.count(my_list) == 3
 
+def test_tuples_as_input():
+    my_tuple = [1, 0, 5, 6]
+    assert mpy.count(my_tuple) == 4
 
 def test_read():
     gg = mpy.read({'SOURCE': file_in_testdir('test.grib'), 'GRID': 80})
