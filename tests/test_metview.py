@@ -68,9 +68,28 @@ def test_lowercase():
     a = mpy.low('MetViEw')
     assert a == 'metview'
 
-##def test_lists_as_input():
-##    my_list = [1, 5, 6]
-##    print(count(my_list))
+
+#def test_lists():
+#    m= mpy.mcont(contour_level_selection_type = 'level_list', contour_level_list = [1, 2, 6])
+#    print('M: ', m)
+#test_lists()
+
+
+def test_create_list():
+    inlist = [1, 5, 6, 5, 1, 9, 18]
+    outlist = mpy.makelist(*inlist)
+    assert outlist == inlist
+
+
+def test_list_unique():
+    inlist = [1, 5, 6, 5, 1, 9]
+    ulist = mpy.unique(inlist)
+    assert ulist == [1, 5, 6, 9]
+
+
+def test_lists_as_input():
+    my_list = [1, 5, 6]
+    assert mpy.count(my_list) == 3
 
 
 def test_read():
