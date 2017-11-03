@@ -15,7 +15,9 @@ Procedure and needed files::
     3) configure the building in a separate directory by means of the
        cmake -DENABLE_ODB=ON -DENABLE_XXHASH=OFF <metview_source_path> command
     4) build by typing "make" or "make -j8"
-    5) to start the tests type from <metview_source_path>/metview directory: ctest
+    5) ensure that the command 'metview' will run this version by setting your PATH
+       to include the 'bin' directory from where you built or installed it
+    6) to start the tests type from <metview_source_path>/metview directory: ctest
 
 
 Create a virtual environment
