@@ -17,7 +17,7 @@ Procedure and needed files::
     4) build by typing "make" or "make -j8"
     5) ensure that the command 'metview' will run this version by setting your PATH
        to include the 'bin' directory from where you built or installed it
-    6) to start the tests type from <metview_source_path>/metview directory: ctest
+    6) to start the tests type from <metview_build_path>/metview directory: ctest
 
 
 Create a virtual environment
