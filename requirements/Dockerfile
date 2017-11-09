@@ -1,6 +1,6 @@
 # Build the docker image once with:
 #   docker build -t mpy requirements
-# Run a shell inside the container with:
+# Run the containers with:
 #   open -a XQuartz
 #   ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
 #   xhost + $ip
@@ -8,17 +8,18 @@
 #
 FROM ubuntu:16.04
 
-RUN apt-get -y update && apt-get install -y --no-install-recommends \
+# setup OS & Python
+RUN apt-get -y update && apt-get install -y \
     build-essential \
     curl \
     git \
     liblapack-dev \
     libncurses-dev \
     libqt4-dev \
+    python3-dev \
     python3-pip \
     python3-tk \
     python3-venv \
-    python3.5-dev \
     sudo \
     vim \
     x11-utils \
@@ -31,15 +32,21 @@ RUN apt-get -y build-dep \
  && rm -rf /var/lib/apt/lists/*
 
 COPY MetviewBundle-2017.10.90-Source.tar.gz /tmp/
-RUN tar -xzf /tmp/MetviewBundle-2017.10.90-Source.tar.gz -C /tmp \
-    && mkdir /tmp/MetviewBundle-2017.10.90-Build \
-    && cd /tmp/MetviewBundle-2017.10.90-Build \
+RUN cat /tmp/MetviewBundle-2017.10.90-Source.tar.gz \
+    | tar -xzC /tmp \
+    && mkdir /tmp/build \
+    && cd /tmp/build \
     && cmake -DENABLE_ODB=ON -DENABLE_XXHASH=OFF /tmp/MetviewBundle-2017.10.90-Source \
-    && make -j 4 \
-    && ctest /tmp/MetviewBundle-2017.10.90-Source/metview \
+    && make \
     && make install \
-    && ldconfig /usr/local/lib \
- && rm -rf /tmp/MetviewBundle*
+ && rm -rf /tmp/build /tmp/MetviewBundle*
+
+# setup workdir
+COPY requirements-tests.txt /
+
+# setup the python and pytest environments
+RUN pip3 install -r /requirements-tests.txt
+
 
 WORKDIR /src
 RUN echo "import setuptools as s; s.setup(name='package-to-test')" > setup.py \

@@ -1,0 +1,10 @@
+pip-tools
+bumpversion
+wheel
+watchdog
+flake8
+tox
+tox-pyenv
+coverage
+check-manifest
+pytest-mypy
