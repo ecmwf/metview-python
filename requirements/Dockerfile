@@ -1,5 +1,5 @@
 # Build the docker image once with:
-#   docker build -t mpy docker_image
+#   docker build -t mpy requirements
 # Run a shell inside the container with:
 #   open -a XQuartz
 #   ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
