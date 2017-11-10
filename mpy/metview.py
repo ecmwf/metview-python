@@ -2,7 +2,6 @@
 import io
 import os
 import subprocess
-import tempfile
 import builtins
 import tempfile
 import time
