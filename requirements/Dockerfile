@@ -37,7 +37,7 @@ RUN cat /tmp/MetviewBundle-2017.10.90-Source.tar.gz \
     && mkdir /tmp/build \
     && cd /tmp/build \
     && cmake -DENABLE_ODB=ON -DENABLE_XXHASH=OFF /tmp/MetviewBundle-2017.10.90-Source \
-    && make \
+    && make -j 4 || make \
     && make install \
  && rm -rf /tmp/build /tmp/MetviewBundle*
 
