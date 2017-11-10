@@ -93,7 +93,7 @@ try:
     ffi = cffi.FFI()
     ffi.cdef(read('metview.h'))
     mv_lib = mi.info('METVIEW_LIB')
-    os.environ["LD_LIBRARY_PATH"] = mv_lib + ':' + os.environ["LD_LIBRARY_PATH"] # is there a more general way to add to a path?
+    os.environ["LD_LIBRARY_PATH"] = mv_lib + ':' + os.environ.get("LD_LIBRARY_PATH", '') # is there a more general way to add to a path?
     lib = ffi.dlopen(os.path.join(mv_lib, 'libMvMacro.so'))
     lib.p_init()
 except Exception as exp:
