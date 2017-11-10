@@ -43,3 +43,11 @@ Test
 Launch tests with::
 
     pytest -v tests
+
+Run X on MacOS
+--------------
+
+    open -a XQuartz
+    ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
+    xhost + $ip
+    docker run --rm -it -e DISPLAY=$ip:0 -v `pwd`:/src mpy

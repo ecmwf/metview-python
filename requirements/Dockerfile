@@ -1,10 +1,7 @@
 # Build the docker image once with:
 #   docker build -t mpy requirements
-# Run the containers with:
-#   open -a XQuartz
-#   ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
-#   xhost + $ip
-#   docker run --rm -it -e DISPLAY=$ip:0 -v `pwd`:/src mpy bash
+# Run the container with:
+#   docker run --rm -it -v `pwd`:/src mpy
 #
 FROM ubuntu:16.04
 
