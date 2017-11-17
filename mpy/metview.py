@@ -18,6 +18,11 @@ def read(fname):
     return io.open(file_path, encoding='utf-8').read()
 
 
+# Python uses 0-based indexing, Metview uses 1-based indexing
+def python_to_mv_index(pi):
+    return pi + 1
+
+
 class MetviewInvoker:
     """Starts a new Metview session on construction and terminates it on program exit"""
     
@@ -101,22 +106,40 @@ except Exception as exp:
     raise exp
 
 
-class Request(dict):
+
+
+
+class Value:
+
+    def __init__(self, val_pointer):
+        self.val_pointer = val_pointer
+
+    def push(self):
+        return self.val_pointer
+
+
+
+class Request(dict, Value):
     verb = "UNKNOWN"
 
     def __init__(self, req):
+        self.val_pointer = None
+
         if isinstance(req, dict):
             self.update(req)
             self.to_metview_style()
             if isinstance(req, Request):
                 self.verb = req.verb
         else:
+            Value.__init__(self, Value)
             self.verb = ffi.string(lib.p_get_req_verb(req)).decode('utf-8')
             n = lib.p_get_req_num_params(req)
             for i in range(0, n):
                 param = ffi.string(lib.p_get_req_param(req, i)).decode('utf-8')
-                val = ffi.string(lib.p_get_req_value(req, param.encode('utf-8'))).decode('utf-8')
-                self[param] = val
+                raw_val = lib.p_get_req_value(req, param.encode('utf-8'))
+                if raw_val != ffi.NULL:
+                    val = ffi.string(raw_val).decode('utf-8')
+                    self[param] = val
             # self['_MACRO'] = 'BLANK'
             # self['_PATH']  = 'BLANK'
 
@@ -137,18 +160,32 @@ class Request(dict):
                 self[k] = conversion_dict[v]
 
     def push(self):
-        r = lib.p_new_request(self.verb.encode('utf-8'))
+        # if we have a pointer to a Metview Value, then use that because it's more
+        # complete than the dict
+        if self.val_pointer:
+            Value.push()
+        else:
+            r = lib.p_new_request(self.verb.encode('utf-8'))
 
-        # to populate a request on the Macro side, we push each
-        # value onto its stack, and then tell it to create a new
-        # parameter with that name for the request. This allows us to
-        # use Macro to handle the addition of complex data types to
-        # a request
-        for k, v in self.items():
-            push_arg(v, 'NONAME')
-            lib.p_set_request_value_from_pop(r, k.encode('utf-8'))
+            # to populate a request on the Macro side, we push each
+            # value onto its stack, and then tell it to create a new
+            # parameter with that name for the request. This allows us to
+            # use Macro to handle the addition of complex data types to
+            # a request
+            for k, v in self.items():
+                push_arg(v, 'NONAME')
+                lib.p_set_request_value_from_pop(r, k.encode('utf-8'))
 
-        lib.p_push_request(r)
+            lib.p_push_request(r)
+
+
+    def __getitem__(self, index):
+        # we don't often need integer indexing of requests, but we do in the
+        # case of a Display Window object
+        if isinstance(index, int):
+            return subset(self, python_to_mv_index(index))
+        else:
+            return subset(self, index)
 
 
 #def dict_to_request(d, verb='NONE'):
@@ -220,8 +257,10 @@ def push_arg(n, name):
 
     nargs = 1
 
-    if isinstance(n, (int, float)):
+    if isinstance(n, float):
         lib.p_push_number(n)
+    elif isinstance(n, int):
+        lib.p_push_number(float(n))
     elif isinstance(n, str):
         push_str(n)
     elif isinstance(n, dict):
@@ -254,15 +293,6 @@ def dict_to_pushed_args(d):
 
 
 
-class Value:
-
-    def __init__(self, val_pointer):
-        self.val_pointer = val_pointer
-
-    def push(self):
-        return self.val_pointer
-
-
 class FileBackedValue(Value):
 
     def __init__(self, val_pointer):
@@ -291,6 +321,12 @@ class Fieldset(FileBackedValue):
 
     def __pow__(self, other):
         return power(self, other)
+    
+    def __len__(self):
+        return int(count(self))
+
+    def __getitem__(self, index):
+        return subset(self, python_to_mv_index(index))
 
 
 class Bufr(FileBackedValue):
@@ -443,6 +479,7 @@ def make(name):
 
 accumulate = make('accumulate')
 add = make('+')
+base_date = make('base_date')
 count = make('count')
 dimension_names = make('dimension_names')
 distance = make('distance')
@@ -453,6 +490,7 @@ geoview = make('geoview')
 greater_equal_than = make('>=')
 greater_than = make('>')
 grib_get_string = make('grib_get_string')
+grib_get_long = make('grib_get_long')
 interpolate = make('interpolate')
 low = make('lowercase')
 lower_equal_than = make('<=')
@@ -467,7 +505,11 @@ minvalue = make('minvalue')
 mobs = make('mobs')
 msymb = make('msymb')
 mtext = make('mtext')
+netcdf_visuliser = make('netcdf_visuliser')
+newpage = make('newpage')
 obsfilter = make('obsfilter')
+plot_page = make('plot_page')
+plot_superpage = make('plot_superpage')
 png_output = make('png_output')
 power = make('^')
 pr = make('print')
@@ -475,10 +517,12 @@ prod = make('*')
 ps_output = make('ps_output')
 read = make('read')
 retrieve = make('retrieve')
+second = make('second')
 setcurrent = make('setcurrent')
 setoutput = make('setoutput')
 sqrt = make('sqrt')
 sub = make('-')
+subset = make('[]')
 type = make('type')
 unique = make('unique')
 value = make('value')

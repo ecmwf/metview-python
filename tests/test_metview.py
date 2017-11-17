@@ -56,7 +56,7 @@ def test_definitions():
     assert msymb_def['SYMBOL_TYPE'] == 'MARKER'
     assert mcoast_def['MAP_COASTLINE_LAND_SHADE'] == 'ON'
     assert mobs_def['OBS_TEMPERATURE'] == 'OFF'
-    assert mtext_def['TEXT_FONT_SIZE'] == '0.80'
+    assert mtext_def['TEXT_FONT_SIZE'] == 0.8
     assert geoview_def['MAP_PROJECTION'] == 'POLAR_STEREOGRAPHIC'
     assert ps_output_def['OUTPUT_NAME'] == 'test'
 
@@ -216,6 +216,23 @@ def test_distance():
     maximum = mpy.maxvalue(dist)
     assert np.isclose(minimum, 0.0)
     assert np.isclose(maximum, SEMI_EQUATOR)
+
+def test_fieldset_len_1():
+    flen = len(TEST_FIELDSET)
+    assert(flen == 1)
+
+
+def test_fieldset_len_6():
+    grib = mpy.read(os.path.join(PATH, 't_for_xs.grib'))
+    flen = len(grib)
+    assert(flen == 6)
+
+
+def test_fieldset_single_index():
+    grib = mpy.read(os.path.join(PATH, 't_for_xs.grib'))
+    grib4 = grib[3] # 0-based indexing in Python
+    assert(len(grib4) == 1)
+    assert(mpy.grib_get_long(grib4, 'level') == 500)
 
 
 def test_read_bufr():
