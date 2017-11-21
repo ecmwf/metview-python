@@ -7,7 +7,7 @@
 #
 FROM bopen/ubuntu-pyenv:latest
 
-RUN apt-get -y update && apt-get -y build-dep \
+RUN apt-get -y update && apt-get -y build-dep --no-install-recommends \
     metview \
     magics++ \
     emoslib \
