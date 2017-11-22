@@ -131,7 +131,7 @@ class Request(dict, Value):
             if isinstance(req, Request):
                 self.verb = req.verb
         else:
-            Value.__init__(self, Value)
+            Value.__init__(self, req)
             self.verb = ffi.string(lib.p_get_req_verb(req)).decode('utf-8')
             n = lib.p_get_req_num_params(req)
             for i in range(0, n):
@@ -163,7 +163,7 @@ class Request(dict, Value):
         # if we have a pointer to a Metview Value, then use that because it's more
         # complete than the dict
         if self.val_pointer:
-            Value.push()
+            lib.p_push_request(Value.push(self))
         else:
             r = lib.p_new_request(self.verb.encode('utf-8'))
 
@@ -263,6 +263,8 @@ def push_arg(n, name):
         lib.p_push_number(float(n))
     elif isinstance(n, str):
         push_str(n)
+    elif isinstance(n, Request):
+        n.push()
     elif isinstance(n, dict):
         Request(n).push()
     elif isinstance(n, Fieldset):
@@ -500,6 +502,7 @@ maxvalue = make('maxvalue')
 mcoast = make('mcoast')
 mcont = make('mcont')
 mcross_sect = make('mcross_sect')
+mxsectview = make('mxsectview')
 met_plot = make('plot')
 minvalue = make('minvalue')
 mobs = make('mobs')
