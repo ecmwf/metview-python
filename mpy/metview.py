@@ -83,7 +83,7 @@ class MetviewInvoker:
         cf.read(settings_file)
         env_section = cf['Environment']
         for envar in env_section:
-            print('set ', envar.upper(), ' = ', env_section[envar])
+            #print('set ', envar.upper(), ' = ', env_section[envar])
             os.environ[envar.upper()] = env_section[envar]
         self.info_section = cf['Info']
 
