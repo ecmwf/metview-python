@@ -502,6 +502,7 @@ maxvalue = make('maxvalue')
 mcoast = make('mcoast')
 mcont = make('mcont')
 mcross_sect = make('mcross_sect')
+mvertprofview = make('mvertprofview')
 mxsectview = make('mxsectview')
 met_plot = make('plot')
 minvalue = make('minvalue')
@@ -522,7 +523,7 @@ read = make('read')
 retrieve = make('retrieve')
 second = make('second')
 setcurrent = make('setcurrent')
-setoutput = make('setoutput')
+_setoutput = make('setoutput')
 sqrt = make('sqrt')
 sub = make('-')
 subset = make('[]')
@@ -534,18 +535,62 @@ waitmode = make('waitmode')
 write = make('write')
 
 
-def plot(*args, **kwargs):
-    map_outputs = {
-        'png': png_output,
-        'ps': ps_output,
-    }
-    if 'output_type' in kwargs:
-        output_function = map_outputs[kwargs['output_type'].lower()]
-        kwargs.pop('output_type')
-        return met_plot(output_function(kwargs), *args)
-    else:
-        return met_plot(*args)
+class Plot():
 
+    def __init__(self):
+        self.plot_to_jupyter = False
+        self.jupyter_available = False
+        
+    def __call__(self, *args, **kwargs):
+        if self.plot_to_jupyter and self.jupyter_available:
+            f, tmp = tempfile.mkstemp(".png")
+            os.close(f)
+
+            base, ext = os.path.splitext(tmp)
+
+            _setoutput(png_output(output_name = base, output_name_first_page_number='off'))
+            met_plot(*args)
+
+            image = Image(tmp)
+            os.unlink(tmp)
+            return image
+        else:
+            map_outputs = {
+                'png': png_output,
+                'ps': ps_output,
+            }
+            if 'output_type' in kwargs:
+                output_function = map_outputs[kwargs['output_type'].lower()]
+                kwargs.pop('output_type')
+                return met_plot(output_function(kwargs), *args)
+            else:
+                return met_plot(*args)
+
+
+plot = Plot()
+
+def setoutput(*args):
+    if 'jupyter' in args:
+        if plot.jupyter_available:
+            plot.plot_to_jupyter = True
+        else:
+            print("setoutput('jupyter') was set, but we are not in a Jupyter environment")
+    else:
+        plot.plot_to_jupyter = False
+        _setoutput(*args)
+
+
+# try to import what we need to pass images back to Jupyter notebooks
+
+try:
+    from IPython.display import Image
+    from IPython import get_ipython
+    import tempfile
+    if get_ipython() != None:
+        plot.jupyter_available = True
+        plot.plot_to_jupyter = True
+except ImportError:
+    pass
 
 # perform a MARS retrieval
 # - defined a request
