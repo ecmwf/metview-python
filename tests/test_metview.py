@@ -304,7 +304,6 @@ def test_obsfilter():
 # this tests the calling of the Cross Section module, but also the
 # return of netCDF data and also that we can perform operations on it
 # as input and output
-@pytest.mark.skip(reason='Crashes the python interpreted in the docker container.')
 def test_cross_section_data():
     grib = mpy.read(os.path.join(PATH, 't_for_xs.grib'))
     xs_data = mpy.mcross_sect(
