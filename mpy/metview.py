@@ -12,6 +12,10 @@ import atexit
 import cffi
 import pandas as pd
 
+#import xarray as xr
+#from eccodes import eccodes
+#from xarray_grib import xarray_grib
+
 
 def read(fname):
     file_path = os.path.join(os.path.dirname(__file__), fname)
@@ -330,6 +334,11 @@ class Fieldset(FileBackedValue):
     def __getitem__(self, index):
         return subset(self, python_to_mv_index(index))
 
+#    def to_xarray(self):
+#        store = xarray_grib.GribDataStore(self.url)
+#        dataset = xr.open_dataset(store)
+#        return dataset
+
 
 class Bufr(FileBackedValue):
 
@@ -479,6 +488,7 @@ def make(name):
     return wrapped
 
 
+abs = make('abs')
 accumulate = make('accumulate')
 add = make('+')
 base_date = make('base_date')
@@ -502,6 +512,7 @@ maxvalue = make('maxvalue')
 mcoast = make('mcoast')
 mcont = make('mcont')
 mcross_sect = make('mcross_sect')
+mgraph = make('mgraph')
 mvertprofview = make('mvertprofview')
 mxsectview = make('mxsectview')
 met_plot = make('plot')
