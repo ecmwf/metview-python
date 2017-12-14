@@ -21,6 +21,7 @@ void p_push_list(CList_p lst);
 int p_result_type(void);
 char *p_value_as_string(Value_p);
 double p_value_as_number(Value_p);
+char *p_error_message(Value_p);
 CList_p p_value_as_list(Value_p);
 Value_p p_result_as_value();
 int p_value_type(Value_p val);

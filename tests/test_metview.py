@@ -346,3 +346,9 @@ def test_plot():
     }
     mpy.plot(TEST_FIELDSET, grid_shade, **png_output)
     os.remove(file_in_testdir('test_plot.1.png'))
+
+
+def test_macro_error():
+    with pytest.raises(Exception):
+        g = TEST_FIELDSET[125]
+

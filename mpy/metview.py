@@ -335,8 +335,11 @@ class Fieldset(FileBackedValue):
         return subset(self, python_to_mv_index(index))
 
 #    def to_xarray(self):
+#        print('getting grib from ', self.url)
 #        store = xarray_grib.GribDataStore(self.url)
+#        print('store: ', store)
 #        dataset = xr.open_dataset(store)
+#        print('dataset: ', dataset)
 #        return dataset
 
 
@@ -470,6 +473,9 @@ def value_from_metview(val):
         return NetCDF(val)
     elif rt == 8:
         return None
+    elif rt == 9:
+        err_msg = ffi.string(lib.p_error_message(val)).decode('utf-8')
+        raise Exception('Metview error: ' + err_msg)
     else:
         raise Exception('value_from_metview got an unhandled return type')
 
