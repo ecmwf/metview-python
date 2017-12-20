@@ -38,3 +38,4 @@ char *p_get_req_verb(MvRequest_p req);
 int p_get_req_num_params(MvRequest_p req);
 char *p_get_req_param(MvRequest_p req, int i);
 char *p_get_req_value(MvRequest_p req, const char *param);
+const char *p_data_path(Value_p val);

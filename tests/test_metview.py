@@ -352,3 +352,8 @@ def test_macro_error():
     with pytest.raises(Exception):
         g = TEST_FIELDSET[125]
 
+def test_value_file_path():
+    p = TEST_FIELDSET + 1 # this will force Metview to write a new temporary file
+    assert(p.url != "")
+    assert(os.path.isfile(p.url))
+
