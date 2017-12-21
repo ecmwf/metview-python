@@ -26,6 +26,9 @@ def read(fname):
 def python_to_mv_index(pi):
     return pi + 1
 
+def string_from_ffi(s):
+    return ffi.string(s).decode('utf-8')
+
 
 class MetviewInvoker:
     """Starts a new Metview session on construction and terminates it on program exit"""
@@ -136,13 +139,13 @@ class Request(dict, Value):
                 self.verb = req.verb
         else:
             Value.__init__(self, req)
-            self.verb = ffi.string(lib.p_get_req_verb(req)).decode('utf-8')
+            self.verb = string_from_ffi(lib.p_get_req_verb(req))
             n = lib.p_get_req_num_params(req)
             for i in range(0, n):
-                param = ffi.string(lib.p_get_req_param(req, i)).decode('utf-8')
+                param = string_from_ffi(lib.p_get_req_param(req, i))
                 raw_val = lib.p_get_req_value(req, param.encode('utf-8'))
                 if raw_val != ffi.NULL:
-                    val = ffi.string(raw_val).decode('utf-8')
+                    val = string_from_ffi(raw_val)
                     self[param] = val
             # self['_MACRO'] = 'BLANK'
             # self['_PATH']  = 'BLANK'
@@ -303,9 +306,8 @@ class FileBackedValue(Value):
 
     def __init__(self, val_pointer):
         Value.__init__(self, val_pointer)
-        # XXX - we should ask Metview for a temporary file - it may already be on disk
-        self.url = tempfile.NamedTemporaryFile(delete=False).name
-        write(self.url, self)
+        # ask Metview for the file relating to this data (Metview will write it if necessary)
+        self.url = string_from_ffi(lib.p_data_path(val_pointer))
 
 
 class Fieldset(FileBackedValue):
@@ -335,8 +337,11 @@ class Fieldset(FileBackedValue):
         return subset(self, python_to_mv_index(index))
 
 #    def to_xarray(self):
+#        print('getting grib from ', self.url)
 #        store = xarray_grib.GribDataStore(self.url)
+#        print('store: ', store)
 #        dataset = xr.open_dataset(store)
+#        print('dataset: ', dataset)
 #        return dataset
 
 
@@ -448,7 +453,7 @@ def value_from_metview(val):
         return lib.p_value_as_number(val)
     # String
     elif rt == 1:
-        return ffi.string(lib.p_value_as_string(val)).decode('utf-8')
+        return string_from_ffi(lib.p_value_as_string(val))
     # Fieldset
     elif rt == 2:
         return Fieldset(val)
@@ -470,6 +475,9 @@ def value_from_metview(val):
         return NetCDF(val)
     elif rt == 8:
         return None
+    elif rt == 9:
+        err_msg = string_from_ffi(lib.p_error_message(val))
+        raise Exception('Metview error: ' + err_msg)
     else:
         raise Exception('value_from_metview got an unhandled return type')
 
