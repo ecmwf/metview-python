@@ -9,14 +9,16 @@ FROM bopen/ubuntu-pyenv:latest
 
 RUN apt-get -y update && apt-get -y install --no-install-recommends \
     curl \
-    python-jinja2 \
     && apt-get -y build-dep --no-install-recommends \
     metview \
     magics++ \
     emoslib \
  && rm -rf /var/lib/apt/lists/*
 
-RUN curl -SL https://software.ecmwf.int/wiki/download/attachments/51731119/MetviewBundle-2017.12.0-Source.tar.gz \
+
+RUN cd /tmp && pyenv local 2.7.14 && pip install jinja2 \
+    && curl -SL https://software.ecmwf.int/wiki/download/attachments/51731119/MetviewBundle-2017.12.0-Source.tar.gz \
+    && cat /tmp/MetviewBundle-2017.12.0-Source.tar.gz \
     | tar -xzC /tmp \
     && mkdir /tmp/build \
     && cd /tmp/build \
