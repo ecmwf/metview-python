@@ -1,4 +1,4 @@
-# run tests in a more reproduceble and isolated environment
+# Run tests in a more reproducible and isolated environment.
 #
 # Build the docker image once with:
 #   docker build -t mpy-tox .
@@ -7,24 +7,22 @@
 #
 FROM bopen/ubuntu-pyenv:latest
 
-RUN apt-get -y update && apt-get -y build-dep --no-install-recommends \
+RUN apt-get -y update && apt-get -y install --no-install-recommends \
+    curl \
+    && apt-get -y build-dep --no-install-recommends \
     metview \
     magics++ \
     emoslib \
  && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get -y update && apt-get install -y \
-    libqt4-dev \
- && rm -rf /var/lib/apt/lists/*
-
-COPY requirements/source /tmp/source
-
-RUN mkdir /tmp/build \
+RUN curl -SL https://software.ecmwf.int/wiki/download/attachments/51731119/MetviewBundle-2017.12.0-Source.tar.gz \
+    | tar -xzC /tmp \
+    && mkdir /tmp/build \
     && cd /tmp/build \
-    && cmake -DENABLE_ODB=ON -DENABLE_XXHASH=OFF /tmp/source \
-    && make -j 4 || make \
+    && cmake -DENABLE_UI=OFF -DENABLE_ODB=ON -DENABLE_XXHASH=OFF /tmp/MetviewBundle-2017.12.0-Source \
+    && make -j 4 \
     && make install \
- && rm -rf /tmp/build /tmp/source
+ && rm -rf /tmp/*
 
 RUN pip3 install pip setuptools wheel tox==2.9.1 tox-pyenv==1.1.0
 
