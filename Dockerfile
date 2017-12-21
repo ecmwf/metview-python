@@ -20,7 +20,7 @@ RUN curl -SL https://software.ecmwf.int/wiki/download/attachments/51731119/Metvi
     && mkdir /tmp/build \
     && cd /tmp/build \
     && cmake -DENABLE_UI=OFF -DENABLE_ODB=ON -DENABLE_XXHASH=OFF /tmp/MetviewBundle-2017.12.0-Source \
-    && make -j 4 \
+    && make \
     && make install \
  && rm -rf /tmp/*
 
