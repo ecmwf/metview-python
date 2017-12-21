@@ -9,6 +9,7 @@ FROM bopen/ubuntu-pyenv:latest
 
 RUN apt-get -y update && apt-get -y install --no-install-recommends \
     curl \
+    python-jinja2 \
     && apt-get -y build-dep --no-install-recommends \
     metview \
     magics++ \
