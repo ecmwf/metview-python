@@ -20,8 +20,10 @@ RUN cd /tmp && pyenv local 2.7.14 && pip install jinja2 \
     | tar -xzC /tmp \
     && mkdir /tmp/build \
     && cd /tmp/build \
-    && cmake -DENABLE_UI=OFF -DENABLE_ODB=ON -DENABLE_XXHASH=OFF /tmp/MetviewBundle-2017.12.0-Source \
-    && make -j 4 \
+    && cmake -DENABLE_UI=OFF -DENABLE_ODB=ON /tmp/MetviewBundle-2017.12.0-Source
+
+RUN cd /tmp/build \
+    && make \
     && make install \
  && rm -rf /tmp/*
 
