@@ -15,17 +15,19 @@ RUN apt-get -y update && apt-get -y install --no-install-recommends \
     emoslib \
  && rm -rf /var/lib/apt/lists/*
 
+COPY MetviewBundle-2017.12.1-Source.tar.gz /tmp
+
+#    && curl -SL https://software.ecmwf.int/wiki/download/attachments/51731119/MetviewBundle-2017.12.0-Source.tar.gz \
+
 RUN cd /tmp && pyenv local 2.7.14 && pip install jinja2 \
-    && curl -SL https://software.ecmwf.int/wiki/download/attachments/51731119/MetviewBundle-2017.12.0-Source.tar.gz \
+    && cat /tmp/MetviewBundle-2017.12.1-Source.tar.gz \
     | tar -xzC /tmp \
     && mkdir /tmp/build \
     && cd /tmp/build \
-    && cmake -DENABLE_UI=OFF -DENABLE_ODB=ON /tmp/MetviewBundle-2017.12.0-Source
-
-RUN cd /tmp/build \
-    && make \
-    && make install \
- && rm -rf /tmp/*
+    && cmake -DENABLE_UI=OFF /tmp/MetviewBundle-2017.12.1-Source \
+    && cd /tmp/build \
+    && make -j 4 ; make \
+    && make install
 
 RUN pip3 install pip setuptools wheel tox==2.9.1 tox-pyenv==1.1.0
 
