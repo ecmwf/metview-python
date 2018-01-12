@@ -357,3 +357,17 @@ def test_value_file_path():
     assert(p.url != "")
     assert(os.path.isfile(p.url))
 
+def test_mvl_ml2hPa():
+    ml_data = mpy.read(file_in_testdir('ml_data.grib'))
+    assert mpy.type(ml_data) == 'fieldset'
+    ml_t = mpy.read(data = ml_data, param = 't')
+    ml_lnsp = mpy.read(data = ml_data, param = 'lnsp')
+    desired_pls = [1000, 900, 850, 500, 300, 100, 10, 1, 0.8, 0.5, 0.3, 0.1]
+    pl_data = mpy.mvl_ml2hPa (ml_lnsp, ml_t, desired_pls)
+    assert mpy.type(pl_data) == 'fieldset'
+    pls = mpy.grib_get_long(pl_data, 'level')
+    lev_types = mpy.grib_get_string(pl_data, 'typeOfLevel')
+    lev_divisors = [1 if x == 'isobaricInhPa' else 100 for x in lev_types]
+    pl_in_hpa = [a/b for a,b in zip(pls, lev_divisors)]
+    assert(pl_in_hpa == desired_pls)
+

@@ -38,7 +38,16 @@ class MetviewInvoker:
         Constructor - starts a Metview session and reads its environment information
         Raises an exception if Metview does not respond within 5 seconds
         """
+
+        # check whether we're in a running Metview session
+        if 'METVIEW_TITLE_PROD' in os.environ:
+            self.persistent_session = True
+            self.info_section = {'METVIEW_LIB': os.environ['METVIEW_LIB']}
+            return
+
+
         print('MetviewInvoker: Invoking Metview')
+        self.persistent_session = True
         self.metview_replied = False
         self.metview_startup_timeout = 5 # seconds
 
@@ -70,6 +79,10 @@ class MetviewInvoker:
 
     def destroy(self):
         """Kills the Metview session. Raises an exception if it could not do it."""
+
+        if self.persistent_session:
+            return
+
         if self.metview_replied:
             print('MetviewInvoker: Closing Metview')
             metview_pid = self.info('EVENT_PID')
@@ -528,6 +541,7 @@ minvalue = make('minvalue')
 mobs = make('mobs')
 msymb = make('msymb')
 mtext = make('mtext')
+mvl_ml2hPa = make('mvl_ml2hPa')
 netcdf_visuliser = make('netcdf_visuliser')
 newpage = make('newpage')
 obsfilter = make('obsfilter')
