@@ -350,7 +350,7 @@ def test_plot():
 
 def test_macro_error():
     with pytest.raises(Exception):
-        g = TEST_FIELDSET[125]
+        TEST_FIELDSET[125]
 
 def test_value_file_path():
     p = TEST_FIELDSET + 1 # this will force Metview to write a new temporary file

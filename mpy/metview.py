@@ -58,7 +58,7 @@ class MetviewInvoker:
         signal.signal(signal.SIGUSR1, self.signal_from_metview)
         #p = subprocess.Popen(['metview', '-edbg', 'tv8 -a', '-slog', '-python-serve', env_file.name, str(pid)], stdout=subprocess.PIPE)
         #p = subprocess.Popen(['metview', '-slog', '-python-serve', env_file.name, str(pid)])
-        p = subprocess.Popen(['metview', '-python-serve', env_file.name, str(pid)], stdout=subprocess.PIPE)
+        subprocess.Popen(['metview', '-python-serve', env_file.name, str(pid)], stdout=subprocess.PIPE)
         
         # wait for Metview to respond...
         wait_start = time.time()
@@ -500,8 +500,8 @@ def make(name):
 
     def wrapped(*args, **kwargs):
         err = _call_function(name, *args, **kwargs)
-        #if err:
-        #   throw Exce....
+        if err:
+            pass  # throw Exceception
 
         val = lib.p_result_as_value()
         return value_from_metview(val)
@@ -618,7 +618,6 @@ def setoutput(*args):
 try:
     from IPython.display import Image
     from IPython import get_ipython
-    import tempfile
     if get_ipython() != None:
         plot.jupyter_available = True
         plot.plot_to_jupyter = True
