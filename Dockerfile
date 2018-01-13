@@ -25,7 +25,7 @@ RUN cd /tmp \
     && tar -xz -C /tmp/source --strip-components=1 -f /src/$SOURCE \
     && mkdir /tmp/build \
     && cd /tmp/build \
-    && cmake -DENABLE_UI=OFF /tmp/source \
+    && cmake -DENABLE_UI=OFF -DENABLE_EXPOSE_SUBPACKAGES=ON ENABLE_ODB=ON /tmp/source \
     && make -j 4 ; make \
     && make install \
     && ldconfig /usr/local/lib \
