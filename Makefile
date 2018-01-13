@@ -1,18 +1,27 @@
 
-METVIEW_BUNDLE := MetviewBundle-2017.12.1-Source.tar.gz
-METVIEW_BUNDLE_URL := https://software.ecmwf.int/wiki/download/attachments/51731119/$(METVIEW_BUNDLE)
-
 PACKAGE := mpy
-PIP := pip
 PYTHONS := python3.4 python3.5 python3.6 pypy3
 
-export PIP_FIND_LINKS := requirements/wheelhouse
+METVIEW_BUNDLE := MetviewBundle-2017.12.1-Source.tar.gz
+METVIEW_BUNDLE_URL := https://software.ecmwf.int/wiki/download/attachments/51731119/$(METVIEW_BUNDLE)
+DOCKERBUILDFLAGS = --build-arg METVIEW_BUNDLE=$(METVIEW_BUNDLE)
+
+PIP := pip
+PACKAGEWHEELHOUSE := requirements/wheelhouse
+
+export PIP_FIND_LINKS := $(PACKAGEWHEELHOUSE)
 TOXFLAGS := --workdir=.docker-tox
 MKDIR = mkdir -p
 
+USERWHEELHOUSE := ~/.wheelhouse
+ifeq ($(shell [ -d $(USERWHEELHOUSE) ] && echo true),true)
+    DOCKERFLAGS := -v $(USERWHEELHOUSE):/src/$(PACKAGEWHEELHOUSE)
+    PIP_FIND_LINKS += $(USERWHEELHOUSE)
+endif
+
 RUNTIME := $(shell [ -f /proc/1/cgroup ] && cat /proc/1/cgroup | grep -q docker && echo docker)
 ifneq ($(RUNTIME),docker)
-    RUN := docker run --rm -it -v `pwd`:/src $(PACKAGE)
+    RUN := docker run --rm -it -v `pwd`:/src $(DOCKERFLAGS) $(PACKAGE)
 endif
 
 
@@ -21,13 +30,10 @@ default:
 
 # local targets
 
-$(PIP_FIND_LINKS):
-	$(MKDIR) $(PIP_FIND_LINKS)
-
-local-wheelhouse-one: $(PIP_FIND_LINKS)
+local-wheelhouse-one:
 	$(PIP) install pip setuptools wheel
-	$(PIP) wheel -w $(PIP_FIND_LINKS) -r requirements/requirements-tests.txt
-	$(PIP) wheel -w $(PIP_FIND_LINKS) -r requirements/requirements-dev.txt
+	$(PIP) wheel -w $(PACKAGEWHEELHOUSE) -r requirements/requirements-tests.txt
+	$(PIP) wheel -w $(PACKAGEWHEELHOUSE) -r requirements/requirements-dev.txt
 
 local-wheelhouse:
 	for PYTHON in $(PYTHONS); do $(MAKE) local-wheelhouse-one PIP="$$PYTHON -m pip"; done
@@ -43,10 +49,10 @@ local-develop: local-install-dev-req
 	$(PIP) install -e .
 
 clean:
-	$(RM) -r .tox .docker-tox */__pycache__ */*.pyc htmlcov dist build .coverage .cache .eggs *.egg-info
+	$(RM) -r */__pycache__ */*.pyc htmlcov dist build .coverage .cache .eggs *.egg-info
 
 distclean: clean
-	$(RM) -r requrements/wheelhouse
+	$(RM) -r .tox .docker-tox requirements/wheelhouse
 
 # container targets
 
@@ -77,4 +83,5 @@ $(METVIEW_BUNDLE):
 	curl -o $(METVIEW_BUNDLE) -L $(METVIEW_BUNDLE_URL)
 
 image: $(METVIEW_BUNDLE)
-	docker build -t $(PACKAGE) --build-arg METVIEW_BUNDLE=$(METVIEW_BUNDLE) .
+	-[ -d $(USERWHEELHOUSE) ] && rsync -av --include="*cp36*manylinux*" --exclude="*" $(USERWHEELHOUSE)/ $(PACKAGEWHEELHOUSE)/
+	docker build -t $(PACKAGE) $(DOCKERBUILDFLAGS) .

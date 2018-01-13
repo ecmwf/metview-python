@@ -1,9 +1,9 @@
 # Run tests in a more reproducible and isolated environment.
 #
 # Build the docker image once with:
-#   docker build -t mpy-tox .
+#   docker build -t mpy .
 # Run the container with:
-#   docker run --rm -it -v `pwd`:/src mpy-tox
+#   docker run --rm -it -v `pwd`:/src mpy
 #
 FROM bopen/ubuntu-pyenv:latest
 
@@ -38,4 +38,5 @@ RUN cd /src \
     && make local-install-dev-req \
  && rm -rf /src/*
 
+VOLUME /src
 WORKDIR /src

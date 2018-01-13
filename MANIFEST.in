@@ -1,0 +1,16 @@
+include *.rst
+include .dockerignore
+include Dockerfile
+include LICENSE
+include Makefile
+include tox.ini
+recursive-include examples *.bufr
+recursive-include examples *.grib
+recursive-include examples *.py
+recursive-include mpy *.h
+recursive-include requirements *.in
+recursive-include requirements *.txt
+recursive-include tests *.bufr
+recursive-include tests *.gpt
+recursive-include tests *.grib
+recursive-include tests *.py
