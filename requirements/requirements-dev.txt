@@ -1,10 +1,14 @@
-pip-tools
 bumpversion
-wheel
-watchdog
+check-manifest
+coverage
+detox
 flake8
+ipython
+matplotlib
+notebook
+pip-tools
+# pytest-mypy
 tox
 tox-pyenv
-coverage
-check-manifest
-pytest-mypy
+watchdog
+wheel

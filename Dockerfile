@@ -7,30 +7,35 @@
 #
 FROM bopen/ubuntu-pyenv:latest
 
-RUN apt-get -y update && apt-get -y install --no-install-recommends \
-    curl \
-    && apt-get -y build-dep --no-install-recommends \
+ARG METVIEW_BUNDLE=MetviewBundle-2017.12.1-Source.tar.gz
+
+ENV LC_ALL=C.UTF-8 LANG=C.UTF-8
+
+RUN apt-get -y update && apt-get -y build-dep --no-install-recommends \
     metview \
     magics++ \
     emoslib \
  && rm -rf /var/lib/apt/lists/*
 
-COPY MetviewBundle-2017.12.1-Source.tar.gz /tmp
+COPY $METVIEW_BUNDLE /src/$METVIEW_BUNDLE
 
-#    && curl -SL https://software.ecmwf.int/wiki/download/attachments/51731119/MetviewBundle-2017.12.0-Source.tar.gz \
-
-RUN cd /tmp && pyenv local 2.7.14 && pip install jinja2 \
-    && cat /tmp/MetviewBundle-2017.12.1-Source.tar.gz \
-    | tar -xzC /tmp \
+RUN cd /tmp \
+    && pyenv local 2.7.14 && pip install jinja2 \
+    && mkdir /tmp/source \
+    && tar -xz -C /tmp/source --strip-components=1 -f /src/$METVIEW_BUNDLE \
     && mkdir /tmp/build \
     && cd /tmp/build \
-    && cmake -DENABLE_UI=OFF /tmp/MetviewBundle-2017.12.1-Source \
-    && cd /tmp/build \
+    && cmake -DENABLE_UI=OFF /tmp/source \
     && make -j 4 ; make \
-    && make install
+    && make install \
+ && rm -rf /tmp/*
 
-RUN pip3 install pip setuptools wheel tox==2.9.1 tox-pyenv==1.1.0
+COPY . /src/
+
+RUN cd /src \
+    && make local-install-test-req \
+    && make local-develop \
+    && make local-install-dev-req \
+ && rm -rf /src/*
 
 WORKDIR /src
-
-ENTRYPOINT ["tox", "--workdir", ".docker-tox"]

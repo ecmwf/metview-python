@@ -5,14 +5,16 @@
 #    pip-compile --output-file requirements/requirements-tests.txt setup.py requirements/requirements-tests.in
 #
 apipkg==1.4               # via execnet
-cffi==1.11.2
-coverage==4.4.1           # via pytest-cov
+attrs==17.4.0             # via pytest
+cffi==1.11.3
+coverage==4.4.2           # via pytest-cov
 execnet==1.5.0            # via pytest-cache
 mccabe==0.6.1             # via pytest-mccabe
-numpy==1.13.3             # via pandas, xarray
-pandas==0.21.0            # via xarray
+numpy==1.14.0             # via pandas, xarray
+pandas==0.22.0            # via xarray
 pep8==1.7.1               # via pytest-pep8
-py==1.4.34                # via pytest
+pluggy==0.6.0             # via pytest
+py==1.5.2                 # via pytest
 pycparser==2.18           # via cffi
 pyflakes==1.6.0           # via pytest-flakes
 pytest-cache==1.0         # via pytest-flakes, pytest-mccabe, pytest-pep8
@@ -20,8 +22,8 @@ pytest-cov==2.5.1
 pytest-flakes==2.0.0
 pytest-mccabe==0.1
 pytest-pep8==1.0.6
-pytest==3.2.3
+pytest==3.3.2
 python-dateutil==2.6.1    # via pandas
 pytz==2017.3              # via pandas
-six==1.11.0               # via python-dateutil
-xarray==0.9.6
+six==1.11.0               # via pytest, python-dateutil
+xarray==0.10.0
