@@ -1,0 +1,12 @@
+.cache
+.coverage
+htmlcov
+dist
+build
+*.pyc
+*.egg-info
+.tox
+.docker-tox
+.eggs
+
+requirements/wheelhouse
