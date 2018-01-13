@@ -6,8 +6,10 @@ flake8
 ipython
 matplotlib
 notebook
+pip
 pip-tools
 # pytest-mypy
+setuptools
 tox
 tox-pyenv
 watchdog
