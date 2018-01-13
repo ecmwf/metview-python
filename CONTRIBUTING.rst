@@ -34,6 +34,10 @@ Running the full test suite on all python supported versions::
 
     $ make detox
 
+To run a shell inside the container run::
+
+    $ make shell
+
 To update the requirements files to the latest versions::
 
     $ make update-test-req
