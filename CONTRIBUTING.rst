@@ -39,3 +39,14 @@ To update the requirements files to the latest versions::
     $ make update-test-req
 
 
+Cleanup
+-------
+
+Light cleanup with::
+
+    $ make clean
+
+The wheelhouse is removed with::
+
+    $ make distclean  # ARE YOU REALLY SURE?
+
