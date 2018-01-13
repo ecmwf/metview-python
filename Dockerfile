@@ -7,7 +7,7 @@
 #
 FROM bopen/ubuntu-pyenv:latest
 
-ARG METVIEW_BUNDLE=MetviewBundle-2017.12.1-Source.tar.gz
+ARG SOURCE=MetviewBundle-2017.12.1-Source.tar.gz
 
 ENV LC_ALL=C.UTF-8 LANG=C.UTF-8
 
@@ -17,17 +17,18 @@ RUN apt-get -y update && apt-get -y build-dep --no-install-recommends \
     emoslib \
  && rm -rf /var/lib/apt/lists/*
 
-COPY $METVIEW_BUNDLE /src/$METVIEW_BUNDLE
+COPY $SOURCE /src/$SOURCE
 
 RUN cd /tmp \
     && pyenv local 2.7.14 && pip install jinja2 \
     && mkdir /tmp/source \
-    && tar -xz -C /tmp/source --strip-components=1 -f /src/$METVIEW_BUNDLE \
+    && tar -xz -C /tmp/source --strip-components=1 -f /src/$SOURCE \
     && mkdir /tmp/build \
     && cd /tmp/build \
     && cmake -DENABLE_UI=OFF /tmp/source \
     && make -j 4 ; make \
     && make install \
+    && ldconfig /usr/local/lib \
  && rm -rf /tmp/*
 
 COPY . /src/

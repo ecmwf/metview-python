@@ -2,10 +2,10 @@
 PACKAGE := mpy
 PYTHONS := python3.4 python3.5 python3.6 pypy3
 
-METVIEW_BUNDLE := MetviewBundle-2017.12.1-Source.tar.gz
-METVIEW_BUNDLE_URL := https://software.ecmwf.int/wiki/download/attachments/51731119/$(METVIEW_BUNDLE)
-DOCKERBUILDFLAGS = --build-arg METVIEW_BUNDLE=$(METVIEW_BUNDLE)
+SOURECE := MetviewBundle-2017.12.1-Source.tar.gz
+SOURCE_URL := https://software.ecmwf.int/wiki/download/attachments/51731119/$(SOURCE)
 
+DOCKERBUILDFLAGS := --build-arg SOURCE=$(SOURCE)
 PIP := pip
 PACKAGEWHEELHOUSE := requirements/wheelhouse
 
@@ -79,9 +79,9 @@ detox:
 
 # image build
 
-$(METVIEW_BUNDLE):
-	curl -o $(METVIEW_BUNDLE) -L $(METVIEW_BUNDLE_URL)
+$(SOURCE):
+	curl -o $(SOURCE) -L $(SOURCE_URL)
 
-image: $(METVIEW_BUNDLE)
+image: $(SOURCE)
 	-[ -d $(USERWHEELHOUSE) ] && rsync -av --include="*cp36*manylinux*" --exclude="*" $(USERWHEELHOUSE)/ $(PACKAGEWHEELHOUSE)/
 	docker build -t $(PACKAGE) $(DOCKERBUILDFLAGS) .
