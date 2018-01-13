@@ -71,10 +71,10 @@ def test_lowercase():
     assert a == 'metview'
 
 
-#def test_lists():
-#    m= mpy.mcont(contour_level_selection_type = 'level_list', contour_level_list = [1, 2, 6])
-#    print('M: ', m)
-#test_lists()
+# def test_lists():
+#     m= mpy.mcont(contour_level_selection_type = 'level_list', contour_level_list = [1, 2, 6])
+#     print('M: ', m)
+# test_lists()
 
 
 def test_create_list():
@@ -82,28 +82,34 @@ def test_create_list():
     outlist = mpy.makelist(*inlist)
     assert outlist == inlist
 
+
 def test_create_list_from_tuple():
     intuple = (10, 50, 60, 50, 1.1, 90)
     outlist = mpy.makelist(*intuple)
     assert outlist == list(intuple)
+
 
 def test_list_unique():
     inlist = [1, 5, 6, 5, 1, 9]
     ulist = mpy.unique(inlist)
     assert ulist == [1, 5, 6, 9]
 
+
 def test_tuple_unique():
     intuple = (3, 2, 2, 7, 3, 1.2, 2.1, 1.2)
     ulist = mpy.unique(intuple)
     assert ulist == [3, 2, 7, 1.2, 2.1]
 
+
 def test_lists_as_input():
     my_list = [1, 5, 6]
     assert mpy.count(my_list) == 3
 
+
 def test_tuples_as_input():
     my_tuple = [1, 0, 5, 6]
     assert mpy.count(my_tuple) == 4
+
 
 def test_read():
     gg = mpy.read({'SOURCE': file_in_testdir('test.grib'), 'GRID': 80})
@@ -217,6 +223,7 @@ def test_distance():
     assert np.isclose(minimum, 0.0)
     assert np.isclose(maximum, SEMI_EQUATOR)
 
+
 def test_fieldset_len_1():
     flen = len(TEST_FIELDSET)
     assert(flen == 1)
@@ -230,7 +237,7 @@ def test_fieldset_len_6():
 
 def test_fieldset_single_index():
     grib = mpy.read(os.path.join(PATH, 't_for_xs.grib'))
-    grib4 = grib[3] # 0-based indexing in Python
+    grib4 = grib[3]  # 0-based indexing in Python
     assert(len(grib4) == 1)
     assert(mpy.grib_get_long(grib4, 'level') == 500)
 
@@ -250,7 +257,7 @@ TEST_GEOPOINTS = mpy.read(os.path.join(PATH, 't2m_3day.gpt'))
 
 
 def test_filter_gpt():
-    filter_out = TEST_GEOPOINTS.filter(TEST_GEOPOINTS >=1)
+    filter_out = TEST_GEOPOINTS.filter(TEST_GEOPOINTS >= 1)
     assert mpy.type(filter_out) == 'geopoints'
 
 
@@ -293,8 +300,8 @@ def test_obsfilter():
     bufr = mpy.read(file_in_testdir('obs_3day.bufr'))
 
     # test two styles of passing parameters
-    gpt1 = mpy.obsfilter({'data': bufr, 'parameter' : '012004', 'output' : "geopoints"})
-    gpt2 = mpy.obsfilter(data = bufr, parameter = '012004', output = "geopoints")
+    gpt1 = mpy.obsfilter({'data': bufr, 'parameter': '012004', 'output': "geopoints"})
+    gpt2 = mpy.obsfilter(data=bufr, parameter='012004', output="geopoints")
     assert(mpy.type(gpt1) == 'geopoints')
     assert(mpy.count(gpt1) == 45)
     assert(mpy.type(gpt2) == 'geopoints')
@@ -307,8 +314,9 @@ def test_obsfilter():
 def test_cross_section_data():
     grib = mpy.read(os.path.join(PATH, 't_for_xs.grib'))
     xs_data = mpy.mcross_sect(
-        line = [59.9,-180,-13.5,158.08],
-        data = grib)
+        line=[59.9, -180, -13.5, 158.08],
+        data=grib,
+    )
     # the result of this should be a netCDF variable
     assert mpy.type(xs_data) == 'netcdf'
     mpy.setcurrent(xs_data, 't')
@@ -352,22 +360,23 @@ def test_macro_error():
     with pytest.raises(Exception):
         TEST_FIELDSET[125]
 
+
 def test_value_file_path():
-    p = TEST_FIELDSET + 1 # this will force Metview to write a new temporary file
+    p = TEST_FIELDSET + 1  # this will force Metview to write a new temporary file
     assert(p.url != "")
     assert(os.path.isfile(p.url))
+
 
 def test_mvl_ml2hPa():
     ml_data = mpy.read(file_in_testdir('ml_data.grib'))
     assert mpy.type(ml_data) == 'fieldset'
-    ml_t = mpy.read(data = ml_data, param = 't')
-    ml_lnsp = mpy.read(data = ml_data, param = 'lnsp')
+    ml_t = mpy.read(data=ml_data, param='t')
+    ml_lnsp = mpy.read(data=ml_data, param='lnsp')
     desired_pls = [1000, 900, 850, 500, 300, 100, 10, 1, 0.8, 0.5, 0.3, 0.1]
-    pl_data = mpy.mvl_ml2hPa (ml_lnsp, ml_t, desired_pls)
+    pl_data = mpy.mvl_ml2hPa(ml_lnsp, ml_t, desired_pls)
     assert mpy.type(pl_data) == 'fieldset'
     pls = mpy.grib_get_long(pl_data, 'level')
     lev_types = mpy.grib_get_string(pl_data, 'typeOfLevel')
     lev_divisors = [1 if x == 'isobaricInhPa' else 100 for x in lev_types]
-    pl_in_hpa = [a/b for a,b in zip(pls, lev_divisors)]
+    pl_in_hpa = [a / b for a, b in zip(pls, lev_divisors)]
     assert(pl_in_hpa == desired_pls)
-
