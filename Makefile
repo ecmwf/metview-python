@@ -2,7 +2,7 @@
 PACKAGE := mpy
 PYTHONS := python3.4 python3.5 python3.6 pypy3
 
-SOURECE := MetviewBundle-2017.12.1-Source.tar.gz
+SOURCE := MetviewBundle-2017.12.1-Source.tar.gz
 SOURCE_URL := https://software.ecmwf.int/wiki/download/attachments/51731119/$(SOURCE)
 
 DOCKERBUILDFLAGS := --build-arg SOURCE=$(SOURCE)
