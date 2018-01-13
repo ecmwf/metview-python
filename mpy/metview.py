@@ -12,9 +12,9 @@ import atexit
 import cffi
 import pandas as pd
 
-#import xarray as xr
-#from eccodes import eccodes
-#from xarray_grib import xarray_grib
+# import xarray as xr
+# from eccodes import eccodes
+# from xarray_grib import xarray_grib
 
 
 def read(fname):
@@ -26,13 +26,14 @@ def read(fname):
 def python_to_mv_index(pi):
     return pi + 1
 
+
 def string_from_ffi(s):
     return ffi.string(s).decode('utf-8')
 
 
 class MetviewInvoker:
     """Starts a new Metview session on construction and terminates it on program exit"""
-    
+
     def __init__(self):
         """
         Constructor - starts a Metview session and reads its environment information
@@ -45,26 +46,25 @@ class MetviewInvoker:
             self.info_section = {'METVIEW_LIB': os.environ['METVIEW_LIB']}
             return
 
-
         print('MetviewInvoker: Invoking Metview')
         self.persistent_session = True
         self.metview_replied = False
-        self.metview_startup_timeout = 5 # seconds
+        self.metview_startup_timeout = 5  # seconds
 
         # start Metview with command-line parameters that will let it communicate back to us
         env_file = tempfile.NamedTemporaryFile(mode='rt')
         pid = os.getpid()
-        #print('PYTHON:', pid, ' ', env_file.name, ' ', repr(signal.SIGUSR1))
+        # print('PYTHON:', pid, ' ', env_file.name, ' ', repr(signal.SIGUSR1))
         signal.signal(signal.SIGUSR1, self.signal_from_metview)
-        #p = subprocess.Popen(['metview', '-edbg', 'tv8 -a', '-slog', '-python-serve', env_file.name, str(pid)], stdout=subprocess.PIPE)
-        #p = subprocess.Popen(['metview', '-slog', '-python-serve', env_file.name, str(pid)])
+        # p = subprocess.Popen(['metview', '-edbg', 'tv8 -a', '-slog', '-python-serve', env_file.name, str(pid)], stdout=subprocess.PIPE)
+        # p = subprocess.Popen(['metview', '-slog', '-python-serve', env_file.name, str(pid)])
         subprocess.Popen(['metview', '-python-serve', env_file.name, str(pid)], stdout=subprocess.PIPE)
-        
+
         # wait for Metview to respond...
         wait_start = time.time()
         while not(self.metview_replied) and (time.time() - wait_start < self.metview_startup_timeout):
             time.sleep(0.001)
-        
+
         if not(self.metview_replied):
             raise Exception('Command "metview" did not respond before ' + str(self.metview_startup_timeout) + ' seconds')
 
@@ -75,7 +75,6 @@ class MetviewInvoker:
         # be problems with the order of cleanup - e.g. the 'os' module might be deleted before
         # this destructor is called.
         atexit.register(self.destroy)
-
 
     def destroy(self):
         """Kills the Metview session. Raises an exception if it could not do it."""
@@ -91,10 +90,10 @@ class MetviewInvoker:
             except Exception as exp:
                 print("Could not terminate the Metview process pid=" + metview_pid)
                 raise exp
-        
+
     def signal_from_metview(self, *args):
         """Called when Metview sends a signal back to Python to say that it's started"""
-        #print ('PYTHON: GOT SIGNAL BACK FROM METVIEW!')
+        # print ('PYTHON: GOT SIGNAL BACK FROM METVIEW!')
         self.metview_replied = True
 
     def read_metview_settings(self, settings_file):
@@ -103,7 +102,7 @@ class MetviewInvoker:
         cf.read(settings_file)
         env_section = cf['Environment']
         for envar in env_section:
-            #print('set ', envar.upper(), ' = ', env_section[envar])
+            # print('set ', envar.upper(), ' = ', env_section[envar])
             os.environ[envar.upper()] = env_section[envar]
         self.info_section = cf['Info']
 
@@ -118,15 +117,13 @@ try:
     ffi = cffi.FFI()
     ffi.cdef(read('metview.h'))
     mv_lib = mi.info('METVIEW_LIB')
-    os.environ["LD_LIBRARY_PATH"] = mv_lib + ':' + os.environ.get("LD_LIBRARY_PATH", '') # is there a more general way to add to a path?
+    # is there a more general way to add to a path?
+    os.environ["LD_LIBRARY_PATH"] = mv_lib + ':' + os.environ.get("LD_LIBRARY_PATH", '')
     lib = ffi.dlopen(os.path.join(mv_lib, 'libMvMacro.so'))
     lib.p_init()
 except Exception as exp:
     print('Error loading Metview package. LD_LIBRARY_PATH=' + os.environ["LD_LIBRARY_PATH"])
     raise exp
-
-
-
 
 
 class Value:
@@ -136,7 +133,6 @@ class Value:
 
     def push(self):
         return self.val_pointer
-
 
 
 class Request(dict, Value):
@@ -170,7 +166,7 @@ class Request(dict, Value):
     def to_metview_style(self):
         for k, v in self.items():
 
-            #if isinstance(v, (list, tuple)):
+            # if isinstance(v, (list, tuple)):
             #    for v_i in v:
             #        v_i = str(v_i).encode('utf-8')
             #        lib.p_add_value(r, k.encode('utf-8'), v_i)
@@ -198,7 +194,6 @@ class Request(dict, Value):
 
             lib.p_push_request(r)
 
-
     def __getitem__(self, index):
         # we don't often need integer indexing of requests, but we do in the
         # case of a Display Window object
@@ -208,7 +203,7 @@ class Request(dict, Value):
             return subset(self, index)
 
 
-#def dict_to_request(d, verb='NONE'):
+# def dict_to_request(d, verb='NONE'):
 #    # get the verb from the request if not supplied by the caller
 #    if verb == 'NONE' and isinstance(d, Request):
 #        verb = d.verb
@@ -233,7 +228,7 @@ class Request(dict, Value):
 #    return r
 
 
-#def push_dict(d, verb='NONE'):
+# def push_dict(d, verb='NONE'):
 #
 #    for k, v in d.items():
 #        if isinstance(v, (list, tuple)):
@@ -261,6 +256,7 @@ def push_bytes(b):
 def push_str(s):
     push_bytes(s.encode('utf-8'))
 
+
 def push_list(lst):
     # ask Metview to create a new list, then add each element by
     # pusing it onto the stack and asking Metview to pop it off
@@ -270,7 +266,6 @@ def push_list(lst):
         push_arg(val, 'NONE')
         lib.p_add_value_from_pop_to_list(mlist, i)
     lib.p_push_list(mlist)
-
 
 
 def push_arg(n, name):
@@ -298,8 +293,7 @@ def push_arg(n, name):
     elif isinstance(n, (list, tuple)):
         push_list(n)
     else:
-        raise TypeError('Cannot push this type of argument to Metview: ' , builtins.type(n))
-
+        raise TypeError('Cannot push this type of argument to Metview: ', builtins.type(n))
 
     return nargs
 
@@ -312,7 +306,6 @@ def dict_to_pushed_args(d):
         push_arg(v, 'NONE')
 
     return 2 * len(d)  # return the number of arguments generated
-
 
 
 class FileBackedValue(Value):
@@ -342,7 +335,7 @@ class Fieldset(FileBackedValue):
 
     def __pow__(self, other):
         return power(self, other)
-    
+
     def __len__(self):
         return int(count(self))
 
@@ -425,7 +418,6 @@ def list_from_metview(mlist):
     return result
 
 
-
 # we can actually get these from Metview, but for testing we just have a dict
 # service_function_verbs = {
 #     'retrieve': 'RETRIEVE',
@@ -462,7 +454,7 @@ def _call_function(name, *args, **kwargs):
 def value_from_metview(val):
     rt = lib.p_value_type(val)
     # Number
-    if rt == 0: 
+    if rt == 0:
         return lib.p_value_as_number(val)
     # String
     elif rt == 1:
@@ -493,7 +485,6 @@ def value_from_metview(val):
         raise Exception('Metview error: ' + err_msg)
     else:
         raise Exception('value_from_metview got an unhandled return type')
-
 
 
 def make(name):
@@ -573,7 +564,7 @@ class Plot():
     def __init__(self):
         self.plot_to_jupyter = False
         self.jupyter_available = False
-        
+
     def __call__(self, *args, **kwargs):
         if self.plot_to_jupyter and self.jupyter_available:
             f, tmp = tempfile.mkstemp(".png")
@@ -581,7 +572,7 @@ class Plot():
 
             base, ext = os.path.splitext(tmp)
 
-            _setoutput(png_output(output_name = base, output_name_first_page_number='off'))
+            _setoutput(png_output(output_name=base, output_name_first_page_number='off'))
             met_plot(*args)
 
             image = Image(tmp)
@@ -602,6 +593,7 @@ class Plot():
 
 plot = Plot()
 
+
 def setoutput(*args):
     if 'jupyter' in args:
         if plot.jupyter_available:
@@ -618,7 +610,7 @@ def setoutput(*args):
 try:
     from IPython.display import Image
     from IPython import get_ipython
-    if get_ipython() != None:
+    if get_ipython() is not None:
         plot.jupyter_available = True
         plot.plot_to_jupyter = True
 except ImportError:
