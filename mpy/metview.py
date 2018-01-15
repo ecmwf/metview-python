@@ -47,7 +47,7 @@ class MetviewInvoker:
             return
 
         print('MetviewInvoker: Invoking Metview')
-        self.persistent_session = True
+        self.persistent_session = False
         self.metview_replied = False
         self.metview_startup_timeout = 5  # seconds
 
