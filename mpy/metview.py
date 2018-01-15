@@ -11,10 +11,7 @@ import atexit
 
 import cffi
 import pandas as pd
-
-# import xarray as xr
-# from eccodes import eccodes
-# from xarray_grib import xarray_grib
+import xarray as xr
 
 
 def read(fname):
@@ -342,13 +339,16 @@ class Fieldset(FileBackedValue):
     def __getitem__(self, index):
         return subset(self, python_to_mv_index(index))
 
-#    def to_xarray(self):
-#        print('getting grib from ', self.url)
-#        store = xarray_grib.GribDataStore(self.url)
-#        print('store: ', store)
-#        dataset = xr.open_dataset(store)
-#        print('dataset: ', dataset)
-#        return dataset
+    def to_dataset(self):
+        # soft dependency on xarray_grib
+        try:
+            import xarray_grib
+        except ImportError:
+            print("Package xarray_grib not found. Try running 'pip install xarray_grib'.")
+            raise
+        store = xarray_grib.GribDataStore(self.url)
+        dataset = xr.open_dataset(store)
+        return dataset
 
 
 class Bufr(FileBackedValue):
