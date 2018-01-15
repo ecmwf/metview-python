@@ -60,6 +60,9 @@ distclean: clean
 shell:
 	$(RUN)
 
+notebook:
+	$(RUN) jupyter notebook --ip=* --allow-root
+
 wheelhouse:
 	$(RUN) make local-wheelhouse
 
