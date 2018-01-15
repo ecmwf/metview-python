@@ -11,7 +11,6 @@ import atexit
 
 import cffi
 import pandas as pd
-import xarray as xr
 
 
 def read(fname):
@@ -343,6 +342,7 @@ class Fieldset(FileBackedValue):
         # soft dependency on xarray_grib
         try:
             import xarray_grib
+            import xarray as xr
         except ImportError:
             print("Package xarray_grib not found. Try running 'pip install xarray_grib'.")
             raise
