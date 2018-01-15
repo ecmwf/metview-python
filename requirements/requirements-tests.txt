@@ -5,10 +5,12 @@
 #    pip-compile --output-file requirements/requirements-tests.txt setup.py requirements/requirements-tests.in
 #
 apipkg==1.4               # via execnet
-attrs==17.4.0             # via pytest
-cffi==1.11.3
+attrs==17.4.0             # via pytest, xarray-grib
+cffi==1.11.4
+contextlib2==0.5.5        # via xarray-grib
 coverage==4.4.2           # via pytest-cov
 execnet==1.5.0            # via pytest-cache
+future==0.16.0            # via xarray-grib
 mccabe==0.6.1             # via pytest-mccabe
 numpy==1.14.0             # via pandas, xarray
 pandas==0.22.0            # via xarray
@@ -26,4 +28,6 @@ pytest==3.3.2
 python-dateutil==2.6.1    # via pandas
 pytz==2017.3              # via pandas
 six==1.11.0               # via pytest, python-dateutil
+typing==3.6.2             # via xarray-grib
+xarray-grib==0.1.0
 xarray==0.10.0

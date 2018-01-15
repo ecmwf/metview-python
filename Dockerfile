@@ -39,5 +39,6 @@ RUN cd /src \
     && make local-install-dev-req \
  && rm -rf /src/*
 
+EXPOSE 8888
 VOLUME /src
 WORKDIR /src

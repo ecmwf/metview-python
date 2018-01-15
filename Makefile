@@ -9,13 +9,14 @@ DOCKERBUILDFLAGS := --build-arg SOURCE=$(SOURCE)
 PIP := pip
 PACKAGEWHEELHOUSE := requirements/wheelhouse
 
+export PIP_INDEX_URL
 export PIP_FIND_LINKS := $(PACKAGEWHEELHOUSE)
 TOXFLAGS := --workdir=.docker-tox
 MKDIR = mkdir -p
 
 USERWHEELHOUSE := ~/.wheelhouse
 ifeq ($(shell [ -d $(USERWHEELHOUSE) ] && echo true),true)
-    DOCKERFLAGS := -v $(USERWHEELHOUSE):/src/$(PACKAGEWHEELHOUSE)
+    DOCKERFLAGS := -v $(USERWHEELHOUSE):/src/$(PACKAGEWHEELHOUSE) -v ~/.ecmwfapirc:/root/.ecmwfapirc -e PIP_INDEX_URL=$$PIP_INDEX_URL -p 8888:8888
     PIP_FIND_LINKS += $(USERWHEELHOUSE)
 endif
 
@@ -83,5 +84,5 @@ $(SOURCE):
 	curl -o $(SOURCE) -L $(SOURCE_URL)
 
 image: $(SOURCE)
-	-[ -d $(USERWHEELHOUSE) ] && rsync -av --include="*cp36*manylinux*" --exclude="*" $(USERWHEELHOUSE)/ $(PACKAGEWHEELHOUSE)/
+	-[ -d $(USERWHEELHOUSE) ] && rsync -av --include="*cp36*manylinux*" --include="xarray*" --exclude="*" $(USERWHEELHOUSE)/ $(PACKAGEWHEELHOUSE)/
 	docker build -t $(PACKAGE) $(DOCKERBUILDFLAGS) .
