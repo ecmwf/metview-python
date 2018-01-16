@@ -506,6 +506,7 @@ abs = make('abs')
 accumulate = make('accumulate')
 add = make('+')
 base_date = make('base_date')
+call = make('call')
 count = make('count')
 dimension_names = make('dimension_names')
 distance = make('distance')
@@ -559,6 +560,26 @@ value = make('value')
 version_info = make('version_info')
 waitmode = make('waitmode')
 write = make('write')
+
+
+# experimental class to facilitate calling an arbitrary Macro function
+# function callers are created on-demand
+# e.g. mpy.mf.nearest_gridpoint_info(grib, 10, 20)
+class MF():
+
+    def __init__(self):
+        self.func_map = {}
+
+    def __getattr__(self, fname):
+        if fname in self.func_map:
+            return self.func_map[fname]
+        else:
+            f = make(fname)
+            self.func_map[fname] = f 
+            return f
+
+mf = MF()
+
 
 
 class Plot():
