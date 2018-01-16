@@ -380,3 +380,16 @@ def test_mvl_ml2hPa():
     lev_divisors = [1 if x == 'isobaricInhPa' else 100 for x in lev_types]
     pl_in_hpa = [a / b for a, b in zip(pls, lev_divisors)]
     assert(pl_in_hpa == desired_pls)
+
+
+def test_mf_function_caller():
+    info = mpy.mf.nearest_gridpoint_info(TEST_FIELDSET[0], 10, 20)
+    assert(isinstance(info, list))
+    info0 = info[0]
+    print(info0)
+    assert(isinstance(info0, dict))
+    assert(info0['latitude'] == 9.75)
+    assert(info0['longitude'] == 20.25)
+    assert(info0['index'] == 51388)
+
+
