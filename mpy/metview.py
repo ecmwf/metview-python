@@ -596,10 +596,9 @@ class Plot():
 
     def __init__(self):
         self.plot_to_jupyter = False
-        self.jupyter_available = False
 
     def __call__(self, *args, **kwargs):
-        if self.plot_to_jupyter and self.jupyter_available:
+        if self.plot_to_jupyter:
             f, tmp = tempfile.mkstemp(".png")
             os.close(f)
 
@@ -627,27 +626,34 @@ class Plot():
 plot = Plot()
 
 
+
+# On a test system, importing IPython took approx 0.5 seconds, so to avoid that hit
+# under most circumstances, we only import it when the user asks for Jupyter
+# functionality. Since this occurs within a function, we need a little trickery to
+# get the IPython functions into the global namespace so that the plot object can use them
 def setoutput(*args):
     if 'jupyter' in args:
-        if plot.jupyter_available:
+        try:
+            global Image
+            global get_ipython
+            IPython = __import__('IPython', globals(), locals()) 
+            Image = IPython.display.Image
+            get_ipython = IPython.get_ipython
+        except ImportError as imperr:
+            print('Could not import IPython module - plotting to Jupyter will not work')
+            raise imperr
+
+        # test whether we're in the Jupyter environment
+        if get_ipython() is not None:
             plot.plot_to_jupyter = True
         else:
-            print("setoutput('jupyter') was set, but we are not in a Jupyter environment")
+            print("ERROR: setoutput('jupyter') was set, but we are not in a Jupyter environment")
+            raise(Exception('Could not set output to jupyter'))
     else:
         plot.plot_to_jupyter = False
         _setoutput(*args)
 
 
-# try to import what we need to pass images back to Jupyter notebooks
-
-try:
-    from IPython.display import Image
-    from IPython import get_ipython
-    if get_ipython() is not None:
-        plot.jupyter_available = True
-        plot.plot_to_jupyter = True
-except ImportError:
-    pass
 
 # perform a MARS retrieval
 # - defined a request
