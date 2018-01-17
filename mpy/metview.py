@@ -578,8 +578,18 @@ class MF():
             self.func_map[fname] = f 
             return f
 
+    # required for IDEs to list the available functions
+    def __dir__(self):
+        macro_dict = make('dictionary')
+        all_funcs = macro_dict()
+        most_funcs = [f for f in all_funcs if len(f) > 1]
+        return most_funcs
+
 mf = MF()
 
+
+#for x in range(350):
+#    exec("uppercase = make('uppercase')")
 
 
 class Plot():
