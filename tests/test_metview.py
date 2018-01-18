@@ -393,3 +393,7 @@ def test_mf_function_caller():
     assert(info0['index'] == 51388)
 
 
+def test_push_nil():
+    n = mpy.nil()
+    assert(n == None)
+    assert(mpy.type(n) == 'nil')

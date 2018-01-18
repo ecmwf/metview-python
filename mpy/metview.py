@@ -290,6 +290,8 @@ def push_arg(n, name):
         lib.p_push_value(n.push())
     elif isinstance(n, (list, tuple)):
         push_list(n)
+    elif n == None:
+        lib.p_push_nil()
     else:
         raise TypeError('Cannot push this type of argument to Metview: ', builtins.type(n))
 
@@ -538,6 +540,7 @@ mtext = make('mtext')
 mvl_ml2hPa = make('mvl_ml2hPa')
 netcdf_visuliser = make('netcdf_visuliser')
 newpage = make('newpage')
+nil = make('nil')
 obsfilter = make('obsfilter')
 plot_page = make('plot_page')
 plot_superpage = make('plot_superpage')

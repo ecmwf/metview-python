@@ -18,6 +18,7 @@ void p_push_string(const char *str);
 void p_push_request(void *req);
 void p_push_value(Value_p val);
 void p_push_list(CList_p lst);
+void p_push_nil();
 int p_result_type(void);
 char *p_value_as_string(Value_p);
 double p_value_as_number(Value_p);
