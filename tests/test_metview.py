@@ -224,6 +224,28 @@ def test_distance():
     assert np.isclose(maximum, SEMI_EQUATOR)
 
 
+def test_valid_date_len_1():
+    vd = mpy.valid_date(TEST_FIELDSET)
+    assert isinstance(vd,np.datetime64)
+    assert vd == np.datetime64("2017-04-27T12:00:00")
+
+
+def test_valid_date_len_6():
+    grib = mpy.read(os.path.join(PATH, 't_for_xs.grib'))
+    vd_grib = mpy.valid_date(grib)
+    assert isinstance(vd_grib[1],np.datetime64)
+    
+    vd_ref = np.datetime64("2017-08-01T12:00:00")
+    for vd in vd_grib:
+        assert vd == vd_ref
+
+
+def test_base_date():
+    bd = mpy.base_date(TEST_FIELDSET)
+    assert isinstance(bd,np.datetime64)
+    assert bd == np.datetime64("2017-04-27T12:00:00")
+    
+    
 def test_fieldset_len_1():
     flen = len(TEST_FIELDSET)
     assert(flen == 1)
@@ -308,6 +330,26 @@ def test_obsfilter():
     assert(mpy.count(gpt2) == 45)
 
 
+def test_date_year():
+    d = np.datetime64("2017-04-27T06:18:02")
+    assert mpy.year(d) == 2017
+    
+    
+def test_date_month():
+    d = np.datetime64("2017-04-27T06:18:02")
+    assert mpy.month(d) == 4   
+    
+    
+def test_date_day():
+    d = np.datetime64("2017-04-27T06:18:02")
+    assert mpy.day(d) == 27
+    
+    
+def test_date_hour():
+    d = np.datetime64("2017-04-27T06:18:02")
+    assert mpy.hour(d) == 6 
+ 
+ 
 # this tests the calling of the Cross Section module, but also the
 # return of netCDF data and also that we can perform operations on it
 # as input and output

@@ -7,6 +7,7 @@ import signal
 
 import cffi
 import pandas as pd
+import numpy as np
 
 
 def read(fname):
@@ -265,6 +266,8 @@ def push_list(lst):
         lib.p_add_value_from_pop_to_list(mlist, i)
     lib.p_push_list(mlist)
 
+def push_date(d):
+    lib.p_push_datestring(np.datetime_as_string(d).encode('utf-8'))
 
 def push_arg(n, name):
 
@@ -288,6 +291,8 @@ def push_arg(n, name):
         lib.p_push_value(n.push())
     elif isinstance(n, NetCDF):
         lib.p_push_value(n.push())
+    elif isinstance(n, np.datetime64):
+        push_date(n)    
     elif isinstance(n, (list, tuple)):
         push_list(n)
     elif n == None:
@@ -421,6 +426,10 @@ def list_from_metview(mlist):
         result.append(v)
     return result
 
+def datestring_from_metview(mdate):
+
+    return np.datetime64(mdate)
+  
 
 # we can actually get these from Metview, but for testing we just have a dict
 # service_function_verbs = {
@@ -487,6 +496,9 @@ def value_from_metview(val):
     elif rt == 9:
         err_msg = string_from_ffi(lib.p_error_message(val))
         raise Exception('Metview error: ' + err_msg)
+    # date
+    elif rt == 10:        
+        return datestring_from_metview(string_from_ffi(lib.p_value_as_datestring(val))) 
     else:
         raise Exception('value_from_metview got an unhandled return type')
 
@@ -510,6 +522,7 @@ add = make('+')
 base_date = make('base_date')
 call = make('call')
 count = make('count')
+day = make('day')
 dimension_names = make('dimension_names')
 distance = make('distance')
 div = make('/')
@@ -520,6 +533,7 @@ greater_equal_than = make('>=')
 greater_than = make('>')
 grib_get_string = make('grib_get_string')
 grib_get_long = make('grib_get_long')
+hour = make('hour')
 interpolate = make('interpolate')
 low = make('lowercase')
 lower_equal_than = make('<=')
@@ -530,6 +544,7 @@ mcoast = make('mcoast')
 mcont = make('mcont')
 mcross_sect = make('mcross_sect')
 mgraph = make('mgraph')
+month = make('month')
 mvertprofview = make('mvertprofview')
 mxsectview = make('mxsectview')
 met_plot = make('plot')
@@ -559,10 +574,12 @@ sub = make('-')
 subset = make('[]')
 type = make('type')
 unique = make('unique')
+valid_date = make('valid_date')
 value = make('value')
 version_info = make('version_info')
 waitmode = make('waitmode')
 write = make('write')
+year = make('year')
 
 
 # experimental class to facilitate calling an arbitrary Macro function
