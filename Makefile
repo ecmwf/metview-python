@@ -1,6 +1,6 @@
 
 PACKAGE := mpy
-PYTHONS := python3.4 python3.5 python3.6 pypy3
+PYTHONS := python3.6 python3.5 pypy3 python3.4
 
 SOURCE := MetviewBundle-2017.12.1-Source.tar.gz
 SOURCE_URL := https://software.ecmwf.int/wiki/download/attachments/51731119/$(SOURCE)
@@ -34,7 +34,7 @@ default:
 local-wheelhouse-one:
 	$(PIP) install pip setuptools wheel
 	$(PIP) wheel -w $(PACKAGEWHEELHOUSE) -r requirements/requirements-tests.txt
-	$(PIP) wheel -w $(PACKAGEWHEELHOUSE) -r requirements/requirements-dev.txt
+	-$(PIP) wheel -w $(PACKAGEWHEELHOUSE) -r requirements/requirements-dev.txt
 
 local-wheelhouse:
 	for PYTHON in $(PYTHONS); do $(MAKE) local-wheelhouse-one PIP="$$PYTHON -m pip"; done
