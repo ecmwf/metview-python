@@ -31,13 +31,16 @@ RUN cd /tmp \
     && ldconfig /usr/local/lib \
  && rm -rf /tmp/*
 
+ENV WHEELHOUSE=~/.wheelhouse PIP_FIND_LINKS=~/.wheelhouse PIP_WHEEL_DIR=~/.wheelhouse
+
 COPY . /src/
 
 RUN cd /src \
+    && mkdir ~/.wheelhouse \
     && make local-install-test-req \
     && make local-develop \
     && make local-install-dev-req \
- && rm -rf /src/*
+ && rm -rf /src/* ~/.wheelhouse/* ~/.cache/*
 
 EXPOSE 8888
 VOLUME /src

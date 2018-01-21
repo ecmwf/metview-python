@@ -1,9 +1,10 @@
-include *.rst
-include .dockerignore
 include Dockerfile
+include .dockerignore
 include LICENSE
 include Makefile
+include *.rst
 include tox.ini
+
 recursive-include examples *.bufr
 recursive-include examples *.grib
 recursive-include examples *.py
@@ -14,3 +15,6 @@ recursive-include tests *.bufr
 recursive-include tests *.gpt
 recursive-include tests *.grib
 recursive-include tests *.py
+
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
