@@ -1,14 +1,18 @@
 bumpversion
 check-manifest
 coverage
+colorcet
 detox
 flake8
 ipython
 matplotlib
 notebook
+numba
 pip
 pip-tools
+properscoring
 # pytest-mypy
+scipy
 setuptools
 tox
 tox-pyenv
