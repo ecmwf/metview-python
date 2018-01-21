@@ -32,7 +32,7 @@ default:
 # local targets
 
 local-wheelhouse-one:
-	$(PIP) install pip setuptools wheel
+	$(PIP) install pip setuptools wheel numpy
 	$(PIP) wheel -w $(PACKAGEWHEELHOUSE) -r requirements/requirements-tests.txt
 	-$(PIP) wheel -w $(PACKAGEWHEELHOUSE) -r requirements/requirements-dev.txt
 
