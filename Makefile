@@ -5,6 +5,9 @@ PYTHONS := python3.6 python3.5 pypy3 python3.4
 SOURCE := MetviewBundle-2017.12.1-Source.tar.gz
 SOURCE_URL := https://software.ecmwf.int/wiki/download/attachments/51731119/$(SOURCE)
 
+# uncomment after running the command 'make local-wheel' in the xarray-grib folder
+# EXTRA_PACKAGES := xarray_grib-0.1.0-py2.py3-none-any.whl
+
 DOCKERBUILDFLAGS := --build-arg SOURCE=$(SOURCE)
 PIP := pip
 
@@ -34,7 +37,6 @@ default:
 local-wheelhouse-one:
 	$(PIP) install pip setuptools wheel
 	$(PIP) wheel -r requirements/requirements-tests.txt
-	$(PIP) wheel -r requirements/requirements-docs.txt
 
 local-wheelhouse:
 	for PYTHON in $(PYTHONS); do $(MAKE) local-wheelhouse-one PIP="$$PYTHON -m pip"; done
@@ -44,11 +46,15 @@ local-install-dev-req:
 	$(PIP) install -U pip setuptools wheel
 	$(PIP) install -r requirements/requirements-dev.txt
 
-local-install-test-req:
+local-install-test-req: $(EXTRA_PACKAGES)
 	$(PIP) install -r requirements/requirements-tests.txt
+	for p in $<; do $(PIP) install $$p; done
 
 local-develop: local-install-dev-req
 	$(PIP) install -e .
+
+local-wheel:
+	$(PIP) wheel -e .
 
 clean:
 	$(RM) -r */__pycache__ */*.pyc htmlcov dist build .coverage .cache .eggs *.egg-info
@@ -70,7 +76,6 @@ wheelhouse:
 
 update-req:
 	$(RUN) pip-compile -o requirements/requirements-tests.txt -U setup.py requirements/requirements-tests.in
-	$(RUN) pip-compile -o requirements/requirements-docs.txt -U setup.py requirements/requirements-docs.in
 
 test:
 	$(RUN) pytest -v --flakes --cov=$(PACKAGE) --cov-report=html --cache-clear
@@ -86,8 +91,11 @@ detox:
 
 # image build
 
+%.whl: $(WHEELHOUSE)/%.whl
+	cp -a $< $@
+
 $(SOURCE):
 	curl -o $(SOURCE) -L $(SOURCE_URL)
 
-image: $(SOURCE)
+image: $(SOURCE) $(EXTRA_PACKAGES)
 	docker build -t $(PACKAGE) $(DOCKERBUILDFLAGS) .
