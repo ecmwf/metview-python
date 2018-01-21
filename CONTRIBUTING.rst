@@ -40,7 +40,7 @@ To run a shell inside the container run::
 
 To update the requirements files to the latest versions::
 
-    $ make update-test-req
+    $ make update-req
 
 
 Cleanup
@@ -50,7 +50,7 @@ Light cleanup with::
 
     $ make clean
 
-The wheelhouse is removed with::
+Complate cleanup with::
 
-    $ make distclean  # ARE YOU REALLY SURE?
+    $ make distclean
 
