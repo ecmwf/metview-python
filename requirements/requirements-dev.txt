@@ -11,7 +11,7 @@ numba
 pip
 pip-tools
 properscoring
-# pytest-mypy
+pytest-mypy
 scipy
 setuptools
 tox
