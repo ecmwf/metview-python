@@ -439,3 +439,33 @@ def test_push_nil():
     n = mpy.nil()
     assert(n == None)
     assert(mpy.type(n) == 'nil')
+
+
+def test_simple_get_vector():
+    a = [5, 6, 7, 8, 9]
+    v = mpy.vector(a)
+    assert(isinstance(v, np.ndarray))
+    assert(len(v) == 5)
+
+
+def test_get_vector_from_grib():
+    v = mpy.values(TEST_FIELDSET[0])
+    assert(isinstance(v, np.ndarray))
+    assert(len(v) == 115680)
+    assert(np.isclose(min(v), 206.93560791))
+    assert(np.isclose(max(v), 316.06060791))
+
+
+def test_get_vector_from_multi_field_grib():
+    g = mpy.read(os.path.join(PATH, 't_for_xs.grib'))
+    v = mpy.values(g)
+    assert(isinstance(v, np.ndarray))
+    assert(v.shape == (6, 2664))
+
+
+def test_set_vector_from_numpy_array():
+    r = np.arange(1,21, dtype=np.float64)
+    assert(mpy.type(r) == 'vector')
+    assert(mpy.count(r) == 20)
+    assert(mpy.maxvalue(r) == 20)
+

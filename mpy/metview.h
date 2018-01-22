@@ -5,6 +5,10 @@ typedef struct MvRequest* MvRequest_p;
 struct CList;
 typedef struct CList* CList_p;
 
+struct CVector;
+typedef struct CVector* CVector_p;
+
+
 struct Value;
 typedef struct Value* Value_p;
 
@@ -19,11 +23,16 @@ void p_push_request(void *req);
 void p_push_value(Value_p val);
 void p_push_datestring(const char *str);
 void p_push_list(CList_p lst);
+void p_push_vector_from_double_array(double *vals, int size);
 void p_push_nil();
 int p_result_type(void);
 char *p_value_as_string(Value_p);
 double p_value_as_number(Value_p);
 char* p_value_as_datestring(Value_p);
+CVector_p p_value_as_vector(Value_p);
+int p_vector_count(CVector_p);
+int p_vector_elem_size(CVector_p);
+double *p_vector_double_array(CVector_p);
 char *p_error_message(Value_p);
 CList_p p_value_as_list(Value_p);
 Value_p p_result_as_value();

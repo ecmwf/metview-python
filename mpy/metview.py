@@ -269,6 +269,17 @@ def push_list(lst):
 def push_date(d):
     lib.p_push_datestring(np.datetime_as_string(d).encode('utf-8'))
 
+
+def push_vector(npa):
+
+    # convert numpy array to CData
+    if npa.dtype == np.float64:
+        cffi_buffer = ffi.cast('double*', npa.ctypes.data)
+        lib.p_push_vector_from_double_array(cffi_buffer, len(npa))
+    else:
+        raise Exception('Only float64 numPy arrays can be passed to Metview, not ', npa.dtype)
+
+
 def push_arg(n, name):
 
     nargs = 1
@@ -295,6 +306,8 @@ def push_arg(n, name):
         push_date(n)    
     elif isinstance(n, (list, tuple)):
         push_list(n)
+    elif isinstance(n, np.ndarray):
+        push_vector(n)
     elif n == None:
         lib.p_push_nil()
     else:
@@ -420,16 +433,44 @@ def list_from_metview(mlist):
 
     result = []
     n = lib.p_list_count(mlist)
+    all_vectors = True
     for i in range(0, n):
         mval = lib.p_list_element_as_value(mlist, i)
         v = value_from_metview(mval)
+        if all_vectors and not isinstance(v, np.ndarray):
+            all_vectors = False
         result.append(v)
+
+    # if this is a list of vectors, then create a 2-D numPy array
+    if all_vectors:
+        result = np.stack(result, axis=0)
+
     return result
+
 
 def datestring_from_metview(mdate):
 
     return np.datetime64(mdate)
   
+
+def vector_from_metview(vec):
+
+    n = lib.p_vector_count(vec)
+    s = lib.p_vector_elem_size(vec)
+    b = lib.p_vector_double_array(vec)
+
+    if s == 4:
+        nptype = np.float32
+    elif s == 8:
+        nptype = np.float64
+    else:
+        raise Exception('Metview vector data type cannot be handled: ', s)
+
+    bsize = n*s
+    c_buffer = ffi.buffer(b, bsize)
+    np_array = np.frombuffer(c_buffer, dtype=nptype)
+    return np_array
+
 
 # we can actually get these from Metview, but for testing we just have a dict
 # service_function_verbs = {
@@ -499,8 +540,10 @@ def value_from_metview(val):
     # date
     elif rt == 10:        
         return datestring_from_metview(string_from_ffi(lib.p_value_as_datestring(val))) 
+    elif rt == 11:
+        return vector_from_metview(lib.p_value_as_vector(val))
     else:
-        raise Exception('value_from_metview got an unhandled return type')
+        raise Exception('value_from_metview got an unhandled return type: ' + str(rt))
 
 
 def make(name):
@@ -519,21 +562,29 @@ def make(name):
 abs = make('abs')
 accumulate = make('accumulate')
 add = make('+')
+average = make('average')
 base_date = make('base_date')
+bitmap = make('bitmap')
 call = make('call')
+coslat = make('coslat')
 count = make('count')
 day = make('day')
 dimension_names = make('dimension_names')
 distance = make('distance')
 div = make('/')
 describe = make('describe')
+duplicate = make('duplicate')
 filter = make('filter')
+find = make('find')
 geoview = make('geoview')
 greater_equal_than = make('>=')
 greater_than = make('>')
 grib_get_string = make('grib_get_string')
 grib_get_long = make('grib_get_long')
+gribsetbits = make('gribsetbits')
 hour = make('hour')
+input_visualiser = make('input_visualiser')
+integrate = make('integrate')
 interpolate = make('interpolate')
 low = make('lowercase')
 lower_equal_than = make('<=')
@@ -544,9 +595,11 @@ mcoast = make('mcoast')
 mcont = make('mcont')
 mcross_sect = make('mcross_sect')
 mean = make('mean')
+merge = make('&')
 mgraph = make('mgraph')
 month = make('month')
 mvertprofview = make('mvertprofview')
+mvl_geoline = make('mvl_geoline')
 mxsectview = make('mxsectview')
 met_plot = make('plot')
 minvalue = make('minvalue')
@@ -568,6 +621,7 @@ ps_output = make('ps_output')
 read = make('read')
 retrieve = make('retrieve')
 second = make('second')
+set_values = make('set_values')
 setcurrent = make('setcurrent')
 _setoutput = make('setoutput')
 sqrt = make('sqrt')
@@ -577,6 +631,8 @@ type = make('type')
 unique = make('unique')
 valid_date = make('valid_date')
 value = make('value')
+values = make('values')
+vector = make('vector')
 version_info = make('version_info')
 waitmode = make('waitmode')
 write = make('write')
