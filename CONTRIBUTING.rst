@@ -38,9 +38,17 @@ To run a shell inside the container run::
 
     $ make shell
 
+To start a Jupyter notebook inside the container run::
+
+    $ make notebook
+
 To update the requirements files to the latest versions::
 
     $ make update-req
+
+All tasks can be run locally by adding `RUN=` to the command line, for example::
+
+    $ make qc RUN=
 
 
 Cleanup
