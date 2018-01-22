@@ -134,6 +134,7 @@ class Value:
         return self.val_pointer
 
 
+
 class Request(dict, Value):
     verb = "UNKNOWN"
 
@@ -330,8 +331,11 @@ class FileBackedValue(Value):
 
     def __init__(self, val_pointer):
         Value.__init__(self, val_pointer)
+
+    def url(self):
         # ask Metview for the file relating to this data (Metview will write it if necessary)
-        self.url = string_from_ffi(lib.p_data_path(val_pointer))
+        return string_from_ffi(lib.p_data_path(self.val_pointer))
+
 
 
 class Fieldset(FileBackedValue):
@@ -368,7 +372,7 @@ class Fieldset(FileBackedValue):
         except ImportError:
             print("Package xarray_grib not found. Try running 'pip install xarray_grib'.")
             raise
-        store = xarray_grib.GribDataStore(self.url)
+        store = xarray_grib.GribDataStore(self.url())
         dataset = xr.open_dataset(store)
         return dataset
 
@@ -406,7 +410,7 @@ class Geopoints(FileBackedValue):
         return filter(self, other)
 
     def to_dataframe(self):
-        return pd.read_table(self.url, skiprows=3)
+        return pd.read_table(self.url(), skiprows=3)
 
 
 class NetCDF(FileBackedValue):
@@ -562,6 +566,7 @@ def make(name):
 abs = make('abs')
 accumulate = make('accumulate')
 add = make('+')
+append = make('append')
 average = make('average')
 base_date = make('base_date')
 bitmap = make('bitmap')
