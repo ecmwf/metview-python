@@ -11,8 +11,8 @@ SOURCE_URL := https://software.ecmwf.int/wiki/download/attachments/51731119/$(SO
 DOCKERBUILDFLAGS := --build-arg SOURCE=$(SOURCE)
 DOCKERFLAGS := -e PIP_INDEX_URL=$$PIP_INDEX_URL
 # Development options
-# DOCKERFLAGS += -v $(pwd)/../metview-source:/metview-source -v $(pwd)/../metview-build:/metview-build
-# DOCKERFLAGS += -v $(pwd)/../metview-prefix:/usr/local
+# DOCKERFLAGS += -v $$(pwd)/../metview:/tmp/source/metview
+# DOCKERFLAGS += -v $$(pwd)/../metview-prefix:/usr/local
 PIP := pip
 
 export WHEELHOUSE := ~/.wheelhouse
@@ -29,7 +29,7 @@ endif
 
 RUNTIME := $(shell [ -f /proc/1/cgroup ] && cat /proc/1/cgroup | grep -q docker && echo docker)
 ifneq ($(RUNTIME),docker)
-    RUN = docker run --rm -it -v `pwd`:/src $(DOCKERFLAGS) $(PACKAGE)
+    RUN = docker run --rm -it -v $$(pwd):/src $(DOCKERFLAGS) $(PACKAGE)
 endif
 
 

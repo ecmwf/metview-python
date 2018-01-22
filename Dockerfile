@@ -20,16 +20,16 @@ RUN apt-get -y update && apt-get -y build-dep --no-install-recommends \
 COPY $SOURCE /src/$SOURCE
 
 RUN cd /tmp \
-    && pyenv local 2.7.14 && pip install jinja2 \
+    && pyenv local 2.7.14 && pip install numpy jinja2 \
     && mkdir /tmp/source \
     && tar -xz -C /tmp/source --strip-components=1 -f /src/$SOURCE \
     && mkdir /tmp/build \
     && cd /tmp/build \
-    && cmake -DENABLE_UI=OFF -DENABLE_EXPOSE_SUBPACKAGES=ON -DENABLE_ODB=ON /tmp/source \
+    && cmake -DENABLE_UI=OFF -DENABLE_EXPOSE_SUBPACKAGES=ON -DENABLE_PYTHON=ON /tmp/source \
     && make -j 4 ; make \
     && make install \
     && ldconfig /usr/local/lib \
- && rm -rf /tmp/* /src/$SOURCE
+ && rm -rf /src/$SOURCE
 
 ENV WHEELHOUSE=~/.wheelhouse PIP_FIND_LINKS=~/.wheelhouse PIP_WHEEL_DIR=~/.wheelhouse
 
