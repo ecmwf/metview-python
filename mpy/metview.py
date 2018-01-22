@@ -133,12 +133,6 @@ class Value:
     def push(self):
         return self.val_pointer
 
-    # enable a more object-oriented interface, e.g. a = fs.interpolate(10, 29.4)
-    def __getattr__(self, fname):
-        def call_func_with_self(*args, **kwargs):
-            return call(fname, self, *args, **kwargs)
-        return call_func_with_self
-
 
 
 class Request(dict, Value):
