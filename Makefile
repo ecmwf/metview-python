@@ -9,6 +9,10 @@ SOURCE_URL := https://software.ecmwf.int/wiki/download/attachments/51731119/$(SO
 # EXTRA_PACKAGES := xarray_grib-0.1.0-py2.py3-none-any.whl
 
 DOCKERBUILDFLAGS := --build-arg SOURCE=$(SOURCE)
+DOCKERFLAGS := -e PIP_INDEX_URL=$$PIP_INDEX_URL
+# Development options
+# DOCKERFLAGS += -v $(pwd)/../metview-source:/metview-source -v $(pwd)/../metview-build:/metview-build
+# DOCKERFLAGS += -v $(pwd)/../metview-prefix:/usr/local
 PIP := pip
 
 export WHEELHOUSE := ~/.wheelhouse
@@ -19,7 +23,7 @@ TOXFLAGS := --workdir=.docker-tox
 MKDIR = mkdir -p
 
 ifeq ($(shell [ -d $(WHEELHOUSE) ] && echo true),true)
-    DOCKERFLAGS := -v $(WHEELHOUSE):/root/.wheelhouse -e PIP_INDEX_URL=$$PIP_INDEX_URL
+    DOCKERFLAGS += -v $(WHEELHOUSE):/root/.wheelhouse
     PIP_FIND_LINKS += $(WHEELHOUSE)
 endif
 
