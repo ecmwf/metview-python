@@ -133,6 +133,12 @@ class Value:
     def push(self):
         return self.val_pointer
 
+    # on destruction, ensure that the Macro Value is also destroyed
+    def __del__(self):
+        if self.val_pointer != None:
+            lib.p_destroy_value(self.val_pointer)
+
+
 
 
 class Request(dict, Value):
