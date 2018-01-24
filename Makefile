@@ -13,6 +13,7 @@ DOCKERFLAGS := -e PIP_INDEX_URL=$$PIP_INDEX_URL
 # Development options
 # DOCKERFLAGS += -v $$(pwd)/../metview:/tmp/source/metview
 # DOCKERFLAGS += -v $$(pwd)/../metview-prefix:/usr/local
+# DOCKERFLAGS += -v $$(pwd)/../metpy:/metpy
 PIP := pip
 
 export WHEELHOUSE := ~/.wheelhouse
