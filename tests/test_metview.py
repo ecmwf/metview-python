@@ -409,6 +409,23 @@ def test_value_file_path():
     assert(os.path.isfile(p.url()))
 
 
+@pytest.mark.parametrize('file_name', [
+    'ml_data.grib',
+    't2m_3day.gpt',
+])
+def test_temporary_file_deletion(file_name):
+    g = mpy.read(file_in_testdir(file_name))
+    h = g + 1  # this will force Metview to write a new temporary file
+    temp_filepath = h.url()
+    assert(temp_filepath != "")  # file should exist right now
+    assert(os.path.isfile(temp_filepath))  # file should exist right now
+    h = 0  # this should force deletion of the variable
+    # here we make the assumption that the system has not created
+    # another temporary file with the same name between object
+    # deletion and the following test for the file
+    assert(not(os.path.isfile(temp_filepath)))
+
+
 def test_mvl_ml2hPa():
     ml_data = mpy.read(file_in_testdir('ml_data.grib'))
     assert mpy.type(ml_data) == 'fieldset'
