@@ -489,7 +489,22 @@ def test_set_vector_from_numpy_array():
 
 def test_simple_vector_with_nans():
     a = np.array([1, np.nan, 2, 3])
+    n = -a
     assert(mpy.count(a) == 4)
     assert(mpy.sum(a) == 6)  # missing vals Python->Macro
-    assert(mpy.neg(a) == [-1, -np.nan, -2, -3]  # missing vals Macro->Python
+    # seems that comparing numPy arrays that have NaNs in them is not
+    # so straightforward, but this works:
+    np.testing.assert_array_equal(mpy.neg(a), n)  # missing vals Macro->Python
+
+
+def test_oo_interface_on_fieldsets():
+    fs = mpy.read(os.path.join(PATH, 't_for_xs.grib'))
+    assert(np.isclose(fs.maxvalue(), 320.434))
+    assert(np.isclose(fs[2].nearest_gridpoint(10, 20), 282.697))
+
+
+def test_oo_interface_on_geopoints():
+    gpt = mpy.read(file_in_testdir('t2m_3day.gpt'))
+    assert(gpt.count() == 45)
+    assert(np.isclose(gpt.mean(), 281.247))
 
