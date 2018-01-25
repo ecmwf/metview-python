@@ -575,6 +575,7 @@ def make(mfname):
     return wrapped
 
 
+# FIXME: all explicit bindings can be removed in favor of implicit bindings in __init__.py
 abs = make('abs')
 accumulate = make('accumulate')
 add = make('+')
