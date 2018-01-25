@@ -133,6 +133,12 @@ class Value:
     def push(self):
         return self.val_pointer
 
+    # enable a more object-oriented interface, e.g. a = fs.interpolate(10, 29.4)
+    def __getattr__(self, fname):
+        def call_func_with_self(*args, **kwargs):
+            return call(fname, self, *args, **kwargs)
+        return call_func_with_self
+
     # on destruction, ensure that the Macro Value is also destroyed
     def __del__(self):
         if self.val_pointer != None:
@@ -498,12 +504,12 @@ def vector_from_metview(vec):
 # }
 
 
-def _call_function(name, *args, **kwargs):
+def _call_function(mfname, *args, **kwargs):
 
     nargs = 0
 
     for n in args:
-        actual_n_args = push_arg(n, name)
+        actual_n_args = push_arg(n, mfname)
         nargs += actual_n_args
 
     merged_dict = {}
@@ -512,7 +518,7 @@ def _call_function(name, *args, **kwargs):
         dn = dict_to_pushed_args(Request(merged_dict))
         nargs += dn
 
-    lib.p_call_function(name.encode('utf-8'), nargs)
+    lib.p_call_function(mfname.encode('utf-8'), nargs)
 
 
 def value_from_metview(val):
@@ -556,10 +562,10 @@ def value_from_metview(val):
         raise Exception('value_from_metview got an unhandled return type: ' + str(rt))
 
 
-def make(name):
+def make(mfname):
 
     def wrapped(*args, **kwargs):
-        err = _call_function(name, *args, **kwargs)
+        err = _call_function(mfname, *args, **kwargs)
         if err:
             pass  # throw Exceception
 
