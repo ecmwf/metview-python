@@ -288,7 +288,7 @@ def push_vector(npa):
     # convert numpy array to CData
     if npa.dtype == np.float64:
         cffi_buffer = ffi.cast('double*', npa.ctypes.data)
-        lib.p_push_vector_from_double_array(cffi_buffer, len(npa))
+        lib.p_push_vector_from_double_array(cffi_buffer, len(npa), np.nan)
     else:
         raise Exception('Only float64 numPy arrays can be passed to Metview, not ', npa.dtype)
 
@@ -557,7 +557,7 @@ def value_from_metview(val):
     elif rt == 10:        
         return datestring_from_metview(string_from_ffi(lib.p_value_as_datestring(val))) 
     elif rt == 11:
-        return vector_from_metview(lib.p_value_as_vector(val))
+        return vector_from_metview(lib.p_value_as_vector(val, np.nan))
     else:
         raise Exception('value_from_metview got an unhandled return type: ' + str(rt))
 
@@ -624,6 +624,7 @@ mobs = make('mobs')
 msymb = make('msymb')
 mtext = make('mtext')
 mvl_ml2hPa = make('mvl_ml2hPa')
+neg = make('neg')
 netcdf_visuliser = make('netcdf_visuliser')
 newpage = make('newpage')
 nil = make('nil')
@@ -641,6 +642,7 @@ second = make('second')
 set_values = make('set_values')
 setcurrent = make('setcurrent')
 _setoutput = make('setoutput')
+sum = make('sum')
 sqrt = make('sqrt')
 sub = make('-')
 subset = make('[]')

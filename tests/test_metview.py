@@ -486,3 +486,10 @@ def test_set_vector_from_numpy_array():
     assert(mpy.count(r) == 20)
     assert(mpy.maxvalue(r) == 20)
 
+
+def test_simple_vector_with_nans():
+    a = np.array([1, np.nan, 2, 3])
+    assert(mpy.count(a) == 4)
+    assert(mpy.sum(a) == 6)  # missing vals Python->Macro
+    assert(mpy.neg(a) == [-1, -np.nan, -2, -3]  # missing vals Macro->Python
+
