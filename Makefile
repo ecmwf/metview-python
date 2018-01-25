@@ -2,7 +2,7 @@
 PACKAGE := mpy
 PYTHONS := python3.6 python3.5 pypy3 python3.4
 
-SOURCE := MetviewBundle-2017.12.0-Source.tar.gz
+SOURCE := MetviewBundle-2017.12.1-Source.tar.gz
 SOURCE_URL := https://software.ecmwf.int/wiki/download/attachments/51731119/$(SOURCE)
 
 # uncomment after running the command 'make local-wheel' in the xarray-grib folder
@@ -12,8 +12,8 @@ DOCKERBUILDFLAGS := --build-arg SOURCE=$(SOURCE)
 DOCKERFLAGS := -e PIP_INDEX_URL=$$PIP_INDEX_URL
 # Development options
 # DOCKERFLAGS += -v $$(pwd)/../metview:/tmp/source/metview
-# DOCKERFLAGS += -v $$(pwd)/../metview-prefix:/usr/local
-# DOCKERFLAGS += -v $$(pwd)/../metpy:/metpy
+DOCKERFLAGS += -v $$(pwd)/../metview-prefix:/usr/local
+DOCKERFLAGS += -v $$(pwd)/../metpy:/metpy
 PIP := pip
 
 export WHEELHOUSE := ~/.wheelhouse
