@@ -2,6 +2,7 @@
 import io
 import os
 import builtins
+import keyword
 import tempfile
 import signal
 
@@ -573,6 +574,20 @@ def make(mfname):
         return value_from_metview(val)
 
     return wrapped
+
+
+def bind_functions(namespace):
+    """Add to the module globals all metview functions except operators like: +, &, etc."""
+    for metview_name in make('dictionary')():
+        if metview_name.isidentifier():
+            python_name = metview_name
+            # NOTE: we append a '_' to metview functions that clash with python reserved keywords
+            #   as they cannot be used as identifiers, for example: 'in' -> 'in_'
+            if keyword.iskeyword(metview_name):
+                python_name += '_'
+            namespace[python_name] = make(metview_name)
+        else:
+            print('metview function %r not bound to python' % metview_name)
 
 
 # FIXME: all explicit bindings can be removed in favor of implicit bindings in __init__.py
