@@ -576,7 +576,7 @@ def make(mfname):
     return wrapped
 
 
-def bind_functions(namespace):
+def bind_functions(namespace, module_name=None):
     """Add to the module globals all metview functions except operators like: +, &, etc."""
     for metview_name in make('dictionary')():
         if metview_name.isidentifier():
@@ -585,7 +585,12 @@ def bind_functions(namespace):
             #   as they cannot be used as identifiers, for example: 'in' -> 'in_'
             if keyword.iskeyword(metview_name):
                 python_name += '_'
-            namespace[python_name] = make(metview_name)
+            python_func = make(metview_name)
+            python_func.__name__ = python_name
+            python_func.__qualname__ = python_name
+            if module_name:
+                python_func.__module__ = module_name
+            namespace[python_name] = python_func
         else:
             print('metview function %r not bound to python' % metview_name)
 

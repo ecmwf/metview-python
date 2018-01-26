@@ -44,6 +44,17 @@ def test_dict_to_pushed_request():
     mpy.dict_to_pushed_args(dict)
 
 
+def test_bind_functions():
+    namespace = {}
+
+    mpy.bind_functions(namespace, module_name='mpy')
+    result = namespace['dictionary']
+
+    assert 'dictionary' in namespace
+    assert result.__name__ == result.__qualname__ == 'dictionary'
+    assert result.__module__ == 'mpy'
+
+
 def test_definitions():
     mcont_def = mpy.mcont({'legend': True})
     msymb_def = mpy.msymb({'symbol_type': 'marker'})
