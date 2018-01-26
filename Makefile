@@ -86,7 +86,7 @@ test:
 	$(RUN) pytest -v --flakes --cov=$(PACKAGE) --cov-report=html --cache-clear
 
 qc:
-	$(RUN) pytest -v --pep8 --mccabe
+	$(RUN) pytest -v --pep8 --mccabe mpy tests
 
 tox:
 	$(RUN) tox $(TOXFLAGS)
