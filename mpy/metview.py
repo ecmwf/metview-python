@@ -676,7 +676,7 @@ read = make('read')
 # second = make('second')
 # set_values = make('set_values')
 # setcurrent = make('setcurrent')
-# _setoutput = make('setoutput')
+met_setoutput = make('setoutput')
 # sum = make('sum')
 # sqrt = make('sqrt')
 sub = make('-')
@@ -735,7 +735,7 @@ class Plot():
 
             base, ext = os.path.splitext(tmp)
 
-            _setoutput(png_output(output_name=base, output_name_first_page_number='off'))
+            met_setoutput(png_output(output_name=base, output_name_first_page_number='off'))
             met_plot(*args)
 
             image = Image(tmp)
@@ -782,7 +782,7 @@ def setoutput(*args):
             raise(Exception('Could not set output to jupyter'))
     else:
         plot.plot_to_jupyter = False
-        _setoutput(*args)
+        met_setoutput(*args)
 
 
 
