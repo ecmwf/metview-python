@@ -607,6 +607,10 @@ def bind_functions(namespace, module_name=None):
     namespace['mvl_ml2hPa'] = make('mvl_ml2hPa')
     namespace['neg'] = make('neg')
     namespace['nil'] = make('nil')
+    # override some functions that need special treatment
+    # FIXME: this needs to be more structured
+    namespace['plot'] = plot
+    namespace['setoutput'] = setoutput
 
 
 # # FIXME: all explicit bindings can be removed in favor of implicit bindings in __init__.py
