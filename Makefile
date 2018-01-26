@@ -20,7 +20,7 @@ export WHEELHOUSE := ~/.wheelhouse
 export PIP_FIND_LINKS := $(WHEELHOUSE)
 export PIP_WHEEL_DIR := $(WHEELHOUSE)
 export PIP_INDEX_URL
-TOXFLAGS := --workdir=.docker-tox
+TOXFLAGS += --workdir=.docker-tox
 MKDIR = mkdir -p
 
 ifeq ($(shell [ -d $(WHEELHOUSE) ] && echo true),true)

@@ -322,6 +322,8 @@ def push_arg(n, name):
         push_list(n)
     elif isinstance(n, np.ndarray):
         push_vector(n)
+    elif isinstance(n, Odb):
+        lib.p_push_value(n.push())
     elif n == None:
         lib.p_push_nil()
     else:
@@ -395,7 +397,6 @@ class Bufr(FileBackedValue):
     def __init__(self, val_pointer):
         FileBackedValue.__init__(self, val_pointer)
 
-
 class Geopoints(FileBackedValue):
 
     def __init__(self, val_pointer):
@@ -444,6 +445,12 @@ class NetCDF(FileBackedValue):
 
     def __pow__(self, other):
         return power(self, other)
+
+
+class Odb(FileBackedValue):
+
+    def __init__(self, val_pointer):
+        FileBackedValue.__init__(self, val_pointer)
 
 
 def list_from_metview(mlist):
@@ -559,6 +566,9 @@ def value_from_metview(val):
         return datestring_from_metview(string_from_ffi(lib.p_value_as_datestring(val))) 
     elif rt == 11:
         return vector_from_metview(lib.p_value_as_vector(val, np.nan))
+    # Odb
+    elif rt == 12:
+        return Odb(val)   
     else:
         raise Exception('value_from_metview got an unhandled return type: ' + str(rt))
 

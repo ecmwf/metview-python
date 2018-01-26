@@ -328,6 +328,44 @@ def test_date_hour():
     assert mv.hour(d) == 6
 
 
+def test_odb():
+    db = mv.read(file_in_testdir('temp_u.odb'))
+    assert(mv.type(db) == 'odb')
+
+    #assert isinstance(db,mv.Odb)
+    assert(mv.count(db) == 88)
+    
+    p_val = mv.values(db,'p')
+    assert(mv.count(p_val) == 88)
+    assert(np.isclose(p_val[0],98065.578125))
+    assert(np.isclose(p_val[87],97651.2109375))
+    
+    t_val = mv.values(db,'t')
+    assert(mv.count(t_val) == 88)
+    assert(np.isclose(t_val[0],144700))
+    assert(np.isclose(t_val[87],94700))
+    
+    v_val = mv.values(db,'val')
+    assert(mv.count(v_val) == 88)
+    assert(np.isclose(v_val[0],-4.62306786))
+    assert(np.isclose(v_val[87],-4.27525187))   
+    
+    
+def test_odb_filter():
+    db = mv.read(file_in_testdir('temp_u.odb'))
+    #assert isinstance(db,mv.Odb)
+    assert(mv.count(db) == 88)
+
+    db_res=mv.odb_filter({'odb_data': db,
+                        'odb_query': "select p, t, val where val < -8"})
+    
+    #assert isinstance(db_res,mv.Odb)    
+    assert(mv.count(db_res) == 6)
+    val = mv.values(db_res,'val')
+    a = np.array([-9.11442089,-8.16880512,-8.07200909,-8.06602955,-8.49743557,-8.21722794])
+    np.testing.assert_allclose(val,a)
+
+
 # this tests the calling of the Cross Section module, but also the
 # return of netCDF data and also that we can perform operations on it
 # as input and output
