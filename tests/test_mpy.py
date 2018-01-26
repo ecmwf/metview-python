@@ -89,16 +89,6 @@ def test_tuple_unique():
     assert ulist == [3, 2, 7, 1.2, 2.1]
 
 
-def test_lists_as_input():
-    my_list = [1, 5, 6]
-    assert mv.count(my_list) == 3
-
-
-def test_tuples_as_input():
-    my_tuple = [1, 0, 5, 6]
-    assert mv.count(my_tuple) == 4
-
-
 def test_read():
     gg = mv.read({'SOURCE': file_in_testdir('test.grib'), 'GRID': 80})
     assert mv.grib_get_string(gg, 'typeOfGrid') == 'regular_gg'
