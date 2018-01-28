@@ -142,8 +142,12 @@ class Value:
 
     # on destruction, ensure that the Macro Value is also destroyed
     def __del__(self):
-        if self.val_pointer != None:
-            lib.p_destroy_value(self.val_pointer)
+        try:
+            if self.val_pointer != None:
+                lib.p_destroy_value(self.val_pointer)
+        except Exception as exp:
+            print("Could not destroy Metview variable")
+            raise exp
 
 
 
