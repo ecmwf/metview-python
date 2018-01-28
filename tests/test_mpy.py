@@ -502,6 +502,18 @@ def test_simple_vector_with_nans():
     np.testing.assert_array_equal(mv.neg(a), n)  # missing vals Macro->Python
 
 
+def test_zero_length_vector_from_numpy():
+    a = np.array([])
+    assert(mv.type(a) == 'vector')
+    assert(mv.count(a) == 0)
+
+
+def test_numpy_array_from_zero_length_vector():
+    v = mv.vector(0)
+    assert(isinstance(v, np.ndarray))
+    assert(len(v) == 0)
+
+
 def test_oo_interface_on_fieldsets():
     fs = mv.read(os.path.join(PATH, 't_for_xs.grib'))
     assert(np.isclose(fs.maxvalue(), 320.434))
