@@ -329,6 +329,10 @@ def test_date_hour():
 
 
 def test_odb():
+    if mv.is_feature_available('odb') == 0:
+        print('Skipping test_odb because ODB is not enabled in this Metview version')
+        return
+
     db = mv.read(file_in_testdir('temp_u.odb'))
     assert(mv.type(db) == 'odb')
 
@@ -352,6 +356,10 @@ def test_odb():
     
     
 def test_odb_filter():
+    if mv.is_feature_available('odb') == 0:
+        print('Skipping test_odb_filter because ODB is not enabled in this Metview version')
+        return
+
     db = mv.read(file_in_testdir('temp_u.odb'))
     #assert isinstance(db,mv.Odb)
     assert(mv.count(db) == 88)
