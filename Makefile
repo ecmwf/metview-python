@@ -1,6 +1,7 @@
 
 PACKAGE := mpy
-PYTHONS := python3.6 python3.5 pypy3 python3.4
+MODULE := $(PACKAGE)
+PYTHONS := python3.6 python3.5 python3.4 pypy3
 
 SOURCE := MetviewBundle-2017.12.0-Source.tar.gz
 SOURCE_URL := https://software.ecmwf.int/wiki/download/attachments/51731119/$(SOURCE)
@@ -25,7 +26,6 @@ MKDIR = mkdir -p
 
 ifeq ($(shell [ -d $(WHEELHOUSE) ] && echo true),true)
     DOCKERFLAGS += -v $(WHEELHOUSE):/root/.wheelhouse
-    PIP_FIND_LINKS += $(WHEELHOUSE)
 endif
 
 RUNTIME := $(shell [ -f /proc/1/cgroup ] && cat /proc/1/cgroup | grep -q docker && echo docker)
@@ -39,6 +39,9 @@ default:
 
 # local targets
 
+$(PIP_FIND_LINKS):
+	$(MKDIR) $@
+
 local-wheelhouse-one:
 	$(PIP) install pip setuptools wheel
 	$(PIP) wheel -r requirements/requirements-tests.txt
@@ -51,11 +54,11 @@ local-install-dev-req:
 	$(PIP) install -U pip setuptools wheel
 	$(PIP) install -r requirements/requirements-dev.txt
 
-local-install-test-req: $(EXTRA_PACKAGES)
+local-install-test-req: $(PIP_FIND_LINKS)
 	$(PIP) install -r requirements/requirements-tests.txt
-	for p in $<; do $(PIP) install $$p; done
 
-local-develop: local-install-dev-req
+local-develop: $(EXTRA_PACKAGES)
+	for p in $<; do $(PIP) install $$p; done
 	$(PIP) install -e .
 
 local-wheel:
@@ -66,6 +69,9 @@ clean:
 
 distclean: clean
 	$(RM) -r .tox .docker-tox
+
+cacheclean:
+	$(RM) -r $(WHEELHOUSE)/* ~/.cache/*
 
 # container targets
 
@@ -83,7 +89,7 @@ update-req:
 	$(RUN) pip-compile -o requirements/requirements-tests.txt -U setup.py requirements/requirements-tests.in
 
 test:
-	$(RUN) pytest -v --flakes --cov=$(PACKAGE) --cov-report=html --cache-clear
+	$(RUN) pytest -v --flakes --cov=$(MODULE) --cov-report=html --cache-clear
 
 qc:
 	$(RUN) pytest -v --pep8 --mccabe mpy tests
@@ -100,7 +106,7 @@ detox:
 	cp -a $< $@
 
 $(SOURCE):
-	curl -o $(SOURCE) -L $(SOURCE_URL)
+	curl -o $@ -L $(SOURCE_URL)
 
 image: $(SOURCE) $(EXTRA_PACKAGES)
 	docker build -t $(PACKAGE) $(DOCKERBUILDFLAGS) .

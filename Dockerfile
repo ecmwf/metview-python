@@ -7,7 +7,7 @@
 #
 FROM bopen/ubuntu-pyenv:latest
 
-ARG SOURCE=MetviewBundle-2017.12.1-Source.tar.gz
+ARG SOURCE=MetviewBundle-2017.12.0-Source.tar.gz
 
 ENV LC_ALL=C.UTF-8 LANG=C.UTF-8
 
@@ -17,30 +17,28 @@ RUN apt-get -y update && apt-get -y build-dep --no-install-recommends \
     emoslib \
  && rm -rf /var/lib/apt/lists/*
 
-COPY $SOURCE /src/$SOURCE
+COPY $SOURCE /tmp/$SOURCE
 
 RUN cd /tmp \
     && pyenv local 2.7.14 && pip install numpy jinja2 \
     && mkdir /tmp/source \
-    && tar -xz -C /tmp/source --strip-components=1 -f /src/$SOURCE \
+    && tar -xz -C /tmp/source --strip-components=1 -f /tmp/$SOURCE \
     && mkdir /tmp/build \
     && cd /tmp/build \
     && cmake -DENABLE_UI=OFF -DENABLE_EXPOSE_SUBPACKAGES=ON -DENABLE_PYTHON=ON /tmp/source \
     && make -j 4 ; make \
-    && make install \
+    && make -j 4 install \
     && ldconfig /usr/local/lib \
- && rm -rf /src/$SOURCE
-
-ENV WHEELHOUSE=~/.wheelhouse PIP_FIND_LINKS=~/.wheelhouse PIP_WHEEL_DIR=~/.wheelhouse
+ && rm -rf /tmp/$SOURCE
 
 COPY . /src/
 
 RUN cd /src \
-    && mkdir ~/.wheelhouse \
     && make local-install-test-req \
     && make local-develop \
     && make local-install-dev-req \
- && rm -rf /src/* ~/.wheelhouse/* ~/.cache/*
+    && make cacheclean \
+ && rm -rf /src/*
 
 EXPOSE 8888
 VOLUME /src

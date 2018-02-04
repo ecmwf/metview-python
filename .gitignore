@@ -8,5 +8,3 @@ build
 .tox
 .docker-tox
 .eggs
-
-requirements/wheelhouse
