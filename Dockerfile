@@ -8,13 +8,29 @@
 FROM bopen/ubuntu-pyenv:latest
 
 ARG SOURCE=MetviewBundle-2017.12.0-Source.tar.gz
+ARG DEBIAN_FRONTEND="noninteractive"
 
 ENV LC_ALL=C.UTF-8 LANG=C.UTF-8
 
-RUN apt-get -y update && apt-get -y build-dep --no-install-recommends \
-    metview \
-    magics++ \
-    emoslib \
+RUN apt-get -y update && apt-get -y install --no-install-recommends \
+    bison \
+    cmake \
+    curl \
+    flex \
+    gfortran \
+    netbase \
+    libboost-dev \
+    libfreetype6-dev \
+    libfftw3-dev \
+    libgdbm-dev \
+    libjasper-dev \
+    libpango1.0-dev \
+    libproj-dev \
+    libnetcdf-cxx-legacy-dev \
+    libnetcdf-dev \
+    libpng-dev \
+    libxml-parser-perl \
+    pkg-config \
  && rm -rf /var/lib/apt/lists/*
 
 COPY $SOURCE /tmp/$SOURCE
@@ -29,7 +45,7 @@ RUN cd /tmp \
     && make -j 4 ; make \
     && make -j 4 install \
     && ldconfig /usr/local/lib \
- && rm -rf /tmp/$SOURCE
+ && rm -rf /tmp/$SOURCE /tmp/build/metview/* /tmp/source/metview/*
 
 COPY . /src/
 
