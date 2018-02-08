@@ -24,6 +24,7 @@ RUN apt-get -y update && apt-get install -y --no-install-recommends \
     libfftw3-dev \
     libgdbm-dev \
     libjasper-dev \
+    libopenjpeg5 \
     libpango1.0-dev \
     libproj-dev \
     libnetcdf-cxx-legacy-dev \
