@@ -145,8 +145,9 @@ class Value:
         try:
             if self.val_pointer != None:
                 lib.p_destroy_value(self.val_pointer)
+                self.val_pointer = None
         except Exception as exp:
-            print("Could not destroy Metview variable")
+            print("Could not destroy Metview variable ", self)
             raise exp
 
 
@@ -158,11 +159,15 @@ class Request(dict, Value):
     def __init__(self, req):
         self.val_pointer = None
 
+        # initialise from Python object (dict/Request)
         if isinstance(req, dict):
             self.update(req)
             self.to_metview_style()
             if isinstance(req, Request):
                 self.verb = req.verb
+                self.val_pointer = req.val_pointer
+
+        # initialise from a Macro pointer
         else:
             Value.__init__(self, req)
             self.verb = string_from_ffi(lib.p_get_req_verb(req))
@@ -176,8 +181,10 @@ class Request(dict, Value):
             # self['_MACRO'] = 'BLANK'
             # self['_PATH']  = 'BLANK'
 
+
     def __str__(self):
         return "VERB: " + self.verb + super().__str__()
+
 
     # translate Python classes into Metview ones where needed
     def to_metview_style(self):
@@ -192,11 +199,12 @@ class Request(dict, Value):
                 conversion_dict = {True: 'on', False: 'off'}
                 self[k] = conversion_dict[v]
 
+
     def push(self):
         # if we have a pointer to a Metview Value, then use that because it's more
         # complete than the dict
         if self.val_pointer:
-            lib.p_push_request(Value.push(self))
+            lib.p_push_value(Value.push(self))
         else:
             r = lib.p_new_request(self.verb.encode('utf-8'))
 
@@ -210,6 +218,7 @@ class Request(dict, Value):
                 lib.p_set_request_value_from_pop(r, k.encode('utf-8'))
 
             lib.p_push_request(r)
+
 
     def __getitem__(self, index):
         # we don't often need integer indexing of requests, but we do in the
@@ -546,8 +555,7 @@ def value_from_metview(val):
         return Fieldset(val)
     # Request dictionary
     elif rt == 3:
-        return_req = lib.p_value_as_request(val)
-        return Request(return_req)
+        return Request(val)
     # BUFR
     elif rt == 4:
         return Bufr(val)
@@ -757,9 +765,12 @@ class Plot():
             if 'output_type' in kwargs:
                 output_function = map_outputs[kwargs['output_type'].lower()]
                 kwargs.pop('output_type')
-                return met_plot(output_function(kwargs), *args)
+                met_plot(output_function(kwargs), *args)
             else:
-                return met_plot(*args)
+                met_plot(*args)
+             # the Macro plot command returns an empty definition, but
+             # None is better for Python
+            return None
 
 
 plot = Plot()
