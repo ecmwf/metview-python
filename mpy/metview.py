@@ -5,6 +5,7 @@ import builtins
 import keyword
 import tempfile
 import signal
+import datetime
 
 import cffi
 import pandas as pd
@@ -293,10 +294,19 @@ def push_list(lst):
         lib.p_add_value_from_pop_to_list(mlist, i)
     lib.p_push_list(mlist)
 
+
 def push_date(d):
     lib.p_push_datestring(np.datetime_as_string(d).encode('utf-8'))
 
 
+def push_datetime(d):
+    lib.p_push_datestring(d.isoformat().encode('utf-8'))
+  
+  
+def push_datetime_date(d):
+    s = d.isoformat() + 'T00:00:00'
+    lib.p_push_datestring(s.encode('utf-8'))
+    
 def push_vector(npa):
 
     # convert numpy array to CData
@@ -330,7 +340,11 @@ def push_arg(n, name):
     elif isinstance(n, NetCDF):
         lib.p_push_value(n.push())
     elif isinstance(n, np.datetime64):
-        push_date(n)    
+        push_date(n)
+    elif isinstance(n, datetime.datetime):
+        push_datetime(n)
+    elif isinstance(n, datetime.date):
+        push_datetime_date(n)    
     elif isinstance(n, (list, tuple)):
         push_list(n)
     elif isinstance(n, np.ndarray):
