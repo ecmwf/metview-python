@@ -307,6 +307,7 @@ def push_datetime_date(d):
     s = d.isoformat() + 'T00:00:00'
     lib.p_push_datestring(s.encode('utf-8'))
     
+    
 def push_vector(npa):
 
     # convert numpy array to CData
