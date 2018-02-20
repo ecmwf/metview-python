@@ -601,3 +601,30 @@ def test_oo_interface_on_geopoints():
     gpt = mv.read(file_in_testdir('t2m_3day.gpt'))
     assert(gpt.count() == 45)
     assert(np.isclose(gpt.mean(), 281.247))
+
+
+def test_table():
+    # test csv with metadata
+    db = mv.read_table(table_filename=file_in_testdir('sample_metadata.csv'),
+                  table_delimiter=' ',
+                  table_combine_delimiters='on',
+                  table_header_row=2,
+                  table_meta_data_rows=1
+                 )
+    assert(db.type() == 'table')
+    assert(db.count() == 9)
+    assert(db.name(3) == "LATIT")
+    assert(len(db.metadata_keys()) == 16)
+    assert(db.metadata_value('integration') == 'PETTERSSEN')
+    v = db.values(4)
+    assert(isinstance(v, np.ndarray))
+    assert(len(v) == 7)
+
+    # test csv with no metadata
+    db = mv.read(file_in_testdir('sample.csv'))
+    assert(db.type() == 'table')
+    assert(db.count() == 4)
+    assert(db.name(2) == "h2")
+    v = db.values(2)
+    assert(isinstance(v, np.ndarray))
+    assert(len(v) == 6)

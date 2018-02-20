@@ -352,6 +352,8 @@ def push_arg(n, name):
         push_vector(n)
     elif isinstance(n, Odb):
         lib.p_push_value(n.push())
+    elif isinstance(n, Table):
+        lib.p_push_value(n.push())
     elif n == None:
         lib.p_push_nil()
     else:
@@ -481,6 +483,11 @@ class Odb(FileBackedValue):
         FileBackedValue.__init__(self, val_pointer)
 
 
+class Table(FileBackedValue):
+
+    def __init__(self, val_pointer):
+        FileBackedValue.__init__(self, val_pointer)
+
 def list_from_metview(mlist):
 
     result = []
@@ -559,6 +566,7 @@ def _call_function(mfname, *args, **kwargs):
 
 def value_from_metview(val):
     rt = lib.p_value_type(val)
+
     # Number
     if rt == 0:
         return lib.p_value_as_number(val)
@@ -595,7 +603,10 @@ def value_from_metview(val):
         return vector_from_metview(lib.p_value_as_vector(val, np.nan))
     # Odb
     elif rt == 12:
-        return Odb(val)   
+        return Odb(val)
+    # Table
+    elif rt == 13:
+        return Table(val)
     else:
         raise Exception('value_from_metview got an unhandled return type: ' + str(rt))
 
