@@ -433,6 +433,15 @@ class Geopoints(FileBackedValue):
     def __add__(self, other):
         return add(self, other)
 
+    def __sub__(self, other):
+        return add(self, other)
+
+    def __pow__(self, other):
+        return power(self, other)
+
+    def __truediv__(self, other):
+        return div(self, other)
+
     def filter(self, other):
         return filter(self, other)
 
