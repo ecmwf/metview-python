@@ -5,6 +5,7 @@ import builtins
 import keyword
 import tempfile
 import signal
+import datetime
 
 import cffi
 import pandas as pd
@@ -293,10 +294,20 @@ def push_list(lst):
         lib.p_add_value_from_pop_to_list(mlist, i)
     lib.p_push_list(mlist)
 
+
 def push_date(d):
     lib.p_push_datestring(np.datetime_as_string(d).encode('utf-8'))
 
 
+def push_datetime(d):
+    lib.p_push_datestring(d.isoformat().encode('utf-8'))
+  
+  
+def push_datetime_date(d):
+    s = d.isoformat() + 'T00:00:00'
+    lib.p_push_datestring(s.encode('utf-8'))
+    
+    
 def push_vector(npa):
 
     # convert numpy array to CData
@@ -330,12 +341,18 @@ def push_arg(n, name):
     elif isinstance(n, NetCDF):
         lib.p_push_value(n.push())
     elif isinstance(n, np.datetime64):
-        push_date(n)    
+        push_date(n)
+    elif isinstance(n, datetime.datetime):
+        push_datetime(n)
+    elif isinstance(n, datetime.date):
+        push_datetime_date(n)    
     elif isinstance(n, (list, tuple)):
         push_list(n)
     elif isinstance(n, np.ndarray):
         push_vector(n)
     elif isinstance(n, Odb):
+        lib.p_push_value(n.push())
+    elif isinstance(n, Table):
         lib.p_push_value(n.push())
     elif n == None:
         lib.p_push_nil()
@@ -475,6 +492,11 @@ class Odb(FileBackedValue):
         FileBackedValue.__init__(self, val_pointer)
 
 
+class Table(FileBackedValue):
+
+    def __init__(self, val_pointer):
+        FileBackedValue.__init__(self, val_pointer)
+
 def list_from_metview(mlist):
 
     result = []
@@ -553,6 +575,7 @@ def _call_function(mfname, *args, **kwargs):
 
 def value_from_metview(val):
     rt = lib.p_value_type(val)
+
     # Number
     if rt == 0:
         return lib.p_value_as_number(val)
@@ -589,7 +612,10 @@ def value_from_metview(val):
         return vector_from_metview(lib.p_value_as_vector(val, np.nan))
     # Odb
     elif rt == 12:
-        return Odb(val)   
+        return Odb(val)
+    # Table
+    elif rt == 13:
+        return Table(val)
     else:
         raise Exception('value_from_metview got an unhandled return type: ' + str(rt))
 
