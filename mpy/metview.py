@@ -434,7 +434,7 @@ class Geopoints(FileBackedValue):
         return add(self, other)
 
     def __sub__(self, other):
-        return add(self, other)
+        return sub(self, other)
 
     def __pow__(self, other):
         return power(self, other)
