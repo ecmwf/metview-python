@@ -1,13 +1,14 @@
 # Run tests in a more reproducible and isolated environment.
 #
 # Build the docker image once with:
-#   docker build -t mpy .
+#   docker build -t metview .
 # Run the container with:
-#   docker run --rm -it -v `pwd`:/src mpy
+#   docker run --rm -it -v `pwd`:/src metview
 #
 FROM bopen/ubuntu-pyenv:latest
 
-ARG SOURCE=MetviewBundle-2017.12.0-Source.tar.gz
+ARG SOURCE="MetviewBundle-2018.02.0-Source.tar.gz"
+ARG CMAKEFLAGS="-DENABLE_UI=OFF -DENABLE_EXPOSE_SUBPACKAGES=ON -DENABLE_ODB=ON -DENABLE_PYTHON=ON"
 ARG DEBIAN_FRONTEND="noninteractive"
 
 ENV LC_ALL=C.UTF-8 LANG=C.UTF-8
@@ -32,6 +33,7 @@ RUN apt-get -y update && apt-get install -y --no-install-recommends \
     libpng-dev \
     libxml-parser-perl \
     pkg-config \
+    swig \
  && rm -rf /var/lib/apt/lists/*
 
 COPY $SOURCE /tmp/$SOURCE
@@ -42,11 +44,11 @@ RUN cd /tmp \
     && tar -xz -C /tmp/source --strip-components=1 -f /tmp/$SOURCE \
     && mkdir /tmp/build \
     && cd /tmp/build \
-    && cmake -DENABLE_UI=OFF -DENABLE_EXPOSE_SUBPACKAGES=ON -DENABLE_PYTHON=ON /tmp/source \
-    && make -j 4 ; make \
+    && cmake $CMAKEFLAGS /tmp/source \
+    && make -j 4 \
     && make -j 4 install \
     && ldconfig /usr/local/lib \
- && rm -rf /tmp/$SOURCE /tmp/build/metview/* /tmp/source/metview/*
+ && rm -rf /tmp/$SOURCE /tmp/build /tmp/source
 
 COPY . /src/
 
