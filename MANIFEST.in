@@ -5,6 +5,9 @@ include Makefile
 include *.rst
 include tox.ini
 
+recursive-include docs *.gitkeep
+recursive-include docs *.py
+recursive-include docs *.rst
 recursive-include examples *.bufr
 recursive-include examples *.grib
 recursive-include examples *.py
@@ -12,9 +15,8 @@ recursive-include mpy *.h
 recursive-include requirements *.in
 recursive-include requirements *.txt
 recursive-include tests *.bufr
+recursive-include tests *.csv
 recursive-include tests *.gpt
 recursive-include tests *.grib
+recursive-include tests *.odb
 recursive-include tests *.py
-
-recursive-exclude * __pycache__
-recursive-exclude * *.py[co]

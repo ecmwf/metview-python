@@ -11,7 +11,7 @@ ARG SOURCE="MetviewBundle-2018.02.0-Source.tar.gz"
 ARG CMAKEFLAGS="-DENABLE_UI=OFF -DENABLE_EXPOSE_SUBPACKAGES=ON -DENABLE_ODB=ON -DENABLE_PYTHON=ON"
 ARG DEBIAN_FRONTEND="noninteractive"
 
-ENV LC_ALL=C.UTF-8 LANG=C.UTF-8
+ENV LC_ALL="C.UTF-8" LANG="C.UTF-8"
 
 RUN apt-get -y update && apt-get install -y --no-install-recommends \
     bison \
@@ -48,7 +48,7 @@ RUN cd /tmp \
     && make -j 4 \
     && make -j 4 install \
     && ldconfig /usr/local/lib \
- && rm -rf /tmp/$SOURCE /tmp/build /tmp/source
+ && rm -rf /tmp/*
 
 COPY . /src/
 

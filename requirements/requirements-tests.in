@@ -1,9 +1,6 @@
-attrs
-contextlib2
-future
 pytest
 pytest-cov
 pytest-flakes
-pytest-pep8
 pytest-mccabe
-typing
+pytest-pep8
+pytest-runner

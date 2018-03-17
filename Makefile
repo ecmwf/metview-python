@@ -1,5 +1,6 @@
 
 PACKAGE := mpy
+IMAGE := metview
 MODULE := $(PACKAGE)
 PYTHONS := python3.6 python3.5 python3.4 pypy3
 
@@ -9,19 +10,21 @@ SOURCE_URL := https://software.ecmwf.int/wiki/download/attachments/51731119/$(SO
 # uncomment after running the command 'make local-wheel' in the xarray-grib folder
 # EXTRA_PACKAGES := xarray_grib-0.1.0-py2.py3-none-any.whl
 
+export WHEELHOUSE := ~/.wheelhouse
+export PIP_FIND_LINKS := $(WHEELHOUSE)
+export PIP_WHEEL_DIR := $(WHEELHOUSE)
+export PIP_INDEX_URL
+
 DOCKERBUILDFLAGS := --build-arg SOURCE=$(SOURCE)
-DOCKERFLAGS := -e PIP_INDEX_URL=$$PIP_INDEX_URL
+DOCKERFLAGS := -e WHEELHOUSE=$(WHEELHOUSE) \
+	-e PIP_FIND_LINKS=$(PIP_FIND_LINKS) \
+	-e PIP_WHEEL_DIR=$(PIP_WHEEL_DIR) \
+	-e PIP_INDEX_URL=$$PIP_INDEX_URL
 # Development options
 # DOCKERFLAGS += -v $$(pwd)/../metview:/tmp/source/metview
 # DOCKERFLAGS += -v $$(pwd)/../metview-prefix:/usr/local
 # DOCKERFLAGS += -v $$(pwd)/../metpy:/metpy
 PIP := pip
-
-export WHEELHOUSE := ~/.wheelhouse
-export PIP_FIND_LINKS := $(WHEELHOUSE)
-export PIP_WHEEL_DIR := $(WHEELHOUSE)
-export PIP_INDEX_URL
-TOXFLAGS += --workdir=.docker-tox
 MKDIR = mkdir -p
 
 ifeq ($(shell [ -d $(WHEELHOUSE) ] && echo true),true)
@@ -30,7 +33,8 @@ endif
 
 RUNTIME := $(shell [ -f /proc/1/cgroup ] && cat /proc/1/cgroup | grep -q docker && echo docker)
 ifneq ($(RUNTIME),docker)
-    RUN = docker run --rm -it -v $$(pwd):/src $(DOCKERFLAGS) $(PACKAGE)
+    override TOXFLAGS += --workdir=.docker-tox
+    RUN = docker run --rm -it -v$$(pwd):/src -w/src $(DOCKERFLAGS) $(IMAGE)
 endif
 
 
@@ -43,8 +47,9 @@ $(PIP_FIND_LINKS):
 	$(MKDIR) $@
 
 local-wheelhouse-one:
-	$(PIP) install pip setuptools wheel
+	$(PIP) install wheel
 	$(PIP) wheel -r requirements/requirements-tests.txt
+	$(PIP) wheel -r requirements/requirements-docs.txt
 
 local-wheelhouse:
 	for PYTHON in $(PYTHONS); do $(MAKE) local-wheelhouse-one PIP="$$PYTHON -m pip"; done
@@ -87,6 +92,7 @@ wheelhouse:
 
 update-req:
 	$(RUN) pip-compile -o requirements/requirements-tests.txt -U setup.py requirements/requirements-tests.in
+	$(RUN) pip-compile -o requirements/requirements-docs.txt -U setup.py requirements/requirements-docs.in
 
 test:
 	$(RUN) pytest -v --flakes --cov=$(MODULE) --cov-report=html --cache-clear
@@ -109,4 +115,4 @@ $(SOURCE):
 	curl -o $@ -L $(SOURCE_URL)
 
 image: $(SOURCE) $(EXTRA_PACKAGES)
-	docker build -t $(PACKAGE) $(DOCKERBUILDFLAGS) .
+	docker build -t $(IMAGE) $(DOCKERBUILDFLAGS) .
