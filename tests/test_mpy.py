@@ -604,6 +604,7 @@ def test_oo_interface_on_geopoints():
     assert(np.isclose(gpt.mean(), 281.247))
 
 
+@pytest.mark.xfail()
 def test_table():
     # test csv with metadata
     db = mv.read_table(table_filename=file_in_testdir('sample_metadata.csv'),
