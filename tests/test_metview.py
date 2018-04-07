@@ -315,12 +315,12 @@ def test_date_year():
     assert mv.year(npd1) == 2017
     npd2 = np.datetime64("2017-04-27T06:18:02.16")
     assert mv.year(npd2) == 2017
-    
+
     dt1 = datetime.datetime(2017, 4, 27, 6, 18, 2)
     assert mv.year(dt1) == 2017
     dt2 = datetime.datetime(2017, 4, 27, 6, 18, 2, 16)
     assert mv.year(dt2) == 2017
-       
+
     d1 = datetime.date(2017, 4, 27)
     assert mv.year(d1) == 2017
 
@@ -330,74 +330,76 @@ def test_date_month():
     assert mv.month(npd1) == 4
     npd2 = np.datetime64("2017-04-27T06:18:02.16")
     assert mv.month(npd2) == 4
-    
+
     dt1 = datetime.datetime(2017, 4, 27, 6, 18, 2)
     assert mv.month(dt1) == 4
     dt2 = datetime.datetime(2017, 4, 27, 6, 18, 2, 16)
-    assert mv.month(dt2) == 4    
+    assert mv.month(dt2) == 4
 
     d1 = datetime.date(2017, 4, 27)
     assert mv.month(d1) == 4
-       
-    
+
+
 def test_date_day():
     npd1 = np.datetime64("2017-04-27T06:18:02")
     assert mv.day(npd1) == 27
     npd2 = np.datetime64("2017-04-27T06:18:02.16")
     assert mv.day(npd2) == 27
-    
+
     dt1 = datetime.datetime(2017, 4, 27, 6, 18, 2)
     assert mv.day(dt1) == 27
     dt2 = datetime.datetime(2017, 4, 27, 6, 18, 2, 16)
-    assert mv.day(dt2) == 27     
-    
+    assert mv.day(dt2) == 27
+
     d1 = datetime.date(2017, 4, 27)
     assert mv.day(d1) == 27
-    
+
 
 def test_date_hour():
     npd1 = np.datetime64("2017-04-27T06:18:02")
     assert mv.hour(npd1) == 6
     npd2 = np.datetime64("2017-04-27T06:18:02.16")
     assert mv.hour(npd2) == 6
-    
+
     dt1 = datetime.datetime(2017, 4, 27, 6, 18, 2)
     assert mv.hour(dt1) == 6
     dt2 = datetime.datetime(2017, 4, 27, 6, 18, 2, 16)
-    assert mv.hour(dt2) == 6  
-    
+    assert mv.hour(dt2) == 6
+
     d1 = datetime.date(2017, 4, 27)
-    assert mv.hour(d1) == 0     
-    
+    assert mv.hour(d1) == 0
+
 
 def test_date_minute():
     npd1 = np.datetime64("2017-04-27T06:18:02")
     assert mv.minute(npd1) == 18
     npd2 = np.datetime64("2017-04-27T06:18:02.16")
     assert mv.minute(npd2) == 18
-    
+
     dt1 = datetime.datetime(2017, 4, 27, 6, 18, 2)
     assert mv.minute(dt1) == 18
     dt2 = datetime.datetime(2017, 4, 27, 6, 18, 2, 16)
-    assert mv.minute(dt2) == 18      
-    
+    assert mv.minute(dt2) == 18
+
     d1 = datetime.date(2017, 4, 27)
-    assert mv.minute(d1) == 0  
+    assert mv.minute(d1) == 0
+
 
 def test_date_second():
     npd1 = np.datetime64("2017-04-27T06:18:02")
     assert mv.second(npd1) == 2
     npd2 = np.datetime64("2017-04-27T06:18:02.16")
     assert mv.second(npd2) == 2
-    
+
     dt1 = datetime.datetime(2017, 4, 27, 6, 18, 2)
     assert mv.second(dt1) == 2
     dt2 = datetime.datetime(2017, 4, 27, 6, 18, 2, 16)
-    assert mv.second(dt2) == 2     
+    assert mv.second(dt2) == 2
 
     d1 = datetime.date(2017, 4, 27)
     assert mv.second(d1) == 0
-      
+
+
 def test_odb():
     if mv.is_feature_available('odb') == 0:
         print('Skipping test_odb because ODB is not enabled in this Metview version')
@@ -406,42 +408,44 @@ def test_odb():
     db = mv.read(file_in_testdir('temp_u.odb'))
     assert(mv.type(db) == 'odb')
 
-    #assert isinstance(db,mv.Odb)
+    # assert isinstance(db,mv.Odb)
     assert(mv.count(db) == 88)
-    
-    p_val = mv.values(db,'p')
+
+    p_val = mv.values(db, 'p')
     assert(mv.count(p_val) == 88)
-    assert(np.isclose(p_val[0],98065.578125))
-    assert(np.isclose(p_val[87],97651.2109375))
-    
-    t_val = mv.values(db,'t')
+    assert(np.isclose(p_val[0], 98065.578125))
+    assert(np.isclose(p_val[87], 97651.2109375))
+
+    t_val = mv.values(db, 't')
     assert(mv.count(t_val) == 88)
-    assert(np.isclose(t_val[0],144700))
-    assert(np.isclose(t_val[87],94700))
-    
-    v_val = mv.values(db,'val')
+    assert(np.isclose(t_val[0], 144700))
+    assert(np.isclose(t_val[87], 94700))
+
+    v_val = mv.values(db, 'val')
     assert(mv.count(v_val) == 88)
-    assert(np.isclose(v_val[0],-4.62306786))
-    assert(np.isclose(v_val[87],-4.27525187))   
-    
-    
+    assert(np.isclose(v_val[0], -4.62306786))
+    assert(np.isclose(v_val[87], -4.27525187))
+
+
 def test_odb_filter():
     if mv.is_feature_available('odb') == 0:
         print('Skipping test_odb_filter because ODB is not enabled in this Metview version')
         return
 
     db = mv.read(file_in_testdir('temp_u.odb'))
-    #assert isinstance(db,mv.Odb)
+    # assert isinstance(db,mv.Odb)
     assert(mv.count(db) == 88)
 
-    db_res=mv.odb_filter({'odb_data': db,
-                        'odb_query': "select p, t, val where val < -8"})
-    
-    #assert isinstance(db_res,mv.Odb)    
+    db_res = mv.odb_filter({
+        'odb_data': db,
+        'odb_query': "select p, t, val where val < -8",
+    })
+
+    # assert isinstance(db_res,mv.Odb)
     assert(mv.count(db_res) == 6)
-    val = mv.values(db_res,'val')
-    a = np.array([-9.11442089,-8.16880512,-8.07200909,-8.06602955,-8.49743557,-8.21722794])
-    np.testing.assert_allclose(val,a)
+    val = mv.values(db_res, 'val')
+    a = np.array([-9.11442089, -8.16880512, -8.07200909, -8.06602955, -8.49743557, -8.21722794])
+    np.testing.assert_allclose(val, a)
 
 
 # this tests the calling of the Cross Section module, but also the
@@ -607,12 +611,13 @@ def test_oo_interface_on_geopoints():
 @pytest.mark.xfail()
 def test_table():
     # test csv with metadata
-    db = mv.read_table(table_filename=file_in_testdir('sample_metadata.csv'),
-                  table_delimiter=' ',
-                  table_combine_delimiters='on',
-                  table_header_row=2,
-                  table_meta_data_rows=1
-                 )
+    db = mv.read_table(
+        table_filename=file_in_testdir('sample_metadata.csv'),
+        table_delimiter=' ',
+        table_combine_delimiters='on',
+        table_header_row=2,
+        table_meta_data_rows=1
+    )
     assert(db.type() == 'table')
     assert(db.count() == 9)
     assert(db.name(3) == "LATIT")
