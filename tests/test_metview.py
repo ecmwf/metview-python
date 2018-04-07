@@ -5,8 +5,8 @@ import datetime
 
 import pytest
 
-import mpy as mv
-from mpy import bindings
+import metview as mv
+from metview import bindings
 
 
 PATH = os.path.dirname(__file__)
@@ -18,7 +18,7 @@ MAX_GPT = 284.5
 
 def test_names():
     assert mv.dictionary.__name__ == mv.dictionary.__qualname__ == 'dictionary'
-    assert mv.dictionary.__module__ == 'mpy'
+    assert mv.dictionary.__module__ == 'metview'
 
 
 def file_in_testdir(filename):

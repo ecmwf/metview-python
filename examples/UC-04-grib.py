@@ -20,20 +20,20 @@ two parameters and combines their values on the same map
 --------------------------------------------------------------------------------
 Analyst plots data variable t2 with contouring definition t_shade_c, and data
 variable z with contouring definition mslp_isolines.
-The fields will be plotted in the order they appear in the mpy.plot() command,
+The fields will be plotted in the order they appear in the mv.plot() command,
 with the shaded temperature at the bottom, and the geopotential on top.
 """
 
-import mpy.metview as mpy
+import metview as mv
 
 
 # retrieve 2m temperature
-t2 = mpy.read('./examples/t2_for_UC-04.grib')
+t2 = mv.read('./examples/t2_for_UC-04.grib')
 
 # retrieve geopotential
-z = mpy.read('./examples/z_for_UC-04.grib')
+z = mv.read('./examples/z_for_UC-04.grib')
 
-t_shade_c = mpy.mcont(
+t_shade_c = mv.mcont(
     legend = True,
     contour_highlight = False,
     contour_level_selection_type = "interval",
@@ -47,7 +47,7 @@ t_shade_c = mpy.mcont(
     contour_shade_colour_direction = "clockwise"
  )
 
-z_isolines = mpy.mcont(
+z_isolines = mv.mcont(
     legend = True,
     contour_line_thickness = 2,
     contour_line_colour = 'black',
@@ -58,4 +58,4 @@ z_isolines = mpy.mcont(
     contour_legend_text = 'Geopotential',
 )
 
-mpy.plot(t2, t_shade_c, z, z_isolines)
+mv.plot(t2, t_shade_c, z, z_isolines)

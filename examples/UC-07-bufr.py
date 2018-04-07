@@ -31,13 +31,13 @@ framework to extract a particular parameter to a tabular format (geopoints)
 --------------------------------------------------------------------------------
 """
 
-import mpy.metview as mpy
+import metview as mv
 
-t2m_grib = mpy.read('./examples/t2m_grib.grib')
+t2m_grib = mv.read('./examples/t2m_grib.grib')
 
-obs_3day = mpy.read('./examples/obs_3day.bufr')
+obs_3day = mv.read('./examples/obs_3day.bufr')
 
-t2m_gpt = mpy.obsfilter(
+t2m_gpt = mv.obsfilter(
     parameter = '012004',
     output = 'geopoints',
     data = obs_3day
@@ -45,42 +45,42 @@ t2m_gpt = mpy.obsfilter(
 
 diff = t2m_grib - t2m_gpt
 
-diff_symb = mpy.msymb(
+diff_symb = mv.msymb(
     legend = True,
     symbol_type = 'marker',
     symbol_table_mode = 'advanced',
 )
 
-mpy.plot(diff, diff_symb)
+mv.plot(diff, diff_symb)
 
 
 # Extract geopoints that are hotter by 1 deg or more
-#hotter = mpy.filter(diff, diff >= 1)
+#hotter = mv.filter(diff, diff >= 1)
 hotter = diff.filter(diff >= 1)
 
 # Extract geopoints that are colder by 1 deg or more
-#colder = mpy.filter(diff, diff <= -1)
+#colder = mv.filter(diff, diff <= -1)
 colder = diff.filter(diff <= -1)
 
 # Get geopoints that are within +/-1
-#exact = mpy.filter(diff, (diff > -1) * (diff < 1))
+#exact = mv.filter(diff, (diff > -1) * (diff < 1))
 exact = diff.filter((diff > -1) * (diff < 1))
 
 # Symbol visdefs for each classification
-red = mpy.msymb(
+red = mv.msymb(
     symbol_type = 'marker',
     symbol_colour = 'red'
 )
 
-blue  = mpy.msymb(
+blue  = mv.msymb(
     symbol_type = 'marker',
     symbol_colour = 'blue'
 )
 
-grey  = mpy.msymb(
+grey  = mv.msymb(
     symbol_type = 'marker',
     symbol_colour = 'grey'
 )
 
 # plot the 'exact' data set with visdef 'grey', 'hotter' with 'red', etc.
-mpy.plot(exact, grey, hotter, red, colder, blue)
+mv.plot(exact, grey, hotter, red, colder, blue)

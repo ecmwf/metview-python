@@ -43,7 +43,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'mpy'
+project = u'metview'
 copyright = u"2017-2018, European Centre for Medium-Range Weather Forecasts (ECMWF)."
 
 # The version info for the project you're documenting, acts as replacement
@@ -51,7 +51,7 @@ copyright = u"2017-2018, European Centre for Medium-Range Weather Forecasts (ECM
 # the built documents.
 #
 # The full version, including alpha/beta/rc tags.
-release = pkg_resources.get_distribution("mpy").version
+release = pkg_resources.get_distribution("metview").version
 # The short X.Y version.
 version = '.'.join(release.split('.')[:2])
 
@@ -176,7 +176,7 @@ html_static_path = ['_static']
 # html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'mpydoc'
+htmlhelp_basename = 'metviewdoc'
 
 
 # -- Options for LaTeX output ------------------------------------------
@@ -196,8 +196,8 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass
 # [howto/manual]).
 latex_documents = [
-    ('index', 'mpy.tex',
-     u'mpy Documentation',
+    ('index', 'metview.tex',
+     u'metview Documentation',
      u'Metview python API', 'manual'),
 ]
 
@@ -227,8 +227,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'mpy',
-     u'mpy Documentation',
+    ('index', 'metview',
+     u'metview Documentation',
      [u'Metview python API'], 1)
 ]
 
@@ -242,10 +242,10 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    ('index', 'mpy',
-     u'mpy Documentation',
+    ('index', 'metview',
+     u'metview Documentation',
      u'Metview python API',
-     'mpy',
+     'metview',
      'One line description of project.',
      'Miscellaneous'),
 ]

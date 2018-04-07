@@ -32,7 +32,7 @@ Create and activate a new virtualenv::
 Install
 -------
 
-From the mpy folder install with::
+From the metview folder install with::
 
     pip install -e .
 
@@ -50,4 +50,4 @@ Run X on MacOS
     open -a XQuartz
     ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
     xhost + $ip
-    docker run --rm -it -e DISPLAY=$ip:0 -v `pwd`:/src mpy
+    docker run --rm -it -e DISPLAY=$ip:0 -v `pwd`:/src metview
