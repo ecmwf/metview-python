@@ -6,6 +6,7 @@ import datetime
 import pytest
 
 import mpy as mv
+from mpy import bindings
 
 
 PATH = os.path.dirname(__file__)
@@ -468,7 +469,7 @@ def test_met_plot():
             'CONTOUR_HIGHLIGHT': False
     })
     coast = mv.mcoast({'MAP_COASTLINE_LAND_SHADE': True})
-    mv.metview.met_plot(TEST_FIELDSET, contour, coast)
+    bindings.met_plot(TEST_FIELDSET, contour, coast)
 
 
 def test_plot():
@@ -487,7 +488,7 @@ def test_plot():
         'contour_shade_min_level_colour': 'blue',
         'contour_shade_colour_direction': 'clockwise',
     }
-    mv.metview.plot(TEST_FIELDSET, grid_shade, **png_output)
+    bindings.plot(TEST_FIELDSET, grid_shade, **png_output)
     os.remove(file_in_testdir('test_plot.1.png'))
 
 

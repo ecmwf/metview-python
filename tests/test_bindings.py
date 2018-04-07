@@ -1,7 +1,7 @@
 
 import os
 
-import mpy.metview as mpy
+from mpy import bindings as mpy
 
 
 PATH = os.path.dirname(__file__)

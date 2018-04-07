@@ -57,7 +57,7 @@ class MetviewInvoker:
         signal.signal(signal.SIGUSR1, self.signal_from_metview)
         # p = subprocess.Popen(['metview', '-edbg', 'tv8 -a', '-slog', '-python-serve', env_file.name, str(pid)], stdout=subprocess.PIPE)
         # p = subprocess.Popen(['metview', '-slog', '-python-serve', env_file.name, str(pid)])
-        subprocess.Popen(['metview', '-nocreatehome', '-python-serve', env_file.name, str(pid)], stdout=subprocess.PIPE)
+        subprocess.Popen(['metview', '-python-serve', env_file.name, str(pid)], stdout=subprocess.PIPE)
 
         # wait for Metview to respond...
         wait_start = time.time()

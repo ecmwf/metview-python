@@ -14,6 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import metview
+from . import bindings
 
-metview.bind_functions(globals(), module_name=__name__)
+bindings.bind_functions(globals(), module_name=__name__)
+
+# Remove "bindings" from the public API.
+del bindings
