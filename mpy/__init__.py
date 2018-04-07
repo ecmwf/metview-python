@@ -14,9 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import bindings
+from . import bindings as _bindings
 
-bindings.bind_functions(globals(), module_name=__name__)
+_bindings.bind_functions(globals(), module_name=__name__)
 
-# Remove "bindings" from the public API.
-del bindings
+# Remove "_bindings" from the public API.
+del _bindings
