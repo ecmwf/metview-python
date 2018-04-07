@@ -1,19 +1,14 @@
 
 import datetime
-import io
 import keyword
 import os
+import pkgutil
 import signal
 import tempfile
 
 import cffi
 import numpy as np
 import pandas as pd
-
-
-def read(fname):
-    file_path = os.path.join(os.path.dirname(__file__), fname)
-    return io.open(file_path, encoding='utf-8').read()
 
 
 # Python uses 0-based indexing, Metview uses 1-based indexing
@@ -115,14 +110,14 @@ mi = MetviewInvoker()
 
 try:
     ffi = cffi.FFI()
-    ffi.cdef(read('metview.h'))
+    ffi.cdef(pkgutil.get_data('metview', 'metview.h').decode('ascii'))
     mv_lib = mi.info('METVIEW_LIB')
     # is there a more general way to add to a path?
     os.environ["LD_LIBRARY_PATH"] = mv_lib + ':' + os.environ.get("LD_LIBRARY_PATH", '')
     lib = ffi.dlopen(os.path.join(mv_lib, 'libMvMacro.so'))
     lib.p_init()
 except Exception as exp:
-    print('Error loading Metview package. LD_LIBRARY_PATH=' + os.environ["LD_LIBRARY_PATH"])
+    print('Error loading Metview. LD_LIBRARY_PATH=' + os.environ.get("LD_LIBRARY_PATH", ''))
     raise exp
 
 
