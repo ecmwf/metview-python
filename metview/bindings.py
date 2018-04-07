@@ -138,14 +138,12 @@ class Value:
     # on destruction, ensure that the Macro Value is also destroyed
     def __del__(self):
         try:
-            if self.val_pointer != None:
+            if self.val_pointer is not None:
                 lib.p_destroy_value(self.val_pointer)
                 self.val_pointer = None
         except Exception as exp:
             print("Could not destroy Metview variable ", self)
             raise exp
-
-
 
 
 class Request(dict, Value):
@@ -176,10 +174,8 @@ class Request(dict, Value):
             # self['_MACRO'] = 'BLANK'
             # self['_PATH']  = 'BLANK'
 
-
     def __str__(self):
         return "VERB: " + self.verb + super().__str__()
-
 
     # translate Python classes into Metview ones where needed
     def to_metview_style(self):
@@ -193,7 +189,6 @@ class Request(dict, Value):
             if isinstance(v, bool):
                 conversion_dict = {True: 'on', False: 'off'}
                 self[k] = conversion_dict[v]
-
 
     def push(self):
         # if we have a pointer to a Metview Value, then use that because it's more
@@ -213,7 +208,6 @@ class Request(dict, Value):
                 lib.p_set_request_value_from_pop(r, k.encode('utf-8'))
 
             lib.p_push_request(r)
-
 
     def __getitem__(self, index):
         # we don't often need integer indexing of requests, but we do in the
@@ -295,13 +289,13 @@ def push_date(d):
 
 def push_datetime(d):
     lib.p_push_datestring(d.isoformat().encode('utf-8'))
-  
-  
+
+
 def push_datetime_date(d):
     s = d.isoformat() + 'T00:00:00'
     lib.p_push_datestring(s.encode('utf-8'))
-    
-    
+
+
 def push_vector(npa):
 
     # convert numpy array to CData
@@ -339,7 +333,7 @@ def push_arg(n, name):
     elif isinstance(n, datetime.datetime):
         push_datetime(n)
     elif isinstance(n, datetime.date):
-        push_datetime_date(n)    
+        push_datetime_date(n)
     elif isinstance(n, (list, tuple)):
         push_list(n)
     elif isinstance(n, np.ndarray):
@@ -348,7 +342,7 @@ def push_arg(n, name):
         lib.p_push_value(n.push())
     elif isinstance(n, Table):
         lib.p_push_value(n.push())
-    elif n == None:
+    elif n is None:
         lib.p_push_nil()
     else:
         raise TypeError('Cannot push this type of argument to Metview: ', builtins.type(n))
@@ -374,7 +368,6 @@ class FileBackedValue(Value):
     def url(self):
         # ask Metview for the file relating to this data (Metview will write it if necessary)
         return string_from_ffi(lib.p_data_path(self.val_pointer))
-
 
 
 class Fieldset(FileBackedValue):
@@ -420,6 +413,7 @@ class Bufr(FileBackedValue):
 
     def __init__(self, val_pointer):
         FileBackedValue.__init__(self, val_pointer)
+
 
 class Geopoints(FileBackedValue):
 
@@ -491,6 +485,7 @@ class Table(FileBackedValue):
     def __init__(self, val_pointer):
         FileBackedValue.__init__(self, val_pointer)
 
+
 def list_from_metview(mlist):
 
     result = []
@@ -513,7 +508,7 @@ def list_from_metview(mlist):
 def datestring_from_metview(mdate):
 
     return np.datetime64(mdate)
-  
+
 
 def vector_from_metview(vec):
 
@@ -600,8 +595,8 @@ def value_from_metview(val):
         err_msg = string_from_ffi(lib.p_error_message(val))
         raise Exception('Metview error: ' + err_msg)
     # date
-    elif rt == 10:        
-        return datestring_from_metview(string_from_ffi(lib.p_value_as_datestring(val))) 
+    elif rt == 10:
+        return datestring_from_metview(string_from_ffi(lib.p_value_as_datestring(val)))
     elif rt == 11:
         return vector_from_metview(lib.p_value_as_vector(val, np.nan))
     # Odb
@@ -690,7 +685,7 @@ class MF():
             return self.func_map[fname]
         else:
             f = make(fname)
-            self.func_map[fname] = f 
+            self.func_map[fname] = f
             return f
 
     # required for IDEs to list the available functions
@@ -700,11 +695,12 @@ class MF():
         most_funcs = [f for f in all_funcs if len(f) > 1]
         return most_funcs
 
+
 mf = MF()
 
 
-#for x in range(350):
-#    exec("uppercase = make('uppercase')")
+# for x in range(350):
+#     exec("uppercase = make('uppercase')")
 
 
 class Plot():
@@ -736,13 +732,12 @@ class Plot():
                 met_plot(output_function(kwargs), *args)
             else:
                 met_plot(*args)
-             # the Macro plot command returns an empty definition, but
-             # None is better for Python
+            # the Macro plot command returns an empty definition, but
+            # None is better for Python
             return None
 
 
 plot = Plot()
-
 
 
 # On a test system, importing IPython took approx 0.5 seconds, so to avoid that hit
@@ -754,7 +749,7 @@ def setoutput(*args):
         try:
             global Image
             global get_ipython
-            IPython = __import__('IPython', globals(), locals()) 
+            IPython = __import__('IPython', globals(), locals())
             Image = IPython.display.Image
             get_ipython = IPython.get_ipython
         except ImportError as imperr:
@@ -770,7 +765,6 @@ def setoutput(*args):
     else:
         plot.plot_to_jupyter = False
         met_setoutput(*args)
-
 
 
 # perform a MARS retrieval
