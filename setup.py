@@ -29,7 +29,7 @@ version = '0.2.0.dev0'
 
 
 setuptools.setup(
-    name='mpy',
+    name='metview',
     version=version,
     description='Metview Python API.',
     long_description=read('README.rst'),

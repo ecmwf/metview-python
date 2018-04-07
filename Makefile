@@ -1,6 +1,6 @@
 
-PACKAGE := mpy
-IMAGE := metview
+PACKAGE := metview
+IMAGE := $(PACKAGE)
 MODULE := $(PACKAGE)
 PYTHONS := python3.6 python3.5 python3.4 pypy3
 

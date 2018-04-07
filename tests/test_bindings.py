@@ -1,7 +1,7 @@
 
 import os
 
-from mpy import bindings
+from metview import bindings
 
 
 PATH = os.path.dirname(__file__)
@@ -35,12 +35,12 @@ def test_dict_to_pushed_request():
 def test_bind_functions():
     namespace = {}
 
-    bindings.bind_functions(namespace, module_name='mpy')
+    bindings.bind_functions(namespace, module_name='metview')
     result = namespace['dictionary']
 
     assert 'dictionary' in namespace
     assert result.__name__ == result.__qualname__ == 'dictionary'
-    assert result.__module__ == 'mpy'
+    assert result.__module__ == 'metview'
 
 
 def test_lists_as_input():
