@@ -34,9 +34,6 @@ coverage.xml
 *.cover
 .hypothesis/
 
-# wheelhouse
-
-wheelhouse/
 
 # Sphinx documentation
 docs/_build/
@@ -50,6 +47,14 @@ docs/_build/
 # mypy
 .mypy_cache/
 
+# PyCharm
+.idea/
+
 # Docker
 .docker-tox
+.docker-current
 .eggs
+
+.pytest_cache
+
+tests/*.nc
