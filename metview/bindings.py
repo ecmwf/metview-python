@@ -1,15 +1,14 @@
 
-import io
-import os
-import builtins
-import keyword
-import tempfile
-import signal
 import datetime
+import io
+import keyword
+import os
+import signal
+import tempfile
 
 import cffi
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 
 def read(fname):
