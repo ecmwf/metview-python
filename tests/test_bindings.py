@@ -1,7 +1,7 @@
 
 import os
 
-from mpy import bindings as mpy
+from mpy import bindings
 
 
 PATH = os.path.dirname(__file__)
@@ -16,8 +16,8 @@ def file_in_testdir(filename):
 
 
 def test_push_number():
-    mpy.lib.p_push_number(5)
-    mpy.lib.p_push_number(4)
+    bindings.lib.p_push_number(5)
+    bindings.lib.p_push_number(4)
 
 
 def test_dict_to_pushed_request():
@@ -29,13 +29,13 @@ def test_dict_to_pushed_request():
         'param5': 'metview',
         'param6': ['1', '2', '3']
     }
-    mpy.dict_to_pushed_args(dict)
+    bindings.dict_to_pushed_args(dict)
 
 
 def test_bind_functions():
     namespace = {}
 
-    mpy.bind_functions(namespace, module_name='mpy')
+    bindings.bind_functions(namespace, module_name='mpy')
     result = namespace['dictionary']
 
     assert 'dictionary' in namespace
@@ -45,19 +45,19 @@ def test_bind_functions():
 
 def test_lists_as_input():
     my_list = [1, 5, 6]
-    assert mpy.count(my_list) == 3
+    assert bindings.count(my_list) == 3
 
 
 def test_tuples_as_input():
     my_tuple = [1, 0, 5, 6]
-    assert mpy.count(my_tuple) == 4
+    assert bindings.count(my_tuple) == 4
 
 
-TEST_FIELDSET = mpy.read(os.path.join(PATH, 'test.grib'))
+TEST_FIELDSET = bindings.read(os.path.join(PATH, 'test.grib'))
 
 
 def test_mf_function_caller():
-    info = mpy.mf.nearest_gridpoint_info(TEST_FIELDSET[0], 10, 20)
+    info = bindings.mf.nearest_gridpoint_info(TEST_FIELDSET[0], 10, 20)
     assert(isinstance(info, list))
     info0 = info[0]
     print(info0)
