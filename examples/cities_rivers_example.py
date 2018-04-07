@@ -1,5 +1,5 @@
 
-import mpy.metview as mpy
+import metview as mv
 
 
 '''
@@ -10,14 +10,14 @@ https://software.ecmwf.int/wiki/display/METV/Boundaries%2C+Cities+and+Rivers+Exa
 '''
 
 # set up the geographical view
-my_view = mpy.geoview({
+my_view = mv.geoview({
     'map_area_definition': 'FULL',
     'map_projection': 'CYLINDRICAL',
 })
 
 # set up the coastlines so that cities, rivers, borders and admnistrative boundaries
 # are shown
-my_coast = mpy.mcoast({
+my_coast = mv.mcoast({
     'map_administrative_boundaries_colour'         : 'ORANGE',
     'map_boundaries'                               : True,
     'map_coastline_resolution'                     : 'HIGH',
@@ -33,7 +33,7 @@ my_coast = mpy.mcoast({
     'map_administrative_boundaries'                : True
 })
 
-my_text = mpy.mtext({
+my_text = mv.mtext({
     'text_font_size'     : '0.80',
     'text_lines'         : 'Administrative boundaries, cities and rivers',
     'text_justification' : 'LEFT',
@@ -41,10 +41,10 @@ my_text = mpy.mtext({
 })
 
 # define the output media
-to_psfile = mpy.ps_output({
+to_psfile = mv.ps_output({
     'output_name' : './examples/plot' # extension is added automatically
 })
-mpy.setoutput(to_psfile)
+mv.setoutput(to_psfile)
 
 # plot the coastlines data onto the map
-mpy.plot(my_view, my_coast, my_text)
+mv.plot(my_view, my_coast, my_text)
