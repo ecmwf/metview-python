@@ -101,7 +101,7 @@ test: testclean
 	$(RUN) python setup.py test --addopts "-v --flakes --cov=$(MODULE) --cov-report=html --cache-clear"
 
 qc:
-	$(RUN) python setup.py test --addopts "-v --pep8 --mccabe"
+	$(RUN) python setup.py test --addopts "-v --pep8 --mccabe metview tests"
 
 tox: testclean
 	$(RUN) tox $(TOXFLAGS)
