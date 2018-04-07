@@ -15,6 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 import os
 
 import setuptools
@@ -22,7 +23,7 @@ import setuptools
 
 def read(fname):
     file_path = os.path.join(os.path.dirname(__file__), fname)
-    return open(file_path, encoding='utf-8').read()
+    return io.open(file_path, encoding='utf-8').read()
 
 
 version = '0.2.0.dev0'
