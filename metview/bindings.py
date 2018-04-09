@@ -637,8 +637,8 @@ def bind_functions(namespace, module_name=None):
             if module_name:
                 python_func.__module__ = module_name
             namespace[python_name] = python_func
-        else:
-            print('metview function %r not bound to python' % metview_name)
+        #else:
+        #    print('metview function %r not bound to python' % metview_name)
     # HACK: some fuctions are missing from the 'dictionary' call.
     namespace['mvl_ml2hPa'] = make('mvl_ml2hPa')
     namespace['neg'] = make('neg')
