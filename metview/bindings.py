@@ -138,7 +138,7 @@ class Value:
     # on destruction, ensure that the Macro Value is also destroyed
     def __del__(self):
         try:
-            if self.val_pointer is not None:
+            if self.val_pointer is not None and lib is not None:
                 lib.p_destroy_value(self.val_pointer)
                 self.val_pointer = None
         except Exception as exp:
