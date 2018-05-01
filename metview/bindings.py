@@ -29,6 +29,8 @@ class MetviewInvoker:
         Raises an exception if Metview does not respond within 5 seconds
         """
 
+        self.debug = (os.environ.get("METVIEW_PYTHON_DEBUG", '0') == '1')
+
         # check whether we're in a running Metview session
         if 'METVIEW_TITLE_PROD' in os.environ:
             self.persistent_session = True
@@ -39,7 +41,8 @@ class MetviewInvoker:
         import time
         import subprocess
 
-        print('MetviewInvoker: Invoking Metview')
+        if self.debug:
+            print('MetviewInvoker: Invoking Metview')
         self.persistent_session = False
         self.metview_replied = False
         self.metview_startup_timeout = 5  # seconds
@@ -76,7 +79,8 @@ class MetviewInvoker:
             return
 
         if self.metview_replied:
-            print('MetviewInvoker: Closing Metview')
+            if self.debug:
+                print('MetviewInvoker: Closing Metview')
             metview_pid = self.info('EVENT_PID')
             try:
                 os.kill(int(metview_pid), signal.SIGUSR1)
