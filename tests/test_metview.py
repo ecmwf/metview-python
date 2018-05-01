@@ -72,6 +72,9 @@ def test_create_list():
     outlist = mv.list(*inlist)
     assert outlist == inlist
 
+def test_create_empty_list():
+    outlist = mv.list()
+    assert outlist == []
 
 def test_create_list_from_tuple():
     intuple = (10, 50, 60, 50, 1.1, 90)

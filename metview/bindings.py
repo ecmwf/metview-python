@@ -503,7 +503,7 @@ def list_from_metview(mlist):
         result.append(v)
 
     # if this is a list of vectors, then create a 2-D numPy array
-    if all_vectors:
+    if all_vectors and n > 0:
         result = np.stack(result, axis=0)
 
     return result
