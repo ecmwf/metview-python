@@ -247,6 +247,19 @@ def test_fieldset_single_index():
     assert(mv.grib_get_long(grib4, 'level') == 500)
 
 
+def test_fieldset_iterator():
+    grib = mv.read(os.path.join(PATH, 't_for_xs.grib'))
+    avg = mv.average(grib)
+    assert(len(avg) ==  6)
+    iteravg = []
+    for f in grib:
+        iteravg.append(mv.average(f))
+    
+    assert(len(iteravg) == len(avg))
+    for i in range(0,6):
+        assert np.isclose(avg[i],iteravg[i])
+        
+
 def test_read_bufr():
     bufr = mv.read(file_in_testdir('obs_3day.bufr'))
     assert(mv.type(bufr) == 'observations')

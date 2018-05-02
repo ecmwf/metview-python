@@ -378,6 +378,7 @@ class Fieldset(FileBackedValue):
 
     def __init__(self, val_pointer):
         FileBackedValue.__init__(self, val_pointer)
+        self.idx = 0
 
     def __add__(self, other):
         return add(self, other)
@@ -399,6 +400,18 @@ class Fieldset(FileBackedValue):
 
     def __getitem__(self, index):
         return subset(self, python_to_mv_index(index))
+
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        if self.idx >= self.__len__():
+            self.idx = 0
+            raise StopIteration
+        else:          
+            self.idx += 1
+            return self.__getitem__(self.idx-1)
+             
 
     def to_dataset(self):
         # soft dependency on xarray_grib
