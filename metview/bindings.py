@@ -541,7 +541,8 @@ def list_from_metview(mlist):
 
 def datestring_from_metview(mdate):
 
-    return np.datetime64(mdate)
+    dt = datetime.datetime.strptime(mdate, "%Y-%m-%dT%H:%M:%S")
+    return dt
 
 
 def vector_from_metview(vec):

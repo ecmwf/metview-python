@@ -209,24 +209,24 @@ def test_distance():
 
 def test_valid_date_len_1():
     vd = mv.valid_date(TEST_FIELDSET)
-    assert isinstance(vd, np.datetime64)
-    assert vd == np.datetime64("2017-04-27T12:00:00")
+    assert isinstance(vd, datetime.datetime)
+    assert vd == datetime.datetime(2017,4,27,12,0,0)
 
 
 def test_valid_date_len_6():
     grib = mv.read(os.path.join(PATH, 't_for_xs.grib'))
     vd_grib = mv.valid_date(grib)
-    assert isinstance(vd_grib[1], np.datetime64)
+    assert isinstance(vd_grib[1], datetime.datetime)
 
-    vd_ref = np.datetime64("2017-08-01T12:00:00")
+    vd_ref = datetime.datetime(2017,8,1,12,0,0)
     for vd in vd_grib:
         assert vd == vd_ref
 
 
 def test_base_date():
     bd = mv.base_date(TEST_FIELDSET)
-    assert isinstance(bd, np.datetime64)
-    assert bd == np.datetime64("2017-04-27T12:00:00")
+    assert isinstance(bd, datetime.datetime)
+    assert bd == datetime.datetime(2017,4,27,12,0,0)
 
 
 def test_fieldset_len_1():
