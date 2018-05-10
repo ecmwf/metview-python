@@ -394,6 +394,18 @@ class Fieldset(FileBackedValue):
     def __mul__(self, other):
         return prod(self, other)
 
+    def __ge__(self, other):
+        return greater_equal_than(self, other)
+
+    def __gt__(self, other):
+        return greater_than(self, other)
+
+    def __le__(self, other):
+        return lower_equal_than(self, other)
+
+    def __lt__(self, other):
+        return lower_than(self, other)
+
     def __truediv__(self, other):
         return div(self, other)
 

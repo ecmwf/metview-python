@@ -258,7 +258,15 @@ def test_fieldset_iterator():
     assert(len(iteravg) == len(avg))
     for i in range(0,6):
         assert np.isclose(avg[i],iteravg[i])
-        
+
+def test_fieldset_relational_operators():
+    a = mv.read(os.path.join(PATH, 'test.grib'))
+    a = mv.int(a)
+    assert(mv.accumulate(a >  273) == 76001)
+    assert(mv.accumulate(a >= 273) == 78156)
+    assert(mv.accumulate(a <  273) == 37524)
+    assert(mv.accumulate(a <= 273) == 39679)
+     
 
 def test_read_bufr():
     bufr = mv.read(file_in_testdir('obs_3day.bufr'))
