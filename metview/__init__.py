@@ -14,6 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# requires a Python 3 interpreter
+import sys
+if sys.version_info[0] < 3:
+    raise EnvironmentError("Metview's Python interface requires Python 3. You are using Python " + repr(sys.version_info))
+
+
+
 from . import bindings as _bindings
 
 _bindings.bind_functions(globals(), module_name=__name__)
