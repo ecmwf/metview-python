@@ -688,8 +688,14 @@ def bind_functions(namespace, module_name=None):
             namespace[python_name] = python_func
         #else:
         #    print('metview function %r not bound to python' % metview_name)
+    # add the 'mvl' functions, which are written in Macro and therefore not
+    # listed by the dictionary() function
+    for f in ['mvl_ml2hPa', 'mvl_create_netcdf_2d', 'mvl_flextra_etadot', 'mvl_geocircle',
+              'mvl_geoline', 'mvl_geopotential_on_ml', 'mvl_mxn_subframes', 'mvl_plot_scm_data',
+              'mvl_regular_layout', 'mvl_regular_layout_area']:
+        namespace[f] = make(f)
+
     # HACK: some fuctions are missing from the 'dictionary' call.
-    namespace['mvl_ml2hPa'] = make('mvl_ml2hPa')
     namespace['neg'] = make('neg')
     namespace['nil'] = make('nil')
     # override some functions that need special treatment
