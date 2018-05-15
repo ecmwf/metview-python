@@ -631,7 +631,7 @@ def test_oo_interface_on_geopoints():
     assert(gpt.count() == 45)
     assert(np.isclose(gpt.mean(), 281.247))
 
-def test_gpts_to_dataframe():
+def test_std_gpts_to_dataframe():
     gpt = mv.read(file_in_testdir('t2m_3day.gpt'))
     df = gpt.to_dataframe()
     assert(isinstance(df, pd.DataFrame))
@@ -644,7 +644,23 @@ def test_gpts_to_dataframe():
     assert(df.loc[5]['latitude'] == 51.15)
     assert(df.loc[25]['longitude'] == 2.65)
     assert(df.loc[8]['level'] == 0)
-    assert(df.loc[4]['value'] == 281.2)
+    assert(np.isclose(df.loc[4]['value'], 281.2))
+
+def test_x_y_gpts_to_dataframe():
+    gpt = mv.read(file_in_testdir('uv.gpt'))
+    df = gpt.to_dataframe()
+    assert(isinstance(df, pd.DataFrame))
+    assert(df.shape == (39,6))
+    dt1_iloc = df.iloc[0][0]
+    assert(isinstance(dt1_iloc, datetime.datetime))
+    dt1_loc = df.iloc[0]['date']
+    assert(isinstance(dt1_loc, datetime.datetime))
+    assert(dt1_loc == datetime.datetime(2018,5,14,12,0,0))
+    assert(df.loc[5]['latitude'] == 70)
+    assert(df.loc[25]['longitude'] == 30)
+    assert(df.loc[8]['level'] == 500)
+    assert(np.isclose(df.loc[4]['value'], -10.865656))
+    assert(np.isclose(df.loc[4]['value2'], 17.589124))
 
 
 @pytest.mark.xfail()
