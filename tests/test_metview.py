@@ -662,6 +662,15 @@ def test_xy_vector_gpts_to_dataframe():
     assert(np.isclose(df.loc[4]['value'], -10.865656))
     assert(np.isclose(df.loc[4]['value2'], 17.589124))
 
+def test_xyv_gpts_to_dataframe():
+    gpt = mv.read(file_in_testdir('xyv.gpt'))
+    df = gpt.to_dataframe()
+    assert(isinstance(df, pd.DataFrame))
+    assert(df.shape == (60,3))
+    assert(df.loc[5]['latitude'] == 70)
+    assert(df.loc[25]['longitude'] == 20)
+    assert(np.isclose(df.loc[4]['value'], -10.8656))
+
 
 @pytest.mark.xfail()
 def test_table():
