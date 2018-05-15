@@ -646,7 +646,7 @@ def test_std_gpts_to_dataframe():
     assert(df.loc[8]['level'] == 0)
     assert(np.isclose(df.loc[4]['value'], 281.2))
 
-def test_x_y_gpts_to_dataframe():
+def test_xy_vector_gpts_to_dataframe():
     gpt = mv.read(file_in_testdir('uv.gpt'))
     df = gpt.to_dataframe()
     assert(isinstance(df, pd.DataFrame))

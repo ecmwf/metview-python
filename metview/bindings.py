@@ -485,17 +485,18 @@ class Geopoints(FileBackedValue):
         return filter(self, other)
 
     def to_dataframe(self):
-        
+        tp = self.dtype()
+
         pddict = {'latitude'  : self.latitudes(),
                   'longitude' : self.longitudes(),
-                  'level'     : self.levels(),
-                  'date'      : self.dates(),
                   'value'     : self.values()}
 
-        # optional - add value2 if any are non-zero
-        val2 = self.value2s()
-        if np.any(val2):
-            pddict['value2'] = val2
+        if tp in ('standard', 'xy_vector', 'polar_vector', 'standard_string'):
+            pddict['level'] = self.levels()
+            pddict['date']  = self.dates()
+
+        if tp in ('xy_vector', 'polar_vector'):
+            pddict['value2'] = self.value2s()
 
         df = pd.DataFrame(pddict)
         return df
