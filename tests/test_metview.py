@@ -2,8 +2,8 @@
 import os
 import numpy as np
 import datetime
-
 import pytest
+import pandas as pd
 
 import metview as mv
 from metview import bindings
@@ -630,6 +630,21 @@ def test_oo_interface_on_geopoints():
     gpt = mv.read(file_in_testdir('t2m_3day.gpt'))
     assert(gpt.count() == 45)
     assert(np.isclose(gpt.mean(), 281.247))
+
+def test_gpts_to_dataframe():
+    gpt = mv.read(file_in_testdir('t2m_3day.gpt'))
+    df = gpt.to_dataframe()
+    assert(isinstance(df, pd.DataFrame))
+    assert(df.shape == (45,5))
+    dt1_iloc = df.iloc[0][0]
+    assert(isinstance(dt1_iloc, datetime.datetime))
+    dt1_loc = df.iloc[0]['date']
+    assert(isinstance(dt1_loc, datetime.datetime))
+    assert(dt1_loc == datetime.datetime(2017,4,25,12,0,0))
+    assert(df.loc[5]['latitude'] == 51.15)
+    assert(df.loc[25]['longitude'] == 2.65)
+    assert(df.loc[8]['level'] == 0)
+    assert(df.loc[4]['value'] == 281.2)
 
 
 @pytest.mark.xfail()

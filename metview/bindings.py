@@ -485,7 +485,12 @@ class Geopoints(FileBackedValue):
         return filter(self, other)
 
     def to_dataframe(self):
-        return pd.read_table(self.url(), skiprows=3)
+        df = pd.DataFrame({'latitude'  : self.latitudes(),
+                           'longitude' : self.longitudes(),
+                           'level'     : self.levels(),
+                           'date'      : self.dates(),
+                           'value'     : self.values()})
+        return df
 
 
 class NetCDF(FileBackedValue):
