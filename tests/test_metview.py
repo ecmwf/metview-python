@@ -4,6 +4,7 @@ import numpy as np
 import datetime
 import pytest
 import pandas as pd
+import xarray as xr
 
 import metview as mv
 from metview import bindings
@@ -670,6 +671,12 @@ def test_xyv_gpts_to_dataframe():
     assert(df.loc[5]['latitude'] == 70)
     assert(df.loc[25]['longitude'] == 20)
     assert(np.isclose(df.loc[4]['value'], -10.8656))
+
+def test_grib_to_dataset():
+    grib = mv.read(file_in_testdir('t_for_xs.grib'))
+    x = grib.to_dataset()
+    assert(isinstance(x, xr.core.dataset.Dataset))
+    assert(isinstance(x['t'], xr.DataArray))
 
 
 @pytest.mark.xfail()
