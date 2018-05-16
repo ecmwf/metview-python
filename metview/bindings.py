@@ -8,7 +8,6 @@ import tempfile
 
 import cffi
 import numpy as np
-import pandas as pd
 
 
 # Python uses 0-based indexing, Metview uses 1-based indexing
@@ -485,6 +484,12 @@ class Geopoints(FileBackedValue):
         return filter(self, other)
 
     def to_dataframe(self):
+        try:
+            import pandas as pd
+        except ImportError:
+            print("Package pandas not found. Try running 'pip install pandas'.")
+            raise
+
         tp = self.dtype()
 
         pddict = {'latitude'  : self.latitudes(),
