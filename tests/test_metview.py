@@ -473,6 +473,32 @@ def test_odb_filter():
     np.testing.assert_allclose(val, a)
 
 
+def test_odb_to_dataframe():
+    if mv.is_feature_available('odb') == 0:
+        print('Skipping test_odb because ODB is not enabled in this Metview version')
+        return
+
+    db = mv.read(file_in_testdir('temp_u.odb'))
+    assert(mv.type(db) == 'odb')
+
+    df = db.to_dataframe()
+    assert(isinstance(df, pd.DataFrame))
+
+    assert(df.shape == (88,3))
+    dt1_loc = df.iloc[0]['p']
+    assert(np.isclose(dt1_loc, 98065.6))
+    dt1_loc = df.iloc[5]['t']
+    assert(np.isclose(dt1_loc, 144700))
+    dt1_loc = df.iloc[50]['t']
+    assert(np.isclose(dt1_loc, 103200))
+    dt1_loc = df.iloc[29]['val']
+    assert(np.isclose(dt1_loc, -6.06863))
+    dt1_loc = df.iloc[87]['val']
+    assert(np.isclose(dt1_loc, -4.27525))
+
+
+
+
 # this tests the calling of the Cross Section module, but also the
 # return of netCDF data and also that we can perform operations on it
 # as input and output

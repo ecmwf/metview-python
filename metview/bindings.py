@@ -532,6 +532,22 @@ class Odb(FileBackedValue):
     def __init__(self, val_pointer):
         FileBackedValue.__init__(self, val_pointer)
 
+    def to_dataframe(self):
+        try:
+            import pandas as pd
+        except ImportError:
+            print("Package pandas not found. Try running 'pip install pandas'.")
+            raise
+
+        cols = self.columns()
+        pddict = {}
+        
+        for col in cols:
+            pddict[col] = self.values(col)
+
+        df = pd.DataFrame(pddict)
+        return df
+
 
 class Table(FileBackedValue):
 
