@@ -20,13 +20,13 @@ UC-05. The Analyst retrieves, for a given time interval, the values
 --------------------------------------------------------------------------------
 """
 
-import mpy.metview as mpy
+import metview as mv
 
-uv = mpy.read('./examples/uv.grib')
+uv = mv.read('./examples/uv.grib')
 
-u = mpy.read(data=uv, param='u')
-v = mpy.read(data=uv, param='v')
+u = mv.read(data=uv, param='u')
+v = mv.read(data=uv, param='v')
 
-wind_speed = mpy.sqrt(u * u + v * v)
+wind_speed = mv.sqrt(u * u + v * v)
 
-mpy.plot(wind_speed)
+mv.plot(wind_speed)

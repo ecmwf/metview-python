@@ -15,6 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 import os
 
 import setuptools
@@ -22,14 +23,14 @@ import setuptools
 
 def read(fname):
     file_path = os.path.join(os.path.dirname(__file__), fname)
-    return open(file_path, encoding='utf-8').read()
+    return io.open(file_path, encoding='utf-8').read()
 
 
-version = '0.1.0.dev0'
+version = '0.8.0'
 
 
 setuptools.setup(
-    name='mpy',
+    name='metview',
     version=version,
     description='Metview Python API.',
     long_description=read('README.rst'),

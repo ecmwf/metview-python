@@ -11,7 +11,7 @@ recursive-include docs *.rst
 recursive-include examples *.bufr
 recursive-include examples *.grib
 recursive-include examples *.py
-recursive-include mpy *.h
+recursive-include metview *.h
 recursive-include requirements *.in
 recursive-include requirements *.txt
 recursive-include tests *.bufr

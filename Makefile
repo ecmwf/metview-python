@@ -1,6 +1,6 @@
 
-PACKAGE := mpy
-IMAGE := metview
+PACKAGE := metview
+IMAGE := $(PACKAGE)
 MODULE := $(PACKAGE)
 PYTHONS := python3.6 python3.5 python3.4 pypy3
 
@@ -69,8 +69,11 @@ local-develop: $(EXTRA_PACKAGES)
 local-wheel:
 	$(PIP) wheel -e .
 
+testclean:
+	$(RM) -r */__pycache__ .coverage .cache
+
 clean:
-	$(RM) -r */__pycache__ */*.pyc htmlcov dist build .coverage .cache .eggs *.egg-info
+	$(RM) -r */*.pyc htmlcov dist build .eggs *.egg-info
 
 distclean: clean
 	$(RM) -r .tox .docker-tox
@@ -94,16 +97,16 @@ update-req:
 	$(RUN) pip-compile -o requirements/requirements-tests.txt -U setup.py requirements/requirements-tests.in
 	$(RUN) pip-compile -o requirements/requirements-docs.txt -U setup.py requirements/requirements-docs.in
 
-test:
-	$(RUN) pytest -v --flakes --cov=$(MODULE) --cov-report=html --cache-clear
+test: testclean
+	$(RUN) python setup.py test --addopts "-v --flakes --cov=$(MODULE) --cov-report=html --cache-clear"
 
 qc:
-	$(RUN) pytest -v --pep8 --mccabe mpy tests
+	$(RUN) python setup.py test --addopts "-v --pep8 --mccabe metview tests"
 
-tox:
+tox: testclean
 	$(RUN) tox $(TOXFLAGS)
 
-detox:
+detox: testclean
 	$(RUN) detox $(TOXFLAGS)
 
 # image build

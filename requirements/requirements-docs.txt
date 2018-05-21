@@ -20,12 +20,12 @@ pandas==0.22.0
 pycparser==2.18           # via cffi
 pygments==2.2.0           # via sphinx
 pyparsing==2.2.0          # via packaging
-pytest-runner==4.0
-python-dateutil==2.7.0    # via pandas
+pytest-runner==4.2
+python-dateutil==2.7.2    # via pandas
 pytz==2018.3              # via babel, pandas
 requests==2.18.4          # via sphinx
 six==1.11.0               # via packaging, python-dateutil, sphinx
 snowballstemmer==1.2.1    # via sphinx
-sphinx==1.7.1
+sphinx==1.7.2
 sphinxcontrib-websupport==1.0.1  # via sphinx
 urllib3==1.22             # via requests

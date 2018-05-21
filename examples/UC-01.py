@@ -12,16 +12,16 @@ Analyst reads data from a GRIB file and derives another quantity from it. Then,
 Analyst saves his data as a GRIB file and creates a plot in PNG format. 
 """
 
-import mpy.metview as mpy
+import metview as mv
 
 
-mydata = mpy.read('tests/test.grib')
+mydata = mv.read('tests/test.grib')
 
 derived = mydata * 2 + 5
 
-mpy.write('derived_data.grib', derived)
+mv.write('derived_data.grib', derived)
 
-grid_shade = mpy.mcont(
+grid_shade = mv.mcont(
     legend = True,
     contour = False,
     contour_highlight = True,
@@ -33,9 +33,9 @@ grid_shade = mpy.mcont(
 )
 
 # Macro-like PNG creation:
-png = mpy.png_output(output_width = 1200, output_name = './examples/myplot')
+png = mv.png_output(output_width = 1200, output_name = './examples/myplot')
 
-mpy.plot(png, derived, grid_shade)
+mv.plot(png, derived, grid_shade)
 
 
 # Using a different notation:
@@ -45,4 +45,4 @@ png_output = {
     'output_name': './examples/myplot'
 }
 
-mpy.plot(derived, grid_shade, **png_output)
+mv.plot(derived, grid_shade, **png_output)

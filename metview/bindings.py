@@ -1,20 +1,13 @@
 
-import io
-import os
-import builtins
-import keyword
-import tempfile
-import signal
 import datetime
+import keyword
+import os
+import pkgutil
+import signal
+import tempfile
 
 import cffi
-import pandas as pd
 import numpy as np
-
-
-def read(fname):
-    file_path = os.path.join(os.path.dirname(__file__), fname)
-    return io.open(file_path, encoding='utf-8').read()
 
 
 # Python uses 0-based indexing, Metview uses 1-based indexing
@@ -35,6 +28,8 @@ class MetviewInvoker:
         Raises an exception if Metview does not respond within 5 seconds
         """
 
+        self.debug = (os.environ.get("METVIEW_PYTHON_DEBUG", '0') == '1')
+
         # check whether we're in a running Metview session
         if 'METVIEW_TITLE_PROD' in os.environ:
             self.persistent_session = True
@@ -45,7 +40,8 @@ class MetviewInvoker:
         import time
         import subprocess
 
-        print('MetviewInvoker: Invoking Metview')
+        if self.debug:
+            print('MetviewInvoker: Invoking Metview')
         self.persistent_session = False
         self.metview_replied = False
         self.metview_startup_timeout = 5  # seconds
@@ -56,8 +52,13 @@ class MetviewInvoker:
         # print('PYTHON:', pid, ' ', env_file.name, ' ', repr(signal.SIGUSR1))
         signal.signal(signal.SIGUSR1, self.signal_from_metview)
         # p = subprocess.Popen(['metview', '-edbg', 'tv8 -a', '-slog', '-python-serve', env_file.name, str(pid)], stdout=subprocess.PIPE)
-        # p = subprocess.Popen(['metview', '-slog', '-python-serve', env_file.name, str(pid)])
-        subprocess.Popen(['metview', '-python-serve', env_file.name, str(pid)], stdout=subprocess.PIPE)
+        metview_flags = ['metview', '-nocreatehome', '-python-serve', env_file.name, str(pid)]
+        if self.debug:
+            metview_flags.insert(2, '-slog')
+            print('Starting Metview using these command args:')
+            print(metview_flags)
+
+        subprocess.Popen(metview_flags)
 
         # wait for Metview to respond...
         wait_start = time.time()
@@ -82,7 +83,8 @@ class MetviewInvoker:
             return
 
         if self.metview_replied:
-            print('MetviewInvoker: Closing Metview')
+            if self.debug:
+                print('MetviewInvoker: Closing Metview')
             metview_pid = self.info('EVENT_PID')
             try:
                 os.kill(int(metview_pid), signal.SIGUSR1)
@@ -116,14 +118,14 @@ mi = MetviewInvoker()
 
 try:
     ffi = cffi.FFI()
-    ffi.cdef(read('metview.h'))
+    ffi.cdef(pkgutil.get_data('metview', 'metview.h').decode('ascii'))
     mv_lib = mi.info('METVIEW_LIB')
     # is there a more general way to add to a path?
     os.environ["LD_LIBRARY_PATH"] = mv_lib + ':' + os.environ.get("LD_LIBRARY_PATH", '')
     lib = ffi.dlopen(os.path.join(mv_lib, 'libMvMacro.so'))
     lib.p_init()
 except Exception as exp:
-    print('Error loading Metview package. LD_LIBRARY_PATH=' + os.environ["LD_LIBRARY_PATH"])
+    print('Error loading Metview. LD_LIBRARY_PATH=' + os.environ.get("LD_LIBRARY_PATH", ''))
     raise exp
 
 
@@ -144,14 +146,12 @@ class Value:
     # on destruction, ensure that the Macro Value is also destroyed
     def __del__(self):
         try:
-            if self.val_pointer != None:
+            if self.val_pointer is not None and lib is not None:
                 lib.p_destroy_value(self.val_pointer)
                 self.val_pointer = None
         except Exception as exp:
             print("Could not destroy Metview variable ", self)
             raise exp
-
-
 
 
 class Request(dict, Value):
@@ -182,10 +182,8 @@ class Request(dict, Value):
             # self['_MACRO'] = 'BLANK'
             # self['_PATH']  = 'BLANK'
 
-
     def __str__(self):
         return "VERB: " + self.verb + super().__str__()
-
 
     # translate Python classes into Metview ones where needed
     def to_metview_style(self):
@@ -199,7 +197,6 @@ class Request(dict, Value):
             if isinstance(v, bool):
                 conversion_dict = {True: 'on', False: 'off'}
                 self[k] = conversion_dict[v]
-
 
     def push(self):
         # if we have a pointer to a Metview Value, then use that because it's more
@@ -219,7 +216,6 @@ class Request(dict, Value):
                 lib.p_set_request_value_from_pop(r, k.encode('utf-8'))
 
             lib.p_push_request(r)
-
 
     def __getitem__(self, index):
         # we don't often need integer indexing of requests, but we do in the
@@ -301,13 +297,13 @@ def push_date(d):
 
 def push_datetime(d):
     lib.p_push_datestring(d.isoformat().encode('utf-8'))
-  
-  
+
+
 def push_datetime_date(d):
     s = d.isoformat() + 'T00:00:00'
     lib.p_push_datestring(s.encode('utf-8'))
-    
-    
+
+
 def push_vector(npa):
 
     # convert numpy array to CData
@@ -345,7 +341,7 @@ def push_arg(n, name):
     elif isinstance(n, datetime.datetime):
         push_datetime(n)
     elif isinstance(n, datetime.date):
-        push_datetime_date(n)    
+        push_datetime_date(n)
     elif isinstance(n, (list, tuple)):
         push_list(n)
     elif isinstance(n, np.ndarray):
@@ -354,7 +350,7 @@ def push_arg(n, name):
         lib.p_push_value(n.push())
     elif isinstance(n, Table):
         lib.p_push_value(n.push())
-    elif n == None:
+    elif n is None:
         lib.p_push_nil()
     else:
         raise TypeError('Cannot push this type of argument to Metview: ', builtins.type(n))
@@ -382,11 +378,11 @@ class FileBackedValue(Value):
         return string_from_ffi(lib.p_data_path(self.val_pointer))
 
 
-
 class Fieldset(FileBackedValue):
 
     def __init__(self, val_pointer):
         FileBackedValue.__init__(self, val_pointer)
+        self.idx = 0
 
     def __add__(self, other):
         return add(self, other)
@@ -396,6 +392,18 @@ class Fieldset(FileBackedValue):
 
     def __mul__(self, other):
         return prod(self, other)
+
+    def __ge__(self, other):
+        return greater_equal_than(self, other)
+
+    def __gt__(self, other):
+        return greater_than(self, other)
+
+    def __le__(self, other):
+        return lower_equal_than(self, other)
+
+    def __lt__(self, other):
+        return lower_than(self, other)
 
     def __truediv__(self, other):
         return div(self, other)
@@ -408,6 +416,18 @@ class Fieldset(FileBackedValue):
 
     def __getitem__(self, index):
         return subset(self, python_to_mv_index(index))
+
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        if self.idx >= self.__len__():
+            self.idx = 0
+            raise StopIteration
+        else:          
+            self.idx += 1
+            return self.__getitem__(self.idx-1)
+             
 
     def to_dataset(self):
         # soft dependency on xarray_grib
@@ -426,6 +446,7 @@ class Bufr(FileBackedValue):
 
     def __init__(self, val_pointer):
         FileBackedValue.__init__(self, val_pointer)
+
 
 class Geopoints(FileBackedValue):
 
@@ -463,7 +484,27 @@ class Geopoints(FileBackedValue):
         return filter(self, other)
 
     def to_dataframe(self):
-        return pd.read_table(self.url(), skiprows=3)
+        try:
+            import pandas as pd
+        except ImportError:
+            print("Package pandas not found. Try running 'pip install pandas'.")
+            raise
+
+        tp = self.dtype()
+
+        pddict = {'latitude'  : self.latitudes(),
+                  'longitude' : self.longitudes(),
+                  'value'     : self.values()}
+
+        if tp in ('standard', 'xy_vector', 'polar_vector', 'standard_string'):
+            pddict['level'] = self.levels()
+            pddict['date']  = self.dates()
+
+        if tp in ('xy_vector', 'polar_vector'):
+            pddict['value2'] = self.value2s()
+
+        df = pd.DataFrame(pddict)
+        return df
 
 
 class NetCDF(FileBackedValue):
@@ -497,6 +538,7 @@ class Table(FileBackedValue):
     def __init__(self, val_pointer):
         FileBackedValue.__init__(self, val_pointer)
 
+
 def list_from_metview(mlist):
 
     result = []
@@ -510,7 +552,7 @@ def list_from_metview(mlist):
         result.append(v)
 
     # if this is a list of vectors, then create a 2-D numPy array
-    if all_vectors:
+    if all_vectors and n > 0:
         result = np.stack(result, axis=0)
 
     return result
@@ -518,8 +560,9 @@ def list_from_metview(mlist):
 
 def datestring_from_metview(mdate):
 
-    return np.datetime64(mdate)
-  
+    dt = datetime.datetime.strptime(mdate, "%Y-%m-%dT%H:%M:%S")
+    return dt
+
 
 def vector_from_metview(vec):
 
@@ -606,8 +649,8 @@ def value_from_metview(val):
         err_msg = string_from_ffi(lib.p_error_message(val))
         raise Exception('Metview error: ' + err_msg)
     # date
-    elif rt == 10:        
-        return datestring_from_metview(string_from_ffi(lib.p_value_as_datestring(val))) 
+    elif rt == 10:
+        return datestring_from_metview(string_from_ffi(lib.p_value_as_datestring(val)))
     elif rt == 11:
         return vector_from_metview(lib.p_value_as_vector(val, np.nan))
     # Odb
@@ -648,10 +691,16 @@ def bind_functions(namespace, module_name=None):
             if module_name:
                 python_func.__module__ = module_name
             namespace[python_name] = python_func
-        else:
-            print('metview function %r not bound to python' % metview_name)
+        #else:
+        #    print('metview function %r not bound to python' % metview_name)
+    # add the 'mvl' functions, which are written in Macro and therefore not
+    # listed by the dictionary() function
+    for f in ['mvl_ml2hPa', 'mvl_create_netcdf_2d', 'mvl_flextra_etadot', 'mvl_geocircle',
+              'mvl_geoline', 'mvl_geopotential_on_ml', 'mvl_mxn_subframes', 'mvl_plot_scm_data',
+              'mvl_regular_layout', 'mvl_regular_layout_area']:
+        namespace[f] = make(f)
+
     # HACK: some fuctions are missing from the 'dictionary' call.
-    namespace['mvl_ml2hPa'] = make('mvl_ml2hPa')
     namespace['neg'] = make('neg')
     namespace['nil'] = make('nil')
     # override some functions that need special treatment
@@ -660,93 +709,32 @@ def bind_functions(namespace, module_name=None):
     namespace['setoutput'] = setoutput
 
 
-# # FIXME: all explicit bindings can be removed in favor of implicit bindings in __init__.py
-# abs = make('abs')
-# accumulate = make('accumulate')
+# some explicit bindings are used here
 add = make('+')
-# append = make('append')
-# average = make('average')
-# base_date = make('base_date')
-# bitmap = make('bitmap')
 call = make('call')
-# coslat = make('coslat')
 count = make('count')
-# day = make('day')
-# dimension_names = make('dimension_names')
-# distance = make('distance')
 div = make('/')
-# describe = make('describe')
-# duplicate = make('duplicate')
 filter = make('filter')
-# find = make('find')
-# geoview = make('geoview')
 greater_equal_than = make('>=')
 greater_than = make('>')
-# grib_get_string = make('grib_get_string')
-# grib_get_long = make('grib_get_long')
-# gribsetbits = make('gribsetbits')
-# hour = make('hour')
-# input_visualiser = make('input_visualiser')
-# integrate = make('integrate')
-# interpolate = make('interpolate')
-# low = make('lowercase')
 lower_equal_than = make('<=')
 lower_than = make('<')
-# makelist = make('list')
-# maxvalue = make('maxvalue')
-# mcoast = make('mcoast')
-# mcont = make('mcont')
-# mcross_sect = make('mcross_sect')
-# mean = make('mean')
 merge = make('&')
-# mgraph = make('mgraph')
-# month = make('month')
-# mvertprofview = make('mvertprofview')
-# mvl_geoline = make('mvl_geoline')
-# mxsectview = make('mxsectview')
 met_plot = make('plot')
-# minvalue = make('minvalue')
-# mobs = make('mobs')
-# msymb = make('msymb')
-# mtext = make('mtext')
-# mvl_ml2hPa = make('mvl_ml2hPa')
-# neg = make('neg')
-# netcdf_visuliser = make('netcdf_visuliser')
-# newpage = make('newpage')
 nil = make('nil')
-# obsfilter = make('obsfilter')
-# plot_page = make('plot_page')
-# plot_superpage = make('plot_superpage')
 png_output = make('png_output')
 power = make('^')
-# pr = make('print')
 prod = make('*')
 ps_output = make('ps_output')
 read = make('read')
-# retrieve = make('retrieve')
-# second = make('second')
-# set_values = make('set_values')
-# setcurrent = make('setcurrent')
 met_setoutput = make('setoutput')
-# sum = make('sum')
-# sqrt = make('sqrt')
 sub = make('-')
 subset = make('[]')
-# type = make('type')
-# unique = make('unique')
-# valid_date = make('valid_date')
-# value = make('value')
-# values = make('values')
-# vector = make('vector')
-# version_info = make('version_info')
-# waitmode = make('waitmode')
-# write = make('write')
-# year = make('year')
 
 
 # experimental class to facilitate calling an arbitrary Macro function
 # function callers are created on-demand
-# e.g. mpy.mf.nearest_gridpoint_info(grib, 10, 20)
+# e.g. mv.mf.nearest_gridpoint_info(grib, 10, 20)
 class MF():
 
     def __init__(self):
@@ -757,7 +745,7 @@ class MF():
             return self.func_map[fname]
         else:
             f = make(fname)
-            self.func_map[fname] = f 
+            self.func_map[fname] = f
             return f
 
     # required for IDEs to list the available functions
@@ -767,11 +755,12 @@ class MF():
         most_funcs = [f for f in all_funcs if len(f) > 1]
         return most_funcs
 
+
 mf = MF()
 
 
-#for x in range(350):
-#    exec("uppercase = make('uppercase')")
+# for x in range(350):
+#     exec("uppercase = make('uppercase')")
 
 
 class Plot():
@@ -803,13 +792,12 @@ class Plot():
                 met_plot(output_function(kwargs), *args)
             else:
                 met_plot(*args)
-             # the Macro plot command returns an empty definition, but
-             # None is better for Python
+            # the Macro plot command returns an empty definition, but
+            # None is better for Python
             return None
 
 
 plot = Plot()
-
 
 
 # On a test system, importing IPython took approx 0.5 seconds, so to avoid that hit
@@ -821,7 +809,7 @@ def setoutput(*args):
         try:
             global Image
             global get_ipython
-            IPython = __import__('IPython', globals(), locals()) 
+            IPython = __import__('IPython', globals(), locals())
             Image = IPython.display.Image
             get_ipython = IPython.get_ipython
         except ImportError as imperr:
@@ -837,7 +825,6 @@ def setoutput(*args):
     else:
         plot.plot_to_jupyter = False
         met_setoutput(*args)
-
 
 
 # perform a MARS retrieval
