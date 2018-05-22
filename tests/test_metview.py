@@ -335,6 +335,37 @@ def test_obsfilter():
     assert(mv.count(gpt2) == 45)
 
 
+def test_read_gptset():
+    gpts = mv.read(file_in_testdir('geopointset_1.gpts'))
+    assert(mv.type(gpts) == 'geopointset')
+    assert(mv.count(gpts) == 6)
+    gpt1 = gpts[0]
+    assert(mv.type(gpt1) == 'geopoints')
+    assert(mv.count(gpt1) == 11)
+    assert(mv.metadata(gpt1) == None)
+    gpt2 = gpts[1]
+    assert(mv.type(gpt2) == 'geopoints')
+    assert(mv.count(gpt2) == 1)
+    # check the metadata
+    md = mv.metadata(gpt2)
+    assert(isinstance(md, dict))
+    assert(md['mykey1'] == 'val1')
+    assert(md['mykey2'] == 5)
+    # check that it is iterable
+    counts = [mv.count(c) for c in gpts]
+    assert(counts == [11.0, 1.0, 44.0, 11.0, 1.0, 44.0])
+    # test the filtering
+    bad_filter = mv.filter(gpts, {'badkey' : 7})
+    assert(bad_filter == None)
+    good_filter = mv.filter(gpts, {'mykey2' : 5})
+    assert(mv.type(good_filter) == 'geopointset')
+    assert(mv.count(good_filter) == 1)
+    assert(mv.count(good_filter[0]) == 1)
+    lats = good_filter[0].latitudes()
+    assert(len(lats) == 1)
+    assert(lats[0] == 60.82)
+
+
 def test_date_year():
     npd1 = np.datetime64("2017-04-27T06:18:02")
     assert mv.year(npd1) == 2017
