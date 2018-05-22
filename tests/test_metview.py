@@ -307,6 +307,23 @@ def test_prod_geopoints():
     assert np.isclose(maximum, MAX_GPT * MAX_GPT)
 
 
+def test_geopoints_element():
+    g1 = TEST_GEOPOINTS[0]
+    assert(isinstance(g1, dict))
+    assert(g1['latitude']       == 49.43)
+    assert(g1['longitude']      == -2.6)
+    assert(g1['height']         == 0)    
+    assert(g1['date']           == 20170425)    
+    assert(g1['time']           == 1200)    
+    assert(g1['value']          == 282.4)
+    assert(g1['value2']         == 0)
+    assert(g1['value_missing']  == 0)
+    assert(g1['value2_missing'] == 0)
+    g44 = TEST_GEOPOINTS[44]
+    assert(isinstance(g44, dict))
+    assert(g44['latitude']       == 59.53)
+
+
 def test_geopoints_relational_operator():
     lt = TEST_GEOPOINTS < 1
     le = TEST_GEOPOINTS <= 1

@@ -10,11 +10,6 @@ import cffi
 import numpy as np
 
 
-# Python uses 0-based indexing, Metview uses 1-based indexing
-def python_to_mv_index(pi):
-    return pi + 1
-
-
 def string_from_ffi(s):
     return ffi.string(s).decode('utf-8')
 
@@ -415,15 +410,16 @@ class FileBackedValueWithOperators(FileBackedValue):
 
 
 class ContainerValue(Value):
-    def __init__(self, val_pointer):
+    def __init__(self, val_pointer, macro_index_base):
         Value.__init__(self, val_pointer)
         self.idx = 0
+        self.macro_index_base = macro_index_base
 
     def __len__(self):
         return int(count(self))
 
     def __getitem__(self, index):
-        return subset(self, python_to_mv_index(index))
+        return subset(self, index + self.macro_index_base) # convert from 0-based indexing
 
     def __iter__(self):
         return self
@@ -442,8 +438,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
 
     def __init__(self, val_pointer):
         FileBackedValue.__init__(self, val_pointer)
-        ContainerValue.__init__(self, val_pointer)
-
+        ContainerValue.__init__(self, val_pointer, 1)
 
     def to_dataset(self):
         # soft dependency on xarray_grib
@@ -464,10 +459,11 @@ class Bufr(FileBackedValue):
         FileBackedValue.__init__(self, val_pointer)
 
 
-class Geopoints(FileBackedValueWithOperators):
+class Geopoints(FileBackedValueWithOperators, ContainerValue):
 
     def __init__(self, val_pointer):
         FileBackedValueWithOperators.__init__(self, val_pointer)
+        ContainerValue.__init__(self, val_pointer, 0)
 
     def filter(self, other):
         return filter(self, other)
@@ -533,7 +529,7 @@ class GeopointSet(FileBackedValueWithOperators, ContainerValue):
 
     def __init__(self, val_pointer):
         FileBackedValueWithOperators.__init__(self, val_pointer)
-        ContainerValue.__init__(self, val_pointer)
+        ContainerValue.__init__(self, val_pointer, 1)
 
 
 def list_from_metview(mlist):
