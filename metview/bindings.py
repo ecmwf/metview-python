@@ -380,11 +380,10 @@ class FileBackedValue(Value):
         return string_from_ffi(lib.p_data_path(self.val_pointer))
 
 
-class Fieldset(FileBackedValue):
+class FileBackedValueWithOperators(FileBackedValue):
 
     def __init__(self, val_pointer):
         FileBackedValue.__init__(self, val_pointer)
-        self.idx = 0
 
     def __add__(self, other):
         return add(self, other)
@@ -394,6 +393,12 @@ class Fieldset(FileBackedValue):
 
     def __mul__(self, other):
         return prod(self, other)
+
+    def __truediv__(self, other):
+        return div(self, other)
+
+    def __pow__(self, other):
+        return power(self, other)
 
     def __ge__(self, other):
         return greater_equal_than(self, other)
@@ -407,11 +412,12 @@ class Fieldset(FileBackedValue):
     def __lt__(self, other):
         return lower_than(self, other)
 
-    def __truediv__(self, other):
-        return div(self, other)
 
-    def __pow__(self, other):
-        return power(self, other)
+
+class ContainerValue(Value):
+    def __init__(self, val_pointer):
+        Value.__init__(self, val_pointer)
+        self.idx = 0
 
     def __len__(self):
         return int(count(self))
@@ -429,7 +435,15 @@ class Fieldset(FileBackedValue):
         else:          
             self.idx += 1
             return self.__getitem__(self.idx-1)
-             
+
+
+
+class Fieldset(FileBackedValueWithOperators, ContainerValue):
+
+    def __init__(self, val_pointer):
+        FileBackedValue.__init__(self, val_pointer)
+        ContainerValue.__init__(self, val_pointer)
+
 
     def to_dataset(self):
         # soft dependency on xarray_grib
@@ -450,37 +464,10 @@ class Bufr(FileBackedValue):
         FileBackedValue.__init__(self, val_pointer)
 
 
-class Geopoints(FileBackedValue):
+class Geopoints(FileBackedValueWithOperators):
 
     def __init__(self, val_pointer):
-        FileBackedValue.__init__(self, val_pointer)
-
-    def __mul__(self, other):
-        return prod(self, other)
-
-    def __ge__(self, other):
-        return greater_equal_than(self, other)
-
-    def __gt__(self, other):
-        return greater_than(self, other)
-
-    def __le__(self, other):
-        return lower_equal_than(self, other)
-
-    def __lt__(self, other):
-        return lower_than(self, other)
-
-    def __add__(self, other):
-        return add(self, other)
-
-    def __sub__(self, other):
-        return sub(self, other)
-
-    def __pow__(self, other):
-        return power(self, other)
-
-    def __truediv__(self, other):
-        return div(self, other)
+        FileBackedValueWithOperators.__init__(self, val_pointer)
 
     def filter(self, other):
         return filter(self, other)
@@ -509,24 +496,9 @@ class Geopoints(FileBackedValue):
         return df
 
 
-class NetCDF(FileBackedValue):
+class NetCDF(FileBackedValueWithOperators):
     def __init__(self, val_pointer):
-        FileBackedValue.__init__(self, val_pointer)
-
-    def __add__(self, other):
-        return add(self, other)
-
-    def __sub__(self, other):
-        return sub(self, other)
-
-    def __mul__(self, other):
-        return prod(self, other)
-
-    def __truediv__(self, other):
-        return div(self, other)
-
-    def __pow__(self, other):
-        return power(self, other)
+        FileBackedValueWithOperators.__init__(self, val_pointer)
 
 
 class Odb(FileBackedValue):
@@ -557,55 +529,11 @@ class Table(FileBackedValue):
         FileBackedValue.__init__(self, val_pointer)
 
 
-class GeopointSet(FileBackedValue):
+class GeopointSet(FileBackedValueWithOperators, ContainerValue):
 
     def __init__(self, val_pointer):
-        FileBackedValue.__init__(self, val_pointer)
-        self.idx = 0
-
-    def __mul__(self, other):
-        return prod(self, other)
-
-    def __ge__(self, other):
-        return greater_equal_than(self, other)
-
-    def __gt__(self, other):
-        return greater_than(self, other)
-
-    def __le__(self, other):
-        return lower_equal_than(self, other)
-
-    def __lt__(self, other):
-        return lower_than(self, other)
-
-    def __add__(self, other):
-        return add(self, other)
-
-    def __sub__(self, other):
-        return sub(self, other)
-
-    def __pow__(self, other):
-        return power(self, other)
-
-    def __truediv__(self, other):
-        return div(self, other)
-
-    def __len__(self):
-        return int(count(self))
-
-    def __getitem__(self, index):
-        return subset(self, python_to_mv_index(index))
-
-    def __iter__(self):
-        return self
-    
-    def __next__(self):
-        if self.idx >= self.__len__():
-            self.idx = 0
-            raise StopIteration
-        else:          
-            self.idx += 1
-            return self.__getitem__(self.idx-1)
+        FileBackedValueWithOperators.__init__(self, val_pointer)
+        ContainerValue.__init__(self, val_pointer)
 
 
 def list_from_metview(mlist):
