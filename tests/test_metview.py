@@ -522,7 +522,7 @@ def test_odb_filter():
     np.testing.assert_allclose(val, a)
 
 
-def test_odb_to_dataframe():
+def test_odb_to_dataframe_1():
     if mv.is_feature_available('odb') == 0:
         print('Skipping test_odb because ODB is not enabled in this Metview version')
         return
@@ -545,6 +545,28 @@ def test_odb_to_dataframe():
     dt1_loc = df.iloc[87]['val']
     assert(np.isclose(dt1_loc, -4.27525))
 
+
+# test an ODB that has strings
+def test_odb_to_dataframe_2():
+    if mv.is_feature_available('odb') == 0:
+        print('Skipping test_odb because ODB is not enabled in this Metview version')
+        return
+
+    db = mv.read(file_in_testdir('small_odb.odb'))
+    assert(mv.type(db) == 'odb')
+
+    df = db.to_dataframe()
+    assert(isinstance(df, pd.DataFrame))
+
+    assert(df.shape == (273,54))
+    dt1_loc = df.iloc[0]['an_depar@body']
+    assert(np.isclose(dt1_loc, -0.123831))
+    dt1_loc = df.iloc[0]['class@desc']
+    assert(dt1_loc.strip() == 'rd') # strings from ODB are padded with spaces
+    dt1_loc = df.iloc[20]['expver@desc']
+    assert(dt1_loc.strip() == 'fgww') # strings from ODB are padded with spaces
+    dt1_loc = df.iloc[20]['sensor@hdr'] # test a constant integer field
+    assert(dt1_loc == 3)
 
 
 
