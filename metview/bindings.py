@@ -465,9 +465,6 @@ class Geopoints(FileBackedValueWithOperators, ContainerValue):
         FileBackedValueWithOperators.__init__(self, val_pointer)
         ContainerValue.__init__(self, val_pointer, 0)
 
-    def filter(self, other):
-        return filter(self, other)
-
     def to_dataframe(self):
         try:
             import pandas as pd

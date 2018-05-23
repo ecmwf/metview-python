@@ -284,8 +284,9 @@ TEST_GEOPOINTS = mv.read(os.path.join(PATH, 't2m_3day.gpt'))
 
 
 def test_filter_gpt():
-    filter_out = TEST_GEOPOINTS.filter(TEST_GEOPOINTS >= 1)
+    filter_out = TEST_GEOPOINTS.filter(TEST_GEOPOINTS >= 280)
     assert mv.type(filter_out) == 'geopoints'
+    assert mv.count(filter_out) == 38
 
 
 def test_sqrt_geopoints():
