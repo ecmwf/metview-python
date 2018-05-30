@@ -107,6 +107,18 @@ def test_write():
     os.remove(file_in_testdir('test_gg_grid.grib'))
 
 
+def test_klass():
+    # these generate warnings, but if they pass then they show that the conversion
+    # from klass to class is working
+    gg = mv.read(file_in_testdir('test.grib'))
+    c = mv.read(data=gg, klass= 'od')
+    assert(mv.type(c) == 'fieldset')
+    c = mv.read({'data':gg, 'klass' :'od'})
+    assert(mv.type(c) == 'fieldset')
+    c = mv.read({'data':gg, 'class' :'od'})
+    assert(mv.type(c) == 'fieldset')
+
+
 TEST_FIELDSET = mv.read(os.path.join(PATH, 'test.grib'))
 
 

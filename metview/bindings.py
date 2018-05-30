@@ -186,14 +186,15 @@ class Request(dict, Value):
     def to_metview_style(self):
         for k, v in self.items():
 
-            # if isinstance(v, (list, tuple)):
-            #    for v_i in v:
-            #        v_i = str(v_i).encode('utf-8')
-            #        lib.p_add_value(r, k.encode('utf-8'), v_i)
-
+            # bool -> on/off
             if isinstance(v, bool):
                 conversion_dict = {True: 'on', False: 'off'}
                 self[k] = conversion_dict[v]
+
+            # klass -> class (because 'class' is a Python keyword and cannot be used as a named parameter)
+            elif k == 'klass':
+                self['class'] = v
+                del self['klass']
 
     def push(self):
         # if we have a pointer to a Metview Value, then use that because it's more
