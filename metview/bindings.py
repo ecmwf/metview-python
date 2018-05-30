@@ -61,7 +61,9 @@ class MetviewInvoker:
             time.sleep(0.001)
 
         if not(self.metview_replied):
-            raise Exception('Command "metview" did not respond before ' + str(self.metview_startup_timeout) + ' seconds')
+            raise Exception('Command "metview" did not respond within ' + str(self.metview_startup_timeout) + ' seconds. ' +
+                            'At least Metview 5 is required, so please ensure it is in your PATH, as earlier ' +
+                            'versions will not work with the Python interface.')
 
         self.read_metview_settings(env_file.name)
 
