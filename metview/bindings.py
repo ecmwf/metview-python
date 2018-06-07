@@ -119,7 +119,7 @@ try:
     mv_lib = mi.info('METVIEW_LIB')
     # is there a more general way to add to a path?
     os.environ["LD_LIBRARY_PATH"] = mv_lib + ':' + os.environ.get("LD_LIBRARY_PATH", '')
-    lib = ffi.dlopen(os.path.join(mv_lib, 'libMvMacro.so'))
+    lib = ffi.dlopen(os.path.join(mv_lib, 'libMvMacro'))
     lib.p_init()
 except Exception as exp:
     print('Error loading Metview. LD_LIBRARY_PATH=' + os.environ.get("LD_LIBRARY_PATH", ''))
@@ -426,12 +426,12 @@ class ContainerValue(Value):
 
     def __iter__(self):
         return self
-    
+
     def __next__(self):
         if self.idx >= self.__len__():
             self.idx = 0
             raise StopIteration
-        else:          
+        else:
             self.idx += 1
             return self.__getitem__(self.idx-1)
 
@@ -511,7 +511,7 @@ class Odb(FileBackedValue):
 
         cols = self.columns()
         pddict = {}
-        
+
         for col in cols:
             pddict[col] = self.values(col)
 
