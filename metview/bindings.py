@@ -117,13 +117,21 @@ try:
     ffi = cffi.FFI()
     ffi.cdef(pkgutil.get_data('metview', 'metview.h').decode('ascii'))
     mv_lib = mi.info('METVIEW_LIB')
-    # is there a more general way to add to a path?
+    # is there a more general way to add to a path to a list of paths?
     os.environ["LD_LIBRARY_PATH"] = mv_lib + ':' + os.environ.get("LD_LIBRARY_PATH", '')
-    lib = ffi.dlopen(os.path.join(mv_lib, 'libMvMacro'))
-    lib.p_init()
+
+    try:
+        # Linux / Unix systems
+        lib = ffi.dlopen(os.path.join(mv_lib, 'libMvMacro.so'))
+    except OSError:
+        # MacOS systems
+        lib = ffi.dlopen(os.path.join(mv_lib, 'libMvMacro'))
+
 except Exception as exp:
-    print('Error loading Metview. LD_LIBRARY_PATH=' + os.environ.get("LD_LIBRARY_PATH", ''))
+    print('Error loading Metview/libMvMacro. LD_LIBRARY_PATH=' + os.environ.get("LD_LIBRARY_PATH", ''))
     raise exp
+
+lib.p_init()
 
 
 class Value:
