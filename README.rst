@@ -3,6 +3,8 @@
 Metview Python bindings
 =======================
 
+See documentation at https://software.ecmwf.int/metview/Metview%27s+Python+Interface
+
 
 Build Metview from source bundle and branch repository "METV-1649-python-prototype"
 -----------------------------------------------------------------------------------
