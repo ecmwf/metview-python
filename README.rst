@@ -6,13 +6,24 @@ Metview Python bindings
 See documentation at https://software.ecmwf.int/metview/Metview%27s+Python+Interface
 
 
-Build Metview from source bundle and branch repository "METV-1649-python-prototype"
------------------------------------------------------------------------------------
+Requirements
+------------
 
-Procedure and needed files::
+- A working Metview 5 installation, either from binaries or built from source.
+  - See https://software.ecmwf.int/metview/Releases
+- A Python 3 interpreter
 
-    1) download and unpack the Metview source-bundle "MetviewBundle-2017.10.90-Source.tar"
-       from https://drive.google.com/open?id=0B_YlV_l0V0y7RTlWUzlERmFZMFU
+The following section describes building Metview from the source bundle. This is not necessary
+if you already have a Metview 5 installation.
+
+
+Build Metview from source bundle 
+---------------------------------
+
+Procedure and needed files to install Metview's binaries from source::
+
+    1) download and unpack the Metview source-bundle 
+       from https://software.ecmwf.int/metview/The+Metview+Source+Bundle
     2) be sure your default Python interpreter is Python 2.7 when building
     3) configure the building in a separate directory by means of the
        cmake -DENABLE_ODB=ON -DENABLE_XXHASH=OFF <metview_source_path> command
