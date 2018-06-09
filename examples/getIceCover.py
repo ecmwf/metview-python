@@ -127,4 +127,8 @@ plt.scatter( co2_ds.sel(time=slice('1980-01-01', '2014-01-01')).to_array()[1,:,0
         iceExtent_ds.sel(time=slice('1980-01-01', '2014-01-01')).to_array()[1,:,0,0,0])
 plt.grid(True)
 plt.show()
+plt.scatter( meth_ds.sel(time=slice('1980-01-01', '2014-01-01')).to_array()[1,:,0,0,0],
+        iceExtent_ds.sel(time=slice('1980-01-01', '2014-01-01')).to_array()[1,:,0,0,0])
+plt.grid(True)
+plt.show()
 # }}} ==========================================================================
