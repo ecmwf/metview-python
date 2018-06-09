@@ -9,9 +9,9 @@ See documentation at https://software.ecmwf.int/metview/Metview%27s+Python+Inter
 Requirements
 ------------
 
-- A working Metview 5 installation, either from binaries or built from source.
+- A working Metview 5 installation (at least version 5.0.3), either from binaries or built from source.
   - See https://software.ecmwf.int/metview/Releases
-- A Python 3 interpreter
+- A Python 3 interpreter (ideally version >= 3.5)
 
 The following section describes building Metview from the source bundle. This is not necessary
 if you already have a Metview 5 installation.
