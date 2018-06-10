@@ -117,6 +117,6 @@ plt.grid(True)
 plt.ylabel('sea ice extent [m2]')
 plt.xlabel('co2 concentration [ppm]')
 plt.title('Correlation of NH Sea Ice extent minimum and CO2 emissions')
-plt.show()
+plt.savefig('seaIce_CO2_correlation.png')
 # }}} ==========================================================================
 # vim:fdm=marker
