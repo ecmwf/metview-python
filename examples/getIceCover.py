@@ -101,21 +101,9 @@ if ( not os.path.exists(co2_tarball) ):
     })
 else:
     print("use existing file '%s'"%(co2_tarball))
-co2_files = getDataFromTarfile(co2_tarball)
-#co2_results = dict()
-#pool   = Pool(4)
-#for file in co2_files:
-#    ofile = pool.apply_async(computeTimeSeries,(file,'XCO2',False))
-#    co2_results[file] = ofile
-#pool.close()
-#pool.join()
-#for k,v in co2_results.items():
-#    co2_results[k] = v.get()
+co2_files      = getDataFromTarfile(co2_tarball)
 co2_timeSeries = 'co2_timeseries_%s-%s.nc'%(startYear,endYear)
-#cdo.yearmean(input = '-cat %s'%(' '.join([co2_results[x] for x in co2_files])),
-#        output = co2_timeSeries, force=False,
-#        options = '-f nc')
-computeTimeSeriesOfFilelist(Pool(4),co2_files,'XCO2',co2_timeSeries,False)
+computeTimeSeriesOfFilelist(Pool(tasks),co2_files,'XCO2',co2_timeSeries,False)
 co2_ds = cdo.readXDataset(co2_timeSeries)
 
 # }}} ==========================================================================
