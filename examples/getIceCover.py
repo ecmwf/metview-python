@@ -111,8 +111,23 @@ co2_ds = cdo.readXDataset(co2_timeSeries)
 # some debugging output
 iceExtent_ds.info()
 co2_ds.info()
-plt.scatter( co2_ds.sel(time=slice('%s-01-01'%(startYear), '%s-01-01'%(endYear))).to_array()[1,:,0,0,0],
-        iceExtent_ds.sel(time=slice('%s-01-01'%(startYear), '%s-01-01'%(endYear))).to_array()[1,:,0,0,0])
+# shaping the data for plotting it
+xSelection =       co2_ds.sel(time=slice('%s-01-01'%(startYear), '%s-01-01'%(endYear)))
+ySelection = iceExtent_ds.sel(time=slice('%s-01-01'%(startYear), '%s-01-01'%(endYear)))
+# create the final scatter plot
+fig = plt.figure(figsize=(10, 7))
+ax  = plt.subplot(1, 1, 1)
+trans_offset = mtrans.offset_copy(ax.transData, fig=fig,
+                                  x=0.05, y=-0.20, units='inches') # inches because we are in UK
+
+x = xSelection.to_array()[1,:,0,0,0]
+y = ySelection.to_array()[1,:,0,0,0]
+plt.scatter( x , y)
+# put years as labels
+years = xSelection.time.dt.year
+for _x,_y,_year in zip(x,y,years):
+    plt.text(_x, _y, '%d'%(_year), transform=trans_offset)
+
 plt.grid(True)
 plt.ylabel('sea ice extent [m2]')
 plt.xlabel('co2 concentration [ppm]')
