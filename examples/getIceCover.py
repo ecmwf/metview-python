@@ -1,9 +1,20 @@
+# ==============================================================================
+# Author: ralf mueller, stephan siemen
+#
+#
+# Plan is to create a plot similar to the scatter plot for co2 concentration and
+# september minimum of sea ice extend
+#
+# doc: https://www.mpg.de/10579957/W004_Environment_climate_062-069.pdf
+# page 5
+#
+# ==============================================================================
 import os
 from ecmwfapi import ECMWFDataServer
 from cdo import Cdo
 from multiprocessing import Pool
 from tarfile import TarFile
-import pandas
+import pandas,time
 import matplotlib.pyplot as plt
     
 server = ECMWFDataServer()
@@ -29,10 +40,26 @@ def computeTimeSeries(file,varname,useCellArea=False):
                 options = '-b F32')
     return ofile
 
+def computeTimeSeriesOfFilelist(pool,files,varname,ofile,useCellArea=False):
+    results = dict()
+    for file in files:
+        rfile = pool.apply_async(computeTimeSeries,(file,varname,False))
+        results[file] = rfile
+    pool.close()
+    pool.join()
+
+    for k,v in results.items():
+        results[k] = v.get()
+
+    cdo.yearmean(input = '-cat %s'%(' '.join([results[x] for x in files])),
+            output = ofile, force=False,
+            options = '-f nc')
+    return ofile
 
 # }}} ==========================================================================
 # data retrival {{{
 iceCover_file = "ci_interim_%s-%s-NH.grb"%(startYear, endYear)
+iceCover_file = "ci_interim_%s-%s-NH.grb"%(1980, 2014)
 if ( not os.path.exists(iceCover_file) ):
     server.retrieve({
         'stream'    : "oper",
@@ -59,7 +86,7 @@ cdo.setattribute('sea_ice_extent@unit=m2,sea_ice_extent@standard_name=sea_ice_ex
 iceExtent_ds = cdo.readXDataset(iceExtent)
 
 # cams return tarballs of netcdf files
-co2_tarball = "co2_totalColumn.tar"
+co2_tarball = "co2_totalColumn_%s-%s.tar"%(startYear, endYear)
 if ( not os.path.exists(co2_tarball) ):
     server.retrieve({ #CO2
         "dataset"   : "cams_ghg_inversions",
@@ -68,67 +95,35 @@ if ( not os.path.exists(co2_tarball) ):
         "frequency" : "3h",
         "param"     : "co2",
         "quantity"  : "total_column",
-        "quantity"  : "concentration",
+#       "quantity"  : "concentration",
         "version"   : "v16r2",
         "target"    : co2_tarball
     })
 else:
     print("use existing file '%s'"%(co2_tarball))
 co2_files = getDataFromTarfile(co2_tarball)
-co2_results = dict()
-pool   = Pool(4)
-for file in co2_files:
-    ofile = pool.apply_async(computeTimeSeries,(file,'XCO2',False))
-    co2_results[file] = ofile
-pool.close()
-pool.join()
-for k,v in co2_results.items():
-    co2_results[k] = v.get()
-co2_timeSeries = 'co2_timeseries.nc'
-cdo.yearmean(input = '-cat %s'%(' '.join([co2_results[x] for x in co2_files])),
-        output = co2_timeSeries, force=False,
-        options = '-f nc')
+#co2_results = dict()
+#pool   = Pool(4)
+#for file in co2_files:
+#    ofile = pool.apply_async(computeTimeSeries,(file,'XCO2',False))
+#    co2_results[file] = ofile
+#pool.close()
+#pool.join()
+#for k,v in co2_results.items():
+#    co2_results[k] = v.get()
+co2_timeSeries = 'co2_timeseries_%s-%s.nc'%(startYear,endYear)
+#cdo.yearmean(input = '-cat %s'%(' '.join([co2_results[x] for x in co2_files])),
+#        output = co2_timeSeries, force=False,
+#        options = '-f nc')
+computeTimeSeriesOfFilelist(Pool(4),co2_files,'XCO2',co2_timeSeries,False)
 co2_ds = cdo.readXDataset(co2_timeSeries)
 
-meth_tarball = "meth_totalColumn.tar"
-if ( not os.path.exists(meth_tarball) ):
-    server.retrieve({ #Methane
-        "dataset"   : "cams_ghg_inversions",
-        "datatype"  : "ra",
-        "date"      : "%s-01-01/to/%s-01-01"%(startYear,endYear),
-        "frequency" : "6h",
-        "param"     : "ch4",
-        "quantity"  : "total_column",
-        "version"   : "v16r1s",
-        "target"    : meth_tarball
-    })
-else:
-    print("use existing file '%s'"%(meth_tarball))
-meth_files = getDataFromTarfile(meth_tarball)
-meth_results = dict()
-pool   = Pool(4)
-for file in meth_files:
-    ofile = pool.apply_async(computeTimeSeries,(file,'CH4',False))
-    meth_results[file] = ofile
-pool.close()
-pool.join()
-for k,v in meth_results.items():
-    meth_results[k] = v.get()
-meth_timeSeries = 'meth_timeseries.nc'
-cdo.yearmean(input = '-cat %s'%(' '.join([meth_results[x] for x in meth_files])),
-        output = meth_timeSeries, force=False,
-        options = '-f nc')
-meth_ds = cdo.readXDataset(meth_timeSeries)
 # }}} ==========================================================================
 # scatter plot {{{ =============================================================
 iceExtent_ds.info()
 co2_ds.info()
-plt.scatter( co2_ds.sel(time=slice('1980-01-01', '2014-01-01')).to_array()[1,:,0,0,0],
-        iceExtent_ds.sel(time=slice('1980-01-01', '2014-01-01')).to_array()[1,:,0,0,0])
-plt.grid(True)
-plt.show()
-plt.scatter( meth_ds.sel(time=slice('1980-01-01', '2014-01-01')).to_array()[1,:,0,0,0],
-        iceExtent_ds.sel(time=slice('1980-01-01', '2014-01-01')).to_array()[1,:,0,0,0])
+plt.scatter( co2_ds.sel(time=slice('%s-01-01'%(startYear), '%s-01-01'%(endYear))).to_array()[1,:,0,0,0],
+        iceExtent_ds.sel(time=slice('%s-01-01'%(startYear), '%s-01-01'%(endYear))).to_array()[1,:,0,0,0])
 plt.grid(True)
 plt.show()
 # }}} ==========================================================================
