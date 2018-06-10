@@ -35,11 +35,11 @@ def getDataFromTarfile(tarfile):
 
 def computeTimeSeries(file,varname,useCellArea=False):
     if (useCellArea):
-        ofile = cdo.mul(input = '-fldmean -selname,%s %s -fldsum -selname,cell_area %s'%(varname,file,file),
-                options = '-b F32')
-    else:
         ofile = cdo.mul(input = '-fldmean -selname,%s %s -fldsum -gridarea %s'%(varname,file,file),
-                options = '-b F32')
+                options = '-b F32',output = '_'+os.path.basename(file),force=False)
+    else:
+        ofile = cdo.fldmean(input =  '-selname,%s %s'%(varname,file),
+                options = '-b F32',output = '_'+os.path.basename(file),force=False)
     return ofile
 
 def computeTimeSeriesOfFilelist(pool,files,varname,ofile,useCellArea=False):
