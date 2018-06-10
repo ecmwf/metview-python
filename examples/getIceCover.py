@@ -114,5 +114,8 @@ co2_ds.info()
 plt.scatter( co2_ds.sel(time=slice('%s-01-01'%(startYear), '%s-01-01'%(endYear))).to_array()[1,:,0,0,0],
         iceExtent_ds.sel(time=slice('%s-01-01'%(startYear), '%s-01-01'%(endYear))).to_array()[1,:,0,0,0])
 plt.grid(True)
+plt.ylabel('sea ice extent [m2]')
+plt.xlabel('co2 concentration [ppm]')
+plt.title('Correlation of NH Sea Ice extent minimum and CO2 emissions')
 plt.show()
 # }}} ==========================================================================
