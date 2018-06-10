@@ -14,14 +14,16 @@ from ecmwfapi import ECMWFDataServer
 from cdo import Cdo
 from multiprocessing import Pool
 from tarfile import TarFile
-import pandas,time
 import matplotlib.pyplot as plt
-    
+import matplotlib.transforms as mtrans
+# basic setup    {{{ ===========================================================
 server = ECMWFDataServer()
 cdo    = Cdo()
 cdo.debug = True
+tasks     = 4
 startYear = 1980
 endYear   = 2014
+# }}} ==========================================================================
 # helper methods {{{ ===========================================================
 def getDataFromTarfile(tarfile):
     tf = TarFile(tarfile)
