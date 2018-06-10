@@ -119,3 +119,4 @@ plt.xlabel('co2 concentration [ppm]')
 plt.title('Correlation of NH Sea Ice extent minimum and CO2 emissions')
 plt.show()
 # }}} ==========================================================================
+# vim:fdm=marker
