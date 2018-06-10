@@ -77,14 +77,15 @@ if ( not os.path.exists(iceCover_file) ):
      })
 else:
     print("use existing file '%s'"%(iceCover_file))
-# compute the nh ice extent and the other time series
+# compute the nh ice extent: minimum usually happens in September
 iceExtent = 'ice_extent_%s-%s-daymean-SeptMin.nc'%(startYear,endYear)
 cdo.setattribute('sea_ice_extent@unit=m2,sea_ice_extent@standard_name=sea_ice_extent',
          input  = '-setname,sea_ice_extent -yearmin -fldsum -mul -selmon,9 %s -gridarea %s'%(iceCover_file,iceCover_file),
          output = iceExtent,force=False,
          options = '-f nc')
 iceExtent_ds = cdo.readXDataset(iceExtent)
-
+# }}} ==========================================================================
+# {{{ CO2 retrieval + processing ===========================================================
 # cams return tarballs of netcdf files
 co2_tarball = "co2_totalColumn_%s-%s.tar"%(startYear, endYear)
 if ( not os.path.exists(co2_tarball) ):
@@ -95,7 +96,6 @@ if ( not os.path.exists(co2_tarball) ):
         "frequency" : "3h",
         "param"     : "co2",
         "quantity"  : "total_column",
-#       "quantity"  : "concentration",
         "version"   : "v16r2",
         "target"    : co2_tarball
     })
@@ -120,6 +120,7 @@ co2_ds = cdo.readXDataset(co2_timeSeries)
 
 # }}} ==========================================================================
 # scatter plot {{{ =============================================================
+# some debugging output
 iceExtent_ds.info()
 co2_ds.info()
 plt.scatter( co2_ds.sel(time=slice('%s-01-01'%(startYear), '%s-01-01'%(endYear))).to_array()[1,:,0,0,0],
