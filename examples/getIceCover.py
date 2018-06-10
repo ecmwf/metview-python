@@ -57,11 +57,9 @@ def computeTimeSeriesOfFilelist(pool,files,varname,ofile,useCellArea=False):
             output = ofile, force=False,
             options = '-f nc')
     return ofile
-
 # }}} ==========================================================================
-# data retrival {{{
+# Sea Ice Cover retrival + processing {{{
 iceCover_file = "ci_interim_%s-%s-NH.grb"%(startYear, endYear)
-iceCover_file = "ci_interim_%s-%s-NH.grb"%(1980, 2014)
 if ( not os.path.exists(iceCover_file) ):
     server.retrieve({
         'stream'    : "oper",
