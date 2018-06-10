@@ -6,7 +6,7 @@
 # september minimum of sea ice extend
 #
 # doc: https://www.mpg.de/10579957/W004_Environment_climate_062-069.pdf
-# page 5
+# page 7
 #
 # ==============================================================================
 import os
