@@ -1,12 +1,12 @@
 # ==============================================================================
-# Author: ralf mueller, stephan siemen
+# Authors: ralf mueller, stephan siemen
 #
 #
 # Plan is to create a plot similar to the scatter plot for co2 concentration and
-# september minimum of sea ice extend
+# september minimum of sea ice extent
 #
-# doc: https://www.mpg.de/10579957/W004_Environment_climate_062-069.pdf
-# page 7
+# reference:
+#   https://www.mpg.de/10579957/W004_Environment_climate_062-069.pdf, p. 7
 #
 # ==============================================================================
 import os
