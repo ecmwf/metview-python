@@ -11,26 +11,9 @@ Requirements
 
 - A working Metview 5 installation (at least version 5.0.3), either from binaries or built from source.
   - See https://software.ecmwf.int/metview/Releases
+  - An alternative is to build from the Metview Source Bundle - see https://software.ecmwf.int/metview/The+Metview+Source+Bundle
+  - Ensure that the command 'metview' will run this version by setting your PATH to include the 'bin' directory from where you built or installed it if it's not in a default location
 - A Python 3 interpreter (ideally version >= 3.5)
-
-The following section describes building Metview from the source bundle. This is not necessary
-if you already have a Metview 5 installation.
-
-
-Build Metview from source bundle 
----------------------------------
-
-Procedure and needed files to install Metview's binaries from source::
-
-    1) download and unpack the Metview source-bundle 
-       from https://software.ecmwf.int/metview/The+Metview+Source+Bundle
-    2) be sure your default Python interpreter is Python 2.7 when building
-    3) configure the building in a separate directory by means of the
-       cmake -DENABLE_ODB=ON -DENABLE_XXHASH=OFF <metview_source_path> command
-    4) build by typing "make" or "make -j8"
-    5) ensure that the command 'metview' will run this version by setting your PATH
-       to include the 'bin' directory from where you built or installed it
-    6) to start the tests type from <metview_build_path>/metview directory: ctest
 
 
 Create a virtual environment
