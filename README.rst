@@ -50,14 +50,14 @@ Build Metview from source bundle
 If you don't have a Metview 5 installation on your machine you may build Metview from the
 source bundle as follows:
 
-    1. download and unpack the Metview source-bundle
-       from https://software.ecmwf.int/metview/The+Metview+Source+Bundle
-    2. be sure your default Python interpreter is Python 2.7 when building
-    3. configure the building in a separate directory by means of the
-       `cmake -DENABLE_ODB=ON -DENABLE_XXHASH=OFF <metview_source_path>` command
-    4. build by typing `make` or `make -j8`
-    5. install by `make install`
-    6. to start the tests type from <metview_build_path>/metview directory: `ctest`
+ 1. download and unpack the Metview source-bundle
+    from https://software.ecmwf.int/metview/The+Metview+Source+Bundle
+ 2. be sure your default Python interpreter is Python 2.7 when building
+ 3. configure the building in a separate directory by means of the
+    `cmake -DENABLE_ODB=ON -DENABLE_XXHASH=OFF <metview_source_path>` command
+ 4. build by typing `make` or `make -j8`
+ 5. install by `make install`
+ 6. to start the tests type from <metview_build_path>/metview directory: `ctest`
 
 
 License
