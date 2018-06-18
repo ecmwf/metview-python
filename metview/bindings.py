@@ -68,7 +68,12 @@ class MetviewInvoker:
             print('Starting Metview using these command args:')
             print(metview_flags)
 
-        subprocess.Popen(metview_flags)
+        try:
+            subprocess.Popen(metview_flags)
+        except Exception as exp:
+            print("Could not run the Metview executable ('metview'); check that the binaries for Metview (version 5 at least) are installed and are in the PATH.")
+            raise exp
+
 
         # wait for Metview to respond...
         wait_start = time.time()
