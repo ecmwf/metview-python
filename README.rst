@@ -15,11 +15,14 @@ Requirements
 ------------
 
 - A working Metview 5 installation (at least version 5.0.3), either from binaries or built from source.
-    See https://software.ecmwf.int/metview/Releases
-    - An alternative is to build from the Metview Source Bundle.
-        See https://software.ecmwf.int/metview/The+Metview+Source+Bundle
+  See https://software.ecmwf.int/metview/Releases
+
+  - An alternative is to build from the Metview Source Bundle.
+    See https://software.ecmwf.int/metview/The+Metview+Source+Bundle
+
 - Ensure that the command 'metview' will run this version by setting your PATH to include the 'bin' directory
-    from where you built or installed it if it's not in a default location.
+  from where you built or installed it if it's not in a default location.
+
 - A Python 3 interpreter (ideally version >= 3.5)
 
 
