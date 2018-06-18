@@ -1,6 +1,4 @@
 
-.. highlights:: console
-
 Metview Python bindings
 =======================
 
