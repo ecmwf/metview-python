@@ -37,7 +37,7 @@ setuptools.setup(
     author='European Centre for Medium-Range Weather Forecasts (ECMWF)',
     author_email='software.support@ecmwf.int',
     license='Apache License Version 2.0',
-    url='https://software.ecmwf.int/stash/projects/MPY/repos/mpy',
+    url='https://github.com/ecmwf/metview-python',
     packages=setuptools.find_packages(),
     include_package_data=True,
     setup_requires=[
