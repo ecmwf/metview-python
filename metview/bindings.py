@@ -129,6 +129,22 @@ class MetviewInvoker:
     def info(self, key):
         """Returns a piece of Metview information that was not set as an env var"""
         return self.info_section[key]
+        
+    def store_signal_handlers(self):
+        """Stores the set of signal handlers that Metview will override"""
+        self.sigint   = signal.getsignal(signal.SIGINT)
+        self.sighup   = signal.getsignal(signal.SIGHUP)
+        self.sighquit = signal.getsignal(signal.SIGQUIT)
+        self.sigterm  = signal.getsignal(signal.SIGTERM)
+        self.sigalarm = signal.getsignal(signal.SIGALRM)
+
+    def restore_signal_handlers(self):
+        """Restores the set of signal handlers that Metview has overridden"""
+        signal.signal(signal.SIGINT, self.sigint)
+        signal.signal(signal.SIGHUP, self.sighup)
+        signal.signal(signal.SIGQUIT,self.sighquit)
+        signal.signal(signal.SIGTERM,self.sigterm)
+        signal.signal(signal.SIGALRM,self.sigalarm)
 
 
 mi = MetviewInvoker()
@@ -151,7 +167,14 @@ except Exception as exp:
     print('Error loading Metview/libMvMacro. LD_LIBRARY_PATH=' + os.environ.get("LD_LIBRARY_PATH", ''))
     raise exp
 
+
+# The C/C++ code behind lib.p_init() will call marsinit(), which overrides various signal handlers. We don't
+# necessarily want this when running a Python script - we should use the default Python behaviour
+# for handling signals, so we save the current signals before calling p_init() and restore them after.
+mi.store_signal_handlers()
 lib.p_init()
+mi.restore_signal_handlers()
+
 
 
 class Value:
