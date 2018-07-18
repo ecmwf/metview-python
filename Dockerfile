@@ -12,6 +12,7 @@ ARG CMAKEFLAGS="-DENABLE_UI=OFF -DENABLE_EXPOSE_SUBPACKAGES=ON -DENABLE_ODB=ON -
 ARG DEBIAN_FRONTEND="noninteractive"
 
 ENV LC_ALL="C.UTF-8" LANG="C.UTF-8"
+
 RUN apt-get -y update && apt-get install -y --no-install-recommends \
     bison \
     cmake \
