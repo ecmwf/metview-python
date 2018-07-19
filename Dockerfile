@@ -24,8 +24,7 @@ RUN apt-get -y update && apt-get install -y --no-install-recommends \
     libfreetype6-dev \
     libfftw3-dev \
     libgdbm-dev \
-    libjasper-dev \
-    libopenjpeg5 \
+    libopenjp2-7-dev \
     libpango1.0-dev \
     libproj-dev \
     libnetcdf-cxx-legacy-dev \
@@ -39,7 +38,7 @@ RUN apt-get -y update && apt-get install -y --no-install-recommends \
 COPY $SOURCE /tmp/$SOURCE
 
 RUN cd /tmp \
-    && pyenv local 2.7.14 && pip install numpy jinja2 \
+    && pyenv local 2.7.15 && pip install numpy jinja2 \
     && mkdir /tmp/source \
     && tar -xz -C /tmp/source --strip-components=1 -f /tmp/$SOURCE \
     && mkdir /tmp/build \
