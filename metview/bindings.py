@@ -242,10 +242,10 @@ class Request(dict, Value):
                 conversion_dict = {True: 'on', False: 'off'}
                 self[k] = conversion_dict[v]
 
-            # klass -> class (because 'class' is a Python keyword and cannot be used as a named parameter)
-            elif k == 'klass':
+            # class_ -> class (because 'class' is a Python keyword and cannot be used as a named parameter)
+            elif k == 'class_':
                 self['class'] = v
-                del self['klass']
+                del self['class_']
 
     def push(self):
         # if we have a pointer to a Metview Value, then use that because it's more
