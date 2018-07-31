@@ -495,15 +495,13 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         ContainerValue.__init__(self, val_pointer, 1)
 
     def to_dataset(self):
-        # soft dependency on xarray_grib
+        # soft dependency on cfgrib
         try:
-            import xarray_grib
-            import xarray as xr
+            from cfgrib import xarray_store
         except ImportError:
             print("Package xarray_grib not found. Try running 'pip install xarray_grib'.")
             raise
-        store = xarray_grib.GribDataStore(self.url())
-        dataset = xr.open_dataset(store)
+        dataset = xarray_store.open_dataset(self.url())
         return dataset
 
 
