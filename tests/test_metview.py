@@ -99,6 +99,10 @@ def test_read():
     gg = mv.read({'SOURCE': file_in_testdir('test.grib'), 'GRID': 80})
     assert mv.grib_get_string(gg, 'typeOfGrid') == 'regular_gg'
 
+def test_read_filter_1():
+    mls = mv.read(source=file_in_testdir('ml_data.grib'), param='t', levelist=[5, 49, 101])
+    assert(mv.grib_get_long(mls, 'level') == [5, 49, 101])
+
 
 def test_write():
     gg = mv.read({'SOURCE': file_in_testdir('test.grib'), 'GRID': 80})
