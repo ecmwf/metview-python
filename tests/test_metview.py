@@ -103,6 +103,13 @@ def test_read_filter_1():
     mls = mv.read(source=file_in_testdir('ml_data.grib'), param='t', levelist=[5, 49, 101])
     assert(mv.grib_get_long(mls, 'level') == [5, 49, 101])
 
+def test_read_filter_2():
+    tuv_all_levs = mv.read(file_in_testdir('tuv_pl.grib'))
+    u_all_levs = mv.read(data=tuv_all_levs, param='u')
+    assert(mv.grib_get_long(u_all_levs, 'level') == [1000,850,700,500,400,300])
+    assert(mv.grib_get_string(u_all_levs, 'shortName') == ['u','u','u','u','u','u'])
+    u_2levs = mv.read(data=u_all_levs, levelist=[700,400])
+    assert(mv.grib_get_long(u_2levs, 'level') == [700,400])
 
 def test_write():
     gg = mv.read({'SOURCE': file_in_testdir('test.grib'), 'GRID': 80})
@@ -791,6 +798,17 @@ def test_grib_to_dataset():
     assert(isinstance(x, xr.core.dataset.Dataset))
     assert(isinstance(x['t'], xr.DataArray))
 
+
+def test_read_filter_to_dataset():
+    tuv_all_levs = mv.read(file_in_testdir('tuv_pl.grib'))
+    u_all_levs = mv.read(data=tuv_all_levs, param='u')
+    assert(mv.grib_get_long(u_all_levs, 'level') == [1000,850,700,500,400,300])
+    assert(mv.grib_get_string(u_all_levs, 'shortName') == ['u','u','u','u','u','u'])
+    x = u_all_levs.to_dataset()
+    x_keys = x.keys()
+    assert('u' in x_keys)     # only 'u' should be there
+    assert('v' not in x_keys) # only 'u' should be there
+    assert('t' not in x_keys) # only 'u' should be there
 
 @pytest.mark.xfail()
 def test_table():
