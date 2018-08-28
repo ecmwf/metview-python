@@ -64,4 +64,4 @@ def test_mf_function_caller():
     assert(isinstance(info0, dict))
     assert(info0['latitude'] == 9.75)
     assert(info0['longitude'] == 20.25)
-    assert(info0['index'] == 51388)
+    assert(info0['index'] == 51387)

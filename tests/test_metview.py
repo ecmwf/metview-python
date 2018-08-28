@@ -89,6 +89,28 @@ def test_list_unique():
     assert ulist == [1, 5, 6, 9]
 
 
+def test_list_sort():
+    s = [4, 7, 2, 3, 4, 9, 0]
+    so = mv.sort(s)
+    assert(so == [0, 2, 3, 4, 4, 7, 9])
+
+
+def test_list_sort_indices():
+    s = [4, 7, 2, 3, 4, 9, 0]
+    soi = mv.sort_indices(s)
+    assert(soi == [6, 2, 3, 0, 4, 1, 5])
+
+
+def test_list_find():
+    s = [4, 7, 2, 3, 4, 9, 0]
+    f = mv.find(s, 2)
+    assert(f == 2)
+    f = mv.find(s, 4)
+    assert(f == 0)
+    f = mv.find(s, 4, 'all')
+    assert(f == [0, 4])
+
+
 def test_tuple_unique():
     intuple = (3, 2, 2, 7, 3, 1.2, 2.1, 1.2)
     ulist = mv.unique(intuple)
@@ -290,7 +312,35 @@ def test_fieldset_relational_operators():
     assert(mv.accumulate(a >= 273) == 78156)
     assert(mv.accumulate(a <  273) == 37524)
     assert(mv.accumulate(a <= 273) == 39679)
-     
+
+
+def test_nearest_gridpoint_info():
+    a = mv.read(os.path.join(PATH, 'test.grib'))
+    ni = mv.nearest_gridpoint_info(a, 57.193, -2.360)
+    ni0 = ni[0]
+    assert(np.isclose(ni0['latitude'],  57.0))
+    assert(np.isclose(ni0['longitude'], 357.75))
+    assert(np.isclose(ni0['distance'],  22.4505))
+    assert(np.isclose(ni0['value'],     282.436))
+    assert(ni0['index'] ==              21597)
+
+
+def test_surrounding_gridpoints():
+    a = mv.read(os.path.join(PATH, 'test.grib'))
+    sgi = mv.surrounding_points_indexes(a, 11.552, 50.653)
+    assert(np.array_equal(sgi, np.array([50468,50467,49988,49987])))
+
+
+def test_datainfo():
+    a = mv.read(os.path.join(PATH, 'tuv_pl.grib'))
+    di = mv.datainfo(a)
+    di3 = di[3]
+    assert(di3['index'] == 3)
+    assert(di3['number_present'] == 2664)
+    assert(di3['number_missing'] == 0)
+    assert(di3['proportion_present'] == 1)
+    assert(di3['proportion_missing'] == 0)
+
 
 def test_read_bufr():
     bufr = mv.read(file_in_testdir('obs_3day.bufr'))
@@ -710,6 +760,27 @@ def test_get_vector_from_multi_field_grib():
     v = mv.values(g)
     assert(isinstance(v, np.ndarray))
     assert(v.shape == (6, 2664))
+
+def test_vector_sort():
+    v1 = x = np.array([5, 3, 4, 9, 1, 4.2])
+    vsortasc = mv.sort(v1)
+    assert(np.array_equal(vsortasc, np.array([1, 3, 4, 4.2, 5, 9])))
+
+
+def test_vector_sort_indices():
+    v1 = x = np.array([5, 3, 4, 9, 1, 4.2])
+    vsortindasc = mv.sort_indices(v1)
+    assert(np.array_equal(vsortindasc, np.array([4, 1, 2, 5, 0, 3])))
+
+
+def test_vector_find():
+    s = np.array([4, 7, 2, 3, 4, 9, 0], dtype=np.float64)
+    f = mv.find(s, 2)
+    assert(f == 2)
+    f = mv.find(s, 4)
+    assert(f == 0)
+    f = mv.find(s, 4, 'all')
+    assert(np.array_equal(f, np.array([0, 4], dtype=np.float64)))
 
 
 def test_set_vector_from_numpy_array():
