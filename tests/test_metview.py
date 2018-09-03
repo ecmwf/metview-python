@@ -745,11 +745,13 @@ def test_simple_get_vector():
     v = mv.vector(a)
     assert(isinstance(v, np.ndarray))
     assert(len(v) == 5)
+    assert(v.dtype == np.dtype('float64'))
 
 
 def test_get_vector_from_grib():
     v = mv.values(TEST_FIELDSET[0])
     assert(isinstance(v, np.ndarray))
+    assert(v.dtype == np.dtype('float64'))
     assert(len(v) == 115680)
     assert(np.isclose(min(v), 206.93560791))
     assert(np.isclose(max(v), 316.06060791))
