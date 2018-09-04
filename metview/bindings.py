@@ -464,16 +464,23 @@ class FileBackedValueWithOperators(FileBackedValue):
 
 
 class ContainerValue(Value):
-    def __init__(self, val_pointer, macro_index_base):
+    def __init__(self, val_pointer, macro_index_base, element_type):
         Value.__init__(self, val_pointer)
         self.idx = 0
         self.macro_index_base = macro_index_base
+        self.element_type = element_type # the type of elements that the container contains
 
     def __len__(self):
         return int(count(self))
 
     def __getitem__(self, index):
         return subset(self, index + self.macro_index_base) # convert from 0-based indexing
+
+    def __setitem__(self, index, value):
+        if (isinstance(value, self.element_type)):
+            lib.p_set_subvalue(self.val_pointer, index+self.macro_index_base, value.val_pointer)
+        else:
+            raise Exception('Cannot assign ', value, ' as element of ', self)
 
     def __iter__(self):
         return self
@@ -492,7 +499,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
 
     def __init__(self, val_pointer):
         FileBackedValue.__init__(self, val_pointer)
-        ContainerValue.__init__(self, val_pointer, 1)
+        ContainerValue.__init__(self, val_pointer, 1, Fieldset)
 
     def to_dataset(self):
         # soft dependency on cfgrib
@@ -515,7 +522,7 @@ class Geopoints(FileBackedValueWithOperators, ContainerValue):
 
     def __init__(self, val_pointer):
         FileBackedValueWithOperators.__init__(self, val_pointer)
-        ContainerValue.__init__(self, val_pointer, 0)
+        ContainerValue.__init__(self, val_pointer, 0, None)
 
     def to_dataframe(self):
         try:
@@ -578,7 +585,7 @@ class GeopointSet(FileBackedValueWithOperators, ContainerValue):
 
     def __init__(self, val_pointer):
         FileBackedValueWithOperators.__init__(self, val_pointer)
-        ContainerValue.__init__(self, val_pointer, 1)
+        ContainerValue.__init__(self, val_pointer, 1, Geopoints)
 
 
 def list_from_metview(mlist):

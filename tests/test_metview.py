@@ -300,10 +300,28 @@ def test_fieldset_iterator():
     iteravg = []
     for f in grib:
         iteravg.append(mv.average(f))
-    
     assert(len(iteravg) == len(avg))
     for i in range(0,6):
         assert np.isclose(avg[i],iteravg[i])
+
+
+def test_fieldset_assignment_to_field_index():
+    grib = mv.read(os.path.join(PATH, 't_for_xs.grib'))
+    # check numbers before assignment
+    assert(np.isclose(mv.integrate(grib[0]), 290.802))
+    assert(np.isclose(mv.integrate(grib[3]), 260.601))
+    assert(np.isclose(mv.integrate(grib[4]), 249.617))
+    # change one field and check some fields
+    grib[0] = grib[0] *10
+    assert(np.isclose(mv.integrate(grib[0]), 2908.02))
+    assert(np.isclose(mv.integrate(grib[3]), 260.601))
+    assert(np.isclose(mv.integrate(grib[4]), 249.617))
+    # another assignment
+    grib[4] = grib[3] *10
+    assert(np.isclose(mv.integrate(grib[0]), 2908.02))
+    assert(np.isclose(mv.integrate(grib[3]), 260.601))
+    assert(np.isclose(mv.integrate(grib[4]), 2606.01))
+
 
 def test_fieldset_relational_operators():
     a = mv.read(os.path.join(PATH, 'test.grib'))
