@@ -359,8 +359,11 @@ def push_vector(npa):
     if npa.dtype == np.float64:
         cffi_buffer = ffi.cast('double*', npa.ctypes.data)
         lib.p_push_vector_from_double_array(cffi_buffer, len(npa), np.nan)
+    elif npa.dtype == np.float32:
+        cffi_buffer = ffi.cast('float*', npa.ctypes.data)
+        lib.p_push_vector_from_float32_array(cffi_buffer, len(npa), np.nan)
     else:
-        raise Exception('Only float64 numPy arrays can be passed to Metview, not ', npa.dtype)
+        raise Exception('Only float32 and float64 numPy arrays can be passed to Metview, not ', npa.dtype)
 
 
 def push_arg(n, name):
@@ -617,12 +620,13 @@ def vector_from_metview(vec):
 
     n = lib.p_vector_count(vec)
     s = lib.p_vector_elem_size(vec)
-    b = lib.p_vector_double_array(vec)
 
     if s == 4:
         nptype = np.float32
+        b = lib.p_vector_float32_array(vec)
     elif s == 8:
         nptype = np.float64
+        b = lib.p_vector_double_array(vec)
     else:
         raise Exception('Metview vector data type cannot be handled: ', s)
 

@@ -16,6 +16,14 @@ SEMI_EQUATOR = 20001600.0
 MAX_SQRT_GPT = 16.867127793433
 MAX_GPT = 284.5
 
+def metview_version():
+    version = mv.version_info()
+    return version['metview_version']
+
+
+def supports_float32_vectors():
+    return metview_version() >= 50200
+
 
 def test_names():
     assert mv.dictionary.__name__ == mv.dictionary.__qualname__ == 'dictionary'
@@ -763,7 +771,20 @@ def test_simple_get_vector():
     v = mv.vector(a)
     assert(isinstance(v, np.ndarray))
     assert(len(v) == 5)
+    assert(v[1] == 6)
     assert(v.dtype == np.dtype('float64'))
+
+
+def test_simple_get_vector_float32():
+    if supports_float32_vectors():
+        mv.vector_set_default_type('float32')
+        a = [5, 6, 7, 8, 9]
+        v = mv.vector(a)
+        assert(isinstance(v, np.ndarray))
+        assert(len(v) == 5)
+        assert(v[1] == 6)
+        assert(v.dtype == np.dtype('float32'))
+        mv.vector_set_default_type('float64')  # reset to default type for the other tests
 
 
 def test_get_vector_from_grib():
@@ -773,6 +794,18 @@ def test_get_vector_from_grib():
     assert(len(v) == 115680)
     assert(np.isclose(min(v), 206.93560791))
     assert(np.isclose(max(v), 316.06060791))
+
+
+def test_get_vector_float32_from_grib():
+    if supports_float32_vectors():
+        mv.vector_set_default_type('float32')
+        v = mv.values(TEST_FIELDSET[0])
+        assert(isinstance(v, np.ndarray))
+        assert(v.dtype == np.dtype('float32'))
+        assert(len(v) == 115680)
+        assert(np.isclose(min(v), 206.93560791))
+        assert(np.isclose(max(v), 316.06060791))
+        mv.vector_set_default_type('float64')  # reset to default type for the other tests
 
 
 def test_get_vector_from_multi_field_grib():
@@ -806,8 +839,18 @@ def test_vector_find():
 def test_set_vector_from_numpy_array():
     r = np.arange(1, 21, dtype=np.float64)
     assert(mv.type(r) == 'vector')
+    assert(mv.dtype(r) == 'float64')
     assert(mv.count(r) == 20)
     assert(mv.maxvalue(r) == 20)
+
+
+def test_set_vector_float32_from_numpy_array():
+    if supports_float32_vectors():
+        r = np.arange(1, 21, dtype=np.float32)
+        assert(mv.type(r) == 'vector')
+        assert(mv.dtype(r) == 'float32')
+        assert(mv.count(r) == 20)
+        assert(mv.maxvalue(r) == 20)
 
 
 def test_simple_vector_with_nans():
