@@ -971,3 +971,35 @@ def test_table():
     v = db.values(2)
     assert(isinstance(v, np.ndarray))
     assert(len(v) == 6)
+
+
+def test_flextra():
+    print(file_in_testdir('flextra_output.txt'))
+    flx = mv.read(file_in_testdir('flextra_output.txt'))
+    print(flx)
+    assert(flx.type() == 'definition')
+    trNum = int(mv.flextra_group_get(flx, "trNum"))
+    assert(trNum == 5)
+
+    startLst = ['03:00:00', '06:00:00', '09:00:00', '12:00:00', '15:00:00']
+    stopIndexLst = [1, 1, 1, 1, 1]
+    for i in range(trNum):
+        vals = mv.flextra_tr_get(flx, i, ["startTime", "stopIndex"])
+        assert(len(vals) == 2)
+        assert(vals[0] == startLst[i])
+        assert(int(vals[1]) == stopIndexLst[i])
+
+    #Read data for the first trajectory
+    vals = mv.flextra_tr_get(flx, 0, ["lat", "lon", "date"])
+    assert(len(vals) == 3)
+    assert(vals[0].size == 25)
+    assert(vals[1].size == 25)
+    assert(len(vals[2]) == 25)
+    assert(isinstance(vals[0], np.ndarray))
+    assert(isinstance(vals[1], np.ndarray))
+    assert(isinstance(vals[2], list))
+    assert(np.isclose(vals[0].mean(), 63.369828))
+    assert(np.isclose(vals[0].std(), 2.2269590))
+    assert(np.isclose(vals[1].mean(), 18.014544))
+    assert(np.isclose(vals[1].std(), 14.98830786689625))
+    assert(vals[2][0] == datetime.datetime(2012,1,11,3,0,0))
