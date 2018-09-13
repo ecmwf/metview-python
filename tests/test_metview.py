@@ -974,9 +974,7 @@ def test_table():
 
 
 def test_flextra():
-    print(file_in_testdir('flextra_output.txt'))
     flx = mv.read(file_in_testdir('flextra_output.txt'))
-    print(flx)
     assert(flx.type() == 'definition')
     trNum = int(mv.flextra_group_get(flx, "trNum"))
     assert(trNum == 5)
