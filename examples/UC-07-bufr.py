@@ -1,5 +1,5 @@
 """
-Metview Python framework
+Metview Python use case
 
 UC-07. The Analyst compute simple differences between observations and analysis
 and plot the values
@@ -33,9 +33,16 @@ framework to extract a particular parameter to a tabular format (geopoints)
 
 import metview as mv
 
-t2m_grib = mv.read('./examples/t2m_grib.grib')
+# define a view over the area of interest
 
-obs_3day = mv.read('./examples/obs_3day.bufr')
+area_view = mv.geoview(
+    map_area_definition = 'corners',
+    area = [45.83,-13.87,62.03,8.92]
+)
+
+t2m_grib = mv.read('./t2m_grib.grib')
+
+obs_3day = mv.read('./obs_3day.bufr')
 
 t2m_gpt = mv.obsfilter(
     parameter = '012004',
@@ -51,7 +58,8 @@ diff_symb = mv.msymb(
     symbol_table_mode = 'advanced',
 )
 
-mv.plot(diff, diff_symb)
+mv.setoutput(mv.png_output(output_width = 1000, output_name = './obsdiff1'))
+mv.plot(area_view, diff, diff_symb)
 
 
 # Extract geopoints that are hotter by 1 deg or more
@@ -83,4 +91,5 @@ grey  = mv.msymb(
 )
 
 # plot the 'exact' data set with visdef 'grey', 'hotter' with 'red', etc.
-mv.plot(exact, grey, hotter, red, colder, blue)
+mv.setoutput(mv.png_output(output_width = 1000, output_name = './obsdiff2'))
+mv.plot(area_view, exact, grey, hotter, red, colder, blue)
