@@ -692,9 +692,9 @@ def test_cross_section_data():
     assert mv.type(xs_data) == 'netcdf'
     mv.setcurrent(xs_data, 't')
     assert mv.dimension_names(xs_data) == ['time', 'nlev', 'lon']
-    assert np.isclose(mv.value(xs_data, 1), 230.39156)
+    assert np.isclose(mv.value(xs_data, 0), 230.39156)
     xs_data_x2 = xs_data * 2
-    assert np.isclose(mv.value(xs_data_x2, 1), 460.7831)
+    assert np.isclose(mv.value(xs_data_x2, 0), 460.7831)
 
 
 def test_netcdf_var_indexing():
@@ -713,6 +713,29 @@ def test_netcdf_single_value():
     assert(mv.attributes(nc)['long_name'] == "Temperature")
     assert(np.isclose(mv.value(nc, 0), 234.7144))
     assert(np.isclose(mv.value(nc, 4), 237.4377))
+
+
+def test_netcdf_multi_indexed_values():
+    nc = mv.read(file_in_testdir('xs_date_mv5.nc'))
+    mv.setcurrent(nc, 't')
+    assert(mv.attributes(nc)['long_name'] == "Temperature")
+    assert(np.isclose(mv.values(nc, [0, 0, 0]), 234.7144))
+    assert(np.isclose(mv.values(nc, [0, 0, 4]), 237.4377))
+    assert(np.isclose(mv.values(nc, [0, 1, 0]), 248.7220))
+    assert(np.isclose(mv.values(nc, [0, 1, 1]), 249.3030))
+
+def test_netcdf_multi_indexed_values_with_all():
+    nc = mv.read(file_in_testdir('xs_date_mv5.nc'))
+    mv.setcurrent(nc, 't')
+    assert(mv.attributes(nc)['long_name'] == "Temperature")
+    v = mv.values(nc, [0, 0, 'all'])
+    assert(len(v) == 64)
+    assert(np.isclose(v[0],  234.714))
+    assert(np.isclose(v[63], 258.979))
+    v = mv.values(nc, [0, 'all', 0])
+    assert(len(v) == 5)
+    assert(np.isclose(v[0], 234.714))
+    assert(np.isclose(v[4], 260.484))
 
 
 def test_met_plot():
