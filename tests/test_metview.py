@@ -697,6 +697,24 @@ def test_cross_section_data():
     assert np.isclose(mv.value(xs_data_x2, 1), 460.7831)
 
 
+def test_netcdf_var_indexing():
+    nc = mv.read(file_in_testdir('xs_date_mv5.nc'))
+    mv.setcurrent(nc, 0)
+    assert(mv.attributes(nc)['long_name'] == "time")
+    mv.setcurrent(nc, 1)
+    assert(mv.attributes(nc)['long_name'] == "latitude")
+    mv.setcurrent(nc, 4)
+    assert(mv.attributes(nc)['long_name'] == "Temperature")
+
+
+def test_netcdf_single_value():
+    nc = mv.read(file_in_testdir('xs_date_mv5.nc'))
+    mv.setcurrent(nc, 't')
+    assert(mv.attributes(nc)['long_name'] == "Temperature")
+    assert(np.isclose(mv.value(nc, 0), 234.7144))
+    assert(np.isclose(mv.value(nc, 4), 237.4377))
+
+
 def test_met_plot():
     contour = mv.mcont({
             'CONTOUR_LINE_COLOUR': 'PURPLE',
