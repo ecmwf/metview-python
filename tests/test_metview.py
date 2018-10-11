@@ -738,6 +738,12 @@ def test_netcdf_multi_indexed_values_with_all():
     assert(np.isclose(v[4], 260.484))
 
 
+def test_strings():
+    sentence = "Hello this is a sentence with many many words"
+    sthis = mv.search(sentence, "this")
+    assert(sthis == 6)
+
+
 def test_met_plot():
     contour = mv.mcont({
             'CONTOUR_LINE_COLOUR': 'PURPLE',
