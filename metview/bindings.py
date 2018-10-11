@@ -20,6 +20,7 @@ import os
 import pkgutil
 import signal
 import tempfile
+import builtins
 
 import cffi
 import numpy as np
@@ -373,6 +374,8 @@ def push_arg(n, name):
     if isinstance(n, float):
         lib.p_push_number(n)
     elif isinstance(n, int):
+        lib.p_push_number(float(n))
+    elif isinstance(n, np.number):
         lib.p_push_number(float(n))
     elif isinstance(n, str):
         push_str(n)

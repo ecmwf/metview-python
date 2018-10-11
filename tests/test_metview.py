@@ -573,6 +573,16 @@ def test_date_second():
     assert mv.second(d1) == 0
 
 
+def test_numpy_numeric_args():
+    # we don't test them all here, but hopefully a representative sample
+    assert(mv.call('+', np.int32(5), 1) == 6)
+    assert(mv.call('+', np.int64(5), 1) == 6)
+    assert(mv.call('+', np.byte(8), 1) == 9)
+    assert(mv.call('+', np.uint16(8), 1) == 9)
+    assert(np.isclose(mv.call('+', np.float32(5.5), 1), 6.5))
+    assert(np.isclose(mv.call('+', np.float64(5.5), 1), 6.5))
+
+
 def test_odb():
     if mv.is_feature_available('odb') == 0:
         print('Skipping test_odb because ODB is not enabled in this Metview version')
