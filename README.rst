@@ -24,6 +24,15 @@ Requirements
 - A Python 3 interpreter (ideally version >= 3.5)
 
 
+You may run a simple selfcheck command to ensure that your system is set up correctly::
+
+    $ python -m metview selfcheck
+    Hello world - printed from Metview!
+    Trying to connect to a Metview installation...
+    Metview version 5.2.0 found
+    Your system is ready.
+
+
 Install
 -------
 
