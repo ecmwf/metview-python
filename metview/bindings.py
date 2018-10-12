@@ -586,6 +586,16 @@ class Table(FileBackedValue):
     def __init__(self, val_pointer):
         FileBackedValue.__init__(self, val_pointer)
 
+    def to_dataframe(self):
+        try:
+            import pandas as pd
+        except ImportError:
+            print("Package pandas not found. Try running 'pip install pandas'.")
+            raise
+
+        df = pd.read_csv(self.url())
+        return df
+
 
 class GeopointSet(FileBackedValueWithOperators, ContainerValue):
 
