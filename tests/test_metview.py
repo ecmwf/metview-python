@@ -744,6 +744,7 @@ def test_strings():
     assert(sthis == 6)
 
 
+@pytest.mark.skip()
 def test_met_plot():
     contour = mv.mcont({
             'CONTOUR_LINE_COLOUR': 'PURPLE',
