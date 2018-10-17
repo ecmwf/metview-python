@@ -21,6 +21,7 @@ import pkgutil
 import signal
 import tempfile
 import builtins
+from enum import Enum
 
 import cffi
 import numpy as np
@@ -175,7 +176,6 @@ except Exception as exp:
 mi.store_signal_handlers()
 lib.p_init()
 mi.restore_signal_handlers()
-
 
 
 class Value:
@@ -682,55 +682,63 @@ def _call_function(mfname, *args, **kwargs):
     lib.p_call_function(mfname.encode('utf-8'), nargs)
 
 
+
+class MvRetVal(Enum):
+    tnumber  = 0
+    tstring  = 1
+    tgrib    = 2
+    trequest = 3
+    tbufr    = 4
+    tgeopts  = 5
+    tlist    = 6
+    tnetcdf  = 7
+    tnil     = 8
+    terror   = 9
+    tdate    = 10
+    tvector  = 11
+    todb     = 12
+    ttable   = 13
+    tgptset  = 14
+    tunknown = 99
+
+
+class ValueReturner():
+    """Class to handle return values from the Macro library"""
+    def __init__(self):
+        self.funcs = {}
+        self.funcs[MvRetVal.tnumber.value]  = lambda val : lib.p_value_as_number(val)
+        self.funcs[MvRetVal.tstring.value]  = lambda val : string_from_ffi(lib.p_value_as_string(val))
+        self.funcs[MvRetVal.tgrib.value]    = lambda val : Fieldset(val)
+        self.funcs[MvRetVal.trequest.value] = lambda val : Request(val)
+        self.funcs[MvRetVal.tbufr.value]    = lambda val : Bufr(val)
+        self.funcs[MvRetVal.tgeopts.value]  = lambda val : Geopoints (val)
+        self.funcs[MvRetVal.tlist.value]    = lambda val : list_from_metview(lib.p_value_as_list(val))
+        self.funcs[MvRetVal.tnetcdf.value]  = lambda val : NetCDF(val)
+        self.funcs[MvRetVal.tnil.value]     = lambda val : None
+        self.funcs[MvRetVal.terror.value]   = lambda val : Exception('Metview error: ' + string_from_ffi(lib.p_error_message(val)))
+        self.funcs[MvRetVal.tdate.value]    = lambda val : datestring_from_metview(string_from_ffi(lib.p_value_as_datestring(val)))
+        self.funcs[MvRetVal.tvector.value]  = lambda val : vector_from_metview(lib.p_value_as_vector(val, np.nan))
+        self.funcs[MvRetVal.todb.value]     = lambda val : Odb(val)
+        self.funcs[MvRetVal.ttable.value]   = lambda val : Table(val)
+        self.funcs[MvRetVal.tgptset.value]  = lambda val : GeopointSet(val)
+
+    def translate_return_val(self, val):
+        rt = lib.p_value_type(val)
+        try:
+            return self.funcs[rt](val)
+        except Exception as exp:
+            raise Exception('value_from_metview got an unhandled return type: ' + str(rt))
+
+
+vr = ValueReturner()
+
+
 def value_from_metview(val):
-    rt = lib.p_value_type(val)
+    retval = vr.translate_return_val(val)
+    if isinstance(retval, Exception):
+        raise retval
+    return retval
 
-    # Number
-    if rt == 0:
-        return lib.p_value_as_number(val)
-    # String
-    elif rt == 1:
-        return string_from_ffi(lib.p_value_as_string(val))
-    # Fieldset
-    elif rt == 2:
-        return Fieldset(val)
-    # Request dictionary
-    elif rt == 3:
-        return Request(val)
-    # BUFR
-    elif rt == 4:
-        return Bufr(val)
-    # Geopoints
-    elif rt == 5:
-        return Geopoints(val)
-    # list
-    elif rt == 6:
-        return list_from_metview(lib.p_value_as_list(val))
-    # netCDF
-    elif rt == 7:
-        return NetCDF(val)
-    elif rt == 8:
-        return None
-    elif rt == 9:
-        err_msg = string_from_ffi(lib.p_error_message(val))
-        raise Exception('Metview error: ' + err_msg)
-    # date
-    elif rt == 10:
-        return datestring_from_metview(string_from_ffi(lib.p_value_as_datestring(val)))
-    elif rt == 11:
-        return vector_from_metview(lib.p_value_as_vector(val, np.nan))
-    # Odb
-    elif rt == 12:
-        return Odb(val)
-    # Table
-    elif rt == 13:
-        return Table(val)
-    # Geopointset
-    elif rt == 14:
-        return GeopointSet(val)
-
-    else:
-        raise Exception('value_from_metview got an unhandled return type: ' + str(rt))
 
 
 def make(mfname):
