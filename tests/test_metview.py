@@ -986,36 +986,47 @@ def test_oo_interface_on_geopoints():
     assert(gpt.count() == 45)
     assert(np.isclose(gpt.mean(), 281.247))
 
+
 def test_std_gpts_to_dataframe():
     gpt = mv.read(file_in_testdir('t2m_3day.gpt'))
     df = gpt.to_dataframe()
+    print(df)
     assert(isinstance(df, pd.DataFrame))
     assert(df.shape == (45,5))
     dt1_iloc = df.iloc[0][0]
-    assert(isinstance(dt1_iloc, datetime.datetime))
-    dt1_loc = df.iloc[0]['date']
-    assert(isinstance(dt1_loc, datetime.datetime))
-    assert(dt1_loc == datetime.datetime(2017,4,25,12,0,0))
+    assert(isinstance(dt1_iloc, float))
+    assert(np.isclose(dt1_iloc, 49.43))
+    dt2_iloc = df.iloc[0][4]
+    assert(isinstance(dt2_iloc, datetime.datetime))
+    dt3_loc = df.iloc[0]['date']
+    assert(isinstance(dt3_loc, datetime.datetime))
+    assert(dt3_loc == datetime.datetime(2017,4,25,12,0,0))
     assert(df.loc[5]['latitude'] == 51.15)
     assert(df.loc[25]['longitude'] == 2.65)
     assert(df.loc[8]['level'] == 0)
     assert(np.isclose(df.loc[4]['value'], 281.2))
+
 
 def test_xy_vector_gpts_to_dataframe():
     gpt = mv.read(file_in_testdir('uv.gpt'))
     df = gpt.to_dataframe()
     assert(isinstance(df, pd.DataFrame))
     assert(df.shape == (39,6))
+    print(df)
     dt1_iloc = df.iloc[0][0]
-    assert(isinstance(dt1_iloc, datetime.datetime))
-    dt1_loc = df.iloc[0]['date']
-    assert(isinstance(dt1_loc, datetime.datetime))
-    assert(dt1_loc == datetime.datetime(2018,5,14,12,0,0))
+    assert(isinstance(dt1_iloc, float))
+    assert(np.isclose(dt1_iloc, 70.0))
+    dt2_iloc = df.iloc[0][4]
+    assert(isinstance(dt2_iloc, datetime.datetime))
+    dt3_loc = df.iloc[0]['date']
+    assert(isinstance(dt3_loc, datetime.datetime))
+    assert(dt3_loc == datetime.datetime(2018,5,14,12,0,0))
     assert(df.loc[5]['latitude'] == 70)
     assert(df.loc[25]['longitude'] == 30)
     assert(df.loc[8]['level'] == 500)
     assert(np.isclose(df.loc[4]['value'], -10.865656))
     assert(np.isclose(df.loc[4]['value2'], 17.589124))
+
 
 def test_xyv_gpts_to_dataframe():
     gpt = mv.read(file_in_testdir('xyv.gpt'))
