@@ -755,7 +755,49 @@ def test_met_plot():
     bindings.met_plot(TEST_FIELDSET, contour, coast)
 
 
-def test_plot():
+
+def test_plot_1():
+    output_name = file_in_testdir('test_plot_1')
+    mv.setoutput(mv.png_output(output_name=output_name))
+    grid_shade = {
+        'legend': True,
+        'contour': False,
+        'contour_highlight': True,
+        'contour_shade': True,
+        'contour_shade_technique': 'grid_shading',
+        'contour_shade_max_level_colour': 'red',
+        'contour_shade_min_level_colour': 'blue',
+        'contour_shade_colour_direction': 'clockwise',
+    }
+    degraded_field = mv.read(data=TEST_FIELDSET, grid=[4,4])
+    mv.plot(degraded_field, mv.mcont(grid_shade))
+    output_name_from_magics = output_name + '.1.png'
+    assert(os.path.isfile(output_name_from_magics))
+    os.remove(output_name_from_magics)
+
+
+def test_plot_2():
+    output_name = file_in_testdir('test_plot_2')
+    png = mv.png_output(output_name=output_name)
+    grid_shade = {
+        'legend': True,
+        'contour': False,
+        'contour_highlight': True,
+        'contour_shade': True,
+        'contour_shade_technique': 'grid_shading',
+        'contour_shade_max_level_colour': 'olive',
+        'contour_shade_min_level_colour': 'blue',
+        'contour_shade_colour_direction': 'clockwise',
+    }
+    degraded_field = mv.read(data=TEST_FIELDSET, grid=[4,4])
+    mv.plot(png, degraded_field, mv.mcont(grid_shade))
+    output_name_from_magics = output_name + '.1.png'
+    assert(os.path.isfile(output_name_from_magics))
+    os.remove(output_name_from_magics)
+
+
+@pytest.mark.skip()
+def test_plot_3():
     png_output = {
         'output_type': 'PnG',
         'output_width': 1200,
