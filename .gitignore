@@ -57,4 +57,3 @@ docs/_build/
 
 .pytest_cache
 
-tests/*.nc
