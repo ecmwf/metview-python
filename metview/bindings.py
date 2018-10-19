@@ -31,6 +31,11 @@ def string_from_ffi(s):
     return ffi.string(s).decode('utf-8')
 
 
+# -----------------------------------------------------------------------------
+#                                 Startup
+# -----------------------------------------------------------------------------
+
+
 class MetviewInvoker:
     """Starts a new Metview session on construction and terminates it on program exit"""
 
@@ -178,6 +183,12 @@ lib.p_init()
 mi.restore_signal_handlers()
 
 
+
+# -----------------------------------------------------------------------------
+#                        Classes to handle complex Macro types
+# -----------------------------------------------------------------------------
+
+
 class Value:
 
     def __init__(self, val_pointer):
@@ -321,7 +332,6 @@ def push_vector(npa):
         raise Exception('Only float32 and float64 numPy arrays can be passed to Metview, not ', npa.dtype)
 
 
-
 class FileBackedValue(Value):
 
     def __init__(self, val_pointer):
@@ -365,7 +375,6 @@ class FileBackedValueWithOperators(FileBackedValue):
         return lower_than(self, other)
 
 
-
 class ContainerValue(Value):
     def __init__(self, val_pointer, macro_index_base, element_type):
         Value.__init__(self, val_pointer)
@@ -395,7 +404,6 @@ class ContainerValue(Value):
         else:
             self.idx += 1
             return self.__getitem__(self.idx-1)
-
 
 
 class Fieldset(FileBackedValueWithOperators, ContainerValue):
@@ -501,52 +509,9 @@ class GeopointSet(FileBackedValueWithOperators, ContainerValue):
         ContainerValue.__init__(self, val_pointer, 1, Geopoints)
 
 
-def list_from_metview(mlist):
-
-    result = []
-    n = lib.p_list_count(mlist)
-    all_vectors = True
-    for i in range(0, n):
-        mval = lib.p_list_element_as_value(mlist, i)
-        v = value_from_metview(mval)
-        if all_vectors and not isinstance(v, np.ndarray):
-            all_vectors = False
-        result.append(v)
-
-    # if this is a list of vectors, then create a 2-D numPy array
-    if all_vectors and n > 0:
-        result = np.stack(result, axis=0)
-
-    return result
-
-
-def datestring_from_metview(mdate):
-
-    dt = datetime.datetime.strptime(mdate, "%Y-%m-%dT%H:%M:%S")
-    return dt
-
-
-def vector_from_metview(vec):
-
-    n = lib.p_vector_count(vec)
-    s = lib.p_vector_elem_size(vec)
-
-    if s == 4:
-        nptype = np.float32
-        b = lib.p_vector_float32_array(vec)
-    elif s == 8:
-        nptype = np.float64
-        b = lib.p_vector_double_array(vec)
-    else:
-        raise Exception('Metview vector data type cannot be handled: ', s)
-
-    bsize = n*s
-    c_buffer = ffi.buffer(b, bsize)
-    np_array = np.frombuffer(c_buffer, dtype=nptype)
-    return np_array
-
-
-
+# -----------------------------------------------------------------------------
+#                        Pushing data types to Macro
+# -----------------------------------------------------------------------------
 
 
 class ValuePusher():
@@ -597,23 +562,54 @@ def dict_to_pushed_args(d):
     return 2 * len(d)  # return the number of arguments generated
 
 
+# -----------------------------------------------------------------------------
+#                        Returning data types from Macro
+# -----------------------------------------------------------------------------
 
 
-def _call_function(mfname, *args, **kwargs):
+def list_from_metview(mlist):
 
-    nargs = 0
+    result = []
+    n = lib.p_list_count(mlist)
+    all_vectors = True
+    for i in range(0, n):
+        mval = lib.p_list_element_as_value(mlist, i)
+        v = value_from_metview(mval)
+        if all_vectors and not isinstance(v, np.ndarray):
+            all_vectors = False
+        result.append(v)
 
-    for n in args:
-        actual_n_args = push_arg(n)
-        nargs += actual_n_args
+    # if this is a list of vectors, then create a 2-D numPy array
+    if all_vectors and n > 0:
+        result = np.stack(result, axis=0)
 
-    merged_dict = {}
-    merged_dict.update(kwargs)
-    if len(merged_dict) > 0:
-        dn = dict_to_pushed_args(Request(merged_dict))
-        nargs += dn
+    return result
 
-    lib.p_call_function(mfname.encode('utf-8'), nargs)
+
+def datestring_from_metview(mdate):
+
+    dt = datetime.datetime.strptime(mdate, "%Y-%m-%dT%H:%M:%S")
+    return dt
+
+
+def vector_from_metview(vec):
+
+    n = lib.p_vector_count(vec)
+    s = lib.p_vector_elem_size(vec)
+
+    if s == 4:
+        nptype = np.float32
+        b = lib.p_vector_float32_array(vec)
+    elif s == 8:
+        nptype = np.float64
+        b = lib.p_vector_double_array(vec)
+    else:
+        raise Exception('Metview vector data type cannot be handled: ', s)
+
+    bsize = n*s
+    c_buffer = ffi.buffer(b, bsize)
+    np_array = np.frombuffer(c_buffer, dtype=nptype)
+    return np_array
 
 
 class MvRetVal(Enum):
@@ -672,6 +668,28 @@ def value_from_metview(val):
         raise retval
     return retval
 
+
+
+# -----------------------------------------------------------------------------
+#                        Creating and calling Macro functions
+# -----------------------------------------------------------------------------
+
+
+def _call_function(mfname, *args, **kwargs):
+
+    nargs = 0
+
+    for n in args:
+        actual_n_args = push_arg(n)
+        nargs += actual_n_args
+
+    merged_dict = {}
+    merged_dict.update(kwargs)
+    if len(merged_dict) > 0:
+        dn = dict_to_pushed_args(Request(merged_dict))
+        nargs += dn
+
+    lib.p_call_function(mfname.encode('utf-8'), nargs)
 
 
 def make(mfname):
@@ -769,6 +787,10 @@ class MF():
 
 mf = MF()
 
+
+# -----------------------------------------------------------------------------
+#                        Particular code for calling the plot() command
+# -----------------------------------------------------------------------------
 
 class Plot():
 
