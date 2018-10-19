@@ -993,10 +993,12 @@ def test_std_gpts_to_dataframe():
     print(df)
     assert(isinstance(df, pd.DataFrame))
     assert(df.shape == (45,5))
-    dt1_iloc = df.iloc[0][0]
+    #dt1_iloc = df.iloc[0][0]
+    dt1_iloc = df.iloc[0]['latitude']
     assert(isinstance(dt1_iloc, float))
     assert(np.isclose(dt1_iloc, 49.43))
-    dt2_iloc = df.iloc[0][4]
+    #dt2_iloc = df.iloc[0][4]
+    dt2_iloc = df.iloc[0]['date']
     assert(isinstance(dt2_iloc, datetime.datetime))
     dt3_loc = df.iloc[0]['date']
     assert(isinstance(dt3_loc, datetime.datetime))
@@ -1012,12 +1014,12 @@ def test_xy_vector_gpts_to_dataframe():
     df = gpt.to_dataframe()
     assert(isinstance(df, pd.DataFrame))
     assert(df.shape == (39,6))
-    print(df)
-    dt1_iloc = df.iloc[0][0]
+    #dt1_iloc = df.iloc[0][0]
+    dt1_iloc = df.iloc[0]['latitude']
     assert(isinstance(dt1_iloc, float))
     assert(np.isclose(dt1_iloc, 70.0))
-    dt2_iloc = df.iloc[0][4]
-    assert(isinstance(dt2_iloc, datetime.datetime))
+    #dt2_iloc = df.iloc[0][4]
+    #assert(isinstance(dt2_iloc, datetime.datetime))
     dt3_loc = df.iloc[0]['date']
     assert(isinstance(dt3_loc, datetime.datetime))
     assert(dt3_loc == datetime.datetime(2018,5,14,12,0,0))
