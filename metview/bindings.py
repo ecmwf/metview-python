@@ -262,7 +262,7 @@ class Request(dict, Value):
             # use Macro to handle the addition of complex data types to
             # a request
             for k, v in self.items():
-                push_arg(v, 'NONAME')
+                push_arg(v)
                 lib.p_set_request_value_from_pop(r, k.encode('utf-8'))
 
             lib.p_push_request(r)
@@ -290,7 +290,7 @@ def push_list(lst):
     # and add it to the list
     mlist = lib.p_new_list(len(lst))
     for i, val in enumerate(lst):
-        push_arg(val, 'NONE')
+        push_arg(val)
         lib.p_add_value_from_pop_to_list(mlist, i)
     lib.p_push_list(mlist)
 
@@ -320,63 +320,6 @@ def push_vector(npa):
     else:
         raise Exception('Only float32 and float64 numPy arrays can be passed to Metview, not ', npa.dtype)
 
-
-def push_arg(n, name):
-
-    nargs = 1
-
-    if isinstance(n, float):
-        lib.p_push_number(n)
-    elif isinstance(n, int):
-        lib.p_push_number(float(n))
-    elif isinstance(n, np.number):
-        lib.p_push_number(float(n))
-    elif isinstance(n, str):
-        push_str(n)
-    elif isinstance(n, Request):
-        n.push()
-    elif isinstance(n, dict):
-        Request(n).push()
-    elif isinstance(n, Fieldset):
-        lib.p_push_value(n.push())
-    elif isinstance(n, Bufr):
-        lib.p_push_value(n.push())
-    elif isinstance(n, Geopoints):
-        lib.p_push_value(n.push())
-    elif isinstance(n, NetCDF):
-        lib.p_push_value(n.push())
-    elif isinstance(n, np.datetime64):
-        push_date(n)
-    elif isinstance(n, datetime.datetime):
-        push_datetime(n)
-    elif isinstance(n, datetime.date):
-        push_datetime_date(n)
-    elif isinstance(n, (list, tuple)):
-        push_list(n)
-    elif isinstance(n, np.ndarray):
-        push_vector(n)
-    elif isinstance(n, Odb):
-        lib.p_push_value(n.push())
-    elif isinstance(n, Table):
-        lib.p_push_value(n.push())
-    elif isinstance(n, GeopointSet):
-        lib.p_push_value(n.push())
-    elif n is None:
-        lib.p_push_nil()
-    else:
-        raise TypeError('Cannot push this type of argument to Metview: ', builtins.type(n))
-
-    return nargs
-
-
-def dict_to_pushed_args(d):
-
-    # push each key and value onto the argument stack
-    for k, v in d.items():
-        push_str(k)
-        push_arg(v, 'NONE')
-
-    return 2 * len(d)  # return the number of arguments generated
 
 
 class FileBackedValue(Value):
@@ -603,12 +546,65 @@ def vector_from_metview(vec):
     return np_array
 
 
+
+
+
+class ValuePusher():
+    """Class to handle pushing values to the Macro library"""
+
+    def __init__(self):
+        # a set of pairs linking value types with functions to push them to Macro
+        # note that Request must come before dict, because a Request inherits from dict;
+        # this ordering requirement also means we should use list or tuple instead of a dict
+        self.funcs = (
+            (float,             lambda n : lib.p_push_number(n)),
+            ((int, np.number),  lambda n : lib.p_push_number(float(n))),
+            (str,               lambda n : push_str(n)),
+            (Request,           lambda n : n.push()),
+            (dict,              lambda n : Request(n).push()),
+            ((list, tuple),     lambda n : push_list(n)),
+            (type(None),        lambda n : lib.p_push_nil()),
+            (FileBackedValue,   lambda n : lib.p_push_value(n.push())),
+            (np.datetime64,     lambda n : push_date(n)),
+            (datetime.datetime, lambda n : push_datetime(n)),
+            (datetime.date,     lambda n : push_datetime_date(n)),
+            (np.ndarray,        lambda n : push_vector(n)),
+        )
+
+    def push_value(self, val):
+        for typekey, typefunc in self.funcs:
+            if isinstance(val, typekey):
+                typefunc(val)
+                return 1
+
+        # if we haven't returned yet, then we could not handle this type of data
+        raise TypeError('Cannot push this type of argument to Metview: ', builtins.type(val))
+
+vp = ValuePusher()
+
+
+def push_arg(n):
+    return vp.push_value(n)
+    
+
+def dict_to_pushed_args(d):
+
+    # push each key and value onto the argument stack
+    for k, v in d.items():
+        push_str(k)
+        push_arg(v)
+
+    return 2 * len(d)  # return the number of arguments generated
+
+
+
+
 def _call_function(mfname, *args, **kwargs):
 
     nargs = 0
 
     for n in args:
-        actual_n_args = push_arg(n, mfname)
+        actual_n_args = push_arg(n)
         nargs += actual_n_args
 
     merged_dict = {}
