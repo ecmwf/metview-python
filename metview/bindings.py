@@ -761,33 +761,6 @@ sub = make('-')
 subset = make('[]')
 
 
-# experimental class to facilitate calling an arbitrary Macro function
-# function callers are created on-demand
-# e.g. mv.mf.nearest_gridpoint_info(grib, 10, 20)
-class MF():
-
-    def __init__(self):
-        self.func_map = {}
-
-    def __getattr__(self, fname):
-        if fname in self.func_map:
-            return self.func_map[fname]
-        else:
-            f = make(fname)
-            self.func_map[fname] = f
-            return f
-
-    # required for IDEs to list the available functions
-    def __dir__(self):
-        macro_dict = make('dictionary')
-        all_funcs = macro_dict()
-        most_funcs = [f for f in all_funcs if len(f) > 1]
-        return most_funcs
-
-
-mf = MF()
-
-
 # -----------------------------------------------------------------------------
 #                        Particular code for calling the plot() command
 # -----------------------------------------------------------------------------
