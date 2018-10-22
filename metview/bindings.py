@@ -69,7 +69,8 @@ class MetviewInvoker:
         # print('PYTHON:', pid, ' ', env_file.name, ' ', repr(signal.SIGUSR1))
         signal.signal(signal.SIGUSR1, self.signal_from_metview)
         # p = subprocess.Popen(['metview', '-edbg', 'tv8 -a', '-slog', '-python-serve', env_file.name, str(pid)], stdout=subprocess.PIPE)
-        metview_flags = ['metview', '-nocreatehome', '-python-serve', env_file.name, str(pid)]
+        metview_startup_cmd = os.environ.get("METVIEW_PYTHON_START_CMD", 'metview')
+        metview_flags = [metview_startup_cmd, '-nocreatehome', '-python-serve', env_file.name, str(pid)]
         if self.debug:
             metview_flags.insert(2, '-slog')
             print('Starting Metview using these command args:')
