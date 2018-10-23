@@ -79,7 +79,7 @@ class MetviewInvoker:
         try:
             subprocess.Popen(metview_flags)
         except Exception as exp:
-            print("Could not run the Metview executable ('metview'); check that the binaries for Metview (version 5 at least) are installed and are in the PATH.")
+            print("Could not run the Metview executable ('" + metview_startup_cmd + "'); check that the binaries for Metview (version 5 at least) are installed and are in the PATH.")
             raise exp
 
 
