@@ -388,12 +388,15 @@ class ContainerValue(Value):
 
     def __getitem__(self, index):
         if isinstance(index, slice):
-            indices = index.indices(len(self))
-            fields = [self[i] for i in range(*indices)]
-            if len(fields) == 1:
-                return fields[0]
+            if self.element_type != None:
+                indices = index.indices(len(self))
+                fields = [self[i] for i in range(*indices)]
+                if len(fields) == 1:
+                    return fields[0]
+                else:
+                    return merge(*fields)
             else:
-                return merge(*fields)
+                raise Exception('This object does not support extended slicing: ' + str(self))
         else: # normal index
             return subset(self, index + self.macro_index_base) # convert from 0-based indexing
 
