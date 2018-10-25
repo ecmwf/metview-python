@@ -750,6 +750,13 @@ def test_netcdf_multi_indexed_values_with_all():
     assert(np.isclose(v[4], 260.484))
 
 
+def test_netcdf_to_dataset():
+    nc = mv.read(file_in_testdir('xs_date_mv5.nc'))
+    x = nc.to_dataset()
+    assert(isinstance(x, xr.core.dataset.Dataset))
+    assert(isinstance(x['t'], xr.DataArray))
+
+
 def test_strings():
     sentence = "Hello this is a sentence with many many words"
     sthis = mv.search(sentence, "this")

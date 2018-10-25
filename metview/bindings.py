@@ -476,6 +476,16 @@ class NetCDF(FileBackedValueWithOperators):
     def __init__(self, val_pointer):
         FileBackedValueWithOperators.__init__(self, val_pointer)
 
+    def to_dataset(self):
+        # soft dependency on xarray
+        try:
+            import xarray as xr
+        except ImportError:
+            print("Package xarray not found. Try running 'pip install xarray'.")
+            raise
+        dataset = xr.open_dataset(self.url())
+        return dataset
+
 
 class Odb(FileBackedValue):
 
