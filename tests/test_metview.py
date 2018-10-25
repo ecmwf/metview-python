@@ -300,6 +300,18 @@ def test_fieldset_single_index():
     assert(len(grib4) == 1)
     assert(mv.grib_get_long(grib4, 'level') == 500)
 
+def test_fieldset_slice():
+    grib = mv.read(os.path.join(PATH, 't_for_xs.grib'))
+    # slice [start,stop+1,step]
+    assert(mv.grib_get_long(grib[0:6:1], 'level') == [1000, 850, 700, 500, 400, 300])
+    assert(mv.grib_get_long(grib[0:6:2], 'level') == [1000, 700, 400])
+    assert(mv.grib_get_long(grib[4:6:1], 'level') == [400, 300])
+    assert(mv.grib_get_long(grib[5:6:1], 'level') == 300)
+    assert(mv.grib_get_long(grib[4:12:1], 'level') == [400, 300])
+    assert(mv.grib_get_long(grib[1:6:3], 'level') == [850, 400])
+    assert(mv.grib_get_long(grib[-1::], 'level') == 300)
+    assert(mv.grib_get_long(grib[-1:-4:-1], 'level') == [300, 400, 500])
+
 
 def test_fieldset_iterator():
     grib = mv.read(os.path.join(PATH, 't_for_xs.grib'))

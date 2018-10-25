@@ -387,7 +387,15 @@ class ContainerValue(Value):
         return int(count(self))
 
     def __getitem__(self, index):
-        return subset(self, index + self.macro_index_base) # convert from 0-based indexing
+        if isinstance(index, slice):
+            indices = index.indices(len(self))
+            fields = [self[i] for i in range(*indices)]
+            if len(fields) == 1:
+                return fields[0]
+            else:
+                return merge(*fields)
+        else: # normal index
+            return subset(self, index + self.macro_index_base) # convert from 0-based indexing
 
     def __setitem__(self, index, value):
         if (isinstance(value, self.element_type)):
