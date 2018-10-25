@@ -377,18 +377,19 @@ class FileBackedValueWithOperators(FileBackedValue):
 
 
 class ContainerValue(Value):
-    def __init__(self, val_pointer, macro_index_base, element_type):
+    def __init__(self, val_pointer, macro_index_base, element_type, support_slicing):
         Value.__init__(self, val_pointer)
         self.idx = 0
         self.macro_index_base = macro_index_base
         self.element_type = element_type # the type of elements that the container contains
+        self.support_slicing = support_slicing
 
     def __len__(self):
         return int(count(self))
 
     def __getitem__(self, index):
         if isinstance(index, slice):
-            if self.element_type != None:
+            if self.support_slicing:
                 indices = index.indices(len(self))
                 fields = [self[i] for i in range(*indices)]
                 if len(fields) == 1:
@@ -422,7 +423,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
 
     def __init__(self, val_pointer):
         FileBackedValue.__init__(self, val_pointer)
-        ContainerValue.__init__(self, val_pointer, 1, Fieldset)
+        ContainerValue.__init__(self, val_pointer, 1, Fieldset, True)
 
     def to_dataset(self):
         # soft dependency on cfgrib
@@ -445,7 +446,7 @@ class Geopoints(FileBackedValueWithOperators, ContainerValue):
 
     def __init__(self, val_pointer):
         FileBackedValueWithOperators.__init__(self, val_pointer)
-        ContainerValue.__init__(self, val_pointer, 0, None)
+        ContainerValue.__init__(self, val_pointer, 0, None, False)
 
     def to_dataframe(self):
         try:
@@ -518,7 +519,7 @@ class GeopointSet(FileBackedValueWithOperators, ContainerValue):
 
     def __init__(self, val_pointer):
         FileBackedValueWithOperators.__init__(self, val_pointer)
-        ContainerValue.__init__(self, val_pointer, 1, Geopoints)
+        ContainerValue.__init__(self, val_pointer, 1, Geopoints, False)
 
 
 # -----------------------------------------------------------------------------
