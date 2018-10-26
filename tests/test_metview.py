@@ -757,6 +757,24 @@ def test_netcdf_to_dataset():
     assert(isinstance(x['t'], xr.DataArray))
 
 
+@pytest.mark.filterwarnings("ignore:GRIB write")
+def test_dataset_to_fieldset():
+    grib = mv.read(file_in_testdir('t_for_xs.grib'))
+    x = grib.to_dataset()
+    f = mv.dataset_to_fieldset(x)
+    assert(mv.type(f) == 'fieldset')
+    assert(len(f) == 6)
+
+
+@pytest.mark.filterwarnings("ignore:GRIB write")
+def test_pass_dataset_as_arg():
+    grib = mv.read(file_in_testdir('t_for_xs.grib'))
+    x = grib.to_dataset()
+    fs = mv.mean(x*2) # *2 is done by xarray, mean is done by Metview
+    assert(mv.type(fs) == 'fieldset')
+    assert(len(fs) == 1)
+
+
 def test_strings():
     sentence = "Hello this is a sentence with many many words"
     sthis = mv.search(sentence, "this")

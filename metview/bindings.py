@@ -537,6 +537,43 @@ class GeopointSet(FileBackedValueWithOperators, ContainerValue):
 # -----------------------------------------------------------------------------
 
 
+def dataset_to_fieldset(val):
+    # we try to import xarray as locally as possible to reduce startup time
+    # try to write the xarray as a GRIB file, then read into a fieldset
+    import xarray as xr
+    import cfgrib
+    
+    if not isinstance(val, xr.core.dataset.Dataset):
+        raise TypeError('dataset_to_fieldset requires a variable of type xr.core.dataset.Dataset, was supplied with ', builtins.type(val))
+
+    f, tmp = tempfile.mkstemp(".grib")
+    os.close(f)
+
+    try:
+        cfgrib.canonical_dataset_to_grib(val, tmp) # could add keys, e.g. grib_keys={'centre': 'ecmf'})
+    except:
+        print("Error trying to write xarray dataset to GRIB for conversion to Metview Fieldset")
+        raise
+
+    fs = read(tmp) # TODO: tell Metview that this is a temporary file that should be deleted when no longer needed
+    return fs
+
+
+def push_xarray_dataset(val):
+    fs = dataset_to_fieldset(val)
+    lib.p_push_value(fs.push())
+
+
+# try_to_push_complex_type exists as a separate function so that we don't have to import xarray at the top
+# of the module - this saves some time on startup
+def try_to_push_complex_type(val):
+    import xarray as xr
+    if isinstance(val, xr.core.dataset.Dataset):
+        push_xarray_dataset(val)
+    else:
+        raise TypeError('Cannot push this type of argument to Metview: ', builtins.type(val))
+
+
 class ValuePusher():
     """Class to handle pushing values to the Macro library"""
 
@@ -565,8 +602,9 @@ class ValuePusher():
                 typefunc(val)
                 return 1
 
-        # if we haven't returned yet, then we could not handle this type of data
-        raise TypeError('Cannot push this type of argument to Metview: ', builtins.type(val))
+        # if we haven't returned yet, then try the more complex types
+        try_to_push_complex_type(val)
+        return 1
 
 vp = ValuePusher()
 
@@ -759,6 +797,7 @@ def bind_functions(namespace, module_name=None):
     # FIXME: this needs to be more structured
     namespace['plot'] = plot
     namespace['setoutput'] = setoutput
+    namespace['dataset_to_fieldset']= dataset_to_fieldset
 
 
 # some explicit bindings are used here
