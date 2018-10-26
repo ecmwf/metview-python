@@ -20,6 +20,8 @@ import os
 import pkgutil
 import signal
 import tempfile
+import builtins
+from enum import Enum
 
 import cffi
 import numpy as np
@@ -27,6 +29,11 @@ import numpy as np
 
 def string_from_ffi(s):
     return ffi.string(s).decode('utf-8')
+
+
+# -----------------------------------------------------------------------------
+#                                 Startup
+# -----------------------------------------------------------------------------
 
 
 class MetviewInvoker:
@@ -62,7 +69,8 @@ class MetviewInvoker:
         # print('PYTHON:', pid, ' ', env_file.name, ' ', repr(signal.SIGUSR1))
         signal.signal(signal.SIGUSR1, self.signal_from_metview)
         # p = subprocess.Popen(['metview', '-edbg', 'tv8 -a', '-slog', '-python-serve', env_file.name, str(pid)], stdout=subprocess.PIPE)
-        metview_flags = ['metview', '-nocreatehome', '-python-serve', env_file.name, str(pid)]
+        metview_startup_cmd = os.environ.get("METVIEW_PYTHON_START_CMD", 'metview')
+        metview_flags = [metview_startup_cmd, '-nocreatehome', '-python-serve', env_file.name, str(pid)]
         if self.debug:
             metview_flags.insert(2, '-slog')
             print('Starting Metview using these command args:')
@@ -71,7 +79,7 @@ class MetviewInvoker:
         try:
             subprocess.Popen(metview_flags)
         except Exception as exp:
-            print("Could not run the Metview executable ('metview'); check that the binaries for Metview (version 5 at least) are installed and are in the PATH.")
+            print("Could not run the Metview executable ('" + metview_startup_cmd + "'); check that the binaries for Metview (version 5 at least) are installed and are in the PATH.")
             raise exp
 
 
@@ -177,6 +185,11 @@ mi.restore_signal_handlers()
 
 
 
+# -----------------------------------------------------------------------------
+#                        Classes to handle complex Macro types
+# -----------------------------------------------------------------------------
+
+
 class Value:
 
     def __init__(self, val_pointer):
@@ -261,7 +274,7 @@ class Request(dict, Value):
             # use Macro to handle the addition of complex data types to
             # a request
             for k, v in self.items():
-                push_arg(v, 'NONAME')
+                push_arg(v)
                 lib.p_set_request_value_from_pop(r, k.encode('utf-8'))
 
             lib.p_push_request(r)
@@ -273,52 +286,6 @@ class Request(dict, Value):
             return subset(self, python_to_mv_index(index))
         else:
             return subset(self, index)
-
-
-# def dict_to_request(d, verb='NONE'):
-#    # get the verb from the request if not supplied by the caller
-#    if verb == 'NONE' and isinstance(d, Request):
-#        verb = d.verb
-#
-#    r = lib.p_new_request(verb.encode('utf-8'))
-#    for k, v in d.items():
-#        if isinstance(v, (list, tuple)):
-#            for v_i in v:
-#                v_i = str(v_i).encode('utf-8')
-#                lib.p_add_value(r, k.encode('utf-8'), v_i)
-#        elif isinstance(v, (Fieldset, Bufr, Geopoints)):
-#            lib.p_set_value(r, k.encode('utf-8'), v.push())
-#        elif isinstance(v, str):
-#            lib.p_set_value(r, k.encode('utf-8'), v.encode('utf-8'))
-#        elif isinstance(v, bool):
-#            conversion_dict = {True: 'on', False: 'off'}
-#            lib.p_set_value(r, k.encode('utf-8'), conversion_dict[v].encode('utf-8'))
-#        elif isinstance(v, (int, float)):
-#            lib.p_set_value(r, k.encode('utf-8'), str(v).encode('utf-8'))
-#        else:
-#            lib.p_set_value(r, k.encode('utf-8'), v)
-#    return r
-
-
-# def push_dict(d, verb='NONE'):
-#
-#    for k, v in d.items():
-#        if isinstance(v, (list, tuple)):
-#            for v_i in v:
-#                v_i = str(v_i).encode('utf-8')
-#                lib.p_add_value(r, k.encode('utf-8'), v_i)
-#        elif isinstance(v, (Fieldset, Bufr, Geopoints)):
-#            lib.p_set_value(r, k.encode('utf-8'), v.push())
-#        elif isinstance(v, str):
-#            lib.p_set_value(r, k.encode('utf-8'), v.encode('utf-8'))
-#        elif isinstance(v, bool):
-#            conversion_dict = {True: 'on', False: 'off'}
-#            lib.p_set_value(r, k.encode('utf-8'), conversion_dict[v].encode('utf-8'))
-#        elif isinstance(v, (int, float)):
-#            lib.p_set_value(r, k.encode('utf-8'), str(v).encode('utf-8'))
-#        else:
-#            lib.p_set_value(r, k.encode('utf-8'), v)
-#    return r
 
 
 def push_bytes(b):
@@ -335,7 +302,7 @@ def push_list(lst):
     # and add it to the list
     mlist = lib.p_new_list(len(lst))
     for i, val in enumerate(lst):
-        push_arg(val, 'NONE')
+        push_arg(val)
         lib.p_add_value_from_pop_to_list(mlist, i)
     lib.p_push_list(mlist)
 
@@ -359,64 +326,11 @@ def push_vector(npa):
     if npa.dtype == np.float64:
         cffi_buffer = ffi.cast('double*', npa.ctypes.data)
         lib.p_push_vector_from_double_array(cffi_buffer, len(npa), np.nan)
+    elif npa.dtype == np.float32:
+        cffi_buffer = ffi.cast('float*', npa.ctypes.data)
+        lib.p_push_vector_from_float32_array(cffi_buffer, len(npa), np.nan)
     else:
-        raise Exception('Only float64 numPy arrays can be passed to Metview, not ', npa.dtype)
-
-
-def push_arg(n, name):
-
-    nargs = 1
-
-    if isinstance(n, float):
-        lib.p_push_number(n)
-    elif isinstance(n, int):
-        lib.p_push_number(float(n))
-    elif isinstance(n, str):
-        push_str(n)
-    elif isinstance(n, Request):
-        n.push()
-    elif isinstance(n, dict):
-        Request(n).push()
-    elif isinstance(n, Fieldset):
-        lib.p_push_value(n.push())
-    elif isinstance(n, Bufr):
-        lib.p_push_value(n.push())
-    elif isinstance(n, Geopoints):
-        lib.p_push_value(n.push())
-    elif isinstance(n, NetCDF):
-        lib.p_push_value(n.push())
-    elif isinstance(n, np.datetime64):
-        push_date(n)
-    elif isinstance(n, datetime.datetime):
-        push_datetime(n)
-    elif isinstance(n, datetime.date):
-        push_datetime_date(n)
-    elif isinstance(n, (list, tuple)):
-        push_list(n)
-    elif isinstance(n, np.ndarray):
-        push_vector(n)
-    elif isinstance(n, Odb):
-        lib.p_push_value(n.push())
-    elif isinstance(n, Table):
-        lib.p_push_value(n.push())
-    elif isinstance(n, GeopointSet):
-        lib.p_push_value(n.push())
-    elif n is None:
-        lib.p_push_nil()
-    else:
-        raise TypeError('Cannot push this type of argument to Metview: ', builtins.type(n))
-
-    return nargs
-
-
-def dict_to_pushed_args(d):
-
-    # push each key and value onto the argument stack
-    for k, v in d.items():
-        push_str(k)
-        push_arg(v, 'NONE')
-
-    return 2 * len(d)  # return the number of arguments generated
+        raise Exception('Only float32 and float64 numPy arrays can be passed to Metview, not ', npa.dtype)
 
 
 class FileBackedValue(Value):
@@ -462,18 +376,36 @@ class FileBackedValueWithOperators(FileBackedValue):
         return lower_than(self, other)
 
 
-
 class ContainerValue(Value):
-    def __init__(self, val_pointer, macro_index_base):
+    def __init__(self, val_pointer, macro_index_base, element_type, support_slicing):
         Value.__init__(self, val_pointer)
         self.idx = 0
         self.macro_index_base = macro_index_base
+        self.element_type = element_type # the type of elements that the container contains
+        self.support_slicing = support_slicing
 
     def __len__(self):
         return int(count(self))
 
     def __getitem__(self, index):
-        return subset(self, index + self.macro_index_base) # convert from 0-based indexing
+        if isinstance(index, slice):
+            if self.support_slicing:
+                indices = index.indices(len(self))
+                fields = [self[i] for i in range(*indices)]
+                if len(fields) == 1:
+                    return fields[0]
+                else:
+                    return merge(*fields)
+            else:
+                raise Exception('This object does not support extended slicing: ' + str(self))
+        else: # normal index
+            return subset(self, index + self.macro_index_base) # convert from 0-based indexing
+
+    def __setitem__(self, index, value):
+        if (isinstance(value, self.element_type)):
+            lib.p_set_subvalue(self.val_pointer, index+self.macro_index_base, value.val_pointer)
+        else:
+            raise Exception('Cannot assign ', value, ' as element of ', self)
 
     def __iter__(self):
         return self
@@ -487,12 +419,11 @@ class ContainerValue(Value):
             return self.__getitem__(self.idx-1)
 
 
-
 class Fieldset(FileBackedValueWithOperators, ContainerValue):
 
     def __init__(self, val_pointer):
         FileBackedValue.__init__(self, val_pointer)
-        ContainerValue.__init__(self, val_pointer, 1)
+        ContainerValue.__init__(self, val_pointer, 1, Fieldset, True)
 
     def to_dataset(self):
         # soft dependency on cfgrib
@@ -515,7 +446,7 @@ class Geopoints(FileBackedValueWithOperators, ContainerValue):
 
     def __init__(self, val_pointer):
         FileBackedValueWithOperators.__init__(self, val_pointer)
-        ContainerValue.__init__(self, val_pointer, 0)
+        ContainerValue.__init__(self, val_pointer, 0, None, False)
 
     def to_dataframe(self):
         try:
@@ -545,6 +476,16 @@ class NetCDF(FileBackedValueWithOperators):
     def __init__(self, val_pointer):
         FileBackedValueWithOperators.__init__(self, val_pointer)
 
+    def to_dataset(self):
+        # soft dependency on xarray
+        try:
+            import xarray as xr
+        except ImportError:
+            print("Package xarray not found. Try running 'pip install xarray'.")
+            raise
+        dataset = xr.open_dataset(self.url())
+        return dataset
+
 
 class Odb(FileBackedValue):
 
@@ -573,12 +514,118 @@ class Table(FileBackedValue):
     def __init__(self, val_pointer):
         FileBackedValue.__init__(self, val_pointer)
 
+    def to_dataframe(self):
+        try:
+            import pandas as pd
+        except ImportError:
+            print("Package pandas not found. Try running 'pip install pandas'.")
+            raise
+
+        df = pd.read_csv(self.url())
+        return df
+
 
 class GeopointSet(FileBackedValueWithOperators, ContainerValue):
 
     def __init__(self, val_pointer):
         FileBackedValueWithOperators.__init__(self, val_pointer)
-        ContainerValue.__init__(self, val_pointer, 1)
+        ContainerValue.__init__(self, val_pointer, 1, Geopoints, False)
+
+
+# -----------------------------------------------------------------------------
+#                        Pushing data types to Macro
+# -----------------------------------------------------------------------------
+
+
+def dataset_to_fieldset(val):
+    # we try to import xarray as locally as possible to reduce startup time
+    # try to write the xarray as a GRIB file, then read into a fieldset
+    import xarray as xr
+    import cfgrib
+    
+    if not isinstance(val, xr.core.dataset.Dataset):
+        raise TypeError('dataset_to_fieldset requires a variable of type xr.core.dataset.Dataset, was supplied with ', builtins.type(val))
+
+    f, tmp = tempfile.mkstemp(".grib")
+    os.close(f)
+
+    try:
+        cfgrib.canonical_dataset_to_grib(val, tmp) # could add keys, e.g. grib_keys={'centre': 'ecmf'})
+    except:
+        print("Error trying to write xarray dataset to GRIB for conversion to Metview Fieldset")
+        raise
+
+    fs = read(tmp) # TODO: tell Metview that this is a temporary file that should be deleted when no longer needed
+    return fs
+
+
+def push_xarray_dataset(val):
+    fs = dataset_to_fieldset(val)
+    lib.p_push_value(fs.push())
+
+
+# try_to_push_complex_type exists as a separate function so that we don't have to import xarray at the top
+# of the module - this saves some time on startup
+def try_to_push_complex_type(val):
+    import xarray as xr
+    if isinstance(val, xr.core.dataset.Dataset):
+        push_xarray_dataset(val)
+    else:
+        raise TypeError('Cannot push this type of argument to Metview: ', builtins.type(val))
+
+
+class ValuePusher():
+    """Class to handle pushing values to the Macro library"""
+
+    def __init__(self):
+        # a set of pairs linking value types with functions to push them to Macro
+        # note that Request must come before dict, because a Request inherits from dict;
+        # this ordering requirement also means we should use list or tuple instead of a dict
+        self.funcs = (
+            (float,             lambda n : lib.p_push_number(n)),
+            ((int, np.number),  lambda n : lib.p_push_number(float(n))),
+            (str,               lambda n : push_str(n)),
+            (Request,           lambda n : n.push()),
+            (dict,              lambda n : Request(n).push()),
+            ((list, tuple),     lambda n : push_list(n)),
+            (type(None),        lambda n : lib.p_push_nil()),
+            (FileBackedValue,   lambda n : lib.p_push_value(n.push())),
+            (np.datetime64,     lambda n : push_date(n)),
+            (datetime.datetime, lambda n : push_datetime(n)),
+            (datetime.date,     lambda n : push_datetime_date(n)),
+            (np.ndarray,        lambda n : push_vector(n)),
+        )
+
+    def push_value(self, val):
+        for typekey, typefunc in self.funcs:
+            if isinstance(val, typekey):
+                typefunc(val)
+                return 1
+
+        # if we haven't returned yet, then try the more complex types
+        try_to_push_complex_type(val)
+        return 1
+
+vp = ValuePusher()
+
+
+def push_arg(n):
+    return vp.push_value(n)
+    
+
+def dict_to_pushed_args(d):
+
+    # push each key and value onto the argument stack
+    for k, v in d.items():
+        push_str(k)
+        push_arg(v)
+
+    return 2 * len(d)  # return the number of arguments generated
+
+
+# -----------------------------------------------------------------------------
+#                        Returning data types from Macro
+# -----------------------------------------------------------------------------
 
 
 def list_from_metview(mlist):
@@ -610,12 +657,13 @@ def vector_from_metview(vec):
 
     n = lib.p_vector_count(vec)
     s = lib.p_vector_elem_size(vec)
-    b = lib.p_vector_double_array(vec)
 
     if s == 4:
         nptype = np.float32
+        b = lib.p_vector_float32_array(vec)
     elif s == 8:
         nptype = np.float64
+        b = lib.p_vector_double_array(vec)
     else:
         raise Exception('Metview vector data type cannot be handled: ', s)
 
@@ -625,20 +673,67 @@ def vector_from_metview(vec):
     return np_array
 
 
-# we can actually get these from Metview, but for testing we just have a dict
-# service_function_verbs = {
-#     'retrieve': 'RETRIEVE',
-#     'mcoast': 'MCOAST',
-#     'mcont': 'MCONT',
-#     'mobs': 'MOBS',
-#     'msymb': 'MSYMB',
-#     'read': 'READ',
-#     'geoview': 'GEOVIEW',
-#     'mtext': 'MTEXT',
-#     'ps_output': 'PS_OUTPUT',
-#     'obsfilter': 'OBSFILTER',
-#     'filter': 'FILTER'
-# }
+class MvRetVal(Enum):
+    tnumber  = 0
+    tstring  = 1
+    tgrib    = 2
+    trequest = 3
+    tbufr    = 4
+    tgeopts  = 5
+    tlist    = 6
+    tnetcdf  = 7
+    tnil     = 8
+    terror   = 9
+    tdate    = 10
+    tvector  = 11
+    todb     = 12
+    ttable   = 13
+    tgptset  = 14
+    tunknown = 99
+
+
+class ValueReturner():
+    """Class to handle return values from the Macro library"""
+    def __init__(self):
+        self.funcs = {}
+        self.funcs[MvRetVal.tnumber.value]  = lambda val : lib.p_value_as_number(val)
+        self.funcs[MvRetVal.tstring.value]  = lambda val : string_from_ffi(lib.p_value_as_string(val))
+        self.funcs[MvRetVal.tgrib.value]    = lambda val : Fieldset(val)
+        self.funcs[MvRetVal.trequest.value] = lambda val : Request(val)
+        self.funcs[MvRetVal.tbufr.value]    = lambda val : Bufr(val)
+        self.funcs[MvRetVal.tgeopts.value]  = lambda val : Geopoints (val)
+        self.funcs[MvRetVal.tlist.value]    = lambda val : list_from_metview(lib.p_value_as_list(val))
+        self.funcs[MvRetVal.tnetcdf.value]  = lambda val : NetCDF(val)
+        self.funcs[MvRetVal.tnil.value]     = lambda val : None
+        self.funcs[MvRetVal.terror.value]   = lambda val : Exception('Metview error: ' + string_from_ffi(lib.p_error_message(val)))
+        self.funcs[MvRetVal.tdate.value]    = lambda val : datestring_from_metview(string_from_ffi(lib.p_value_as_datestring(val)))
+        self.funcs[MvRetVal.tvector.value]  = lambda val : vector_from_metview(lib.p_value_as_vector(val, np.nan))
+        self.funcs[MvRetVal.todb.value]     = lambda val : Odb(val)
+        self.funcs[MvRetVal.ttable.value]   = lambda val : Table(val)
+        self.funcs[MvRetVal.tgptset.value]  = lambda val : GeopointSet(val)
+
+    def translate_return_val(self, val):
+        rt = lib.p_value_type(val)
+        try:
+            return self.funcs[rt](val)
+        except Exception as exp:
+            raise Exception('value_from_metview got an unhandled return type: ' + str(rt))
+
+
+vr = ValueReturner()
+
+
+def value_from_metview(val):
+    retval = vr.translate_return_val(val)
+    if isinstance(retval, Exception):
+        raise retval
+    return retval
+
+
+
+# -----------------------------------------------------------------------------
+#                        Creating and calling Macro functions
+# -----------------------------------------------------------------------------
 
 
 def _call_function(mfname, *args, **kwargs):
@@ -646,7 +741,7 @@ def _call_function(mfname, *args, **kwargs):
     nargs = 0
 
     for n in args:
-        actual_n_args = push_arg(n, mfname)
+        actual_n_args = push_arg(n)
         nargs += actual_n_args
 
     merged_dict = {}
@@ -656,57 +751,6 @@ def _call_function(mfname, *args, **kwargs):
         nargs += dn
 
     lib.p_call_function(mfname.encode('utf-8'), nargs)
-
-
-def value_from_metview(val):
-    rt = lib.p_value_type(val)
-
-    # Number
-    if rt == 0:
-        return lib.p_value_as_number(val)
-    # String
-    elif rt == 1:
-        return string_from_ffi(lib.p_value_as_string(val))
-    # Fieldset
-    elif rt == 2:
-        return Fieldset(val)
-    # Request dictionary
-    elif rt == 3:
-        return Request(val)
-    # BUFR
-    elif rt == 4:
-        return Bufr(val)
-    # Geopoints
-    elif rt == 5:
-        return Geopoints(val)
-    # list
-    elif rt == 6:
-        return list_from_metview(lib.p_value_as_list(val))
-    # netCDF
-    elif rt == 7:
-        return NetCDF(val)
-    elif rt == 8:
-        return None
-    elif rt == 9:
-        err_msg = string_from_ffi(lib.p_error_message(val))
-        raise Exception('Metview error: ' + err_msg)
-    # date
-    elif rt == 10:
-        return datestring_from_metview(string_from_ffi(lib.p_value_as_datestring(val)))
-    elif rt == 11:
-        return vector_from_metview(lib.p_value_as_vector(val, np.nan))
-    # Odb
-    elif rt == 12:
-        return Odb(val)
-    # Table
-    elif rt == 13:
-        return Table(val)
-    # Geopointset
-    elif rt == 14:
-        return GeopointSet(val)
-
-    else:
-        raise Exception('value_from_metview got an unhandled return type: ' + str(rt))
 
 
 def make(mfname):
@@ -753,6 +797,7 @@ def bind_functions(namespace, module_name=None):
     # FIXME: this needs to be more structured
     namespace['plot'] = plot
     namespace['setoutput'] = setoutput
+    namespace['dataset_to_fieldset']= dataset_to_fieldset
 
 
 # some explicit bindings are used here
@@ -778,36 +823,9 @@ sub = make('-')
 subset = make('[]')
 
 
-# experimental class to facilitate calling an arbitrary Macro function
-# function callers are created on-demand
-# e.g. mv.mf.nearest_gridpoint_info(grib, 10, 20)
-class MF():
-
-    def __init__(self):
-        self.func_map = {}
-
-    def __getattr__(self, fname):
-        if fname in self.func_map:
-            return self.func_map[fname]
-        else:
-            f = make(fname)
-            self.func_map[fname] = f
-            return f
-
-    # required for IDEs to list the available functions
-    def __dir__(self):
-        macro_dict = make('dictionary')
-        all_funcs = macro_dict()
-        most_funcs = [f for f in all_funcs if len(f) > 1]
-        return most_funcs
-
-
-mf = MF()
-
-
-# for x in range(350):
-#     exec("uppercase = make('uppercase')")
-
+# -----------------------------------------------------------------------------
+#                        Particular code for calling the plot() command
+# -----------------------------------------------------------------------------
 
 class Plot():
 
@@ -872,15 +890,3 @@ def setoutput(*args):
         plot.plot_to_jupyter = False
         met_setoutput(*args)
 
-
-# perform a MARS retrieval
-# - defined a request
-# - set waitmode to 1 to force synchronisation
-# - the return is a path to a temporary file, so copy it before end of script
-# req = { 'PARAM' : 't',
-#         'LEVELIST' : ['1000', '500'],
-#         'GRID' : ['2', '2']}
-# waitmode(1)
-# g = retrieve(req)
-# print(g)
-# copyfile(g, './result.grib')

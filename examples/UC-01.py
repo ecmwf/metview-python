@@ -1,5 +1,5 @@
 """
-Metview Python framework
+Metview Python use case
 
 UC-01. The Analyst produces plots and files for the Product user
 
@@ -15,7 +15,7 @@ Analyst saves his data as a GRIB file and creates a plot in PNG format.
 import metview as mv
 
 
-mydata = mv.read('tests/test.grib')
+mydata = mv.read('../tests/test.grib')
 
 derived = mydata * 2 + 5
 
@@ -32,8 +32,9 @@ grid_shade = mv.mcont(
     contour_shade_colour_direction = 'clockwise',
 )
 
+
 # Macro-like PNG creation:
-png = mv.png_output(output_width = 1200, output_name = './examples/myplot')
+png = mv.png_output(output_width = 1200, output_name = './myplot')
 
 mv.plot(png, derived, grid_shade)
 
@@ -42,7 +43,7 @@ mv.plot(png, derived, grid_shade)
 png_output = {
     'output_type': 'png',
     'output_width': 1200,
-    'output_name': './examples/myplot'
+    'output_name': './myplot2'
 }
 
 mv.plot(derived, grid_shade, **png_output)

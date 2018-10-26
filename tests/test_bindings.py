@@ -52,16 +52,3 @@ def test_tuples_as_input():
     my_tuple = [1, 0, 5, 6]
     assert bindings.count(my_tuple) == 4
 
-
-TEST_FIELDSET = bindings.read(os.path.join(PATH, 'test.grib'))
-
-
-def test_mf_function_caller():
-    info = bindings.mf.nearest_gridpoint_info(TEST_FIELDSET[0], 10, 20)
-    assert(isinstance(info, list))
-    info0 = info[0]
-    print(info0)
-    assert(isinstance(info0, dict))
-    assert(info0['latitude'] == 9.75)
-    assert(info0['longitude'] == 20.25)
-    assert(info0['index'] == 51388)

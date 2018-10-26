@@ -16,6 +16,14 @@ SEMI_EQUATOR = 20001600.0
 MAX_SQRT_GPT = 16.867127793433
 MAX_GPT = 284.5
 
+def metview_version():
+    version = mv.version_info()
+    return version['metview_version']
+
+
+def supports_float32_vectors():
+    return metview_version() >= 50200
+
 
 def test_names():
     assert mv.dictionary.__name__ == mv.dictionary.__qualname__ == 'dictionary'
@@ -89,6 +97,28 @@ def test_list_unique():
     assert ulist == [1, 5, 6, 9]
 
 
+def test_list_sort():
+    s = [4, 7, 2, 3, 4, 9, 0]
+    so = mv.sort(s)
+    assert(so == [0, 2, 3, 4, 4, 7, 9])
+
+
+def test_list_sort_indices():
+    s = [4, 7, 2, 3, 4, 9, 0]
+    soi = mv.sort_indices(s)
+    assert(soi == [6, 2, 3, 0, 4, 1, 5])
+
+
+def test_list_find():
+    s = [4, 7, 2, 3, 4, 9, 0]
+    f = mv.find(s, 2)
+    assert(f == 2)
+    f = mv.find(s, 4)
+    assert(f == 0)
+    f = mv.find(s, 4, 'all')
+    assert(f == [0, 4])
+
+
 def test_tuple_unique():
     intuple = (3, 2, 2, 7, 3, 1.2, 2.1, 1.2)
     ulist = mv.unique(intuple)
@@ -99,6 +129,17 @@ def test_read():
     gg = mv.read({'SOURCE': file_in_testdir('test.grib'), 'GRID': 80})
     assert mv.grib_get_string(gg, 'typeOfGrid') == 'regular_gg'
 
+def test_read_filter_1():
+    mls = mv.read(source=file_in_testdir('ml_data.grib'), param='t', levelist=[5, 49, 101])
+    assert(mv.grib_get_long(mls, 'level') == [5, 49, 101])
+
+def test_read_filter_2():
+    tuv_all_levs = mv.read(file_in_testdir('tuv_pl.grib'))
+    u_all_levs = mv.read(data=tuv_all_levs, param='u')
+    assert(mv.grib_get_long(u_all_levs, 'level') == [1000,850,700,500,400,300])
+    assert(mv.grib_get_string(u_all_levs, 'shortName') == ['u','u','u','u','u','u'])
+    u_2levs = mv.read(data=u_all_levs, levelist=[700,400])
+    assert(mv.grib_get_long(u_2levs, 'level') == [700,400])
 
 def test_write():
     gg = mv.read({'SOURCE': file_in_testdir('test.grib'), 'GRID': 80})
@@ -259,6 +300,18 @@ def test_fieldset_single_index():
     assert(len(grib4) == 1)
     assert(mv.grib_get_long(grib4, 'level') == 500)
 
+def test_fieldset_slice():
+    grib = mv.read(os.path.join(PATH, 't_for_xs.grib'))
+    # slice [start,stop+1,step]
+    assert(mv.grib_get_long(grib[0:6:1], 'level') == [1000, 850, 700, 500, 400, 300])
+    assert(mv.grib_get_long(grib[0:6:2], 'level') == [1000, 700, 400])
+    assert(mv.grib_get_long(grib[4:6:1], 'level') == [400, 300])
+    assert(mv.grib_get_long(grib[5:6:1], 'level') == 300)
+    assert(mv.grib_get_long(grib[4:12:1], 'level') == [400, 300])
+    assert(mv.grib_get_long(grib[1:6:3], 'level') == [850, 400])
+    assert(mv.grib_get_long(grib[-1::], 'level') == 300)
+    assert(mv.grib_get_long(grib[-1:-4:-1], 'level') == [300, 400, 500])
+
 
 def test_fieldset_iterator():
     grib = mv.read(os.path.join(PATH, 't_for_xs.grib'))
@@ -267,10 +320,28 @@ def test_fieldset_iterator():
     iteravg = []
     for f in grib:
         iteravg.append(mv.average(f))
-    
     assert(len(iteravg) == len(avg))
     for i in range(0,6):
         assert np.isclose(avg[i],iteravg[i])
+
+
+def test_fieldset_assignment_to_field_index():
+    grib = mv.read(os.path.join(PATH, 't_for_xs.grib'))
+    # check numbers before assignment
+    assert(np.isclose(mv.integrate(grib[0]), 290.802))
+    assert(np.isclose(mv.integrate(grib[3]), 260.601))
+    assert(np.isclose(mv.integrate(grib[4]), 249.617))
+    # change one field and check some fields
+    grib[0] = grib[0] *10
+    assert(np.isclose(mv.integrate(grib[0]), 2908.02))
+    assert(np.isclose(mv.integrate(grib[3]), 260.601))
+    assert(np.isclose(mv.integrate(grib[4]), 249.617))
+    # another assignment
+    grib[4] = grib[3] *10
+    assert(np.isclose(mv.integrate(grib[0]), 2908.02))
+    assert(np.isclose(mv.integrate(grib[3]), 260.601))
+    assert(np.isclose(mv.integrate(grib[4]), 2606.01))
+
 
 def test_fieldset_relational_operators():
     a = mv.read(os.path.join(PATH, 'test.grib'))
@@ -279,7 +350,35 @@ def test_fieldset_relational_operators():
     assert(mv.accumulate(a >= 273) == 78156)
     assert(mv.accumulate(a <  273) == 37524)
     assert(mv.accumulate(a <= 273) == 39679)
-     
+
+
+def test_nearest_gridpoint_info():
+    a = mv.read(os.path.join(PATH, 'test.grib'))
+    ni = mv.nearest_gridpoint_info(a, 57.193, -2.360)
+    ni0 = ni[0]
+    assert(np.isclose(ni0['latitude'],  57.0))
+    assert(np.isclose(ni0['longitude'], 357.75))
+    assert(np.isclose(ni0['distance'],  22.4505))
+    assert(np.isclose(ni0['value'],     282.436))
+    assert(ni0['index'] ==              21597)
+
+
+def test_surrounding_gridpoints():
+    a = mv.read(os.path.join(PATH, 'test.grib'))
+    sgi = mv.surrounding_points_indexes(a, 11.552, 50.653)
+    assert(np.array_equal(sgi, np.array([50468,50467,49988,49987])))
+
+
+def test_datainfo():
+    a = mv.read(os.path.join(PATH, 'tuv_pl.grib'))
+    di = mv.datainfo(a)
+    di3 = di[3]
+    assert(di3['index'] == 3)
+    assert(di3['number_present'] == 2664)
+    assert(di3['number_missing'] == 0)
+    assert(di3['proportion_present'] == 1)
+    assert(di3['proportion_missing'] == 0)
+
 
 def test_read_bufr():
     bufr = mv.read(file_in_testdir('obs_3day.bufr'))
@@ -486,6 +585,16 @@ def test_date_second():
     assert mv.second(d1) == 0
 
 
+def test_numpy_numeric_args():
+    # we don't test them all here, but hopefully a representative sample
+    assert(mv.call('+', np.int32(5), 1) == 6)
+    assert(mv.call('+', np.int64(5), 1) == 6)
+    assert(mv.call('+', np.byte(8), 1) == 9)
+    assert(mv.call('+', np.uint16(8), 1) == 9)
+    assert(np.isclose(mv.call('+', np.float32(5.5), 1), 6.5))
+    assert(np.isclose(mv.call('+', np.float64(5.5), 1), 6.5))
+
+
 def test_odb():
     if mv.is_feature_available('odb') == 0:
         print('Skipping test_odb because ODB is not enabled in this Metview version')
@@ -595,11 +704,84 @@ def test_cross_section_data():
     assert mv.type(xs_data) == 'netcdf'
     mv.setcurrent(xs_data, 't')
     assert mv.dimension_names(xs_data) == ['time', 'nlev', 'lon']
-    assert np.isclose(mv.value(xs_data, 1), 230.39156)
+    assert np.isclose(mv.value(xs_data, 0), 230.39156)
     xs_data_x2 = xs_data * 2
-    assert np.isclose(mv.value(xs_data_x2, 1), 460.7831)
+    assert np.isclose(mv.value(xs_data_x2, 0), 460.7831)
 
 
+def test_netcdf_var_indexing():
+    nc = mv.read(file_in_testdir('xs_date_mv5.nc'))
+    mv.setcurrent(nc, 0)
+    assert(mv.attributes(nc)['long_name'] == "time")
+    mv.setcurrent(nc, 1)
+    assert(mv.attributes(nc)['long_name'] == "latitude")
+    mv.setcurrent(nc, 4)
+    assert(mv.attributes(nc)['long_name'] == "Temperature")
+
+
+def test_netcdf_single_value():
+    nc = mv.read(file_in_testdir('xs_date_mv5.nc'))
+    mv.setcurrent(nc, 't')
+    assert(mv.attributes(nc)['long_name'] == "Temperature")
+    assert(np.isclose(mv.value(nc, 0), 234.7144))
+    assert(np.isclose(mv.value(nc, 4), 237.4377))
+
+
+def test_netcdf_multi_indexed_values():
+    nc = mv.read(file_in_testdir('xs_date_mv5.nc'))
+    mv.setcurrent(nc, 't')
+    assert(mv.attributes(nc)['long_name'] == "Temperature")
+    assert(np.isclose(mv.values(nc, [0, 0, 0]), 234.7144))
+    assert(np.isclose(mv.values(nc, [0, 0, 4]), 237.4377))
+    assert(np.isclose(mv.values(nc, [0, 1, 0]), 248.7220))
+    assert(np.isclose(mv.values(nc, [0, 1, 1]), 249.3030))
+
+def test_netcdf_multi_indexed_values_with_all():
+    nc = mv.read(file_in_testdir('xs_date_mv5.nc'))
+    mv.setcurrent(nc, 't')
+    assert(mv.attributes(nc)['long_name'] == "Temperature")
+    v = mv.values(nc, [0, 0, 'all'])
+    assert(len(v) == 64)
+    assert(np.isclose(v[0],  234.714))
+    assert(np.isclose(v[63], 258.979))
+    v = mv.values(nc, [0, 'all', 0])
+    assert(len(v) == 5)
+    assert(np.isclose(v[0], 234.714))
+    assert(np.isclose(v[4], 260.484))
+
+
+def test_netcdf_to_dataset():
+    nc = mv.read(file_in_testdir('xs_date_mv5.nc'))
+    x = nc.to_dataset()
+    assert(isinstance(x, xr.core.dataset.Dataset))
+    assert(isinstance(x['t'], xr.DataArray))
+
+
+@pytest.mark.filterwarnings("ignore:GRIB write")
+def test_dataset_to_fieldset():
+    grib = mv.read(file_in_testdir('t_for_xs.grib'))
+    x = grib.to_dataset()
+    f = mv.dataset_to_fieldset(x)
+    assert(mv.type(f) == 'fieldset')
+    assert(len(f) == 6)
+
+
+@pytest.mark.filterwarnings("ignore:GRIB write")
+def test_pass_dataset_as_arg():
+    grib = mv.read(file_in_testdir('t_for_xs.grib'))
+    x = grib.to_dataset()
+    fs = mv.mean(x*2) # *2 is done by xarray, mean is done by Metview
+    assert(mv.type(fs) == 'fieldset')
+    assert(len(fs) == 1)
+
+
+def test_strings():
+    sentence = "Hello this is a sentence with many many words"
+    sthis = mv.search(sentence, "this")
+    assert(sthis == 6)
+
+
+@pytest.mark.skip()
 def test_met_plot():
     contour = mv.mcont({
             'CONTOUR_LINE_COLOUR': 'PURPLE',
@@ -610,7 +792,49 @@ def test_met_plot():
     bindings.met_plot(TEST_FIELDSET, contour, coast)
 
 
-def test_plot():
+
+def test_plot_1():
+    output_name = file_in_testdir('test_plot_1')
+    mv.setoutput(mv.png_output(output_name=output_name))
+    grid_shade = {
+        'legend': True,
+        'contour': False,
+        'contour_highlight': True,
+        'contour_shade': True,
+        'contour_shade_technique': 'grid_shading',
+        'contour_shade_max_level_colour': 'red',
+        'contour_shade_min_level_colour': 'blue',
+        'contour_shade_colour_direction': 'clockwise',
+    }
+    degraded_field = mv.read(data=TEST_FIELDSET, grid=[4,4])
+    mv.plot(degraded_field, mv.mcont(grid_shade))
+    output_name_from_magics = output_name + '.1.png'
+    assert(os.path.isfile(output_name_from_magics))
+    os.remove(output_name_from_magics)
+
+
+def test_plot_2():
+    output_name = file_in_testdir('test_plot_2')
+    png = mv.png_output(output_name=output_name)
+    grid_shade = {
+        'legend': True,
+        'contour': False,
+        'contour_highlight': True,
+        'contour_shade': True,
+        'contour_shade_technique': 'grid_shading',
+        'contour_shade_max_level_colour': 'olive',
+        'contour_shade_min_level_colour': 'blue',
+        'contour_shade_colour_direction': 'clockwise',
+    }
+    degraded_field = mv.read(data=TEST_FIELDSET, grid=[4,4])
+    mv.plot(png, degraded_field, mv.mcont(grid_shade))
+    output_name_from_magics = output_name + '.1.png'
+    assert(os.path.isfile(output_name_from_magics))
+    os.remove(output_name_from_magics)
+
+
+@pytest.mark.skip()
+def test_plot_3():
     png_output = {
         'output_type': 'PnG',
         'output_width': 1200,
@@ -684,14 +908,41 @@ def test_simple_get_vector():
     v = mv.vector(a)
     assert(isinstance(v, np.ndarray))
     assert(len(v) == 5)
+    assert(v[1] == 6)
+    assert(v.dtype == np.dtype('float64'))
+
+
+def test_simple_get_vector_float32():
+    if supports_float32_vectors():
+        mv.vector_set_default_type('float32')
+        a = [5, 6, 7, 8, 9]
+        v = mv.vector(a)
+        assert(isinstance(v, np.ndarray))
+        assert(len(v) == 5)
+        assert(v[1] == 6)
+        assert(v.dtype == np.dtype('float32'))
+        mv.vector_set_default_type('float64')  # reset to default type for the other tests
 
 
 def test_get_vector_from_grib():
     v = mv.values(TEST_FIELDSET[0])
     assert(isinstance(v, np.ndarray))
+    assert(v.dtype == np.dtype('float64'))
     assert(len(v) == 115680)
     assert(np.isclose(min(v), 206.93560791))
     assert(np.isclose(max(v), 316.06060791))
+
+
+def test_get_vector_float32_from_grib():
+    if supports_float32_vectors():
+        mv.vector_set_default_type('float32')
+        v = mv.values(TEST_FIELDSET[0])
+        assert(isinstance(v, np.ndarray))
+        assert(v.dtype == np.dtype('float32'))
+        assert(len(v) == 115680)
+        assert(np.isclose(min(v), 206.93560791))
+        assert(np.isclose(max(v), 316.06060791))
+        mv.vector_set_default_type('float64')  # reset to default type for the other tests
 
 
 def test_get_vector_from_multi_field_grib():
@@ -700,12 +951,43 @@ def test_get_vector_from_multi_field_grib():
     assert(isinstance(v, np.ndarray))
     assert(v.shape == (6, 2664))
 
+def test_vector_sort():
+    v1 = x = np.array([5, 3, 4, 9, 1, 4.2])
+    vsortasc = mv.sort(v1)
+    assert(np.array_equal(vsortasc, np.array([1, 3, 4, 4.2, 5, 9])))
+
+
+def test_vector_sort_indices():
+    v1 = x = np.array([5, 3, 4, 9, 1, 4.2])
+    vsortindasc = mv.sort_indices(v1)
+    assert(np.array_equal(vsortindasc, np.array([4, 1, 2, 5, 0, 3])))
+
+
+def test_vector_find():
+    s = np.array([4, 7, 2, 3, 4, 9, 0], dtype=np.float64)
+    f = mv.find(s, 2)
+    assert(f == 2)
+    f = mv.find(s, 4)
+    assert(f == 0)
+    f = mv.find(s, 4, 'all')
+    assert(np.array_equal(f, np.array([0, 4], dtype=np.float64)))
+
 
 def test_set_vector_from_numpy_array():
     r = np.arange(1, 21, dtype=np.float64)
     assert(mv.type(r) == 'vector')
+    assert(mv.dtype(r) == 'float64')
     assert(mv.count(r) == 20)
     assert(mv.maxvalue(r) == 20)
+
+
+def test_set_vector_float32_from_numpy_array():
+    if supports_float32_vectors():
+        r = np.arange(1, 21, dtype=np.float32)
+        assert(mv.type(r) == 'vector')
+        assert(mv.dtype(r) == 'float32')
+        assert(mv.count(r) == 20)
+        assert(mv.maxvalue(r) == 20)
 
 
 def test_simple_vector_with_nans():
@@ -741,36 +1023,49 @@ def test_oo_interface_on_geopoints():
     assert(gpt.count() == 45)
     assert(np.isclose(gpt.mean(), 281.247))
 
+
 def test_std_gpts_to_dataframe():
     gpt = mv.read(file_in_testdir('t2m_3day.gpt'))
     df = gpt.to_dataframe()
+    print(df)
     assert(isinstance(df, pd.DataFrame))
     assert(df.shape == (45,5))
-    dt1_iloc = df.iloc[0][0]
-    assert(isinstance(dt1_iloc, datetime.datetime))
-    dt1_loc = df.iloc[0]['date']
-    assert(isinstance(dt1_loc, datetime.datetime))
-    assert(dt1_loc == datetime.datetime(2017,4,25,12,0,0))
+    #dt1_iloc = df.iloc[0][0]
+    dt1_iloc = df.iloc[0]['latitude']
+    assert(isinstance(dt1_iloc, float))
+    assert(np.isclose(dt1_iloc, 49.43))
+    #dt2_iloc = df.iloc[0][4]
+    dt2_iloc = df.iloc[0]['date']
+    assert(isinstance(dt2_iloc, datetime.datetime))
+    dt3_loc = df.iloc[0]['date']
+    assert(isinstance(dt3_loc, datetime.datetime))
+    assert(dt3_loc == datetime.datetime(2017,4,25,12,0,0))
     assert(df.loc[5]['latitude'] == 51.15)
     assert(df.loc[25]['longitude'] == 2.65)
     assert(df.loc[8]['level'] == 0)
     assert(np.isclose(df.loc[4]['value'], 281.2))
+
 
 def test_xy_vector_gpts_to_dataframe():
     gpt = mv.read(file_in_testdir('uv.gpt'))
     df = gpt.to_dataframe()
     assert(isinstance(df, pd.DataFrame))
     assert(df.shape == (39,6))
-    dt1_iloc = df.iloc[0][0]
-    assert(isinstance(dt1_iloc, datetime.datetime))
-    dt1_loc = df.iloc[0]['date']
-    assert(isinstance(dt1_loc, datetime.datetime))
-    assert(dt1_loc == datetime.datetime(2018,5,14,12,0,0))
+    #dt1_iloc = df.iloc[0][0]
+    dt1_iloc = df.iloc[0]['latitude']
+    assert(isinstance(dt1_iloc, float))
+    assert(np.isclose(dt1_iloc, 70.0))
+    #dt2_iloc = df.iloc[0][4]
+    #assert(isinstance(dt2_iloc, datetime.datetime))
+    dt3_loc = df.iloc[0]['date']
+    assert(isinstance(dt3_loc, datetime.datetime))
+    assert(dt3_loc == datetime.datetime(2018,5,14,12,0,0))
     assert(df.loc[5]['latitude'] == 70)
     assert(df.loc[25]['longitude'] == 30)
     assert(df.loc[8]['level'] == 500)
     assert(np.isclose(df.loc[4]['value'], -10.865656))
     assert(np.isclose(df.loc[4]['value2'], 17.589124))
+
 
 def test_xyv_gpts_to_dataframe():
     gpt = mv.read(file_in_testdir('xyv.gpt'))
@@ -787,6 +1082,17 @@ def test_grib_to_dataset():
     assert(isinstance(x, xr.core.dataset.Dataset))
     assert(isinstance(x['t'], xr.DataArray))
 
+
+def test_read_filter_to_dataset():
+    tuv_all_levs = mv.read(file_in_testdir('tuv_pl.grib'))
+    u_all_levs = mv.read(data=tuv_all_levs, param='u')
+    assert(mv.grib_get_long(u_all_levs, 'level') == [1000,850,700,500,400,300])
+    assert(mv.grib_get_string(u_all_levs, 'shortName') == ['u','u','u','u','u','u'])
+    x = u_all_levs.to_dataset()
+    x_keys = x.keys()
+    assert('u' in x_keys)     # only 'u' should be there
+    assert('v' not in x_keys) # only 'u' should be there
+    assert('t' not in x_keys) # only 'u' should be there
 
 @pytest.mark.xfail()
 def test_table():
@@ -815,3 +1121,33 @@ def test_table():
     v = db.values(2)
     assert(isinstance(v, np.ndarray))
     assert(len(v) == 6)
+
+
+def test_flextra():
+    flx = mv.read(file_in_testdir('flextra_output.txt'))
+    assert(flx.type() == 'definition')
+    trNum = int(mv.flextra_group_get(flx, "trNum"))
+    assert(trNum == 5)
+
+    startLst = ['03:00:00', '06:00:00', '09:00:00', '12:00:00', '15:00:00']
+    stopIndexLst = [1, 1, 1, 1, 1]
+    for i in range(trNum):
+        vals = mv.flextra_tr_get(flx, i, ["startTime", "stopIndex"])
+        assert(len(vals) == 2)
+        assert(vals[0] == startLst[i])
+        assert(int(vals[1]) == stopIndexLst[i])
+
+    #Read data for the first trajectory
+    vals = mv.flextra_tr_get(flx, 0, ["lat", "lon", "date"])
+    assert(len(vals) == 3)
+    assert(vals[0].size == 25)
+    assert(vals[1].size == 25)
+    assert(len(vals[2]) == 25)
+    assert(isinstance(vals[0], np.ndarray))
+    assert(isinstance(vals[1], np.ndarray))
+    assert(isinstance(vals[2], list))
+    assert(np.isclose(vals[0].mean(), 63.369828))
+    assert(np.isclose(vals[0].std(), 2.2269590))
+    assert(np.isclose(vals[1].mean(), 18.014544))
+    assert(np.isclose(vals[1].std(), 14.98830786689625))
+    assert(vals[2][0] == datetime.datetime(2012,1,11,3,0,0))

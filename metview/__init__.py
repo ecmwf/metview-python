@@ -20,10 +20,15 @@ if sys.version_info[0] < 3:
     raise EnvironmentError("Metview's Python interface requires Python 3. You are using Python " + repr(sys.version_info))
 
 
+# if the user has started via "python -m metview selfcheck"
+# then we do not want to import anything yet because we want to
+# catch errors differently
 
-from . import bindings as _bindings
+if len(sys.argv) != 2 or sys.argv[0] != "-m" or sys.argv[1] != "selfcheck":
 
-_bindings.bind_functions(globals(), module_name=__name__)
+    from . import bindings as _bindings
 
-# Remove "_bindings" from the public API.
-del _bindings
+    _bindings.bind_functions(globals(), module_name=__name__)
+
+    # Remove "_bindings" from the public API.
+    del _bindings

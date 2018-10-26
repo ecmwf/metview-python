@@ -1,5 +1,5 @@
 """
-Metview Python framework
+Metview Python use case
 
 UC-04. The Analyst retrieves, for a given time interval, the values of
 two parameters and combines their values on the same map
@@ -27,11 +27,11 @@ with the shaded temperature at the bottom, and the geopotential on top.
 import metview as mv
 
 
-# retrieve 2m temperature
-t2 = mv.read('./examples/t2_for_UC-04.grib')
+# read 2m temperature
+t2 = mv.read('./t2_for_UC-04.grib')
 
-# retrieve geopotential
-z = mv.read('./examples/z_for_UC-04.grib')
+# read geopotential
+z = mv.read('./z_for_UC-04.grib')
 
 t_shade_c = mv.mcont(
     legend = True,
@@ -58,4 +58,5 @@ z_isolines = mv.mcont(
     contour_legend_text = 'Geopotential',
 )
 
+mv.setoutput(mv.png_output(output_width = 1000, output_name = './gribplot'))
 mv.plot(t2, t_shade_c, z, z_isolines)
