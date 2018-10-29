@@ -6,7 +6,7 @@ Python interface to Metview meteorological workstation and batch system.
 See documentation at https://software.ecmwf.int/metview/Metview's+Python+Interface
 
 .. warning::
-    This is Alpha software.
+    This is Beta software.
 
 
 Requirements
