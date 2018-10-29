@@ -11,12 +11,16 @@ recursive-include docs *.rst
 recursive-include examples *.bufr
 recursive-include examples *.grib
 recursive-include examples *.py
+recursive-include examples *.ipynb
 recursive-include metview *.h
 recursive-include requirements *.in
 recursive-include requirements *.txt
 recursive-include tests *.bufr
 recursive-include tests *.csv
+recursive-include tests *.txt
 recursive-include tests *.gpt
+recursive-include tests *.gpts
 recursive-include tests *.grib
+recursive-include tests *.nc
 recursive-include tests *.odb
 recursive-include tests *.py
