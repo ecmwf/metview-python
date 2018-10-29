@@ -7,7 +7,7 @@
 #
 FROM bopen/ubuntu-pyenv:latest
 
-ARG SOURCE="MetviewBundle-2018.02.1-Source.tar.gz"
+ARG SOURCE="MetviewBundle-2018.10.0-Source.tar.gz"
 ARG CMAKEFLAGS="-DENABLE_UI=OFF -DENABLE_EXPOSE_SUBPACKAGES=ON -DENABLE_ODB=ON -DENABLE_PYTHON=ON"
 ARG DEBIAN_FRONTEND="noninteractive"
 

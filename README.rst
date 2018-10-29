@@ -2,17 +2,16 @@
 Metview Python bindings
 =======================
 
-Python interface to Metview meteorological workstation and batch system.
+Python interface to Metview, a meteorological workstation and batch system for accessing, examining, manipulating and visualising meteorological data.
 See documentation at https://software.ecmwf.int/metview/Metview's+Python+Interface
 
-.. warning::
-    This is Beta software.
+.. :information_source: This is Beta software.
 
 
 Requirements
 ------------
 
-- A working Metview 5 installation (at least version 5.0.3), either from binaries or built from source.
+- A working Metview 5 installation (at least version 5.0.3, ideally 5.2.1), either from binaries or built from source.
   See https://software.ecmwf.int/metview/Releases
 
   - An alternative is to build from the Metview Source Bundle.
@@ -22,15 +21,6 @@ Requirements
   from where you built or installed it if it's not in a default location.
 
 - A Python 3 interpreter (ideally version >= 3.5)
-
-
-You may run a simple selfcheck command to ensure that your system is set up correctly::
-
-    $ python -m metview selfcheck
-    Hello world - printed from Metview!
-    Trying to connect to a Metview installation...
-    Metview version 5.2.0 found
-    Your system is ready.
 
 
 Install
@@ -44,11 +34,27 @@ The package is installed from PyPI with::
 Test
 ----
 
-To test that your system is properly setup open a Python 3 interpreter and try::
+You may run a simple selfcheck command to ensure that your system is set up correctly::
+
+    $ python -m metview selfcheck
+    Hello world - printed from Metview!
+    Trying to connect to a Metview installation...
+    Metview version 5.2.0 found
+    Your system is ready.
+
+
+To manually test that your system is properly setup open a Python 3 interpreter and try::
 
     >>> import metview as mv
     >>> mv.lowercase('Hello World!')
     'hello world!'
+
+
+Examples
+--------
+
+The examples folder contains some Jupyter notebooks and some standalone examples for you to try out!
+
 
 
 License

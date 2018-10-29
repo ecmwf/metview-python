@@ -58,7 +58,7 @@ Light cleanup with::
 
     $ make clean
 
-Complate cleanup with::
+Complete cleanup with::
 
     $ make distclean
 
