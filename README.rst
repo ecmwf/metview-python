@@ -5,7 +5,7 @@ Metview Python bindings
 Python interface to Metview, a meteorological workstation and batch system for accessing, examining, manipulating and visualising meteorological data.
 See documentation at https://software.ecmwf.int/metview/Metview's+Python+Interface
 
-.. :information_source: This is Beta software.
+**This is Beta software.**
 
 
 Requirements
