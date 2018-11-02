@@ -1109,9 +1109,14 @@ def test_table():
     assert(db.name(3) == "LATIT")
     assert(len(db.metadata_keys()) == 16)
     assert(db.metadata_value('integration') == 'PETTERSSEN')
+    v = db.values(0)
+    assert(isinstance(v, np.ndarray))
+    assert(len(v) == 7)
+    assert(np.array_equal(v, np.array([0,3600,7200,10800,14400,18000,21600])))
     v = db.values(4)
     assert(isinstance(v, np.ndarray))
     assert(len(v) == 7)
+    assert(np.array_equal(v, np.array([963.5,964.1,964.0,963.3,961.8,960.3,959.0])))
 
     # test csv with no metadata
     db = mv.read(file_in_testdir('sample.csv'))
@@ -1121,6 +1126,7 @@ def test_table():
     v = db.values(2)
     assert(isinstance(v, np.ndarray))
     assert(len(v) == 6)
+    assert(np.array_equal(v, np.array([4,5,6,7,8,9])))
 
 
 def test_flextra():
