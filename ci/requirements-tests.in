@@ -1,3 +1,5 @@
+cfgrib
+netCDF4==1.3.1
 pytest
 pytest-cov
 pytest-flakes
