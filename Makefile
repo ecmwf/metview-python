@@ -1,14 +1,15 @@
 
 PACKAGE := metview
-IMAGE := $(PACKAGE)
+IMAGE := $(PACKAGE)-ci
 MODULE := $(PACKAGE)
 PYTHONS := python3.6 python3.5 python3.4 pypy3
+PYTHON := python
 
-SOURCE := MetviewBundle-2018.02.1-Source.tar.gz
+SOURCE := MetviewBundle-2018.10.0-Source.tar.gz
 SOURCE_URL := https://software.ecmwf.int/wiki/download/attachments/51731119/$(SOURCE)
 
-# uncomment after running the command 'make local-wheel' in the xarray-grib folder
-# EXTRA_PACKAGES := xarray_grib-0.1.0-py2.py3-none-any.whl
+PYTESTFLAGS_TEST := -v --flakes --doctest-glob '*.rst' --cov=$(MODULE) --cov=cf2cdm --cov-report=html --cache-clear
+PYTESTFLAGS_QC := --pep8 --mccabe $(PYTESTFLAGS_TEST)
 
 export WHEELHOUSE := ~/.wheelhouse
 export PIP_FIND_LINKS := $(WHEELHOUSE)
@@ -20,11 +21,7 @@ DOCKERFLAGS := -e WHEELHOUSE=$(WHEELHOUSE) \
 	-e PIP_FIND_LINKS=$(PIP_FIND_LINKS) \
 	-e PIP_WHEEL_DIR=$(PIP_WHEEL_DIR) \
 	-e PIP_INDEX_URL=$$PIP_INDEX_URL
-# Development options
-# DOCKERFLAGS += -v $$(pwd)/../metview:/tmp/source/metview
-# DOCKERFLAGS += -v $$(pwd)/../metview-prefix:/usr/local
-# DOCKERFLAGS += -v $$(pwd)/../metpy:/metpy
-PIP := pip
+PIP := $(PYTHON) -m pip
 MKDIR = mkdir -p
 
 ifeq ($(shell [ -d $(WHEELHOUSE) ] && echo true),true)
@@ -48,22 +45,21 @@ $(PIP_FIND_LINKS):
 
 local-wheelhouse-one:
 	$(PIP) install wheel
-	$(PIP) wheel -r requirements/requirements-tests.txt
-	$(PIP) wheel -r requirements/requirements-docs.txt
+	$(PIP) wheel -r ci/requirements-tests.txt
+	$(PIP) wheel -r ci/requirements-docs.txt
 
 local-wheelhouse:
-	for PYTHON in $(PYTHONS); do $(MAKE) local-wheelhouse-one PIP="$$PYTHON -m pip"; done
-	$(PIP) wheel -r requirements/requirements-dev.txt
+	for PYTHON in $(PYTHONS); do $(MAKE) local-wheelhouse-one PYTHON=$$PYTHON; done
+	$(PIP) wheel -r ci/requirements-dev.txt
 
 local-install-dev-req:
 	$(PIP) install -U pip setuptools wheel
-	$(PIP) install -r requirements/requirements-dev.txt
+	$(PIP) install -r ci/requirements-dev.txt
 
 local-install-test-req: $(PIP_FIND_LINKS)
-	$(PIP) install -r requirements/requirements-tests.txt
+	$(PIP) install -r ci/requirements-tests.txt
 
-local-develop: $(EXTRA_PACKAGES)
-	for p in $<; do $(PIP) install $$p; done
+local-develop:
 	$(PIP) install -e .
 
 local-wheel:
@@ -72,11 +68,11 @@ local-wheel:
 testclean:
 	$(RM) -r */__pycache__ .coverage .cache
 
-clean:
-	$(RM) -r */*.pyc htmlcov dist build .eggs *.egg-info
+clean: testclean
+	$(RM) -r */*.pyc htmlcov dist build .eggs
 
 distclean: clean
-	$(RM) -r .tox .docker-tox
+	$(RM) -r .tox .docker-tox *.egg-info
 
 cacheclean:
 	$(RM) -r $(WHEELHOUSE)/* ~/.cache/*
@@ -88,20 +84,23 @@ shell:
 
 notebook: DOCKERFLAGS += -p 8888:8888
 notebook:
-	$(RUN) jupyter notebook --ip=* --allow-root
+	$(RUN) jupyter notebook --ip=0.0.0.0 --allow-root
 
 wheelhouse:
 	$(RUN) make local-wheelhouse
 
 update-req:
-	$(RUN) pip-compile -o requirements/requirements-tests.txt -U setup.py requirements/requirements-tests.in
-	$(RUN) pip-compile -o requirements/requirements-docs.txt -U setup.py requirements/requirements-docs.in
+	$(RUN) pip-compile -o ci/requirements-tests.txt -U setup.py ci/requirements-tests.in
+	$(RUN) pip-compile -o ci/requirements-docs.txt -U setup.py ci/requirements-docs.in
 
 test: testclean
-	$(RUN) python setup.py test --addopts "-v --flakes --cov=$(MODULE) --cov-report=html --cache-clear"
+	$(RUN) $(PYTHON) setup.py test --addopts "$(PYTESTFLAGS_TEST)"
 
-qc:
-	$(RUN) python setup.py test --addopts "-v --pep8 --mccabe metview tests"
+qc: testclean
+	$(RUN) $(PYTHON) setup.py test --addopts "$(PYTESTFLAGS_QC)"
+
+doc:
+	$(RUN) $(PYTHON) setup.py build_sphinx
 
 tox: testclean
 	$(RUN) tox $(TOXFLAGS)
@@ -110,12 +109,8 @@ detox: testclean
 	$(RUN) detox $(TOXFLAGS)
 
 # image build
-
-%.whl: $(WHEELHOUSE)/%.whl
-	cp -a $< $@
-
 $(SOURCE):
 	curl -o $@ -L $(SOURCE_URL)
 
 image: $(SOURCE) $(EXTRA_PACKAGES)
-	docker build -t $(IMAGE) $(DOCKERBUILDFLAGS) .
+	docker build -t $(IMAGE) -f ci/Dockerfile $(DOCKERBUILDFLAGS) .
