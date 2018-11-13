@@ -10,5 +10,3 @@ RUN pip install -U pip \
     && pip install -r /home/jovyan/work/ci/requirements-tests.txt \
     && pip install matplotlib \
     && pip install -e /home/jovyan/work
-
-USER jovyan
