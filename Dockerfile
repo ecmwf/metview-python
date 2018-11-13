@@ -9,6 +9,4 @@ COPY . /src
 RUN pip install -r /src/ci/requirements-tests.txt \
     pip install -e .
 
-EXPOSE 8888
-VOLUME /src
-WORKDIR /src
+USER jovyan
