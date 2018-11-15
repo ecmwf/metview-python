@@ -8,6 +8,7 @@ PYTHON := python
 SOURCE_NAME := MetviewBundle-2018.10.0-Source.tar.gz
 SOURCE := ci/$(SOURCE_NAME)
 SOURCE_URL := https://software.ecmwf.int/wiki/download/attachments/51731119/$(SOURCE_NAME)
+EXTRA_FILES := .ecmwfapirc
 
 PYTESTFLAGS_TEST := -v --flakes --doctest-glob '*.rst' --cov=$(MODULE) --cov-report=html --cache-clear
 PYTESTFLAGS_QC := --pep8 --mccabe $(PYTESTFLAGS_TEST)
@@ -110,8 +111,11 @@ detox: testclean
 	$(RUN) detox $(TOXFLAGS)
 
 # image build
+.ecmwfapirc: ~/.ecmwfapirc
+	cp $^ $@
+
 $(SOURCE):
 	curl -o $@ -L $(SOURCE_URL)
 
-image: $(SOURCE)
+image: $(SOURCE) $(EXTRA_FILES)
 	docker build -t $(IMAGE) -f ci/Dockerfile $(DOCKERBUILDFLAGS) .
