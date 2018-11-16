@@ -201,6 +201,15 @@ class Value:
         else:
             lib.p_push_value(self.val_pointer)
 
+
+    # if we steal a value pointer from a temporary Value object, we need to
+    # ensure that the Metview Value is not destroyed when the temporary object
+    # is destroyed by setting its pointer to None
+    def steal_val_pointer(self, other):
+        self.val_pointer = other.val_pointer
+        other.val_pointer = None
+
+
     # enable a more object-oriented interface, e.g. a = fs.interpolate(10, 29.4)
     def __getattr__(self, fname):
         def call_func_with_self(*args, **kwargs):
@@ -435,9 +444,12 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         ContainerValue.__init__(self, val_pointer, 1, Fieldset, True)
         if path is not None:
             temp = read(path)
-            self.val_pointer = temp.val_pointer
-            temp.val_pointer = None # avoid freeing on deletion
-  
+            self.steal_val_pointer(temp)
+
+    def append(self, other):
+        temp = merge(self, other)   
+        self.steal_val_pointer(temp)
+
     def to_dataset(self):
         # soft dependency on cfgrib
         try:
