@@ -196,7 +196,10 @@ class Value:
         self.val_pointer = val_pointer
 
     def push(self):
-        return self.val_pointer
+        if self.val_pointer is None:
+            lib.p_push_nil()
+        else:
+            lib.p_push_value(self.val_pointer)
 
     # enable a more object-oriented interface, e.g. a = fs.interpolate(10, 29.4)
     def __getattr__(self, fname):
@@ -264,7 +267,7 @@ class Request(dict, Value):
         # if we have a pointer to a Metview Value, then use that because it's more
         # complete than the dict
         if self.val_pointer:
-            lib.p_push_value(Value.push(self))
+            Value.push(self)
         else:
             r = lib.p_new_request(self.verb.encode('utf-8'))
 
@@ -385,7 +388,10 @@ class ContainerValue(Value):
         self.support_slicing = support_slicing
 
     def __len__(self):
-        return int(count(self))
+        if self.val_pointer is None:
+            return 0
+        else:
+            return int(count(self))
 
     def __getitem__(self, index):
         if isinstance(index, slice):
@@ -424,10 +430,14 @@ class ContainerValue(Value):
 
 class Fieldset(FileBackedValueWithOperators, ContainerValue):
 
-    def __init__(self, val_pointer):
+    def __init__(self, val_pointer=None, path=None):
         FileBackedValue.__init__(self, val_pointer)
         ContainerValue.__init__(self, val_pointer, 1, Fieldset, True)
-
+        if path is not None:
+            temp = read(path)
+            self.val_pointer = temp.val_pointer
+            temp.val_pointer = None # avoid freeing on deletion
+  
     def to_dataset(self):
         # soft dependency on cfgrib
         try:
@@ -564,7 +574,7 @@ def dataset_to_fieldset(val):
 
 def push_xarray_dataset(val):
     fs = dataset_to_fieldset(val)
-    lib.p_push_value(fs.push())
+    fs.push()
 
 
 # try_to_push_complex_type exists as a separate function so that we don't have to import xarray at the top
@@ -592,7 +602,7 @@ class ValuePusher():
             (dict,              lambda n : Request(n).push()),
             ((list, tuple),     lambda n : push_list(n)),
             (type(None),        lambda n : lib.p_push_nil()),
-            (FileBackedValue,   lambda n : lib.p_push_value(n.push())),
+            (FileBackedValue,   lambda n : n.push()),
             (np.datetime64,     lambda n : push_date(n)),
             (datetime.datetime, lambda n : push_datetime(n)),
             (datetime.date,     lambda n : push_datetime_date(n)),
@@ -801,6 +811,8 @@ def bind_functions(namespace, module_name=None):
     namespace['plot'] = plot
     namespace['setoutput'] = setoutput
     namespace['dataset_to_fieldset']= dataset_to_fieldset
+
+    namespace['Fieldset'] = Fieldset
 
 
 # some explicit bindings are used here

@@ -384,6 +384,25 @@ def test_datainfo():
     assert(di3['proportion_missing'] == 0)
 
 
+def test_empty_fieldset_contructor():
+    f = mv.Fieldset()
+    assert(type(f) == mv.Fieldset)
+    assert(len(f) == 0)
+
+
+def test_fieldset_contructor_with_path():
+    f = mv.Fieldset(path=os.path.join(PATH, 'test.grib'))
+    assert(type(f) == mv.Fieldset)
+    assert(len(f) == 1)
+    ni = mv.nearest_gridpoint_info(f, 57.193, -2.360)
+    ni0 = ni[0]
+    assert(np.isclose(ni0['latitude'],  57.0))
+    assert(np.isclose(ni0['longitude'], 357.75))
+    assert(np.isclose(ni0['distance'],  22.4505))
+    assert(np.isclose(ni0['value'],     282.436))
+    assert(ni0['index'] ==              21597)
+
+
 def test_read_bufr():
     bufr = mv.read(file_in_testdir('obs_3day.bufr'))
     assert(mv.type(bufr) == 'observations')
