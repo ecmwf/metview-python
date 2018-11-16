@@ -403,6 +403,26 @@ def test_fieldset_contructor_with_path():
     assert(ni0['index'] ==              21597)
 
 
+def test_fieldset_append_from_empty():
+    f = mv.Fieldset()
+    g = mv.read(os.path.join(PATH, 'tuv_pl.grib'))
+    f.append(g[0])
+    assert(type(f) == mv.Fieldset)
+    assert(len(f) == 1)
+    shortnames = f.grib_get_string('shortName')
+    assert(shortnames == 't')
+    f.append(g[1])
+    assert(type(f) == mv.Fieldset)
+    assert(len(f) == 2)
+    shortnames = f.grib_get_string('shortName')
+    assert(shortnames == ['t', 'u'])
+    f.append(g[15:18])
+    assert(type(f) == mv.Fieldset)
+    assert(len(f) == 5)
+    shortnames = f.grib_get_string('shortName')
+    assert(shortnames == ['t', 'u', 't', 'u', 'v'])
+
+
 def test_read_bufr():
     bufr = mv.read(file_in_testdir('obs_3day.bufr'))
     assert(mv.type(bufr) == 'observations')
