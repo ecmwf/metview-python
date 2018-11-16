@@ -312,6 +312,10 @@ def test_fieldset_slice():
     assert(mv.grib_get_long(grib[-1::], 'level') == 300)
     assert(mv.grib_get_long(grib[-1:-4:-1], 'level') == [300, 400, 500])
 
+    grib = mv.read(os.path.join(PATH, 'tuv_pl.grib'))
+    assert(mv.grib_get_long(grib[0:18:1], 'level') == [1000, 1000, 1000, 850, 850, 850,
+                                                       700, 700, 700, 500, 500, 500,
+                                                       400, 400, 400, 300, 300, 300])
 
 def test_fieldset_iterator():
     grib = mv.read(os.path.join(PATH, 't_for_xs.grib'))

@@ -392,10 +392,13 @@ class ContainerValue(Value):
             if self.support_slicing:
                 indices = index.indices(len(self))
                 fields = [self[i] for i in range(*indices)]
-                if len(fields) == 1:
-                    return fields[0]
+                if len(fields) == 0:
+                    return None
                 else:
-                    return merge(*fields)
+                    f = fields[0]
+                    for i in range(1,len(fields)):
+                        f = merge(f,fields[i])
+                    return f
             else:
                 raise Exception('This object does not support extended slicing: ' + str(self))
         else: # normal index
