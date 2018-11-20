@@ -562,7 +562,7 @@ class GeopointSet(FileBackedValueWithOperators, ContainerValue):
 # -----------------------------------------------------------------------------
 
 
-def dataset_to_fieldset(val):
+def dataset_to_fieldset(val, **kwarg):
     # we try to import xarray as locally as possible to reduce startup time
     # try to write the xarray as a GRIB file, then read into a fieldset
     import xarray as xr
@@ -575,7 +575,7 @@ def dataset_to_fieldset(val):
     os.close(f)
 
     try:
-        cfgrib.canonical_dataset_to_grib(val, tmp) # could add keys, e.g. grib_keys={'centre': 'ecmf'})
+        cfgrib.canonical_dataset_to_grib(val, tmp, **kwarg) # could add keys, e.g. grib_keys={'centre': 'ecmf'})
     except:
         print("Error trying to write xarray dataset to GRIB for conversion to Metview Fieldset")
         raise
