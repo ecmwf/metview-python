@@ -698,6 +698,13 @@ def vector_from_metview(vec):
     return np_array
 
 
+def handle_error(msg):
+    if "Service" in msg and "Examiner" in msg:
+        return None
+    else:
+        return Exception('Metview error: ' + (msg))
+
+
 class MvRetVal(Enum):
     tnumber  = 0
     tstring  = 1
@@ -730,7 +737,7 @@ class ValueReturner():
         self.funcs[MvRetVal.tlist.value]    = lambda val : list_from_metview(lib.p_value_as_list(val))
         self.funcs[MvRetVal.tnetcdf.value]  = lambda val : NetCDF(val)
         self.funcs[MvRetVal.tnil.value]     = lambda val : None
-        self.funcs[MvRetVal.terror.value]   = lambda val : Exception('Metview error: ' + string_from_ffi(lib.p_error_message(val)))
+        self.funcs[MvRetVal.terror.value]   = lambda val : handle_error(string_from_ffi(lib.p_error_message(val)))
         self.funcs[MvRetVal.tdate.value]    = lambda val : datestring_from_metview(string_from_ffi(lib.p_value_as_datestring(val)))
         self.funcs[MvRetVal.tvector.value]  = lambda val : vector_from_metview(lib.p_value_as_vector(val, np.nan))
         self.funcs[MvRetVal.todb.value]     = lambda val : Odb(val)
