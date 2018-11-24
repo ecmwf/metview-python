@@ -10,6 +10,7 @@ recursive-include docs *.py
 recursive-include docs *.rst
 recursive-include examples *.bufr
 recursive-include examples *.grib
+recursive-include examples *.nc
 recursive-include examples *.py
 recursive-include examples *.ipynb
 recursive-include metview *.h
