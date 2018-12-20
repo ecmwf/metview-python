@@ -2,6 +2,12 @@
 Changelog for metview
 =====================
 
+1.0.0 (2018-12-20)
+------------------
+
+- code cleanup so that tox and pyflakes pass the tests
+
+
 0.9.1 (2018-11-24)
 ------------------
 
