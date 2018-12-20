@@ -450,7 +450,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         try:
             from cfgrib import xarray_store
         except ImportError:
-            print("Package xarray_grib not found. Try running 'pip install xarray_grib'.")
+            print("Package cfgrib/xarray_store not found. Try running 'pip install cfgrib'.")
             raise
         dataset = xarray_store.open_dataset(self.url())
         return dataset
