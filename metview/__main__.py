@@ -23,7 +23,7 @@ def main(argv=None):
     parser.add_argument('command')
     args = parser.parse_args(args=argv)
     if args.command == 'selfcheck':
-        sys.argv=[]
+        sys.argv = []
         print('Trying to connect to a Metview installation...')
         try:
             from . import bindings as _bindings
