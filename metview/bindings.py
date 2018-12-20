@@ -292,12 +292,7 @@ class Request(dict, Value):
             lib.p_push_request(r)
 
     def __getitem__(self, index):
-        # we don't often need integer indexing of requests, but we do in the
-        # case of a Display Window object
-        if isinstance(index, int):
-            return subset(self, python_to_mv_index(index))
-        else:
-            return subset(self, index)
+        return subset(self, index)
 
 
 def push_bytes(b):
@@ -748,7 +743,7 @@ class ValueReturner():
         rt = lib.p_value_type(val)
         try:
             return self.funcs[rt](val)
-        except Exception as exp:
+        except Exception:
             raise Exception('value_from_metview got an unhandled return type: ' + str(rt))
 
 

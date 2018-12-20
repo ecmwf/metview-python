@@ -897,6 +897,20 @@ def test_plot_3():
     os.remove(file_in_testdir('test_plot.1.png'))
 
 
+def test_plot_2_pages():
+    output_name = file_in_testdir('test_plot_2_pages')
+    png = mv.png_output(output_name=output_name)
+    degraded_field = mv.read(data=TEST_FIELDSET, grid=[4,4])
+    page1 = mv.plot_page(top= 2.2, bottom=52.2, right=100)
+    page2 = mv.plot_page(top=50)
+    dw = mv.plot_superpage(pages = [page1,page2])
+    mv.setoutput(png)
+    mv.plot(dw[0], degraded_field, dw[1], degraded_field+50)
+    output_name_from_magics = output_name + '.1.png'
+    assert(os.path.isfile(output_name_from_magics))
+    os.remove(output_name_from_magics)
+
+
 def test_macro_error():
     with pytest.raises(Exception):
         TEST_FIELDSET[125]
@@ -995,13 +1009,13 @@ def test_get_vector_from_multi_field_grib():
     assert(v.shape == (6, 2664))
 
 def test_vector_sort():
-    v1 = x = np.array([5, 3, 4, 9, 1, 4.2])
+    v1 = np.array([5, 3, 4, 9, 1, 4.2])
     vsortasc = mv.sort(v1)
     assert(np.array_equal(vsortasc, np.array([1, 3, 4, 4.2, 5, 9])))
 
 
 def test_vector_sort_indices():
-    v1 = x = np.array([5, 3, 4, 9, 1, 4.2])
+    v1 = np.array([5, 3, 4, 9, 1, 4.2])
     vsortindasc = mv.sort_indices(v1)
     assert(np.array_equal(vsortindasc, np.array([4, 1, 2, 5, 0, 3])))
 
