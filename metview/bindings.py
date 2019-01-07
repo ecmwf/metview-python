@@ -388,6 +388,12 @@ class FileBackedValueWithOperators(FileBackedValue):
     def __lt__(self, other):
         return lower_than(self, other)
 
+    def __eq__(self, other):
+        return equal(self, other)
+
+    def __ne__(self, other):
+        return met_not_eq(self, other)
+
 
 class ContainerValue(Value):
     def __init__(self, val_pointer, macro_index_base, element_type, support_slicing):
@@ -850,12 +856,14 @@ add = make('+')
 call = make('call')
 count = make('count')
 div = make('/')
+equal = make('=')
 filter = make('filter')
 greater_equal_than = make('>=')
 greater_than = make('>')
 lower_equal_than = make('<=')
 lower_than = make('<')
 merge = make('&')
+met_not_eq = make('<>')
 met_plot = make('plot')
 nil = make('nil')
 png_output = make('png_output')

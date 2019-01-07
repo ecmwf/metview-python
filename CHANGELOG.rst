@@ -2,6 +2,12 @@
 Changelog for metview
 =====================
 
+1.1.0 (2019-??-??)
+------------------
+
+- added equality (``==``) and non-equality (``!=``) operators for Fieldset and Geopoints objects, e.g. ``same = (a == b)`` will produce a new Fieldset with 1s where the values are the same, and 0s elsewhere.
+
+
 1.0.0 (2018-12-20)
 ------------------
 

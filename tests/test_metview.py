@@ -364,6 +364,46 @@ def test_fieldset_relational_operators():
     assert(mv.accumulate(a <= 273) == 39679)
 
 
+def test_fieldset_equality_operator():
+    a = mv.read(os.path.join(PATH, 'test.grib'))
+    v = mv.values(a)
+    v[10] = -29
+    v[13] = -31
+    v[15] = -33
+    b = a.set_values(v)
+    same = (a == b)
+    assert(type(same) == mv.Fieldset)
+    vsame = same.values()
+    assert(mv.sum(vsame) == len(vsame) - 3)  # all but 3 should be the same
+    assert(vsame[5]  == 1)
+    assert(vsame[10] == 0)
+    assert(vsame[11] == 1)
+    assert(vsame[12] == 1)
+    assert(vsame[13] == 0)
+    assert(vsame[14] == 1)
+    assert(vsame[15] == 0)
+
+
+def test_fieldset_nonequality_operator():
+    a = mv.read(os.path.join(PATH, 'test.grib'))
+    v = mv.values(a)
+    v[10] = -29
+    v[13] = -31
+    v[15] = -33
+    b = a.set_values(v)
+    diff = (a != b)
+    assert(type(diff) == mv.Fieldset)
+    vdiff = diff.values()
+    assert(mv.sum(vdiff) == 3)  # there should be exactly 3 differences
+    assert(vdiff[5]  == 0)
+    assert(vdiff[10] == 1)
+    assert(vdiff[11] == 0)
+    assert(vdiff[12] == 0)
+    assert(vdiff[13] == 1)
+    assert(vdiff[14] == 0)
+    assert(vdiff[15] == 1)
+
+
 def test_nearest_gridpoint_info():
     a = mv.read(os.path.join(PATH, 'test.grib'))
     ni = mv.nearest_gridpoint_info(a, 57.193, -2.360)
@@ -496,6 +536,48 @@ def test_geopoints_relational_operator():
     assert mv.maxvalue(le) == 0
     assert mv.maxvalue(gt) == 1
     assert mv.maxvalue(ge) == 1
+
+
+def test_geopoints_equality_operator():
+    a = mv.read(file_in_testdir('t2m_3day.gpt'))
+    assert(mv.type(a) == 'geopoints')
+    v = mv.values(a)
+    v[10] = -29
+    v[13] = -31
+    v[15] = -33
+    b = a.set_values(v)
+    same = (a == b)
+    assert(mv.type(same) == 'geopoints')
+    vsame = same.values()
+    assert(mv.sum(vsame) == len(vsame) - 3)  # all but 3 should be the same
+    assert(vsame[5]  == 1)
+    assert(vsame[10] == 0)
+    assert(vsame[11] == 1)
+    assert(vsame[12] == 1)
+    assert(vsame[13] == 0)
+    assert(vsame[14] == 1)
+    assert(vsame[15] == 0)
+
+
+def test_geopoints_nonequality_operator():
+    a = mv.read(file_in_testdir('t2m_3day.gpt'))
+    assert(mv.type(a) == 'geopoints')
+    v = mv.values(a)
+    v[10] = -29
+    v[13] = -31
+    v[15] = -33
+    b = a.set_values(v)
+    diff = (a != b)
+    assert(mv.type(diff) == 'geopoints')
+    vdiff = diff.values()
+    assert(mv.sum(vdiff) == 3)  # there should be exactly 3 differences
+    assert(vdiff[5]  == 0)
+    assert(vdiff[10] == 1)
+    assert(vdiff[11] == 0)
+    assert(vdiff[12] == 0)
+    assert(vdiff[13] == 1)
+    assert(vdiff[14] == 0)
+    assert(vdiff[15] == 1)
 
 
 def test_geopoints_fieldset_operator():
