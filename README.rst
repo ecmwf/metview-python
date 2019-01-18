@@ -10,6 +10,7 @@ Requirements
 ------------
 
 - A working Metview 5 installation (at least version 5.0.3, ideally 5.3.0 or above), either from binaries or built from source.
+  Binary installation packages are available for many Linux distributions.
   See https://confluence.ecmwf.int/metview/Releases
 
   - An alternative is to build from the Metview Source Bundle.
