@@ -19,7 +19,7 @@ Requirements
 - Ensure that the command 'metview' will run this version by setting your PATH to include the 'bin' directory
   from where you built or installed it if it's not in a default location.
 
-- A Python 3 interpreter (ideally version >= 3.5)
+- A Python 3 interpreter (ideally version >= 3.5) 
 
 
 Install
