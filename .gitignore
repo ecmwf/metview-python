@@ -56,4 +56,5 @@ docs/_build/
 .eggs
 
 .pytest_cache
+tests/*.idx
 
