@@ -1106,8 +1106,8 @@ def test_xy_vector_gpts_to_dataframe():
     assert(df.loc[5]['latitude'] == 70)
     assert(df.loc[25]['longitude'] == 30)
     assert(df.loc[8]['level'] == 500)
-    assert(np.isclose(df.loc[4]['value'], -10.865656))
-    assert(np.isclose(df.loc[4]['value2'], 17.589124))
+    assert(np.isclose(df.loc[4]['x-comp'], -10.865656))
+    assert(np.isclose(df.loc[4]['y-comp'], 17.589124))
 
 
 def test_xyv_gpts_to_dataframe():

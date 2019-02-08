@@ -417,7 +417,10 @@ class ContainerValue(Value):
             else:
                 raise Exception('This object does not support extended slicing: ' + str(self))
         else: # normal index
-            return subset(self, index + self.macro_index_base) # convert from 0-based indexing
+            if isinstance(index, str): # can have a string as an index
+                return subset(self, index)
+            else:
+                return subset(self, index + self.macro_index_base) # numeric index: convert from 0-based indexing
 
     def __setitem__(self, index, value):
         if (isinstance(value, self.element_type)):
@@ -480,18 +483,15 @@ class Geopoints(FileBackedValueWithOperators, ContainerValue):
             print("Package pandas not found. Try running 'pip install pandas'.")
             raise
 
-        tp = self.dtype()
+        # create a dictionary of columns (note that we do not include 'time'
+        # because it is incorporated into 'date')
+        cols = self.columns()
+        if 'time' in cols:
+            cols.remove('time')
 
-        pddict = {'latitude'  : self.latitudes(),
-                  'longitude' : self.longitudes(),
-                  'value'     : self.values()}
-
-        if tp in ('standard', 'xy_vector', 'polar_vector', 'standard_string'):
-            pddict['level'] = self.levels()
-            pddict['date']  = self.dates()
-
-        if tp in ('xy_vector', 'polar_vector'):
-            pddict['value2'] = self.value2s()
+        pddict = {}
+        for c in cols:
+            pddict[c] = self[c]
 
         df = pd.DataFrame(pddict)
         return df
