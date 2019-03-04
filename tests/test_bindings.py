@@ -51,4 +51,3 @@ def test_lists_as_input():
 def test_tuples_as_input():
     my_tuple = [1, 0, 5, 6]
     assert bindings.count(my_tuple) == 4
-

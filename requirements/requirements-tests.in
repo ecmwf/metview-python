@@ -1,3 +1,5 @@
+cfgrib
+netCDF4
 pytest
 pytest-cov
 pytest-flakes

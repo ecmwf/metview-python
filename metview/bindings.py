@@ -68,9 +68,11 @@ class MetviewInvoker:
         pid = os.getpid()
         # print('PYTHON:', pid, ' ', env_file.name, ' ', repr(signal.SIGUSR1))
         signal.signal(signal.SIGUSR1, self.signal_from_metview)
-        # p = subprocess.Popen(['metview', '-edbg', 'tv8 -a', '-slog', '-python-serve', env_file.name, str(pid)], stdout=subprocess.PIPE)
+        # p = subprocess.Popen(['metview', '-edbg', 'tv8 -a', '-slog', '-python-serve',
+        #     env_file.name, str(pid)], stdout=subprocess.PIPE)
         metview_startup_cmd = os.environ.get("METVIEW_PYTHON_START_CMD", 'metview')
-        metview_flags = [metview_startup_cmd, '-nocreatehome', '-python-serve', env_file.name, str(pid)]
+        metview_flags = [metview_startup_cmd, '-nocreatehome', '-python-serve',
+                         env_file.name, str(pid)]
         if self.debug:
             metview_flags.insert(2, '-slog')
             print('Starting Metview using these command args:')
@@ -79,19 +81,22 @@ class MetviewInvoker:
         try:
             subprocess.Popen(metview_flags)
         except Exception as exp:
-            print("Could not run the Metview executable ('" + metview_startup_cmd + "'); check that the binaries for Metview (version 5 at least) are installed and are in the PATH.")
+            print("Could not run the Metview executable ('" + metview_startup_cmd + "'); "
+                  "check that the binaries for Metview (version 5 at least) are installed "
+                  "and are in the PATH.")
             raise exp
-
 
         # wait for Metview to respond...
         wait_start = time.time()
-        while not(self.metview_replied) and (time.time() - wait_start < self.metview_startup_timeout):
+        while (not(self.metview_replied) and
+               (time.time() - wait_start < self.metview_startup_timeout)):
             time.sleep(0.001)
 
         if not(self.metview_replied):
-            raise Exception('Command "metview" did not respond within ' + str(self.metview_startup_timeout) + ' seconds. ' +
-                            'At least Metview 5 is required, so please ensure it is in your PATH, as earlier ' +
-                            'versions will not work with the Python interface.')
+            raise Exception('Command "metview" did not respond within '
+                            + str(self.metview_startup_timeout) + ' seconds. '
+                            'At least Metview 5 is required, so please ensure it is in your PATH, '
+                            'as earlier versions will not work with the Python interface.')
 
         self.read_metview_settings(env_file.name)
 
@@ -137,7 +142,7 @@ class MetviewInvoker:
     def info(self, key):
         """Returns a piece of Metview information that was not set as an env var"""
         return self.info_section[key]
-        
+
     def store_signal_handlers(self):
         """Stores the set of signal handlers that Metview will override"""
         self.sigint   = signal.getsignal(signal.SIGINT)
@@ -148,11 +153,11 @@ class MetviewInvoker:
 
     def restore_signal_handlers(self):
         """Restores the set of signal handlers that Metview has overridden"""
-        signal.signal(signal.SIGINT, self.sigint)
-        signal.signal(signal.SIGHUP, self.sighup)
-        signal.signal(signal.SIGQUIT,self.sighquit)
-        signal.signal(signal.SIGTERM,self.sigterm)
-        signal.signal(signal.SIGALRM,self.sigalarm)
+        signal.signal(signal.SIGINT,  self.sigint)
+        signal.signal(signal.SIGHUP,  self.sighup)
+        signal.signal(signal.SIGQUIT, self.sighquit)
+        signal.signal(signal.SIGTERM, self.sigterm)
+        signal.signal(signal.SIGALRM, self.sigalarm)
 
 
 mi = MetviewInvoker()
@@ -172,17 +177,18 @@ try:
         lib = ffi.dlopen(os.path.join(mv_lib, 'libMvMacro'))
 
 except Exception as exp:
-    print('Error loading Metview/libMvMacro. LD_LIBRARY_PATH=' + os.environ.get("LD_LIBRARY_PATH", ''))
+    print('Error loading Metview/libMvMacro. LD_LIBRARY_PATH='
+          + os.environ.get("LD_LIBRARY_PATH", ''))
     raise exp
 
 
-# The C/C++ code behind lib.p_init() will call marsinit(), which overrides various signal handlers. We don't
-# necessarily want this when running a Python script - we should use the default Python behaviour
-# for handling signals, so we save the current signals before calling p_init() and restore them after.
+# The C/C++ code behind lib.p_init() will call marsinit(), which overrides various signal
+# handlers. We don't necessarily want this when running a Python script - we should use
+# the default Python behaviour for handling signals, so we save the current signals
+# before calling p_init() and restore them after.
 mi.store_signal_handlers()
 lib.p_init()
 mi.restore_signal_handlers()
-
 
 
 # -----------------------------------------------------------------------------
@@ -201,14 +207,12 @@ class Value:
         else:
             lib.p_push_value(self.val_pointer)
 
-
     # if we steal a value pointer from a temporary Value object, we need to
     # ensure that the Metview Value is not destroyed when the temporary object
     # is destroyed by setting its pointer to None
     def steal_val_pointer(self, other):
         self.val_pointer = other.val_pointer
         other.val_pointer = None
-
 
     # enable a more object-oriented interface, e.g. a = fs.interpolate(10, 29.4)
     def __getattr__(self, fname):
@@ -267,7 +271,8 @@ class Request(dict, Value):
                 conversion_dict = {True: 'on', False: 'off'}
                 self[k] = conversion_dict[v]
 
-            # class_ -> class (because 'class' is a Python keyword and cannot be used as a named parameter)
+            # class_ -> class (because 'class' is a Python keyword and cannot be
+            # used as a named parameter)
             elif k == 'class_':
                 self['class'] = v
                 del self['class_']
@@ -292,12 +297,7 @@ class Request(dict, Value):
             lib.p_push_request(r)
 
     def __getitem__(self, index):
-        # we don't often need integer indexing of requests, but we do in the
-        # case of a Display Window object
-        if isinstance(index, int):
-            return subset(self, python_to_mv_index(index))
-        else:
-            return subset(self, index)
+        return subset(self, index)
 
 
 def push_bytes(b):
@@ -342,7 +342,8 @@ def push_vector(npa):
         cffi_buffer = ffi.cast('float*', npa.ctypes.data)
         lib.p_push_vector_from_float32_array(cffi_buffer, len(npa), np.nan)
     else:
-        raise Exception('Only float32 and float64 numPy arrays can be passed to Metview, not ', npa.dtype)
+        raise Exception('Only float32 and float64 numPy arrays can be passed to Metview, not ',
+                        npa.dtype)
 
 
 class FileBackedValue(Value):
@@ -387,13 +388,19 @@ class FileBackedValueWithOperators(FileBackedValue):
     def __lt__(self, other):
         return lower_than(self, other)
 
+    def __eq__(self, other):
+        return equal(self, other)
+
+    def __ne__(self, other):
+        return met_not_eq(self, other)
+
 
 class ContainerValue(Value):
     def __init__(self, val_pointer, macro_index_base, element_type, support_slicing):
         Value.__init__(self, val_pointer)
         self.idx = 0
         self.macro_index_base = macro_index_base
-        self.element_type = element_type # the type of elements that the container contains
+        self.element_type = element_type  # the type of elements that the container contains
         self.support_slicing = support_slicing
 
     def __len__(self):
@@ -411,8 +418,8 @@ class ContainerValue(Value):
                     return None
                 else:
                     f = fields[0]
-                    for i in range(1,len(fields)):
-                        f = merge(f,fields[i])
+                    for i in range(1, len(fields)):
+                        f = merge(f, fields[i])
                     return f
             else:
                 raise Exception('This object does not support extended slicing: ' + str(self))
@@ -424,7 +431,7 @@ class ContainerValue(Value):
 
     def __setitem__(self, index, value):
         if (isinstance(value, self.element_type)):
-            lib.p_set_subvalue(self.val_pointer, index+self.macro_index_base, value.val_pointer)
+            lib.p_set_subvalue(self.val_pointer, index + self.macro_index_base, value.val_pointer)
         else:
             raise Exception('Cannot assign ', value, ' as element of ', self)
 
@@ -437,7 +444,7 @@ class ContainerValue(Value):
             raise StopIteration
         else:
             self.idx += 1
-            return self.__getitem__(self.idx-1)
+            return self.__getitem__(self.idx - 1)
 
 
 class Fieldset(FileBackedValueWithOperators, ContainerValue):
@@ -450,7 +457,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             self.steal_val_pointer(temp)
 
     def append(self, other):
-        temp = merge(self, other)   
+        temp = merge(self, other)
         self.steal_val_pointer(temp)
 
     def to_dataset(self):
@@ -458,7 +465,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         try:
             from cfgrib import xarray_store
         except ImportError:
-            print("Package xarray_grib not found. Try running 'pip install xarray_grib'.")
+            print("Package cfgrib/xarray_store not found. Try running 'pip install cfgrib'.")
             raise
         dataset = xarray_store.open_dataset(self.url())
         return dataset
@@ -567,20 +574,23 @@ def dataset_to_fieldset(val, **kwarg):
     # try to write the xarray as a GRIB file, then read into a fieldset
     import xarray as xr
     import cfgrib
-    
+
     if not isinstance(val, xr.core.dataset.Dataset):
-        raise TypeError('dataset_to_fieldset requires a variable of type xr.core.dataset.Dataset, was supplied with ', builtins.type(val))
+        raise TypeError('dataset_to_fieldset requires a variable of type xr.core.dataset.Dataset;'
+                        ' was supplied with ', builtins.type(val))
 
     f, tmp = tempfile.mkstemp(".grib")
     os.close(f)
 
     try:
-        cfgrib.canonical_dataset_to_grib(val, tmp, **kwarg) # could add keys, e.g. grib_keys={'centre': 'ecmf'})
+        # could add keys, e.g. grib_keys={'centre': 'ecmf'})
+        cfgrib.canonical_dataset_to_grib(val, tmp, **kwarg)
     except:
         print("Error trying to write xarray dataset to GRIB for conversion to Metview Fieldset")
         raise
 
-    fs = read(tmp) # TODO: tell Metview that this is a temporary file that should be deleted when no longer needed
+    # TODO: tell Metview that this is a temporary file that should be deleted when no longer needed
+    fs = read(tmp)
     return fs
 
 
@@ -589,8 +599,8 @@ def push_xarray_dataset(val):
     fs.push()
 
 
-# try_to_push_complex_type exists as a separate function so that we don't have to import xarray at the top
-# of the module - this saves some time on startup
+# try_to_push_complex_type exists as a separate function so that we don't have
+# to import xarray at the top of the module - this saves some time on startup
 def try_to_push_complex_type(val):
     import xarray as xr
     if isinstance(val, xr.core.dataset.Dataset):
@@ -636,7 +646,7 @@ vp = ValuePusher()
 
 def push_arg(n):
     return vp.push_value(n)
-    
+
 
 def dict_to_pushed_args(d):
 
@@ -653,8 +663,9 @@ def dict_to_pushed_args(d):
 # -----------------------------------------------------------------------------
 
 
-def list_from_metview(mlist):
+def list_from_metview(val):
 
+    mlist = lib.p_value_as_list(val)
     result = []
     n = lib.p_list_count(mlist)
     all_vectors = True
@@ -672,13 +683,16 @@ def list_from_metview(mlist):
     return result
 
 
-def datestring_from_metview(mdate):
+def datestring_from_metview(val):
 
+    mdate = string_from_ffi(lib.p_value_as_datestring(val))
     dt = datetime.datetime.strptime(mdate, "%Y-%m-%dT%H:%M:%S")
     return dt
 
 
-def vector_from_metview(vec):
+def vector_from_metview(val):
+
+    vec = lib.p_value_as_vector(val, np.nan)
 
     n = lib.p_vector_count(vec)
     s = lib.p_vector_elem_size(vec)
@@ -692,17 +706,22 @@ def vector_from_metview(vec):
     else:
         raise Exception('Metview vector data type cannot be handled: ', s)
 
-    bsize = n*s
+    bsize = n * s
     c_buffer = ffi.buffer(b, bsize)
     np_array = np.frombuffer(c_buffer, dtype=nptype)
     return np_array
 
 
-def handle_error(msg):
+def handle_error(val):
+    msg = string_from_ffi(lib.p_error_message(val))
     if "Service" in msg and "Examiner" in msg:
         return None
     else:
         return Exception('Metview error: ' + (msg))
+
+
+def string_from_metview(val):
+    return string_from_ffi(lib.p_value_as_string(val))
 
 
 class MvRetVal(Enum):
@@ -729,17 +748,17 @@ class ValueReturner():
     def __init__(self):
         self.funcs = {}
         self.funcs[MvRetVal.tnumber.value]  = lambda val : lib.p_value_as_number(val)
-        self.funcs[MvRetVal.tstring.value]  = lambda val : string_from_ffi(lib.p_value_as_string(val))
+        self.funcs[MvRetVal.tstring.value]  = lambda val : string_from_metview(val)
         self.funcs[MvRetVal.tgrib.value]    = lambda val : Fieldset(val)
         self.funcs[MvRetVal.trequest.value] = lambda val : Request(val)
         self.funcs[MvRetVal.tbufr.value]    = lambda val : Bufr(val)
-        self.funcs[MvRetVal.tgeopts.value]  = lambda val : Geopoints (val)
-        self.funcs[MvRetVal.tlist.value]    = lambda val : list_from_metview(lib.p_value_as_list(val))
+        self.funcs[MvRetVal.tgeopts.value]  = lambda val : Geopoints(val)
+        self.funcs[MvRetVal.tlist.value]    = lambda val : list_from_metview(val)
         self.funcs[MvRetVal.tnetcdf.value]  = lambda val : NetCDF(val)
         self.funcs[MvRetVal.tnil.value]     = lambda val : None
-        self.funcs[MvRetVal.terror.value]   = lambda val : handle_error(string_from_ffi(lib.p_error_message(val)))
-        self.funcs[MvRetVal.tdate.value]    = lambda val : datestring_from_metview(string_from_ffi(lib.p_value_as_datestring(val)))
-        self.funcs[MvRetVal.tvector.value]  = lambda val : vector_from_metview(lib.p_value_as_vector(val, np.nan))
+        self.funcs[MvRetVal.terror.value]   = lambda val : handle_error(val)
+        self.funcs[MvRetVal.tdate.value]    = lambda val : datestring_from_metview(val)
+        self.funcs[MvRetVal.tvector.value]  = lambda val : vector_from_metview(val)
         self.funcs[MvRetVal.todb.value]     = lambda val : Odb(val)
         self.funcs[MvRetVal.ttable.value]   = lambda val : Table(val)
         self.funcs[MvRetVal.tgptset.value]  = lambda val : GeopointSet(val)
@@ -748,7 +767,7 @@ class ValueReturner():
         rt = lib.p_value_type(val)
         try:
             return self.funcs[rt](val)
-        except Exception as exp:
+        except Exception:
             raise Exception('value_from_metview got an unhandled return type: ' + str(rt))
 
 
@@ -762,11 +781,9 @@ def value_from_metview(val):
     return retval
 
 
-
 # -----------------------------------------------------------------------------
 #                        Creating and calling Macro functions
 # -----------------------------------------------------------------------------
-
 
 def _call_function(mfname, *args, **kwargs):
 
@@ -813,7 +830,7 @@ def bind_functions(namespace, module_name=None):
             if module_name:
                 python_func.__module__ = module_name
             namespace[python_name] = python_func
-        #else:
+        # else:
         #    print('metview function %r not bound to python' % metview_name)
     # add the 'mvl' functions, which are written in Macro and therefore not
     # listed by the dictionary() function
@@ -834,7 +851,7 @@ def bind_functions(namespace, module_name=None):
     # FIXME: this needs to be more structured
     namespace['plot'] = plot
     namespace['setoutput'] = setoutput
-    namespace['dataset_to_fieldset']= dataset_to_fieldset
+    namespace['dataset_to_fieldset'] = dataset_to_fieldset
 
     namespace['Fieldset'] = Fieldset
 
@@ -844,12 +861,14 @@ add = make('+')
 call = make('call')
 count = make('count')
 div = make('/')
+equal = make('=')
 filter = make('filter')
 greater_equal_than = make('>=')
 greater_than = make('>')
 lower_equal_than = make('<=')
 lower_than = make('<')
 merge = make('&')
+met_not_eq = make('<>')
 met_plot = make('plot')
 nil = make('nil')
 png_output = make('png_output')
@@ -928,4 +947,3 @@ def setoutput(*args):
     else:
         plot.plot_to_jupyter = False
         met_setoutput(*args)
-
