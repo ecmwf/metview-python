@@ -423,11 +423,11 @@ class ContainerValue(Value):
                     return f
             else:
                 raise Exception('This object does not support extended slicing: ' + str(self))
-        else: # normal index
-            if isinstance(index, str): # can have a string as an index
+        else:  # normal index
+            if isinstance(index, str):  # can have a string as an index
                 return subset(self, index)
             else:
-                return subset(self, index + self.macro_index_base) # numeric index: convert from 0-based indexing
+                return subset(self, index + self.macro_index_base)  # numeric index: 0->1-based
 
     def __setitem__(self, index, value):
         if (isinstance(value, self.element_type)):
@@ -836,8 +836,8 @@ def bind_functions(namespace, module_name=None):
     # listed by the dictionary() function
     for f in ['mvl_ml2hPa', 'mvl_create_netcdf_2d', 'mvl_flextra_etadot', 'mvl_geocircle',
               'mvl_geoline', 'mvl_geopotential_on_ml', 'mvl_mxn_subframes', 'mvl_plot_scm_data',
-              'mvl_regular_layout', 'mvl_regular_layout_area', 'thermo_data_info', 'thermo_parcel_path',
-              'thermo_parcel_area', 'xy_curve', 'potential_temperature',
+              'mvl_regular_layout', 'mvl_regular_layout_area', 'thermo_data_info',
+              'thermo_parcel_path', 'thermo_parcel_area', 'xy_curve', 'potential_temperature',
               'temperature_from_potential_temperature', 'saturation_mixing_ratio', 'mixing_ratio',
               'vapour_pressure', 'saturation_vapour_pressure',
               'lifted_condensation_level', 'divergence', 'vorticity', 'laplacian',
