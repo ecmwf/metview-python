@@ -584,7 +584,7 @@ def dataset_to_fieldset(val, **kwarg):
 
     try:
         # could add keys, e.g. grib_keys={'centre': 'ecmf'})
-        cfgrib.canonical_dataset_to_grib(val, tmp, **kwarg)
+        cfgrib.to_grib(val, tmp, **kwarg)
     except:
         print("Error trying to write xarray dataset to GRIB for conversion to Metview Fieldset")
         raise
