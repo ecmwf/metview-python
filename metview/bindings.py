@@ -1,6 +1,6 @@
 #
-# Copyright 2017-2018 B-Open Solutions srl.
-# Copyright 2017-2018 European Centre for Medium-Range Weather Forecasts (ECMWF).
+# Copyright 2017-2019 B-Open Solutions srl.
+# Copyright 2017-2019 European Centre for Medium-Range Weather Forecasts (ECMWF).
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -388,6 +388,12 @@ class FileBackedValueWithOperators(FileBackedValue):
     def __lt__(self, other):
         return lower_than(self, other)
 
+    def __eq__(self, other):
+        return equal(self, other)
+
+    def __ne__(self, other):
+        return met_not_eq(self, other)
+
 
 class ContainerValue(Value):
     def __init__(self, val_pointer, macro_index_base, element_type, support_slicing):
@@ -418,7 +424,10 @@ class ContainerValue(Value):
             else:
                 raise Exception('This object does not support extended slicing: ' + str(self))
         else:  # normal index
-            return subset(self, index + self.macro_index_base)  # convert from 0-based indexing
+            if isinstance(index, str):  # can have a string as an index
+                return subset(self, index)
+            else:
+                return subset(self, index + self.macro_index_base)  # numeric index: 0->1-based
 
     def __setitem__(self, index, value):
         if (isinstance(value, self.element_type)):
@@ -481,18 +490,15 @@ class Geopoints(FileBackedValueWithOperators, ContainerValue):
             print("Package pandas not found. Try running 'pip install pandas'.")
             raise
 
-        tp = self.dtype()
+        # create a dictionary of columns (note that we do not include 'time'
+        # because it is incorporated into 'date')
+        cols = self.columns()
+        if 'time' in cols:
+            cols.remove('time')
 
-        pddict = {'latitude'  : self.latitudes(),
-                  'longitude' : self.longitudes(),
-                  'value'     : self.values()}
-
-        if tp in ('standard', 'xy_vector', 'polar_vector', 'standard_string'):
-            pddict['level'] = self.levels()
-            pddict['date']  = self.dates()
-
-        if tp in ('xy_vector', 'polar_vector'):
-            pddict['value2'] = self.value2s()
+        pddict = {}
+        for c in cols:
+            pddict[c] = self[c]
 
         df = pd.DataFrame(pddict)
         return df
@@ -578,7 +584,7 @@ def dataset_to_fieldset(val, **kwarg):
 
     try:
         # could add keys, e.g. grib_keys={'centre': 'ecmf'})
-        cfgrib.canonical_dataset_to_grib(val, tmp, **kwarg)
+        cfgrib.to_grib(val, tmp, **kwarg)
     except:
         print("Error trying to write xarray dataset to GRIB for conversion to Metview Fieldset")
         raise
@@ -830,7 +836,12 @@ def bind_functions(namespace, module_name=None):
     # listed by the dictionary() function
     for f in ['mvl_ml2hPa', 'mvl_create_netcdf_2d', 'mvl_flextra_etadot', 'mvl_geocircle',
               'mvl_geoline', 'mvl_geopotential_on_ml', 'mvl_mxn_subframes', 'mvl_plot_scm_data',
-              'mvl_regular_layout', 'mvl_regular_layout_area']:
+              'mvl_regular_layout', 'mvl_regular_layout_area', 'thermo_data_info',
+              'thermo_parcel_path', 'thermo_parcel_area', 'xy_curve', 'potential_temperature',
+              'temperature_from_potential_temperature', 'saturation_mixing_ratio', 'mixing_ratio',
+              'vapour_pressure', 'saturation_vapour_pressure',
+              'lifted_condensation_level', 'divergence', 'vorticity', 'laplacian',
+              'geostrophic_wind_pl', 'geostrophic_wind_ml']:
         namespace[f] = make(f)
 
     # HACK: some fuctions are missing from the 'dictionary' call.
@@ -850,12 +861,14 @@ add = make('+')
 call = make('call')
 count = make('count')
 div = make('/')
+equal = make('=')
 filter = make('filter')
 greater_equal_than = make('>=')
 greater_than = make('>')
 lower_equal_than = make('<=')
 lower_than = make('<')
 merge = make('&')
+met_not_eq = make('<>')
 met_plot = make('plot')
 nil = make('nil')
 png_output = make('png_output')
