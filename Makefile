@@ -4,7 +4,7 @@ IMAGE := $(PACKAGE)
 MODULE := $(PACKAGE)
 PYTHONS := python3.6 python3.5 python3.4 pypy3
 
-SOURCE := MetviewBundle-2018.02.1-Source.tar.gz
+SOURCE := MetviewBundle-2019.02.0-Source.tar.gz
 SOURCE_URL := https://software.ecmwf.int/wiki/download/attachments/51731119/$(SOURCE)
 
 # uncomment after running the command 'make local-wheel' in the xarray-grib folder
