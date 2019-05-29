@@ -708,7 +708,8 @@ def vector_from_metview(val):
 
     bsize = n * s
     c_buffer = ffi.buffer(b, bsize)
-    np_array = np.frombuffer(c_buffer, dtype=nptype)
+    np_array = (np.frombuffer(c_buffer, dtype=nptype)).copy() # copy so that we can destroy
+    lib.p_destroy_value(val)
     return np_array
 
 
