@@ -44,7 +44,7 @@ RUN cd /tmp \
     && mkdir /tmp/build \
     && cd /tmp/build \
     && cmake $CMAKEFLAGS /tmp/source \
-    && make -j 4 \
+    && make -j 4 ; make \
     && make -j 4 install \
     && ldconfig /usr/local/lib \
  && rm -rf /tmp/*
