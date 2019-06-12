@@ -1,6 +1,13 @@
 
-Changelog for metview
-=====================
+Changelog for Metview's Python interface
+========================================
+
+1.2.0 ()
+------------------
+
+- added integral() function
+- fixed memory leak when exporting vectors as numpy arrays
+
 
 1.1.0 (2019-03-04)
 ------------------
