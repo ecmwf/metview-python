@@ -61,7 +61,7 @@ class MetviewInvoker:
             print('MetviewInvoker: Invoking Metview')
         self.persistent_session = False
         self.metview_replied = False
-        self.metview_startup_timeout = 8  # seconds
+        self.metview_startup_timeout = int(os.environ.get("METVIEW_PYTHON_START_TIMEOUT", '8')) # seconds
 
         # start Metview with command-line parameters that will let it communicate back to us
         env_file = tempfile.NamedTemporaryFile(mode='rt')
