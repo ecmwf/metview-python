@@ -5,6 +5,8 @@ Changelog for Metview's Python interface
 1.2.0 ()
 ------------------
 
+- Metview startup timeout configurable via environment variable METVIEW_PYTHON_START_TIMEOUT (in seconds)
+- Metview startup timeout default set to 8 seconds in case of busy systems
 - added integral() function
 - fixed memory leak when exporting vectors as numpy arrays
 
