@@ -42,7 +42,7 @@ class MetviewInvoker:
     def __init__(self):
         """
         Constructor - starts a Metview session and reads its environment information
-        Raises an exception if Metview does not respond within 5 seconds
+        Raises an exception if Metview does not respond within so-many seconds
         """
 
         self.debug = (os.environ.get("METVIEW_PYTHON_DEBUG", '0') == '1')
@@ -61,7 +61,7 @@ class MetviewInvoker:
             print('MetviewInvoker: Invoking Metview')
         self.persistent_session = False
         self.metview_replied = False
-        self.metview_startup_timeout = 5  # seconds
+        self.metview_startup_timeout = 8  # seconds
 
         # start Metview with command-line parameters that will let it communicate back to us
         env_file = tempfile.NamedTemporaryFile(mode='rt')
