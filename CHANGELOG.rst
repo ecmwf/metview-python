@@ -2,7 +2,7 @@
 Changelog for Metview's Python interface
 ========================================
 
-1.2.0 ()
+1.2.0 (2019-07-11)
 ------------------
 
 - Metview startup timeout configurable via environment variable METVIEW_PYTHON_START_TIMEOUT (in seconds)
