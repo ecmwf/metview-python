@@ -2,6 +2,12 @@
 Changelog for Metview's Python interface
 ========================================
 
+1.3.0 (2019-??-??)
+------------------
+
+- fixed memory leak when returning a list of items
+
+
 1.2.0 (2019-07-11)
 ------------------
 

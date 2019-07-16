@@ -680,6 +680,9 @@ def list_from_metview(val):
     if all_vectors and n > 0:
         result = np.stack(result, axis=0)
 
+    # delete the Metview list - this will decrement the reference counts of its objects
+    lib.p_destroy_value(val)
+
     return result
 
 
