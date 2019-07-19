@@ -6,6 +6,7 @@ Changelog for Metview's Python interface
 ------------------
 
 - fixed memory leak when returning a list of items
+- allow bool-typed numpy arrays as input
 
 
 1.2.0 (2019-07-11)
