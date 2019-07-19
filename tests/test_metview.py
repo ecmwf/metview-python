@@ -491,6 +491,15 @@ def test_filter_gpt():
     assert mv.count(filter_out) == 38
 
 
+def test_bool_filter_gpt():
+    condition = TEST_GEOPOINTS.latitudes() > 58
+    filter_out = TEST_GEOPOINTS.filter(condition)
+    assert mv.type(filter_out) == 'geopoints'
+    assert mv.count(filter_out) == 3
+    assert(np.array_equal(filter_out.latitudes(), np.array([60.14, 61.2, 59.53])))
+    assert(np.array_equal(filter_out.values(), np.array([277.1, 278.8, 276.5])))
+
+
 def test_sqrt_geopoints():
     sqrt_out = mv.sqrt(TEST_GEOPOINTS)
     maximum = mv.maxvalue(sqrt_out)
@@ -1120,7 +1129,7 @@ def test_vector_find():
     assert(np.array_equal(f, np.array([0, 4], dtype=np.float64)))
 
 
-def test_set_vector_from_numpy_array():
+def test_set_vector_float64_from_numpy_array():
     r = np.arange(1, 21, dtype=np.float64)
     assert(mv.type(r) == 'vector')
     assert(mv.dtype(r) == 'float64')
@@ -1135,6 +1144,22 @@ def test_set_vector_float32_from_numpy_array():
         assert(mv.dtype(r) == 'float32')
         assert(mv.count(r) == 20)
         assert(mv.maxvalue(r) == 20)
+
+
+def test_set_vector_10_bool_from_numpy_array():
+    r = np.array([1, 0, 0, 1, 1, 0, 1], dtype=np.bool)
+    assert(mv.type(r) == 'vector')
+    assert(mv.dtype(r) == 'float32')
+    assert(mv.count(r) == 7)
+    assert(np.array_equal(mv.abs(r), np.array([1, 0, 0, 1, 1, 0, 1], dtype=np.float32)))
+
+
+def test_set_vector_TF_bool_from_numpy_array():
+    r = np.array([True, False, False, True, True, False, True], dtype=np.bool)
+    assert(mv.type(r) == 'vector')
+    assert(mv.dtype(r) == 'float32')
+    assert(mv.count(r) == 7)
+    assert(np.array_equal(mv.abs(r), np.array([1, 0, 0, 1, 1, 0, 1], dtype=np.float32)))
 
 
 def test_simple_vector_with_nans():
