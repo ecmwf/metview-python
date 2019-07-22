@@ -441,6 +441,7 @@ class ContainerValue(Value):
             raise Exception('Cannot assign ', value, ' as element of ', self)
 
     def __iter__(self):
+        self.idx = 0
         return self
 
     def __next__(self):

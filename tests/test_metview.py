@@ -337,6 +337,53 @@ def test_fieldset_iterator():
         assert np.isclose(avg[i], iteravg[i])
 
 
+def test_fieldset_iterator_multiple():
+    grib = mv.read(os.path.join(PATH, 't_for_xs.grib'))
+    avg = mv.average(grib)
+    assert(len(avg) == 6)
+    for i in [1,2,3]:
+        iteravg = []
+        for f in grib:
+            iteravg.append(mv.average(f))
+        assert(len(iteravg) == len(avg))
+        for i in range(0, 6):
+            assert np.isclose(avg[i], iteravg[i])
+
+
+def test_fieldset_iterator_with_zip():
+    # this tests something different with the iterator - this does not try to
+    # 'go off the edge' of the fieldset, because the length is determined by
+    # the list of levels
+    grib = mv.read(os.path.join(PATH, 't_for_xs.grib'))
+    ref_levs = mv.grib_get_long(grib, "level")
+    assert(len(ref_levs) == 6)
+    levs1 = []
+    levs2 = []
+    for k,f in zip(grib.grib_get_long("level"),grib):
+        levs1.append(k)
+        levs2.append(f.grib_get_long("level"))
+    assert(levs1 == ref_levs)
+    assert(levs2 == ref_levs)
+
+
+def test_fieldset_iterator_with_zip_multiple():
+    # same as test_fieldset_iterator_with_zip() but multiple times
+    grib = mv.read(os.path.join(PATH, 't_for_xs.grib'))
+    ref_levs = mv.grib_get_long(grib, "level")
+    assert(len(ref_levs) == 6)
+    for i in [1,2,3]:
+        levs1 = []
+        levs2 = []
+        for k,f in zip(grib.grib_get_long("level"),grib):
+            levs1.append(k)
+            levs2.append(f.grib_get_long("level"))
+        print(levs1)
+        print(levs2)
+        print(mv.grib_get_long(grib, "level"))
+        assert(levs1 == ref_levs)
+        assert(levs2 == ref_levs)
+
+
 def test_fieldset_assignment_to_field_index():
     grib = mv.read(os.path.join(PATH, 't_for_xs.grib'))
     # check numbers before assignment
