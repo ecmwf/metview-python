@@ -45,20 +45,23 @@ def test_describe():
 
 
 def test_definitions():
+    plotting_enabled = (mv.is_feature_available('plotting') == 1)
     mcont_def = mv.mcont({'legend': True})
     msymb_def = mv.msymb({'symbol_type': 'marker'})
     mcoast_def = mv.mcoast({'map_coastline_land_shade': True})
     mobs_def = mv.mobs({'obs_temperature': False})
     mtext_def = mv.mtext({'text_font_size': '0.80'})
     geoview_def = mv.geoview({'map_projection': 'polar_stereographic'})
-    ps_output_def = mv.ps_output({'output_name': 'test'})
+    if plotting_enabled:
+        ps_output_def = mv.ps_output({'output_name': 'test'})
     assert mcont_def['LEGEND'] == 'ON'
     assert msymb_def['SYMBOL_TYPE'] == 'MARKER'
     assert mcoast_def['MAP_COASTLINE_LAND_SHADE'] == 'ON'
     assert mobs_def['OBS_TEMPERATURE'] == 'OFF'
     assert mtext_def['TEXT_FONT_SIZE'] == 0.8
     assert geoview_def['MAP_PROJECTION'] == 'POLAR_STEREOGRAPHIC'
-    assert ps_output_def['OUTPUT_NAME'] == 'test'
+    if plotting_enabled:
+        assert ps_output_def['OUTPUT_NAME'] == 'test'
 
 
 def test_print():
@@ -982,6 +985,10 @@ def test_met_plot():
 
 
 def test_plot_1():
+    if mv.is_feature_available('plotting') == 0:
+        print('Skipping test_plot_1 because plotting is not enabled in this Metview version')
+        return
+
     output_name = file_in_testdir('test_plot_1')
     mv.setoutput(mv.png_output(output_name=output_name))
     grid_shade = {
@@ -1002,6 +1009,10 @@ def test_plot_1():
 
 
 def test_plot_2():
+    if mv.is_feature_available('plotting') == 0:
+        print('Skipping test_plot_2 because plotting is not enabled in this Metview version')
+        return
+
     output_name = file_in_testdir('test_plot_2')
     png = mv.png_output(output_name=output_name)
     grid_shade = {
@@ -1043,6 +1054,10 @@ def test_plot_3():
 
 
 def test_plot_2_pages():
+    if mv.is_feature_available('plotting') == 0:
+        print('Skipping test_plot_2_pages because plotting is not enabled in this Metview version')
+        return
+
     output_name = file_in_testdir('test_plot_2_pages')
     png = mv.png_output(output_name=output_name)
     degraded_field = mv.read(data=TEST_FIELDSET, grid=[4, 4])
