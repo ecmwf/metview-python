@@ -639,6 +639,26 @@ def test_geopoints_nonequality_operator():
     assert(vdiff[15] == 1)
 
 
+def test_geopoints_set_dates():
+    g = mv.create_geo(3)
+    
+    # set dates from datetimes
+    dts = [datetime.datetime(2017, 4, 27),
+           datetime.datetime(2018, 5, 28),
+           datetime.datetime(2019, 6, 29) ]
+    h = mv.set_dates(g, dts)
+    assert(h.dates() == dts)
+
+    # set dates from integers
+    dts = [20120403,
+           20131102,
+           20010101 ]
+    h = mv.set_dates(g, dts)
+    assert(h.dates() == [datetime.datetime(2012, 4, 3),
+                         datetime.datetime(2013, 11, 2),
+                         datetime.datetime(2001, 1, 1)])
+
+
 def test_geopoints_fieldset_operator():
     diff = TEST_FIELDSET - TEST_GEOPOINTS
     assert mv.type(diff) == 'geopoints'
