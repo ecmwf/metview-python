@@ -234,7 +234,7 @@ class Value:
 class Request(dict, Value):
     verb = "UNKNOWN"
 
-    def __init__(self, req):
+    def __init__(self, req, myverb = None):
         self.val_pointer = None
 
         # initialise from Python object (dict/Request)
@@ -244,6 +244,9 @@ class Request(dict, Value):
             if isinstance(req, Request):
                 self.verb = req.verb
                 self.val_pointer = req.val_pointer
+            else:
+                if myverb != None:
+                    self.set_verb(myverb)
 
         # initialise from a Macro pointer
         else:
@@ -276,6 +279,13 @@ class Request(dict, Value):
             elif k == 'class_':
                 self['class'] = v
                 del self['class_']
+                
+    def set_verb(self, v):
+        self.verb = v
+
+    def verb(self):
+        return self.verb
+
 
     def push(self):
         # if we have a pointer to a Metview Value, then use that because it's more
@@ -864,6 +874,7 @@ def bind_functions(namespace, module_name=None):
     namespace['dataset_to_fieldset'] = dataset_to_fieldset
 
     namespace['Fieldset'] = Fieldset
+    namespace['Request'] = Request
 
 
 # some explicit bindings are used here
