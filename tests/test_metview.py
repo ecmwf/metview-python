@@ -1423,7 +1423,7 @@ def test_request():
     assert(isinstance(r, mv.Request))
     assert(isinstance(r, dict))
     r.set_verb('MSYMB')
-    assert(r.verb == "MSYMB")
+    assert(r.get_verb() == "MSYMB")
     assert(r['param1'] == 'value1')
     assert(r['param2'] == 180)
     r['param3'] = 108
@@ -1435,11 +1435,9 @@ def test_request():
     r = mv.Request(d, "MCOAST")
     assert(isinstance(r, mv.Request))
     assert(isinstance(r, dict))
-    assert(r.verb == "MCOAST")
+    assert(r.get_verb() == "MCOAST")
     assert(r['param1'] == 'value1')
     assert(r['param2'] == 180)
     r['param3'] = 108
     assert(r['param3'] == 108)
 
-
-test_request()

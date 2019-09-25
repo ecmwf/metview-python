@@ -283,7 +283,7 @@ class Request(dict, Value):
     def set_verb(self, v):
         self.verb = v
 
-    def verb(self):
+    def get_verb(self):
         return self.verb
 
 
