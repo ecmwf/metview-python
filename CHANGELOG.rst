@@ -5,6 +5,7 @@ Changelog for Metview's Python interface
 1.3.0 (2019-10-02)
 ------------------
 
+- export the Request class
 - fixed memory leak when returning a list of items
 - allow bool-typed numpy arrays as input
 - fixed issue where the Fieldset iterator could fail if used multiple times

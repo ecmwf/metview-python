@@ -1413,3 +1413,33 @@ def test_flextra():
     assert(np.isclose(vals[1].mean(), 18.014544))
     assert(np.isclose(vals[1].std(), 14.98830786689625))
     assert(vals[2][0] == datetime.datetime(2012, 1, 11, 3, 0, 0))
+
+
+def test_request():
+    # set verb separately
+    d = {'param1' : 'value1',
+         'param2' : 180}
+    r = mv.Request(d)
+    assert(isinstance(r, mv.Request))
+    assert(isinstance(r, dict))
+    r.set_verb('MSYMB')
+    assert(r.verb == "MSYMB")
+    assert(r['param1'] == 'value1')
+    assert(r['param2'] == 180)
+    r['param3'] = 108
+    assert(r['param3'] == 108)
+
+    # set verb in constructor
+    d = {'param1' : 'value1',
+         'param2' : 180}
+    r = mv.Request(d, "MCOAST")
+    assert(isinstance(r, mv.Request))
+    assert(isinstance(r, dict))
+    assert(r.verb == "MCOAST")
+    assert(r['param1'] == 'value1')
+    assert(r['param2'] == 180)
+    r['param3'] = 108
+    assert(r['param3'] == 108)
+
+
+test_request()
