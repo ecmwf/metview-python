@@ -2,7 +2,7 @@
 Changelog for Metview's Python interface
 ========================================
 
-1.3.0 (2019-10-02)
+1.3.0 (2019-09-26)
 ------------------
 
 - export the Request class
