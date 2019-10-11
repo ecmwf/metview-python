@@ -861,7 +861,7 @@ def bind_functions(namespace, module_name=None):
               'temperature_from_potential_temperature', 'saturation_mixing_ratio', 'mixing_ratio',
               'vapour_pressure', 'saturation_vapour_pressure',
               'lifted_condensation_level', 'divergence', 'vorticity', 'laplacian',
-              'geostrophic_wind_pl', 'geostrophic_wind_ml', 'integral']:
+              'geostrophic_wind_pl', 'geostrophic_wind_ml', 'integral', 'ml_to_hl']:
         namespace[f] = make(f)
 
     # HACK: some fuctions are missing from the 'dictionary' call.
