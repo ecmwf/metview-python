@@ -2,7 +2,7 @@
 Changelog for Metview's Python interface
 ========================================
 
-1.3.2 (2019-12-09)
+1.3.2 (2019-12-06)
 ------------------
 - added support for reflected operators on Fieldsets, e.g. "2 * Fieldset"
   - done for addition, subtraction, multiplication, division and power
