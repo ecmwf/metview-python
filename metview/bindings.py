@@ -379,17 +379,32 @@ class FileBackedValueWithOperators(FileBackedValue):
     def __add__(self, other):
         return add(self, other)
 
+    def __radd__(self, other):
+        return add(other, self)
+
     def __sub__(self, other):
         return sub(self, other)
+
+    def __rsub__(self, other):
+        return sub(other, self)
 
     def __mul__(self, other):
         return prod(self, other)
 
+    def __rmul__(other, self):
+        return prod(other, self)
+
     def __truediv__(self, other):
         return div(self, other)
 
+    def __rtruediv__(self, other):
+        return div(other, self)
+
     def __pow__(self, other):
         return power(self, other)
+
+    def __rpow__(self, other):
+        return power(other, self)
 
     def __ge__(self, other):
         return greater_equal_than(self, other)
@@ -466,7 +481,7 @@ class ContainerValue(Value):
 class Fieldset(FileBackedValueWithOperators, ContainerValue):
 
     def __init__(self, val_pointer=None, path=None):
-        FileBackedValue.__init__(self, val_pointer)
+        FileBackedValueWithOperators.__init__(self, val_pointer)
         ContainerValue.__init__(self, val_pointer, 1, Fieldset, True)
         if path is not None:
             temp = read(path)

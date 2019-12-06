@@ -208,6 +208,12 @@ def test_add():
     assert np.isclose(maximum, MAX_VALUE + 2)
 
 
+def test_add_reverse():
+    plus_two = 2 + TEST_FIELDSET
+    maximum = mv.maxvalue(plus_two)
+    assert np.isclose(maximum, MAX_VALUE + 2)
+
+
 def test_add_fieldsets():
     sum = TEST_FIELDSET + TEST_FIELDSET
     maximum = mv.maxvalue(sum)
@@ -218,6 +224,12 @@ def test_sub():
     minus_two = TEST_FIELDSET - 2
     maximum = mv.maxvalue(minus_two)
     assert np.isclose(maximum, MAX_VALUE - 2)
+
+
+def test_sub_reverse():
+    minus_two = 2 - TEST_FIELDSET
+    minimum = mv.minvalue(minus_two)
+    assert np.isclose(minimum, 2 - MAX_VALUE)
 
 
 def test_sub_fieldsets():
@@ -238,6 +250,12 @@ def test_product():
     assert np.isclose(maximum, MAX_VALUE * 2)
 
 
+def test_product_reverse():
+    times_two = 2 * TEST_FIELDSET
+    maximum = mv.maxvalue(times_two)
+    assert np.isclose(maximum, MAX_VALUE * 2)
+
+
 def test_product_fieldsets():
     prod = TEST_FIELDSET * TEST_FIELDSET
     maximum = mv.maxvalue(prod)
@@ -250,6 +268,12 @@ def test_division():
     assert np.isclose(maximum, MAX_VALUE / 2)
 
 
+def test_division_reverse():
+    divided_two = 2 / TEST_FIELDSET
+    minimum = mv.minvalue(divided_two)
+    assert np.isclose(minimum, 2 / MAX_VALUE)
+
+
 def test_division_fieldsets():
     div = TEST_FIELDSET / TEST_FIELDSET
     maximum = mv.maxvalue(div)
@@ -260,6 +284,16 @@ def test_power():
     raised_two = TEST_FIELDSET ** 2
     maximum = mv.maxvalue(raised_two)
     assert np.isclose(maximum, MAX_VALUE ** 2)
+
+
+def test_power_reverse():
+    mask = (TEST_FIELDSET > 290)
+    FS_3_AND_4 = (mask * 3) + (1 - mask) * 4
+    raised = 2 ** FS_3_AND_4
+    minimum = mv.minvalue(raised)
+    maximum = mv.maxvalue(raised)
+    assert np.isclose(minimum, 2 ** 3)
+    assert np.isclose(maximum, 2 ** 4)
 
 
 def test_distance():
