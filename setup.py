@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #
-# Copyright 2017-2019 B-Open Solutions srl.
-# Copyright 2017-2019 European Centre for Medium-Range Weather Forecasts (ECMWF).
+# Copyright 2017-2020 B-Open Solutions srl.
+# Copyright 2017-2020 European Centre for Medium-Range Weather Forecasts (ECMWF).
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ def read(fname):
     return io.open(file_path, encoding='utf-8').read()
 
 
-version = '1.3.2'
+version = '1.3.3'
 
 
 setuptools.setup(
