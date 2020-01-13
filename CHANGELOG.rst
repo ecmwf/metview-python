@@ -2,7 +2,7 @@
 Changelog for Metview's Python interface
 ========================================
 
-1.3.3 (2020-??-??)
+1.3.3 (2020-01-13)
 ------------------
 - fixed memory leak in Fieldset.append() method
 
