@@ -1300,6 +1300,20 @@ def test_numpy_array_from_zero_length_vector():
     assert(len(v) == 0)
 
 
+def test_numpy_array_slices_to_vector():
+    npa = np.array([5, 3, 4, 9, 1, 4.2, 7, 8, 9])
+    v = mv.call('+', npa, 0)
+    assert(np.array_equal(v, np.array([5, 3, 4, 9, 1, 4.2, 7, 8, 9])))
+    v = mv.call('+', npa[2:5], 0)
+    assert(np.array_equal(v, np.array([4, 9, 1])))
+    v = mv.call('+', npa[2:-1], 0)
+    assert(np.array_equal(v, np.array([4, 9, 1, 4.2, 7, 8])))
+    v = mv.call('+', npa[::2], 0)
+    assert(np.array_equal(v, np.array([5, 4, 1,  7, 9])))
+    v = mv.call('+', npa[2:7:3], 0)
+    assert(np.array_equal(v, np.array([4, 4.2])))
+
+
 def test_oo_interface_on_fieldsets():
     fs = mv.read(os.path.join(PATH, 't_for_xs.grib'))
     assert(np.isclose(fs.maxvalue(), 320.434))

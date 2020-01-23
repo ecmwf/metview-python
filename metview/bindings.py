@@ -344,6 +344,11 @@ def push_datetime_date(d):
 
 def push_vector(npa):
 
+    # if this is a view with a non-contiguous step, make a copy so that
+    # we get contiguous data
+    if not npa.flags['C_CONTIGUOUS']:
+        npa = npa.copy()
+
     # convert numpy array to CData
     dtype = npa.dtype
     if dtype == np.float64:    #  can directly pass the data buffer
