@@ -1314,6 +1314,18 @@ def test_numpy_array_slices_to_vector():
     assert(np.array_equal(v, np.array([4, 4.2])))
 
 
+def test_numpy_array_slices_from_2d_to_vector():
+    latlons = np.array([[50.,15.],[-80.,0.],[40.,-5.]])
+    lats = latlons[:,0]
+    lons = latlons[:,1]
+    ref_lats = np.array([50.,-80.,40.])
+    ref_lons = np.array([15.,0.,-5])
+    vlats = mv.call('+', lats, 0)
+    vlons = mv.call('+', lons, 0)
+    assert(np.array_equal(vlats, ref_lats))
+    assert(np.array_equal(vlons, ref_lons))
+
+
 def test_oo_interface_on_fieldsets():
     fs = mv.read(os.path.join(PATH, 't_for_xs.grib'))
     assert(np.isclose(fs.maxvalue(), 320.434))
