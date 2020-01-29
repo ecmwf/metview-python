@@ -16,9 +16,12 @@
 
 # requires a Python 3 interpreter
 import sys
+
 if sys.version_info[0] < 3:
-    raise EnvironmentError("Metview's Python interface requires Python 3. You are using Python "
-                           + repr(sys.version_info))
+    raise EnvironmentError(
+        "Metview's Python interface requires Python 3. You are using Python "
+        + repr(sys.version_info)
+    )
 
 
 # if the user has started via "python -m metview selfcheck"

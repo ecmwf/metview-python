@@ -28,35 +28,35 @@ import metview as mv
 
 
 # read 2m temperature
-t2 = mv.read('./t2_for_UC-04.grib')
+t2 = mv.read("./t2_for_UC-04.grib")
 
 # read geopotential
-z = mv.read('./z_for_UC-04.grib')
+z = mv.read("./z_for_UC-04.grib")
 
 t_shade_c = mv.mcont(
-    legend = True,
-    contour_highlight = False,
-    contour_level_selection_type = "interval",
-    contour_interval = 10,
-    contour_shade = True,
-    contour_shade_max_level = 60,
-    contour_shade_min_level = -60,
-    contour_shade_method = "area_fill",
-    contour_shade_max_level_colour = "red",
-    contour_shade_min_level_colour = "blue",
-    contour_shade_colour_direction = "clockwise"
- )
-
-z_isolines = mv.mcont(
-    legend = True,
-    contour_line_thickness = 2,
-    contour_line_colour = 'black',
-    contour_highlight_colour = 'black',
-    contour_highlight_thickness = 4,
-    contour_level_selection_type = 'interval',
-    contour_interval = 5,
-    contour_legend_text = 'Geopotential',
+    legend=True,
+    contour_highlight=False,
+    contour_level_selection_type="interval",
+    contour_interval=10,
+    contour_shade=True,
+    contour_shade_max_level=60,
+    contour_shade_min_level=-60,
+    contour_shade_method="area_fill",
+    contour_shade_max_level_colour="red",
+    contour_shade_min_level_colour="blue",
+    contour_shade_colour_direction="clockwise",
 )
 
-mv.setoutput(mv.png_output(output_width = 1000, output_name = './gribplot'))
+z_isolines = mv.mcont(
+    legend=True,
+    contour_line_thickness=2,
+    contour_line_colour="black",
+    contour_highlight_colour="black",
+    contour_highlight_thickness=4,
+    contour_level_selection_type="interval",
+    contour_interval=5,
+    contour_legend_text="Geopotential",
+)
+
+mv.setoutput(mv.png_output(output_width=1000, output_name="./gribplot"))
 mv.plot(t2, t_shade_c, z, z_isolines)
