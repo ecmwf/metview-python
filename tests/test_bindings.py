@@ -1,4 +1,3 @@
-
 import os
 
 from metview import bindings
@@ -22,12 +21,12 @@ def test_push_number():
 
 def test_dict_to_pushed_request():
     dict = {
-        'param1': True,
-        'param2': False,
-        'param3': 10,
-        'param4': 10.5,
-        'param5': 'metview',
-        'param6': ['1', '2', '3']
+        "param1": True,
+        "param2": False,
+        "param3": 10,
+        "param4": 10.5,
+        "param5": "metview",
+        "param6": ["1", "2", "3"],
     }
     bindings.dict_to_pushed_args(dict)
 
@@ -35,12 +34,12 @@ def test_dict_to_pushed_request():
 def test_bind_functions():
     namespace = {}
 
-    bindings.bind_functions(namespace, module_name='metview')
-    result = namespace['dictionary']
+    bindings.bind_functions(namespace, module_name="metview")
+    result = namespace["dictionary"]
 
-    assert 'dictionary' in namespace
-    assert result.__name__ == result.__qualname__ == 'dictionary'
-    assert result.__module__ == 'metview'
+    assert "dictionary" in namespace
+    assert result.__name__ == result.__qualname__ == "dictionary"
+    assert result.__module__ == "metview"
 
 
 def test_lists_as_input():

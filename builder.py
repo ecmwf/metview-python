@@ -5,13 +5,9 @@ import sys
 
 ffibuilder = cffi.FFI()
 ffibuilder.set_source(
-    "metview._bindings",
-    '#include <metview.h>',
-    libraries=["MvMacro"],
+    "metview._bindings", "#include <metview.h>", libraries=["MvMacro"],
 )
-ffibuilder.cdef(
-    open("metview/metview.h").read()
-)
+ffibuilder.cdef(open("metview/metview.h").read())
 
 if __name__ == "__main__":
     try:
