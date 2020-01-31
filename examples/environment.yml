@@ -1,0 +1,7 @@
+channels:
+  - conda-forge
+dependencies:
+  - metview-batch
+  - pip
+  - pip:
+    - metview
