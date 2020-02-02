@@ -106,9 +106,6 @@ class MetviewInvoker:
             )
 
         self.read_metview_settings(env_file.name)
-
-        # fix for binder-hosted notebooks, where PWD and os.cwd() do not seem to be in sync
-        os.putenv('PWD', os.getcwd())
         
         # when the Python session terminates, we should destroy this object so that the Metview
         # session is properly cleaned up. We can also do this in a __del__ function, but there can
@@ -202,6 +199,8 @@ mi.store_signal_handlers()
 lib.p_init()
 mi.restore_signal_handlers()
 
+# fix for binder-hosted notebooks, where PWD and os.cwd() do not seem to be in sync
+os.putenv('PWD', os.getcwd())
 
 # -----------------------------------------------------------------------------
 #                        Classes to handle complex Macro types
