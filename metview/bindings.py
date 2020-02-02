@@ -59,6 +59,9 @@ class MetviewInvoker:
             os.environ.get("METVIEW_PYTHON_START_TIMEOUT", "8")
         )  # seconds
 
+        # fix for binder-hosted notebooks, where PWD and os.cwd() do not seem to be in sync
+        os.putenv('PWD', os.getcwd())
+        
         # start Metview with command-line parameters that will let it communicate back to us
         env_file = tempfile.NamedTemporaryFile(mode="rt")
         pid = os.getpid()
