@@ -58,9 +58,6 @@ class MetviewInvoker:
         self.metview_startup_timeout = int(
             os.environ.get("METVIEW_PYTHON_START_TIMEOUT", "8")
         )  # seconds
-
-        # fix for binder-hosted notebooks, where PWD and os.cwd() do not seem to be in sync
-        os.putenv('PWD', os.getcwd())
         
         # start Metview with command-line parameters that will let it communicate back to us
         env_file = tempfile.NamedTemporaryFile(mode="rt")
@@ -110,6 +107,9 @@ class MetviewInvoker:
 
         self.read_metview_settings(env_file.name)
 
+        # fix for binder-hosted notebooks, where PWD and os.cwd() do not seem to be in sync
+        os.putenv('PWD', os.getcwd())
+        
         # when the Python session terminates, we should destroy this object so that the Metview
         # session is properly cleaned up. We can also do this in a __del__ function, but there can
         # be problems with the order of cleanup - e.g. the 'os' module might be deleted before
