@@ -4,4 +4,4 @@ dependencies:
   - metview-batch
   - pip
   - pip:
-    - metview
+    - metview >=1.3.4
