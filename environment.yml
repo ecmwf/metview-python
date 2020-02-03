@@ -6,3 +6,5 @@ dependencies:
   - pip:
     - metview >=1.3.4
     - scipy
+    - matplotlib
+    - cdsapi
