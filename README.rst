@@ -6,6 +6,14 @@ Python interface to Metview, a meteorological workstation and batch system for a
 See documentation at https://confluence.ecmwf.int/metview/Metview's+Python+Interface
 
 
+Try the example notebooks on Binder!
+------------------------------------
+Click the link below to start a Binder session to try the examples online now:
+
+.. image:: https://mybinder.org/badge_logo.svg
+ :target: https://mybinder.org/v2/gh/ecmwf/metview-python/master?filepath=examples
+
+
 Requirements
 ------------
 
