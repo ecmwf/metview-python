@@ -58,7 +58,7 @@ class MetviewInvoker:
         self.metview_startup_timeout = int(
             os.environ.get("METVIEW_PYTHON_START_TIMEOUT", "8")
         )  # seconds
-        
+
         # start Metview with command-line parameters that will let it communicate back to us
         env_file = tempfile.NamedTemporaryFile(mode="rt")
         pid = os.getpid()
@@ -106,7 +106,7 @@ class MetviewInvoker:
             )
 
         self.read_metview_settings(env_file.name)
-        
+
         # when the Python session terminates, we should destroy this object so that the Metview
         # session is properly cleaned up. We can also do this in a __del__ function, but there can
         # be problems with the order of cleanup - e.g. the 'os' module might be deleted before
@@ -200,7 +200,7 @@ lib.p_init()
 mi.restore_signal_handlers()
 
 # fix for binder-hosted notebooks, where PWD and os.cwd() do not seem to be in sync
-os.putenv('PWD', os.getcwd())
+os.putenv("PWD", os.getcwd())
 
 # -----------------------------------------------------------------------------
 #                        Classes to handle complex Macro types
@@ -440,10 +440,26 @@ class FileBackedValueWithOperators(FileBackedValue):
         return met_not_eq(self, other)
 
 
+class ContainerValueIterator:
+    def __init__(self, data):
+        self.index = 0
+        self.data = data
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.index >= len(self.data):
+            self.index = 0
+            raise StopIteration
+        else:
+            self.index += 1
+            return self.data[self.index - 1]
+
+
 class ContainerValue(Value):
     def __init__(self, val_pointer, macro_index_base, element_type, support_slicing):
         Value.__init__(self, val_pointer)
-        self.idx = 0
         self.macro_index_base = macro_index_base
         self.element_type = (
             element_type  # the type of elements that the container contains
@@ -489,16 +505,7 @@ class ContainerValue(Value):
             raise Exception("Cannot assign ", value, " as element of ", self)
 
     def __iter__(self):
-        self.idx = 0
-        return self
-
-    def __next__(self):
-        if self.idx >= self.__len__():
-            self.idx = 0
-            raise StopIteration
-        else:
-            self.idx += 1
-            return self.__getitem__(self.idx - 1)
+        return ContainerValueIterator(self)
 
 
 class Fieldset(FileBackedValueWithOperators, ContainerValue):

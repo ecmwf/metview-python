@@ -441,11 +441,37 @@ def test_fieldset_iterator_with_zip_multiple():
         for k, f in zip(grib.grib_get_long("level"), grib):
             levs1.append(k)
             levs2.append(f.grib_get_long("level"))
-        print(levs1)
-        print(levs2)
         print(mv.grib_get_long(grib, "level"))
         assert levs1 == ref_levs
         assert levs2 == ref_levs
+
+
+def test_fieldset_iterator_with_overlapping_iter_calls():
+    # this test simulates what happens when we pass a fieldset to
+    # the Pool.map function - there are multiple iterators working
+    # on the same Fieldset
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    assert len(grib) == 6
+
+    subset = mv.Fieldset()
+    for k, f in zip([1, 2], grib):
+        subset.append(f)
+    assert subset.grib_get_long("level") == [1000, 850]
+
+    subset = mv.Fieldset()
+    for k, f in zip([3, 4, 5], grib):
+        subset.append(f)
+    assert subset.grib_get_long("level") == [1000, 850, 700]
+
+    subset = mv.Fieldset()
+    for k, f in zip([2, 1, 7, 3, 1, 5], grib):
+        subset.append(f)
+    assert subset.grib_get_long("level") == [1000, 850, 700, 500, 400, 300]
+
+    subset = mv.Fieldset()
+    for k, f in zip([3, 4, 5], grib):
+        subset.append(f)
+    assert subset.grib_get_long("level") == [1000, 850, 700]
 
 
 def test_fieldset_assignment_to_field_index():
