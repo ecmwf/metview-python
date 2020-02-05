@@ -534,6 +534,21 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         dataset = xarray_store.open_dataset(self.url())
         return dataset
 
+    def __getstate__(self):
+        # used for pickling
+        # we cannot (and do not want to) directly pickle the Value pointer
+        # so we remove it and put instead the path to the file
+        d = dict(self.__dict__)
+        del d["val_pointer"]
+        d["url_path"] = self.url()
+        return d
+
+    def __setstate__(self, state):
+        # used for un-pickling
+        # read the data from the pickled path
+        self.__dict__.update(state)
+        self.__init__(val_pointer=None, path=state["url_path"])
+
 
 class Bufr(FileBackedValue):
     def __init__(self, val_pointer):

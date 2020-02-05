@@ -10,6 +10,7 @@
 import os
 import numpy as np
 import datetime
+import pickle
 import pytest
 import pandas as pd
 import xarray as xr
@@ -606,6 +607,45 @@ def test_fieldset_append_from_empty():
     assert len(f) == 5
     shortnames = f.grib_get_string("shortName")
     assert shortnames == ["t", "u", "t", "u", "v"]
+
+
+def test_fieldset_pickling():
+    pickled_fname = file_in_testdir("pickled_fieldset.p")
+    g = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+
+    h = g[5]
+    pickle.dump(h, open(pickled_fname, "wb"))
+    assert os.path.isfile(pickled_fname)
+    h2 = pickle.load(open(pickled_fname, "rb"))
+    shortnames = h2.grib_get_string("shortName")
+    assert shortnames == "v"
+    os.remove(pickled_fname)
+
+    pickle.dump(g, open(pickled_fname, "wb"))
+    assert os.path.isfile(pickled_fname)
+    g2 = pickle.load(open(pickled_fname, "rb"))
+    shortnames = g2.grib_get_string("shortName")
+    assert shortnames == [
+        "t",
+        "u",
+        "v",
+        "t",
+        "u",
+        "v",
+        "t",
+        "u",
+        "v",
+        "t",
+        "u",
+        "v",
+        "t",
+        "u",
+        "v",
+        "t",
+        "u",
+        "v",
+    ]
+    os.remove(pickled_fname)
 
 
 def test_read_bufr():
