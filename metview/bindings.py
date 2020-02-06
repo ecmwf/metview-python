@@ -210,6 +210,7 @@ os.putenv("PWD", os.getcwd())
 class Value:
     def __init__(self, val_pointer):
         self.val_pointer = val_pointer
+        self.pickled = False
 
     def push(self):
         if self.val_pointer is None:
@@ -231,12 +232,16 @@ class Value:
 
         return call_func_with_self
 
-    # on destruction, ensure that the Macro Value is also destroyed
+    # on destruction, ensure that the Macro Value is also destroyed.
+    # note the exception - if the variable has been pickled, then there
+    # may be a temporary file that another process will want to use
+    # later, so in this case we do not destroy the Macro Value.
     def __del__(self):
         try:
             if self.val_pointer is not None and lib is not None:
-                lib.p_destroy_value(self.val_pointer)
-                self.val_pointer = None
+                if not self.pickled:
+                    lib.p_destroy_value(self.val_pointer)
+                    self.val_pointer = None
         except Exception as exp:
             print("Could not destroy Metview variable ", self)
             raise exp
@@ -541,6 +546,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         d = dict(self.__dict__)
         del d["val_pointer"]
         d["url_path"] = self.url()
+        self.pickled = True
         return d
 
     def __setstate__(self, state):
