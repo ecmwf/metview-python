@@ -2,6 +2,11 @@
 Changelog for Metview's Python interface
 ========================================
 
+1.3.5 
+------------------
+- added relative_humidity_from_td() function
+
+
 1.3.4 (2020-02-02)
 ------------------
 - fixed issue when passing sliced numpy arrays to Metview

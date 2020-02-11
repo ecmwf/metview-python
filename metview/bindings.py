@@ -951,6 +951,7 @@ def bind_functions(namespace, module_name=None):
         "temperature_from_potential_temperature",
         "saturation_mixing_ratio",
         "mixing_ratio",
+        "relative_humidity_from_td",
         "vapour_pressure",
         "saturation_vapour_pressure",
         "lifted_condensation_level",
