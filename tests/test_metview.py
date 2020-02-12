@@ -1266,7 +1266,7 @@ def test_value_file_path():
     assert os.path.isfile(p.url())
 
 
-@pytest.mark.parametrize("file_name", ["ml_data.grib", "t2m_3day.gpt",])
+@pytest.mark.parametrize("file_name", ["ml_data.grib",])
 def test_temporary_file_deletion(file_name):
     g = mv.read(file_in_testdir(file_name))
     h = g + 1  # this will force Metview to write a new temporary file
