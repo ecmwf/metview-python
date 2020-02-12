@@ -2,9 +2,10 @@
 Changelog for Metview's Python interface
 ========================================
 
-1.3.5 
+1.4.0
 ------------------
 - added relative_humidity_from_td() function
+- fixed issue where negative indexing did not work on a Fieldset
 
 
 1.3.4 (2020-02-02)

@@ -497,6 +497,12 @@ class ContainerValue(Value):
             if isinstance(index, str):  # can have a string as an index
                 return subset(self, index)
             else:
+                if index < 0:  # negative index valid for range [-len..-1]
+                    c = int(count(self))
+                    if index >= -c:
+                        index = c + index
+                    else:
+                        raise IndexError("Index " + str(index) + " invalid ", self)
                 return subset(
                     self, index + self.macro_index_base
                 )  # numeric index: 0->1-based
