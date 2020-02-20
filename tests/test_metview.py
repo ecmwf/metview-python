@@ -839,7 +839,7 @@ def test_read_gptset():
     gpt1 = gpts[0]
     assert mv.type(gpt1) == "geopoints"
     assert mv.count(gpt1) == 11
-    assert mv.metadata(gpt1) is None
+    assert mv.metadata(gpt1) == {}
     gpt2 = gpts[1]
     assert mv.type(gpt2) == "geopoints"
     assert mv.count(gpt2) == 1
