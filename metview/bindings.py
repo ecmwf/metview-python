@@ -225,6 +225,9 @@ class Value:
         self.val_pointer = other.val_pointer
         other.val_pointer = None
 
+    def set_temporary(self, flag):
+        lib.p_set_temporary(self.val_pointer, flag)
+
     # enable a more object-oriented interface, e.g. a = fs.interpolate(10, 29.4)
     def __getattr__(self, fname):
         def call_func_with_self(*args, **kwargs):
@@ -700,6 +703,7 @@ def dataset_to_fieldset(val, **kwarg):
 
     # TODO: tell Metview that this is a temporary file that should be deleted when no longer needed
     fs = read(tmp)
+    fs.set_temporary(1)
     return fs
 
 

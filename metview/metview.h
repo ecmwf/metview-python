@@ -53,5 +53,6 @@ const char *p_get_req_param(Value_p req, int i);
 const char *p_get_req_value(Value_p req, const char *param);
 void p_set_subvalue(Value_p, int, Value_p);
 void p_set_subvalue_from_arg_stack(Value_p);
+void p_set_temporary(Value_p val, int flag);
 const char *p_data_path(Value_p val);
 void p_destroy_value(Value_p val);
