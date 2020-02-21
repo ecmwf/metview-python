@@ -815,6 +815,23 @@ def test_geopoints_set_dates():
     ]
 
 
+def test_geopoints_set_latitudes_via_indexing_1():
+    g = mv.create_geo(3)
+    g["latitude"] = [5, 7, 9]
+    assert np.array_equal(mv.latitudes(g), np.array([5, 7, 9]))
+    assert np.array_equal(mv.longitudes(g), np.array([0, 0, 0]))
+    g["value"] = [6.6, 29.5, 46.7]
+    assert np.array_equal(g["value"], np.array([6.6, 29.5, 46.7]))
+    assert np.array_equal(mv.values(g), np.array([6.6, 29.5, 46.7]))
+
+
+def test_geopoints_set_latitudes_via_indexing_2():
+    g = mv.create_geo(type="ncols", myvals_0=np.array([10.0, 20.0, 30.0]))
+    g["myvals_0"] = [7, 9, 14]
+    assert np.array_equal(g["myvals_0"], np.array([7, 9, 14]))
+    assert np.array_equal(mv.values(g, "myvals_0"), np.array([7, 9, 14]))
+
+
 def test_geopoints_fieldset_operator():
     diff = TEST_FIELDSET - TEST_GEOPOINTS
     assert mv.type(diff) == "geopoints"

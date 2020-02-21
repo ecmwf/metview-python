@@ -462,13 +462,16 @@ class ContainerValueIterator:
             return self.data[self.index - 1]
 
 
+# ContainerValue
+# val_pointer - pointer to a C++ Value
+# macro_index_base - 0 or 1 - what do Macro indexing functions expect?
+# element_types - the type of elements that the container contains
+# support_slicing - does the container suppoer slicing?
 class ContainerValue(Value):
-    def __init__(self, val_pointer, macro_index_base, element_type, support_slicing):
+    def __init__(self, val_pointer, macro_index_base, element_types, support_slicing):
         Value.__init__(self, val_pointer)
         self.macro_index_base = macro_index_base
-        self.element_type = (
-            element_type  # the type of elements that the container contains
-        )
+        self.element_types = element_types
         self.support_slicing = support_slicing
 
     def __len__(self):
@@ -508,10 +511,12 @@ class ContainerValue(Value):
                 )  # numeric index: 0->1-based
 
     def __setitem__(self, index, value):
-        if isinstance(value, self.element_type):
-            lib.p_set_subvalue(
-                self.val_pointer, index + self.macro_index_base, value.val_pointer
-            )
+        if isinstance(value, self.element_types):
+            if isinstance(index, int):
+                index += self.macro_index_base
+            push_arg(index)
+            push_arg(value)
+            lib.p_set_subvalue_from_arg_stack(self.val_pointer)
         else:
             raise Exception("Cannot assign ", value, " as element of ", self)
 
@@ -522,7 +527,14 @@ class ContainerValue(Value):
 class Fieldset(FileBackedValueWithOperators, ContainerValue):
     def __init__(self, val_pointer=None, path=None):
         FileBackedValueWithOperators.__init__(self, val_pointer)
-        ContainerValue.__init__(self, val_pointer, 1, Fieldset, True)
+        ContainerValue.__init__(
+            self,
+            val_pointer=val_pointer,
+            macro_index_base=1,
+            element_types=Fieldset,
+            support_slicing=True,
+        )
+
         if path is not None:
             temp = read(path)
             self.steal_val_pointer(temp)
@@ -570,7 +582,13 @@ class Bufr(FileBackedValue):
 class Geopoints(FileBackedValueWithOperators, ContainerValue):
     def __init__(self, val_pointer):
         FileBackedValueWithOperators.__init__(self, val_pointer)
-        ContainerValue.__init__(self, val_pointer, 0, None, False)
+        ContainerValue.__init__(
+            self,
+            val_pointer=val_pointer,
+            macro_index_base=0,
+            element_types=(np.ndarray, list),
+            support_slicing=False,
+        )
 
     def to_dataframe(self):
         try:
