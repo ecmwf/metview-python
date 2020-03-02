@@ -4,9 +4,12 @@ Changelog for Metview's Python interface
 
 1.4.0
 ------------------
-- added relative_humidity_from_td() function
+- allow a geopoints column name to be used as index when assigning data to a column
 - fixed issue where negative indexing did not work on a Fieldset
-
+- fixed issue where concurrent iterators on a Fieldset did not work
+- added experimental support for pickling Fieldsets
+- automatically obtain list of Macro-based functions
+- allow example notebooks to run in Binder
 
 1.3.4 (2020-02-02)
 ------------------
