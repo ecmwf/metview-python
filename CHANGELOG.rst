@@ -5,6 +5,7 @@ Changelog for Metview's Python interface
 1.4.0
 ------------------
 - allow a geopoints column name to be used as index when assigning data to a column
+- added support for Metview's file object
 - fixed issue where negative indexing did not work on a Fieldset
 - fixed issue where concurrent iterators on a Fieldset did not work
 - added experimental support for pickling Fieldsets

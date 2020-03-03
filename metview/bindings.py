@@ -386,6 +386,12 @@ def push_vector(npa):
         )
 
 
+
+class File(Value):
+    def __init__(self, val_pointer):
+        Value.__init__(self, val_pointer)
+
+
 class FileBackedValue(Value):
     def __init__(self, val_pointer):
         Value.__init__(self, val_pointer)
@@ -745,6 +751,7 @@ class ValuePusher:
             (datetime.datetime, lambda n: push_datetime(n)),
             (datetime.date, lambda n: push_datetime_date(n)),
             (np.ndarray, lambda n: push_vector(n)),
+            (File, lambda n: n.push()),
         )
 
     def push_value(self, val):
@@ -863,6 +870,7 @@ class MvRetVal(Enum):
     todb = 12
     ttable = 13
     tgptset = 14
+    tfile = 15
     tunknown = 99
 
 
@@ -886,6 +894,7 @@ class ValueReturner:
         self.funcs[MvRetVal.todb.value] = lambda val: Odb(val)
         self.funcs[MvRetVal.ttable.value] = lambda val: Table(val)
         self.funcs[MvRetVal.tgptset.value] = lambda val: GeopointSet(val)
+        self.funcs[MvRetVal.tfile.value] = lambda val: File(val)
 
     def translate_return_val(self, val):
         rt = lib.p_value_type(val)

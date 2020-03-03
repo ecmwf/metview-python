@@ -1648,3 +1648,19 @@ def test_request():
     assert r["param2"] == 180
     r["param3"] = 108
     assert r["param3"] == 108
+
+
+def test_file():
+    grib = mv.read(file_in_testdir("t_for_xs.grib"))
+    fpath = file_in_testdir("my_file.grib")
+    f = mv.file(fpath)
+    mv.write(f, grib[2])
+    mv.write(f, grib[5])
+    mv.write(f, grib[1])
+    f = 0
+    assert os.path.isfile(fpath)
+    result = mv.read(fpath)
+    assert isinstance(result, mv.Fieldset)
+    assert len(result) == 3
+    assert result.grib_get_long("level") == [700, 300, 850]
+    os.remove(fpath)
