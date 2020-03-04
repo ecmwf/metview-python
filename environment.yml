@@ -8,3 +8,5 @@ dependencies:
     - scipy
     - matplotlib
     - cdsapi
+    - xarray
+    - pandas
