@@ -21,6 +21,7 @@ from metview import bindings
 
 PATH = os.path.dirname(__file__)
 MAX_VALUE = 316.06060791015625
+MIN_VALUE = 206.93560791015625
 SEMI_EQUATOR = 20001600.0
 MAX_SQRT_GPT = 16.867127793433
 MAX_GPT = 284.5
@@ -305,6 +306,33 @@ def test_power_reverse():
     maximum = mv.maxvalue(raised)
     assert np.isclose(minimum, 2 ** 3)
     assert np.isclose(maximum, 2 ** 4)
+
+
+def test_pos():
+    pos_fs = +TEST_FIELDSET
+    minimum = mv.minvalue(pos_fs)
+    maximum = mv.maxvalue(pos_fs)
+    assert np.isclose(minimum, MIN_VALUE)
+    assert np.isclose(maximum, MAX_VALUE)
+
+
+def test_neg():
+    neg_fs = -TEST_FIELDSET
+    minimum = mv.minvalue(neg_fs)
+    assert np.isclose(minimum, -MAX_VALUE)
+
+
+def test_abs():
+    abs_fs = abs(TEST_FIELDSET)
+    minimum = mv.minvalue(abs_fs)
+    maximum = mv.maxvalue(abs_fs)
+    assert np.isclose(minimum, MIN_VALUE)
+    assert np.isclose(maximum, MAX_VALUE)
+    abs_fs = abs(-TEST_FIELDSET)
+    minimum = mv.minvalue(abs_fs)
+    maximum = mv.maxvalue(abs_fs)
+    assert np.isclose(minimum, MIN_VALUE)
+    assert np.isclose(maximum, MAX_VALUE)
 
 
 def test_distance():

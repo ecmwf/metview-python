@@ -453,6 +453,15 @@ class FileBackedValueWithOperators(FileBackedValue):
     def __ne__(self, other):
         return met_not_eq(self, other)
 
+    def __pos__(self):
+        return self
+
+    def __neg__(self):
+        return 0.0 - self
+
+    def __abs__(self):
+        return self.abs()
+
 
 class ContainerValueIterator:
     def __init__(self, data):
