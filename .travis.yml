@@ -40,8 +40,7 @@ before_install:
 
 install:
   # install deps
-  - pip install -r requirements/requirements-tests.txt
-  - pip install black
+  - pip install netcdf4 xarray cfgrib pytest black
   - conda install -c conda-forge metview-batch
 
 #---------------------------------#
