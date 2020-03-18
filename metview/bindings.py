@@ -386,7 +386,6 @@ def push_vector(npa):
         )
 
 
-
 class File(Value):
     def __init__(self, val_pointer):
         Value.__init__(self, val_pointer)
