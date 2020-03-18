@@ -72,6 +72,9 @@ Download      https://pypi.org/project/metview
 Code quality  .. image:: https://travis-ci.com/ecmwf/metview-python.svg?branch=develop
                 :target: https://travis-ci.com/ecmwf/metview-python
                 :alt: Build Status on Travis CI
+              .. image:: https://coveralls.io/repos/ecmwf/metview-python/badge.svg?branch=develop&service=github
+                :target: https://coveralls.io/github/ecmwf/metview-python
+                :alt: Coverage Status on Coveralls
 ============= =========================================================
 
 
