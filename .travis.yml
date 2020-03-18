@@ -21,6 +21,7 @@ env:
   global:
     - METVIEW_PYTHON_SRC=${TRAVIS_BUILD_DIR}
     - PYTHONPATH=${PYTHONPATH}:${METVIEW_PYTHON_SRC}:.
+    - METVIEW_PYTHON_DEBUG=1
 
 git:
   depth: 1
