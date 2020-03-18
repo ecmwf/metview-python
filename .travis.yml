@@ -42,7 +42,7 @@ before_install:
 
 install:
   # install deps
-  - pip install netcdf4 xarray cfgrib pytest black coveralls
+  - pip install netcdf4 xarray cfgrib pytest pytest-cov black coveralls
   - conda install -c conda-forge metview-batch
 
 #---------------------------------#
