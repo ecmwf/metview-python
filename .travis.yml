@@ -1,0 +1,62 @@
+#---------------------------------#
+#      general configuration      #
+#---------------------------------#
+
+sudo: false
+
+branches:
+  only:
+    - master
+    - develop
+    - /^\d+\.\d+\.\d+$/
+
+language: python
+
+matrix:
+  include:
+    - os: linux
+      dist: xenial
+      env: MINICONDA_FILE="Miniconda3-latest-Linux-x86_64.sh"
+
+env:
+  global:
+    - METVIEW_PYTHON_SRC=${TRAVIS_BUILD_DIR}
+    - PYTHONPATH=${PYTHONPATH}:${METVIEW_PYTHON_SRC}:.
+
+git:
+  depth: 1
+
+before_install:
+  # install conda
+  - |
+    MINICONDA_URL="https://repo.continuum.io/miniconda"
+    curl -L -O "${MINICONDA_URL}/${MINICONDA_FILE}"
+    bash ${MINICONDA_FILE} -b
+  # activate conda
+  - source ~/miniconda3/bin/activate
+  # auto-yes for conda
+  - conda config --set always_yes yes
+  # update conda
+  #- conda update -n base -c conda-forge conda
+
+install:
+  # install deps
+  - conda install pandas xarray cfgrib
+  - conda install -c conda-forge metview-batch pytest black
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+
+script:
+  - cd ${METVIEW_PYTHON_SRC}
+  - black --check .
+  - pytest tests/
+
+#deploy:
+#  provider: pypi
+#  user: "__token__"
+#  password:
+#    secure: "GbNaC38NEN7NR7hzGj76ubG7fisKjrA+nMGvWCrfSRJrI+fo4JwDBmWU5/4hQ+H7+m/EOv9AWO/h0fFceYOUB9zjkJViXPoGSMBLxvsQ6/zG+v7ysvF1AOGcDgcE2/01w1vPRCPtqN4o9zIYVTsyE9AWRks0EV8tgSfIstRS6rbIrtqLZZhhwDxTc9y057KZSezT3qhAWgOwFK3SATXDItSLNndRHf3c86QSsum13rygkbT6A5CCuyRWNfIPaKncSUMlxfxgM+Ckge8SbRGM0iJYumeJX0sp8DHUstaMHeVu/quWjRfiMJoZ03ZibvwGLV1YHwvJz7xnzN447Ken1kZ94XY0viMeQpVjRKk6lVi9+W4uaX5r8+J8LuSkEim1CrKFcN2rLj6WHv5//IEW9khi5RemaecTY5cZPeMN8NC4VXjJ3vTM4Qzuu987Hy8fx67/aCIS2eSpVcxM8oZP8kKxa/3+Zu+hW+LH9oxfrPNhBQxbCKLtANSX6YKSwscw5Nz1TBOQxCNqFyrC8JD4uz/7nOBxQLpFruEayOvXGNfDyPAYEANR0WMG+0sDqTjtZ8LMVo4gK04WDuj+dGywKqtCW71f6pnmkkOk2v903IjAsBAQNWQhQBNBxxfiJ0ApAPwlS06Y6eRZoLDSLTuMMjg+tq+0DdDt6T6pFQYfooc="
+#  on:
+#    tags: true
