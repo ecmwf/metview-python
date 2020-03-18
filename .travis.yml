@@ -40,7 +40,7 @@ before_install:
 
 install:
   # install deps
-  - pip install -r requirements-tests.txt
+  - pip install -r requirements/requirements-tests.txt
   - pip install black
   - conda install -c conda-forge metview-batch
 
