@@ -63,6 +63,17 @@ Examples
 The [examples](examples) folder contains some Jupyter notebooks and some standalone examples for you to try out!
 
 
+Project resources
+-----------------
+
+============= =========================================================
+Development   https://github.com/ecmwf/metview-python
+Download      https://pypi.org/project/metview
+Code quality  .. image:: https://travis-ci.com/ecmwf/metview-python.svg?branch=develop
+                :target: https://travis-ci.com/ecmwf/metview-python
+                :alt: Build Status on Travis CI
+============= =========================================================
+
 
 License
 -------
