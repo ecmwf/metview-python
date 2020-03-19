@@ -2,6 +2,11 @@
 Changelog for Metview's Python interface
 ========================================
 
+1.4.1
+------------------
+- added travis ci and coveralls support
+- added automatic upload to PyPi
+
 1.4.0
 ------------------
 - allow a geopoints column name to be used as index when assigning data to a column
