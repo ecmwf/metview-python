@@ -69,10 +69,10 @@ Project resources
 ============= =========================================================
 Development   https://github.com/ecmwf/metview-python
 Download      https://pypi.org/project/metview
-Code quality  .. image:: https://travis-ci.com/ecmwf/metview-python.svg?branch=develop
+Code quality  .. image:: https://travis-ci.com/ecmwf/metview-python.svg?branch=master
                 :target: https://travis-ci.com/ecmwf/metview-python
                 :alt: Build Status on Travis CI
-              .. image:: https://coveralls.io/repos/ecmwf/metview-python/badge.svg?branch=develop&service=github
+              .. image:: https://coveralls.io/repos/ecmwf/metview-python/badge.svg?branch=master&service=github
                 :target: https://coveralls.io/github/ecmwf/metview-python
                 :alt: Coverage Status on Coveralls
 ============= =========================================================
@@ -81,7 +81,7 @@ Code quality  .. image:: https://travis-ci.com/ecmwf/metview-python.svg?branch=d
 License
 -------
 
-Copyright 2017-2019 European Centre for Medium-Range Weather Forecasts (ECMWF).
+Copyright 2017-2020 European Centre for Medium-Range Weather Forecasts (ECMWF).
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
