@@ -380,7 +380,7 @@ def push_vector(npa):
         cffi_buffer = ffi.cast("float*", f32_array.ctypes.data)
         lib.p_push_vector_from_float32_array(cffi_buffer, len(f32_array), np.nan)
     else:
-        raise Exception(
+        raise TypeError(
             "Only float32 and float64 numPy arrays can be passed to Metview, not ",
             npa.dtype,
         )
@@ -510,7 +510,7 @@ class ContainerValue(Value):
                         f = merge(f, fields[i])
                     return f
             else:
-                raise Exception(
+                raise IndexError(
                     "This object does not support extended slicing: " + str(self)
                 )
         else:  # normal index
@@ -535,7 +535,7 @@ class ContainerValue(Value):
             push_arg(value)
             lib.p_set_subvalue_from_arg_stack(self.val_pointer)
         else:
-            raise Exception("Cannot assign ", value, " as element of ", self)
+            raise IndexError("Cannot assign ", value, " as element of ", self)
 
     def __iter__(self):
         return ContainerValueIterator(self)

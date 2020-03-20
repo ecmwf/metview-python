@@ -445,6 +445,12 @@ def test_fieldset_slice():
     ]
 
 
+def test_empty_fieldset_slice():
+    f = mv.Fieldset()
+    s = f[0:4:1]
+    assert s == None
+
+
 def test_fieldset_iterator():
     grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
     avg = mv.average(grib)
@@ -546,6 +552,12 @@ def test_fieldset_assignment_to_field_index():
     assert np.isclose(mv.integrate(grib[0]), 2908.02)
     assert np.isclose(mv.integrate(grib[3]), 260.601)
     assert np.isclose(mv.integrate(grib[4]), 2606.01)
+
+
+def test_fieldset_assignment_to_invalid_field_index_type():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    with pytest.raises(IndexError):
+        grib[2] = "27"
 
 
 def test_fieldset_relational_operators():
@@ -766,6 +778,11 @@ def test_geopoints_element():
     g44 = TEST_GEOPOINTS[44]
     assert isinstance(g44, dict)
     assert g44["latitude"] == 59.53
+
+
+def test_geopoints_slice_assert():
+    with pytest.raises(IndexError):
+        sl = TEST_GEOPOINTS[2:16:2]
 
 
 def test_geopoints_relational_operator():
@@ -1179,6 +1196,12 @@ def test_dataset_to_fieldset():
     assert len(f) == 6
 
 
+def test_bad_type_to_fieldset():
+    gpt = mv.read(file_in_testdir("t2m_3day.gpt"))
+    with pytest.raises(TypeError):
+        f = mv.dataset_to_fieldset(gpt)
+
+
 @pytest.mark.filterwarnings("ignore:GRIB write")
 def test_pass_dataset_as_arg():
     grib = mv.read(file_in_testdir("t_for_xs.grib"))
@@ -1186,6 +1209,12 @@ def test_pass_dataset_as_arg():
     fs = mv.mean(x * 2)  # *2 is done by xarray, mean is done by Metview
     assert mv.type(fs) == "fieldset"
     assert len(fs) == 1
+
+
+def test_unsupported_type_to_metview():
+    r = range(1, 90)
+    with pytest.raises(TypeError):
+        f = mv.maxvalue(r)
 
 
 def test_strings():
@@ -1454,6 +1483,12 @@ def test_set_vector_TF_bool_from_numpy_array():
     assert np.array_equal(mv.abs(r), np.array([1, 0, 0, 1, 1, 0, 1], dtype=np.float32))
 
 
+def test_set_vector_from_int_numpy_array():
+    r = np.array([5, 8, 7, 1, 2900], dtype=np.int)
+    with pytest.raises(TypeError):
+        a = mv.type(r)
+
+
 def test_simple_vector_with_nans():
     a = np.array([1, np.nan, 2, 3])
     n = -a
@@ -1586,7 +1621,6 @@ def test_read_filter_to_dataset():
     assert "t" not in x_keys  # only 'u' should be there
 
 
-@pytest.mark.xfail()
 def test_table():
     # test csv with metadata
     db = mv.read_table(
@@ -1617,10 +1651,40 @@ def test_table():
     assert db.type() == "table"
     assert db.count() == 4
     assert db.name(2) == "h2"
-    v = db.values(2)
+    v = db.values(1)
     assert isinstance(v, np.ndarray)
     assert len(v) == 6
     assert np.array_equal(v, np.array([4, 5, 6, 7, 8, 9]))
+    v = db.values("h2")
+    assert isinstance(v, np.ndarray)
+    assert len(v) == 6
+    assert np.array_equal(v, np.array([4, 5, 6, 7, 8, 9]))
+
+
+def test_table_to_dataframe():
+    t = mv.read(file_in_testdir("sample.csv"))
+    df = t.to_dataframe()
+    assert isinstance(df, pd.DataFrame)
+    assert df.shape == (6, 4)
+    dt0_iloc = df.iloc[0]["h1"]
+    assert isinstance(dt0_iloc, np.int64)
+    assert dt0_iloc == 1
+    dt0_iloc = df.iloc[0][0]
+    assert isinstance(dt0_iloc, np.int64)
+    assert dt0_iloc == 1
+    dt3_iloc = df.iloc[3]["h1"]
+    assert isinstance(dt3_iloc, np.int64)
+    assert dt3_iloc == 4
+    dt3_iloc = df.iloc[3][0]
+    assert isinstance(dt3_iloc, np.int64)
+    assert dt3_iloc == 4
+    dt2_iloc = df.iloc[2]["name"]
+    assert isinstance(dt2_iloc, str)
+    assert dt2_iloc == "charlie"
+    dt2_iloc = df.iloc[2][3]
+    assert isinstance(dt2_iloc, str)
+    assert dt2_iloc == "charlie"
+    assert np.array_equal(df["h2"], np.array([4, 5, 6, 7, 8, 9]))
 
 
 def test_flextra():
@@ -1676,6 +1740,31 @@ def test_request():
     assert r["param2"] == 180
     r["param3"] = 108
     assert r["param3"] == 108
+
+    # make a copy of r
+    r2 = mv.Request(r)
+    assert isinstance(r2, mv.Request)
+    assert isinstance(r2, dict)
+    assert r2.get_verb() == "MCOAST"
+    assert r2["param1"] == "value1"
+    assert r2["param2"] == 180
+    r2["param3"] = 108
+    assert r2["param3"] == 108
+
+    # destroy r and check that r2 is still ok
+    r = 0
+    assert isinstance(r2, mv.Request)
+    assert isinstance(r2, dict)
+    assert r2.get_verb() == "MCOAST"
+    assert r2["param1"] == "value1"
+    assert r2["param2"] == 180
+    r2["param3"] = 108
+    assert r2["param3"] == 108
+
+    # check the string representation
+    d = {"param1": "value1", "param2": 180}
+    r = mv.Request(d, "MCOAST")
+    assert str(r) == "VERB: MCOAST{'param1': 'value1', 'param2': 180}"
 
 
 def test_file():
