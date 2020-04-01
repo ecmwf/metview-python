@@ -410,6 +410,13 @@ def test_fieldset_negative_index_too_high():
         grib_m1 = grib[-7]  # last element
 
 
+def test_fieldset_array_index():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    grib_ai = grib[np.array([1.0, 2.0, 0.0, 5.0])]
+    assert len(grib_ai) == 4
+    assert mv.grib_get_long(grib_ai, "level") == [850, 700, 1000, 300]
+
+
 def test_fieldset_slice():
     grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
     # slice [start,stop+1,step]

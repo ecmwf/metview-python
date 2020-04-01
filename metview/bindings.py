@@ -516,6 +516,8 @@ class ContainerValue(Value):
         else:  # normal index
             if isinstance(index, str):  # can have a string as an index
                 return subset(self, index)
+            elif isinstance(index, np.ndarray):  # can have an array as an index
+                return subset(self, index + self.macro_index_base)
             else:
                 if index < 0:  # negative index valid for range [-len..-1]
                     c = int(count(self))

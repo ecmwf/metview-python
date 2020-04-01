@@ -2,6 +2,10 @@
 Changelog for Metview's Python interface
 ========================================
 
+1.4.2
+------------------
+- fixed issue when using a numpy array to index a Fieldset
+
 1.4.1
 ------------------
 - added travis ci and coveralls support
