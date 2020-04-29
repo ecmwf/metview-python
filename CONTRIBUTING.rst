@@ -7,7 +7,9 @@ Contributing
 ============
 
 Contributions are welcome, and they are greatly appreciated! Every
-little bit helps, and credit will always be given.
+little bit helps, and credit will always be given. Note that contributors must
+agree to ECMWF's Contribution License Agreement (CLA) before their contribution
+can be accepted.
 
 You can contribute in many ways:
 
