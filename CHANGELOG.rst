@@ -2,6 +2,10 @@
 Changelog for Metview's Python interface
 ========================================
 
+(No version update)
+-------------------
+- added new Jupyter notebook for computing and plotting ensemble data
+
 1.4.2
 ------------------
 - fixed issue when using a numpy array to index a Fieldset
