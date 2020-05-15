@@ -1,0 +1,9 @@
+- if: "type = vector_field"
+  disable:
+    - intensity
+    - direction
+
+- if: "type = polar_field"
+  disable:
+    - u_component
+    - v_component
