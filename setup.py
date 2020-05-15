@@ -40,7 +40,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     include_package_data=True,
     setup_requires=["pytest-runner",],
-    install_requires=["cffi", "numpy", "pandas",],
+    install_requires=["cffi", "numpy", "pandas", "pyyaml"],
     tests_require=["pytest",],
     test_suite="tests",
     zip_safe=True,
