@@ -1,4 +1,4 @@
-# Copyright 2020- European Centre for Medium-Range Weather Forecasts (ECMWF).
+# Copyright 2017- European Centre for Medium-Range Weather Forecasts (ECMWF).
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,6 +42,10 @@ def option_to_stream(key, content, prefix):
     """
     valid_keys = {"type", "values", "default"}
     check_keys(valid_keys, valid_keys, set(content.keys()))
+    if content["type"] != "option":
+        raise ValueError(
+            f"invalid 'type' value: {content['type']}. Valid type value is only 'option'"
+        )
 
     # incipit
     option_stream = f"{key.upper()}\n{{\n"
@@ -49,7 +53,7 @@ def option_to_stream(key, content, prefix):
     values = "\n".join([str(v).upper() for v in content["values"]])
     option_stream += f"{textwrap.indent(values, prefix)}\n}}"
     # default
-    option_stream += f" = {content['default'].upper()}\n"
+    option_stream += f" = {str(content['default']).upper()}\n"
 
     return option_stream
 
