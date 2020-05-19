@@ -141,3 +141,73 @@ def test_translate_definition(tmpdir):
     exp_stream += "}"
 
     assert definition_stream == exp_stream
+
+
+def test_objaction_to_stream():
+    actions = [
+        {"dummy1": {"action": ["action1_1", "action1_2"], "service": "service1"}},
+        {"dummy2": {"action": ["action2_1", "action2_2"], "service": "service2"}},
+    ]
+    actions_stream = modules.objaction_to_stream(actions, 2)
+    exp_stream = "state,\n"
+    exp_stream += textwrap.indent(
+        "class   = DUMMY1\naction  = action1_1/action1_2\nservice = service1\n\n", "  ")
+    exp_stream += "state,\n"
+    exp_stream += textwrap.indent(
+        "class   = DUMMY2\naction  = action2_1/action2_2\nservice = service2\n", "  ")
+
+    assert actions_stream == exp_stream
+
+
+def test_translate_objectspec(tmpdir):
+    objectspec_content = """
+        object:
+            var1: value1
+            var2: true
+            definition_file: path1
+            rules_file: path2
+        actions:
+          - action1:
+               action:
+                   - action1_1
+                   - action1_2
+               service: service1
+          - action2:
+              action: action2_1
+              service: service2
+        service:
+          var3: value3
+          var4: value4
+    """
+    objectspec_path = tmpdir.join("objectspec.yml")
+    with open(objectspec_path, "w") as f:
+        f.write(objectspec_content)
+
+    defpath = "<definition_path>"
+    rulespath = "<rules_path>"
+    objectspec_stream = modules.translate_objectspec(objectspec_path, defpath, rulespath)
+    exp_stream = """
+        object,
+            var1            = value1,
+            var2            = True,
+            definition_file = <definition_path>,
+            rules_file      = <rules_path>
+    
+        state,
+            class   = ACTION1
+            action  = action1_1/action1_2
+            service = service1
+        
+        state,
+            class   = ACTION2
+            action  = action2_1
+            service = service2
+        
+        service,
+            var3 = value3,
+            var4 = value4
+    """
+    # "strip" to remove the first with line
+    exp_stream = textwrap.dedent(exp_stream.strip("\n"))
+
+    assert objectspec_stream == exp_stream
