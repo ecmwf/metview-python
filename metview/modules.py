@@ -117,9 +117,7 @@ def objrows_to_stream(section_content):
     for key, value in section_content.items():
         if key == "class":
             value = value.upper()
-        if str(value).lower() == "true":
-            value = "True"
-        row = f"{key:{max_key_length}} = {value}"
+        row = f"{key:{max_key_length}} = {str(value)}"
         rows.append(row)
     rows_stream = ",\n".join(rows)
 
