@@ -46,16 +46,45 @@ def option_to_stream(key, content, prefix):
         raise ValueError(
             f"invalid 'type' value: {content['type']}. Valid type value is only 'option'"
         )
+    if not all([isinstance(v, str) for v in content["values"]]):
+        raise ValueError(f"for option type all values must be strings: {content['values']}")
 
     # incipit
     option_stream = f"{key.upper()}\n{{\n"
     # values
-    values = "\n".join([str(v).upper() for v in content["values"]])
+    values = "\n".join([f"{v.upper()}; {v.upper()}" for v in content["values"]])
     option_stream += f"{textwrap.indent(values, prefix)}\n}}"
     # default
     option_stream += f" = {str(content['default']).upper()}\n"
 
     return option_stream
+
+
+def type_to_stream(key, content, prefix):
+    """
+
+    :param str key:
+    :param dict content:
+    :param str prefix:
+    :return str:
+    """
+    type_to_symbol = {
+        "number": "*",
+        "string": "@",
+    }
+    # incipit
+    help_ = f"help = {content.get('help')}" if content.get('help') else ""
+    interface = f"interface = {content.get('interface')}" if content.get('interface') else ""
+    declaration = ",".join(filter(len, [help_, interface]))
+    declaration = f" [ {declaration} ]" if declaration else ""
+    incipit = f"{key.upper()}{declaration}\n{{\n"
+    # values
+    list_symbol = "/\n" if content.get("list") is True else ""
+    values = f"{type_to_symbol[content['type']]}\n{list_symbol}"
+    default = content.get("default") if content.get("default") else "''"
+    param_stream = f"{incipit}{textwrap.indent(values, prefix)}}} = {default}\n"
+
+    return param_stream
 
 
 def param_to_stream(param, prefix):
@@ -66,10 +95,13 @@ def param_to_stream(param, prefix):
     :return str:
     """
     key, content = list(param.items())[0]
-    if content.get("type") == "option":
+    if content["type"] == "option":
         param_stream = option_to_stream(key, content, prefix)
+    elif content["type"] in ["string", "number"]:
+        param_stream = type_to_stream(key, content, prefix)
     else:
-        value_stream = f"[ interface = icon, class = {param[key]['type'].upper()} ]"
+        interface = content.get("interface", "icon")
+        value_stream = f"[ interface = {interface}, class = {param[key]['type'].upper()} ]"
         param_stream = f"{key.upper()}\n{textwrap.indent(value_stream, prefix )}\n"
         param_stream += "{ @ }\n"
 
@@ -93,7 +125,7 @@ def translate_definition(definition_path, indent_width=2):
     check_keys(valid_keys, mandatory_keys, actual_keys)
 
     # incipit
-    stream = f"{definition['class'].upper()}\n{{"
+    stream = f"{definition['class'].upper()}; APPLICATION\n{{"
     # content
     prefix = " " * indent_width
     params = ""

@@ -45,6 +45,17 @@ def test_check_keys():
     assert modules.check_keys(valid_keys, mandatory_keys, actual_keys) is None
 
 
+def test_option_to_stream_invalid_type():
+    key = "dummy"
+    content = {
+        "type": "option",
+        "values": ["value1", 3],
+        "default": "value2"
+    }
+    with pytest.raises(ValueError):
+        modules.option_to_stream(key, content, " " * 2)
+
+
 def test_option_to_stream():
     key = "dummy"
     content = {
@@ -52,54 +63,109 @@ def test_option_to_stream():
         "values": ["value1", "value2"],
         "default": "value2"
     }
-    prefix = " " * 100
+    prefix = " " * 2
     option_stream = modules.option_to_stream(key, content, prefix)
     exp_stream = f"{key.upper()}\n{{\n"
-    exp_stream += prefix + f"{content['values'][0].upper()}\n"
-    exp_stream += prefix + f"{content['values'][1].upper()}\n}} = {content['default'].upper()}\n"
+    exp_stream += prefix + f"{content['values'][0].upper()}; {content['values'][0].upper()}\n"
+    exp_stream += prefix + f"{content['values'][1].upper()}; {content['values'][1].upper()}\n"
+    exp_stream += f"}} = {content['default'].upper()}\n"
 
     assert option_stream == exp_stream
 
 
-def test_option_to_stream_2():
-    key = "contour_highlight_thickness"
+def test_type_to_stream_number():
+    key = 'dummy_key'
     content = {
-        "type": "option",
-        "values": ["*"],
-        "default": 3
+        "type": "number",
+        "list": False,
     }
     prefix = " " * 2
-    option_stream = modules.option_to_stream(key, content, prefix)
-    exp_stream = f"{key.upper()}\n{{\n"
-    exp_stream += prefix + f"{content['values'][0].upper()}\n}} = 3\n"
+    type_stream = modules.type_to_stream(key, content, prefix)
+    exp_stream = """
+        DUMMY_KEY
+        {
+          *
+        } = ''
+    """
 
-    assert option_stream == exp_stream
+    assert type_stream == textwrap.dedent(exp_stream.strip("\n"))
 
 
-def test_option_to_stream_3():
-    key = "contour_level_selection_type"
+def test_type_to_stream_numbers_list():
+    key = 'dummy_key'
     content = {
-        "type": "option",
-        "values": ["count", "interval", "level_list"],
-        "default": "count"
+        "type": "number",
+        "list": True,
     }
     prefix = " " * 2
-    option_stream = modules.option_to_stream(key, content, prefix)
-    exp_stream = f"{key.upper()}\n{{\n"
-    exp_stream += prefix + f"{content['values'][0].upper()}\n"
-    exp_stream += prefix + f"{content['values'][1].upper()}\n"
-    exp_stream += prefix + f"{content['values'][2].upper()}\n}} = {content['default'].upper()}\n"
+    type_stream = modules.type_to_stream(key, content, prefix)
+    exp_stream = """
+        DUMMY_KEY
+        {
+          *
+          /
+        } = ''
+    """
 
-    assert option_stream == exp_stream
+    assert type_stream == textwrap.dedent(exp_stream.strip("\n"))
 
 
-def test_param_to_stream():
-    param = {"param1":  {"type": "type1"}}
+def test_type_to_stream_string():
+    key = 'dummy_key'
+    content = {
+        "type": "string",
+        "list": False,
+    }
     prefix = " " * 2
-    param_stream = modules.param_to_stream(param, prefix)
-    exp_stream = "PARAM1\n  [ interface = icon, class = TYPE1 ]\n{ @ }\n"
+    type_stream = modules.type_to_stream(key, content, prefix)
+    exp_stream = """
+        DUMMY_KEY
+        {
+          @
+        } = ''
+    """
 
-    assert param_stream == exp_stream
+    assert type_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_type_to_stream_strings_list():
+    key = 'dummy_key'
+    content = {
+        "type": "string",
+        "list": True,
+    }
+    prefix = " " * 2
+    type_stream = modules.type_to_stream(key, content, prefix)
+    exp_stream = """
+        DUMMY_KEY
+        {
+          @
+          /
+        } = ''
+    """
+
+    assert type_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_type_to_stream_with_help():
+    key = 'dummy_key'
+    content = {
+        "type": "string",
+        "list": True,
+        "help": "dummy_help",
+        "interface": "dummy_interface",
+    }
+    prefix = " " * 2
+    type_stream = modules.type_to_stream(key, content, prefix)
+    exp_stream = """
+        DUMMY_KEY [ help = dummy_help,interface = dummy_interface ]
+        {
+          @
+          /
+        } = ''
+    """
+
+    assert type_stream == textwrap.dedent(exp_stream.strip("\n"))
 
 
 def test_param_to_stream_option():
@@ -112,9 +178,99 @@ def test_param_to_stream_option():
     }
     prefix = " " * 2
     param_stream = modules.param_to_stream(param, prefix)
-    exp_stream = "PARAM1\n{\n  VALUE1\n  VALUE2\n} = VALUE2\n"
+    exp_stream = """
+        PARAM1
+        {
+          VALUE1; VALUE1
+          VALUE2; VALUE2
+        } = VALUE2
+    """
 
-    assert param_stream == exp_stream
+    assert param_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_param_to_stream_number():
+    param = {
+        "contour_highlight_thickness": {
+            "type": "number",
+            "default": 3
+        }
+    }
+    prefix = " " * 2
+    option_stream = modules.param_to_stream(param, prefix)
+    exp_stream = """
+        CONTOUR_HIGHLIGHT_THICKNESS
+        {
+          *
+        } = 3
+    """
+
+    assert option_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_param_to_stream_numbers_list():
+    param = {
+        "contour_level_list": {
+            "type": "number",
+            "default": [],
+            "list": True,
+        }
+    }
+    prefix = " " * 2
+    option_stream = modules.param_to_stream(param, prefix)
+    exp_stream = """
+        CONTOUR_LEVEL_LIST
+        {
+          *
+          /
+        } = ''
+    """
+
+    assert option_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_param_to_stream_strings_list():
+    param = {
+        "contour_legend_text": {
+            "type": "string",
+            "list": True,
+            "default": [],
+        }
+    }
+    prefix = " " * 2
+    option_stream = modules.param_to_stream(param, prefix)
+    exp_stream = """
+        CONTOUR_LEGEND_TEXT
+        {
+          @
+          /
+        } = ''
+    """
+
+    assert option_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_param_to_stream_strings_list_help():
+    param = {
+        "contour_shade_colour_table": {
+            "type": "string",
+            "list": True,
+            "default": [],
+            "help": "help_colour",
+            "interface": "colour",
+        }
+    }
+    prefix = " " * 2
+    option_stream = modules.param_to_stream(param, prefix)
+    exp_stream = """
+        CONTOUR_SHADE_COLOUR_TABLE [ help = help_colour,interface = colour ]
+        {
+          @
+          /
+        } = ''
+    """
+
+    assert option_stream == textwrap.dedent(exp_stream.strip("\n"))
 
 
 def test_translate_definition(tmpdir):
@@ -135,12 +291,22 @@ def test_translate_definition(tmpdir):
         f.write(definition_content)
 
     definition_stream = modules.translate_definition(definition_path)
-    exp_stream = "DUMMY_CLASS\n{\n"
-    exp_stream += textwrap.indent("PARAM1\n{\n  VALUE1\n  VALUE2\n} = VALUE2\n\n", "  ")
-    exp_stream += textwrap.indent("PARAM2\n  [ interface = icon, class = TYPE2 ]\n{ @ }\n", "  ")
-    exp_stream += "}"
+    exp_stream = """
+        DUMMY_CLASS; APPLICATION
+        {
+          PARAM1
+          {
+            VALUE1; VALUE1
+            VALUE2; VALUE2
+          } = VALUE2
+        
+          PARAM2
+            [ interface = icon, class = TYPE2 ]
+          { @ }
+        }
+    """
 
-    assert definition_stream == exp_stream
+    assert definition_stream == textwrap.dedent(exp_stream).strip("\n")
 
 
 def test_objaction_to_stream():
