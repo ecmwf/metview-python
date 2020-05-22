@@ -172,7 +172,7 @@ def test_datatype_to_stream():
     key = 'dummy_key'
     content = {
         "type": "grib",
-        "interface":{
+        "interface": {
             "multi": False,
         }
     }
@@ -191,7 +191,7 @@ def test_datatype_to_stream_no_exclusive():
     key = 'dummy_key'
     content = {
         "type": "grib",
-        "interface":{
+        "interface": {
             "multi": True,
         }
     }
@@ -210,7 +210,7 @@ def test_datatype_to_stream_with_help():
     key = 'dummy_key'
     content = {
         "type": "grib",
-        "interface":{
+        "interface": {
             "multi": False,
             "help": {"type": "data", "ke1": "value1", "key2": "value2"},
         }
