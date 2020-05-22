@@ -96,8 +96,8 @@ def datatype_to_stream(key, content, prefix):
     :return str:
     """
     help_dict = content.get("interface", {}).get("help", {})
-    width = max([len("help_" + k) for k in help_dict.keys()], default=0)
     if help_dict:
+        width = max([len("help_" + k) for k in help_dict.keys()])
         helps = [f"{'help':{width}} = help_{help_dict.pop('type', '')}"]
         for hk, value in help_dict.items():
             helps.append(f"{'help_' + hk:{width}} = {value}")
@@ -140,8 +140,11 @@ def translate_definition(definition_path, indent_width=2):
     :param int indent_width:
     :return str:
     """
-    with open(definition_path, "r") as f:
-        definition = yaml.safe_load(f.read())
+    try:
+        with open(definition_path, "r") as f:
+            definition = yaml.safe_load(f.read())
+    except Exception as err:
+        raise ValueError(f"invalid definition YAML file: {err}")
 
     # validity-check
     valid_keys = {"class", "params"}
@@ -236,8 +239,11 @@ def translate_objectspec(objectspec_path, defpath, rulespath, indent_width=4):
     :param int indent_width:
     :return str:
     """
-    with open(objectspec_path, "r") as f:
-        objectspec = yaml.safe_load(f.read())
+    try:
+        with open(objectspec_path, "r") as f:
+            objectspec = yaml.safe_load(f.read())
+    except Exception as err:
+        raise ValueError(f"invalid objectspec YAML file: {err}")
 
     # validity-check
     valid_keys = {"actions", "object", "service"}

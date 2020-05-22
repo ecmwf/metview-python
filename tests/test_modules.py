@@ -73,7 +73,7 @@ def test_option_to_stream():
     assert option_stream == exp_stream
 
 
-def test_type_to_stream_number():
+def test_basetype_to_stream_number():
     key = 'dummy_key'
     content = {
         "type": "number",
@@ -91,7 +91,7 @@ def test_type_to_stream_number():
     assert type_stream == textwrap.dedent(exp_stream.strip("\n"))
 
 
-def test_type_to_stream_numbers_list():
+def test_basetype_to_stream_numbers_list():
     key = 'dummy_key'
     content = {
         "type": "number",
@@ -110,7 +110,7 @@ def test_type_to_stream_numbers_list():
     assert type_stream == textwrap.dedent(exp_stream.strip("\n"))
 
 
-def test_type_to_stream_string():
+def test_basetype_to_stream_string():
     key = 'dummy_key'
     content = {
         "type": "string",
@@ -128,7 +128,7 @@ def test_type_to_stream_string():
     assert type_stream == textwrap.dedent(exp_stream.strip("\n"))
 
 
-def test_type_to_stream_strings_list():
+def test_basetype_to_stream_strings_list():
     key = 'dummy_key'
     content = {
         "type": "string",
@@ -147,7 +147,7 @@ def test_type_to_stream_strings_list():
     assert type_stream == textwrap.dedent(exp_stream.strip("\n"))
 
 
-def test_type_to_stream_with_help():
+def test_basetype_to_stream_with_help():
     key = 'dummy_key'
     content = {
         "type": "string",
@@ -166,6 +166,68 @@ def test_type_to_stream_with_help():
     """
 
     assert type_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_datatype_to_stream():
+    key = 'dummy_key'
+    content = {
+        "type": "grib",
+        "interface":{
+            "multi": False,
+        }
+    }
+    prefix = " " * 2
+    datatype_stream = modules.datatype_to_stream(key, content, prefix)
+    exp_stream = """
+        DUMMY_KEY
+          [  interface = icon, class = GRIB, exclusive = true  ]
+        { @ }
+    """
+
+    assert datatype_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_datatype_to_stream_no_exclusive():
+    key = 'dummy_key'
+    content = {
+        "type": "grib",
+        "interface":{
+            "multi": True,
+        }
+    }
+    prefix = " " * 2
+    datatype_stream = modules.datatype_to_stream(key, content, prefix)
+    exp_stream = """
+        DUMMY_KEY
+          [  interface = icon, class = GRIB  ]
+        { @ }
+    """
+
+    assert datatype_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_datatype_to_stream_with_help():
+    key = 'dummy_key'
+    content = {
+        "type": "grib",
+        "interface":{
+            "multi": False,
+            "help": {"type": "data", "ke1": "value1", "key2": "value2"},
+        }
+    }
+    prefix = " " * 2
+    datatype_stream = modules.datatype_to_stream(key, content, prefix)
+    exp_stream = """
+        DUMMY_KEY
+          [  interface = icon, class = GRIB, exclusive = true,
+             help      = help_data,
+             help_ke1  = value1,
+             help_key2 = value2
+          ]
+        { @ }
+    """
+
+    assert datatype_stream == textwrap.dedent(exp_stream.strip("\n"))
 
 
 def test_param_to_stream_option():
