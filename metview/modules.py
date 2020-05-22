@@ -95,16 +95,16 @@ def datatype_to_stream(key, content, prefix):
     :param str prefix:
     :return str:
     """
+    help_dict = content.get("interface", {}).get("help", {})
+    width = max([len("help_" + k) for k in help_dict.keys()], default=0)
+    if help_dict:
+        helps = [f"{'help':{width}} = help_{help_dict.pop('type', '')}"]
+        for hk, value in help_dict.items():
+            helps.append(f"{'help_' + hk:{width}} = {value}")
+        helps = ",\n" + textwrap.indent(",\n".join(helps), prefix + ' ')
+    else:
+        helps = ""
     exclusive = ", exclusive = true" if content.get("interface", {}).get("multi") is False else ""
-    help_content = content.get("interface", {}).get("help", {})
-    max_helpkey_len = max([len("help_" + k) for k in help_content.keys()], default=0)
-    helps = []
-    for hk, value in help_content.items():
-        if hk == "type":
-            hk = ""
-            value = f"help_{value}"
-        helps.append(f"{'_'.join(filter(len, ['help', hk])):{max_helpkey_len}} = {value}")
-    helps = ",\n" + textwrap.indent(",\n".join(helps), prefix + ' ') if helps else ""
     declaration = f"interface = icon, class = {content['type'].upper()}{exclusive}"
     metadata = f"[{prefix}{declaration}{prefix if not helps else ''}{helps}"
     metadata += "\n]" if helps else "]"
