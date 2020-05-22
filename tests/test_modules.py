@@ -80,7 +80,7 @@ def test_type_to_stream_number():
         "list": False,
     }
     prefix = " " * 2
-    type_stream = modules.type_to_stream(key, content, prefix)
+    type_stream = modules.basetype_to_stream(key, content, prefix)
     exp_stream = """
         DUMMY_KEY
         {
@@ -98,7 +98,7 @@ def test_type_to_stream_numbers_list():
         "list": True,
     }
     prefix = " " * 2
-    type_stream = modules.type_to_stream(key, content, prefix)
+    type_stream = modules.basetype_to_stream(key, content, prefix)
     exp_stream = """
         DUMMY_KEY
         {
@@ -117,7 +117,7 @@ def test_type_to_stream_string():
         "list": False,
     }
     prefix = " " * 2
-    type_stream = modules.type_to_stream(key, content, prefix)
+    type_stream = modules.basetype_to_stream(key, content, prefix)
     exp_stream = """
         DUMMY_KEY
         {
@@ -135,7 +135,7 @@ def test_type_to_stream_strings_list():
         "list": True,
     }
     prefix = " " * 2
-    type_stream = modules.type_to_stream(key, content, prefix)
+    type_stream = modules.basetype_to_stream(key, content, prefix)
     exp_stream = """
         DUMMY_KEY
         {
@@ -156,7 +156,7 @@ def test_type_to_stream_with_help():
         "interface": "dummy_interface",
     }
     prefix = " " * 2
-    type_stream = modules.type_to_stream(key, content, prefix)
+    type_stream = modules.basetype_to_stream(key, content, prefix)
     exp_stream = """
         DUMMY_KEY [ help = dummy_help,interface = dummy_interface ]
         {
@@ -275,16 +275,26 @@ def test_param_to_stream_strings_list_help():
 
 def test_translate_definition(tmpdir):
     definition_content = """
-        "class": "dummy_class"
-        "params":
-            - "param1":
-                "type": "option"
-                "values":
-                    - "value1"
-                    - "value2"
-                "default": "value2"
-            - "param2":
-                "type": "type2"
+        class: dummy_class
+        params:
+            - param1:
+                type: option
+                values:
+                    - value1
+                    - value2
+                default: value2
+            - param2:
+                type: number
+            - param3:
+                type: grib
+                interface:
+                    help:
+                        type: data
+                        name: dummy name
+            - param4:
+                type: grib
+                interface:
+                    multi: false
     """
     definition_path = tmpdir.join("definition.yml")
     with open(definition_path, "w") as f:
@@ -301,7 +311,19 @@ def test_translate_definition(tmpdir):
           } = VALUE2
         
           PARAM2
-            [ interface = icon, class = TYPE2 ]
+          {
+            *
+          } = ''
+          
+          PARAM3
+            [  interface = icon, class = GRIB,
+               help      = help_data,
+               help_name = dummy name
+            ]
+          { @ }
+          
+          PARAM4
+            [  interface = icon, class = GRIB, exclusive = true  ]
           { @ }
         }
     """

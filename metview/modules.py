@@ -60,7 +60,7 @@ def option_to_stream(key, content, prefix):
     return option_stream
 
 
-def type_to_stream(key, content, prefix):
+def basetype_to_stream(key, content, prefix):
     """
 
     :param str key:
@@ -87,6 +87,32 @@ def type_to_stream(key, content, prefix):
     return param_stream
 
 
+def datatype_to_stream(key, content, prefix):
+    """
+
+    :param str key:
+    :param dict content:
+    :param str prefix:
+    :return str:
+    """
+    exclusive = ", exclusive = true" if content.get("interface", {}).get("multi") is False else ""
+    help_content = content.get("interface", {}).get("help", {})
+    max_helpkey_len = max([len("help_" + k) for k in help_content.keys()], default=0)
+    helps = []
+    for hk, value in help_content.items():
+        if hk == "type":
+            hk = ""
+            value = f"help_{value}"
+        helps.append(f"{'_'.join(filter(len, ['help', hk])):{max_helpkey_len}} = {value}")
+    helps = ",\n" + textwrap.indent(",\n".join(helps), prefix + ' ') if helps else ""
+    declaration = f"interface = icon, class = {content['type'].upper()}{exclusive}"
+    metadata = f"[{prefix}{declaration}{prefix if not helps else ''}{helps}"
+    metadata += "\n]" if helps else "]"
+    param_stream = f"{key.upper()}\n{textwrap.indent(metadata, prefix)}\n"
+    param_stream += "{ @ }\n"
+    return param_stream
+
+
 def param_to_stream(param, prefix):
     """
 
@@ -98,12 +124,11 @@ def param_to_stream(param, prefix):
     if content["type"] == "option":
         param_stream = option_to_stream(key, content, prefix)
     elif content["type"] in ["string", "number"]:
-        param_stream = type_to_stream(key, content, prefix)
+        param_stream = basetype_to_stream(key, content, prefix)
+    elif content["type"] in ["grib", "netcdf", "geopoints"]:
+        param_stream = datatype_to_stream(key, content, prefix)
     else:
-        interface = content.get("interface", "icon")
-        value_stream = f"[ interface = {interface}, class = {param[key]['type'].upper()} ]"
-        param_stream = f"{key.upper()}\n{textwrap.indent(value_stream, prefix )}\n"
-        param_stream += "{ @ }\n"
+        raise ValueError("")
 
     return param_stream
 
