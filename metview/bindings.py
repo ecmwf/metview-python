@@ -274,10 +274,7 @@ class Request(dict, Value):
             n = lib.p_get_req_num_params(req)
             for i in range(0, n):
                 param = string_from_ffi(lib.p_get_req_param(req, i))
-                raw_val = lib.p_get_req_value(req, param.encode("utf-8"))
-                if raw_val != ffi.NULL:
-                    val = string_from_ffi(raw_val)
-                    self[param] = val
+                self[param] = self[param]
             # self['_MACRO'] = 'BLANK'
             # self['_PATH']  = 'BLANK'
 

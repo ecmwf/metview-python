@@ -6,6 +6,7 @@ Changelog for Metview's Python interface
 -------------------
 - added new Jupyter notebook for data analysis
 - added new Jupyter notebook for computing and plotting ensemble data
+- fixed issue where Metview Request objects did not respect the input data type
 
 1.4.2
 ------------------

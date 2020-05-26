@@ -73,6 +73,14 @@ def test_definitions():
     if plotting_enabled:
         assert ps_output_def["OUTPUT_NAME"] == "test"
 
+def test_definitions_as_dict():
+    mcont_def = mv.mcont({"legend": True, "contour_line_thickness": 7,
+                          "contour_level_selection_type": "level_list",
+                          "contour_level_list": [5, 7, 8, 9]})
+    mcont_dict = mcont_def.copy()
+    assert mcont_dict["LEGEND"] == "ON"
+    assert mcont_dict["CONTOUR_LINE_THICKNESS"] == 7
+
 
 def test_print():
     mv.print("Start ", 7, 1, 3, " Finished!")
