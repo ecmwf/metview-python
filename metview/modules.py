@@ -263,8 +263,39 @@ def translate_objectspec(objectspec_path, defpath, rulespath, indent_width=4):
     return stream
 
 
+def translate_rule_test(test):
+    """
+
+    :param str test:
+    :return str:
+    """
+    # desired replacements
+    rep = {
+        " and ": " %and ",
+        " or ": " %or ",
+        " not ": " %not ",
+        "(not ": "(%not ",
+    }
+    translated_test = test
+    for k, v in rep.items():
+        translated_test = translated_test.replace(k, v)
+    return translated_test
+
+
 def translate_rules(rules_path):
-    return ""
+    """
+
+    :param str rules_path:
+    :return str:
+    """
+    with open(rules_path, "r") as f:
+        rules = yaml.safe_load(f.read())
+
+    tests = []
+    for rule in rules:
+        translated_test = translate_rule_test(rule["if"])
+        tests.append(translated_test)
+    return tests
 
 
 def translate_config(definition_yaml_path, objectspec_yaml_path, rules_yaml_path, output_path="."):
