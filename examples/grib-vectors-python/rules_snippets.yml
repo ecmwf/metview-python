@@ -59,7 +59,7 @@
   unset:
     - LEVELIST
 
-- if: "(TYPE=IM and OBSTYPE=10 and (IDENT=52 or IDENT=53 or IDENT=54))"  then"
+- if: "(TYPE=IM and OBSTYPE=10 and (IDENT=52 or IDENT=53 or IDENT=54))"
   warning: "Replacing OBSTYPE=10 by CHANNEL=3, INSTRUMENT=205"
   unset:
     - OBSTYPE
