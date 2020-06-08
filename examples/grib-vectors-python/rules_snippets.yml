@@ -1,68 +1,61 @@
 - if: "LAYER <> mc_10fg and LAYER  <> mc_10ws and LAYER <> mc_2tmax and
       LAYER <> mc_2tmean and LAYER <> mc_2tmin and LAYER <> mc_cape and
       LAYER <> mc_capeshear and LAYER <> mc_sf and LAYER <> mc_swh and LAYER <> mc_tp"
-  unset:
-    - qu:antile
+  unset: quantile
 
 - if: "AXIS_TICK_LABEL = OFF or AXIS_TICK_LABEL_TYPE = LABEL_LIST"
   unset:
-    - AXIS_TICK_LABEL_FORMAT
-    - AXIS_TICK_LABEL_FREQUENCY
+    - axis_tick_label_format
+    - axis_tick_label_frequency
 
 - if: "AXIS_TYPE <> DATE or AXIS_DATE_TYPE = MONTHS or AXIS_DATE_TYPE = YEARS or
       AXIS_DAYS_LABEL = OFF"
   unset:
-    - AXIS_DAYS_LABEL_COMPOSITION
-    - AXIS_DAYS_LABEL_HEIGHT
-    - AXIS_DAYS_LABEL_QUALITY
-    - AXIS_DAYS_LABEL_COLOUR
+    - axis_days_label_composition
+    - axis_days_label_height
+    - axis_days_label_quality
+    - axis_days_label_colour
 
 - if: "SYMBOL_MARKER_MODE <> INDEX or SYMBOL_TABLE_MODE <> OFF or SYMBOL_TYPE <> BOTH and
       SYMBOL_TYPE <> MARKER"
-  unset:
-    - SYMBOL_MARKER_INDEX
+  unset: symbol_marker_index
 
 - if: "TYPE = IM or TYPE = SIM or TYPE = OLDIM) and STREAM <> SSMI"
-  set:
-    - REPRES = SV
+  set: repres = sv
   unset:
-    - PARAM
-    - LEVTYPE
-    - LEVELIST
-    - RESOL
-    - DUPLICATES
-    - GRID
-    - ROTATION
+    - param
+    - levtype
+    - levelist
+    - resol
+    - duplicates
+    - grid
+    - rotation
 
 - if: "LEVTYPE = SFC and CLASS = ER and STREAM = OPER and (TYPE = AN or TYPE = FC) and (not REPRES)"
-  set:
-    - REPRES = GG
+  set: repres = gg
 
-- if: "not ( TYPE = OLDIM or TYPE = OB or TYPE = FB or TYPE = AI or TYPE = AF or TYPE = AB or
+- if: "not (TYPE = OLDIM or TYPE = OB or TYPE = FB or TYPE = AI or TYPE = AF or TYPE = AB or
       TYPE = TF or TYPE = OFB or TYPE = MFB or TYPE = OAI or TYPE = SFB or TYPE = FSOIFB or
       TYPE = FCDFB)"
   unset:
-    - OBSTYPE
-    - OBSGROUP
-    - DUPLICATES
+    - obstype
+    - obsgroup
+    - duplicates
 
 - if: "(AREA = G or AREA = GLOBE) and (_APPL = diss)"
   warning: "Expand global AREA for dissemination to AREA = 90/0/-90/359.99"
-  set:
-    - AREA = 90/0/-90/359.99
+  set: area = 90/0/-90/359.99
 
 - if: "_VERB = READ and CLASS  <> ANY"
-  warning: "CLASS  ignored in READ"
+  warning: "CLASS ignored in READ"
 
 - if: "LEVTYPE = DP and (SECTION = M or SECTION = Z) and
       (PRODUCT = INST or PRODUCT = TACC or PRODUCT = TAVG)"
-  unset:
-    - LEVELIST
+  unset: levelist
 
 - if: "(TYPE=IM and OBSTYPE=10 and (IDENT=52 or IDENT=53 or IDENT=54))"
   warning: "Replacing OBSTYPE=10 by CHANNEL=3, INSTRUMENT=205"
-  unset:
-    - OBSTYPE
+  unset: obstype
   set:
-    - CHANNEL = 3
-    - INSTRUMENT = 205
+    - channel = 3
+    - instrument = 205
