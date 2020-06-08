@@ -263,23 +263,81 @@ def translate_objectspec(objectspec_path, defpath, rulespath, indent_width=4):
     return stream
 
 
-def translate_rule_test(test):
+def translate_rule_test(test, width, indent_width):
     """
 
     :param str test:
+    :param int width:
+    :param int indent_width:
     :return str:
     """
-    # desired replacements
+    # The following replacements are done for two reasons:
+    #   - add "%" character before logic operators (e.g. "and", "or", etc.)
+    #   - whitespace around relational operators are removed to avoid that "tetxwrap" ends a line
+    #     with an incomplete statement
     rep = {
         " and ": " %and ",
         " or ": " %or ",
-        " not ": " %not ",
+        " not ": " %not ",  # tests starting with "not " also fall in this case because we add "if "
         "(not ": "(%not ",
+        " in ": " %in ",
+        " = ": "=",
+        " > ": ">",
+        " >= ": ">=",
+        " < ": "<",
+        " <= ": "<=",
+        " <> ": "<>",
     }
-    translated_test = test
+    rev_rep = {
+        "=": " = ",
+        ">": " > ",
+        "<": " < ",
+        # the following replacements repair possible errors caused by the previous ones
+        "< =": "<=",
+        "> =": ">=",
+        "<  >": "<>",
+    }
+    # remove multiple whitespace
+    test_stream = f"%if {' '.join(test.split())}"
+    # apply replacements
     for k, v in rep.items():
-        translated_test = translated_test.replace(k, v)
-    return translated_test
+        test_stream = test_stream.replace(k, v)
+    # wrap the lines with indentation starting from the second line
+    test_stream = textwrap.fill(test_stream, width=width, subsequent_indent=" " * indent_width)
+    # re-add whitespace around operators
+    for k, v in rev_rep.items():
+        test_stream = test_stream.replace(k, v)
+    return test_stream
+
+
+def translate_rule(rule, width=80, indent_width=4):
+    """
+
+    :param dict rule:
+    :param int width:
+    :param int indent_width:
+    :return str:
+    """
+    # validity-check
+    valid_keys = {"error", "if", "set", "unset", "warning"}
+    mandatory_keys = {"if"}
+    actual_keys = set(rule.keys())
+    check_keys(valid_keys, mandatory_keys, actual_keys)
+
+    test = rule.pop("if")
+    rule_stream = f"{translate_rule_test(test, width, indent_width)} %then\n"
+    prefix = " " * indent_width if len(rule_stream.splitlines()) == 1 else " " * 2 * indent_width
+    for action, value in rule.items():
+        if "set" in action:  # "set" and "unset" could be list or string
+            if isinstance(value, str):
+                value = [value]
+            action_stream = ""
+            for param in value:
+                action_stream += f"%{action} {param.upper()}\n"
+            rule_stream += textwrap.indent(action_stream, prefix)
+        else:
+            rule_stream += textwrap.indent(f"%{action} {value}\n", prefix)
+    return rule_stream
 
 
 def translate_rules(rules_path):
@@ -291,11 +349,11 @@ def translate_rules(rules_path):
     with open(rules_path, "r") as f:
         rules = yaml.safe_load(f.read())
 
-    tests = []
+    rules_stream = ""
     for rule in rules:
-        translated_test = translate_rule_test(rule["if"])
-        tests.append(translated_test)
-    return tests
+        rule_stream = translate_rule(rule)
+        rules_stream += f"{rule_stream}\n"
+    return rules_stream
 
 
 def translate_config(definition_yaml_path, objectspec_yaml_path, rules_yaml_path, output_path="."):
