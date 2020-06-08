@@ -1,9 +1,9 @@
-- if: "type = vector_field"
+- if: "TYPE = VECTOR_FIELD"
   unset:
     - intensity
     - direction
 
-- if: "type = polar_field"
+- if: "TYPE = POLAR_FIELD"
   unset:
     - u_component
     - v_component
