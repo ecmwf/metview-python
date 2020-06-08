@@ -288,7 +288,7 @@ def translate_rule_test(test, width, indent_width):
         " <= ": "<=",
         " <> ": "<>",
     }
-    rev_rep = {
+    reverse_rep = {
         "=": " = ",
         ">": " > ",
         "<": " < ",
@@ -297,7 +297,7 @@ def translate_rule_test(test, width, indent_width):
         "> =": ">=",
         "<  >": "<>",
     }
-    # remove multiple whitespace
+    # add "%if" statement and remove multiple whitespace
     test_stream = f"%if {' '.join(test.split())}"
     # apply replacements
     for k, v in rep.items():
@@ -305,12 +305,12 @@ def translate_rule_test(test, width, indent_width):
     # wrap the lines with indentation starting from the second line
     test_stream = textwrap.fill(test_stream, width=width, subsequent_indent=" " * indent_width)
     # re-add whitespace around operators
-    for k, v in rev_rep.items():
+    for k, v in reverse_rep.items():
         test_stream = test_stream.replace(k, v)
     return test_stream
 
 
-def translate_rule(rule, width=80, indent_width=4):
+def translate_rule(rule, width, indent_width):
     """
 
     :param dict rule:
@@ -328,7 +328,7 @@ def translate_rule(rule, width=80, indent_width=4):
     rule_stream = f"{translate_rule_test(test, width, indent_width)} %then\n"
     prefix = " " * indent_width if len(rule_stream.splitlines()) == 1 else " " * 2 * indent_width
     for action, value in rule.items():
-        if "set" in action:  # "set" and "unset" could be list or string
+        if "set" in action:  # "set" and "unset" can be list or string
             if isinstance(value, str):
                 value = [value]
             action_stream = ""
@@ -340,10 +340,12 @@ def translate_rule(rule, width=80, indent_width=4):
     return rule_stream
 
 
-def translate_rules(rules_path):
+def translate_rules(rules_path, width=80, indent_width=4):
     """
 
     :param str rules_path:
+    :param int width:
+    :param int indent_width:
     :return str:
     """
     with open(rules_path, "r") as f:
@@ -351,7 +353,7 @@ def translate_rules(rules_path):
 
     rules_stream = ""
     for rule in rules:
-        rule_stream = translate_rule(rule)
+        rule_stream = translate_rule(rule, width, indent_width)
         rules_stream += f"{rule_stream}\n"
     return rules_stream
 
