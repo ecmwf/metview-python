@@ -605,3 +605,250 @@ def test_translate_rule_unset_as_list():
     """
 
     assert rule_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_translate_rules_snippet1(tmpdir):
+    rules_content = """
+    - if: "LAYER <> mc_10fg and LAYER  <> mc_10ws and LAYER <> mc_2tmax and
+        LAYER <> mc_2tmean and LAYER <> mc_2tmin and LAYER <> mc_cape and
+        LAYER <> mc_capeshear and LAYER <> mc_sf and LAYER <> mc_swh and LAYER <> mc_tp"
+      unset: quantile
+    """
+    rules_path = tmpdir.join("rules.yml")
+    with open(rules_path, "w") as f:
+        f.write(rules_content)
+    rules_stream = modules.translate_rules(rules_path)
+    exp_stream = """
+        %if LAYER <> mc_10fg %and LAYER <> mc_10ws %and LAYER <> mc_2tmax %and LAYER <> mc_2tmean %and
+            LAYER <> mc_2tmin %and LAYER <> mc_cape %and LAYER <> mc_capeshear %and LAYER <> mc_sf %and
+            LAYER <> mc_swh %and LAYER <> mc_tp %then
+                %unset QUANTILE
+
+    """
+
+    assert rules_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_translate_rules_snippet2(tmpdir):
+    rules_content = """
+    - if: "AXIS_TICK_LABEL = OFF or AXIS_TICK_LABEL_TYPE = LABEL_LIST"
+      unset:
+        - axis_tick_label_format
+        - axis_tick_label_frequency
+    """
+    rules_path = tmpdir.join("rules.yml")
+    with open(rules_path, "w") as f:
+        f.write(rules_content)
+    rules_stream = modules.translate_rules(rules_path)
+    exp_stream = """
+        %if AXIS_TICK_LABEL = OFF %or AXIS_TICK_LABEL_TYPE = LABEL_LIST %then
+            %unset AXIS_TICK_LABEL_FORMAT
+            %unset AXIS_TICK_LABEL_FREQUENCY
+
+    """
+
+    assert rules_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_translate_rules_snippet3(tmpdir):
+    rules_content = """
+    - if: "AXIS_TYPE <> DATE or AXIS_DATE_TYPE = MONTHS or AXIS_DATE_TYPE = YEARS or
+           AXIS_DAYS_LABEL = OFF"
+      unset:
+        - axis_days_label_composition
+        - axis_days_label_height
+        - axis_days_label_quality
+        - axis_days_label_colour
+    """
+    rules_path = tmpdir.join("rules.yml")
+    with open(rules_path, "w") as f:
+        f.write(rules_content)
+    rules_stream = modules.translate_rules(rules_path)
+    exp_stream = """
+        %if AXIS_TYPE <> DATE %or AXIS_DATE_TYPE = MONTHS %or AXIS_DATE_TYPE = YEARS %or AXIS_DAYS_LABEL = OFF %then
+            %unset AXIS_DAYS_LABEL_COMPOSITION
+            %unset AXIS_DAYS_LABEL_HEIGHT
+            %unset AXIS_DAYS_LABEL_QUALITY
+            %unset AXIS_DAYS_LABEL_COLOUR
+
+    """
+
+    assert rules_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_translate_rules_snippet4(tmpdir):
+    rules_content = """
+    - if: "SYMBOL_MARKER_MODE <> INDEX or SYMBOL_TABLE_MODE <> OFF or SYMBOL_TYPE <> BOTH and
+            SYMBOL_TYPE <> MARKER"
+      unset: symbol_marker_index
+    """
+    rules_path = tmpdir.join("rules.yml")
+    with open(rules_path, "w") as f:
+        f.write(rules_content)
+    rules_stream = modules.translate_rules(rules_path)
+    exp_stream = """
+        %if SYMBOL_MARKER_MODE <> INDEX %or SYMBOL_TABLE_MODE <> OFF %or SYMBOL_TYPE <> BOTH %and SYMBOL_TYPE <> MARKER %then
+            %unset SYMBOL_MARKER_INDEX
+
+    """
+
+    assert rules_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_translate_rules_snippet5(tmpdir):
+    rules_content = """
+    - if: "TYPE = IM or TYPE = SIM or TYPE = OLDIM) and STREAM <> SSMI"
+      set: repres = sv
+      unset:
+        - param
+        - levtype
+        - levelist
+        - resol
+        - duplicates
+        - grid
+        - rotation
+    """
+    rules_path = tmpdir.join("rules.yml")
+    with open(rules_path, "w") as f:
+        f.write(rules_content)
+    rules_stream = modules.translate_rules(rules_path)
+    exp_stream = """
+        %if TYPE = IM %or TYPE = SIM %or TYPE = OLDIM) %and STREAM <> SSMI %then
+            %set REPRES = SV
+            %unset PARAM
+            %unset LEVTYPE
+            %unset LEVELIST
+            %unset RESOL
+            %unset DUPLICATES
+            %unset GRID
+            %unset ROTATION
+
+    """
+
+    assert rules_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_translate_rules_snippet6(tmpdir):
+    rules_content = """
+    - if: "LEVTYPE = SFC and CLASS = ER and STREAM = OPER and (TYPE = AN or TYPE = FC) and (not REPRES)"
+      set: repres = gg
+    """
+    rules_path = tmpdir.join("rules.yml")
+    with open(rules_path, "w") as f:
+        f.write(rules_content)
+    rules_stream = modules.translate_rules(rules_path)
+    exp_stream = """
+        %if LEVTYPE = SFC %and CLASS = ER %and STREAM = OPER %and (TYPE = AN %or TYPE = FC) %and (%not REPRES) %then
+            %set REPRES = GG
+
+    """
+
+    assert rules_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_translate_rules_snippet7(tmpdir):
+    rules_content = """
+    - if: "not (TYPE = OLDIM or TYPE = OB or TYPE = FB or TYPE = AI or TYPE = AF or TYPE = AB or
+      TYPE = TF or TYPE = OFB or TYPE = MFB or TYPE = OAI or TYPE = SFB or TYPE = FSOIFB or
+      TYPE = FCDFB)"
+      unset:
+        - obstype
+        - obsgroup
+        - duplicates
+    """
+    rules_path = tmpdir.join("rules.yml")
+    with open(rules_path, "w") as f:
+        f.write(rules_content)
+    rules_stream = modules.translate_rules(rules_path)
+    exp_stream = """
+        %if %not (TYPE = OLDIM %or TYPE = OB %or TYPE = FB %or TYPE = AI %or TYPE = AF %or TYPE = AB %or
+            TYPE = TF %or TYPE = OFB %or TYPE = MFB %or TYPE = OAI %or TYPE = SFB %or TYPE = FSOIFB %or TYPE = FCDFB) %then
+                %unset OBSTYPE
+                %unset OBSGROUP
+                %unset DUPLICATES
+
+    """
+
+    assert rules_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_translate_rules_snippet8(tmpdir):
+    rules_content = """
+    - if: "(AREA = G or AREA = GLOBE) and (_APPL = diss)"
+      warning: "Expand global AREA for dissemination to AREA = 90/0/-90/359.99"
+      set: area = 90/0/-90/359.99
+    """
+    rules_path = tmpdir.join("rules.yml")
+    with open(rules_path, "w") as f:
+        f.write(rules_content)
+    rules_stream = modules.translate_rules(rules_path)
+    exp_stream = """
+        %if (AREA = G %or AREA = GLOBE) %and (_APPL = diss) %then
+            %warning "Expand global AREA for dissemination to AREA = 90/0/-90/359.99"
+            %set AREA = 90/0/-90/359.99
+
+    """
+
+    assert rules_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_translate_rules_snippet9(tmpdir):
+    rules_content = """
+    - if: "_VERB = READ and CLASS  <> ANY"
+      warning: "CLASS ignored in READ"
+    """
+    rules_path = tmpdir.join("rules.yml")
+    with open(rules_path, "w") as f:
+        f.write(rules_content)
+    rules_stream = modules.translate_rules(rules_path)
+    exp_stream = """
+        %if _VERB = READ %and CLASS <> ANY %then
+            %warning "CLASS ignored in READ"
+
+    """
+
+    assert rules_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_translate_rules_snippet10(tmpdir):
+    rules_content = """
+    - if: "LEVTYPE = DP and (SECTION = M or SECTION = Z) and
+      (PRODUCT = INST or PRODUCT = TACC or PRODUCT = TAVG)"
+      unset: levelist
+    """
+    rules_path = tmpdir.join("rules.yml")
+    with open(rules_path, "w") as f:
+        f.write(rules_content)
+    rules_stream = modules.translate_rules(rules_path)
+    exp_stream = """
+        %if LEVTYPE = DP %and (SECTION = M %or SECTION = Z) %and (PRODUCT = INST %or PRODUCT = TACC %or PRODUCT = TAVG) %then
+            %unset LEVELIST
+
+    """
+
+    assert rules_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_translate_rules_snippet11(tmpdir):
+    rules_content = """
+    - if: "(TYPE=IM and OBSTYPE=10 and (IDENT=52 or IDENT=53 or IDENT=54))"
+      warning: "Replacing OBSTYPE=10 by CHANNEL=3, INSTRUMENT=205"
+      unset: obstype
+      set:
+        - channel = 3
+        - instrument = 205
+    """
+    rules_path = tmpdir.join("rules.yml")
+    with open(rules_path, "w") as f:
+        f.write(rules_content)
+    rules_stream = modules.translate_rules(rules_path)
+    exp_stream = """
+        %if (TYPE=IM %and OBSTYPE=10 %and (IDENT=52 %or IDENT=53 %or IDENT=54)) %then
+            %warning "Replacing OBSTYPE=10 by CHANNEL=3, INSTRUMENT=205"
+            %unset OBSTYPE
+            %set CHANNEL = 3
+            %set INSTRUMENT = 205
+
+    """
+
+    assert rules_stream == textwrap.dedent(exp_stream.strip("\n"))
