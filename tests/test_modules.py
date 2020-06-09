@@ -461,3 +461,147 @@ def test_translate_objectspec(tmpdir):
     exp_stream = textwrap.dedent(exp_stream.strip("\n"))
 
     assert objectspec_stream == exp_stream
+
+
+def test_translate_rule_test_lowercase():
+    width = 80
+    indent_width = 4
+    test = "param = value"
+    test_stream = modules.translate_rule_test(test, width, indent_width)
+    exp_stream = "%if param = value %then\n"
+
+    assert test_stream == exp_stream
+
+
+def test_translate_rule_test_uppercase():
+    width = 80
+    indent_width = 4
+    test = "PARAM = VALUE"
+    test_stream = modules.translate_rule_test(test, width, indent_width)
+    exp_stream = "%if PARAM = VALUE %then\n"
+
+    assert test_stream == exp_stream
+
+
+def test_translate_rule_test_mixedcase():
+    width = 80
+    indent_width = 4
+    test = "PARAM = value"
+    test_stream = modules.translate_rule_test(test, width, indent_width)
+    exp_stream = "%if PARAM = value %then\n"
+
+    assert test_stream == exp_stream
+
+
+def test_translate_rule_test_width():
+    width = 80
+    indent_width = 4
+    test = "param = value and param2 > value2 or param3 <> value3 not (param4 in value4)"
+    test_stream = modules.translate_rule_test(test, width, indent_width)
+    exp_stream = "%if param = value %and param2 > value2 %or "
+    exp_stream += "param3 <> value3 %not (param4 %in value4) %then\n"
+
+    assert test_stream == exp_stream
+
+
+def test_translate_rule_test_width2():
+    width = 40
+    indent_width = 4
+    test = "param = value and param2 > value2 or param3 <> value3 not (param4 in value4)"
+    test_stream = modules.translate_rule_test(test, width, indent_width)
+    exp_stream = """
+        %if param = value %and param2 > value2 %or
+            param3 <> value3 %not (param4 %in value4) %then
+    """
+
+    assert test_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_translate_rule_wrong_key():
+    width = 89
+    indent_width = 4
+    rule = {
+        "if": "dummy_test",
+        "sunset": "dummy_parameter"
+    }
+
+    with pytest.raises(ValueError):
+        modules.translate_rule(rule, width, indent_width)
+
+
+def test_translate_rule_missing_if():
+    width = 89
+    indent_width = 4
+    rule = {
+        "error": "dummy_error",
+        "set": "dummy_parameter"
+    }
+
+    with pytest.raises(ValueError):
+        modules.translate_rule(rule, width, indent_width)
+
+
+def test_translate_rule_set_as_string():
+    width = 89
+    indent_width = 4
+    rule = {
+        "if": "dummy_test",
+        "set": "dummy_parameter"
+    }
+    rule_stream = modules.translate_rule(rule, width, indent_width)
+    exp_stream = """
+        %if dummy_test %then
+            %set DUMMY_PARAMETER
+    """
+
+    assert rule_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_translate_rule_unset_as_string():
+    width = 89
+    indent_width = 4
+    rule = {
+        "if": "dummy_test",
+        "unset": "dummy_parameter"
+    }
+    rule_stream = modules.translate_rule(rule, width, indent_width)
+    exp_stream = """
+        %if dummy_test %then
+            %unset DUMMY_PARAMETER
+    """
+
+    assert rule_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_translate_rule_set_as_list():
+    width = 89
+    indent_width = 4
+    rule = {
+        "if": "dummy_test",
+        "set": ["param1", "param2"]
+    }
+    rule_stream = modules.translate_rule(rule, width, indent_width)
+    exp_stream = """
+        %if dummy_test %then
+            %set PARAM1
+            %set PARAM2
+    """
+
+    assert rule_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_translate_rule_unset_as_list():
+    width = 89
+    indent_width = 4
+    rule = {
+        "if": "dummy_test",
+        "unset": ["param1", "param2"]
+    }
+    rule_stream = modules.translate_rule(rule, width, indent_width)
+    exp_stream = """
+        %if dummy_test %then
+            %unset PARAM1
+            %unset PARAM2
+    """
+
+    assert rule_stream == textwrap.dedent(exp_stream.strip("\n"))
