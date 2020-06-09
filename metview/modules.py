@@ -273,41 +273,29 @@ def translate_rule_test(test, width, indent_width):
     """
     # The following replacements are done for two reasons:
     #   - add "%" character before logic operators (e.g. "and", "or", etc.)
-    #   - whitespace around relational operators are removed to avoid that "tetxwrap" ends a line
-    #     with an incomplete statement
+    #   - split test after each logical operator
     rep = {
-        " and ": " %and ",
-        " or ": " %or ",
-        " not ": " %not ",  # tests starting with "not " also fall in this case because we add "if "
-        "(not ": "(%not ",
-        " in ": " %in ",
-        " = ": "=",
-        " > ": ">",
-        " >= ": ">=",
-        " < ": "<",
-        " <= ": "<=",
-        " <> ": "<>",
-    }
-    reverse_rep = {
-        "=": " = ",
-        ">": " > ",
-        "<": " < ",
-        # the following replacements repair possible errors caused by the previous ones
-        "< =": "<=",
-        "> =": ">=",
-        "<  >": "<>",
+        " and ": " %and\n",
+        " or ": " %or\n",
+        " not ": " %not\n",  # tests starting with "not " also fall in this case because we add "if "
+        "(not ": "(%not\n",
+        " in ": " %in\n",
     }
     # add "%if" statement and remove multiple whitespace
-    test_stream = f"%if {' '.join(test.split())}"
+    test = f"%if {' '.join(test.split())}"
     # apply replacements
     for k, v in rep.items():
-        test_stream = test_stream.replace(k, v)
-    # wrap the lines with indentation starting from the second line
-    test_stream = textwrap.fill(test_stream, width=width, subsequent_indent=" " * indent_width)
-    # re-add whitespace around operators
-    for k, v in reverse_rep.items():
-        test_stream = test_stream.replace(k, v)
-    return test_stream
+        test = test.replace(k, v)
+    tests = test.splitlines()
+    # compose test stream avoiding to end a line with an incomplete sub-test (e.g. " ...PARAM = \n")
+    test_stream = ""
+    idx = 1
+    for l in tests:
+        test_stream += f" {l}"
+        if len(test_stream) > idx * width:
+            test_stream += f"\n{' ' * indent_width}"
+            idx += 1
+    return test_stream.strip(" \n")
 
 
 def translate_rule(rule, width, indent_width):
@@ -340,7 +328,7 @@ def translate_rule(rule, width, indent_width):
     return rule_stream
 
 
-def translate_rules(rules_path, width=80, indent_width=4):
+def translate_rules(rules_path, width=89, indent_width=4):
     """
 
     :param str rules_path:
