@@ -288,14 +288,15 @@ def translate_rule_test(test, width, indent_width):
         test = test.replace(k, v)
     # compose test-stream avoiding to end a line with an incomplete sub-test (e.g. " ...PARAM = \n")
     tests = test.splitlines()
-    test_stream = ""
+    test_stream = tests[0]
     idx = 1
-    for l in tests:
-        test_stream += f" {l}"
-        if len(test_stream) > idx * width:
-            test_stream += f"\n{' ' * indent_width}" if tests[-1] != l else ""
+    for l in tests[1:]:
+        if (len(test_stream) > idx * width) and tests[-1] != l:
+            test_stream += f"\n{' ' * indent_width}{l}"
             idx += 1
-    return test_stream
+        else:
+            test_stream += f" {l}"
+    return f"{test_stream} %then\n"
 
 
 def translate_rule(rule, width, indent_width):
@@ -313,7 +314,7 @@ def translate_rule(rule, width, indent_width):
     check_keys(valid_keys, mandatory_keys, actual_keys)
 
     test = rule.pop("if")
-    rule_stream = f"{translate_rule_test(test, width, indent_width)} %then\n"
+    rule_stream = translate_rule_test(test, width, indent_width)
     prefix = " " * indent_width if len(rule_stream.splitlines()) == 1 else " " * 2 * indent_width
     for action, value in rule.items():
         if "set" in action:  # "set" and "unset" can be list or string
