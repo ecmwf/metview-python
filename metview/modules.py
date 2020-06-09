@@ -325,7 +325,7 @@ def translate_rule(rule, width, indent_width):
                 action_stream += f"%{action} {param.upper()}\n"
             rule_stream += textwrap.indent(action_stream, prefix)
         else:
-            rule_stream += textwrap.indent(f"%{action} {value}\n", prefix)
+            rule_stream += textwrap.indent(f'%{action} "{value}"\n', prefix)
     return rule_stream
 
 
