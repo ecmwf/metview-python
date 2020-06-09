@@ -277,7 +277,7 @@ def translate_rule_test(test, width, indent_width):
     rep = {
         " and ": " %and\n",
         " or ": " %or\n",
-        " not ": " %not\n",  # tests starting with "not " also fall in this case because we add "if "
+        " not ": " %not\n",  # tests starting with "not ..." fall in this case because we add "%if "
         "(not ": "(%not\n",
         " in ": " %in\n",
     }
@@ -286,16 +286,16 @@ def translate_rule_test(test, width, indent_width):
     # apply replacements
     for k, v in rep.items():
         test = test.replace(k, v)
+    # compose test-stream avoiding to end a line with an incomplete sub-test (e.g. " ...PARAM = \n")
     tests = test.splitlines()
-    # compose test stream avoiding to end a line with an incomplete sub-test (e.g. " ...PARAM = \n")
     test_stream = ""
     idx = 1
     for l in tests:
         test_stream += f" {l}"
         if len(test_stream) > idx * width:
-            test_stream += f"\n{' ' * indent_width}"
+            test_stream += f"\n{' ' * indent_width}" if tests[-1] != l else ""
             idx += 1
-    return test_stream.strip(" \n")
+    return test_stream
 
 
 def translate_rule(rule, width, indent_width):
