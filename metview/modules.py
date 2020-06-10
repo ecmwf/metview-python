@@ -17,6 +17,17 @@ import textwrap
 import yaml
 
 
+PARAMSHARE_TYPES = {
+    "colour": "%include MagicsColours.txt",
+    "line_style": ["SOLID", "DASH", "DOT", "CHAIN_DOT", "CHAIN_DASH"],
+    "marker": range(1, 6),
+    "onoff": ["ON", "OFF"],
+    "quality": ["LOW", "MEDIUM", "HIGH"],
+    "shading": ["DOT", "HATCH", "AREA_FILL"],
+    "thickness": range(1, 11),
+}
+
+
 def check_keys(valid_keys, mandatory_keys, actual_keys):
     """
 
@@ -75,7 +86,7 @@ def basetype_to_stream(key, content, prefix):
     # incipit
     help_ = f"help = {content.get('help')}" if content.get('help') else ""
     interface = f"interface = {content.get('interface')}" if content.get('interface') else ""
-    declaration = ",".join(filter(len, [help_, interface]))
+    declaration = ",".join(filter(None, [help_, interface]))
     declaration = f" [ {declaration} ]" if declaration else ""
     incipit = f"{key.upper()}{declaration}\n{{\n"
     # values
@@ -113,6 +124,37 @@ def datatype_to_stream(key, content, prefix):
     return param_stream
 
 
+def shared_param_to_stream(key, content, prefix):
+    """
+
+    :param str key:
+    :param dict content:
+    :param str prefix:
+    :return str:
+    """
+    valid_keys = {"type", "default", "help", "interface"}
+    mandatory_keys = {"type", "default"}
+    check_keys(valid_keys, mandatory_keys, set(content.keys()))
+    shared_type = content["type"]
+    if shared_type not in PARAMSHARE_TYPES:
+        raise ValueError(
+            f"invalid 'type': {shared_type}. Valid types are only {PARAMSHARE_TYPES.keys()}"
+        )
+
+    # incipit
+    help_ = f"help = {content.get('help')}" if content.get("help") else ""
+    interface = f"interface = {content.get('interface')}" if content.get("interface") else ""
+    declaration = ",".join(filter(None, [help_, interface]))
+    declaration = f" [ {declaration} ]" if declaration else ""
+    sh_param_stream = f"{key.upper()}{declaration}\n{{\n"
+    # values
+    sh_param_stream += f"{textwrap.indent(f'&PARAMSHARE&{shared_type.upper()}', prefix)}\n}}"
+    # default
+    sh_param_stream += f" = {str(content['default']).upper()}\n"
+
+    return sh_param_stream
+
+
 def param_to_stream(param, prefix):
     """
 
@@ -120,20 +162,60 @@ def param_to_stream(param, prefix):
     :param str prefix:
     :return str:
     """
+    base_types = ["string", "number"]
+    data_types = ["grib", "netcdf", "geopoints"]
     key, content = list(param.items())[0]
     if content["type"] == "option":
         param_stream = option_to_stream(key, content, prefix)
-    elif content["type"] in ["string", "number"]:
+    elif content["type"] in base_types:
         param_stream = basetype_to_stream(key, content, prefix)
-    elif content["type"] in ["grib", "netcdf", "geopoints"]:
+    elif content["type"] in data_types:
         param_stream = datatype_to_stream(key, content, prefix)
+    elif content["type"] in PARAMSHARE_TYPES:
+        param_stream = shared_param_to_stream(key, content, prefix)
     else:
-        raise ValueError("")
+        valid_types = list(PARAMSHARE_TYPES.keys()) + base_types + data_types + ["option"]
+        raise ValueError(f"invalid param type: '{content['type']}'. Valid types are: {valid_types}")
 
     return param_stream
 
 
-def translate_definition(definition_path, indent_width=2):
+def assemble_paramshare_section(params, indent_width):
+    """
+
+    :param list params:
+    :param int indent_width:
+    :return str:
+    """
+    # gather common subsets of parameters, if any
+    shared_types = []
+    for param_dict in params:
+        param_descr = list(param_dict.values())[0]
+        if param_descr.get("type") in PARAMSHARE_TYPES:
+            shared_types.append(param_descr["type"])
+
+    if not shared_types:
+        return ""
+    prefix = " " * indent_width
+    types_stream = []
+    for sh_type in shared_types:
+        # incipit
+        sh_type_stream = f"{sh_type.upper()} {{\n"
+        # values
+        if isinstance(PARAMSHARE_TYPES[sh_type], str):
+            sh_type_stream += textwrap.indent(PARAMSHARE_TYPES[sh_type], prefix)
+        else:
+            values = "\n".join([f"{v}; {v}" for v in PARAMSHARE_TYPES[sh_type]])
+            sh_type_stream += textwrap.indent(values, prefix)
+        # closure
+        sh_type_stream += "\n}\n"
+        types_stream.append(sh_type_stream)
+    types_stream = textwrap.indent("\n".join(types_stream), prefix)
+    paramshare_stream = f"PARAMSHARE; ParamShare; PARAMSHARE\n{{\n{types_stream}}}\n\n"
+    return paramshare_stream
+
+
+def translate_definition(definition_path, indent_width=4):
     """
 
     :param str definition_path:
@@ -153,7 +235,8 @@ def translate_definition(definition_path, indent_width=2):
     check_keys(valid_keys, mandatory_keys, actual_keys)
 
     # incipit
-    stream = f"{definition['class'].upper()}; APPLICATION\n{{"
+    paramshare_stream = assemble_paramshare_section(definition["params"], indent_width)
+    stream = f"{paramshare_stream}{definition['class'].upper()}; APPLICATION\n{{"
     # content
     prefix = " " * indent_width
     params = ""
