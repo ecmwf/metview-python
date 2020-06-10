@@ -174,7 +174,7 @@ def param_to_stream(param, prefix):
     elif content["type"] in PARAMSHARE_TYPES:
         param_stream = shared_param_to_stream(key, content, prefix)
     else:
-        valid_types = list(PARAMSHARE_TYPES.keys()) + base_types + data_types + ["option"]
+        valid_types = sorted(list(PARAMSHARE_TYPES.keys()) + base_types + data_types + ["option"])
         raise ValueError(f"invalid param type: '{content['type']}'. Valid types are: {valid_types}")
 
     return param_stream
