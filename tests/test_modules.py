@@ -238,6 +238,57 @@ def test_shared_param_to_stream_invalid_keys():
         modules.shared_param_to_stream(key, content, " ")
 
 
+def test_shared_param_to_stream_no_mandatory_key():
+    key = "dummy"
+    content = {"type": "colour"}
+
+    with pytest.raises(ValueError):
+        modules.shared_param_to_stream(key, content, " ")
+
+
+def test_shared_param_to_stream_invalid_type():
+    key = "dummy"
+    content = {"type": "dummy", "default": "dummy_default"}
+
+    with pytest.raises(ValueError):
+        modules.shared_param_to_stream(key, content, " ")
+
+
+def test_shared_param_to_stream_colour_no_help():
+    key = "dummy"
+    content = {"type": "colour", "default": "dummy_colour"}
+    prefix = " " * 4
+    sh_param_stream = modules.shared_param_to_stream(key, content, prefix)
+    exp_stream = """
+        DUMMY
+        {
+            &PARAMSHARE&COLOUR
+        } = DUMMY_COLOUR
+    """
+
+    assert sh_param_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_shared_param_to_stream_colour_with_help():
+    key = "dummy"
+    content = {
+        "type": "colour",
+        "help": "help_colour",
+        "interface": "colour",
+        "default": "dummy_colour"
+    }
+    prefix = " " * 4
+    sh_param_stream = modules.shared_param_to_stream(key, content, prefix)
+    exp_stream = """
+        DUMMY  [  help = help_colour,interface = colour  ]
+        {
+            &PARAMSHARE&COLOUR
+        } = DUMMY_COLOUR
+    """
+
+    assert sh_param_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
 def test_param_to_stream_option():
     param = {
         "param1":  {

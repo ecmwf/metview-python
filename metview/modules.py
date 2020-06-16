@@ -142,11 +142,12 @@ def shared_param_to_stream(key, content, prefix):
             f"invalid 'type': {shared_type}. Valid types are only {PARAMSHARE_TYPES.keys()}"
         )
 
+    bracket_prefix = "  "
     # incipit
     help_ = f"help = {content.get('help')}" if content.get("help") else ""
     interface = f"interface = {content.get('interface')}" if content.get("interface") else ""
     declaration = ",".join(filter(None, [help_, interface]))
-    declaration = f" [ {declaration} ]" if declaration else ""
+    declaration = f"  [{bracket_prefix}{declaration}{bracket_prefix}]" if declaration else ""
     sh_param_stream = f"{key.upper()}{declaration}\n{{\n"
     # values
     sh_param_stream += f"{textwrap.indent(f'&PARAMSHARE&{shared_type.upper()}', prefix)}\n}}"
