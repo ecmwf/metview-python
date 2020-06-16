@@ -106,18 +106,19 @@ def datatype_to_stream(key, content, prefix):
     :param str prefix:
     :return str:
     """
+    bracket_prefix = "  "
     help_dict = content.get("interface", {}).get("help", {})
     if help_dict:
         width = max([len("help_" + k) for k in help_dict.keys()])
         helps = [f"{'help':{width}} = help_{help_dict.pop('type', '')}"]
         for hk, value in help_dict.items():
             helps.append(f"{'help_' + hk:{width}} = {value}")
-        helps = ",\n" + textwrap.indent(",\n".join(helps), prefix + ' ')
+        helps = ",\n" + textwrap.indent(",\n".join(helps), bracket_prefix + " ")
     else:
         helps = ""
     exclusive = ", exclusive = true" if content.get("interface", {}).get("multi") is False else ""
     declaration = f"interface = icon, class = {content['type'].upper()}{exclusive}"
-    metadata = f"[{prefix}{declaration}{prefix if not helps else ''}{helps}"
+    metadata = f"[{bracket_prefix}{declaration}{bracket_prefix if not helps else ''}{helps}"
     metadata += "\n]" if helps else "]"
     param_stream = f"{key.upper()}\n{textwrap.indent(metadata, prefix)}\n"
     param_stream += "{ @ }\n"

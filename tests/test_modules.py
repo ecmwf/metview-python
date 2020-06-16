@@ -230,6 +230,14 @@ def test_datatype_to_stream_with_help():
     assert datatype_stream == textwrap.dedent(exp_stream.strip("\n"))
 
 
+def test_shared_param_to_stream_invalid_keys():
+    key = "dummy"
+    content = {"dummy_name": "dummy_value"}
+
+    with pytest.raises(ValueError):
+        modules.shared_param_to_stream(key, content, " ")
+
+
 def test_param_to_stream_option():
     param = {
         "param1":  {
@@ -366,27 +374,27 @@ def test_translate_definition(tmpdir):
     exp_stream = """
         DUMMY_CLASS; APPLICATION
         {
-          PARAM1
-          {
-            VALUE1; VALUE1
-            VALUE2; VALUE2
-          } = VALUE2
-        
-          PARAM2
-          {
-            *
-          } = ''
-          
-          PARAM3
-            [  interface = icon, class = GRIB,
-               help      = help_data,
-               help_name = dummy name
-            ]
-          { @ }
-          
-          PARAM4
-            [  interface = icon, class = GRIB, exclusive = true  ]
-          { @ }
+            PARAM1
+            {
+                VALUE1; VALUE1
+                VALUE2; VALUE2
+            } = VALUE2
+            
+            PARAM2
+            {
+                *
+            } = ''
+            
+            PARAM3
+                [  interface = icon, class = GRIB,
+                   help      = help_data,
+                   help_name = dummy name
+                ]
+            { @ }
+            
+            PARAM4
+                [  interface = icon, class = GRIB, exclusive = true  ]
+            { @ }
         }
     """
 
