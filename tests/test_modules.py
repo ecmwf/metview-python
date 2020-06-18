@@ -394,6 +394,127 @@ def test_param_to_stream_strings_list_help():
     assert option_stream == textwrap.dedent(exp_stream.strip("\n"))
 
 
+def test_assemble_paramshare_section_no_param():
+    params = []
+    paramshare_stream = modules.assemble_paramshare_section(params, 4)
+
+    assert paramshare_stream == ""
+
+
+def test_assemble_paramshare_section_no_type():
+    params = [{"param1": {"type": "dummy_type1"}}, {"param2": {"type": "dummy_type2"}}]
+    paramshare_stream = modules.assemble_paramshare_section(params, 4)
+
+    assert paramshare_stream == ""
+
+
+def test_assemble_paramshare_section_colour():
+    params = [{"param1": {"type": "colour"}}, {"param2": {"type": "dummy_type2"}}]
+    paramshare_stream = modules.assemble_paramshare_section(params, 4)
+    exp_stream = """
+        PARAMSHARE; ParamShare; PARAMSHARE
+        {
+            COLOUR {
+                %include MagicsColours.txt
+            }
+        }
+
+    """
+
+    assert paramshare_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_assemble_paramshare_section_marker_line_style():
+    params = [
+        {"param1": {"type": "marker"}},
+        {"param2": {"type": "line_style"}}
+    ]
+    paramshare_stream = modules.assemble_paramshare_section(params, 4)
+    exp_stream = """
+        PARAMSHARE; ParamShare; PARAMSHARE
+        {
+            MARKER {
+                1; 1
+                2; 2
+                3; 3
+                4; 4
+                5; 5
+            }
+        
+            LINE_STYLE {
+                SOLID; SOLID
+                DASH; DASH
+                DOT; DOT
+                CHAIN_DOT; CHAIN_DOT
+                CHAIN_DASH; CHAIN_DASH
+            }
+        }
+
+    """
+
+    assert paramshare_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_assemble_paramshare_section_onoff_quality():
+    params = [
+        {"param1": {"type": "onoff"}},
+        {"param2": {"type": "quality"}}
+    ]
+    paramshare_stream = modules.assemble_paramshare_section(params, 4)
+    exp_stream = """
+        PARAMSHARE; ParamShare; PARAMSHARE
+        {
+            ONOFF {
+                ON; ON
+                OFF; OFF
+            }
+
+            QUALITY {
+                LOW; LOW
+                MEDIUM; MEDIUM
+                HIGH; HIGH
+            }
+        }
+
+    """
+
+    assert paramshare_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
+def test_assemble_paramshare_section_shading_thickness():
+    params = [
+        {"param1": {"type": "shading"}},
+        {"param2": {"type": "thickness"}}
+    ]
+    paramshare_stream = modules.assemble_paramshare_section(params, 4)
+    exp_stream = """
+        PARAMSHARE; ParamShare; PARAMSHARE
+        {
+            SHADING {
+                DOT; DOT
+                HATCH; HATCH
+                AREA_FILL; AREA_FILL
+            }
+
+            THICKNESS {
+                1; 1
+                2; 2
+                3; 3
+                4; 4
+                5; 5
+                6; 6
+                7; 7
+                8; 8
+                9; 9
+                10; 10
+            }
+        }
+
+    """
+
+    assert paramshare_stream == textwrap.dedent(exp_stream.strip("\n"))
+
+
 def test_translate_definition(tmpdir):
     definition_content = """
         class: dummy_class
