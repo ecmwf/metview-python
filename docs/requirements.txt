@@ -1,0 +1,5 @@
+# These are the requirements for readthedoc
+nbsphinx
+sphinx_rtd_theme
+sphinx_gallery
+#matplotlib
