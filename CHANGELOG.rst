@@ -2,6 +2,11 @@
 Changelog for Metview's Python interface
 ========================================
 
+1.4.3
+------------------
+- added support for int numpy arrays as input to functions and methods
+
+
 (No version update)
 -------------------
 - added new Jupyter notebook for data analysis
