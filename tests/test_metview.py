@@ -1512,8 +1512,21 @@ def test_set_vector_TF_bool_from_numpy_array():
 
 def test_set_vector_from_int_numpy_array():
     r = np.array([5, 8, 7, 1, 2900], dtype=np.int)
-    with pytest.raises(TypeError):
-        a = mv.type(r)
+    assert mv.type(r) == "vector"
+    assert mv.dtype(r) == "float64"
+    assert mv.count(r) == 5
+    assert np.array_equal(mv.abs(r), np.array([5, 8, 7, 1, 2900], dtype=np.float64))
+#    with pytest.raises(TypeError):
+#        a = mv.type(r)
+
+
+# these are dtype(int) although not explicitly stated
+def test_set_vector_from_int_numpy_array_implicit():
+    r = np.array([5, 8, 7, 1, 2900])
+    assert mv.type(r) == "vector"
+    assert mv.dtype(r) == "float64"
+    assert mv.count(r) == 5
+    assert np.array_equal(mv.abs(r), np.array([5, 8, 7, 1, 2900], dtype=np.float64))
 
 
 def test_simple_vector_with_nans():
