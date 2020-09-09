@@ -463,6 +463,15 @@ class FileBackedValueWithOperators(FileBackedValue):
     def __abs__(self):
         return self.abs()
 
+    def __and__(self, other):
+        return met_and(self, other)
+
+    def __or__(self, other):
+        return met_or(self, other)
+
+    def __invert__(self):
+        return met_not(self)
+
 
 class ContainerValueIterator:
     def __init__(self, data):
@@ -1016,6 +1025,9 @@ read = make("read")
 met_setoutput = make("setoutput")
 sub = make("-")
 subset = make("[]")
+met_and = make("and")
+met_or = make("or")
+met_not = make("not")
 
 
 # -----------------------------------------------------------------------------

@@ -5,6 +5,7 @@ Changelog for Metview's Python interface
 1.4.3
 ------------------
 - added support for int numpy arrays as input to functions and methods
+- added support for bitwise and (&), or (|) and not (~) operators on Fieldsets
 - improved timeout message by mentioning how to increase the timeout
 
 

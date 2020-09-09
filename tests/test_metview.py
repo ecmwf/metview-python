@@ -363,6 +363,24 @@ def test_distance():
     assert np.isclose(maximum, SEMI_EQUATOR)
 
 
+def test_fieldset_and():
+    t = (TEST_FIELDSET > 290) & (TEST_FIELDSET < 310)
+    s = mv.accumulate(t)
+    assert s == 43855
+
+
+def test_fieldset_or():
+    t = (TEST_FIELDSET < 250) | (TEST_FIELDSET > 310)
+    s = mv.accumulate(t)
+    assert s == 12427
+
+
+def test_fieldset_not():
+    t = ~(TEST_FIELDSET < 250)
+    s = mv.accumulate(t)
+    assert s == 104821
+
+
 def test_valid_date_len_1():
     vd = mv.valid_date(TEST_FIELDSET)
     assert isinstance(vd, datetime.datetime)
