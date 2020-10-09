@@ -340,6 +340,12 @@ def test_power_reverse():
     assert np.isclose(maximum, 2 ** 4)
 
 
+def test_mod():
+    assert mv.mod(17, 4) == 1
+    assert mv.mod(15, 3) == 0
+    assert mv.mod(15.7, 30) == 15
+
+
 def test_pos():
     pos_fs = +TEST_FIELDSET
     minimum = mv.minvalue(pos_fs)

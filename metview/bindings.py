@@ -994,6 +994,7 @@ def bind_functions(namespace, module_name=None):
     namespace["neg"] = make("neg")
     namespace["nil"] = make("nil")
     namespace["div"] = div
+    namespace["mod"] = mod
     # override some functions that need special treatment
     # FIXME: this needs to be more structured
     namespace["plot"] = plot
@@ -1018,6 +1019,7 @@ lower_than = make("<")
 merge = make("&")
 met_not_eq = make("<>")
 met_plot = make("plot")
+mod = make("mod")
 nil = make("nil")
 png_output = make("png_output")
 power = make("^")
