@@ -300,8 +300,20 @@ def test_division():
     assert np.isclose(maximum, MAX_VALUE / 2)
 
 
+def test_division_via_function():
+    divided_two = mv.div(TEST_FIELDSET, 2)
+    maximum = mv.maxvalue(divided_two)
+    assert np.isclose(maximum, MAX_VALUE / 2)
+
+
 def test_division_reverse():
     divided_two = 2 / TEST_FIELDSET
+    minimum = mv.minvalue(divided_two)
+    assert np.isclose(minimum, 2 / MAX_VALUE)
+
+
+def test_division_reverse_via_function():
+    divided_two = mv.div(2, TEST_FIELDSET)
     minimum = mv.minvalue(divided_two)
     assert np.isclose(minimum, 2 / MAX_VALUE)
 

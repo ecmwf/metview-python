@@ -6,6 +6,7 @@ Changelog for Metview's Python interface
 ------------------
 - added support for int numpy arrays as input to functions and methods
 - added support for bitwise and (&), or (|) and not (~) operators on Fieldsets
+- added div() function (already available via the '/' operator)
 - improved timeout message by mentioning how to increase the timeout
 - fixed error when updating an  mv.Request object
 

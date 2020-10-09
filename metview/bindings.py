@@ -993,6 +993,7 @@ def bind_functions(namespace, module_name=None):
     # HACK: some fuctions are missing from the 'dictionary' call.
     namespace["neg"] = make("neg")
     namespace["nil"] = make("nil")
+    namespace["div"] = div
     # override some functions that need special treatment
     # FIXME: this needs to be more structured
     namespace["plot"] = plot
