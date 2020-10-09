@@ -287,7 +287,7 @@ class Request(dict, Value):
         for k in list(self):
 
             # bool -> on/off
-            v = self.get(k) # self[k] returns 1 for True
+            v = self.get(k)  # self[k] returns 1 for True
             if isinstance(v, bool):
                 conversion_dict = {True: "on", False: "off"}
                 self[k] = conversion_dict[v]
