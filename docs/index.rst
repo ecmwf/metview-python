@@ -48,7 +48,9 @@ Metview was developed as part of a cooperation between ECMWF and INPE (Brazilian
    fieldset
    grib
    geopoints
+   thermo
    math
+   netcdf
    geo
    odb_filter   
 

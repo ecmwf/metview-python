@@ -175,7 +175,7 @@ Geopoints functions
     :param gpt: input geopoints
     :type gpt: :class:`Geopoints`
     :param cond: filter conditions
-    :type cond: number or list or ndarray or :class:`Geopoints`
+    :type cond: number or datetime.datetime or list or ndarray or :class:`Geopoints`
     :rtype: :class:`Geopoints`
 
     The actual filtering is based on the type of ``cond``:

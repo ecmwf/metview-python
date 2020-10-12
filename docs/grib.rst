@@ -1184,25 +1184,25 @@ Fieldset functions
          hlevs = [1000, 2000, 3000, 4000, 5000]
          th = mv.ml_to_hl (t, z, None, hlevs, "sea", "linear")
 
-.. py:function:: mod(fs1, fs2)
+.. .. py:function:: mod(fs1, fs2)
 
-   Returns a fieldset in each point containing the remainder of dividing ``fs1`` by ``fs2``.
+..    Returns a fieldset in each point containing the remainder of dividing ``fs1`` by ``fs2``.
    
-   with as many fields as the input fieldsets; the grid point values of the output fieldset are the remainder of the division of the first fieldset by the second fieldset (the function operating field by field). 
+..    with as many fields as the input fieldsets; the grid point values of the output fieldset are the remainder of the division of the first fieldset by the second fieldset (the function operating field by field). 
    
-   :param fs1: the divident fieldset
-   :type fs1: :class:`Fieldset`
-   :param fs2: the divisor fieldset
-   :type fs2: :class:`Fieldset`
-   :rtype: :class:`Fieldset`
+..    :param fs1: the divident fieldset
+..    :type fs1: :class:`Fieldset`
+..    :param fs2: the divisor fieldset
+..    :type fs2: :class:`Fieldset`
+..    :rtype: :class:`Fieldset`
    
-   Where the gridpoint values of ``fs2`` are larger than those of ``fs1``, the output gridpoint value is set to the integer part of ``fs1``. A missing value in either ``fs1`` or ``fs2`` will result in a missing value in the corresponding place in the output fieldset. Note that only the integer parts of the inputs are considered in the calculation, meaning that a second parameter of 0.5 would cause a division by zero.
+..    Where the gridpoint values of ``fs2`` are larger than those of ``fs1``, the output gridpoint value is set to the integer part of ``fs1``. A missing value in either ``fs1`` or ``fs2`` will result in a missing value in the corresponding place in the output fieldset. Note that only the integer parts of the inputs are considered in the calculation, meaning that a second parameter of 0.5 would cause a division by zero.
 
-   With N fields in ``fs1`` and ``fs2`` by denoting the i-th value in the k-th field by :math:`x_{i}^{k}` and  :math:`y_{i}^{k}`, respectively, the output values can be written as:
+..    With N fields in ``fs1`` and ``fs2`` by denoting the i-th value in the k-th field by :math:`x_{i}^{k}` and  :math:`y_{i}^{k}`, respectively, the output values can be written as:
 
-   .. math::
+..    .. math::
 
-         m_{i} = mod(x_{i}^{k}, y_{i}^{k})
+..          m_{i} = mod(x_{i}^{k}, y_{i}^{k})
 
 .. py:function:: mvl_geopotential_on_ml(t, q, lnsp, zs)
 

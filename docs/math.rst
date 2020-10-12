@@ -103,8 +103,17 @@ Mathematical functions
 
    Missing values are retained, unaltered by the calculation.
 
+.. py:function:: mod(data1, data2)
 
-
+   Computes the remainder of dividing ``data1`` by ``data2``.
+   
+   :param data1: divident data
+   :type data1: :class:`Fieldset` or :class:`NetCDF`
+   :param data2: divisor data
+   :type data2: :class:`Fieldset` or :class:`NetCDF`
+   :rtype: same type as ``data1``
+   
+   Where the values of ``data2`` are larger than those of ``data1``, the output value is set to the integer part of ``data1``. A missing value in either ``data1`` or ``data2`` will result in a missing value in the corresponding place in the output. Note that only the integer parts of the inputs are considered in the calculation, meaning that a divisor of 0.5 would cause a division by zero.
 
 .. py:function:: neg(fs)
 
