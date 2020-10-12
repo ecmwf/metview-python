@@ -4,51 +4,53 @@ Fieldset functions
 .. .. minigallery:: metview.gradient
 ..     :add-heading:
 
-.. py:function:: abs(fs)
+.. .. py:function:: abs(fs)
    
-   Returns the fieldset of the absolute value of ``fs`` at each grid point or spectral coefficient. 
+..    Returns the fieldset of the absolute value of ``fs`` at each grid point or spectral coefficient. 
 
-   :param fs: input fieldset
-   :type fs: :class:`Fieldset`
-   :rtype: :class:`Fieldset`
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :rtype: :class:`Fieldset`
 
-   Missing values are retained, unaltered by the calculation.
+..    Missing values are retained, unaltered by the calculation.
 
 .. py:function:: accumulate(fs)
 
-   For each field in ``fs`` this function calculates the sum of all the values of the field. If there is only one field in ``fs`` it returns a number, otherwise a numpy array is returned. Only non-missing values are considered in the calculation. For fields with no valid values NaN is returned.
+   Computes the sum of all the values for each field in ``fs``.
 
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
    :rtype: float or ndarray or None
 
-.. py:function:: acos(fs)
-   
-   Return the fieldset of the arc cosine function of ``fs`` at each grid point. Results are in radians. Missing values are retained, unaltered by the calculation.
-   
-   :param fs: input fieldset
-   :type fs: :class:`Fieldset`
-   :rtype: :class:`Fieldset`
+   If there is only one field in ``fs`` it returns a number, otherwise a numpy array is returned. Only non-missing values are considered in the calculation. For fields with no valid values NaN is returned.
 
-.. py:function:: asin(fs)
+.. .. py:function:: acos(fs)
    
-   Return the fieldset of the arc sine function of ``fs`` at each grid point. Results are in radians. Missing values are retained, unaltered by the calculation.
+..    Return the fieldset of the arc cosine function of ``fs`` at each grid point. Results are in radians. Missing values are retained, unaltered by the calculation.
    
-   :param fs: input fieldset
-   :type fs: :class:`Fieldset`
-   :rtype: :class:`Fieldset`   
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :rtype: :class:`Fieldset`
 
-.. py:function:: atan(fs)
+.. .. py:function:: asin(fs)
    
-   Return the fieldset of the arc tangent function of ``fs`` at each grid point. Results are in radians. Missing values are retained, unaltered by the calculation.
+..    Return the fieldset of the arc sine function of ``fs`` at each grid point. Results are in radians. Missing values are retained, unaltered by the calculation.
    
-   :param fs: input fieldset
-   :type fs: :class:`Fieldset`
-   :rtype: :class:`Fieldset`
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :rtype: :class:`Fieldset`   
+
+.. .. py:function:: atan(fs)
+   
+..    Return the fieldset of the arc tangent function of ``fs`` at each grid point. Results are in radians. Missing values are retained, unaltered by the calculation.
+   
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :rtype: :class:`Fieldset`
 
 .. py:function:: average(fs)
 
-   For each field in ``fs`` calculates the average of all the field values. 
+   Computes the average of all the values for each field in ``fs``. 
    
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
@@ -108,51 +110,64 @@ Fieldset functions
       Here we compute the averages over longitude strips bounded by 30N and 30S, in 5 degree intervals around the globe. The result for each field in ``fs`` is vector of 73 values (in this case values for 0 and 360 are duplicated values). Each value returned (representing the average at longitude Lon) is the average of non-missing values in those grid points whose longitude coordinate is between Lon-2.5 and Lon+2.5 (2.5 is 5/2), in the strip between 30N and 30S.
 
 
-.. py:function:: bearing (fs, ref_lat_or_coords, [ref_lon])
+.. py:function:: bearing (fs, lat, lon)
+.. py:function:: bearing (fs, coords)
+   :noindex:
 
-   Computes the bearing for each grid point with reference to the given location. 
+   Computes the bearing for each grid point in ``'fs`` with reference to the given location. 
    
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
-   :param ref_lat_or_coords: latitude of the reference point or coordinates of the reference point as [lat, lon]
-   :type ref_lat_or_coords: float or list
-   :param float ref_lon: longitude of the reference point
+   :param lat: latitude of the reference point
+   :type lat: float
+   :param lon: longitude of the reference point
+   :type lon: float
+   :param coords: coordinates of the reference point as [lat, lon]
+   :type coords: list
    :rtype: :class:`Fieldset`
    
-   The bearing is the angle between the Northward meridian going through the reference point and the great circle connecting the reference point and the given gridpoint. It is measured in degrees clockwise from North. If a gridpoint is located on the same latitude as the reference point the bearing is regarded constant: it is either 90° (East) or 270° (West). If the gridpoint is co-located with the reference point the bearing is set to a missing value. The reference location should be specified in degrees.
+   The **bearing** is the angle between the Northward meridian going through the reference point and the great circle connecting the reference point and the given gridpoint. It is measured in degrees clockwise from North. If a gridpoint is located on the same latitude as the reference point the bearing is regarded constant: it is either 90° (East) or 270° (West). If the gridpoint is co-located with the reference point the bearing is set to a missing value. The reference location should be specified in degrees.
 
 .. py:function:: base_date(fs)
 
-   Returns the base dates (including the time components) of the given fields. If ``fs`` has only one field, a date is returned; otherwise a list of dates is returned.
+   Returns the base dates (including the time components) of the given fields. 
 
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
    :rtype: datetime.datetime or list of datetime.datetime objects
 
-.. py:function:: bitmap(fs, value_or_field)
+   If ``fs`` has only one field, a date is returned; otherwise a list of dates is returned.
+
+.. py:function:: bitmap(fs, value)
+.. py:function:: bitmap(fs, field)
+   :noindex:
 
    Returns a copy of ``fs`` with zero or more of its values replaced with the GRIB missing value indicator. 
    
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
-   :param value_or_field: bitmap value or bitmap fieldset
-   :type value_or_field: float or :class:`Fieldset`
+   :param value: bitmap value
+   :type value_or_field: float
+   :param field: bitmap fieldset
+   :type field: :class:`Fieldset`
    :rtype: :class:`Fieldset`
    
    The behaviour of :func:`bitmap` depends on the arguments:
 
-   * if ``value_or_field`` is a number any value being equal to it is replaced with the missing value indicator in ``fs``. 
-   * if ``value_or_field`` is a :class:`Fieldset` with the same number of fields as ``fs`` the result takes the arrangement of missing values from ``value_or_field``. 
-   * if ``value_or_field`` contains only one field the arrangement of missing values from that field are copied into all fields of the output fieldset. See also :func:`nobitmap`.
+   * if ``value`` is specified any value being equal to it is replaced with the missing value indicator in ``fs``. 
+   * if ``field`` is specified with the same number of fields as ``fs`` the result takes the arrangement of missing values from ``field``. 
+   * if ``field`` contains only one field the arrangement of missing values from that field are copied into all fields of the output fieldset. 
+   
+   See also :func:`nobitmap`.
 
 
-.. py:function:: cos(fs)
+.. .. py:function:: cos(fs)
 
-   Returns the fieldset of the cosine of ``fs`` at each grid point. Input values must be in radians. Missing values are retained, unaltered by the calculation.
+..    Returns the fieldset of the cosine of ``fs`` at each grid point. Input values must be in radians. Missing values are retained, unaltered by the calculation.
 
-   :param fs: input fieldset
-   :type fs: :class:`Fieldset`
-   :rtype: :class:`Fieldset`  
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :rtype: :class:`Fieldset`  
 
 .. py:function:: coslat(fs)
 
@@ -174,7 +189,7 @@ Fieldset functions
 
 .. py:function:: corr_a(fs1, fs2, [area])    
    
-   Computes the correlation between ``fs1`` and ``fs2`` over a weighted area. 
+   Computes the correlation between ``fs1`` and ``fs2`` over a weighted ``area``. 
    
    :param fs1: first input fieldset
    :type fs: :class:`Fieldset`
@@ -183,7 +198,15 @@ Fieldset functions
    :param list area: area as [N,W,S,E] to perform the computations
    :rtype: float or list 
    
-   If the ``area`` is not specified the whole field will be used in the calculation. The result is a number for a single field or a list for a multi-field :class:`Fieldset`.
+   If ``area`` is not specified the whole field will be used in the calculation. The result is a number for a single field or a list for a multi-field :class:`Fieldset`.
+
+   With n fields in ``fs`` by denoting the i-th value in the k-th field by :math:`x_{i}^{k}` the output values can be written as:
+
+   .. math:: 
+      
+          z_{i} = \frac {1}{N} \sum_{k}^{N}x_{i}^{k}y_{i}^{k} - \frac {1}{N} \sum_{k}^{N}x_{i}^{k} \frac {1}{N} \sum_{k}^{N}y_{i}^{k}
+          
+          v_{i} = \frac {1}{n} \sum_{k}^{n} (x_{i}^{k})^2 - \frac {1}{n} (\sum_{k}^{n} x_{i}^{k})^2
 
    .. note::
       The following lines are equivalent although the first one is more efficient:
@@ -196,7 +219,7 @@ Fieldset functions
 
 .. py:function:: covar(fs1, fs2)   
 
-   Computes the covariance of ``fs1`` and ``fs2``. 
+   Computes the point-wise covariance of ``fs1`` and ``fs2``. 
    
    :param fs1: first input fieldset
    :type fs: :class:`Fieldset`
@@ -204,7 +227,7 @@ Fieldset functions
    :type fs: :class:`Fieldset`
    :rtype: :class:`Fieldset`
    
-   With N fields in ``fs1`` and ``fs2`` by denoting the i-th value in the k-th field by :math:`x_{i}^{k}` and :math:`y_{i}^{k}` respectively, the output values can be written as:
+   The result is a single field. With N fields in ``fs1`` and ``fs2`` by denoting the i-th value in the k-th field by :math:`x_{i}^{k}` and :math:`y_{i}^{k}` respectively, the output values can be written as:
 
    .. math:: 
       
@@ -236,19 +259,19 @@ Fieldset functions
 
 .. py:function:: datainfo(fs)   
 
-   Returns a list of dictionaries containing some metadata for each field in ``fs``. 
+   Returns a dictionary containing some metadata for each field in ``fs``. 
    
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
-   :rtype: list of dictionary
+   :rtype: list of dict
    
-   The dictionary contains the following members: 
+   A given dict contains the following members: 
    
-   * index: the index of the field in the fieldset (indexing starts at 1)
-   * number_present: the number of values
+   * index: the index of the field in the fieldset (indexing starts at 0)
+   * number_present: the number of non-missing values
    * number_missing: the number of missing values
-   * proportion_present: the proportion of the 
-   * proportion_missing: the proportion
+   * proportion_present: the normalised proportion of the non-missing values to the total number of values ([0-1])
+   * proportion_missing: normalised the proportion of the missing values to the total number of values ([0-1])
    
 .. py:function:: direction(u, v)
 
@@ -262,30 +285,33 @@ Fieldset functions
 
    The resulting values are directions, in degrees clockwise from North, where a value of 0 represents a wind from the North and a value of 90 represents a wind from the East. A missing value in either ``u`` or ``v``  will result in a missing value in the corresponding place in the output fieldset.
 
-.. py:function:: distance(fs, ref_lat_or_coords, [ref_lon])
+.. py:function:: distance(fs, lat, lon)
+.. py:function:: distance(fs, coords)
+   :noindex:
 
-   Returns a fieldset with the value in each grid point being the distance in **metres** from a given geographical location (the reference). 
+   Returns a :class:`Fieldset` with the value in each grid point being the distance in **metres** from a given geographical location (the reference). 
    
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
-   :param ref_lat_or_coords: latitude of the reference point or coordinates of the reference point as [lat, lon]
-   :type ref_lat_or_coords: float or list
-   :param float ref_lon: longitude of the reference point
+   :param float lat: latitude of the reference point 
+   :param float lon: longitude of the reference point
+   :param coords: coordinates of the reference point as [lat, lon]
+   :type coords: list
    :rtype: :class:`Fieldset`
    
    The reference location should be specified in degrees.
 
-.. py:function:: div(fs1, fs2):
+.. .. py:function:: div(fs1, fs2):
 
-   Returns a fieldset where values in each grid point are the integer part of the division of ``fs1`` by ``fs2`` (the function is operating field by field).
+..    Returns a fieldset where values in each grid point are the integer part of the division of ``fs1`` by ``fs2`` (the function is operating field by field).
 
-   :param fs1: first input fieldset
-   :type fs1: :class:`Fieldset`
-   :param fs2: second input fieldset
-   :type fs2: :class:`Fieldset`
-   :rtype: :class:`Fieldset` 
+..    :param fs1: first input fieldset
+..    :type fs1: :class:`Fieldset`
+..    :param fs2: second input fieldset
+..    :type fs2: :class:`Fieldset`
+..    :rtype: :class:`Fieldset` 
 
-   A missing value in either ``fs1`` or ``fs2`` will result in a missing value in the corresponding place in the output fieldset.
+..    A missing value in either ``fs1`` or ``fs2`` will result in a missing value in the corresponding place in the output fieldset.
 
 .. py:function:: divergence(fx, fy)
 
@@ -309,7 +335,7 @@ Fieldset functions
    * :math:`\phi` is the latitude
    * :math:`\lambda` is the longitude.
 
-   The derivatives are computed with a second order finite-difference approximation. The resulting fields contain missing values on the poles. If ``fx`` and ``fy`` are horizontal wind components the GRIB **paramId** of the resulting field is set to 155 (=divergence). 
+   The derivatives are computed with a second order finite-difference approximation. The resulting fields contain missing values on the poles. If ``fx`` and ``fy`` are horizontal wind components the ecCodes **paramId** of the resulting field is set to 155 (=divergence). 
    
    .. warning::
       :func:`divergence` is only implemented for regular latitude-longitude grids.
@@ -324,31 +350,33 @@ Fieldset functions
    :param int number_of_copies: the number of copies required
    :rtype: :class:`Fieldset` 
 
-.. py:function:: exp(fs)
+.. .. py:function:: exp(fs)
 
-   Returns the fieldset of the exponential of ``fs`` at each grid point. Missing values are retained, unaltered by the calculation.
+..    Returns the fieldset of the exponential of ``fs`` at each grid point. Missing values are retained, unaltered by the calculation.
 
-   :param fs: input fieldset
-   :type fs: :class:`Fieldset`
-   :rtype: :class:`Fieldset`  
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :rtype: :class:`Fieldset`  
 
 
-.. py:function:: find(fs, value_or_range, [area_or_mask])
+.. py:function:: find(fs, value, [area_or_mask])
+.. py:function:: find(fs, range, [area_or_mask])
+   :noindex:
 
    Returns a list of locations (lat/lon pairs) where the values of ``fs`` equal to or within the range of ``value_or_range``. 
    
    :param fs: input fieldset 
    :type fs: :class:`Fieldset`
-   :param value_or_range: the value or range defining the search condition
-   :type value_or_range: int or list 
+   :param float value: the value defining the search condition
+   :param list range: the range defining the search condition
    :param area_or_mask: area or mask field restricting the search
    :type area_or_mask: list or :class:`Fieldset`
    :rtype: list of lists
 
-   The primary search condition is defined by ``value_or_range``:
+   The primary search condition is defined by ``value`` or ``range``:
 
-   * if ``value_or_range`` is a number the locations where ``fs`` equals to this number are returned
-   * if ``value_or_range`` is a list of [v1, v2] the locations where ``fs`` values are within the closed range of [v1, v2] are returned
+   * if ``value`` is specified the locations where ``fs`` equals to this number are returned
+   * if ``range`` is specified as a list of [v1, v2] the locations where ``fs`` values are within the closed range of [v1, v2] are returned
 
    The optional ``area_or_mask`` argument can pose an additional search condition:
 
@@ -359,7 +387,7 @@ Fieldset functions
 
 .. py:function:: float(fs, [number_of_bits])
 
-   Returns a fieldset with integer data converted into floating point data for more accurate computations.
+   Returns a :class:`Fieldset` with integer data converted into floating point data for more accurate computations.
    
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
@@ -424,7 +452,7 @@ Fieldset functions
    :param fs: input fieldset
    :type fs: :class:`Fieldset` 
    :param list bins: bins used for the computations
-   :param list area: area as [North,West,South,East] used for the computations
+   :param list area: area as [North, West, South, East] used for the computations
    :rtype: list or list of lists
 
    ``bins`` is a list with numbers in ascending order defining the bins. The first and last bins are unbounded. E.g. if ``bins`` = [0, 10, 20] the following bins are defined:
@@ -442,7 +470,7 @@ Fieldset functions
       Note that this function accumulates its results between fields in ``fs``!
 
 
-.. py:function::  geostrophic_wind_pl(z)
+.. py:function::  geostrophic_wind(z)
 
    Computes the geostrophic wind from geopotential fields defined on pressure levels. 
    
@@ -468,17 +496,17 @@ Fieldset functions
    The derivatives are computed with a second order finite-difference approximation. The resulting fieldset contains two fields for each input field: the u and v geostrophic wind components. In each output field the points close to the poles and the Equator are bitmapped (they contain missing values). 
    
    .. warning::
-      :func:`geostrophic_wind_pl` is only implemented for regular latitude-longitude grids.
+      :func:`geostrophic_wind` is only implemented for regular latitude-longitude grids.
 
 .. py:function:: gfind(fs, value, [eps])
 
-   Returns a :class:`Geopoints` holding the grid points whose value is equal to ``value``. 
+   Returns a :class:`Geopoints` holding the grid points whose value is equal to ``value`` int the first field of ``fs``. 
    
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
    :param float value: the value to match
    :param float eps: when specified data values are selected when :math:`abs(data - value) < eps`
-   :rtype: :class:`Fieldset`  
+   :rtype: :class:`Geopoints`  
   
    Missing values in ``fs`` are not returned.
 
@@ -509,7 +537,7 @@ Fieldset functions
 
 .. py:function:: grib_get(fs, keys, [grouping])
 
-   Extracts the values of ecCodes keys from the GRIB headers of ``fs`` in an efficient way. 
+   Extracts the values of a set of ecCodes keys from the GRIB headers of ``fs`` in an efficient way. 
    
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
@@ -578,7 +606,7 @@ Fieldset functions
    
    :func:`grib_get_long_array` and :func:`grib_get_double_array` return a 1d-ndarray if ``fs`` has a single field, otherwise they return a list 1d-ndarrays.
    
-   :func:`grib_get_string` returns a list of strings if ``fs`` has a single field, otherwise it Returns a list lists.
+   :func:`grib_get_string` returns a list of strings if ``fs`` has a single field, otherwise it returns a list lists.
 
    .. note::
       :func:`grib_get_long` and :func:`grib_get_long_array` extract a C long value internally but it is cast into float on return.
@@ -589,6 +617,7 @@ Fieldset functions
 
       .. code-block:: python
 
+         import metview as mv
          print(mv.grib_get_long(data, "editionNumber"))
          print(mv.grib_get_long(data, "max"))
          print(mv.grib_get_double(data, "max"))
@@ -612,7 +641,6 @@ Fieldset functions
       .. code-block:: python
          
          import metview as mv
-
          g = mv.read('your_data_in_gg.grb')
          pl = mv.grib_get_long_array (g, 'pl')
          print(len(pl))
@@ -628,7 +656,7 @@ Fieldset functions
    :param list keys_and_values: the ecCodes keys and values
    :rtype: :class:`Fieldset`
    
-   ``keys_and_values`` has to be a list of the ecCodes keys and their values following each other. The actual data types are deduced the value passed (and not from the key name!). 
+   ``keys_and_values`` has to be a list of the ecCodes keys and their values following each other. The actual data types are deduced from the values passed (and not from the key name!). 
 
    :Example:
 
@@ -667,7 +695,7 @@ Fieldset functions
 
 .. py:function:: gribsetbits(number_of_bits)
 
-   Sets the number of GRIB packing bits to ``number_of_bits`` (eg 8, 10, 16), and returns the previously used internal value. 
+   Sets the number of GRIB packing bits to ``number_of_bits`` (e.g. 8, 10, 16), and returns the previously used internal value. 
 
    :param int number_of_bits: number of bits
    :rtype: float 
@@ -682,7 +710,7 @@ Fieldset functions
    :type fs: :class:`Fieldset`
    :rtype: :class:`Fieldset` 
 
-   The grid cell area is returned in m2 units. This function only works for regular latitude-longitude grids and Gaussian grids.
+   The grid cell area is returned in m\ :sup:`2` units. This function only works for regular latitude-longitude grids and Gaussian grids.
 
 .. py:function:: indexes(fs, values)
 
@@ -690,7 +718,7 @@ Fieldset functions
 
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
-   :type ndarray values: the values to find the index for
+   :param ndarray values: the values to find the index for
    :rtype: :class:`Fieldset`
 
    Indexes are zero-based and will always have a minimum value of zero and a maximum value equal to the index of the last element of ``values``. A value lying between two values in ``values`` will use the index of the nearest value; if equidistant, then the higher value is used. ``values`` must be sorted in ascending order. 
@@ -721,15 +749,15 @@ Fieldset functions
          g = 2 4 5 5
              1 0 3 1
 
-.. py:function:: int(fs)
+.. .. py:function:: int(fs)
 
-   Returns the fieldset of the integer part of ``fs`` at each grid point or spectral coefficient.
+..    Returns the fieldset of the integer part of ``fs`` at each grid point or spectral coefficient.
 
-   :param fs: input fieldset
-   :type fs: :class:`Fieldset`
-   :rtype: :class:`Fieldset` 
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :rtype: :class:`Fieldset` 
 
-   Missing values are retained, unaltered by the calculation.
+..    Missing values are retained, unaltered by the calculation.
 
 .. py:function:: integer(fs)
 
@@ -752,7 +780,7 @@ Fieldset functions
    :type fs: :class:`Fieldset`
    :rtype: float or ndarray
 
-   The result is either a number (for one input field) or a 1D-ndarray (for multiple input fields). The computations are based on the cell area (in m2 units) returned by :func:`grid_cell_area`.
+   The result is either a **number** (for one input field) or an **ndarray** (for multiple input fields). The computations are based on the cell area (in m\ :super:`2` units) returned by :func:`grid_cell_area`.
 
 .. py:function:: integrate(fs, [area_or_mask])
 
@@ -760,10 +788,47 @@ Fieldset functions
    
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
-   :param area_or_mask: list defining an area or fieldset defining a mask
+   :param area_or_mask: list defining an area as [North, West, South, East] or fieldset defining a mask
    :type area_or_mask: list or :class:`Fieldset`
    :rtype: float or ndarray or None
    
+   If ``fs`` contains only one field a number is returned. If there is more than one field a numpy array is returned. Missing values in the input fieldset are bypassed in this calculation. For each field for which there are no valid values None is returned.
+
+   * If ``fs`` is the only argument the integration is done on all grid points.
+   * If ``area_or_mask`` is a list it defines an **area** as [North, West, South, East] for the integration:
+
+      .. code-block:: python
+
+         import metview as mv
+         europe = [75,-12.5,35,42.5]
+         x = mv.integrate(field, europe) 
+
+   * If ``area_or_mask`` is a fieldset it is used as a **mask** and the integration is performed only on the grid points where the mask values are non zero. ``area_or_mask`` should contain either one or as many fields as there are in ``fs``. If it has a single field then the mask is applied to all fields in ``fs``. If it has the same number of fields as ``fs``, then a different mask is applied to each input field. The example below shows how to use :func:`integrate` with a land-sea mask retrieved from MARS:
+      
+      .. code-block:: python
+
+         import metview as mv
+         
+         # read grib data on a 1 degree by 1 degree grid
+         f = mv.read("my_fs.grib") 
+
+         # retrieve land-sea mask from MARS on the same grid
+         lsm = mv.retrieve(
+            type="an",
+            date=-1,
+            param="lsm",
+            grid=[1,1],
+            levtype="sfc"
+         )
+
+         # make sure values are either 0 or 1
+         lsm = lsm > 0.5
+
+         # compute the average value on land and on sea
+         land = mv.integrate(f, lsm)
+         sea = mv.integrate(f, not lsm) 
+
+
    .. note::
       The computations are based on the following approximation of the grid cell areas:
 
@@ -778,7 +843,7 @@ Fieldset functions
       * :math:`\Delta\phi_{i}` is the size of the grid cells in latitude
       * :math:`\Delta\lambda_{i}` is the size of the i-th grid cell in longitude.
    
-      The function then supposes that Δφi is constant and the weighted average over the area is computed as:
+      :func:`integrate` then supposes that :math:`\Delta\phi_{i}` is constant and the weighted average over the area is computed as:
    
       .. math::
 
@@ -790,54 +855,47 @@ Fieldset functions
    
       Please note that for **Gaussian grids** the formula can only be only regarded as an approximation since :math:`\Delta\phi_{i}` is not constant!
 
-   If ``fs`` contains only one field a number is returned. If there is more than one field a numpy array is returned. Missing values in the input fieldset are bypassed in this calculation. For each field for which there are no valid values None is returned.
-
-   * If ``fs`` is the only argument the integration is done on all grid points.
-   * If ``area_or_mask`` is a list it must contain four numbers which are respectively the **north**, **west**, **south** and **east** boundaries of an area. The integration is done on the grid points contained inside this area:
-
-      .. code-block:: python
-   
-         europe = [75,-12.5,35,42.5]
-         x = integrate(field, europe) 
-
-   * If ``area_or_mask`` is a fieldset it is used as a mask. It should contain either one or as many fields as the first fieldset. If it has a single field then this mask is applied to all fields of the input fieldset. If it has the same number of fields as ``fs``, then a different mask is applied to each input field. The integration is performed only on the grid points where the mask values are non zero. The following code shows a simple example:
-      
-      .. code-block:: python
-
-         # Retrieve land-sea mask and interpolate to LL grid
-         lsm = retrieve(
-            type : "an",
-            date : -1,
-            param : "lsm",
-            grid : [1.5,1.5],
-            levtype : "sfc"
-         )
-
-         # The following line forces the values to 0 or 1.
-         lsm = lsm > 0.5
-
-         # Now compute the average value on land and on sea
-         land = integrate(field, lsm)
-         sea = integrate(field, not lsm) 
-
-.. py:function:: interpolate(fs, lat_or_locations, [lon])
+.. py:function:: interpolate(fs, lat, lon)
+.. py:function:: interpolate(fs, locations)
+   :noindex:
 
    Interpolate the values of ``fs`` to a given location(s) using **bilinear** interpolation. 
      
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
-   :param lat_or_locations: 
-   :type lat_or_locations: float or list or :class:`Geopoints`
-   :param lon: 
+   :param lat: latitude of target location
+   :type lat: float
+   :param lon: longitude of target location
    :type lon: float
+   :param locations: multiple target locations
+   :type locations: list or :class:`Geopoints`
    :rtype: float or ndarray or :class:`Geopoints` or None
 
-   A **single target location** can be defined with ``lat`` and ``lon`` or by specifying a list of [lat, lon] as ``lat_locations``. If ``fs`` has only one field, a float is returned; otherwise a 1D-ndarray is returned. Where it is not possible to generate a sensible value due to lack of valid data in ``fs``, None is returned.
+   A **single target location** can be defined with ``lat`` and ``lon`` or by specifying a list of [lat, lon] as ``locations``. If ``fs`` has only one field, a float is returned; otherwise a 1D-ndarray is returned. Where it is not possible to generate a sensible value due to lack of valid data in ``fs``, None is returned.
 
-   For multiple target locations ``lat_or_locations`` must be a :class:`Geopoints` and in this case the first field in ``fs`` is interpolated for each position of the :class:`Geopoints`. The output is then another :class:`Geopoints` taking the date, time and level from ``fs``. Where it is not possible to generate a sensible value due to lack of valid data in the fieldset NaN is used (this can be removed from the output with :func:`remove_missing_values`). 
+   For multiple target locations ``locations`` must be a :class:`Geopoints` and in this case the first field in ``fs`` is interpolated for each position of the :class:`Geopoints`. The output is then another :class:`Geopoints` taking the date, time and level from ``fs``. Where it is not possible to generate a sensible value due to lack of valid data in the fieldset NaN is used (this can be removed from the output with :func:`remove_missing_values`). 
    
    .. note::
       A similar function, :func:`nearest_gridpoint`, also exists.
+
+.. .. py:function:: interpolate(fs, lat_or_locations, [lon])
+
+..    Interpolate the values of ``fs`` to a given location(s) using **bilinear** interpolation. 
+     
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :param lat_or_locations: 
+..    :type lat_or_locations: float or list or :class:`Geopoints`
+..    :param lon: 
+..    :type lon: float
+..    :rtype: float or ndarray or :class:`Geopoints` or None
+
+..    A **single target location** can be defined with ``lat`` and ``lon`` or by specifying a list of [lat, lon] as ``lat_locations``. If ``fs`` has only one field, a float is returned; otherwise a 1D-ndarray is returned. Where it is not possible to generate a sensible value due to lack of valid data in ``fs``, None is returned.
+
+..    For multiple target locations ``lat_or_locations`` must be a :class:`Geopoints` and in this case the first field in ``fs`` is interpolated for each position of the :class:`Geopoints`. The output is then another :class:`Geopoints` taking the date, time and level from ``fs``. Where it is not possible to generate a sensible value due to lack of valid data in the fieldset NaN is used (this can be removed from the output with :func:`remove_missing_values`). 
+   
+..    .. note::
+..       A similar function, :func:`nearest_gridpoint`, also exists.
 
 .. py:function:: laplacian(fs)
 
@@ -874,21 +932,21 @@ Fieldset functions
 
    If ``fs`` contains more than one field a list of ndarrays is returned. Each of these ndarrays contains one value per gridpoint in each field.
 
-.. py:function:: log(fs)
+.. .. py:function:: log(fs)
 
-   Returns the fieldset of the natural logarithm of ``fs`` at each grid point. Missing values are retained, unaltered by the calculation.
+..    Returns the fieldset of the natural logarithm of ``fs`` at each grid point. Missing values are retained, unaltered by the calculation.
 
-   :param fs: input fieldset
-   :type fs: :class:`Fieldset`
-   :rtype: :class:`Fieldset` 
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :rtype: :class:`Fieldset` 
 
-.. py:function:: log10(fs)
+.. .. py:function:: log10(fs)
 
-   Returns the fieldset of the log base 10 of ``fs`` at each grid point. Missing values are retained, unaltered by the calculation.
+..    Returns the fieldset of the log base 10 of ``fs`` at each grid point. Missing values are retained, unaltered by the calculation.
 
-   :param fs: input fieldset
-   :type fs: :class:`Fieldset`
-   :rtype: :class:`Fieldset`
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :rtype: :class:`Fieldset`
 
 .. py:function:: longitudes(fs)
 
@@ -916,7 +974,7 @@ Fieldset functions
       * what happens depends on the type of ``values``:
 
          * if ``values`` is a :class:`Fieldset` the value at the same gridpoint in the (N-1)-th field in ``values`` is written into the i-th output field at the given gridpoint (here field indexing starts at 0)
-         * if ``values`` is an ndarray the value at (N-1)-th position in the ``values`` array is written into the i-th output field at the given gridpoint
+         * if ``values`` is an ndarray the value at the (N-1)-th position in the ``values`` array is written into the i-th output field at the given gridpoint
    
    The output will have has as many fields as there are in ``indexer``.
 
@@ -924,7 +982,7 @@ Fieldset functions
 
 .. py:function:: mask(fs, area)
 
-   For each field in ``fs`` creates a field containing grid point values of 0 or 1 according to whether they are outside or inside the ``area``.
+   For each field in ``fs`` creates a field containing 0 or 1 values according to whether a grid point is outside or inside the ``area``.
 
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
@@ -935,12 +993,12 @@ Fieldset functions
 
       Non-rectangular masks, and even convex masks can be created by using the operators **and**, **or** and **not**. To create the following mask:
 
-      .. image:: images/mask_1.png
+      .. image:: _static/mask_1.png
          :width: 300px
 
       First decompose it into basic rectangles:
 
-      .. image:: images/mask_2.png
+      .. image:: _static/mask_2.png
          :width: 300px
 
       Then create a mask for each of them and use **and** and **or** to compose the desired mask like this:
@@ -964,43 +1022,40 @@ Fieldset functions
          # Then remove b
          m = m and not mv.mask(f,b)
 
+.. py:function:: max(fs)
+.. py:function:: max(fs, other_fs)
+.. py:function:: max(fs, value)
+.. py:function:: max(fs, gpt)
 
-.. fieldset max ( fieldset )
-.. fieldset min ( fieldset )
+   Computes the point-wise maximum of ``fs``.
 
-.. Returns the fieldset of maximum (minimum) value of the input fieldset at each grid point or spectral coefficient. A missing value in either input fieldset will result in a missing value in the corresponding place in the output fieldset.
+   :param fs: input fieldset
+   :type fs: :class:`Fieldset`
+   :param other_fs: another input fieldset
+   :type other_fs: :class:`Fieldset`
+   :param float value: input numerical value
+   :param gpt: input geopoints data
+   :type gpt: :class:`Geopoints`
+   :rtype: :class:`Fieldset` or :class:`Geopoints`
 
+   The actual behaviour of :func:`max` depends on the arguments:
 
-.. fieldset max ( fieldset,fieldset )
-.. fieldset min ( fieldset,fieldset )
-
-.. Returns the fieldset of maximum (minimum) value of the two input fieldsets at each grid point or spectral coefficient. A missing value in either input fieldset will result in a missing value in the corresponding place in the output fieldset.
-
-
-.. fieldset max ( fieldset,number )
-.. fieldset min ( fieldset,number )
-
-.. Returns the fieldset of the maximum (minimum) of the number and the fieldset value at each grid point or spectral coefficient. Missing values in the input fieldset are transferred to the output fieldset.
-
-
-.. geopoints max ( fieldset,geopoints )
-.. geopoints min ( fieldset,geopoints )
-
-.. Returns geopoints of maximum (minimum) of the fieldset value and the geopoint value at each grid point or spectral coefficient. Missing values, either in the fieldset or in the original geopoints variable, result in a value of geo_missing_value .
-
-
-.. number maxvalue ( fieldset )
-.. number maxvalue ( fieldset,list )
-.. number minvalue ( fieldset )
-.. number minvalue ( fieldset,list )
-
-.. Returns the maximum (minimum) value of all the values of all the fields of the fieldset. The versions that take a list as a second parameter require a geographical area (north, west, south, east); only points within this area will be included in the calculation. Only non-missing values are considered in the calculation. If there are no valid values, the function returns nil.
+   * if ``fs`` is the only argument returns a :class:`Fieldset` with a single field containing the maximum value of ``fs`` at each grid point or spectral coefficient. A missing value anywhere in ``fs`` will result in a missing value in the corresponding place in the output.  
+   * if ``other_fs`` is specified returns a :class:`Fieldset` containing the maximum of ``fs`` and ``other_fs`` at each grid point or spectral coefficient. A missing value anywhere in ``fs`` or ``other_fs`` will result in a missing value in the corresponding place in the output.
+   * if ``value`` is specified returns a :class:`Fieldset` containing the maximum of ``fs`` and ``value`` at each grid point or spectral coefficient. A missing value anywhere in ``fs`` will result in a missing value in the corresponding place in the output.
+   * if ``gpt`` is specified returns a :class:`Geopoints` containing the maximum of ``fs`` and ``gpt`` at each location in ``gpt``. A missing value anywhere in ``fs`` or ``gpt`` will result in a :class:`Geopoints` missing value in the corresponding place in the output.
 
 
-.. matrix or list matrix ( fieldset )
+.. py:function:: maxvalue(fs, [area])
 
-.. Generates a matrix containing the values of the input field, or a list of matrices if there are more than one field in the fieldset. Only works with regular lat/long grids.
+   Computes the maximum of all the values in ``fs``.
 
+   :param fs: input fieldset
+   :type fs: :class:`Fieldset`
+   :param list area: area as [North, West, South, East]
+   :rtype: float or None
+
+   If ``area`` is specified only points within it will be included in the computation. Missing values are ignored, and if there are no valid values at all, :func:`maxvalue` returns None.
 
 .. py:function:: mean(fs)
 
@@ -1038,23 +1093,58 @@ Fieldset functions
 
    The output is a fieldset with as many fields as the total number of fields in all merged fieldsets. Merging with None does nothing, and is used to initialise when building a fieldset from scratch.
 
+.. py:function:: min(fs)
+.. py:function:: min(fs, other_fs)
+.. py:function:: min(fs, value)
+.. py:function:: min(fs, gpt)
+
+   Computes the point-wise minimum of ``fs``.
+
+   :param fs: input fieldset
+   :type fs: :class:`Fieldset`
+   :param other_fs: another input fieldset
+   :type other_fs: :class:`Fieldset`
+   :param float value: input numerical value
+   :param gpt: input geopoints data
+   :type gpt: :class:`Geopoints`
+   :rtype: :class:`Fieldset` or :class:`Geopoints`
+
+   The actual behaviour of :func:`min` depends on the arguments:
+
+   * if ``fs`` is the only argument returns a :class:`Fieldset` with a single field containing the minimum value of ``fs`` at each grid point or spectral coefficient. A missing value anywhere in ``fs`` will result in a missing value in the corresponding place in the output.  
+   * if ``other_fs`` is specified returns a :class:`Fieldset` containing the minimum of ``fs`` and ``other_fs`` at each grid point or spectral coefficient. A missing value anywhere in ``fs`` or ``other_fs`` will result in a missing value in the corresponding place in the output.
+   * if ``value`` is specified returns a :class:`Fieldset` containing the minimum of ``fs`` and ``value`` at each grid point or spectral coefficient. A missing value anywhere in ``fs`` will result in a missing value in the corresponding place in the output.
+   * if ``gpt`` is specified returns a :class:`Geopoints` containing the minimum of ``fs`` and ``gpt`` at each location in ``gpt``. A missing value anywhere in ``fs`` or ``gpt`` will result in a :class:`Geopoints` missing value in the corresponding place in the output.
+
+.. py:function:: minvalue(fs, [area])
+
+   Computes the minimum of all the values in ``fs``.
+
+   :param fs: input fieldset
+   :type fs: :class:`Fieldset`
+   :param list area: area as [North, West, South, East]
+   :rtype: float or None
+
+   If ``area`` is specified only points within it will be included in the computation. Missing values are ignored, and if there are no valid values at all, :func:`minvalue` returns None.
+
+
 .. py:function:: ml_to_hl(fs, z, zs, h, ref_level, method)
 
-   Interpolates a fieldset on model levels (i.e. on hybrid or eta levels used by the IFS) onto height levels (in m) above sea or ground level. 
+   Interpolates ``fs`` on model levels (i.e. on hybrid or eta levels used by the IFS) onto height levels (in m) above sea or ground level. 
    
-   :param fs: the fieldset to be interpolated
+   :param fs: fieldset to be interpolated
    :type fs: :class:`Fieldset`
-   :param z: the geopotential fieldset on model levels  (it must contain the same levels as ``fs`` but their order can be different) 
+   :param z: geopotential fieldset on model levels (it must contain the same levels as ``fs`` but their order can be different) 
    :type z: :class:`Fieldset`
-   :param zs: the surface geopotential field (if the ``ref_level`` is set to "sea" it should be set to None).
+   :param zs: surface geopotential field (if the ``ref_level`` is set to "sea" it should be set to None).
    :type zs: :class:`Fieldset` or None
-   :param h: the list of target height levels (they can came in any given order)
+   :param h: list of target height levels (they can came in any given order)
    :type h: list or :class:`Fieldset`
    :param str ref_level: specifies the reference level for the target heights. The possible values are "sea" and "ground"
    :param str method: specifies the interpolation method. The possible values are "linear" and "log". 
    :rtype: :class:`Fieldset`
       
-   At gridpoints where the interpolation is not possible missing value is returned.  
+   At gridpoints where the interpolation is not possible a missing value is returned.  
 
    .. note::
       Geopotential is not archived operationally on model levels in MARS at ECMWF. To compute it use :func:`mvl_geopotential_on_ml`. 
@@ -1064,6 +1154,8 @@ Fieldset functions
       This code illustrates how to use :func:`ml_to_hl` together with :func:`mvl_geopotential_on_ml` with data retrieved from MARS:
 
       .. code-block:: python
+
+         import metview as mv 
 
          # retrieve the data on model levels - surface geopotential (zs)
          # is taken from the analyis on level 1!
@@ -1116,13 +1208,13 @@ Fieldset functions
 
    Computes geopotential on model levels.
 
-   :param t: the temperature fields on all the model levels in ascending numeric order (e.g. 1-137)
+   :param t: temperature fields on **all** the model levels in ascending numeric order (e.g. 1-137)
    :type t: :class:`Fieldset`
-   :param q: the specific humidity fields on all the model levels in ascending numeric order (e.g. 1-137)
+   :param q: the specific humidity fields on **all** the model levels in ascending numeric order (e.g. 1-137)
    :type q: :class:`Fieldset`
-   :param lnsp: the logarithm of surface pressure field (model level 1!).
+   :param lnsp: logarithm of surface pressure field (model level 1!).
    :type lnsp: :class:`Fieldset`
-   :param zs: the surface geopotential field (model level 1!)
+   :param zs: surface geopotential field (model level 1!)
    :type zs: :class:`Fieldset`
    :rtype: :class:`Fieldset`
 
@@ -1137,6 +1229,8 @@ Fieldset functions
 
       .. code-block:: python
 
+         import metview as mv
+         
          # retrieve the data on model levels - surface geopotential (zs) is
          # only available in the analyis on level 1!
          ret_core = {
@@ -1164,14 +1258,14 @@ Fieldset functions
 
    Interpolates ``fs`` from ECMWF model levels onto a set of pressure levels defined by ``pressures``. 
    
-   :param lnsp: the logarithm of surface pressure field (model level 1!).
+   :param lnsp: logarithm of surface pressure field (model level 1!).
    :type lnsp: :class:`Fieldset`
-   :param fs: the fieldset to be interpolated (must contain model levels!). Does not have to be sorted by level.
+   :param fs: fieldset to be interpolated (must contain model levels!). Does not have to be sorted by level.
    :type fs: :class:`Fieldset`
-   :param list pressures: the list of target pressure levels in hPa. Does not have to be sorted by level.
+   :param list pressures: list of target pressure levels in hPa. Does not have to be sorted.
    :rtype: :class:`Fieldset`
   
-   Locations where interpolation is not possible are returned as missing. 
+   At locations where the interpolation is not possible a missing value is returned.
     
    :Example:
    
@@ -1179,7 +1273,9 @@ Fieldset functions
 
       .. code-block:: python
 
-         # retrieve the data in model levels
+         import metview as mv
+
+         # retrieve the data on model levels
          ret_core = {"type": "fc", "levtype": "ml", "step": 12, "grid": [1.5,1.5]}
          t_ml = mv.retrieve(**ret_core, param="t", levelist=[1, "to", 137])
          lnsp = mv.retrieve(**ret_core, param="lnsp", levelist=1)
@@ -1188,72 +1284,113 @@ Fieldset functions
          p_levels = [1000, 900, 850, 500, 300, 100, 10, 1, 0.1]
          t_pres = mv.mvl_ml2hPa(lnsp, t_ml, p_levels)
 
+ 
+.. py:function:: nearest_gridpoint(fs, lats, lons, [mode])
+.. py:function:: nearest_gridpoint(fs, location, [mode])
+.. py:function:: nearest_gridpoint(fs, gpt, [mode])
+   :noindex:
 
-.. number or list nearest_gridpoint ( fieldset,list[,string] )
-.. number or list nearest_gridpoint ( fieldset,number,number[,string] )
-.. vector or list nearest_gridpoint ( fieldset,vector,vector[,string] )
-
-.. Returns the value of the nearest point to a given location (or locations) in each field of a fieldset. The field must be a gridded field. If a list is given, it must contain two numbers - latitude and longitude. If two numbers are given, the first is the latitude, the second the longitude. For batch processing of multiple locations, two vectors can be given, the first is a vector of latitudes, the second the longitudes; this can be much more efficient than multiple calls with a single location each. If the fieldset has only one field, a number (or vector) is returned; otherwise a list of numbers (or a list of vectors) is returned.
-
-.. By default, when the nearest gridpoint value is a missing value or the location is out of the grid area, nil is returned in the case of a single coordinate, or vector_missing_value in the case of a vector. If an extra parameter 'valid' is added to the function call, then of the surrounding points, the nearest valid one is returned; nil will still be returned if all the surrounding points are missing.
-
-.. Note that a similar function, interpolate(), also exists.
-
-
-.. geopoints nearest_gridpoint ( fieldset,geopoints )
-
-.. Generates a set of geopoints from a field. The first field of the input fieldset is used. The result is a set of geopoints whose values are those of the nearest gridpoints in the field to the geopoints given as a second parameter. Where it is not possible to generate a sensible value due to lack of valid data in the fieldset, the internal geopoints missing value is used (this value can be checked for with the built-in variable geo_missing_value or removed with the function remove_missing_values). Note that a similar function, interpolate() , also exists.
-
-.. py:function:: nearest_gridpoint_info(fs, lat_or_location, [lon, [valid]])
-
-   Returns the value and location of the nearest point to a given location in each field in ``fs``. 
+   Returns the nearest gridpoint value from ``fs`` for a given location (or locations).
    
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
-   :param lat_or_location: 
-   :type lat_or_location: float or list
-   :param lon: 
+   :param lats: target latitude(s)
+   :type lats: float or ndarray
+   :param lons: target longitudes(s)
+   :type lons: float or ndarray
+   :param location: single target location defined as a list of [lat, lon]
+   :type location: list
+   :param gpt: input geopoints
+   :type gpt: :class:`Geopoints`
+   :param str mode: specifies the way missing values are handled. The only allowed value is "valid".
+   :rtype: float or ndarray or :class:`Geopoints`
+  
+   ``fs`` must be a gridded field. 
+
+   The nearest gridpoint extraction depends on the arguments:
+
+   * ``location`` defines a single location. The return value is a float when ``fs`` only contains one field, and an ndarray otherwise.
+   * ``lats`` and ``lons`` can define either a single location (as float) or multiple locations (as ndarray). If a single location is specified the retrun value is the same as for ``location``. For multiple locations a list of 1D-ndarrays is returned.
+   * when ``gpt`` is specified only the first field of ``fs`` is used. The result is a :class:`Geopoints` containing the the nearest gridpoint values for all the locations in ``gpt``.  Where it is not possible to generate a sensible value due to lack of valid data in ``fs``, the internal geopoints missing value is used (this value can be checked for with the built-in variable geo_missing_value or removed with the function :func:`remove_missing_values`).
+
+   Parameter ``mode`` controls the return value when the nearest gridpoint value is a missing value or the location is out of the grid area:
+
+   * by default, None is returned for a single location and nan for multiple locations. 
+   * if ``mode`` is 'valid' then from out of the surrounding gridpoints the nearest valid one is returned; None or nan will still be returned if all the surrounding points are missing.
+
+.. note::
+      A similar function, :func:`interpolate`, also exists.
+
+.. py:function:: nearest_gridpoint_info(fs, lat, lon, [mode])
+.. py:function:: nearest_gridpoint_info(fs, location, [mode])
+   :noindex:
+
+   Returns the value and location of the nearest grid point to a given location in each field in ``fs``. 
+   
+   :param fs: input fieldset
+   :type fs: :class:`Fieldset`
+   :param lat: target latitude
+   :type lat: float
+   :param lon: target longitude
    :type lon: float
-   :param str valid: the only possible value is "valid"
-   :rtype: list
+   :param location: single target location defined as a list of [lat, lon]
+   :type location: list
+   :param str mode: specifies the way missing values are handled. The only allowed value is "valid".
+   :rtype: list of dict
    
-   The location can be specified by ``lat`` or ``lon`` or as a list of [lat, lon] via the ``location`` argument. 
-   The return value is a list containing the following values for each field:
+   The return value is a **list** containing the following values for each field:
    
-   * if the nearest gridpoint value is non missing a dictionary is returned with the members of **value**, **latitude** and **longitude**. 
-   * if the nearest gridpoint has missing value the return value depends on ``valid``:
+   If the nearest gridpoint value is non missing a dictionary is returned with these members:
    
-      * if ``valid`` is not specified None is returned
-      * if ``valid`` is specified the dictionary for the nearest valid point from the surrounding gridpoints is returned. If all the surrounding points are missing None is returned
+   * latitude: latitude of the nearest gridpoint
+   * longitude: longitude of the nearest gridpoint
+   * index: index of nearest gridpoint within the field 
+   * distance: distance between the nearest gridpoint and the specified location in km
+   * value: value at the nearest gridpoint
+
+   If the nearest gridpoint has missing value the return value depends on ``mode``:
+   
+      * if ``mode`` is not specified None is returned
+      * if ``mode`` is "valid" the dictionary for the nearest valid point from the surrounding gridpoints is returned. If all the surrounding points are missing None is returned
    
    :Example:
 
       .. code-block:: python
 
          import metview as mv
-         f = mv.read("my_grib_file")
-         info = mv.nearest_gridpoint_info(f, 51.46, -1.33)
-         for v in info:
-            print(v)
+         
+         # read grib with 2 fields on a 1.5x1.5 degree grid
+         f = mv.read("my_data.grib")
+         
+         # get nearest gridpoint info
+         info = mv.nearest_gridpoint_info(f, 47, 19)
+         print(info)
 
-.. py:function:: neg(fs)
+         >>> [{'latitude': 46.5, 'longitude': 19.5, 
+               'index': 6973.0, 'distance': 67.3506,
+               'value': 291.144}, 
+              {'latitude': 46.5, 'longitude': 19.5, 
+               'index': 6973.0, 'distance': 67.3506,
+               'value': 294.011'}]
 
-   Returns the fieldset of the negative of ``fs`` at each grid point or spectral coefficient.
+.. .. py:function:: neg(fs)
+
+..    Returns the fieldset of the negative of ``fs`` at each grid point or spectral coefficient.
    
-   :param fs: input fieldset
-   :type fs: :class:`Fieldset`
-   :rtype: :class:`Fieldset`
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :rtype: :class:`Fieldset`
 
-   Missing values are retained, unaltered by the calculation.
+..    Missing values are retained, unaltered by the calculation.
 
-   .. note::
-      The following lines of codes are equivalent:
+..    .. note::
+..       The following lines of codes are equivalent:
 
-      .. code-block:: python
+..       .. code-block:: python
 
-         import metview as mv
-         fs = mv.neg(fs)
-         fs = -fs 
+..          import metview as mv
+..          fs = mv.neg(fs)
+..          fs = -fs 
 
 .. py:function:: nobitmap(fs, value)
 
@@ -1272,37 +1409,42 @@ Fieldset functions
 
 .. Computes the specified percentiles for a given fieldset. This is a Metview icon function, for detailed documentation please see Percentile.
 
-.. py:function:: pressure(lnsp, [levels, fs_target])
+.. py:function:: pressure(lnsp, [levels])
+.. py:function:: pressure(lnsp, fs_levels)
+   :noindex:
 
-   Computes the pressure (in Pa) from the logarithm of surface pressure (lnsp) on a list of ECMWF model levels. 
+   Computes the pressure (in Pa) on a list of ECMWF model levels from ``lnsp`` (logarithm of surface pressure). 
    
-   :param lnsp: input fieldset containing an lnsp field (its ecCodes paramId must be 152).
+   :param lnsp: fieldset containing an lnsp field (its ecCodes paramId must be 152!)
    :type lnsp: :class:`Fieldset`
    :param levels: the target model level or levels 
    :type levels: int or list of ints
-   :param fs_target: fielsdet defining the target model levels
-   :type fs_target:  :class:`Fieldset`
+   :param fs_levels: fielsdet defining the target model levels
+   :type fs_levels:  :class:`Fieldset`
    :rtype: :class:`Fieldset`
 
    If only ``lnsp`` is specified the pressure is computed for the full model level range defined by the GRIB header of ``lnsp``.
 
-   If ``levels`` is specified it defines the output model level(s). 
+   If ``levels`` is specified it defines the output model level(s). For a **single level** ``levels`` must be number, while for **multiple levels** it must be a list.
 
-   If ``fs_target`` is specified the target levels are taken from its fields.
+   If ``fs_levels`` is specified the target levels are taken from its fields.
 
    Missing values in ``lnsp`` are retained in the output fieldset.
 
    .. warning::
       This function is obsolete, use :func:`unipressure` instead.
 
-.. py:function:: rmask(fs, circle_or_lat, [lon, radius])
+.. py:function:: rmask(fs, circle)
+.. py:function:: rmask(fs, lat, lon, radius)
+   :noindex:
 
-   For each field in ``fs`` creates a field containing grid point values of 0 or 1 according to whether their distance to given geographical location is larger or smaller than a given radius. 0 is assigned to points outside the radius and 1 to points inside the radius.
+   For each field in ``fs`` creates a field containing grid point values of 0 or 1 according to whether their distance to a given geographical location is larger or smaller than a given radius. 0 is assigned to points outside the radius and 1 to points inside the radius.
    
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
-   :param circle_or_lat: the circle as list in the form of [lat, lon, radius] or the latitude coordinate of the centre of the circle
-   :type circle_or_lat: list of float
+   :param circle: circle as a list of [lat, lon, radius]
+   :type circle_or_lat: list
+   :param float lat: latitude coordinate of the centre of the circle
    :param float lon: longitude coordinate of the centre of the circle
    :param float radius: radius of the circle in m
    :rtype: :class:`Fieldset`
@@ -1312,7 +1454,7 @@ Fieldset functions
 
 .. py:function:: rms(fs)
 
-   Computes the root mean square of ``fs``. 
+   Computes the point-wise root mean square of ``fs``. 
    
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
@@ -1320,11 +1462,11 @@ Fieldset functions
    
    A missing value in any field in ``fs`` will result in a missing value in the corresponding grid point in the output fieldset. 
    
-   With n fields in ``fs`` by denoting the i-th value in the k-th field by :math:`x_{i}^{k}` the output values can be written as:
+   With N fields in ``fs`` by denoting the i-th value in the k-th field by :math:`x_{i}^{k}` the output values can be written as:
 
    .. math:: 
       
-         r_{i} = \sqrt {\frac {1}{n} \sum_{k}^{n} (x_{i}^{k})^{2}}
+         r_{i} = \sqrt {\frac {1}{N} \sum_{k}^{N} (x_{i}^{k})^{2}}
 
    .. note::
       The following lines are equivalent:
@@ -1350,7 +1492,7 @@ Fieldset functions
 
    where:
 
-   * R is the radius of the Earth
+   * R is the radius of the Earth in m
    * :math:`\phi` is the latitude
    * :math:`\lambda` is the longitude.    
 
@@ -1375,7 +1517,7 @@ Fieldset functions
 
    where:
    
-   * R is the radius of the Earth
+   * R is the radius of the Earth in m
    * :math:`\phi` is the latitude
 
    The derivatives are computed with a second order finite-difference approximation. The resulting fields contain missing values on the poles. 
@@ -1383,33 +1525,42 @@ Fieldset functions
    .. warning::
       :func:`second_derivative_y` is only implemented for regular latitude-longitude grids.
 
+.. py:function:: set_values(fs, values, [mode])
 
-.. fieldset set_values ( fieldset,vector )
-.. fieldset set_values ( fieldset,list )
-.. fieldset set_values ( fieldset,vector,string )
-.. fieldset set_values ( fieldset,list,string )
-
-.. Creates a new fieldset with all the fields' values replaced by those supplied. If supplied as a single vector, the values are set in all fields; if a list of vectors is supplied then there must be the same number of vectors as there are fields in the fieldset. The default behaviour is to produce an error if the input fieldset and vector have different numbers of values. If, however, a third parameter (set to the string 'resize') is passed to the function, the resulting fieldset will instead be resized to have the same number of values as the input vector - this can be useful when creating a new fieldset from a template. Missing values in the vector(s) are retained as missing values in the fieldset.
-
-
-
-.. py:function:: sgn (fs)
-
-   Returns the fieldset of the sign of the values of ``fs`` at each grid point or spectral coefficient: -1 for negative values, 1 for positive and 0 for null values. Missing values are retained, unaltered by the calculation.
+   Creates a new fieldset with all the values in ``fs`` replaced by ``values``.
 
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
+   :param values: values to be written into ``fs``
+   :type values: ndarray or list of ndarray
+   :param str mode: resize mode. If specified must be set to "resize"!
    :rtype: :class:`Fieldset`
 
-.. py:function:: sin(fs)
+   If ``values`` is an ndarray the same values are set in each field of ``fs``.
 
-   Returns the fieldset of the sine of ``fs`` at each grid point.
+   If ``values`` is a list of ndarray the list size must be same as there are fields in ``fs``. 
+   
+   The default behaviour is to produce an **error** if the number points in a field and the given ndarray are not the same. If, however, ``mode`` is specified and set to "resize" the resulting fieldset will be resized to have the same number of values as the ndarray. This can be a useful option when creating a new :class:`Fieldset` from a template. 
+   
+   Missing values in the ``values`` are retained as missing values in the fieldset.
 
-   :param fs: input fieldset
-   :type fs: :class:`Fieldset`
-   :rtype: :class:`Fieldset`
+.. .. py:function:: sgn (fs)
 
-   Input fieldset must have values in radians. Missing values are retained, unaltered by the calculation.
+..    Returns the fieldset of the sign of the values of ``fs`` at each grid point or spectral coefficient: -1 for negative values, 1 for positive and 0 for null values. Missing values are retained, unaltered by the calculation.
+
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :rtype: :class:`Fieldset`
+
+.. .. py:function:: sin(fs)
+
+..    Returns the fieldset of the sine of ``fs`` at each grid point.
+
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :rtype: :class:`Fieldset`
+
+..    Input fieldset must have values in radians. Missing values are retained, unaltered by the calculation.
 
 .. py:function:: sinlat(fs)
 
@@ -1420,7 +1571,7 @@ Fieldset functions
    :rtype: :class:`Fieldset` 
 
    Missing values are retained, unaltered by the calculation. 
-
+   
    :Example:
 
       The following code shows how to compute the absolute vorticity from vorticity with :func:`sinlat`:
@@ -1466,18 +1617,18 @@ Fieldset functions
    * if it is a str the sorting direction applies to all the ``keys``
    * if it is a list ``keys`` must also be a list with the same number of elements - the sorting directions apply to each sorting key specified.
 
-.. py:function:: sqrt(fs)
+.. .. py:function:: sqrt(fs)
 
-   Returns the fieldset of the square root of ``fs`` at each grid point. Missing values are retained, unaltered by the calculation.
+..    Returns the fieldset of the square root of ``fs`` at each grid point. Missing values are retained, unaltered by the calculation.
 
-   :param fs: input fieldset
-   :type fs: :class:`Fieldset`
-   :rtype: :class:`Fieldset`
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :rtype: :class:`Fieldset`
 
 
 .. py:function:: stdev(fs)
 
-   Computes the grid point-wise standard deviation of ``fs``. 
+   Computes the point-wise standard deviation of ``fs``. 
    
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
@@ -1514,7 +1665,7 @@ Fieldset functions
 
 .. py:function:: sum(fs)
 
-   Computes the grid point-wise sum of the values in ``fs``. 
+   Computes the point-wise sum of the values in ``fs``. 
 
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
@@ -1527,27 +1678,44 @@ Fieldset functions
    .. math:: 
       
          s_{i} = \sum_{k}^{N} x_{i}^{k}
-   
-.. vector or list surrounding_points_indexes ( fieldset,list[,string] )
-.. vector or list surrounding_points_indexes ( fieldset,number,number[,string] )
-.. vector or list surrounding_points_indexes ( fieldset,vector,vector[,string] )
-
-.. Returns the indexes of the four gridpoints surrounding the given location, ordered by increasing distance from the target point. If a list is given, it must contain two numbers - latitude and longitude. If two numbers are given, the first is the latitude, the second the longitude. The field must be a gridded field. If the fieldset has only one field, a single vector of indexes is returned; otherwise a list of vectors is returned. In the case where the field is a reduced Gaussian grid and the input location is at the North or South pole, beyond the most extreme row of points, there will be a 'circle' of surrounding points, and all of these indexes are returned.
-
-.. For batch processing of multiple locations, two vectors can be given, the first is a vector of latitudes, the second the longitudes; this can be much more efficient than multiple calls with a single location each. If the fieldset has only one field, a single vector is returned; otherwise a list of vectors is returned.
-
-.. By default, if any of the surrounding points are missing, the function will return nil. To prevent this, and to return all the points regardless, add the option 'all' as the last parameter of the function call.
 
 
-.. py:function:: tan(fs)
+.. py:function:: surrounding_points_indexes(fs, lats, lons, [mode])
+.. py:function:: surrounding_points_indexes(fs, location, [mode])
 
-   Return the tangent of ``fs`` at each grid point. 
-
+   Returns the indexes of the gridpoints surrounding the given location (or locations) in ``fs``.
+  
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
-   :rtype: :class:`Fieldset`
+   :param lats: target latitude(s)
+   :type lats: float or ndarray
+   :param lons: target longitudes(s)
+   :type lons: float or ndarray
+   :param location: single target location defined as a list of [lat, lon]
+   :type location: list
+   :param str mode: specifies the way missing values are handled. The only allowed value is "all".
+   :rtype: ndarray or list of ndarray
+  
+   ``fs`` must be a gridded field. 
 
-   Values in ``fs`` are supposed to be specified in radians. Missing values are retained, unaltered by the calculation. For values which the tangent function is not defined for (e.g. :math:`\pi/2`) a missing value is returned.
+   The location(s) can be specified in the following ways:
+
+   * ``location`` defines a single location.
+   * ``lats`` and ``lons`` can define either a single location (as float) or multiple locations (as ndarray).
+
+   The return value is an ndarray when ``fs`` only contains one field, and a list of ndarray otherwise. By default the 4 surrounding gridpoint indexes are returned. The only exception is when a field is defined on a **reduced Gaussian grid** and the input location is at the North or South pole, beyond the most extreme row of points. In this case there will be a 'circle' of surrounding points, and all of these indexes are returned.
+   
+   If any of the surrounding points are **missing**, :func:`surrounding_points_indexes` will return nan. To prevent this, and to return all the points regardless, option ``mode`` has to be set to "all".
+   
+.. .. py:function:: tan(fs)
+
+..    Return the tangent of ``fs`` at each grid point. 
+
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :rtype: :class:`Fieldset`
+
+..    Values in ``fs`` are supposed to be specified in radians. Missing values are retained, unaltered by the calculation. For values which the tangent function is not defined for (e.g. :math:`\pi/2`) a missing value is returned.
 
 .. py:function:: tanlat(fs)
 
@@ -1559,75 +1727,110 @@ Fieldset functions
 
    Missing values are retained, unaltered by the calculation. The resulting fields contain missing values on the poles.
 
-.. fieldset thickness ( fieldset )
-.. fieldset thickness ( fieldset,number )
-.. fieldset thickness ( fieldset,list )
-.. fieldset thickness ( fieldset,fieldset )
 
-.. This function creates fields of thickness from the logarithm of the surface pressure (lnsp ) and a list of model levels. Note that this function only works with lat/long grids and assumes that the parameter for lnsp is 152. A newer, more flexible version of this function exists - see unithickness () .
+.. py:function:: thickness(lnsp, [levels])
+.. py:function:: thickness(lnsp, fs_levels)
+   :noindex:
 
-..         The first argument is always a fieldset containing an lnsp field. If no other parameter is given, the list of levels will range from 1 to (number of vertical coordinates/2)-1 as coded in the GRIB header of the lnsp .
-..         The second argument specifies the levels at which the output fields must be generated. To generate a single level, pass a number. For more than one level, either pass a list of levels or a fieldset. If a fieldset is passed as the second parameter, the level information is extracted from each field of the fieldset.
+   Computes the pressure thickness (in Pa) of a list of ECMWF model levels from ``lnsp`` (logarithm of surface pressure). 
+   
+   :param lnsp: fieldset containing an lnsp field (its ecCodes paramId must be 152!)
+   :type lnsp: :class:`Fieldset`
+   :param levels: the target model level or levels 
+   :type levels: int or list of ints
+   :param fs_levels: fielsdet defining the target model levels
+   :type fs_levels:  :class:`Fieldset`
+   :rtype: :class:`Fieldset`
 
-.. Missing values in the lnsp field are retained in the output fieldset.
+   If only ``lnsp`` is specified the thickness is computed for all the model levels defined by the GRIB header of ``lnsp``.
 
+   If ``levels`` is specified it defines the output model level(s). For a **single level** ``levels`` must be number, while for **multiple levels** it must be a list.
 
-.. fieldset unipressure ( fieldset )
-.. fieldset unipressure ( fieldset,fieldset )
-.. fieldset unipressure ( fieldset,list )
-.. fieldset unipressure ( fieldset,number )
-.. fieldset unipressure ( fieldset,fieldset,number )
-.. fieldset unipressure ( fieldset,list,number )
+   If ``fs_levels`` is specified the target levels are taken from its fields.
 
-.. This function creates fields of pressure from the logarithm of the surface pressure (lnsp) and a list of model levels. Unlike pressure() , this function works with all grid types known to Metview (not just lat/long); it also allows the user to override the parameter number for lnsp (default 152).
+   Missing values in ``lnsp`` are retained in the output fieldset.
 
-..         The first argument is always a fieldset containing an lnsp field. If no other parameter is given, then pressure is computed for all model levels that are described in the GRIB header of fieldset .
-..         If number is given (always the last parameter) it is the lnsp parameter code (default is 152).
-..         list should contain model levels for which pressure is to be computed. Note that also for a single model level one has to use a list (this is a signature difference compared to the old function pressure() ).
-..         If fieldset is given as the second parameter then pressure is computed for those model levels found in the second fieldset.
-
-.. Missing values in the lnsp field are retained in the output fieldset.
+   .. warning::
+      This function is obsolete, use :func:`unithickness` instead.
 
 
-.. fieldset unithickness ( fieldset )
-.. fieldset unithickness ( fieldset,fieldset )
-.. fieldset unithickness ( fieldset,list )
-.. fieldset unithickness ( fieldset,number )
-.. fieldset unithickness ( fieldset,fieldset,number )
-.. fieldset unithickness ( fieldset,list,number )
+.. py:function:: unipressure(lnsp, [levels], [lnsp_code])
+.. py:function:: unipressure(lnsp, fs_levels, [lnsp_code])
+   :noindex:
 
-.. This function creates fields of thickness from the logarithm of the surface pressure (lnsp) and a list of model levels. Unlike thickness() , this function works with all grid types known to Metview (not just lat/long); it also allows the user to override the parameter number for lnsp (default 152).
+   Computes the pressure (in Pa) on a list of ECMWF model levels from ``lnsp`` (logarithm of surface pressure). 
 
-..         The first argument is always a fieldset containing an lnsp field. If no other parameter is given, then thickness is computed for all model levels that are described in the GRIB header of fieldset .
-..         If number is given (always the last parameter) it is the lnsp parameter code (default is 152).
-..         list should contain model levels for which thickness is to be computed. Note that also for a single model level one has to use a list (this is a signature difference compared to the old function thickness() ).
-..         If fieldset is given as the second parameter then thickness is computed for those model levels found in the second fieldset.
+   :param lnsp: lnsp fieldset
+   :type lnsp: :class:`Fieldset`
+   :param fs_levels: levels fieldset
+   :type fs_levels: :class:`Fieldset`
+   :param lnsp_code: ecCodes paramId for lnsp
+   :type lnsp_code: int
+   :param levels: list of target model levels to compute the pressure on
+   :type levels: list
+   :rtype: :class:`Fieldset`
 
-.. Missing values in the lnsp field are retained in the output fieldset.
+   ``lnsp`` must contain an lnsp field, which is identified by its ecCodes paramId. By default the value of 152 is used but it can be overriden by the optional ``lnsp_code``.
+   
+   The list of target model levels to compute the pressure on depends on the actual arguments:
 
-.. py:function:: univertint(fs, [input_or_code, [levels_or_code]])
+   * if no ``fs_levels`` is specified the pressure is computed on the full model level range defined by the GRIB header of ``lnsp``.   
+   * if ``fs_levels`` is specified the pressure is computed on all the model levels in ``fs_levels``.
+   * if ``levels`` is specified it defines the list of target model levels the pressure will be computed on. 
+         
+   A missing value in ``lnsp`` will result in a missing value in the corresponding place in the output fieldset.
 
-   Performs a vertical integration for data on pressure levels or on ECMWF (hybrid) model levels. 
+.. py:function:: unithickness(lnsp, [levels], [lnsp_code])
+.. py:function:: unithickness(lnsp, fs_levels, [lnsp_code])
+   :noindex:
 
-   :param fs: input (or lnsp) fieldset
+   Computes the pressure thickness (in Pa) of a list of ECMWF model levels from ``lnsp`` (logarithm of surface pressure). 
+
+   :param lnsp: lnsp fieldset
+   :type lnsp: :class:`Fieldset`
+   :param fs_levels: levels fieldset
+   :type fs_levels: :class:`Fieldset`
+   :param lnsp_code: ecCodes paramId for lnsp
+   :type lnsp_code: int
+   :param levels: list of target model levels whose thickness wll be computed
+   :type levels: list
+   :rtype: :class:`Fieldset`
+
+   ``lnsp`` must contain an lnsp field, which is identified by its ecCodes paramId. By default the value of 152 is used but it can be overriden by the optional ``lnsp_code``.
+   
+   The list of target model levels depends on the actual arguments:
+
+   * if no ``fs_levels`` is specified the thickness is computed for all the model levels defined by the GRIB header in ``lnsp``.   
+   * if ``fs_levels`` is specified the thickness is computed for all the model levels in ``fs_levels``.
+   * if ``levels`` is specified it defines the list of target model levels whose thickness will be computed. 
+         
+   A missing value in ``lnsp`` will result in a missing value in the corresponding place in the output fieldset.
+
+
+.. py:function:: univertint(fs, [lnsp_code])
+.. py:function:: univertint(lnsp, fs, [levels])
+   :noindex:
+
+   Performs a vertical integration for pressure levels or ECMWF (hybrid) model levels. 
+
+   :param fs: input fieldset
    :type fs: :class:`Fieldset`
-   :param input_or_code: input fieldset or paramId for lnsp
-   :type input_or_code: :class:`Fieldset` or number
-   :param levels_or_code: level range or paramId for lnsp
-   :type levels_or_code: list or number
+   :param lnsp: lnsp fieldset
+   :type lnsp: :class:`Fieldset`
+   :param lnsp_code: ecCodes paramId for lnsp
+   :type lnsp_code: int
+   :param levels: level range as a list of [top, bottom]
+   :type levels: list
    :rtype: :class:`Fieldset` containing one field only
 
-   :func:`univertint` has to be called in a different way depending on the type of vertical levels in the input data.
+   :func:`univertint` has to be called in a different way depending on the type of vertical levels in ``fs``.
 
    * Pressure levels: the function has to be called with the ``fs`` argument only.
    * Model levels: 
 
-      * if ``fs`` is the only argument it must also contain a logarithm of surface pressure (**lnsp**) field. 
-      * when ``fs`` is the input fieldset it must also contain an lnsp field. In this case the optional ``input_or_code`` can specify the ecCodes **paramId** used to identify the **lnsp** field (by default the value of 152 is used).
-      * when ``fs`` is not the input fieldset but contains the **lnsp** field ``input_or_code`` must contain the input fieldset. The optional ``levels_or_code`` in this case can be either of these:
-      
-         * the ecCodes **paramId** number for lnsp used to identify the lnsp field (by default the value of 152 is used)
-         * a **list** with two numbers [top, bottom] to specify the level range for the integration. 
+      * when no ``lnsp`` is specified ``fs`` must also contain an lnsp field. In this case the optional ``lnsp_code`` can specify the ecCodes **paramId** used to identify the **lnsp** field (by default the value of 152 is used.
+      * when ``lnsp`` is specified it defines the **lnsp** field.
+      * the optional ``levels`` parameter is a **list** with two numbers [top, bottom] to specify the level range for the integration. If ``levels`` is not specified the vertical integration is performed for all the model levels in ``fs``.
          
    A missing value in any field will result in a missing value in the corresponding place in the output fieldset.
 
@@ -1642,6 +1845,33 @@ Fieldset functions
    * f: input fieldset
    * p: pressure
    * g: acceleration of gravity (9.80665 m/s2).
+
+:Example: 
+
+      .. code-block:: python
+
+         import metview as mv
+
+         # Retrieve cloud liquid water content 
+         clwc = mv.retrieve(
+            levtype : "ml",
+            levelist : [1,"to",137],
+            param : "clwc",
+            date : -1,
+            grid : [2,2]
+         )
+
+         # Retrieve lnsp
+         lnsp = mv.retrieve(
+            levtype : "ml",
+            levelist : 1,
+            param : "lnsp",
+            date : -1,
+            grid : [2,2]
+         )
+
+         # Compute total amount of liquid water
+         r = mv.univertint(lnsp,clwc)
 
 
 .. py:function:: valid_date(fs)
@@ -1662,27 +1892,29 @@ Fieldset functions
    :type fs: :class:`Fieldset`
    :rtype: 1D-ndarray or list of 1D-ndarrays
    
-   If ``fs`` contains more than one field a list of ndarrays is returned. Each of these arrays contains as many elements as there are grid points in each field. Missing values are included in the results as Nan.
+   If ``fs`` contains more than one field a list of ndarrays is returned. Each of these arrays contains as many elements as there are grid points in each field. Missing values are included in the results as nan.
 
    :Example:
 
-   .. code-block:: python
+      .. code-block:: python
 
-      # fs is a fieldset of n fields
-      vals = mv.values(fs)
-      
-      # values in first field
-      first_vals = vals[0]
+         import metview as mv
 
-      # first value in in first field
-      first_gridpoint = first_vals[0]
+         # fs is a fieldset of n fields
+         vals = mv.values(fs)
+         
+         # values in the first field
+         first_vals = vals[0]
 
-      # or equivalently
-      first_gridpoint = vals[0][0]
+         # first value in in first field
+         first_gridpoint = first_vals[0]
+
+         # or equivalently
+         first_gridpoint = vals[0][0]
 
 .. py:function:: var(fs)
 
-   Computes the variance in each grid point in ``fs``. 
+   Computes the point-wise variance in ``fs``. 
    
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
@@ -1702,7 +1934,7 @@ Fieldset functions
       .. code-block:: python
 
          y = mv.var(x)
-         y = mv.mean(x*x)-mv.mean(x)^2
+         y = mv.mean(x*x)-mv.mean(x)**2
 
 
 .. py:function:: var_a(fs, [area])
@@ -1716,54 +1948,45 @@ Fieldset functions
    
    If the ``area`` is not specified the whole field will be used in the calculation. The result is a number for a single field or a list for a multi-field :class:`Fieldset`.
 
-.. fieldset vertint ( fieldset )
-.. fieldset vertint ( fieldset,fieldset )
+.. py:function:: vertint(fs)
+.. py:function:: vertint(lnsp, fs)
+   :noindex:
 
-.. This function performs a vertical integration of the input fieldset, which must contain a range of model levels for the same parameter. A missing value in any field will result in a missing value in the corresponding place in the output fieldset. If the function is called with the fieldset as its single argument, it must also contain the logarithm of the surface pressure (lnsp ). If the function is called with two parameters, the first one is a fieldset containing an lnsp field, the second one is the multi-level fieldset.
+   Performs a vertical integration on ECMWF (hybrid) model levels. 
 
-.. The function computes :
+   :param fs: input fieldset
+   :type fs: :class:`Fieldset`
+   :param lnsp: lnsp fieldset
+   :type lnsp: :class:`Fieldset`
+   :rtype: :class:`Fieldset` containing one field only
 
-.. \int_{bottom}^{top} f \frac{dp}{g}
-
-.. where
-
-..         f is the fieldset
-..         p is the pressure
-..         g is the acceleration of gravity (9.80665 m/s2).
-
-.. The following example computes the total amount of liquid water in the atmosphere by integrating the cloud liquid water content (clwc ) over all levels of the model
-
-.. # Retrieve clwc
-.. clwc = retrieve(
-..    levtype : "ml",
-..    levelist : [1,"to",31],
-..    param : "clwc",
-..    date : -1,
-..    grid : [2.5,2.5]
-.. )
-
-.. # Retrieve lnsp
-.. lnsp = retrieve(
-..    levtype : "ml",
-..    levelist : 1,
-..    param : "lnsp",
-..    date : -1,
-..    grid : [2.5,2.5]
-.. )
-
-.. # Integrate the field
-.. x = vertint(lnsp,clwc)
-.. plot(x)
-
+   ``fs`` must contain a **contiguous range** of model levels for the same parameter. A missing value in any field will result in a missing value in the corresponding place in the output fieldset. 
    
+   When no ``lnsp`` is specified ``fs`` must also contain an lnsp field with an ecCodes paramId of 152. 
+
+   The computations are based on the following formula:
+
+   .. math::
+      
+      \int_{bottom}^{top} f \frac{dp}{g}
+
+   where:
+
+   * f: input fieldset
+   * p: pressure
+   * g: acceleration of gravity (9.80665 m/s2).
+
+   .. warning::
+      This function is obsolete, use :func:`univertint` instead.
+
 .. py:function:: vorticity(fx, fy)
 
    Computes the vertical component of the curl differential operator for 2-dimensional vector fields.
    
    :param fx: zonal (west-east) vector component fieldset
-   :type fs: :class:`Fieldset`
-   :param fx: meridional (south-north) vector component fieldset
-   :type fs: :class:`Fieldset`
+   :type fx: :class:`Fieldset`
+   :param fy: meridional (south-north) vector component fieldset
+   :type fy: :class:`Fieldset`
    :rtype: :class:`Fieldset`  
    
    For wind fields (i.e. when the input fieldsets are u and v wind components) this computes the relative vorticity (:math:`\zeta`). The computations for a vector field f=(fx ,fy ) are based on the following formula:

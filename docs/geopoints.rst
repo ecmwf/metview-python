@@ -1,18 +1,16 @@
 Geopoints functions
 *********************
 
-.. .. minigallery:: metview.gradient
-..     :add-heading:
 
-.. py:function:: abs(gpt)
+.. .. py:function:: abs(gpt)
     
-   Returns the absolute value of ``gpt``. 
+..    Returns the absolute value of ``gpt``. 
 
-   :param fs: input geopoints
-   :type fs: :class:`Geopoints`
-   :rtype: :class:`Geopoints`
+..    :param fs: input geopoints
+..    :type fs: :class:`Geopoints`
+..    :rtype: :class:`Geopoints`
 
-   Missing values retain their value.
+..    Missing values retain their value.
 
 .. geopoints asin ( geopoints )
 .. geopoints acos ( geopoints )
@@ -28,19 +26,19 @@ Geopoints functions
     :type fs: :class:`Geopoints`
     :rtype: list
 
-.. py:function:: cos(gpt)
+.. .. py:function:: cos(gpt)
 
-    Returns the cosine of ``gpt``. 
+..     Returns the cosine of ``gpt``. 
     
-    :param fs: input geopoints
-    :type fs: :class:`Geopoints`
-    :rtype: :class:`Geopoints`
+..     :param fs: input geopoints
+..     :type fs: :class:`Geopoints`
+..     :rtype: :class:`Geopoints`
     
-    The values in ``gpt`` are supposed to be specified in radians. Missing values retain their value.
+..     The values in ``gpt`` are supposed to be specified in radians. Missing values retain their value.
 
 .. py:function:: count(gpt)
 
-    Returns the the number of element (i.e. data rows) in ``gpt``.
+    Returns the the number of elements (i.e. data rows) in ``gpt``.
     
     :param fs: input geopoints
     :type fs: :class:`Geopoints`
@@ -49,7 +47,9 @@ Geopoints functions
     .. note::
         Use Python's built-in len instead of :func:`count`.
 
-.. py:function:: create_geo(number_of_points, [format, [number_of_values_columns, [value_columns]]], **kwargs)
+..  py:function:: create_geo(number_of_points, [format, [number_of_values_columns, [value_columns]]])
+..  py:function:: create_geo(number_of_points, **kwargs)
+    :noindex:
 
     Creates a new :class:`Geopoints` with the given ``number_of_points``, all set to default values and coordinates.
 
@@ -64,11 +64,11 @@ Geopoints functions
 
     It is intended that this function be used in conjunction with the "set_* geopoints" functions in order to populate the geopoints with data. 
     
-    If no ``format`` is specified a "traditional" 6-column format geopoints is created. Otherwise ``format`` defines the actual format. The possible values are as follows: 'polar_vector ', 'xy_vector ', 'xyv ' and 'ncols'. 
+    If no ``format`` is specified a "traditional" 6-column format geopoints is created. Otherwise ``format`` defines the actual format. The possible values are as follows: 'polar_vector', 'xy_vector ', 'xyv ' and 'ncols'. 
     
     If ``format`` is "ncols", then the number of value columns can be given by ``number_of_value_columns`` (default is 1). In this case, the ``value_columns`` can be used to provide a list of names of the value columns.
 
-    An alternative, and more efficient way to create a new geopoints variable if you already have the data to populate it, is to provide a set of keyword arguments (``kwargs``) as shown in the examples below. Using this syntax, you can completely create a new geopoints variable with all its column data in one go. This is much more efficient than creating an empty geopoints variable and then populating it using the "set_" functions. The possible keyword arguments are as follows:
+    An alternative, and more efficient way to create a new geopoints variable if you already have the data to populate it, is to provide a set of keyword arguments (``kwargs``) as shown in the examples below. Using this syntax, you can completely create a new geopoints variable with all its column data in one go. This is much more efficient than creating an empty geopoints variable and then populating it using the "set_" functions.
 
     :Examples:
 
@@ -119,18 +119,21 @@ Geopoints functions
     :type fs: :class:`Geopoints`
     :rtype: list of datetime.datetime
 
-.. py:function:: distance(gpt, ref_lat_or_coords, [ref_lon])
+.. py:function:: distance(gpt, lat, lon)
+.. py:function:: distance(gpt, coords)
+   :noindex:
 
-    Returns a geopoints with the value of each point being the distance in **metres** from the given geographical location (the reference). 
-    
-    :param gpt: input geopoint
-    :type gpt: :class:`Geopoints`
-    :param ref_lat_or_coords: latitude of the reference point or coordinates of the reference point as [lat, lon]
-    :type ref_lat_or_coords: float or list
-    :param float ref_lon: longitude of the reference point
-    :rtype: :class:`Geopoints`
+   Returns a :class:`Geopoints` with the value in each grid point being the distance in **metres** from a given geographical location (the reference). 
    
-    The reference location should be specified in degrees. A geopoint with either latitude or longitude set to missing value will have a distance of missing value.
+   :param fs: input geopoints
+   :type fs: :class:`Geopoints`
+   :param float lat: latitude of the reference point 
+   :param float lon: longitude of the reference point
+   :param coords: coordinates of the reference point as [lat, lon]
+   :type coords: list
+   :rtype: :class:`Geopoints`
+   
+   The reference location should be specified in degrees. A geopoint with either latitude or longitude set to missing value will have a distance of missing value.
 
 .. py:function:: db_info(gpt, key, [column_name])
 
@@ -153,15 +156,15 @@ Geopoints functions
     .. note::
         This information is derived from the **DB_INFO** section (if it exists) in the geopoints file header (see Storing Data Origin Information in a Geopoints File).
 
-.. py:function:: exp(gpt)
+.. .. py:function:: exp(gpt)
 
-    Returns the exponential of ``gpt``. 
+..     Returns the exponential of ``gpt``. 
     
-    :param fs: input geopoints
-    :type fs: :class:`Geopoints`
-    :rtype: :class:`Geopoints`
+..     :param fs: input geopoints
+..     :type fs: :class:`Geopoints`
+..     :rtype: :class:`Geopoints`
     
-    Missing values retain their value.
+..     Missing values retain their value.
 
 .. py:function:: geosort(gpt)
 
@@ -171,15 +174,15 @@ Geopoints functions
     :type fs: :class:`Geopoints`
     :rtype: :class:`Geopoints`
 
-.. py:function:: int(gpt)
+.. .. py:function:: int(gpt)
 
-    Returns the integer part of ``gpt``. 
+..     Returns the integer part of ``gpt``. 
     
-    :param fs: input geopoints
-    :type fs: :class:`Geopoints`
-    :rtype: :class:`Geopoints`
+..     :param fs: input geopoints
+..     :type fs: :class:`Geopoints`
+..     :rtype: :class:`Geopoints`
     
-    Missing values retain their value.
+..     Missing values retain their value.
 
 .. py:function:: intbits(gpt, bit, [number_of_bits])
 
@@ -201,6 +204,8 @@ Geopoints functions
 
         .. code-block:: python
 
+            import metview as mv
+
             # To extract the 1st, 2nd and 3rd bits from
             # an int separately:
             
@@ -208,21 +213,21 @@ Geopoints functions
             # bit at the right
             n = 6 
 
-            flag = intbits (n, 1) # flag is now 0
-            flag = intbits (n, 2) # flag is now 1
-            flag = intbits (n, 3) # flag is now 1
+            flag = mv.intbits (n, 1) # flag is now 0
+            flag = mv.intbits (n, 2) # flag is now 1
+            flag = mv.intbits (n, 3) # flag is now 1
 
             # To extract the 1st and 2nd bits together 
             # to make a single int:
-            flag = intbits (n, 1, 2) # flag is now 2
+            flag = mv.intbits (n, 1, 2) # flag is now 2
 
             # To extract the 2nd and 3rd bits together 
             # to make a single int:
-            flag = intbits (n, 2, 2) # flag is now 3
+            flag = mv.intbits (n, 2, 2) # flag is now 3
 
             # To extract the 3rd and 4th bits together 
             # to make a single int:
-            flag = intbits (n, 3, 2) # flag is now 1
+            flag = mv.intbits (n, 3, 2) # flag is now 1
 
     The number of bits available depends on the machine architecture and Metview's compilation options, but at the time of writing it should be 32. This function does not treat missing values differently from any other values (for efficiency with large datasets).
 
@@ -250,25 +255,25 @@ Geopoints functions
     :type fs: :class:`Geopoints`
     :rtype: ndarray
 
-.. py:function:: log(gpt)
+.. .. py:function:: log(gpt)
 
-    Returns the natural logarithm of ``gpt``. 
+..     Returns the natural logarithm of ``gpt``. 
     
-    :param fs: input geopoints
-    :type fs: :class:`Geopoints`
-    :rtype: :class:`Geopoints`
+..     :param fs: input geopoints
+..     :type fs: :class:`Geopoints`
+..     :rtype: :class:`Geopoints`
     
-    For values the logarithm is not defined a missing value is set in the output. Missing values in ``gpt`` retain their value.
+..     For values the logarithm is not defined a missing value is set in the output. Missing values in ``gpt`` retain their value.
 
-.. py:function:: log10(gpt)
+.. .. py:function:: log10(gpt)
 
-    Returns the base 10 logarithm of ``gpt``. 
+..     Returns the base 10 logarithm of ``gpt``. 
     
-    :param fs: input geopoints
-    :type fs: :class:`Geopoints`
-    :rtype: :class:`Geopoints`
+..     :param fs: input geopoints
+..     :type fs: :class:`Geopoints`
+..     :rtype: :class:`Geopoints`
     
-    For values the logarithm is not defined a missing value is set in the output. Missing values in ``gpt`` retain their value.
+..     For values the logarithm is not defined a missing value is set in the output. Missing values in ``gpt`` retain their value.
 
 
 .. py:function:: mean(gpt)
@@ -292,75 +297,75 @@ Geopoints functions
    
     Points with missing latitudes or longitudes are considered to be outside any area. See the documentation for the fieldset version of this function to see how to compose more complex regions than a simple rectangular area.
 
-.. py:function:: neg(gpt)
+.. .. py:function:: neg(gpt)
 
-    Returns the negative of ``gpt``. 
+..     Returns the negative of ``gpt``. 
     
-    :param fs: input geopoints
-    :type fs: :class:`Geopoints`
-    :rtype: :class:`Geopoints`
+..     :param fs: input geopoints
+..     :type fs: :class:`Geopoints`
+..     :rtype: :class:`Geopoints`
     
-    Missing values in ``gpt`` retain their value.
+..     Missing values in ``gpt`` retain their value.
 
-    .. note::
-        These lines of codes are equivalent:
+..     .. note::
+..         These lines of codes are equivalent:
 
-        .. code-block:: python
+..         .. code-block:: python
 
-            f = mv.neg(g)
-            f = -g
+..             f = mv.neg(g)
+..             f = -g
 
-
-.. py:function:: offset(gpt, lat_offset_or_list, [lon_offset])
+.. py:function:: offset(gpt, lat_offset, lon_offset)
+.. py:function:: offset(gpt, offset)
 
     Creates a new :class:`Geopoints` from ``gpt`` with the locations offset by the specified amounts.
 
-    :param fs: input geopoints
-    :type fs: :class:`Geopoints`
-    :param lat_offset_or_list: latitude offset or latitude and longitude offsets as [lat_offset, lon_offset]
-    :type lat_offset_or_list: float or list
-    :param lon_offset: longitude offset
+    :param gpt: input geopoints
+    :type gpt: :class:`Geopoints`
+    :param float lat_offset: latitude offset
+    :param float lon_offset: longitude offset
+    :type list offset:  latitude and longitude offsets as [lat_offset, lon_offset]
     :rtype: :class:`Geopoints`
 
-.. py:function:: sgn(gpt)
+.. .. py:function:: sgn(gpt)
 
-    Returns the sign of ``gpt``:  -1 for negative , 1 for positive and 0 for 0 values.
+..     Returns the sign of ``gpt``:  -1 for negative , 1 for positive and 0 for 0 values.
     
-    :param fs: input geopoints
-    :type fs: :class:`Geopoints`
-    :rtype: :class:`Geopoints`
+..     :param fs: input geopoints
+..     :type fs: :class:`Geopoints`
+..     :rtype: :class:`Geopoints`
     
-    Missing values in ``gpt`` retain their value.
+..     Missing values in ``gpt`` retain their value.
 
-.. py:function:: sin(gpt)
+.. .. py:function:: sin(gpt)
 
-    Returns the sine of ``gpt``.
+..     Returns the sine of ``gpt``.
     
-    :param fs: input geopoints
-    :type fs: :class:`Geopoints`
-    :rtype: :class:`Geopoints`
+..     :param fs: input geopoints
+..     :type fs: :class:`Geopoints`
+..     :rtype: :class:`Geopoints`
     
-    Values in ``gpt``are interpreted as radians. Missing values retain their value.
+..     Values in ``gpt``are interpreted as radians. Missing values retain their value.
 
-.. py:function:: sqrt(gpt)
+.. .. py:function:: sqrt(gpt)
 
-    Returns the square root of ``gpt``. 
+..     Returns the square root of ``gpt``. 
     
-    :param fs: input geopoints
-    :type fs: :class:`Geopoints`
-    :rtype: :class:`Geopoints`
+..     :param fs: input geopoints
+..     :type fs: :class:`Geopoints`
+..     :rtype: :class:`Geopoints`
     
-    For values the square root is not defined a missing value is set in the output. Missing values in ``gpt`` retain their value.
+..     For values the square root is not defined a missing value is set in the output. Missing values in ``gpt`` retain their value.
 
-.. py:function:: tan(gpt)
+.. .. py:function:: tan(gpt)
 
-    Returns the tangent of ``gpt``.
+..     Returns the tangent of ``gpt``.
     
-    :param fs: input geopoints
-    :type fs: :class:`Geopoints`
-    :rtype: :class:`Geopoints`
+..     :param fs: input geopoints
+..     :type fs: :class:`Geopoints`
+..     :rtype: :class:`Geopoints`
     
-    Values in ``gpt`` are interpreted as radians. For values the tangent is not defined a missing value is set in the output. Missing values retain their original value.
+..     Values in ``gpt`` are interpreted as radians. For values the tangent is not defined a missing value is set in the output. Missing values retain their original value.
 
 
 .. geopoints filter ( geopoints,geopoints )
@@ -457,31 +462,82 @@ Geopoints functions
 .. Generates a set of geopoints from a field. The first field of the input fieldset is used. The result is a set of geopoints whose locations are taken from the original geopoints, but whose values are those of the nearest gridpoints in the field to the geopoints given as a second parameter. By default, when the nearest gridpoint value is a missing value or the location is out of the grid area, the internal geopoints missing value is used (this value can be checked for with the built-in variable geo_missing_value or removed with the function remove_missing_values). If an extra parameter 'valid' is added to the function call, then of the surrounding points, the nearest valid one is returned; geo_missing_value will still be returned if all the surrounding points are missing. This function will return a missing value where the geopoints have missing lat/lon.
 
 
+.. py:function:: polar_vector(gpt_magnitude, gpt_dir)
 
-.. geopoints polar_vector ( geopoints, geopoints )
+    Combines two single-parameter :class:`Geopoints` into a new :class:`Geopoints` of 'polar_vector' type.
+    
+    :param gpt_magnitude: geopoints containing the magnitude values
+    :type gpt_magnitude: :class:`Geopoints`
+    :param gpt_dir: geopoints containing the direction values
+    :type gpt_dir: :class:`Geopoints`
+    :rtype: :class:`Geopoints` of 'polar_vector' type.
 
-.. Combines two single-parameter geopoints variables into a polar vector style geopoints variable. The first represents speed, the second represents direction. Both input geopoints variables should contain the same number of points.
-
-
-.. geopoints remove_duplicates ( geopoints )
-
-.. Returns a new geopoints variable that contains just one instance of any duplicate geopoint. Two geopoints are considered to be duplicates of each other if the files have the same format and the points have the same coordinates, height, date, time and values.
-
-
-.. geopoints remove_missing_latlons ( geopoints )
-
-.. Returns a new geopoints variable that contains just the points that do not have missing latitudes or longitudes from the input geopoints variable.
+    ``gpt_magnitude`` and ``gpt_dir`` should contain the same number of points.
 
 
+.. py:function:: remove_duplicates(gpt)
 
-.. geopoints remove_missing_values ( geopoints )
+    Returns a new :class:`Geopoints` that contains just one instance of any duplicate geopoint in ``gpt``. 
 
-.. Returns a new geopoints variable that contains just the non-missing values from the input geopoints variable. A geopoint is considered to be missing if either its value or value2 members are missing.
+    :param gpt: input geopoints
+    :type gpt: :class:`Geopoints`
+    :rtype: :class:`Geopoints`
+
+.. py:function:: remove_missing_latlons(gpt)
+
+    Returns a new :class:`Geopoints` that contains just the points that do not have missing latitudes or longitudes in ``gpt``. 
+
+    :param gpt: input geopoints
+    :type gpt: :class:`Geopoints`
+    :rtype: :class:`Geopoints`
 
 
-.. geopoints set_latitudes ( geopoints, number or vector or list )
-.. geopoints set_longitudes ( geopoints, number or vector or list )
-.. geopoints set_levels ( geopoints, number or vector or list )
+.. py:function:: remove_missing_values (gpt)
+
+    Returns a new :class:`Geopoints` that contains just the non-missing values in ``gpt``.
+    
+    :param gpt: input geopoints
+    :type gpt: :class:`Geopoints`
+    :rtype: :class:`Geopoints`
+    
+    A geopoint is considered to be missing if either its **value** or **value2** members are missing.
+
+.. py:function:: set_latitudes(gpt, latitudes)
+
+    Creates a new :class:`Geopoints` with all the latitudes in ``gpt`` replaced by ``latitudes``.
+
+    :param gpt: input geopoints
+    :type gpt: :class:`Geopoints`
+    :param latitudes: latitudes to be written into ``gpt``
+    :type latitudes: float or ndarray
+    :rtype: :class:`Geopoints`
+
+    If ``latitudes`` is a number all the latitudes are replaced with it. If ``latitudes`` is an array shorter than the geopoints count then only the first values that have a corresponding value in ``latitudes`` are changed.
+
+.. py:function:: set_longitudes(gpt, longitudes)
+
+    Creates a new :class:`Geopoints` with all the longitudes in ``gpt`` replaced by ``longitudes``.
+
+    :param gpt: input geopoints
+    :type gpt: :class:`Geopoints`
+    :param latitudes: longitudes to be written into ``gpt``
+    :type latitudes: float or ndarray
+    :rtype: :class:`Geopoints`
+
+    If ``longitudes`` is a number all the longitudes are replaced with it. If ``longitudes`` an array and is shorter than the geopoints count then only the first values that have a corresponding value in ``longitudes`` are changed.
+
+.. py:function:: set_levels(gpt, levels)
+
+    Creates a new :class:`Geopoints` with all the levels in ``gpt`` replaced by ``levels``.
+
+    :param gpt: input geopoints
+    :type gpt: :class:`Geopoints`
+    :param levels: levels to be written into ``gpt``
+    :type levels: float or ndarray
+    :rtype: :class:`Geopoints`
+
+    If ``levels`` is a number all the levels are replaced with it.  If ``levels`` is an array and shorter than the geopoints count then only the first values that have a corresponding value in ``levels`` are changed.
+
 .. geopoints set_dates ( geopoints, number or vector or list )
 .. geopoints set_stnids ( geopoints, list )
 .. geopoints set_times ( geopoints, number or vector or list )
