@@ -287,7 +287,7 @@ class Request(dict, Value):
         for k in list(self):
 
             # bool -> on/off
-            v = self.get(k) # self[k] returns 1 for True
+            v = self.get(k)  # self[k] returns 1 for True
             if isinstance(v, bool):
                 conversion_dict = {True: "on", False: "off"}
                 self[k] = conversion_dict[v]
@@ -993,6 +993,8 @@ def bind_functions(namespace, module_name=None):
     # HACK: some fuctions are missing from the 'dictionary' call.
     namespace["neg"] = make("neg")
     namespace["nil"] = make("nil")
+    namespace["div"] = div
+    namespace["mod"] = mod
     # override some functions that need special treatment
     # FIXME: this needs to be more structured
     namespace["plot"] = plot
@@ -1017,6 +1019,7 @@ lower_than = make("<")
 merge = make("&")
 met_not_eq = make("<>")
 met_plot = make("plot")
+mod = make("mod")
 nil = make("nil")
 png_output = make("png_output")
 power = make("^")

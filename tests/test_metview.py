@@ -300,8 +300,20 @@ def test_division():
     assert np.isclose(maximum, MAX_VALUE / 2)
 
 
+def test_division_via_function():
+    divided_two = mv.div(TEST_FIELDSET, 2)
+    maximum = mv.maxvalue(divided_two)
+    assert np.isclose(maximum, MAX_VALUE / 2)
+
+
 def test_division_reverse():
     divided_two = 2 / TEST_FIELDSET
+    minimum = mv.minvalue(divided_two)
+    assert np.isclose(minimum, 2 / MAX_VALUE)
+
+
+def test_division_reverse_via_function():
+    divided_two = mv.div(2, TEST_FIELDSET)
     minimum = mv.minvalue(divided_two)
     assert np.isclose(minimum, 2 / MAX_VALUE)
 
@@ -326,6 +338,12 @@ def test_power_reverse():
     maximum = mv.maxvalue(raised)
     assert np.isclose(minimum, 2 ** 3)
     assert np.isclose(maximum, 2 ** 4)
+
+
+def test_mod():
+    assert mv.mod(17, 4) == 1
+    assert mv.mod(15, 3) == 0
+    assert mv.mod(15.7, 30) == 15
 
 
 def test_pos():
