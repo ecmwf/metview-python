@@ -2,6 +2,11 @@
 Changelog for Metview's Python interface
 ========================================
 
+1.5.1
+------------------
+- temporarily removed tests that involve writing xarrays as GRIB
+
+
 1.5.0
 ------------------
 - added support for int numpy arrays as input to functions and methods
