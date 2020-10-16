@@ -37,7 +37,6 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
-docs/gen_modules
 docs/make.bat
 docs/auto_examples/*.zip
 

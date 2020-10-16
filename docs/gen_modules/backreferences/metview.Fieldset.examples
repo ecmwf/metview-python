@@ -1,0 +1,23 @@
+
+
+Examples using ``metview.Fieldset``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Split Contouring">
+
+.. only:: html
+
+ .. figure:: /auto_examples/grib/images/thumb/sphx_glr_split_contour_thumb.png
+     :alt: Split Contouring
+
+     :ref:`sphx_glr_auto_examples_grib_split_contour.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_grib_split_contour.py`
