@@ -156,7 +156,7 @@ for _, t in toc.items():
 -------------------------------
 
 .. list-table::
-    :widths: 20 10 70
+    :widths: 20 80
     :header-rows: 0
 
 """.format(
@@ -165,9 +165,13 @@ for _, t in toc.items():
             )
 
             for fn in gr.fn:
+#                 f.write("""
+#     * - :func:`{}`
+#       - .. image:: {} 
+#            :width: 16px
+#       - {}
+# """.format(fn.name, "_static/MCONT.png", fn.desc))
                 f.write("""
     * - :func:`{}`
-      - .. image:: {} 
-           :width: 16px
       - {}
-""".format(fn.name, "_static/MCONT.png", fn.desc))
+""".format(fn.name, fn.desc))
