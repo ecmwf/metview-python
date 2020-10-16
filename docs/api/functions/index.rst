@@ -5,7 +5,6 @@ Functions
    :maxdepth: 0
    :caption: Documentation
    :titlesonly:
-   :glob:
    
    accumulate
    average
