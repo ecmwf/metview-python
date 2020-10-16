@@ -14,15 +14,15 @@ Fieldset functions
 
 ..    Missing values are retained, unaltered by the calculation.
 
-.. py:function:: accumulate(fs)
+.. .. py:function:: accumulate(fs)
 
-   Computes the sum of all the values for each field in ``fs``.
+..    Computes the sum of all the values for each field in ``fs``.
 
-   :param fs: input fieldset
-   :type fs: :class:`Fieldset`
-   :rtype: float or ndarray or None
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :rtype: float or ndarray or None
 
-   If there is only one field in ``fs`` it returns a number, otherwise a numpy array is returned. Only non-missing values are considered in the calculation. For fields with no valid values NaN is returned.
+..    If there is only one field in ``fs`` it returns a number, otherwise a numpy array is returned. Only non-missing values are considered in the calculation. For fields with no valid values NaN is returned.
 
 .. .. py:function:: acos(fs)
    
@@ -48,66 +48,66 @@ Fieldset functions
 ..    :type fs: :class:`Fieldset`
 ..    :rtype: :class:`Fieldset`
 
-.. py:function:: average(fs)
+.. .. py:function:: average(fs)
 
-   Computes the average of all the values for each field in ``fs``. 
+..    Computes the average of all the values for each field in ``fs``. 
    
-   :param fs: input fieldset
-   :type fs: :class:`Fieldset`
-   :rtype: float or ndarray or None
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :rtype: float or ndarray or None
 
-   If there is only one field in ``fs`` a float is returned, otherwise a numpy array is returned. Only non-missing values are considered in the calculation. If there are no valid values, the function returns NaN for that field.
+..    If there is only one field in ``fs`` a float is returned, otherwise a numpy array is returned. Only non-missing values are considered in the calculation. If there are no valid values, the function returns NaN for that field.
 
-   .. note::
-      :func:`average` simply returns the mathematical average of all the field values using the following formula:
+..    .. note::
+..       :func:`average` simply returns the mathematical average of all the field values using the following formula:
 
-      .. math:: 
+..       .. math:: 
       
-         average = \frac {1}{N} \sum_{i}^{N}f_{i}
+..          average = \frac {1}{N} \sum_{i}^{N}f_{i}
         
-      To get the physically correct average based on the grid cell areas use :func:`integrate`.
+..       To get the physically correct average based on the grid cell areas use :func:`integrate`.
 
-.. py:function:: average_ew(fs, area, increment)
+.. .. py:function:: average_ew(fs, area, increment)
    
-   Computes the zonal average for each field in ``fs`` for a set of latitude belts.
+..    Computes the zonal average for each field in ``fs`` for a set of latitude belts.
 
-   :param fs: input fieldset
-   :type fs: :class:`Fieldset`
-   :param list area: area as [N,W,S,E] to perform the averaging 
-   :param int increment: increment in degrees defining the size of the latitude belts
-   :rtype: 1d-ndarray or 2d-ndarray
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :param list area: area as [N,W,S,E] to perform the averaging 
+..    :param int increment: increment in degrees defining the size of the latitude belts
+..    :rtype: 1d-ndarray or 2d-ndarray
 
-   If ``fs`` only contains one field a 1d-ndarray is returned otherwise the result is a 2d-ndarray. 
+..    If ``fs`` only contains one field a 1d-ndarray is returned otherwise the result is a 2d-ndarray. 
    
-   The averaging is performed for each field individually within the latitude belts defined by ``area`` and ``increment``. Each grid point value is weighted by the cosine of its latitude. Missing values are ignored. If a latitude belt contains no grid point values Nan is returned for that belt. 
+..    The averaging is performed for each field individually within the latitude belts defined by ``area`` and ``increment``. Each grid point value is weighted by the cosine of its latitude. Missing values are ignored. If a latitude belt contains no grid point values Nan is returned for that belt. 
 
-   :Example:
+..    :Example:
       
-      .. code-block:: python
+..       .. code-block:: python
 
-         ave = average_ew(fs, [60,-180,-60,180], 2.5)
+..          ave = average_ew(fs, [60,-180,-60,180], 2.5)
 
-      Here we compute the averages over full latitude circles starting from 60N, stepping by 2.5 degrees until 60S. If ``fs`` contains only one field the output will be a 1d-ndarray of 49 E-W average values, from North to South. If ``fs`` contains n fields then the output will be an array of n 1d-arrays each containing 49 values. Each value in the result represents the average at latitude Lat based on those grid points whose latitude coordinate is between Lat-1.25 and Lat+1.25 (1.25 is 2.5/2), i.e. within a latitude belt with width of 2.5 degrees, centered around Lat.
+..       Here we compute the averages over full latitude circles starting from 60N, stepping by 2.5 degrees until 60S. If ``fs`` contains only one field the output will be a 1d-ndarray of 49 E-W average values, from North to South. If ``fs`` contains n fields then the output will be an array of n 1d-arrays each containing 49 values. Each value in the result represents the average at latitude Lat based on those grid points whose latitude coordinate is between Lat-1.25 and Lat+1.25 (1.25 is 2.5/2), i.e. within a latitude belt with width of 2.5 degrees, centered around Lat.
 
-.. py:function:: average_ns(fs, area, increment)
+.. .. py:function:: average_ns(fs, area, increment)
    
-   Computes the meridional average for each field in ``fs`` for a set of longitude strips.
+..    Computes the meridional average for each field in ``fs`` for a set of longitude strips.
 
-   :param fs: input fieldset
-   :type fs: :class:`Fieldset`
-   :param list area: area as [N,W,S,E] to perform the averaging 
-   :param int increment: increment in degrees defining the size of the longitude strips
-   :rtype: 1d-ndarray or 2d-ndarray
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :param list area: area as [N,W,S,E] to perform the averaging 
+..    :param int increment: increment in degrees defining the size of the longitude strips
+..    :rtype: 1d-ndarray or 2d-ndarray
    
-   The averaging is performed for each field individually within the longitude strips defined by ``area`` and ``increment``. Each grid point value is weighted by the cosine of its latitude. Missing values are ignored. If a longitude strip contains no grid point values Nan is returned for that strip. 
+..    The averaging is performed for each field individually within the longitude strips defined by ``area`` and ``increment``. Each grid point value is weighted by the cosine of its latitude. Missing values are ignored. If a longitude strip contains no grid point values Nan is returned for that strip. 
 
-   :Example:
+..    :Example:
       
-      .. code-block:: python
+..       .. code-block:: python
 
-         ave = average_ns(fs, [30,0,-30,360], 5)
+..          ave = average_ns(fs, [30,0,-30,360], 5)
 
-      Here we compute the averages over longitude strips bounded by 30N and 30S, in 5 degree intervals around the globe. The result for each field in ``fs`` is vector of 73 values (in this case values for 0 and 360 are duplicated values). Each value returned (representing the average at longitude Lon) is the average of non-missing values in those grid points whose longitude coordinate is between Lon-2.5 and Lon+2.5 (2.5 is 5/2), in the strip between 30N and 30S.
+..       Here we compute the averages over longitude strips bounded by 30N and 30S, in 5 degree intervals around the globe. The result for each field in ``fs`` is vector of 73 values (in this case values for 0 and 360 are duplicated values). Each value returned (representing the average at longitude Lon) is the average of non-missing values in those grid points whose longitude coordinate is between Lon-2.5 and Lon+2.5 (2.5 is 5/2), in the strip between 30N and 30S.
 
 
 .. py:function:: bearing (fs, lat, lon)
@@ -510,30 +510,30 @@ Fieldset functions
   
    Missing values in ``fs`` are not returned.
 
-.. py:function:: gradient(fs)
+.. .. py:function:: gradient(fs)
 
-   Computes the horizontal gradient of each field in a fieldset. 
+..    Computes the horizontal gradient of each field in a fieldset. 
    
-   :param fs: input fieldset
-   :type fs: :class:`Fieldset`
-   :rtype: :class:`Fieldset`  
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :rtype: :class:`Fieldset`  
    
-   The derivatives are computed with a second order finite-difference approximation. The resulting fieldset contains two fields for each input field: the zonal derivative followed by the meridional derivative. The output fields contain missing values at the poles.
+..    The derivatives are computed with a second order finite-difference approximation. The resulting fieldset contains two fields for each input field: the zonal derivative followed by the meridional derivative. The output fields contain missing values at the poles.
 
-   The computations for a field f are based on the following formula:
+..    The computations for a field f are based on the following formula:
 
-      .. math::
+..       .. math::
 
-         \nabla f = (\frac {\partial f}{\partial x}, \frac {\partial f}{\partial y}) = (\frac{1}{R \ cos\phi}\frac{\partial f}{\partial \lambda}, \frac{1}{R}\frac{\partial f}{\partial \phi} )
+..          \nabla f = (\frac {\partial f}{\partial x}, \frac {\partial f}{\partial y}) = (\frac{1}{R \ cos\phi}\frac{\partial f}{\partial \lambda}, \frac{1}{R}\frac{\partial f}{\partial \phi} )
    
-   where:
+..    where:
 
-   * R is the radius of the Earth (in m)
-   * :math:`\phi` is the latitude
-   * :math:`\lambda` is the longitude.
+..    * R is the radius of the Earth (in m)
+..    * :math:`\phi` is the latitude
+..    * :math:`\lambda` is the longitude.
 
-   .. warning::
-      :func:`gradient` is only implemented for regular latitude-longitude grids.
+..    .. warning::
+..       :func:`gradient` is only implemented for regular latitude-longitude grids.
 
 .. py:function:: grib_get(fs, keys, [grouping])
 
@@ -897,30 +897,30 @@ Fieldset functions
 ..    .. note::
 ..       A similar function, :func:`nearest_gridpoint`, also exists.
 
-.. py:function:: laplacian(fs)
+.. .. py:function:: laplacian(fs)
 
-   Computes the Laplacian of each field in ``fs``. 
+..    Computes the Laplacian of each field in ``fs``. 
    
-   :param fs: input fieldset
-   :type fs: :class:`Fieldset`
-   :rtype: :class:`Fieldset`
+..    :param fs: input fieldset
+..    :type fs: :class:`Fieldset`
+..    :rtype: :class:`Fieldset`
    
-   The computations for a field f are based on the following formula:
+..    The computations for a field f are based on the following formula:
 
-   .. math::
+..    .. math::
  
-      \triangle f =\frac{1}{R^2 \ cos^2\phi}\frac{\partial^2 f}{\partial \lambda^2} + \frac{1}{R^2}\frac{\partial^2 f}{\partial \phi^2} - \frac{1}{R^2}tan\phi\frac{\partial f}{\partial \phi}
+..       \triangle f =\frac{1}{R^2 \ cos^2\phi}\frac{\partial^2 f}{\partial \lambda^2} + \frac{1}{R^2}\frac{\partial^2 f}{\partial \phi^2} - \frac{1}{R^2}tan\phi\frac{\partial f}{\partial \phi}
 
-   where:
+..    where:
 
-      * R: radius of the Earth
-      * :math:`\phi`: latitude
-      * :math:`\lambda`: longitude.
+..       * R: radius of the Earth
+..       * :math:`\phi`: latitude
+..       * :math:`\lambda`: longitude.
 
-   The derivatives are computed with a second order finite-difference approximation. The resulting fields contain missing values on the poles. 
+..    The derivatives are computed with a second order finite-difference approximation. The resulting fields contain missing values on the poles. 
 
-   .. warning::
-      :func:`laplacian` is only implemented for regular latitude-longitude grids.
+..    .. warning::
+..       :func:`laplacian` is only implemented for regular latitude-longitude grids.
 
 .. py:function:: latitudes(fs)
 

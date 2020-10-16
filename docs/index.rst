@@ -6,7 +6,7 @@ Metview
 .. warning::
    This documentation is work in progress. It is not yet ready.
 
-.. image:: images/metview-all-in-one.png
+.. image:: _static/metview-all-in-one.png
    :width: 300px
 
 **Metview** is a meteorological workstation application designed to be a complete working environment for both the operational and research meteorologist. Its capabilities include powerful data access, processing and visualisation. It features both a powerful **icon-based user interface** for interactive work and a **Python** interface for batch processing.
@@ -37,6 +37,7 @@ Metview was developed as part of a cooperation between ECMWF and INPE (Brazilian
 .. toctree::
    :maxdepth: 1
    :caption: Examples
+   :titlesonly:
 
    auto_examples/index
    notebook_gallery
@@ -45,14 +46,16 @@ Metview was developed as part of a cooperation between ECMWF and INPE (Brazilian
    :maxdepth: 1
    :caption: Documentation
 
-   fieldset
-   grib
-   geopoints
-   thermo
-   math
-   netcdf
-   geo
-   odb_filter   
+   api/ref_guide 
+   data_types/index
+
+.. toctree::
+   :maxdepth: 0
+   :glob:
+   :hidden:
+
+   functions/index
+   
 
 Indices and tables
 ==================

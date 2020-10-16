@@ -1,0 +1,12 @@
+div.leftside {
+    width: 54px;
+    padding: 5px 5px 0px 0px;
+    float: left;
+  }
+  
+div.rightside {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    padding-left: 40px;
+    /*float: right;*/
+  }

@@ -4,7 +4,7 @@
 
 .. _sphx_glr_auto_examples:
 
-This is my gallery
+Gallery
 ==================
 
 Below is a gallery of examples
@@ -240,27 +240,6 @@ Below is a gallery of examples
    :hidden:
 
    /auto_examples/taylor
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Split Contouring">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_split_contour_thumb.png
-     :alt: Split Contouring
-
-     :ref:`sphx_glr_auto_examples_split_contour.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/split_contour
 
 .. raw:: html
 
@@ -1290,6 +1269,39 @@ Below is a gallery of examples
    :hidden:
 
    /auto_examples/ens_tephigram
+.. raw:: html
+
+    <div class="sphx-glr-clear"></div>
+
+
+
+.. _sphx_glr_auto_examples_grib:
+
+GRIB map plotting
+===========================
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Split Contouring">
+
+.. only:: html
+
+ .. figure:: /auto_examples/grib/images/thumb/sphx_glr_split_contour_thumb.png
+     :alt: Split Contouring
+
+     :ref:`sphx_glr_auto_examples_grib_split_contour.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/grib/split_contour
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>

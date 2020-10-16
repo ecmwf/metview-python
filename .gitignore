@@ -71,6 +71,12 @@ tests/*.idx
 .idea
 .vscode
 
+
+# docs
+docs/api/build_functions.py
+docs/api/functions_mv.yaml
+
+
 # gallery
 docs/gallery/*.grib
 docs/gallery/*.grb
@@ -86,3 +92,4 @@ docs/gallery/*.png
 docs/gallery/*.tar
 docs/gallery/*.tar.gz
 docs/gallery/*.gz
+docs/gallery/*/*.grib

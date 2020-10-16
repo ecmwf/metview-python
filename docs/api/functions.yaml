@@ -1,0 +1,2196 @@
+- abs:
+    category:
+      fieldset: Absolute value
+    desc: Compute the absolute value
+    type: script
+    group:
+      - maths
+- accumulate:
+    category:
+      fieldset: Adds up the values in a given field
+    desc: Adds up the values in a given field
+    type: script
+    group:
+      - stats
+- acos:
+    category:
+      fieldset: Arc cosine
+    desc: Arc cosine
+    type: script
+    group:
+      - maths
+- addmonths:
+    category:
+      date: Adds months to a date
+    desc: Adds months to a date
+    type: script
+    group:
+      - date
+- annotationview:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - view
+- any:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - widget
+- append:
+    category:
+      io: 'Writes/appends the given data to file. args: (filehandler, any)'
+    desc: 'Writes/appends the given data to file. args: (filehandler, any)'
+    type: script
+- arguments:
+    category:
+      info: Returns the list of the calling arguments of the current function
+    desc: Returns the list of the calling arguments of the current function
+    type: script
+- ascii:
+    category:
+      string: Returns the corresponding ASCII character
+    desc: Returns the corresponding ASCII character
+    type: script
+- asin:
+    category:
+      fieldset: Arc sine
+    desc: Arc sine
+    type: script
+    group:
+      - maths
+- atan:
+    category:
+      fieldset: Arc tangent
+    desc: Arc tangent
+    type: script
+    group:
+      - maths
+- atan2:
+    category:
+      fieldset: Arc tangent of 2 variables
+    desc: Arc tangent of 2 variables
+    type: script
+    group:
+      - maths
+- attributes:
+    category:
+      netcdf: Returns the attributes of the current NetCDF variable
+    desc: Returns the attributes of the current NetCDF variable
+    type: script
+    group:
+      - netcdf
+- average:
+    category:
+      fieldset: Averages the values in a given field
+    desc: Averages the values in a given field
+    type: script
+    group: 
+      - stats
+- average_ew:
+    category:
+      fieldset: Returns the zonal averages as a list (or list of lists) of numbers.
+    desc: Returns the zonal averages as a list (or list of lists) of numbers.
+    type: script
+    group:
+      - stats
+- average_ns:
+    category:
+      fieldset: Returns the meridional averages as a list (or list of lists) of numbers.
+    desc: Returns the meridional averages as a list (or list of lists) of numbers.
+    type: script
+    group:
+      - stats
+- averageview:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - view
+- base_date:
+    category:
+      fieldset: Returns the base date(s) of a given fieldset
+    desc: Returns the base date(s) of a given fieldset
+    type: script
+    group:
+      - grib
+- bearing:
+    category:
+      fieldset: Computes the bearings for all the gridpoints with respect to a reference
+        point
+    desc: Computes the bearings for all the gridpoints with respect to a reference
+      point
+    type: script
+    group:
+      - geo
+- binning:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - plot
+- bitmap:
+    category:
+      fieldset: Apply bitmap of 2nd fieldset to 1st fieldset
+      vector: Converts numbers to missing values in a vector
+    desc: Converts numbers to missing values in a vector
+    type: script
+    group:
+      - filter
+- bufr_picker:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - bufr
+      - filter
+- cartesianview:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - view
+- checkbox:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - widget
+- cleanfile:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - filter
+- colour:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - widget
+- columns:
+    category:
+      geopoints: Returns a list of column names for a geopoints variable
+      odb: Returns the list of columns from the given ODB.
+    desc: Returns the list of columns from the given ODB.
+    type: script
+    group:
+      - geopoints
+- compute:
+    category: {}
+    desc: ''
+    type: icon
+- corr_a:
+    category:
+      fieldset: Computes the area-weighted correlation for each field in a fieldset
+    desc: Computes the area-weighted correlation for each field in a fieldset
+    type: script
+    group:
+      - stats
+- cos:
+    category:
+      fieldset: Cosine
+    desc: Cosine
+    type: script
+    group:
+      - maths
+- coslat:
+    category:
+      fieldset: Generates a field with the cosine of the gridpoint latitudes
+    desc: Generates a field with the cosine of the gridpoint latitudes
+    type: script
+    group:
+      - geo
+- count:
+    category:
+      fieldset: Returns the number of fields in a variable
+    desc: Returns the number of fields in a variable
+    type: script
+- covar:
+    category:
+      fieldset: Returns the covariance of all two fieldsets
+    desc: Returns the covariance of all two fieldsets
+    type: script
+    group:
+      - stats
+- covar_a:
+    category:
+      fieldset: Computes the area-weighted covariance for each field in a fieldset
+    desc: Computes the area-weighted covariance for each field in a fieldset
+    type: script
+    group:
+      - stats
+- create_geo:
+    category:
+      geopoints: Creates a new set of geopoints
+    desc: Creates a new set of geopoints
+    type: script
+- create_geo_set:
+    category:
+      geopointset: Creates a new geopoints_set
+    desc: Creates a new geopoints_s,,,,,,,,,,,,,,,,,,,,,,,,,,kmet
+    type: script
+- cross_sect:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - vertical
+- datainfo:
+    category:
+      fieldset: Returns information on missing values in fieldsets
+    desc: Returns information on missing values in fieldsets
+    type: script
+    group:
+      - grib
+- date:
+    category:
+      date: Creates a date from a number or a string
+    desc: Creates a date from a number or a string
+    type: script
+- dates:
+    category:
+      geopoints: Returns a list/vector of dates from the given geopoints.
+    desc: Returns a list/vector of dates from the given geopoints.
+    type: script
+- day:
+    category:
+      date: Extract a date component
+    desc: Extract a date component
+    type: script
+- db_info:
+    category:
+      geopoints: Returns a string of the database from the given geopoints.
+    desc: Returns a string of the database from the given geopoints.
+    type: script
+    group:
+      - geopoints
+- definition:
+    category: {}
+    desc: ''
+    type: icon
+- describe:
+    category:
+      info: Describes available function
+    desc: Describes available function
+    type: script
+- dictionary:
+    category:
+      info: Returns the list of all the documented functions
+    desc: Returns the list of all the documented functions
+    type: script
+- dimension_names:
+    category:
+      netcdf: Returns a list of the netcdf's dimension names.
+    desc: Returns a list of the netcdf's dimension names.
+    type: script
+    group:
+      - netcdf
+- dimensions:
+    category:
+      netcdf: Returns a list of the netcdf's dimensions.
+    desc: Returns a list of the netcdf's dimensions.
+    type: script
+    group:
+      - netcdf
+- direction:
+    category:
+      fieldset: Computes meteorological wind direction using U and V wind components
+    desc: Computes meteorological wind direction using U and V wind components
+    type: script
+    group:
+      - geo
+- distance:
+    category:
+      fieldset: Computes the distances of all the gridpoints from a point
+    desc: Computes the distances of all the gridpoints from a point
+    type: script
+    group:
+      - geo
+- divrot:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - calculus
+- divrot_mir:
+    category: {}
+    desc: ''
+    type: icon
+- divwind:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - calculus
+- divwind_mir:
+    category: {}
+    desc: ''
+    type: icon
+- dow:
+    category:
+      date: Extract a date component
+    desc: Extract a date component
+    type: script
+- download:
+    category: {}
+    desc: ''
+    type: icon
+- drawing_priority:
+    category: {}
+    desc: ''
+    type: icon
+- dtype:
+    category:
+      vector: Returns a string describing the vector's internal storage type
+    desc: Returns a string describing the vector's internal storage type
+    type: script
+- duplicate:
+    category:
+      fieldset: Duplicates a field N times
+    desc: Duplicates a field N times
+    type: script
+    group:
+      - grib
+- eccharts:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - plot
+- ecfs:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - retrieve
+- eps_output:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - output
+- epscairo_output:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - output
+- eqpott_m:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - thermo
+- eqpott_p:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - thermo
+- examine:
+    category:
+      ui: Actives an interactive data examiner window on the given data
+    desc: Actives an interactive data examiner window on the given data
+    type: script
+    group:
+      - ui
+- exist:
+    category:
+      io: 'Determines whether the given file exists. Returns 1 or 0. args: (string)'
+    desc: 'Determines whether the given file exists. Returns 1 or 0. args: (string)'
+    type: script
+- exp:
+    category:
+      fieldset: Exponential
+    desc: Exponential
+    type: script
+    group:
+      - maths
+- fail:
+    category:
+      system: Prints all its arguments and stop in error
+    desc: Prints all its arguments and stop in error
+    type: script
+- fetch:
+    category:
+      system: 'Returns the item stored in the named cache (or nil). args: (string)'
+    desc: 'Returns the item stored in the named cache (or nil). args: (string)'
+    type: script
+- file:
+    category:
+      io: 'Returns a file handler for the specified filename. args: (string)'
+    desc: 'Returns a file handler for the specified filename. args: (string)'
+    type: script
+- filetype:
+    category:
+      fieldset: 'Returns the type of the given file. args: (string)'
+    desc: 'Returns the type of the given file. args: (string)'
+    type: script
+- fill_missing_values_ew:
+    category:
+      fieldset: Fills missing values along the horizontal line
+    desc: Fills missing values along the horizontal line
+    type: script
+- filter:
+    category:
+      vector: Filters a vector according to the values of a second vector
+    desc: Filters a vector according to the values of a second vector
+    type: script
+    group:
+      - filter
+- find:
+    category:
+      fieldset: Finds values in field
+      list: Find where an item occurs in a list
+      vector: Find where a number occurs in a vector
+    desc: Find where a number occurs in a vector
+    type: script
+- first_derivative_x:
+    category:
+      fieldset: Computes first West-East derivative of fields
+    desc: Computes first West-East derivative of fields
+    type: script
+    group:
+      - calculus
+- first_derivative_y:
+    category:
+      fieldset: Computes first South-North derivative of fields
+    desc: Computes first South-North derivative of fields
+    type: script
+    group:
+      - calculus
+- flexpart_convert_trajectory:
+    category:
+      flexpart: Converts raw FLEXPART trajectory output to CSV
+    desc: Converts raw FLEXPART trajectory output to CSV
+    type: script
+- flexpart_prepare:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - retrieve
+- flexpart_release:
+    category: {}
+    desc: ''
+    type: icon
+- flexpart_run:
+    category: {}
+    desc: ''
+    type: icon
+- flextra_group_get:
+    category:
+      flextra: Returns a list of available meta data keys for the given table
+    desc: Returns a list of available meta data keys for the given table
+    type: script
+- flextra_prepare:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - retrieve
+- flextra_run:
+    category: {}
+    desc: ''
+    type: icon
+- flextra_tr_get:
+    category:
+      flextra: Returns a list of available meta data keys for the given table
+    desc: Returns a list of available meta data keys for the given table
+    type: script
+- flextra_visualiser:
+    category: {}
+    desc: ''
+    type: icon
+- float:
+    category:
+      fieldset: Converts int GRIB to float GRIB
+    desc: Converts int GRIB to float GRIB
+    type: script
+- frequencies:
+    category:
+      fieldset: Computes frequencies of a field
+    desc: Computes frequencies of a field
+    type: script
+    group:
+      - stats
+- geo_to_grib:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - conversion
+- geo_to_kml:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - conversion
+- geosort:
+    category:
+      geopoints: Sorts the geopoints North to South and West to East
+    desc: Sorts the geopoints North to South and West to East
+    type: script
+    group:
+      - geo
+- geoview:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - view
+- getenv:
+    category:
+      unix: Return the value of a shell variable
+    desc: Return the value of a shell variable
+    type: script
+- gfind:
+    category:
+      fieldset: Finds values in field and returns the result as geopoints
+    desc: Finds values in field and returns the result as geopoints
+    type: script
+    group:
+      - grib
+- global_attributes:
+    category:
+      netcdf: Returns a definition variable holding the netcdf's global metadata.
+    desc: Returns a definition variable holding the netcdf's global metadata.
+    type: script
+    group:
+      - netcdf
+- globe_output:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - output
+- gradient:
+    category:
+      fieldset: Computes horizontal gradient of fields
+    desc: Computes horizontal gradient of fields
+    type: script
+    group:
+      - calculus
+- grib_get:
+    category:
+      fieldset: Reads GRIB headers using ecCodes keys
+    desc: Reads GRIB headers using ecCodes keys
+    type: script
+    group:
+      - grib
+- grib_get_double:
+    category:
+      fieldset: Reads GRIB headers using ecCodes keys
+    desc: Reads GRIB headers using ecCodes keys
+    type: script
+    group:
+      - grib
+- grib_get_double_array:
+    category:
+      fieldset: Reads GRIB headers using ecCodes keys
+    desc: Reads GRIB headers using ecCodes keys
+    type: script
+    group:
+      - grib
+- grib_get_long:
+    category:
+      fieldset: Reads GRIB headers using ecCodes keys
+    desc: Reads GRIB headers using ecCodes keys
+    type: script
+    group:
+      - grib
+- grib_get_long_array:
+    category:
+      fieldset: Reads GRIB headers using ecCodes keys
+    desc: Reads GRIB headers using ecCodes keys
+    type: script
+    group:
+      - grib
+- grib_get_string:
+    category:
+      fieldset: Reads GRIB headers using ecCodes keys
+    desc: Reads GRIB headers using ecCodes keys
+    type: script
+    group:
+      - grib
+- grib_set:
+    category:
+      fieldset: Writes GRIB headers using ecCodes keys
+    desc: Writes GRIB headers using ecCodes keys
+    type: script
+    group:
+      - grib
+- grib_set_double:
+    category:
+      fieldset: Writes GRIB headers using ecCodes keys
+    desc: Writes GRIB headers using ecCodes keys
+    type: script
+    group:
+      - grib
+- grib_set_long:
+    category:
+      fieldset: Writes GRIB headers using ecCodes keys
+    desc: Writes GRIB headers using ecCodes keys
+    type: script
+    group:
+      - grib
+- grib_set_string:
+    category:
+      fieldset: Writes GRIB headers using ecCodes keys
+    desc: Writes GRIB headers using ecCodes keys
+    type: script
+    group:
+      - grib
+- grib_to_geo:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - conversion
+- grib_vectors:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - plot
+- gribsetbits:
+    category:
+      fieldset: Sets GRIB packing bit width
+    desc: Sets GRIB packing bit width
+    type: script
+    group:
+      - grib
+- grid_cell_area:
+    category:
+      fieldset: Computes grid cell area for each gridpoints in a field
+    desc: Computes grid cell area for each gridpoints in a field
+    type: script
+    group:
+      - geo
+- hour:
+    category:
+      date: Extract a date component
+    desc: Extract a date component
+    type: script
+- hovmoeller_area:
+    category: {}
+    desc: ''
+    type: icon
+- hovmoeller_expand:
+    category: {}
+    desc: ''
+    type: icon
+- hovmoeller_height:
+    category: {}
+    desc: ''
+    type: icon
+- hovmoeller_line:
+    category: {}
+    desc: ''
+    type: icon
+- hovmoellerview:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - view
+- icon:
+    category: {}
+    desc: ''
+    type: icon
+- in:
+    category:
+      list: Test if a value is in a list
+    desc: Test if a value is in a list
+    type: script
+- indexes:
+    category:
+      fieldset: Builds an output fieldset containing each gridpoint's indexed position
+        in the given vector
+    desc: Builds an output fieldset containing each gridpoint's indexed position in
+      the given vector
+    type: script
+- input_visualiser:
+    category: {}
+    desc: ''
+    type: icon
+- int:
+    category:
+      fieldset: Integer part
+    desc: Integer part
+    type: script
+- intbits:
+    category:
+      geopoints: Returns ranges of bits in a geopoints variable
+      number: Returns value of a given range of bits in an integer
+    desc: Returns ranges of bits in a geopoints variable
+    type: script
+    group:
+      - maths
+- integer:
+    category:
+      fieldset: Converts float GRIB to int GRIB
+    desc: Converts float GRIB to int GRIB
+    type: script
+- integrate:
+    category:
+      fieldset: Computes the average weighted by the gridcell area for each field
+        in fieldset
+    desc: Computes the average weighted by the gridcell area for each field in fieldset
+    type: script
+    group:
+      - stats
+- interpolate:
+    category:
+      fieldset: Interpolates field values to the specified location
+    desc: Interpolates field values to the specified location
+    type: script
+    group:
+      - grid
+- is_feature_available:
+    category:
+      info: 'Returns 1 if the given feature is available, otherwise 0. Feature names:
+        ''odb'''
+    desc: 'Returns 1 if the given feature is available, otherwise 0. Feature names:
+      ''odb'''
+    type: script
+- juldate:
+    category:
+      date: Extract a date component
+    desc: Extract a date component
+    type: script
+- julday:
+    category:
+      date: Extract a date component
+    desc: Extract a date component
+    type: script
+- kml_output:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - output
+- latitudes:
+    category:
+      fieldset: Returns the grid point latitudes as a vector (or list of vectors)
+      geopoints: Returns a list/vector of latitudes from the given geopoints.
+    desc: Returns a list/vector of latitudes from the given geopoints.
+    type: script
+    group:
+      - geo
+- length:
+    category:
+      string: Returns the length of a string.
+    desc: Returns the length of a string.
+    type: script
+- levels:
+    category:
+      geopoints: Returns a list/vector of heights from the given geopoints.
+    desc: Returns a list/vector of heights from the given geopoints.
+    type: script
+- list:
+    category:
+      list: Builds a list from its arguments
+    desc: Builds a list from its arguments
+    type: script
+- log:
+    category:
+      fieldset: Natural logarithm
+    desc: Natural logarithm
+    type: script
+    group:
+      - maths
+- log10:
+    category:
+      fieldset: Base 10 logarithm
+    desc: Base 10 logarithm
+    type: script
+    group:
+      - maths
+- longitudes:
+    category:
+      fieldset: Returns the grid point longitudes as a vector (or list of vectors)
+      geopoints: Returns a list/vector of longitudes from the given geopoints.
+    desc: Returns a list/vector of longitudes from the given geopoints.
+    type: script
+    group:
+      - geo
+- lookup:
+    category:
+      fieldset: Builds an output fieldset using the values in the first as indices
+        into the second
+    desc: Builds an output fieldset using the values in the first as indices into
+      the second
+    type: script
+- lowercase:
+    category:
+      string: Sets to unique case of letters
+    desc: Sets to unique case of letters
+    type: script
+- magml:
+    category: {}
+    desc: ''
+    type: icon
+- mapview:
+    category: {}
+    desc: ''
+    type: icon
+- mask:
+    category:
+      fieldset: Generates masks for fieldsets
+      geopoints: Generates masks for geopoints
+    desc: Generates masks for geopoints
+    type: script
+- maverageview:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - view
+- max:
+    category:
+      fieldset: Maximum
+    desc: Maximum
+    type: script
+- maxis:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - visdef
+- maxvalue:
+    category:
+      fieldset: Maximum value of a variable
+    desc: Maximum value of a variable
+    type: script
+- mboxplot:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - visdef
+- mcoast:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - visdef
+- mcont:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - visdef
+- mcross_sect:
+    category: {}
+    desc: ''
+    type: icon
+- mean:
+    category:
+      fieldset: Returns the mean of all the fields
+      geopoints: Returns the sum or mean of the values in a geopoints variable
+      vector: Returns the sum or mean of the values in a vector variable
+    desc: Returns the sum or mean of the values in a geopoints variable
+    type: script
+    group:
+      - stats
+- mean_ew:
+    category:
+      fieldset: Generates a fieldset out of East-West means
+    desc: Generates a fieldset out of East-West means
+    type: script
+    group:
+      - stats
+- menu:
+    category: {}
+    desc: ''
+    type: icon
+- merge:
+    category:
+      fieldset: Merge several fieldsets
+      geopoints: Merges 2 sets of geopoints
+      vector: Appends a number to a vector
+    desc: Merges 2 sets of geopoints
+    type: script
+- met3d:
+    category: {}
+    desc: ''
+    type: icon
+- met3d_prepare:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - retrieve
+- metadata:
+    category:
+      geopoints: Returns a metadata definition from the given geopoints.
+    desc: Returns a metadata definition from the given geopoints.
+    type: script
+- metadata_keys:
+    category:
+      table: Returns a list of available meta data keys for the given table
+    desc: Returns a list of available meta data keys for the given table
+    type: script
+- metadata_value:
+    category:
+      table: Returns the value of then given meta data key for a table
+    desc: Returns the value of then given meta data key for a table
+    type: script
+- meteogram:
+    category: {}
+    desc: ''
+    type: icon
+- mgraph:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - visdef
+- mhovmoeller_area:
+    category: {}
+    desc: ''
+    type: icon
+- mhovmoeller_expand:
+    category: {}
+    desc: ''
+    type: icon
+- mhovmoeller_line:
+    category: {}
+    desc: ''
+    type: icon
+- mhovmoeller_vertical:
+    category: {}
+    desc: ''
+    type: icon
+- mhovmoellerview:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - view
+- mimport:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - visdef
+- min:
+    category:
+      fieldset: Minimum
+    desc: Minimum
+    type: script
+- minute:
+    category:
+      date: Extract a date component
+    desc: Extract a date component
+    type: script
+- minvalue:
+    category:
+      fieldset: Minimum value of a variable
+    desc: Minimum value of a variable
+    type: script
+- mlegend:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - visdef
+- mobs:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - visdef
+- month:
+    category:
+      date: Extract a date component
+    desc: Extract a date component
+    type: script
+- msymb:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - visdef
+- mtaylor:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - visdef
+- mtext:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - visdef
+- mthermo:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - visdef
+- mthermogrid:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - visdef
+- mvert_prof:
+    category: {}
+    desc: ''
+    type: icon
+- mvertprofview:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - view
+- mwind:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - visdef
+- mxs_average:
+    category: {}
+    desc: ''
+    type: icon
+- mxsectview:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - view
+- name:
+    category:
+      system: 'Returns the path/name of the macro being executed. args: none'
+      table: Returns the name of the given table column.
+    desc: Returns the name of the given table column.
+    type: script
+- nearest_gridpoint:
+    category:
+      fieldset: Returns the nearest grid point value from a field
+    desc: Returns the nearest grid point value from a field
+    type: script
+    group:
+      - geo
+- nearest_gridpoint_info:
+    category:
+      fieldset: Returns the nearest grid point value from a field
+    desc: Returns the nearest grid point value from a field
+    type: script
+    group:
+      - geo
+- netcdf_auto_rescale_values_to_fit_packed_type:
+    category:
+      netcdf: 'Sets the behaviour of netcdf value handling: 1=on, 0=off'
+    desc: 'Sets the behaviour of netcdf value handling: 1=on, 0=off'
+    type: script
+    group:
+      - netcdf
+- netcdf_auto_scale_values:
+    category:
+      netcdf: 'Sets the behaviour of netcdf value handling: 1=on, 0=off'
+    desc: 'Sets the behaviour of netcdf value handling: 1=on, 0=off'
+    type: script
+    group:
+      - netcdf
+- netcdf_auto_translate_times:
+    category:
+      netcdf: 'Sets the behaviour of netcdf value handling: 1=on, 0=off'
+    desc: 'Sets the behaviour of netcdf value handling: 1=on, 0=off'
+    type: script
+    group:
+      - netcdf
+- netcdf_preserve_missing_values:
+    category:
+      netcdf: 'Sets the behaviour of netcdf value handling: 1=on, 0=off'
+    desc: 'Sets the behaviour of netcdf value handling: 1=on, 0=off'
+    type: script
+    group:
+      - netcdf
+- netcdf_visualiser:
+    category: {}
+    desc: ''
+    type: icon
+    group: 
+      - plot
+- newpage:
+    category:
+      io: Forces a new page on PostScript output
+    desc: Forces a new page on PostScript output
+    type: script
+    group:
+      - plot
+- nice:
+    category:
+      unix: Nice (nice value)
+    desc: Nice (nice value)
+    type: script
+- nobitmap:
+    category:
+      fieldset: Clear bitmap of 1st fieldset assigning value instead
+      vector: Converts missing values to numbers in a vector
+    desc: Converts missing values to numbers in a vector
+    type: script
+    group:
+      - filter
+- now:
+    category:
+      date: Returns the current date and time
+    desc: Returns the current date and time
+    type: script
+- number:
+    category:
+      number: Returns the number represented by the string
+    desc: Returns the number represented by the string
+    type: script
+- obsfilter:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - filter
+- odb_filter:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - filter
+- odb_visualiser:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - plot
+- offset:
+    category:
+      geopoints: Offsets the locations of geopoints
+    desc: Offsets the locations of geopoints
+    type: script
+    group:
+      - geo
+- option_menu:
+    category: {}
+    desc: ''
+    type: icon
+    group: 
+      - widget
+- output:
+    category: {}
+    desc: ''
+    type: icon
+- overlay_control:
+    category: {}
+    desc: ''
+    type: icon
+- parse:
+    category:
+      string: Splits a string into tokens.
+    desc: Splits a string into tokens.
+    type: script
+- paxis:
+    category: {}
+    desc: ''
+    type: icon
+- pcoast:
+    category: {}
+    desc: ''
+    type: icon
+- pcont:
+    category: {}
+    desc: ''
+    type: icon
+- pdf_output:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - output
+- percentile:
+    category: {}
+    desc: ''
+    type: icon
+- percentile:
+    category:
+      vector: Returns a set of percentiles of a vector
+    desc: Returns a set of percentiles of a vector
+    type: script
+    group:
+      - stats
+- pgraph:
+    category: {}
+    desc: ''
+    type: icon
+- plot_page:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - layout
+- plot_subpage:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - layout
+- plot_superpage:
+    category:
+      plot: Returns a super_page for plotting
+    desc: Returns a super_page for plotting
+    type: script
+    group:
+      - layout
+- png_output:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - ouput
+- polar_vector:
+    category:
+      geopoints: Combines two 1-parameter geopoints variables into polar vector style
+    desc: Combines two 1-parameter geopoints variables into polar vector style
+    type: script
+- pott_m:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - thermo
+- pott_p:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - thermo
+- precision:
+    category:
+      number: Sets the printing precision for floating point values.
+    desc: Sets the printing precision for floating point values.
+    type: script
+- pressure:
+    category:
+      fieldset: Creates fields of pressure or thickness (input in lat/lon only).
+    desc: Creates fields of pressure or thickness (input in lat/lon only).
+    type: script
+    group:
+      - vertical
+- print:
+    category:
+      io: Prints all its arguments
+    desc: Prints all its arguments
+    type: script
+- ps_output:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - output
+- pscairo_output:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - output
+- psymb:
+    category: {}
+    desc: ''
+    type: icon
+- ptext:
+    category: {}
+    desc: ''
+    type: icon
+- purge_mem:
+    category:
+      fieldset: Releases unused memory
+    desc: Releases unused memory
+    type: script
+- putenv:
+    category:
+      unix: Sets the value of an environment variable.
+    desc: Sets the value of an environment variable.
+    type: script
+- pwind:
+    category: {}
+    desc: ''
+    type: icon
+- read:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - filter
+- read:
+    category: {}
+    desc: ''
+    type: null
+- read:
+    category:
+      io: 'Reads the given file and returns a variable of the appropriate type. args:
+        (string)'
+    desc: 'Reads the given file and returns a variable of the appropriate type. args:
+      (string)'
+    type: script
+- read_mir:
+    category: {}
+    desc: ''
+    type: icon
+- read_request:
+    category:
+      fieldset: 'Reads the given request file and returns a list of dictionaries.
+        args: (string)'
+    desc: 'Reads the given request file and returns a list of dictionaries. args:
+      (string)'
+    type: script
+- read_table:
+    category:
+      table: Reads a table file with parameters for parsing it.
+    desc: Reads a table file with parameters for parsing it.
+    type: script
+- read_tigge:
+    category: {}
+    desc: ''
+    type: icon
+- relhum:
+    category: {}
+    desc: ''
+    type: icon
+- remove_duplicates:
+    category:
+      geopoints: Removes geopoint duplicates
+    desc: Removes geopoint duplicates
+    type: script
+- remove_missing_latlons:
+    category:
+      geopoints: Copies a set of geopoints, removing missing lat/lons
+    desc: Copies a set of geopoints, removing missing lat/lons
+    type: script
+- remove_missing_values:
+    category:
+      geopoints: Copies a set of geopoints, removing missing values
+    desc: Copies a set of geopoints, removing missing values
+    type: script
+- reprojection:
+    category: {}
+    desc: ''
+    type: icon
+- retrieve:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - retrieve
+- retrieve_mir:
+    category: {}
+    desc: ''
+    type: icon
+- retrieve_odb:
+    category: {}
+    desc: ''
+    type: icon
+- retrieve_tigge:
+    category: {}
+    desc: ''
+    type: icon
+- rmask:
+    category:
+      fieldset: Generates masks based on a radius around a point for fieldsets
+    desc: Generates masks based on a radius around a point for fieldsets
+    type: script
+    group:
+      - filter
+- rms:
+    category:
+      fieldset: Returns the root mean square of all the fields of a variable
+    desc: Returns the root mean square of all the fields of a variable
+    type: script
+    group:
+      - stats
+- round:
+    category:
+      number: Rounds spurious decimals in a value.
+    desc: Rounds spurious decimals in a value.
+    type: script
+- rttov_run:
+    category: {}
+    desc: ''
+    type: icon
+- rttov_visualiser:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - plot
+- runmode:
+    category:
+      system: Returns a string describing the current run mode
+    desc: Returns a string describing the current run mode
+    type: script
+- scm_run:
+    category: {}
+    desc: ''
+    type: icon
+- scm_visualiser:
+    category: {}
+    desc: ''
+    type: icon
+- search:
+    category:
+      string: Search for a given substring.
+    desc: Search for a given substring.
+    type: script
+- second:
+    category:
+      date: Extract a date component
+    desc: Extract a date component
+    type: script
+- second_derivative_x:
+    category:
+      fieldset: Computes second West-East derivative of fields
+    desc: Computes second West-East derivative of fields
+    type: script
+    group:
+      - calculus
+- second_derivative_y:
+    category:
+      fieldset: Computes second South-North derivative of fields
+    desc: Computes second South-North derivative of fields
+    type: script
+    group:
+      - calculus
+- seqpott_m:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - thermo
+- seqpott_p:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - thermo
+- set_dates:
+    category:
+      geopoints: Sets the date column in the geopoints variable.
+    desc: Sets the date column in the geopoints variable.
+    type: script
+- set_latitudes:
+    category:
+      geopoints: Sets the latitude column in the geopoints variable.
+    desc: Sets the latitude column in the geopoints variable.
+    type: script
+- set_levels:
+    category:
+      geopoints: Sets the level column in the geopoints variable.
+    desc: Sets the level column in the geopoints variable.
+    type: script
+- set_longitudes:
+    category:
+      geopoints: Sets the longitude column in the geopoints variable.
+    desc: Sets the longitude column in the geopoints variable.
+    type: script
+- set_metadata:
+    category:
+      geopoints: Sets a geopoints metadata from a definition
+    desc: Sets a geopoints metadata from a definition
+    type: script
+- set_stnids:
+    category:
+      geopoints: Sets the stnid column in the geopoints variable.
+    desc: Sets the stnid column in the geopoints variable.
+    type: script
+- set_times:
+    category:
+      geopoints: Sets the time column in the geopoints variable.
+    desc: Sets the time column in the geopoints variable.
+    type: script
+- set_value2s:
+    category:
+      geopoints: Sets the value2 column in the geopoints variable.
+    desc: Sets the value2 column in the geopoints variable.
+    type: script
+- set_values:
+    category:
+      fieldset: Sets the grid point values from a vector (or list of vectors).
+      geopoints: Sets the value column in the geopoints variable.
+    desc: Sets the value column in the geopoints variable.
+    type: script
+- setcurrent:
+    category:
+      netcdf: Sets the variable number on which netcdf functions will operate.
+    desc: Sets the variable number on which netcdf functions will operate.
+    type: script
+- sgn:
+    category:
+      fieldset: Signum
+    desc: Signum
+    type: script
+    group:
+      - maths
+- shell:
+    category:
+      unix: Execute a shell command
+    desc: Execute a shell command
+    type: script
+- sin:
+    category:
+      fieldset: Sine
+    desc: Sine
+    type: script
+    group:
+      - maths
+- sinlat:
+    category:
+      fieldset: Generates a field with the sine of the gridpoint latitudes
+    desc: Generates a field with the sine of the gridpoint latitudes
+    type: script
+    group:
+      - geo
+- sleep:
+    category:
+      unix: Sleep (number of seconds)
+    desc: Sleep (number of seconds)
+    type: script
+- slider:
+    category: {}
+    desc: ''
+    type: icon
+- sort:
+    category:
+      fieldset: Sorts a fieldset
+      list: Sorts a list or indices (sort/sort_indices/sort_and_indices)
+      vector: Sorts a vector according to an operator '<' (default) or '>'
+    desc: Sorts a vector according to an operator '<' (default) or '>'
+    type: script
+- sort_and_indices:
+    category:
+      list: Sorts a list or indices (sort/sort_indices/sort_and_indices)
+    desc: Sorts a list or indices (sort/sort_indices/sort_and_indices)
+    type: script
+- sort_indices:
+    category:
+      list: Sorts a list or indices (sort/sort_indices/sort_and_indices)
+      vector: Sorts a vector according to an operator '<' (default) or '>'
+    desc: Sorts a vector according to an operator '<' (default) or '>'
+    type: script
+- spec_contour:
+    category: {}
+    desc: ''
+    type: icon
+- spec_graph:
+    category: {}
+    desc: ''
+    type: icon
+- sqrt:
+    category:
+      fieldset: Square root
+    desc: Square root
+    type: script
+    group:
+      - maths
+- stations:
+    category: {}
+    desc: ''
+    type: icon
+- stdev:
+    category:
+      fieldset: Returns the standard deviation of all the fields of a variable
+    desc: Returns the standard deviation of all the fields of a variable
+    type: script
+    group:
+      - stats
+- stdev_a:
+    category:
+      fieldset: Computes the area-weighted standard deviation for each field in a
+        fieldset
+    desc: Computes the area-weighted standard deviation for each field in a fieldset
+    type: script
+    group:
+      - stats
+- stnids:
+    category:
+      geopoints: Returns a list/vector of station ids from the given geopoints.
+    desc: Returns a list/vector of station ids from the given geopoints.
+    type: script
+- stop:
+    category:
+      system: Prints all its arguments and stop the macro
+    desc: Prints all its arguments and stop the macro
+    type: script
+- stopwatch_laptime:
+    category:
+      timing: Provides stopwatch timings
+    desc: Provides stopwatch timings
+    type: script
+- stopwatch_reset:
+    category:
+      timing: Provides stopwatch timings
+    desc: Provides stopwatch timings
+    type: script
+- stopwatch_start:
+    category:
+      timing: Provides stopwatch timings
+    desc: Provides stopwatch timings
+    type: script
+- stopwatch_stop:
+    category:
+      timing: Provides stopwatch timings
+    desc: Provides stopwatch timings
+    type: script
+- store:
+    category:
+      system: 'Saves the data in a cache under the given name. args: (string, any)'
+    desc: 'Saves the data in a cache under the given name. args: (string, any)'
+    type: script
+- streamfn:
+    category: {}
+    desc: ''
+    type: icon
+- subsample:
+    category:
+      geopoints: Filters from the first geopoints variable points that exist in the
+        second
+    desc: Filters from the first geopoints variable points that exist in the second
+    type: script
+- substring:
+    category:
+      string: Returns a substring.
+    desc: Returns a substring.
+    type: script
+- sum:
+    category:
+      fieldset: Returns a field sum of all the fields of a variable
+      geopoints: Returns the sum or mean of the values in a geopoints variable
+      vector: Returns the sum or mean of the values in a vector variable
+    desc: Returns the sum or mean of the values in a geopoints variable
+    type: script
+    group:
+      - stats
+- surrounding_points_indexes:
+    category:
+      fieldset: Returns the indexes of the four surrounding grid points
+    desc: Returns the indexes of the four surrounding grid points
+    type: script
+    group:
+      - grid
+- svg_output:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - output
+- table:
+    category: {}
+    desc: ''
+    type: icon
+- table_visualiser:
+    category: {}
+    desc: ''
+    type: icon
+- tan:
+    category:
+      fieldset: Tangent
+    desc: Tangent
+    type: script
+    group:
+      - maths
+- tanlat:
+    category:
+      fieldset: Generates a field with the tangent of the gridpoint latitudes
+    desc: Generates a field with the tangent of the gridpoint latitudes
+    type: script
+    group:
+      - geo
+- thermo_bufr:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - thermo
+- thermo_grib:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - thermo
+- thermo_odb:
+    category: {}
+    desc: ''
+    type: icon
+- thermoview:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - view
+- thickness:
+    category:
+      fieldset: Creates fields of pressure or thickness (input in lat/lon only).
+    desc: Creates fields of pressure or thickness (input in lat/lon only).
+    type: script
+    group:
+      - vertical
+- times:
+    category:
+      geopoints: Returns a list/vector of times from the given geopoints.
+    desc: Returns a list/vector of times from the given geopoints.
+    type: script
+- tmpfile:
+    category:
+      io: Return a unique filename for a temporary file.
+    desc: Return a unique filename for a temporary file.
+    type: script
+- toggle:
+    category: {}
+    desc: ''
+    type: icon
+- togrib:
+    category: {}
+    desc: ''
+    type: icon
+- tolist:
+    category:
+      vector: Converts a vector into a list of numbers
+    desc: Converts a vector into a list of numbers
+    type: script
+- type:
+    category:
+      info: Returns the type of an expression
+    desc: Returns the type of an expression
+    type: script
+- ui_float:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - widget
+- ui_integer:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - widget
+- unipressure:
+    category:
+      fieldset: Creates fields of pressure or thickness (accepts several grid types)
+    desc: Creates fields of pressure or thickness (accepts several grid types)
+    type: script
+    group:
+      - vertical
+- unique:
+    category:
+      list: Returns a list with all the unique items in the input list
+      vector: Returns a vector with all the unique items in the input vector
+    desc: Returns a vector with all the unique items in the input vector
+    type: script
+- unithickness:
+    category:
+      fieldset: Creates fields of pressure or thickness (accepts several grid types)
+    desc: Creates fields of pressure or thickness (accepts several grid types)
+    type: script
+    group:
+      - vertical
+- univertint:
+    category:
+      fieldset: Universal vertical integration, also for sparse vertical data
+    desc: Universal vertical integration, also for sparse vertical data
+    type: script
+    group:
+      - vertical
+- uppercase:
+    category:
+      string: Sets to unique case of letters
+    desc: Sets to unique case of letters
+    type: script
+- uvwind:
+    category: {}
+    desc: ''
+    type: icon
+- uvwind_mir:
+    category: {}
+    desc: ''
+    type: icon
+- valid_date:
+    category:
+      fieldset: Returns the valid date(s) of a given fieldset
+    desc: Returns the valid date(s) of a given fieldset
+    type: script
+- value:
+    category:
+      netcdf: Returns the n:th value from the current netcdf variable.
+    desc: Returns the n:th value from the current netcdf variable.
+    type: script
+- value2s:
+    category:
+      geopoints: Returns a list/vector of 2nd values from the given geopoints.
+    desc: Returns a list/vector of 2nd values from the given geopoints.
+    type: script
+- value_columns:
+    category:
+      geopoints: Returns a list of column names for a geopoints variable
+    desc: Returns a list of column names for a geopoints variable
+    type: script
+- values:
+    category:
+      fieldset: Returns the grid point values as a vector (or list of vectors).
+      geopoints: Returns a list/vector of values from the given geopoints.
+      netcdf: Returns a list containing all the values for the current netcdf variable.
+      odb: Returns a list of values from the given ODB column.
+      table: Returns a list of values from the given table column.
+    desc: Returns a list of values from the given ODB column.
+    type: script
+- vapor_prepare:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - retrieve
+- var:
+    category:
+      fieldset: Returns the variance of all the fields of a variable
+    desc: Returns the variance of all the fields of a variable
+    type: script
+    group:
+      - stats
+- var_a:
+    category:
+      fieldset: Computes the area-weighted variance for each field in a fieldset
+    desc: Computes the area-weighted variance for each field in a fieldset
+    type: script
+    group:
+      - stats
+- variables:
+    category:
+      netcdf: Returns a list of the names of the given netcdf file's variables.
+    desc: Returns a list of the names of the given netcdf file's variables.
+    type: script
+- vector:
+    category:
+      list: Builds a new vector either with 'n' zero elements or populated from a
+        list
+    desc: Builds a new vector either with 'n' zero elements or populated from a list
+    type: script
+- vector_set_default_type:
+    category:
+      vector: Sets the default internal storage type for all subsequent vectors
+    desc: Sets the default internal storage type for all subsequent vectors
+    type: script
+- velpot:
+    category: {}
+    desc: ''
+    type: icon
+- version_info:
+    category:
+      info: Returns version information about Metview
+    desc: Returns version information about Metview
+    type: script
+- vert_prof:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - vertical
+- vertint: 
+    category:
+      fieldset: Performs vertical integration
+    desc: Performs vertical integration
+    type: script
+    group:
+      - vertical
+- vertprofview:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - view
+- waitmode:
+    category:
+      system: Causes Macro to always wait(1)/not wait(0) for functions to complete
+        before continuing.
+    desc: Causes Macro to always wait(1)/not wait(0) for functions to complete before
+      continuing.
+    type: script
+- wmsclient:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - retrieve
+- write:
+    category:
+      io: 'Writes/appends the given data to file. args: (filehandler, any)'
+    desc: 'Writes/appends the given data to file. args: (filehandler, any)'
+    type: script
+- xs_average:
+    category: {}
+    desc: ''
+    type: icon
+- xsectview:
+    category: {}
+    desc: ''
+    type: icon
+    group:
+      - view
+- xy_vector:
+    category:
+      geopoints: Combines two 1-parameter geopoints variables into u/v vector style
+    desc: Combines two 1-parameter geopoints variables into u/v vector style
+    type: script
+- year:
+    category:
+      date: Extract a date component
+    desc: Extract a date component
+    type: script
+- yymmdd:
+    category:
+      date: Extract a date component
+    desc: Extract a date component
+    type: script
+- yyyymmdd:
+    category:
+      date: Extract a date component
+    desc: Extract a date component
+    type: script
+- '# MVL functions':
+    category: {}
+    desc: ''
+    type: null
+- dewpoint_from_relative_humidity:
+    category:
+      fieldset: Computes the dewpoint for a given temperature and relative humidity
+    desc: Computes the dewpoint for a given temperature and relative humidity
+    type: script
+    group:
+      - thermo
+- dewpoint_from_specific_humidity:
+    category:
+      fieldset: Computes the dewpoint for a given specific humidity and pressure
+    desc: Computes the dewpoint for a given specific humidity and pressure
+    type: script
+    group:
+      - thermo
+- divergence:
+    category:
+      fieldset: Compute horizontal divergence of vector fields
+    desc: Compute horizontal divergence of vector fields
+    type: script
+    group:
+      - calculus
+- flexpart_build_title:
+    category:
+      plot: Generates title for plotting FLEXPART gridded output fields
+    desc: Generates title for plotting FLEXPART gridded output fields
+    type: script
+- flexpart_filter:
+    category:
+      flexpart: Extract fields from FLEXPART output GRIB files
+    desc: Extract fields from FLEXPART output GRIB files
+    type: script
+- flexpart_total_column:
+    category:
+      flexpart: Computes the sum/vertical integral of fields in a FLEXPART output
+        GRIB file.
+    desc: Computes the sum/vertical integral of fields in a FLEXPART output GRIB file.
+    type: script
+- geostrophic_wind:
+    category:
+      fieldset: Computes geostrophic wind on pressure levels
+    desc: Computes geostrophic wind on pressure levels
+    type: script
+    group:
+      - vertical
+- integral:
+    category:
+      fieldset: Computes surface integral for fields
+    desc: Computes surface integral for fields
+    type: script
+    group:
+      - calculus
+- laplacian:
+    category:
+      fieldset: Computes horizontal Laplacian of fields
+    desc: Computes horizontal Laplacian of fields
+    type: script
+    group:
+      - calculus
+- lifted_condensation_level:
+    category:
+      thermo: Computes the Lifted Condensation Level (LCL) using the parcel method
+    desc: Computes the Lifted Condensation Level (LCL) using the parcel method
+    type: script
+    group:
+      - thermo
+- mixing_ratio:
+    category:
+      thermo: Computes the mixing ratio from specific humidity
+    desc: Computes the mixing ratio from specific humidity
+    type: script
+    group:
+      - thermo
+- ml_to_hl:
+    category:
+      fieldset: Interpolates model level fields to height levels
+    desc: Interpolates model level fields to height levels
+    type: script
+    group:
+      - vertical
+- mvl_geocircle:
+    category:
+      plot: Returns a curve marking the circle with the given radius around the given
+        centre
+    desc: Returns a curve marking the circle with the given radius around the given
+      centre
+    type: script
+    group:
+      - plot
+- mvl_geoline:
+    category:
+      plot: Returns a line marking a line of interest
+    desc: Returns a line marking a line of interest
+    type: script
+    group:
+      - plot
+- mvl_geopolyline:
+    category:
+      fieldset: Returns a plot object for a polyline sampled in lat-lon coordinates
+    desc: Returns a plot object for a polyline sampled in lat-lon coordinates
+    type: script
+    group:
+      - plot
+- mvl_geopotential_on_ml:
+    category:
+      fieldset: Computes geopotential on model levels
+    desc: Computes geopotential on model levels
+    type: script
+    group:
+      - vertical
+- mvl_ml2hPa:
+    category:
+      fieldset: Interpolates a fieldset on model levels to pressure levels (in hPa)
+    desc: Interpolates a fieldset on model levels to pressure levels (in hPa)
+    type: script
+    group:
+      - vertical
+- mvl_regular_layout:
+    category:
+      plot: Generates a regular grid of frames/subframes
+    desc: Generates a regular grid of frames/subframes
+    type: script
+    group:
+      - layout
+- mxn_layout:
+    category:
+      plot: Generates a regular grid of plot pages
+    desc: Generates a regular grid of plot pages
+    type: script
+    group:
+      - layout
+- potential_temperature:
+    category:
+      thermo: computes the potential temperature for a given temperature and pressure
+    desc: computes the potential temperature for a given temperature and pressure
+    type: script
+    group:
+      - thermo
+- relative_humidity_from_dewpoint:
+    category:
+      thermo: Computes the relative humidity for a given temperature and dewpoint
+    desc: Computes the relative humidity for a given temperature and dewpoint
+    type: script
+    group:
+      - thermo
+- saturation_mixing_ratio:
+    category:
+      thermo: Computes the saturation mixing ratio for a given temperature and pressure
+    desc: Computes the saturation mixing ratio for a given temperature and pressure
+    type: script
+    group:
+      - thermo
+- saturation_vapour_pressure:
+    category:
+      thermo: Computes the saturation vapour pressure for a given temperature
+    desc: Computes the saturation vapour pressure for a given temperature
+    type: script
+    group:
+      - thermo
+- temperature_from_potential_temperature:
+    category:
+      thermo: Computes the temperature from potential tempearture and pressure
+    desc: Computes the temperature from potential tempearture and pressure
+    type: script
+    group:
+      - thermo
+- thermo_data_info:
+    category:
+      thermo: extracts information from a thermo data object
+    desc: extracts information from a thermo data object
+    type: script
+- thermo_data_values:
+    category:
+      fieldset: extracts data and metadata from a thermo data object
+    desc: extracts data and metadata from a thermo data object
+    type: script
+    group:
+      - thermo
+- thermo_parcel_area:
+    category:
+      plot: returns a set of coloured areas from a thermo parcel path
+    desc: returns a set of coloured areas from a thermo parcel path
+    type: script
+    group:
+      - thermo
+      - plot
+- thermo_parcel_path:
+    category:
+      thermo: computes the path of an ascending thermodynamic parcel
+    desc: computes the path of an ascending thermodynamic parcel
+    type: script
+    group:
+      - thermo
+- vapour_pressure:
+    category:
+      thermo: Computes the vapour pressure for a given specific humidity and pressure
+    desc: Computes the vapour pressure for a given specific humidity and pressure
+    type: script
+    group:
+      - thermo
+- vorticity:
+    category:
+      fieldset: Compute relative vorticity of vector fields
+    desc: Compute relative vorticity of vector fields
+    type: script
+    group:
+      - calculus
+- w_from_omega:
+    category:
+      fieldset: Computes the vertical velocity in m/s from pressure velocity
+    desc: Computes the vertical velocity in m/s from pressure velocity
+    type: script
+    group:
+      - vertical
+- xs_build_curve:
+    category:
+      plot: returns a curve for the given cross section data
+    desc: returns a curve for the given cross section data
+    type: script
+- xs_build_orog:
+    category:
+      plot: returns an orography area curve for the given cross section data
+    desc: returns an orography area curve for the given cross section data
+    type: script
+- xy_area:
+    category:
+      plot: returns an xy area plot object with a given colour
+    desc: returns an xy area plot object with a given colour
+    type: script
+- xy_curve:
+    category:
+      plot: returns a curve with a given colour, style and thickness
+    desc: returns a curve with a given colour, style and thickness
+    type: script
