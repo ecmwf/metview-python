@@ -1,5 +1,5 @@
 gradient
-******************
+===========
 
 .. py:function:: gradient(fs)
 

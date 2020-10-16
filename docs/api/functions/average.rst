@@ -1,6 +1,5 @@
 average
-===================
-
+================
 
 .. py:function:: average(fs)
 
