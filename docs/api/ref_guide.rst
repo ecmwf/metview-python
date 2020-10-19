@@ -11,9 +11,18 @@ Reference Guide
    plot_toc
    ui_toc
 
+
 .. toctree::
    :maxdepth: 1
    :caption: All functions
    :titlesonly:
    
    functions/index
+
+.. toctree::
+   :maxdepth: 0
+   :caption: Documentation
+   :titlesonly:
+   :glob:
+
+   icon/*

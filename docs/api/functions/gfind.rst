@@ -1,0 +1,14 @@
+gfind
+=========
+
+.. py:function:: gfind(fs, value, [eps])
+
+   Returns a :class:`Geopoints` holding the grid points whose value is equal to ``value`` int the first field of ``fs``. 
+   
+   :param fs: input fieldset
+   :type fs: :class:`Fieldset`
+   :param float value: the value to match
+   :param float eps: when specified data values are selected when :math:`abs(data - value) < eps`
+   :rtype: :class:`Geopoints`  
+  
+   Missing values in ``fs`` are not returned.

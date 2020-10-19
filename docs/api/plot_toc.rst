@@ -21,6 +21,12 @@ Plotting
     * - :func:`grib_vectors`
       - 
 
+    * - :func:`input_visualiser`
+      - 
+
+    * - :func:`met3d`
+      - 
+
     * - :func:`mvl_geocircle`
       - Returns a curve marking the circle with the given radius around the given centre
 
@@ -42,8 +48,26 @@ Plotting
     * - :func:`rttov_visualiser`
       - 
 
+    * - :func:`scm_visualiser`
+      - 
+
+    * - :func:`table_visualiser`
+      - 
+
     * - :func:`thermo_parcel_area`
       - returns a set of coloured areas from a thermo parcel path
+
+    * - :func:`xs_build_curve`
+      - returns a curve for the given cross section data
+
+    * - :func:`xs_build_orog`
+      - returns an orography area curve for the given cross section data
+
+    * - :func:`xy_area`
+      - returns an xy area plot object with a given colour
+
+    * - :func:`xy_curve`
+      - returns a curve with a given colour, style and thickness
 
 
 Layout
@@ -81,16 +105,10 @@ Views
     * - :func:`annotationview`
       - 
 
-    * - :func:`averageview`
-      - 
-
     * - :func:`cartesianview`
       - 
 
     * - :func:`geoview`
-      - 
-
-    * - :func:`hovmoellerview`
       - 
 
     * - :func:`maverageview`
@@ -108,12 +126,6 @@ Views
     * - :func:`thermoview`
       - 
 
-    * - :func:`vertprofview`
-      - 
-
-    * - :func:`xsectview`
-      - 
-
 
 Visual definitions
 -------------------------------
@@ -124,9 +136,6 @@ Visual definitions
 
 
     * - :func:`maxis`
-      - 
-
-    * - :func:`mboxplot`
       - 
 
     * - :func:`mcoast`
@@ -180,13 +189,13 @@ Graphical output
     * - :func:`epscairo_output`
       - 
 
-    * - :func:`globe_output`
-      - 
-
     * - :func:`kml_output`
       - 
 
     * - :func:`pdf_output`
+      - 
+
+    * - :func:`png_output`
       - 
 
     * - :func:`ps_output`

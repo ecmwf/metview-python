@@ -26,6 +26,11 @@ groups_def = {
     "netcdf": "NetCDF data",
     "visdef": "Visual definitions",
     "retrieve": "Data retrieval",
+    "mask": "Masking",
+    "flex": "Flextra and Flexpart",
+    "table": "Table data",
+    "scm" : "Single Column Model",
+    "rttov": "RTTOV"
 }
 
 toc_def = {
@@ -38,7 +43,7 @@ toc_def = {
             "thermo",
             "geo",
             "filter",
-            "grid",
+            "mask" "grid",
             "vertical",
         ],
     },
@@ -49,7 +54,7 @@ toc_def = {
     "ui": {"title": "User interface", "gr": ["widget", "ui"]},
     "data": {
         "title": "Data access",
-        "gr": ["retrieve", "conversion", "grib", "geopoints", "netcdf"],
+        "gr": ["retrieve", "conversion", "grib", "geopoints", "netcdf", "flex", "table", "scm", "rttov"],
     },
 }
 
@@ -57,6 +62,7 @@ groups = {}
 toc = {}
 
 dtypes = {
+    "fieldsets": ":class:`Fieldset`",
     "fieldset": ":class:`Fieldset`",
     "geopoints": ":class:`Geopoints`",
     "array": "ndarray",
@@ -94,37 +100,64 @@ for k, v in toc_def.items():
     toc[k] = TocGroup(k, v)
 
 fn_list = []
+fn_orphan = []
 
 
 class DocFunction:
-    def __init__(self, name, dtype, desc):
+    def __init__(self, name, dtype, desc, pix):
         self.name = name
         self.dtype = dtype
+        self.category = {}
         self.desc = desc
-        self.dtype = {}
 
-    def type_str(self):
-        t = []
-        for k, v in self.dtype.items():
-            dt = dtypes.get(k, "")
-            if dt:
-                t.append(dt)
-        return ", ".join(t)
+        for k, v in dtypes.items():
+            if k in self.desc:
+                self.desc = self.desc.replace(k, v)
+
+        self.groups = []
+        self.pix = pix
+        if self.dtype == "icon":
+            if self.pix == "":
+                self.pix = self.name.upper() + ".png"
+            else:
+                self.pix += ".png"
+
+    def orphan(self):
+        return len(self.groups) == 0
+
+    def add_to_group(self, gr):
+        gr.fn.append(self)
+        self.groups.append(gr)
+     
+    # def type_str(self):
+    #     t = []
+    #     for k, v in self.dtype.items():
+    #         dt typeses.get(k, "")
+    #         if dt:
+    #             t.append(dt)
+    #     return ", ".join(t)
 
 
 with open("functions.yaml", "r") as f:
     for v in yaml.safe_load(f):
         name = list(v.keys())[0]
         item = v[name]
-        fn = DocFunction(name, item.get("type", ""), item.get("desc", "???"))
+        if item.get("exclude", False):
+            continue
+
+        fn = DocFunction(
+            name, item.get("type", ""), item.get("desc", "???"), item.get("pix", "")
+        )
         fn_list.append(fn)
+
         for gr in item.get("group", []):
             if gr in groups:
                 # raise Exception("Unknown group: {}".format(gr))
                 # groups[gr] = []
-                groups[gr].fn.append(fn)
+                # groups[gr].fn.append(fn)
+                fn.add_to_group(groups[gr])
 
-        fn.dtype = item.get("category", {})
+        fn.category = item.get("category", {})
 
     for _, gr in groups.items():
         gr.sort()
@@ -165,13 +198,31 @@ for _, t in toc.items():
             )
 
             for fn in gr.fn:
-#                 f.write("""
-#     * - :func:`{}`
-#       - .. image:: {} 
-#            :width: 16px
-#       - {}
-# """.format(fn.name, "_static/MCONT.png", fn.desc))
-                f.write("""
+                #                 f.write("""
+                #     * - :func:`{}`
+                #       - .. image:: {}
+                #            :width: 16px
+                #       - {}
+                # """.format(fn.name, "_static/MCONT.png", fn.desc))
+                f.write(
+                    """
     * - :func:`{}`
       - {}
-""".format(fn.name, fn.desc))
+""".format(
+                        fn.name, fn.desc
+                    )
+                )
+
+print("SCRIPT functions without group")
+cnt = 0
+for f in fn_list:
+    if f.orphan() and f.dtype != "icon":
+        print("[{}] {}".format(cnt, f.name))
+        cnt +=1
+
+print("\nICON functions without group")
+cnt = 0
+for f in fn_list:
+    if f.orphan() and f.dtype == "icon":
+        print("[{}] {}".format(cnt, f.name))
+        cnt +=1

@@ -13,46 +13,52 @@ Basic mathematics
 
 
     * - :func:`abs`
-      - Compute the absolute value
+      - Computes the absolute value
 
     * - :func:`acos`
-      - Arc cosine
+      - Computes the arc cosine
 
     * - :func:`asin`
-      - Arc sine
+      - Computes the arc sine
 
     * - :func:`atan`
-      - Arc tangent
+      - Computes the arc tangent
 
     * - :func:`atan2`
-      - Arc tangent of 2 variables
+      - Computes the arc tangent of 2 variables
 
     * - :func:`cos`
-      - Cosine
+      - Computes the cosine
+
+    * - :func:`div`
+      - Computes the integer part of a divison
 
     * - :func:`exp`
-      - Exponential
+      - Computes the exponential
 
     * - :func:`intbits`
-      - Returns ranges of bits in a geopoints variable
+      - Returns ranges of bits
 
     * - :func:`log`
-      - Natural logarithm
+      - Computes the natural logarithm
 
     * - :func:`log10`
-      - Base 10 logarithm
+      - Computes the base 10 logarithm
+
+    * - :func:`mod`
+      - Computes the integer remainder of a divison
 
     * - :func:`sgn`
-      - Signum
+      - Computes the sign
 
     * - :func:`sin`
-      - Sine
+      - Computes the sine
 
     * - :func:`sqrt`
-      - Square root
+      - Computes the square root
 
     * - :func:`tan`
-      - Tangent
+      - Computes the tangent
 
 
 Calculus
@@ -64,37 +70,46 @@ Calculus
 
 
     * - :func:`divergence`
-      - Compute horizontal divergence of vector fields
+      - Computes the horizontal divergence of a vector :class:`Fieldset`
 
     * - :func:`divrot`
-      - 
+      - Computes the rotational wind from a vorticity :class:`Fieldset`
 
     * - :func:`divwind`
-      - 
+      - Computes the divergent wind from a divergence :class:`Fieldset`
 
     * - :func:`first_derivative_x`
-      - Computes first West-East derivative of fields
+      - Computes first West-East derivative of a :class:`Fieldset`
 
     * - :func:`first_derivative_y`
-      - Computes first South-North derivative of fields
+      - Computes first South-North derivative of a :class:`Fieldset`
 
     * - :func:`gradient`
-      - Computes horizontal gradient of fields
+      - Computes horizontal gradient of a :class:`Fieldset`
 
     * - :func:`integral`
-      - Computes surface integral for fields
+      - Computes the surface integral of a :class:`Fieldset`
 
     * - :func:`laplacian`
-      - Computes horizontal Laplacian of fields
+      - Computes the horizontal Laplacian of :class:`Fieldset`
 
     * - :func:`second_derivative_x`
-      - Computes second West-East derivative of fields
+      - Computes the second West-East derivative of a :class:`Fieldset`
 
     * - :func:`second_derivative_y`
-      - Computes second South-North derivative of fields
+      - Computes the econd South-North derivative of a :class:`Fieldset`
+
+    * - :func:`streamfn`
+      - Computes the stream function from a vorticity :class:`Fieldset`
+
+    * - :func:`uvwind`
+      - Computes u/v from a vorticty and divegence :class:`Fieldset`
+
+    * - :func:`velpot`
+      - Computes the velocity potential from a divergence :class:`Fieldset`
 
     * - :func:`vorticity`
-      - Compute relative vorticity of vector fields
+      - Computes the relative vorticity of a vector :class:`Fieldset`
 
 
 Statistics
@@ -106,10 +121,10 @@ Statistics
 
 
     * - :func:`accumulate`
-      - Adds up the values in a given field
+      - Adds up the values per field in a :class:`Fieldset`
 
     * - :func:`average`
-      - Averages the values in a given field
+      - Computes the average per field in a :class:`Fieldset`
 
     * - :func:`average_ew`
       - Returns the zonal averages as a list (or list of lists) of numbers.
@@ -118,28 +133,40 @@ Statistics
       - Returns the meridional averages as a list (or list of lists) of numbers.
 
     * - :func:`corr_a`
-      - Computes the area-weighted correlation for each field in a fieldset
+      - Computes the area-weighted correlation for each field in a :class:`Fieldset`
 
     * - :func:`covar`
-      - Returns the covariance of all two fieldsets
+      - Returns the covariance of all two :class:`Fieldset`
 
     * - :func:`covar_a`
-      - Computes the area-weighted covariance for each field in a fieldset
+      - Computes the area-weighted covariance for each field in a :class:`Fieldset`
 
     * - :func:`frequencies`
       - Computes frequencies of a field
 
     * - :func:`integrate`
-      - Computes the average weighted by the gridcell area for each field in fieldset
+      - Computes the average weighted by the gridcell area for each field in :class:`Fieldset`
+
+    * - :func:`max`
+      - Maximum
+
+    * - :func:`maxvalue`
+      - Computes the maximum of all the values in a :class:`Fieldset`
 
     * - :func:`mean`
-      - Returns the sum or mean of the values in a geopoints variable
+      - Returns the sum or mean of the values in a :class:`Geopoints` variable
 
     * - :func:`mean_ew`
-      - Generates a fieldset out of East-West means
+      - Generates a :class:`Fieldset` out of East-West means
+
+    * - :func:`min`
+      - Minimum
+
+    * - :func:`minvalue`
+      - Minimum value of a variable
 
     * - :func:`percentile`
-      - Returns a set of percentiles of a vector
+      - 
 
     * - :func:`rms`
       - Returns the root mean square of all the fields of a variable
@@ -148,16 +175,16 @@ Statistics
       - Returns the standard deviation of all the fields of a variable
 
     * - :func:`stdev_a`
-      - Computes the area-weighted standard deviation for each field in a fieldset
+      - Computes the area-weighted standard deviation for each field in a :class:`Fieldset`
 
     * - :func:`sum`
-      - Returns the sum or mean of the values in a geopoints variable
+      - Returns the sum or mean of the values in a :class:`Geopoints` variable
 
     * - :func:`var`
       - Returns the variance of all the fields of a variable
 
     * - :func:`var_a`
-      - Computes the area-weighted variance for each field in a fieldset
+      - Computes the area-weighted variance for each field in a :class:`Fieldset`
 
 
 Thermodynamics
@@ -198,6 +225,9 @@ Thermodynamics
     * - :func:`relative_humidity_from_dewpoint`
       - Computes the relative humidity for a given temperature and dewpoint
 
+    * - :func:`relhum`
+      - 
+
     * - :func:`saturation_mixing_ratio`
       - Computes the saturation mixing ratio for a given temperature and pressure
 
@@ -215,6 +245,9 @@ Thermodynamics
 
     * - :func:`thermo_bufr`
       - 
+
+    * - :func:`thermo_data_info`
+      - extracts information from a thermo data object
 
     * - :func:`thermo_data_values`
       - extracts data and metadata from a thermo data object
@@ -253,16 +286,16 @@ Geographic
       - Computes the distances of all the gridpoints from a point
 
     * - :func:`geosort`
-      - Sorts the geopoints North to South and West to East
+      - Sorts the :class:`Geopoints` North to South and West to East
 
     * - :func:`grid_cell_area`
       - Computes grid cell area for each gridpoints in a field
 
     * - :func:`latitudes`
-      - Returns a list/vector of latitudes from the given geopoints.
+      - Returns a list/vector of latitudes from the given :class:`Geopoints`.
 
     * - :func:`longitudes`
-      - Returns a list/vector of longitudes from the given geopoints.
+      - Returns a list/vector of longitudes from the given :class:`Geopoints`.
 
     * - :func:`nearest_gridpoint`
       - Returns the nearest grid point value from a field
@@ -271,10 +304,16 @@ Geographic
       - Returns the nearest grid point value from a field
 
     * - :func:`offset`
-      - Offsets the locations of geopoints
+      - Offsets the locations of :class:`Geopoints`
+
+    * - :func:`reprojection`
+      - 
 
     * - :func:`sinlat`
       - Generates a field with the sine of the gridpoint latitudes
+
+    * - :func:`subsample`
+      - Filters from the first :class:`Geopoints` variable points that exist in the second
 
     * - :func:`tanlat`
       - Generates a field with the tangent of the gridpoint latitudes
@@ -288,9 +327,6 @@ Filtering
     :header-rows: 0
 
 
-    * - :func:`bitmap`
-      - Converts numbers to missing values in a vector
-
     * - :func:`bufr_picker`
       - 
 
@@ -299,9 +335,6 @@ Filtering
 
     * - :func:`filter`
       - Filters a vector according to the values of a second vector
-
-    * - :func:`nobitmap`
-      - Converts missing values to numbers in a vector
 
     * - :func:`obsfilter`
       - 
@@ -312,24 +345,6 @@ Filtering
     * - :func:`read`
       - 
 
-    * - :func:`rmask`
-      - Generates masks based on a radius around a point for fieldsets
-
-
-Grid
--------------------------------
-
-.. list-table::
-    :widths: 20 80
-    :header-rows: 0
-
-
-    * - :func:`interpolate`
-      - Interpolates field values to the specified location
-
-    * - :func:`surrounding_points_indexes`
-      - Returns the indexes of the four surrounding grid points
-
 
 Vertical
 -------------------------------
@@ -339,20 +354,38 @@ Vertical
     :header-rows: 0
 
 
-    * - :func:`cross_sect`
-      - 
-
     * - :func:`geostrophic_wind`
       - Computes geostrophic wind on pressure levels
 
+    * - :func:`mcross_sect`
+      - 
+
+    * - :func:`mhovmoeller_area`
+      - 
+
+    * - :func:`mhovmoeller_expand`
+      - 
+
+    * - :func:`mhovmoeller_line`
+      - 
+
+    * - :func:`mhovmoeller_vertical`
+      - 
+
     * - :func:`ml_to_hl`
       - Interpolates model level fields to height levels
+
+    * - :func:`mvert_prof`
+      - 
 
     * - :func:`mvl_geopotential_on_ml`
       - Computes geopotential on model levels
 
     * - :func:`mvl_ml2hPa`
-      - Interpolates a fieldset on model levels to pressure levels (in hPa)
+      - Interpolates a :class:`Fieldset` on model levels to pressure levels (in hPa)
+
+    * - :func:`mxs_average`
+      - 
 
     * - :func:`pressure`
       - Creates fields of pressure or thickness (input in lat/lon only).
@@ -368,9 +401,6 @@ Vertical
 
     * - :func:`univertint`
       - Universal vertical integration, also for sparse vertical data
-
-    * - :func:`vert_prof`
-      - 
 
     * - :func:`vertint`
       - Performs vertical integration

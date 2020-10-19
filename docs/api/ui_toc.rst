@@ -21,7 +21,22 @@ Widgets
     * - :func:`colour`
       - 
 
+    * - :func:`icon`
+      - 
+
+    * - :func:`menu`
+      - 
+
     * - :func:`option_menu`
+      - 
+
+    * - :func:`output`
+      - 
+
+    * - :func:`slider`
+      - 
+
+    * - :func:`toggle`
       - 
 
     * - :func:`ui_float`

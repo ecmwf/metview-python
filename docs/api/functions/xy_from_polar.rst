@@ -1,0 +1,25 @@
+xy_from_polar
+====================
+
+..  py:function:: xy_from_polar(magnitude: number,  dir: number)
+
+    Converts vector data from meteorological polar representation to xy representation.
+
+    :param magnitude: temperature (K)
+    :type magnitude: float, ndarray or :class:`Fieldset`
+    :param dir: relative humidity ([0-1])
+    :type dir: float, ndarray or :class:`Fieldset`
+    :rtype: same type as ``magnitude`` or None
+
+    In polar representation the data is specified by two components:
+
+    ``magnitude``: represents the speed/magnitude
+    ``dir``: represents the direction of the vector in degrees. Angles measured from South in clockwise direction.
+
+    In the target xy representation the x axis points East while the y axis points North.
+
+    The type of the result depends on the type of the input data
+
+    * if the input is number the result is a list of two numbers
+    * if the input is vector the result is a list of two vectors, the first vector contains the x components while the second vector the y components
+    * if the input is fieldset the result is a fieldset where an x component field is immediately followed by the corresponding y component field.

@@ -73,7 +73,10 @@ tests/*.idx
 
 # docs
 docs/api/build_functions.py
+docs/api/get_icon.py
 docs/api/functions_mv.yaml
+docs/api/depot
+docs/api/depot_2
 
 
 # gallery
