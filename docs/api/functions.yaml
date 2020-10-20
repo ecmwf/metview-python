@@ -28,7 +28,7 @@
       - date
 - annotationview:
     category: {}
-    desc: ''
+    desc: Creates an annotation view
     type: icon
     title: Annotation View
     group:
@@ -131,7 +131,7 @@
       - geo
 - binning:
     category: {}
-    desc: ''
+    desc: Defines 1D or 2D binning for scatterplots
     type: icon
     group:
       - plot
@@ -145,7 +145,7 @@
       - mask
 - bufr_picker:
     category: {}
-    desc: ''
+    desc: Filters BUFR data with complex structure
     type: icon
     pix: BUFRPICKER
     group:
@@ -153,7 +153,7 @@
       - filter
 - cartesianview:
     category: {}
-    desc: ''
+    desc: Creates a Cartesian view
     type: icon
     title: Cartesian View
     group:
@@ -166,7 +166,7 @@
       - widget
 - cleanfile:
     category: {}
-    desc: ''
+    desc: Removes unwanted header padding from GRIB and BUFR
     type: icon
     title: Clean File
     group:
@@ -318,7 +318,7 @@
     desc: Computes meteorological wind direction using U and V wind components
     type: script
     group:
-      - geo
+      - wind
 - distance:
     category:
       fieldset: Computes the distances of all the gridpoints from a point
@@ -338,7 +338,7 @@
     type: icon
     family: divrot
     group:
-      - calculus
+      - wind
 - divrot_mir:
     category: {}
     desc: ''
@@ -349,7 +349,7 @@
     desc: Computes the divergent wind from a divergence fieldset
     type: icon
     group:
-      - calculus
+      - wind
 - divwind_mir:
     category: {}
     desc: ''
@@ -363,7 +363,7 @@
     exclude: True
 - download:
     category: {}
-    desc: ''
+    desc: Downloads files from a given URL
     type: icon
     title: Download from URL
 - drawing_priority:
@@ -385,37 +385,39 @@
       - grib
 - eccharts:
     category: {}
-    desc: ''
+    desc: Retrieves and plots ecCharts layers
     type: icon
     group:
       - plot
 - ecfs:
     category: {}
-    desc: ''
+    desc: Retrieves data from ECFS
     type: icon
     group:
       - retrieve
 - eps_output:
     category: {}
-    desc: ''
+    desc: Defines the EPS (Encapsulated PostScript) output format
     type: icon
+    standard: False
     group:
       - output
 - epscairo_output:
     category: {}
-    desc: ''
+    desc: Defines the EPS output format using the Cairo driver
     type: icon
+    standard: False
     group:
       - output
 - eqpott_m:
     category: {}
-    desc: ''
+    desc: Computes the equivalent potential temperature on model levels
     type: icon
     group:
       - thermo
 - eqpott_p:
     category: {}
-    desc: ''
+    desc: Computes the equivalent potential temperature on pressure levels
     type: icon
     group:
       - thermo
@@ -508,52 +510,52 @@
       - flex
 - flexpart_prepare:
     category: {}
-    desc: ''
+    desc: Retrieves and prepares data for a FLEXPART simulation
     type: icon
     group:
       - retrieve
       - flex
 - flexpart_release:
     category: {}
-    desc: ''
+    desc: Defines a FLEXPART release
     type: icon
     group:
       - flex
 - flexpart_run:
     category: {}
-    desc: ''
+    desc: Performs a FLEXPART simulation
     type: icon
     group:
       - flex
 - flextra_group_get:
     category:
       flextra: Returns a list of available meta data keys for the given table
-    desc: Returns a list of available meta data keys for the given table
+    desc: Returns data for a FLEXTRA result group
     type: script
     group: 
       - flex
 - flextra_prepare:
     category: {}
-    desc: ''
+    desc: Retrieves and prepares data for a FLEXTRA simulation
     type: icon
     group:
       - retrieve
 - flextra_run:
     category: {}
-    desc: ''
+    desc: Performs a FLEXTRA simulation
     type: icon
     group:
       - flex
 - flextra_tr_get:
     category:
       flextra: Returns a list of available meta data keys for the given table
-    desc: Returns a list of available meta data keys for the given table
+    desc: Returns data for an individual FLEXTRA trajectory
     type: script
     group:
       - flex
 - flextra_visualiser:
     category: {}
-    desc: ''
+    desc: Defines visualisation for FLEXTRA results
     type: icon
     group:
       - flex
@@ -573,14 +575,14 @@
       - stats
 - geo_to_grib:
     category: {}
-    desc: ''
+    desc: Converts geopoints data to GRIB
     type: icon
     title: Geopoints To Grib
     group:
       - conversion
 - geo_to_kml:
     category: {}
-    desc: ''
+    desc: Converts geopoints data to KML
     type: icon
     title: Geopoints To KML
     pix: GEOTOKML
@@ -595,7 +597,7 @@
       - geo
 - geoview:
     category: {}
-    desc: ''
+    desc: Creates a map view
     type: icon
     title: Geographical View
     group:
@@ -713,7 +715,7 @@
       - conversion
 - grib_vectors:
     category: {}
-    desc: ''
+    desc: Combines GRIB scalar fields into vector data 
     type: icon
     pix: GRIBVECTORS
     group:
@@ -760,7 +762,7 @@
     exclude: True
 - hovmoellerview:
     category: {}
-    desc: ''
+    desc: Defines a Hovmoeller diagram view
     type: icon
     exclude: True
     group:
@@ -788,7 +790,7 @@
       - grib
 - input_visualiser:
     category: {}
-    desc: ''
+    desc: Defines visualisation for array data
     type: icon
     pix: INPUTVISUALISER
     group:
@@ -851,8 +853,10 @@
     exclude: True
 - kml_output:
     category: {}
-    desc: ''
+    desc: Defines the KML output format
     type: icon
+    standard: False
+    mag: True
     group:
       - output
 - latitudes:
@@ -939,7 +943,7 @@
       - mask
 - maverageview:
     category: {}
-    desc: ''
+    desc: Creates an average view
     type: icon
     title: Average View
     pix: MXAVERAGEVIEW
@@ -954,7 +958,7 @@
       - stats
 - maxis:
     category: {}
-    desc: ''
+    desc: Defines the axis plotting styles
     type: icon
     title: Axis Plotting
     mag: True
@@ -976,7 +980,7 @@
       - visdef
 - mcoast:
     category: {}
-    desc: ''
+    desc: Defines the map plotting style
     type: icon
     title: Coastlines
     mag: True
@@ -984,7 +988,7 @@
       - visdef
 - mcont:
     category: {}
-    desc: ''
+    desc: Defines the contouring style
     type: icon
     title: Contouring
     mag: True
@@ -992,7 +996,7 @@
       - visdef
 - mcross_sect:
     category: {}
-    desc: ''
+    desc: Generates input data for a cross section
     type: icon
     title: Cross Section Data
     pix: MXSECTION
@@ -1029,13 +1033,13 @@
     type: script
 - met3d:
     category: {}
-    desc: ''
+    desc: Visualises GRIB data in Met3D
     type: icon
     group:
       - plot
 - met3d_prepare:
     category: {}
-    desc: ''
+    desc: Retrieves and prepare GRIB data for Met3D
     type: icon
     group:
       - retrieve
@@ -1062,11 +1066,14 @@
       - table
 - meteogram:
     category: {}
-    desc: ''
+    desc: Generates a meteogram
     type: icon
+    pix: METPLUS
+    group:
+      - plot
 - mgraph:
     category: {}
-    desc: ''
+    desc: Defines the graph plotting style
     type: icon
     title: Graph Plotting
     mag: True
@@ -1074,45 +1081,45 @@
       - visdef
 - mhovmoeller_area:
     category: {}
-    desc: ''
+    desc: Generates data for the Hovmoeller area mode
     type: icon
     family: hovm_data
     group:
       - vertical
 - mhovmoeller_expand:
     category: {}
-    desc: ''
+    desc: Generates data for the Hovmoeller expand mode
     type: icon
     family: hovm_data
     group:
       - vertical
 - mhovmoeller_line:
     category: {}
-    desc: ''
+    desc: Generates data for the Hovmoeller line mode
     type: icon
     family: hovm_data
     group:
       - vertical
 - mhovmoeller_vertical:
     category: {}
-    desc: ''
+    desc: Generates data for the Hovmoeller vertical mode
     type: icon
     family: hovm_data
     group:
       - vertical
 - mhovmoellerview:
     category: {}
-    desc: ''
+    desc: Creates a Hovmoeller diagram view
     type: icon
     pix: MHOVMOELLERVIEW
     group:
       - view
 - mimport:
     category: {}
-    desc: ''
+    desc: Plots an image at the spcified position in a view 
     type: icon
     group:
-      - visdef
+      - plot
 - min:
     category:
       fieldset: Minimum
@@ -1135,7 +1142,7 @@
       - stats
 - mlegend:
     category: {}
-    desc: ''
+    desc: Defines the legend plotting style
     type: icon
     title: Legend
     mag: True
@@ -1143,7 +1150,7 @@
       - visdef
 - mobs:
     category: {}
-    desc: ''
+    desc: Defines the BUFR observation plotting style
     type: icon
     title: Observation Plotting
     mag: True
@@ -1163,7 +1170,7 @@
     exclude: True
 - msymb:
     category: {}
-    desc: ''
+    desc: Defines the symbol plotting style
     type: icon
     title: Symbol Plotting
     mag: True
@@ -1171,7 +1178,7 @@
       - visdef
 - mtaylor:
     category: {}
-    desc: ''
+    desc: Defines the Taylor diagram style
     type: icon
     title: Taylor Grid
     mag: True
@@ -1179,7 +1186,7 @@
       - visdef
 - mtext:
     category: {}
-    desc: ''
+    desc: Defines the title plotting style
     type: icon
     title: Text Plotting
     mag: True
@@ -1187,14 +1194,14 @@
       - visdef
 - mthermo:
     category: {}
-    desc: ''
+    desc: Defines the thermodynamical data plotting style
     type: icon
     title: Thermo Plotting
     group:
       - visdef
 - mthermogrid:
     category: {}
-    desc: ''
+    desc: Defines the thermodynamical diagram style
     type: icon
     title: Thermo Grid
     mag: True
@@ -1202,7 +1209,7 @@
       - visdef
 - mvert_prof:
     category: {}
-    desc: ''
+    desc: Generates data for the vertical profile view
     type: icon
     title: Vertical Profile Data
     pix: MVPROFILE
@@ -1210,7 +1217,7 @@
       - vertical
 - mvertprofview:
     category: {}
-    desc: ''
+    desc: Creates a vertical profile view
     type: icon
     title: Vertical Profile View
     pix: MVPROFILEVIEW
@@ -1218,7 +1225,7 @@
       - view
 - mwind:
     category: {}
-    desc: ''
+    desc: Defines the wind plotting style
     type: icon
     title: Wind Plotting
     mag: True
@@ -1226,7 +1233,7 @@
       - visdef
 - mxs_average:
     category: {}
-    desc: ''
+    desc: Defines the average view
     type: icon
     title: Average View
     pix: MXAVERAGE
@@ -1234,7 +1241,7 @@
       - vertical
 - mxsectview:
     category: {}
-    desc: ''
+    desc: Creates a cross section view
     type: icon
     title: Cross Section View
     pix: MXSECTIONVIEW
@@ -1292,7 +1299,7 @@
       - netcdf
 - netcdf_visualiser:
     category: {}
-    desc: ''
+    desc: Defines visualisation for NetCDF data
     type: icon
     pix: NETCDFVIS
     group: 
@@ -1332,21 +1339,21 @@
     exclude: True
 - obsfilter:
     category: {}
-    desc: ''
+    desc: Filters BUFR data
     type: icon
     title: Observation Filter
     group:
       - filter
 - odb_filter:
     category: {}
-    desc: ''
+    desc: Filters ODB data
     type: icon
     title: ODB Filter
     group:
       - filter
 - odb_visualiser:
     category: {}
-    desc: ''
+    desc: Defines visualisation for ODB data
     type: icon
     title: ODB Visualiser
     group:
@@ -1398,20 +1405,21 @@
     exclude: True
 - pdf_output:
     category: {}
-    desc: ''
+    desc: Defines the PDF output format
     type: icon
+    standard: False
     group:
       - output
 - percentile:
     category: {}
-    desc: ''
+    desc: Computes a set of percentiles of GRIB data
     type: icon
     group:
       - stats
 - percentile:
     category:
       vector: Returns a set of percentiles of a vector
-    desc: Returns a set of percentiles of a vector
+    desc: Returns a set of percentiles of an array
     type: script
     exclude: True
 - pgraph:
@@ -1421,27 +1429,38 @@
     exclude: True
 - plot_page:
     category: {}
-    desc: ''
+    desc: Generates a plot
+    type: script
+    group:
+      - plot   
+- plot_page:
+    category: {}
+    desc: Creates a page in a plot layout
     type: icon
+    pix: DISPLAYWINDOW
     group:
       - layout
 - plot_subpage:
     category: {}
-    desc: ''
+    desc: Creates a subpage in a plot layout
     type: icon
+    pix: DISPLAYWINDOW
     group:
       - layout
 - plot_superpage:
     category:
       plot: Returns a super_page for plotting
-    desc: Returns a super_page for plotting
-    type: script
+    desc: Creates a top level plot layout
+    type: icon
+    pix: DISPLAYWINDOW
     group:
       - layout
 - png_output:
     category: {}
-    desc: ''
+    desc: Defines the PNG output format
     type: icon
+    standard: False
+    mag: True
     group:
       - output
 - polar_vector:
@@ -1453,13 +1472,13 @@
       - geopoints
 - pott_m:
     category: {}
-    desc: ''
+    desc: Computes the potential temperature on model levels
     type: icon
     group:
       - thermo
 - pott_p:
     category: {}
-    desc: ''
+    desc: Computes the potential temperature on pressure levels
     type: icon
     group:
       - thermo
@@ -1483,14 +1502,17 @@
     type: script
 - ps_output:
     category: {}
-    desc: ''
+    desc: Defines the PostScript output format
     type: icon
+    standard: False
+    mag: True
     group:
       - output
 - pscairo_output:
     category: {}
-    desc: ''
+    desc: Defines the PostScript output format using the Cairo driver
     type: icon
+    standard: False
     group:
       - output
 - psymb:
@@ -1521,7 +1543,7 @@
     exclude: True
 - read:
     category: {}
-    desc: ''
+    desc: Filters and interpolates GRIB data
     type: icon
     group:
       - filter
@@ -1562,7 +1584,7 @@
     exclude: True
 - relhum:
     category: {}
-    desc: ''
+    desc: Computes relative humidity from specific humidity
     type: icon
     title: Relative Humidity
     group:
@@ -1590,13 +1612,13 @@
       - mask
 - reprojection:
     category: {}
-    desc: ''
+    desc: Repoject satellite view GRIB data onto a latlon grid
     type: icon
     group:
       - geo
 - retrieve:
     category: {}
-    desc: ''
+    desc: Retrieves data from MARS
     type: icon
     group:
       - retrieve
@@ -1637,13 +1659,13 @@
     exclude: True
 - rttov_run:
     category: {}
-    desc: ''
+    desc: Runs the RTTOV model
     type: icon
     group:
       - rttov
 - rttov_visualiser:
     category: {}
-    desc: ''
+    desc: Defines visualisation for RTTOV model output
     type: icon
     group:
       - plot
@@ -1655,13 +1677,13 @@
     type: script
 - scm_run:
     category: {}
-    desc: ''
+    desc: Runs the Single Column Model
     type: icon
     group:
       - scm
 - scm_visualiser:
     category: {}
-    desc: ''
+    desc: Defines visualisation for SCM output
     type: icon
     pix: SCM_VIS
     group:
@@ -1695,13 +1717,13 @@
       - calculus
 - seqpott_m:
     category: {}
-    desc: ''
+    desc: Computes the saturation equivalent potential temperature on model levels
     type: icon
     group:
       - thermo
 - seqpott_p:
     category: {}
-    desc: ''
+    desc: Computes the saturation equivalent potential temperature on pressure levels
     type: icon
     group:
       - thermo
@@ -1855,7 +1877,7 @@
       - maths
 - stations:
     category: {}
-    desc: ''
+    desc: Specifies a WMO station
     type: icon
 - stdev:
     category:
@@ -1921,7 +1943,7 @@
     type: icon
     family: velpot
     group:
-      - calculus
+      - wind
 - subsample:
     category:
       geopoints: Filters from the first geopoints variable points that exist in the
@@ -1955,8 +1977,10 @@
       - grid
 - svg_output:
     category: {}
-    desc: ''
+    desc: Defines the SVG output format
     type: icon
+    standard: False
+    mag: True
     group:
       - output
 - table:
@@ -1966,8 +1990,9 @@
     exclude: True
 - table_visualiser:
     category: {}
-    desc: ''
+    desc: Defines visualisation for CSV data
     type: icon
+    pix: TABLEVISUALISER
     group:
       - plot
 - tan:
@@ -1986,13 +2011,13 @@
       - geo
 - thermo_bufr:
     category: {}
-    desc: ''
+    desc: Generates thermodynamical profile from BUFR
     type: icon
     group:
       - thermo
 - thermo_grib:
     category: {}
-    desc: ''
+    desc: Generates thermodynamical profile from GRIB
     type: icon
     group:
       - thermo
@@ -2003,7 +2028,7 @@
     exclude: True
 - thermoview:
     category: {}
-    desc: ''
+    desc: Creates a thermodynamical diagram view
     type: icon
     title: Thermo View
     group:
@@ -2102,7 +2127,7 @@
     type: icon
     family: divrot
     group:
-      - calculus
+      - wind
 - uvwind_mir:
     category: {}
     desc: ''
@@ -2150,7 +2175,7 @@
       - table
 - vapor_prepare:
     category: {}
-    desc: ''
+    desc: Prepares and visualises GRIB data in Vapor
     type: icon
     group:
       - retrieve
@@ -2194,7 +2219,7 @@
     type: icon
     family: velpot
     group:
-      - calculus
+      - wind
 - version_info:
     category:
       info: Returns version information about Metview
@@ -2202,7 +2227,7 @@
     type: script
 - vert_prof:
     category: {}
-    desc: ''
+    desc: Generates data for the vertical profile view
     type: icon
     exclude: True
     group:
@@ -2230,7 +2255,7 @@
     type: script
 - wmsclient:
     category: {}
-    desc: ''
+    desc: Web Map Service (WMS) client
     type: icon
     title: WMS Client
     pix: WMS_CLIENT
@@ -2327,7 +2352,7 @@
     desc: Computes geostrophic wind on pressure levels
     type: script
     group:
-      - vertical
+      - wind
 - integral:
     category:
       fieldset: Computes surface integral for fields
@@ -2367,29 +2392,28 @@
     category:
       plot: Returns a curve marking the circle with the given radius around the given
         centre
-    desc: Returns a curve marking the circle with the given radius around the given
-      centre
+    desc: Returns a curve for a circle/quadrants defined on the surface of the Earth
     type: script
     group:
       - plot
 - mvl_geoline:
     category:
       plot: Returns a line marking a line of interest
-    desc: Returns a line marking a line of interest
+    desc: Returns a curve for a line sampled in lat-lon coordinates
     type: script
     group:
       - plot
 - mvl_geopolyline:
     category:
       fieldset: Returns a plot object for a polyline sampled in lat-lon coordinates
-    desc: Returns a plot object for a polyline sampled in lat-lon coordinates
+    desc: Returns a curve with a polyline sampled in lat-lon coordinates
     type: script
     group:
       - plot
 - mvl_geopotential_on_ml:
     category:
       fieldset: Computes geopotential on model levels
-    desc: Computes geopotential on model levels
+    desc: Computes the geopotential on model levels
     type: script
     group:
       - vertical
@@ -2465,7 +2489,7 @@
       - thermo
 - thermo_parcel_area:
     category:
-      plot: returns a set of coloured areas from a thermo parcel path
+      plot: Returns a set of coloured areas from a thermo parcel path
     desc: returns a set of coloured areas from a thermo parcel path
     type: script
     group:
@@ -2474,7 +2498,7 @@
 - thermo_parcel_path:
     category:
       thermo: computes the path of an ascending thermodynamic parcel
-    desc: computes the path of an ascending thermodynamic parcel
+    desc: Computes the path of an ascending thermodynamic parcel
     type: script
     group:
       - thermo
@@ -2502,28 +2526,33 @@
 - xs_build_curve:
     category:
       plot: returns a curve for the given cross section data
-    desc: returns a curve for the given cross section data
+    desc: Returns a curve for the given cross section data
     type: script
     group:
       - plot
 - xs_build_orog:
     category:
       plot: returns an orography area curve for the given cross section data
-    desc: returns an orography area curve for the given cross section data
+    desc: Returns an orography area curve for the given cross section data
     type: script
     group:
       - plot
 - xy_area:
     category:
       plot: returns an xy area plot object with a given colour
-    desc: returns an xy area plot object with a given colour
+    desc: Returns an xy area plot object with a given colour
     type: script
     group:
       - plot
 - xy_curve:
     category:
       plot: returns a curve with a given colour, style and thickness
-    desc: returns a curve with a given colour, style and thickness
+    desc: Returns a curve with a given colour, style and thickness
     type: script
     group:
       - plot
+- xy_from_polar:
+    desc: Computes the x and y components from polar components
+    type: script
+    group:
+      - wind

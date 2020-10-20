@@ -30,21 +30,25 @@ groups_def = {
     "flex": "Flextra and Flexpart",
     "table": "Table data",
     "scm" : "Single Column Model",
-    "rttov": "RTTOV"
+    "rttov": "RTTOV",
+    "wind": "Wind"
 }
 
 toc_def = {
     "comp": {
         "title": "Computation functions",
         "gr": [
-            "maths",
-            "calculus",
             "stats",
-            "thermo",
             "geo",
             "filter",
-            "mask" "grid",
+            "mask",
+            "grid",
+            "wind",
             "vertical",
+            "thermo",
+            "calculus",
+            "maths",
+
         ],
     },
     "plot": {
@@ -144,7 +148,7 @@ with open("functions.yaml", "r") as f:
         item = v[name]
         if item.get("exclude", False):
             continue
-
+        
         fn = DocFunction(
             name, item.get("type", ""), item.get("desc", "???"), item.get("pix", "")
         )

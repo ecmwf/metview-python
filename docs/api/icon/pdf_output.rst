@@ -2,18 +2,6 @@
 pdf_output
 =========================
 
-.. container::
-    
-    .. container:: leftside
-
-        .. image:: /_static/PDF_OUTPUT.png
-           :width: 48px
-
-    .. container:: rightside
-
-        This function represents the `Pdf Output <https://confluence.ecmwf.int/display/METV/pdf+output>`_ icon in Metview's user interface.
-
-
 .. py:function:: pdf_output(**kwargs)
   
     Description comes here!

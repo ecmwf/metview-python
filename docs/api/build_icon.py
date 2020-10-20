@@ -44,6 +44,7 @@ param_types = {
     "symbol_name": "str",
 }
 
+ignore_group = ["widget"]
 
 class DocParam:
     def __init__(self, name, conf):
@@ -69,6 +70,7 @@ class DocFunction:
         self.pix = item.get("pix", "")
         self.title = item.get("title", "")
         self.mag = item.get("mag", False)
+        self.standard = item.get("standard", True)
 
         if self.title == "":
             self.title = self.name.replace("_", " ")
@@ -84,6 +86,9 @@ class DocFunction:
                 self.pix = self.name.upper() + ".png"
             else:
                 self.pix += ".png"
+
+        self.group = conf.get("group", [])
+
 
     def load_params(self, conf):
         d = conf.get("params", [])
@@ -204,6 +209,8 @@ class DocFunction:
 
                         self.params[name].desc += v
 
+
+
     def remove_bold(self, t):
         return t.replace("**", "")
 
@@ -277,6 +284,10 @@ def add_icon_rst(name, fname):
         if fn is None:
             return
 
+        for ig in ignore_group:
+            if ig in fn.group:
+                return 
+
         print("class={} name={}".format(cls_name, name))
         fn.load_params(conf)
         fn.load_param_desc()
@@ -284,9 +295,13 @@ def add_icon_rst(name, fname):
 
         output = "icon/{}.rst".format(cls_name)
 
+
         with open(output, "w") as f:
-            f.write(
-                """
+            
+            if fn.standard:
+
+                f.write(
+                    """
 {}
 =========================
 
@@ -315,6 +330,22 @@ def add_icon_rst(name, fname):
                     fn.name,
                 )
             )
+
+            else:
+                f.write(
+                    """
+{}
+=========================
+
+.. py:function:: {}(**kwargs)
+  
+    Description comes here!
+
+""".format(
+                    name,
+                    fn.name,
+                )
+            )               
 
             for _, p in fn.params.items():
 

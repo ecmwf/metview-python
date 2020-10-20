@@ -6,7 +6,7 @@ plot_page
     
     .. container:: leftside
 
-        .. image:: /_static/PLOT_PAGE.png
+        .. image:: /_static/DISPLAYWINDOW.png
            :width: 48px
 
     .. container:: rightside

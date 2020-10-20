@@ -13,25 +13,25 @@ Data retrieval
 
 
     * - :func:`ecfs`
-      - 
+      - Retrieves data from ECFS
 
     * - :func:`flexpart_prepare`
-      - 
+      - Retrieves and prepares data for a FLEXPART simulation
 
     * - :func:`flextra_prepare`
-      - 
+      - Retrieves and prepares data for a FLEXTRA simulation
 
     * - :func:`met3d_prepare`
-      - 
+      - Retrieves and prepare GRIB data for Met3D
 
     * - :func:`retrieve`
-      - 
+      - Retrieves data from MARS
 
     * - :func:`vapor_prepare`
-      - 
+      - Prepares and visualises GRIB data in Vapor
 
     * - :func:`wmsclient`
-      - 
+      - Web Map Service (WMS) client
 
 
 Data conversion
@@ -43,10 +43,10 @@ Data conversion
 
 
     * - :func:`geo_to_grib`
-      - 
+      - Converts :class:`Geopoints` data to GRIB
 
     * - :func:`geo_to_kml`
-      - 
+      - Converts :class:`Geopoints` data to KML
 
     * - :func:`grib_to_geo`
       - 
@@ -283,28 +283,28 @@ Flextra and Flexpart
       - Extract fields from FLEXPART output GRIB files
 
     * - :func:`flexpart_prepare`
-      - 
+      - Retrieves and prepares data for a FLEXPART simulation
 
     * - :func:`flexpart_release`
-      - 
+      - Defines a FLEXPART release
 
     * - :func:`flexpart_run`
-      - 
+      - Performs a FLEXPART simulation
 
     * - :func:`flexpart_total_column`
       - Computes the sum/vertical integral of fields in a FLEXPART output GRIB file.
 
     * - :func:`flextra_group_get`
-      - Returns a list of available meta data keys for the given table
+      - Returns data for a FLEXTRA result group
 
     * - :func:`flextra_run`
-      - 
+      - Performs a FLEXTRA simulation
 
     * - :func:`flextra_tr_get`
-      - Returns a list of available meta data keys for the given table
+      - Returns data for an individual FLEXTRA trajectory
 
     * - :func:`flextra_visualiser`
-      - 
+      - Defines visualisation for FLEXTRA results
 
 
 Table data
@@ -340,10 +340,10 @@ Single Column Model
 
 
     * - :func:`scm_run`
-      - 
+      - Runs the Single Column Model
 
     * - :func:`scm_visualiser`
-      - 
+      - Defines visualisation for SCM output
 
 
 RTTOV
@@ -355,7 +355,7 @@ RTTOV
 
 
     * - :func:`rttov_run`
-      - 
+      - Runs the RTTOV model
 
     * - :func:`rttov_visualiser`
-      - 
+      - Defines visualisation for RTTOV model output

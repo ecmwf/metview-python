@@ -6,7 +6,7 @@ table_visualiser
     
     .. container:: leftside
 
-        .. image:: /_static/TABLE_VISUALISER.png
+        .. image:: /_static/TABLEVISUALISER.png
            :width: 48px
 
     .. container:: rightside
