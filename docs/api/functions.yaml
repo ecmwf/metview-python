@@ -956,6 +956,7 @@
     desc: ''
     type: icon
     title: Axis Plotting
+    mag: True
     group:
       - visdef
 - maxvalue:
@@ -977,6 +978,7 @@
     desc: ''
     type: icon
     title: Coastlines
+    mag: True
     group:
       - visdef
 - mcont:
@@ -984,6 +986,7 @@
     desc: ''
     type: icon
     title: Contouring
+    mag: True
     group:
       - visdef
 - mcross_sect:
@@ -1065,6 +1068,7 @@
     desc: ''
     type: icon
     title: Graph Plotting
+    mag: True
     group:
       - visdef
 - mhovmoeller_area:
@@ -1133,6 +1137,7 @@
     desc: ''
     type: icon
     title: Legend
+    mag: True
     group:
       - visdef
 - mobs:
@@ -1140,6 +1145,7 @@
     desc: ''
     type: icon
     title: Observation Plotting
+    mag: True
     group:
       - visdef
 - mod:
@@ -1159,6 +1165,7 @@
     desc: ''
     type: icon
     title: Symbol Plotting
+    mag: True
     group:
       - visdef
 - mtaylor:
@@ -1166,6 +1173,7 @@
     desc: ''
     type: icon
     title: Taylor Grid
+    mag: True
     group:
       - visdef
 - mtext:
@@ -1173,6 +1181,7 @@
     desc: ''
     type: icon
     title: Text Plotting
+    mag: True
     group:
       - visdef
 - mthermo:
@@ -1187,6 +1196,7 @@
     desc: ''
     type: icon
     title: Thermo Grid
+    mag: True
     group:
       - visdef
 - mvert_prof:
@@ -1210,6 +1220,7 @@
     desc: ''
     type: icon
     title: Wind Plotting
+    mag: True
     group:
       - visdef
 - mxs_average:
@@ -1282,6 +1293,7 @@
     category: {}
     desc: ''
     type: icon
+    pix: NETCDFVIS
     group: 
       - plot
 - newpage:

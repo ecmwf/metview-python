@@ -37,8 +37,8 @@ ODB Scatterplot with Binning
     #
 
     # ------------------------------------------------------------------
-    # Description: Demonstrates how to generate a scatterpot from ODB
-    #              using binning.
+    # Demonstrates how to generate a scatterpot from ODB
+    # using binning.
     # ------------------------------------------------------------------
 
     import metview as mv
@@ -131,11 +131,6 @@ ODB Scatterplot with Binning
 
     # Plot
     mv.plot(scatter_view, bin_plot, bin_grid_shade, title)
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.295 seconds)
 
 
 .. _sphx_glr_download_auto_examples_odb_scatterplot_binning.py:

@@ -16,7 +16,7 @@ Cross Section with Orography
 import metview as mv
 
 # read grib file - contains model level data
-fs = mv.read(source="fc_ml.grib")
+fs = mv.read("fc_ml.grib")
 
 # read temperature and scale it to C
 t = mv.read(data=fs, param="t")

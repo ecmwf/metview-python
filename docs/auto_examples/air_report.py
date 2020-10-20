@@ -1,23 +1,21 @@
-# Metview Example
 
-#  **************************** LICENSE START ***********************************
-#
-#  Copyright 2016 ECMWF. This software is distributed under the terms
-#  of the Apache License version 2.0. In applying this license, ECMWF does not
-#  waive the privileges and immunities granted to it by virtue of its status as
-#  an Intergovernmental Organization or submit itself to any jurisdiction.
-#
-#  ***************************** LICENSE END ************************************
 
 """
 Aircraft observations
 ======================
 """
 
-# ------------------------------------------------------------------
-# Description: Demonstrates how to show observations from a geopoints
-#              file using symbol objects.
-# ------------------------------------------------------------------
+
+# (C) Copyright 2017- ECMWF.
+#
+# This software is licensed under the terms of the Apache Licence Version 2.0
+# which can be obtained at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# In applying this licence, ECMWF does not waive the privileges and immunities
+# granted to it by virtue of its status as an intergovernmental organisation
+# nor does it submit to any jurisdiction.
+#
+
 
 import metview as mv
 

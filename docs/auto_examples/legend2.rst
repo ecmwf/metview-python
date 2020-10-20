@@ -37,8 +37,8 @@ Disjoint Legend
     #
 
     # ------------------------------------------------------------------
-    # Description: Demonstrates how to show a disjoint legend with labels
-    #              for each level value.
+    # Demonstrates how to show a disjoint legend with labels
+    # for each level value.
     # ------------------------------------------------------------------
 
     import metview as mv
@@ -104,11 +104,6 @@ Disjoint Legend
 
     # plot the cartesian graph
     mv.plot(my_view, my_data, my_contour, my_coast, my_title, my_legend)
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  1.135 seconds)
 
 
 .. _sphx_glr_download_auto_examples_legend2.py:

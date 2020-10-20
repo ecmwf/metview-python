@@ -14,8 +14,8 @@ ODB Scatterplot with Binning
 #
 
 # ------------------------------------------------------------------
-# Description: Demonstrates how to generate a scatterpot from ODB
-#              using binning.
+# Demonstrates how to generate a scatterpot from ODB
+# using binning.
 # ------------------------------------------------------------------
 
 import metview as mv

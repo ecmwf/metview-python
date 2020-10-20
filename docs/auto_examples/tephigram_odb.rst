@@ -146,11 +146,6 @@ Tephigram from ODB
     mv.plot(view, t_vis, td_vis, wind_vis, wp, title)
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.736 seconds)
-
-
 .. _sphx_glr_download_auto_examples_tephigram_odb.py:
 
 

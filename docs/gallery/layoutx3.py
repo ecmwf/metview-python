@@ -14,9 +14,9 @@ Layout with 3 Maps
 #
 
 # ------------------------------------------------------------------
-# Description: Demonstrates how to use a Display Window icon to
-#              produce a plot with 3 maps consisting of a) a 24h
-#              forecast, b) a 96h forecast and c) their difference
+# Demonstrates how to use a Display Window icon to
+# produce a plot with 3 maps consisting of a) a 24h
+# forecast, b) a 96h forecast and c) their difference
 # ------------------------------------------------------------------
 
 import metview as mv

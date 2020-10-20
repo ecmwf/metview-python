@@ -26,10 +26,17 @@ Aircraft observations
 .. code-block:: default
 
 
-    # ------------------------------------------------------------------
-    # Description: Demonstrates how to show observations from a geopoints
-    #              file using symbol objects.
-    # ------------------------------------------------------------------
+
+    # (C) Copyright 2017- ECMWF.
+    #
+    # This software is licensed under the terms of the Apache Licence Version 2.0
+    # which can be obtained at http://www.apache.org/licenses/LICENSE-2.0.
+    #
+    # In applying this licence, ECMWF does not waive the privileges and immunities
+    # granted to it by virtue of its status as an intergovernmental organisation
+    # nor does it submit to any jurisdiction.
+    #
+
 
     import metview as mv
 
@@ -97,11 +104,6 @@ Aircraft observations
 
     # plot the data onto the map
     mv.plot(my_coast, my_data, my_symbol, my_title, my_legend)
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  3.283 seconds)
 
 
 .. _sphx_glr_download_auto_examples_air_report.py:

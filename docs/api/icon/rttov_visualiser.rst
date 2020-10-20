@@ -11,7 +11,7 @@ rttov_visualiser
 
     .. container:: rightside
 
-        This icon performs an ODB/SQL query on an ODB database (ODB-1) or file (ODB-2). The result is always an ODB file (in ODB-2 format).
+        This icon represents the `rttov visualiser <https://confluence.ecmwf.int/display/METV/rttov+visualiser>`_ icon in Metview's user interface.
 
 
 .. py:function:: rttov_visualiser(**kwargs)

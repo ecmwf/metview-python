@@ -121,11 +121,6 @@ NetCDF Marine Observations
     mv.plot(view, vis, sym, legend, title)
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.390 seconds)
-
-
 .. _sphx_glr_download_auto_examples_nc_maritime_obs.py:
 
 

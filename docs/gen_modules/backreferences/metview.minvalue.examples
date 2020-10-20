@@ -1,0 +1,42 @@
+
+
+Examples using ``metview.minvalue``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="ODB Radiance Map">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_odb_radiance_thumb.png
+     :alt: ODB Radiance Map
+
+     :ref:`sphx_glr_auto_examples_odb_radiance.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_odb_radiance.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="ENS Tephigram">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_ens_tephigram_thumb.png
+     :alt: ENS Tephigram
+
+     :ref:`sphx_glr_auto_examples_ens_tephigram.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_ens_tephigram.py`

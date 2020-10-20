@@ -130,11 +130,6 @@ Storm Track
     mv.plot(view, track_vis, track_graph, track_text, g_mslp, cont_mslp)
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.423 seconds)
-
-
 .. _sphx_glr_download_auto_examples_storm_track.py:
 
 

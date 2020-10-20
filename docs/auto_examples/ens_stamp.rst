@@ -107,11 +107,6 @@ ENS Stamp Map
     mv.plot(pl_lst)
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  11.452 seconds)
-
-
 .. _sphx_glr_download_auto_examples_ens_stamp.py:
 
 

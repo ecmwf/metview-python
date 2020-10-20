@@ -37,10 +37,10 @@ Difference Plot with Rainbow Contour Settings
     #
 
     # ---------------------------------------------------------------
-    # Description: Demonstrates how to use Rainbow contouring to
-    #              separately contour positive, negative and zero
-    #              differences, similar to the Split Contour facility
-    #              which existed in Metview 3.
+    # Demonstrates how to use Rainbow contouring to
+    # separately contour positive, negative and zero
+    # differences, similar to the Split Contour facility
+    # which existed in Metview 3.
     # ---------------------------------------------------------------
 
     import metview as mv
@@ -108,11 +108,6 @@ Difference Plot with Rainbow Contour Settings
 
     # into the view, plot the difference field with the 'split' visdef
     mv.plot(view, difference, split)
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.718 seconds)
 
 
 .. _sphx_glr_download_auto_examples_rainbow_contour_diffs.py:

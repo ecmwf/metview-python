@@ -26,9 +26,20 @@ Cross Section
 .. code-block:: default
 
 
+    # (C) Copyright 2017- ECMWF.
+    #
+    # This software is licensed under the terms of the Apache Licence Version 2.0
+    # which can be obtained at http://www.apache.org/licenses/LICENSE-2.0.
+    #
+    # In applying this licence, ECMWF does not waive the privileges and immunities
+    # granted to it by virtue of its status as an intergovernmental organisation
+    # nor does it submit to any jurisdiction.
+    #
+
+
     # ------------------------------------------------------------------
-    # Description: Demonstrates how to use a Cross Section View to
-    #              compute and plot a vertical cross section of GRIB data
+    # Demonstrates how to use a Cross Section View to
+    # compute and plot a vertical cross section of GRIB data
     # ------------------------------------------------------------------
 
     import metview as mv
@@ -64,11 +75,6 @@ Cross Section
 
     # plot the data into the Cross Section view with visdefs for styling
     mv.plot(cross_section_view, t_fc, shading, title)
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.666 seconds)
 
 
 .. _sphx_glr_download_auto_examples_cross_section_pl_data.py:

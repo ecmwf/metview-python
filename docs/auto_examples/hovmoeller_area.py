@@ -14,8 +14,8 @@ Hovmoeller Area Average
 #
 
 # ----------------------------------------------------------------------
-# Description: Demonstrates how to use a Hovmoeller View to
-#              compute and plot an area average over time from GRIB data
+# Demonstrates how to use a Hovmoeller View to
+# compute and plot an area average over time from GRIB data
 # ----------------------------------------------------------------------
 
 import metview as mv

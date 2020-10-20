@@ -1,0 +1,42 @@
+
+
+Examples using ``metview.grib_vectors``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Wind Coloured by Temperature">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_wind_coloured_by_t_thumb.png
+     :alt: Wind Coloured by Temperature
+
+     :ref:`sphx_glr_auto_examples_wind_coloured_by_t.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_wind_coloured_by_t.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Temperature Gradient Vectors">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_gradient_vector_thumb.png
+     :alt: Temperature Gradient Vectors
+
+     :ref:`sphx_glr_auto_examples_gradient_vector.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_gradient_vector.py`

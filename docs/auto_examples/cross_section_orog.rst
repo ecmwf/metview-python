@@ -14,9 +14,20 @@ Cross Section with Orography
 
 
 
-.. image:: /auto_examples/images/sphx_glr_cross_section_orog_001.png
-    :alt: cross section orog
-    :class: sphx-glr-single-img
+.. rst-class:: sphx-glr-horizontal
+
+
+    *
+
+      .. image:: /auto_examples/images/sphx_glr_cross_section_orog_001.png
+          :alt: cross section orog
+          :class: sphx-glr-multi-img
+
+    *
+
+      .. image:: /auto_examples/images/sphx_glr_cross_section_orog_002.png
+          :alt: cross section orog
+          :class: sphx-glr-multi-img
 
 
 
@@ -39,7 +50,7 @@ Cross Section with Orography
     import metview as mv
 
     # read grib file - contains model level data
-    fs = mv.read(source="fc_ml.grib")
+    fs = mv.read("fc_ml.grib")
 
     # read temperature and scale it to C
     t = mv.read(data=fs, param="t")
@@ -88,11 +99,6 @@ Cross Section with Orography
 
     # generate plot
     mv.plot(xs_view, xs_sp_data, sp_cont, xs_t_data, t_cont, orog_graph)
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  5.958 seconds)
 
 
 .. _sphx_glr_download_auto_examples_cross_section_orog.py:

@@ -124,11 +124,6 @@ Storm Wind Quadrants
     mv.plot(view, quad_vis, quad_graph, track_vis, track_graph, title)
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  1.360 seconds)
-
-
 .. _sphx_glr_download_auto_examples_storm_quadrants.py:
 
 

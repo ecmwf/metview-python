@@ -26,6 +26,17 @@ Coloured observation values
 .. code-block:: default
 
 
+
+    # (C) Copyright 2017- ECMWF.
+    #
+    # This software is licensed under the terms of the Apache Licence Version 2.0
+    # which can be obtained at http://www.apache.org/licenses/LICENSE-2.0.
+    #
+    # In applying this licence, ECMWF does not waive the privileges and immunities
+    # granted to it by virtue of its status as an intergovernmental organisation
+    # nor does it submit to any jurisdiction.
+
+
     import metview as mv
 
     # read BUFR data
@@ -84,11 +95,6 @@ Coloured observation values
 
     # plot the data with the style
     mv.plot(view, gpt, sym, legend, title)
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  2.313 seconds)
 
 
 .. _sphx_glr_download_auto_examples_coloured_obs_values.py:

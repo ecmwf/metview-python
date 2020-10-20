@@ -14,8 +14,8 @@ Geoline on Map
 #
 
 # ---------------------------------------------------------------
-# Description: Demonstrates how to plot a line on any map
-#              projection using function mvl_geoline.
+# Demonstrates how to plot a line on any map projection using
+# function mvl_geoline.
 # ---------------------------------------------------------------
 
 import metview as mv

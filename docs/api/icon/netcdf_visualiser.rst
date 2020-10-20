@@ -6,12 +6,12 @@ netcdf_visualiser
     
     .. container:: leftside
 
-        .. image:: /_static/NETCDF_VISUALISER.png
+        .. image:: /_static/NETCDFVIS.png
            :width: 48px
 
     .. container:: rightside
 
-        This icon performs an ODB/SQL query on an ODB database (ODB-1) or file (ODB-2). The result is always an ODB file (in ODB-2 format).
+        This icon represents the `netcdf visualiser <https://confluence.ecmwf.int/display/METV/netcdf+visualiser>`_ icon in Metview's user interface.
 
 
 .. py:function:: netcdf_visualiser(**kwargs)

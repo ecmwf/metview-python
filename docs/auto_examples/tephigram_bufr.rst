@@ -68,11 +68,6 @@ Tephigram from BUFR
     mv.plot(view, prof, vis)
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  4.151 seconds)
-
-
 .. _sphx_glr_download_auto_examples_tephigram_bufr.py:
 
 

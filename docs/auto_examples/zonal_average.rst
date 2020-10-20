@@ -123,11 +123,6 @@ Zonal Average
     mv.plot(view, u, cont_u, t, cont_t, title)
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.866 seconds)
-
-
 .. _sphx_glr_download_auto_examples_zonal_average.py:
 
 

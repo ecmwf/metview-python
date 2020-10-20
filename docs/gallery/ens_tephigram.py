@@ -61,6 +61,11 @@ t_col_line = "RGB(0.8706,0,0)"
 td_col_line = "RGB(0,0.2784,0.007843)"
 ddep_col_line = "RGB(0,0.3725,1)"
 
+# define cf curve data
+t_cf = prof_cf["t"]
+td_cf = prof_cf["td"]
+ddep_cf = (t_cf - td_cf) + sidebar_x_offset
+
 # get pressure levels for t and td (from pf)
 # and compute ENS mean profiles
 lev_num = int(len(prof_pf["p"]) / ens_num)
@@ -70,19 +75,23 @@ td_mean = np.empty(lev_num)
 ddep_mean = np.empty(lev_num)
 
 for i in range(len(p)):
+    # get pressure
     p[i] = prof_pf["p"][i * ens_num]
+
+    # get t and td for all the perturbed members
     idx_start = i * ens_num
     idx_end = (i + 1) * ens_num - 1
     t_v = prof_pf["t"][idx_start:idx_end]
     td_v = prof_pf["td"][idx_start:idx_end]
+
+    # add t and td from cf
+    t_v = np.append(t_v, t_cf[i])
+    td_v = np.append(td_v, td_cf[i])
+
+    # compute means
     t_mean[i] = mv.mean(t_v)
     td_mean[i] = mv.mean(td_v)
     ddep_mean[i] = mv.mean(t_v - td_v) + sidebar_x_offset
-
-# define cf curve data
-t_cf = prof_cf["t"]
-td_cf = prof_cf["td"]
-ddep_cf = (t_cf - td_cf) + sidebar_x_offset
 
 # compute areas (polygons) for t, td and dew point depression (ddep)
 # outer area = full ENS range
@@ -96,10 +105,13 @@ ddep_poly_inner = np.empty(lev_num * 2)
 ddep_poly_outer = np.empty(lev_num * 2)
 
 for i in range(lev_num):
+    # collect t and td (pf+cf) for the given level
     idx_start = i * ens_num
     idx_end = (i + 1) * ens_num - 1
     t_v = prof_pf["t"][idx_start:idx_end]
     td_v = prof_pf["td"][idx_start:idx_end]
+    t_v = np.append(t_v, t_cf[i])
+    td_v = np.append(td_v, td_cf[i])
 
     i_left = i
     i_right = 2 * lev_num - i - 1

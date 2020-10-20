@@ -1,0 +1,61 @@
+
+
+Examples using ``metview.sqrt``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section with Orography">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_orog_thumb.png
+     :alt: Cross Section with Orography
+
+     :ref:`sphx_glr_auto_examples_cross_section_orog.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_cross_section_orog.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Time-height Section">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_time_height_xs_thumb.png
+     :alt: Time-height Section
+
+     :ref:`sphx_glr_auto_examples_time_height_xs.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_time_height_xs.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section with Orography and Boundary Layer Height">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_orog_and_blh_thumb.png
+     :alt: Cross Section with Orography and Boundary Layer Height
+
+     :ref:`sphx_glr_auto_examples_cross_section_orog_and_blh.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_cross_section_orog_and_blh.py`

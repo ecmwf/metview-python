@@ -37,9 +37,9 @@ Histogram Legend
     #
 
     # ------------------------------------------------------------------
-    # Description: Demonstrates how to combine two fields into a single plot
-    #              using contour and shade. A histogram legend is used for one
-    #              of the fields.
+    # Demonstrates how to combine two fields into a single plot
+    # using contour and shade. A histogram legend is used for one
+    # of the fields.
     # ------------------------------------------------------------------
 
     import metview as mv
@@ -125,11 +125,6 @@ Histogram Legend
     mv.plot(
         my_view, my_data1, my_contour1, my_data2, my_contour2, my_coast, my_title, my_legend
     )
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  1.564 seconds)
 
 
 .. _sphx_glr_download_auto_examples_legend3.py:

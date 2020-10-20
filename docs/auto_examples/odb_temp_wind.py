@@ -16,9 +16,7 @@ ODB Temp Wind
 import metview as mv
 
 # -------------------------------------------------------------------------
-# Tags: ODB, Wind, Map
-# Title: ODB TEMP wind map
-# Description: Demonstrates how to plot TEMP wind data from ODB onto a map
+# Demonstrates how to plot TEMP wind data from ODB onto a map
 # ------------------------------------------------------------------------
 
 # define pressure level

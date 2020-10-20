@@ -14,10 +14,10 @@ Difference Plot with Rainbow Contour Settings
 #
 
 # ---------------------------------------------------------------
-# Description: Demonstrates how to use Rainbow contouring to
-#              separately contour positive, negative and zero
-#              differences, similar to the Split Contour facility
-#              which existed in Metview 3.
+# Demonstrates how to use Rainbow contouring to
+# separately contour positive, negative and zero
+# differences, similar to the Split Contour facility
+# which existed in Metview 3.
 # ---------------------------------------------------------------
 
 import metview as mv

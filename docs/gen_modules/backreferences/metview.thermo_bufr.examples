@@ -1,0 +1,42 @@
+
+
+Examples using ``metview.thermo_bufr``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Tephigram from BUFR">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_tephigram_bufr_thumb.png
+     :alt: Tephigram from BUFR
+
+     :ref:`sphx_glr_auto_examples_tephigram_bufr.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_tephigram_bufr.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="BUFR Hodograph">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_hodograph_thumb.png
+     :alt: BUFR Hodograph
+
+     :ref:`sphx_glr_auto_examples_hodograph.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_hodograph.py`

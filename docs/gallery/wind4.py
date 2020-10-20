@@ -14,8 +14,8 @@ Vorticity and Wind
 #
 
 # --------------------------------------------------------------------------------
-# Description: Demonstrates how to combine a contour field and a wind field into a
-#              single plot (inspired by an ecCharts product).
+# Demonstrates how to combine a contour field and a wind field into a
+# single plot (inspired by an ecCharts product).
 # --------------------------------------------------------------------------------
 
 import metview as mv

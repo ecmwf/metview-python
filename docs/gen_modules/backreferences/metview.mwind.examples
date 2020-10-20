@@ -1,0 +1,289 @@
+
+
+Examples using ``metview.mwind``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Streamlines">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_streamline_thumb.png
+     :alt: Streamlines
+
+     :ref:`sphx_glr_auto_examples_streamline.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_streamline.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section 3D Parallel Wind">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_wind_3d_thumb.png
+     :alt: Cross Section 3D Parallel Wind
+
+     :ref:`sphx_glr_auto_examples_cross_section_wind_3d.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_cross_section_wind_3d.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Wind Coloured by Temperature">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_wind_coloured_by_t_thumb.png
+     :alt: Wind Coloured by Temperature
+
+     :ref:`sphx_glr_auto_examples_wind_coloured_by_t.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_wind_coloured_by_t.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Wind Vectors from List Data">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_geowind_thumb.png
+     :alt: Wind Vectors from List Data
+
+     :ref:`sphx_glr_auto_examples_geowind.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_geowind.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Wind Field Overlay and Legend Box">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_wind_overlay_and_legend_box_thumb.png
+     :alt: Wind Field Overlay and Legend Box
+
+     :ref:`sphx_glr_auto_examples_wind_overlay_and_legend_box.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_wind_overlay_and_legend_box.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Temperature Gradient Vectors">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_gradient_vector_thumb.png
+     :alt: Temperature Gradient Vectors
+
+     :ref:`sphx_glr_auto_examples_gradient_vector.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_gradient_vector.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF Wind">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_nc_era5_wind_thumb.png
+     :alt: NetCDF Wind
+
+     :ref:`sphx_glr_auto_examples_nc_era5_wind.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_nc_era5_wind.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF Sea Currents with Fix-sized Vectors">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_nc_seacurrent_fixed_vector_thumb.png
+     :alt: NetCDF Sea Currents with Fix-sized Vectors
+
+     :ref:`sphx_glr_auto_examples_nc_seacurrent_fixed_vector.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_nc_seacurrent_fixed_vector.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="ODB Temp Wind">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_odb_temp_wind_thumb.png
+     :alt: ODB Temp Wind
+
+     :ref:`sphx_glr_auto_examples_odb_temp_wind.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_odb_temp_wind.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Tephigram from ODB">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_tephigram_odb_thumb.png
+     :alt: Tephigram from ODB
+
+     :ref:`sphx_glr_auto_examples_tephigram_odb.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_tephigram_odb.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Windgust and MSLP with 10m Wind">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_storm_joachim_thumb.png
+     :alt: Windgust and MSLP with 10m Wind
+
+     :ref:`sphx_glr_auto_examples_storm_joachim.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_storm_joachim.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Vorticity and Wind">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_wind4_thumb.png
+     :alt: Vorticity and Wind
+
+     :ref:`sphx_glr_auto_examples_wind4.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_wind4.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="ODB Wind Profiler">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_odb_wind_profiler_thumb.png
+     :alt: ODB Wind Profiler
+
+     :ref:`sphx_glr_auto_examples_odb_wind_profiler.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_odb_wind_profiler.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Tephigram from List Data">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_tephigram_thumb.png
+     :alt: Tephigram from List Data
+
+     :ref:`sphx_glr_auto_examples_tephigram.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_tephigram.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="ENS Tephigram">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_ens_tephigram_thumb.png
+     :alt: ENS Tephigram
+
+     :ref:`sphx_glr_auto_examples_ens_tephigram.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_ens_tephigram.py`

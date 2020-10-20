@@ -1,3 +1,9 @@
+
+"""
+Cross Section
+=============================
+"""
+
 # (C) Copyright 2017- ECMWF.
 #
 # This software is licensed under the terms of the Apache Licence Version 2.0
@@ -8,14 +14,10 @@
 # nor does it submit to any jurisdiction.
 #
 
-"""
-Cross Section
-=============================
-"""
 
 # ------------------------------------------------------------------
-# Description: Demonstrates how to use a Cross Section View to
-#              compute and plot a vertical cross section of GRIB data
+# Demonstrates how to use a Cross Section View to
+# compute and plot a vertical cross section of GRIB data
 # ------------------------------------------------------------------
 
 import metview as mv

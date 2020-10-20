@@ -14,8 +14,8 @@ Bar Chart Plotting
 #
 
 # ------------------------------------------------------------------
-# Description: Demonstrates how to plot time serie vectors using linebars
-#              and bars in a Cartesian view.
+# Demonstrates how to plot time serie vectors using linebars
+# and bars in a Cartesian view.
 # ------------------------------------------------------------------
 
 import metview as mv

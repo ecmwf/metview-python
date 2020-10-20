@@ -14,8 +14,8 @@ Wind Vectors from List Data
 #
 
 # -------------------------------------------------------------------------------
-# Description: Demonstrates how to plot a set of vectors as coloured arrows using
-#              advance mode (colour depends on arrow length).
+# Demonstrates how to plot a set of vectors as coloured arrows using 
+# advance mode (colour depends on arrow length).
 # -------------------------------------------------------------------------------
 
 import metview as mv

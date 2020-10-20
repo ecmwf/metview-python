@@ -122,11 +122,6 @@ NetCDF Sea Currents with Fix-sized Vectors
     mv.plot(view, vis, vector_plotting, legend, title)
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.873 seconds)
-
-
 .. _sphx_glr_download_auto_examples_nc_seacurrent_fixed_vector.py:
 
 

@@ -1,0 +1,156 @@
+
+
+Examples using ``metview.mxsectview``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_pl_data_thumb.png
+     :alt: Cross Section
+
+     :ref:`sphx_glr_auto_examples_cross_section_pl_data.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_cross_section_pl_data.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section with Orography">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_orog_thumb.png
+     :alt: Cross Section with Orography
+
+     :ref:`sphx_glr_auto_examples_cross_section_orog.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_cross_section_orog.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section 3D Parallel Wind">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_wind_3d_thumb.png
+     :alt: Cross Section 3D Parallel Wind
+
+     :ref:`sphx_glr_auto_examples_cross_section_wind_3d.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_cross_section_wind_3d.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section in Height for Model Level Data with Orography">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_height_ml_orog_thumb.png
+     :alt: Cross Section in Height for Model Level Data with Orography
+
+     :ref:`sphx_glr_auto_examples_cross_section_height_ml_orog.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_cross_section_height_ml_orog.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section Parallel Wind Component with Map">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_wind_parallel_thumb.png
+     :alt: Cross Section Parallel Wind Component with Map
+
+     :ref:`sphx_glr_auto_examples_cross_section_wind_parallel.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_cross_section_wind_parallel.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section Normal Wind Component with Map">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_wind_normal_thumb.png
+     :alt: Cross Section Normal Wind Component with Map
+
+     :ref:`sphx_glr_auto_examples_cross_section_wind_normal.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_cross_section_wind_normal.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section Going Through the South Pole">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_via_pole_thumb.png
+     :alt: Cross Section Going Through the South Pole
+
+     :ref:`sphx_glr_auto_examples_cross_section_via_pole.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_cross_section_via_pole.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section with Orography and Boundary Layer Height">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_orog_and_blh_thumb.png
+     :alt: Cross Section with Orography and Boundary Layer Height
+
+     :ref:`sphx_glr_auto_examples_cross_section_orog_and_blh.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_cross_section_orog_and_blh.py`

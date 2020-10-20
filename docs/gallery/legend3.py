@@ -14,9 +14,9 @@ Histogram Legend
 #
 
 # ------------------------------------------------------------------
-# Description: Demonstrates how to combine two fields into a single plot
-#              using contour and shade. A histogram legend is used for one
-#              of the fields.
+# Demonstrates how to combine two fields into a single plot
+# using contour and shade. A histogram legend is used for one
+# of the fields.
 # ------------------------------------------------------------------
 
 import metview as mv

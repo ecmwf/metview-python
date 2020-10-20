@@ -91,11 +91,6 @@ Geocircle on Map
     mv.plot(view, plt_lst)
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.433 seconds)
-
-
 .. _sphx_glr_download_auto_examples_geocircle_on_map.py:
 
 

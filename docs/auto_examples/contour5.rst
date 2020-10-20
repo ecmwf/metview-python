@@ -26,18 +26,20 @@ Contour Shading and Positional Legend
 .. code-block:: default
 
 
-    #  **************************** LICENSE START ***********************************
+
+    # (C) Copyright 2017- ECMWF.
     #
-    #  Copyright 2018 ECMWF. This software is distributed under the terms
-    #  of the Apache License version 2.0. In applying this license, ECMWF does not
-    #  waive the privileges and immunities granted to it by virtue of its status as
-    #  an Intergovernmental Organization or submit itself to any jurisdiction.
+    # This software is licensed under the terms of the Apache Licence Version 2.0
+    # which can be obtained at http://www.apache.org/licenses/LICENSE-2.0.
     #
-    #  ***************************** LICENSE END ************************************
+    # In applying this licence, ECMWF does not waive the privileges and immunities
+    # granted to it by virtue of its status as an intergovernmental organisation
+    # nor does it submit to any jurisdiction.
+
 
     # ------------------------------------------------------------------
-    # Description: Demonstrates how to show a field using contour shading and
-    #              define a positional vertical legend.
+    # Demonstrates how to show a field using contour shading and
+    # define a positional vertical legend.
     # ------------------------------------------------------------------
 
     import metview as mv
@@ -112,11 +114,6 @@ Contour Shading and Positional Legend
 
     # plot the data onto the map
     mv.plot(my_view, my_data, my_contour, my_legend, my_coast, my_title)
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.588 seconds)
 
 
 .. _sphx_glr_download_auto_examples_contour5.py:

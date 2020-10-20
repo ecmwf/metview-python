@@ -11,7 +11,7 @@ bufr_picker
 
     .. container:: rightside
 
-        This icon performs an ODB/SQL query on an ODB database (ODB-1) or file (ODB-2). The result is always an ODB file (in ODB-2 format).
+        This icon represents the `bufr picker <https://confluence.ecmwf.int/display/METV/bufr+picker>`_ icon in Metview's user interface.
 
 
 .. py:function:: bufr_picker(**kwargs)

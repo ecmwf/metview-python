@@ -1,6 +1,7 @@
+
 """
-Split Contouring
-==============================================
+Split contouring
+======================
 """
 
 # (C) Copyright 2017- ECMWF.
@@ -13,15 +14,17 @@ Split Contouring
 # nor does it submit to any jurisdiction.
 #
 
+
+import metview as mv 
+
 # ---------------------------------------------------------------
-# Description: Demonstrates one way to emulate Metview 3's split
-#              contouring facility using multiple Contouring
-#              definitions in later Metview versions
+# Demonstrates one way to emulate Metview 3's split
+# contouring facility using multiple Contouring
+# definitions in later Metview versions
 # ---------------------------------------------------------------
 
-import metview as mv
 
-use_mars = False
+use_mars = 1
 if use_mars:
     # Retrieve data from MARS
     data = mv.retrieve(param="t", levelist=1000, grid=[1.5, 1.5], date=-10)
@@ -50,6 +53,7 @@ split_on = mv.mcont(
     contour_max_level=0,
     contour_min_level=0,
 )
+
 
 # define the output plot file
 mv.setoutput(mv.pdf_output(output_name="split_contour"))

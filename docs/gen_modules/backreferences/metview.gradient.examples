@@ -21,3 +21,22 @@ Examples using ``metview.gradient``
 .. only:: not html
 
  * :ref:`sphx_glr_auto_examples_advection.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Temperature Gradient Vectors">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_gradient_vector_thumb.png
+     :alt: Temperature Gradient Vectors
+
+     :ref:`sphx_glr_auto_examples_gradient_vector.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_gradient_vector.py`

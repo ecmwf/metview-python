@@ -125,11 +125,6 @@ Model-Obs Difference
     mv.plot(view, diff, diff_symb, title, legend)
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  1.868 seconds)
-
-
 .. _sphx_glr_download_auto_examples_model_obs_diff_plot.py:
 
 

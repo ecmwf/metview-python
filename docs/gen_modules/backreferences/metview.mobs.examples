@@ -1,0 +1,42 @@
+
+
+Examples using ``metview.mobs``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="BUFR Synop Map">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_synop_map_thumb.png
+     :alt: BUFR Synop Map
+
+     :ref:`sphx_glr_auto_examples_synop_map.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_synop_map.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="BUFR Temp Map">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_temp_map_thumb.png
+     :alt: BUFR Temp Map
+
+     :ref:`sphx_glr_auto_examples_temp_map.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_temp_map.py`

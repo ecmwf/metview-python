@@ -16,7 +16,7 @@ Wind Coloured by Temperature
 import metview as mv
 
 # read grib file - contains model level data, one timestep
-fs = mv.read(source="fc_ml.grib")
+fs = mv.read("fc_ml.grib")
 
 # define model level to read
 level = 96  # around 500 hPa

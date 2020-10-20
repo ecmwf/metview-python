@@ -125,11 +125,6 @@ Parcel Method on Skew-T
     mv.plot(view, parcel_area, prof, prof_vis, parcel_vis, title, info_box)
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  1.584 seconds)
-
-
 .. _sphx_glr_download_auto_examples_parcel_path_skewt_grib.py:
 
 

@@ -75,27 +75,6 @@ Below is a gallery of examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_pl_data_thumb.png
-     :alt: Cross Section
-
-     :ref:`sphx_glr_auto_examples_cross_section_pl_data.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/cross_section_pl_data
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="SSt on Extended Cylindrical Map">
 
 .. only:: html
@@ -114,6 +93,27 @@ Below is a gallery of examples
    :hidden:
 
    /auto_examples/sst_extended_latlon
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Contour Shading Only Over Land">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_shading_only_over_land_thumb.png
+     :alt: Contour Shading Only Over Land
+
+     :ref:`sphx_glr_auto_examples_shading_only_over_land.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/shading_only_over_land
 
 .. raw:: html
 
@@ -156,27 +156,6 @@ Below is a gallery of examples
    :hidden:
 
    /auto_examples/tephigram_bufr
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Boundaries, Cities and Rivers">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_coastlines2_thumb.png
-     :alt: Boundaries, Cities and Rivers
-
-     :ref:`sphx_glr_auto_examples_coastlines2.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/coastlines2
 
 .. raw:: html
 
@@ -243,14 +222,14 @@ Below is a gallery of examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Coloured observation values">
+    <div class="sphx-glr-thumbcontainer" tooltip="Boundaries, Cities and Rivers">
 
 .. only:: html
 
- .. figure:: /auto_examples/images/thumb/sphx_glr_coloured_obs_values_thumb.png
-     :alt: Coloured observation values
+ .. figure:: /auto_examples/images/thumb/sphx_glr_coastlines2_thumb.png
+     :alt: Boundaries, Cities and Rivers
 
-     :ref:`sphx_glr_auto_examples_coloured_obs_values.py`
+     :ref:`sphx_glr_auto_examples_coastlines2.py`
 
 .. raw:: html
 
@@ -260,7 +239,49 @@ Below is a gallery of examples
 .. toctree::
    :hidden:
 
-   /auto_examples/coloured_obs_values
+   /auto_examples/coastlines2
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Plot test labels at geopoints locations">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_text_at_geopoints_locations_thumb.png
+     :alt: Plot test labels at geopoints locations
+
+     :ref:`sphx_glr_auto_examples_text_at_geopoints_locations.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/text_at_geopoints_locations
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_pl_data_thumb.png
+     :alt: Cross Section
+
+     :ref:`sphx_glr_auto_examples_cross_section_pl_data.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/cross_section_pl_data
 
 .. raw:: html
 
@@ -282,6 +303,27 @@ Below is a gallery of examples
    :hidden:
 
    /auto_examples/geoline_on_map
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Fill the area between two curves">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_fill_between_curves_thumb.png
+     :alt: Fill the area between two curves
+
+     :ref:`sphx_glr_auto_examples_fill_between_curves.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/fill_between_curves
 
 .. raw:: html
 
@@ -324,6 +366,27 @@ Below is a gallery of examples
    :hidden:
 
    /auto_examples/ens_prob
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Field anomalies">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_field_anomalies_thumb.png
+     :alt: Field anomalies
+
+     :ref:`sphx_glr_auto_examples_field_anomalies.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/field_anomalies
 
 .. raw:: html
 
@@ -390,27 +453,6 @@ Below is a gallery of examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Meridional Average">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_meridional_average_thumb.png
-     :alt: Meridional Average
-
-     :ref:`sphx_glr_auto_examples_meridional_average.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/meridional_average
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Wind Coloured by Temperature">
 
 .. only:: html
@@ -429,6 +471,27 @@ Below is a gallery of examples
    :hidden:
 
    /auto_examples/wind_coloured_by_t
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Meridional Average">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_meridional_average_thumb.png
+     :alt: Meridional Average
+
+     :ref:`sphx_glr_auto_examples_meridional_average.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/meridional_average
 
 .. raw:: html
 
@@ -474,6 +537,27 @@ Below is a gallery of examples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Temperature Below 0 Celsius">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_contour10_thumb.png
+     :alt: Temperature Below 0 Celsius
+
+     :ref:`sphx_glr_auto_examples_contour10.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/contour10
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Hovmoeller Area Average">
 
 .. only:: html
@@ -495,14 +579,14 @@ Below is a gallery of examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Temperature Below 0 Celsius">
+    <div class="sphx-glr-thumbcontainer" tooltip="Coloured observation values">
 
 .. only:: html
 
- .. figure:: /auto_examples/images/thumb/sphx_glr_contour10_thumb.png
-     :alt: Temperature Below 0 Celsius
+ .. figure:: /auto_examples/images/thumb/sphx_glr_coloured_obs_values_thumb.png
+     :alt: Coloured observation values
 
-     :ref:`sphx_glr_auto_examples_contour10.py`
+     :ref:`sphx_glr_auto_examples_coloured_obs_values.py`
 
 .. raw:: html
 
@@ -512,7 +596,28 @@ Below is a gallery of examples
 .. toctree::
    :hidden:
 
-   /auto_examples/contour10
+   /auto_examples/coloured_obs_values
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Contouring with gradient shading">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_gradient_shading_thumb.png
+     :alt: Contouring with gradient shading
+
+     :ref:`sphx_glr_auto_examples_gradient_shading.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/gradient_shading
 
 .. raw:: html
 
@@ -537,14 +642,14 @@ Below is a gallery of examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Aircraft observations">
+    <div class="sphx-glr-thumbcontainer" tooltip="FLEXTRA Forward Trajectories">
 
 .. only:: html
 
- .. figure:: /auto_examples/images/thumb/sphx_glr_air_report_thumb.png
-     :alt: Aircraft observations
+ .. figure:: /auto_examples/images/thumb/sphx_glr_flextra_forward_thumb.png
+     :alt: FLEXTRA Forward Trajectories
 
-     :ref:`sphx_glr_auto_examples_air_report.py`
+     :ref:`sphx_glr_auto_examples_flextra_forward.py`
 
 .. raw:: html
 
@@ -554,7 +659,28 @@ Below is a gallery of examples
 .. toctree::
    :hidden:
 
-   /auto_examples/air_report
+   /auto_examples/flextra_forward
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Wind Field Overlay and Legend Box">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_wind_overlay_and_legend_box_thumb.png
+     :alt: Wind Field Overlay and Legend Box
+
+     :ref:`sphx_glr_auto_examples_wind_overlay_and_legend_box.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/wind_overlay_and_legend_box
 
 .. raw:: html
 
@@ -621,6 +747,27 @@ Below is a gallery of examples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Geopolyline on Map">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_geopolyline_on_map_thumb.png
+     :alt: Geopolyline on Map
+
+     :ref:`sphx_glr_auto_examples_geopolyline_on_map.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/geopolyline_on_map
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="NetCDF Wind">
 
 .. only:: html
@@ -642,6 +789,27 @@ Below is a gallery of examples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Aircraft observations">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_air_report_thumb.png
+     :alt: Aircraft observations
+
+     :ref:`sphx_glr_auto_examples_air_report.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/air_report
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Zonal Average">
 
 .. only:: html
@@ -660,6 +828,48 @@ Below is a gallery of examples
    :hidden:
 
    /auto_examples/zonal_average
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Plotting Station Ids from SYNOP BUFR">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_bufr_synop_station_id_thumb.png
+     :alt: Plotting Station Ids from SYNOP BUFR
+
+     :ref:`sphx_glr_auto_examples_bufr_synop_station_id.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/bufr_synop_station_id
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="GRIB Scatterplot">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_grib_scatterplot_thumb.png
+     :alt: GRIB Scatterplot
+
+     :ref:`sphx_glr_auto_examples_grib_scatterplot.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/grib_scatterplot
 
 .. raw:: html
 
@@ -726,27 +936,6 @@ Below is a gallery of examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Interval Shading Contour">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_contour9_thumb.png
-     :alt: Interval Shading Contour
-
-     :ref:`sphx_glr_auto_examples_contour9.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/contour9
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Difference Plot with Rainbow Contour Settings">
 
 .. only:: html
@@ -768,27 +957,6 @@ Below is a gallery of examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF Ozone Layout 2x2">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_nc_era5_ozone_thumb.png
-     :alt: NetCDF Ozone Layout 2x2
-
-     :ref:`sphx_glr_auto_examples_nc_era5_ozone.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/nc_era5_ozone
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Contour Shading and Positional Legend">
 
 .. only:: html
@@ -807,6 +975,48 @@ Below is a gallery of examples
    :hidden:
 
    /auto_examples/contour5
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="De-accumulate Precipitation Forecast">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_deaccumulate_precip_fc_thumb.png
+     :alt: De-accumulate Precipitation Forecast
+
+     :ref:`sphx_glr_auto_examples_deaccumulate_precip_fc.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/deaccumulate_precip_fc
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF Ozone Layout 2x2">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_nc_era5_ozone_thumb.png
+     :alt: NetCDF Ozone Layout 2x2
+
+     :ref:`sphx_glr_auto_examples_nc_era5_ozone.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/nc_era5_ozone
 
 .. raw:: html
 
@@ -915,6 +1125,27 @@ Below is a gallery of examples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="ODB Temp Wind">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_odb_temp_wind_thumb.png
+     :alt: ODB Temp Wind
+
+     :ref:`sphx_glr_auto_examples_odb_temp_wind.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/odb_temp_wind
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Storm Track">
 
 .. only:: html
@@ -936,14 +1167,14 @@ Below is a gallery of examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="ODB Temp Wind">
+    <div class="sphx-glr-thumbcontainer" tooltip="Interval Shading Contour">
 
 .. only:: html
 
- .. figure:: /auto_examples/images/thumb/sphx_glr_odb_temp_wind_thumb.png
-     :alt: ODB Temp Wind
+ .. figure:: /auto_examples/images/thumb/sphx_glr_contour9_thumb.png
+     :alt: Interval Shading Contour
 
-     :ref:`sphx_glr_auto_examples_odb_temp_wind.py`
+     :ref:`sphx_glr_auto_examples_contour9.py`
 
 .. raw:: html
 
@@ -953,7 +1184,7 @@ Below is a gallery of examples
 .. toctree::
    :hidden:
 
-   /auto_examples/odb_temp_wind
+   /auto_examples/contour9
 
 .. raw:: html
 
@@ -1062,6 +1293,27 @@ Below is a gallery of examples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section in Height for Model Level Data with Orography">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_height_ml_orog_thumb.png
+     :alt: Cross Section in Height for Model Level Data with Orography
+
+     :ref:`sphx_glr_auto_examples_cross_section_height_ml_orog.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/cross_section_height_ml_orog
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Windgust and MSLP with 10m Wind">
 
 .. only:: html
@@ -1104,27 +1356,6 @@ Below is a gallery of examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section Parallel Wind Component with Map">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_wind_parallel_thumb.png
-     :alt: Cross Section Parallel Wind Component with Map
-
-     :ref:`sphx_glr_auto_examples_cross_section_wind_parallel.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/cross_section_wind_parallel
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Vorticity and Wind">
 
 .. only:: html
@@ -1143,6 +1374,27 @@ Below is a gallery of examples
    :hidden:
 
    /auto_examples/wind4
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section Parallel Wind Component with Map">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_wind_parallel_thumb.png
+     :alt: Cross Section Parallel Wind Component with Map
+
+     :ref:`sphx_glr_auto_examples_cross_section_wind_parallel.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/cross_section_wind_parallel
 
 .. raw:: html
 
@@ -1167,6 +1419,27 @@ Below is a gallery of examples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section Going Through the South Pole">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_via_pole_thumb.png
+     :alt: Cross Section Going Through the South Pole
+
+     :ref:`sphx_glr_auto_examples_cross_section_via_pole.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/cross_section_via_pole
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="ODB Wind Profiler">
 
 .. only:: html
@@ -1185,6 +1458,27 @@ Below is a gallery of examples
    :hidden:
 
    /auto_examples/odb_wind_profiler
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section with Orography and Boundary Layer Height">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_orog_and_blh_thumb.png
+     :alt: Cross Section with Orography and Boundary Layer Height
+
+     :ref:`sphx_glr_auto_examples_cross_section_orog_and_blh.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/cross_section_orog_and_blh
 
 .. raw:: html
 
@@ -1230,12 +1524,12 @@ Below is a gallery of examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR Temp Map">
+    <div class="sphx-glr-thumbcontainer" tooltip="BUFR Hodograph">
 
 .. only:: html
 
  .. figure:: /auto_examples/images/thumb/sphx_glr_hodograph_thumb.png
-     :alt: BUFR Temp Map
+     :alt: BUFR Hodograph
 
      :ref:`sphx_glr_auto_examples_hodograph.py`
 
@@ -1284,12 +1578,12 @@ GRIB map plotting
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Split Contouring">
+    <div class="sphx-glr-thumbcontainer" tooltip="Split contouring">
 
 .. only:: html
 
  .. figure:: /auto_examples/grib/images/thumb/sphx_glr_split_contour_thumb.png
-     :alt: Split Contouring
+     :alt: Split contouring
 
      :ref:`sphx_glr_auto_examples_grib_split_contour.py`
 

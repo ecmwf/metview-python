@@ -1,0 +1,232 @@
+
+
+Examples using ``metview.msymb``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Taylor Diagram">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_taylor_thumb.png
+     :alt: Taylor Diagram
+
+     :ref:`sphx_glr_auto_examples_taylor.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_taylor.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Plot test labels at geopoints locations">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_text_at_geopoints_locations_thumb.png
+     :alt: Plot test labels at geopoints locations
+
+     :ref:`sphx_glr_auto_examples_text_at_geopoints_locations.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_text_at_geopoints_locations.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Coloured observation values">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_coloured_obs_values_thumb.png
+     :alt: Coloured observation values
+
+     :ref:`sphx_glr_auto_examples_coloured_obs_values.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_coloured_obs_values.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="FLEXTRA Forward Trajectories">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_flextra_forward_thumb.png
+     :alt: FLEXTRA Forward Trajectories
+
+     :ref:`sphx_glr_auto_examples_flextra_forward.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_flextra_forward.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="ODB Radiance Map">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_odb_radiance_thumb.png
+     :alt: ODB Radiance Map
+
+     :ref:`sphx_glr_auto_examples_odb_radiance.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_odb_radiance.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Aircraft observations">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_air_report_thumb.png
+     :alt: Aircraft observations
+
+     :ref:`sphx_glr_auto_examples_air_report.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_air_report.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Plotting Station Ids from SYNOP BUFR">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_bufr_synop_station_id_thumb.png
+     :alt: Plotting Station Ids from SYNOP BUFR
+
+     :ref:`sphx_glr_auto_examples_bufr_synop_station_id.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_bufr_synop_station_id.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF Marine Observations">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_nc_maritime_obs_thumb.png
+     :alt: NetCDF Marine Observations
+
+     :ref:`sphx_glr_auto_examples_nc_maritime_obs.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_nc_maritime_obs.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Model-Obs Difference">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_model_obs_diff_plot_thumb.png
+     :alt: Model-Obs Difference
+
+     :ref:`sphx_glr_auto_examples_model_obs_diff_plot.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_model_obs_diff_plot.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Storm Track">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_storm_track_thumb.png
+     :alt: Storm Track
+
+     :ref:`sphx_glr_auto_examples_storm_track.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_storm_track.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Graph Plot with Double Axis">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_double_axis_1_thumb.png
+     :alt: Graph Plot with Double Axis
+
+     :ref:`sphx_glr_auto_examples_double_axis_1.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_double_axis_1.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="BUFR Hodograph">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_hodograph_thumb.png
+     :alt: BUFR Hodograph
+
+     :ref:`sphx_glr_auto_examples_hodograph.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_hodograph.py`

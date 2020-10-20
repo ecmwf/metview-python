@@ -37,8 +37,8 @@ Geoline on Map
     #
 
     # ---------------------------------------------------------------
-    # Description: Demonstrates how to plot a line on any map
-    #              projection using function mvl_geoline.
+    # Demonstrates how to plot a line on any map projection using
+    # function mvl_geoline.
     # ---------------------------------------------------------------
 
     import metview as mv
@@ -76,11 +76,6 @@ Geoline on Map
 
     # plot the line on the map
     mv.plot(view, geoline, line_visdef)
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.356 seconds)
 
 
 .. _sphx_glr_download_auto_examples_geoline_on_map.py:

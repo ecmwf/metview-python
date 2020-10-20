@@ -1,3 +1,10 @@
+
+"""
+Interval Shading Contour
+======================================
+"""
+
+
 # (C) Copyright 2017- ECMWF.
 #
 # This software is licensed under the terms of the Apache Licence Version 2.0
@@ -8,13 +15,9 @@
 # nor does it submit to any jurisdiction.
 #
 
-"""
-Interval Shading Contour
-======================================
-"""
 
 # ----------------------------------------------------------------------------------
-# Description: Demonstrates how to define a shading contour using an interval range.
+# Demonstrates how to define a shading contour using an interval range.
 # ----------------------------------------------------------------------------------
 
 import metview as mv

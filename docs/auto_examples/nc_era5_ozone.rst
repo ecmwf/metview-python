@@ -125,11 +125,6 @@ NetCDF Ozone Layout 2x2
     mv.plot(p_obj)
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  1.480 seconds)
-
-
 .. _sphx_glr_download_auto_examples_nc_era5_ozone.py:
 
 

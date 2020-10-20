@@ -1,0 +1,23 @@
+
+
+Examples using ``metview.integrate``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Time Series from GRIB">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_time_series_thumb.png
+     :alt: Time Series from GRIB
+
+     :ref:`sphx_glr_auto_examples_time_series.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_time_series.py`

@@ -1,0 +1,460 @@
+
+
+Examples using ``metview.mlegend``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Simulated Satellite Image">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_simulated_sat_img_thumb.png
+     :alt: Simulated Satellite Image
+
+     :ref:`sphx_glr_auto_examples_simulated_sat_img.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_simulated_sat_img.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Fill the area between two curves">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_fill_between_curves_thumb.png
+     :alt: Fill the area between two curves
+
+     :ref:`sphx_glr_auto_examples_fill_between_curves.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_fill_between_curves.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Field anomalies">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_field_anomalies_thumb.png
+     :alt: Field anomalies
+
+     :ref:`sphx_glr_auto_examples_field_anomalies.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_field_anomalies.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Coloured observation values">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_coloured_obs_values_thumb.png
+     :alt: Coloured observation values
+
+     :ref:`sphx_glr_auto_examples_coloured_obs_values.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_coloured_obs_values.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Contouring with gradient shading">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_gradient_shading_thumb.png
+     :alt: Contouring with gradient shading
+
+     :ref:`sphx_glr_auto_examples_gradient_shading.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_gradient_shading.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="FLEXTRA Forward Trajectories">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_flextra_forward_thumb.png
+     :alt: FLEXTRA Forward Trajectories
+
+     :ref:`sphx_glr_auto_examples_flextra_forward.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_flextra_forward.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Wind Field Overlay and Legend Box">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_wind_overlay_and_legend_box_thumb.png
+     :alt: Wind Field Overlay and Legend Box
+
+     :ref:`sphx_glr_auto_examples_wind_overlay_and_legend_box.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_wind_overlay_and_legend_box.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="ODB Radiance Map">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_odb_radiance_thumb.png
+     :alt: ODB Radiance Map
+
+     :ref:`sphx_glr_auto_examples_odb_radiance.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_odb_radiance.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Aircraft observations">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_air_report_thumb.png
+     :alt: Aircraft observations
+
+     :ref:`sphx_glr_auto_examples_air_report.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_air_report.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="GRIB Scatterplot">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_grib_scatterplot_thumb.png
+     :alt: GRIB Scatterplot
+
+     :ref:`sphx_glr_auto_examples_grib_scatterplot.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_grib_scatterplot.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Disjoint Legend">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_legend2_thumb.png
+     :alt: Disjoint Legend
+
+     :ref:`sphx_glr_auto_examples_legend2.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_legend2.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Time Series from GRIB">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_time_series_thumb.png
+     :alt: Time Series from GRIB
+
+     :ref:`sphx_glr_auto_examples_time_series.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_time_series.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Time-height Section">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_time_height_xs_thumb.png
+     :alt: Time-height Section
+
+     :ref:`sphx_glr_auto_examples_time_height_xs.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_time_height_xs.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Contour Shading and Positional Legend">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_contour5_thumb.png
+     :alt: Contour Shading and Positional Legend
+
+     :ref:`sphx_glr_auto_examples_contour5.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_contour5.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="De-accumulate Precipitation Forecast">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_deaccumulate_precip_fc_thumb.png
+     :alt: De-accumulate Precipitation Forecast
+
+     :ref:`sphx_glr_auto_examples_deaccumulate_precip_fc.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_deaccumulate_precip_fc.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF Marine Observations">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_nc_maritime_obs_thumb.png
+     :alt: NetCDF Marine Observations
+
+     :ref:`sphx_glr_auto_examples_nc_maritime_obs.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_nc_maritime_obs.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Model-Obs Difference">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_model_obs_diff_plot_thumb.png
+     :alt: Model-Obs Difference
+
+     :ref:`sphx_glr_auto_examples_model_obs_diff_plot.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_model_obs_diff_plot.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF Sea Currents with Fix-sized Vectors">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_nc_seacurrent_fixed_vector_thumb.png
+     :alt: NetCDF Sea Currents with Fix-sized Vectors
+
+     :ref:`sphx_glr_auto_examples_nc_seacurrent_fixed_vector.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_nc_seacurrent_fixed_vector.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="CDF Curve">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cdf_curve_thumb.png
+     :alt: CDF Curve
+
+     :ref:`sphx_glr_auto_examples_cdf_curve.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_cdf_curve.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Histogram Legend">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_legend3_thumb.png
+     :alt: Histogram Legend
+
+     :ref:`sphx_glr_auto_examples_legend3.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_legend3.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section in Height for Model Level Data with Orography">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_height_ml_orog_thumb.png
+     :alt: Cross Section in Height for Model Level Data with Orography
+
+     :ref:`sphx_glr_auto_examples_cross_section_height_ml_orog.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_cross_section_height_ml_orog.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section Going Through the South Pole">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_via_pole_thumb.png
+     :alt: Cross Section Going Through the South Pole
+
+     :ref:`sphx_glr_auto_examples_cross_section_via_pole.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_cross_section_via_pole.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section with Orography and Boundary Layer Height">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_orog_and_blh_thumb.png
+     :alt: Cross Section with Orography and Boundary Layer Height
+
+     :ref:`sphx_glr_auto_examples_cross_section_orog_and_blh.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_cross_section_orog_and_blh.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="BUFR Hodograph">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_hodograph_thumb.png
+     :alt: BUFR Hodograph
+
+     :ref:`sphx_glr_auto_examples_hodograph.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_hodograph.py`

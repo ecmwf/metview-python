@@ -1,0 +1,213 @@
+
+
+Examples using ``metview.bindings.NetCDF``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Tephigram from BUFR">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_tephigram_bufr_thumb.png
+     :alt: Tephigram from BUFR
+
+     :ref:`sphx_glr_auto_examples_tephigram_bufr.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_tephigram_bufr.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF Temperature">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_nc_era5_t2_thumb.png
+     :alt: NetCDF Temperature
+
+     :ref:`sphx_glr_auto_examples_nc_era5_t2.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_nc_era5_t2.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF Wind">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_nc_era5_wind_thumb.png
+     :alt: NetCDF Wind
+
+     :ref:`sphx_glr_auto_examples_nc_era5_wind.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_nc_era5_wind.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF Ozone Layout 2x2">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_nc_era5_ozone_thumb.png
+     :alt: NetCDF Ozone Layout 2x2
+
+     :ref:`sphx_glr_auto_examples_nc_era5_ozone.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_nc_era5_ozone.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF Marine Observations">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_nc_maritime_obs_thumb.png
+     :alt: NetCDF Marine Observations
+
+     :ref:`sphx_glr_auto_examples_nc_maritime_obs.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_nc_maritime_obs.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF Sea Currents with Fix-sized Vectors">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_nc_seacurrent_fixed_vector_thumb.png
+     :alt: NetCDF Sea Currents with Fix-sized Vectors
+
+     :ref:`sphx_glr_auto_examples_nc_seacurrent_fixed_vector.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_nc_seacurrent_fixed_vector.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Parcel Method on Skew-T">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_parcel_path_skewt_grib_thumb.png
+     :alt: Parcel Method on Skew-T
+
+     :ref:`sphx_glr_auto_examples_parcel_path_skewt_grib.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_parcel_path_skewt_grib.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section in Height for Model Level Data with Orography">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_height_ml_orog_thumb.png
+     :alt: Cross Section in Height for Model Level Data with Orography
+
+     :ref:`sphx_glr_auto_examples_cross_section_height_ml_orog.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_cross_section_height_ml_orog.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section with Orography and Boundary Layer Height">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_orog_and_blh_thumb.png
+     :alt: Cross Section with Orography and Boundary Layer Height
+
+     :ref:`sphx_glr_auto_examples_cross_section_orog_and_blh.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_cross_section_orog_and_blh.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="BUFR Hodograph">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_hodograph_thumb.png
+     :alt: BUFR Hodograph
+
+     :ref:`sphx_glr_auto_examples_hodograph.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_hodograph.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="ENS Tephigram">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_ens_tephigram_thumb.png
+     :alt: ENS Tephigram
+
+     :ref:`sphx_glr_auto_examples_ens_tephigram.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_ens_tephigram.py`

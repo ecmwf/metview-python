@@ -37,8 +37,8 @@ Hovmoeller Area Average
     #
 
     # ----------------------------------------------------------------------
-    # Description: Demonstrates how to use a Hovmoeller View to
-    #              compute and plot an area average over time from GRIB data
+    # Demonstrates how to use a Hovmoeller View to
+    # compute and plot an area average over time from GRIB data
     # ----------------------------------------------------------------------
 
     import metview as mv
@@ -97,11 +97,6 @@ Hovmoeller Area Average
 
     # plot the data into the Hovmoeller view with visdefs for styling
     mv.plot(hovmoeller_view, t_ts, shade, title)
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.687 seconds)
 
 
 .. _sphx_glr_download_auto_examples_hovmoeller_area.py:

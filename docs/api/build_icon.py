@@ -5,6 +5,8 @@ import glob
 import re
 import requests
 import html2text
+import xml.etree.ElementTree as ET
+
 
 # exclude_list = ["compute",
 # "divrot_mir", "divwind_mir", "magml",
@@ -60,12 +62,14 @@ class DocParam:
 
 
 class DocFunction:
-    def __init__(self, name, dtype, desc, pix, title):
+    def __init__(self, name, conf):
         self.name = name
-        self.dtype = dtype
-        self.desc = desc
-        self.pix = pix
-        self.title = title
+        self.dtype = item.get("type", "")
+        self.desc = item.get("desc", "???")
+        self.pix = item.get("pix", "")
+        self.title = item.get("title", "")
+        self.mag = item.get("mag", False)
+
         if self.title == "":
             self.title = self.name.replace("_", " ")
         self.params = {}
@@ -97,6 +101,9 @@ class DocFunction:
             return
 
         h = r.text
+        if h == "":
+            return
+
         t = html2text.html2text(h)
         t = t.split("* No labels \n\nOverview")[0]
         blocks = t.split("### ")
@@ -142,6 +149,55 @@ class DocFunction:
 
                     # print(" final={}".format(self.params[name].desc))
 
+    def load_param_desc_magics(self):
+        if self.mag:
+
+            fname = os.getenv("HOME", "") + "/git/magics/metview_files/{}.yaml".format(
+                self.name.upper()
+            )
+            if not os.path.exists(fname):
+                return
+
+            with open(fname, "r") as f:
+                doc = yaml.safe_load(f)
+                for name, p in self.params.items():
+                    # print("  p={}".format(name))
+                    h_name = p.name
+                    v = doc.get(h_name, "")
+                    if v:
+                        v = v.strip()
+                        if v.startswith("'"):
+                            v = v[1:]
+                        if v.endswith("'"):
+                            v = v[:-1]
+
+                        v = v.replace("\t", "")
+                        v = v.replace("\n", "")
+                        v = self.resolve_arg_ref_magics(v)
+
+                        if p.values:
+                            if not v.endswith("."):
+                                v += ". "
+                            else:
+                                v += " "
+                            v += "The possible values:\n\n"
+                            for vv in p.values.split("/"):
+                                v += "        * {}\n".format(vv)
+
+                        if p.default is not None and not (
+                            isinstance(p.default, str) and p.default == ""
+                        ):
+                            if v.endswith("\n"):
+                                v += "        "
+                            elif not v.endswith("."):
+                                v += ". "
+                            else:
+                                v += " "
+
+                            v += "The default is: {}.".format(p.default)
+
+                        self.params[name].desc += v
+
     def remove_bold(self, t):
         return t.replace("**", "")
 
@@ -164,6 +220,15 @@ class DocFunction:
             # print("  p={}".format(p))
             r = re.compile("{}".format(p), re.IGNORECASE)
             t = r.sub("``{}``".format(name), t)
+        return t
+
+    def resolve_arg_ref_magics(self, t):
+        # print("text={}".format(t))
+        for name in self.params.keys():
+            # print("  p={}".format(p))
+            if "_" in name:
+                r = re.compile("{}".format(name), re.IGNORECASE)
+                t = r.sub("``{}``".format(name), t)
         return t
 
     def resolve_links(self, t):
@@ -206,6 +271,7 @@ def add_icon_rst(name, fname):
         print("class={} name={}".format(cls_name, name))
         fn.load_params(conf)
         fn.load_param_desc()
+        fn.load_param_desc_magics()
 
         output = "icon/{}.rst".format(cls_name)
 
@@ -224,7 +290,7 @@ def add_icon_rst(name, fname):
 
     .. container:: rightside
 
-        This icon performs an ODB/SQL query on an ODB database (ODB-1) or file (ODB-2). The result is always an ODB file (in ODB-2 format).
+        This icon represents the {} icon in Metview's user interface.
 
 
 .. py:function:: {}(**kwargs)
@@ -232,7 +298,12 @@ def add_icon_rst(name, fname):
     Description comes here!
 
 """.format(
-                    name, fn.pix, name
+                    name,
+                    fn.pix,
+                    "`{} <https://confluence.ecmwf.int/display/METV/{}>`_".format(
+                        fn.title, fn.title.replace(" ", "+")
+                    ),
+                    fn.name,
                 )
             )
 
@@ -291,13 +362,7 @@ with open("functions.yaml", "r") as f:
 
         # print("pix={}".format(item.get("pix", "")))
         # print("type={}".format(item.get("type", "")))
-        fn = DocFunction(
-            name,
-            item.get("type", ""),
-            item.get("desc", "???"),
-            item.get("pix", ""),
-            item.get("title", ""),
-        )
+        fn = DocFunction(name, item)
         # print(" -> {}".format(fn.pix))
         fn_list.append(fn)
 
@@ -307,5 +372,6 @@ for d_name in glob.glob(os.path.join(path, "*.yaml")):
     # if name == "flexpart_run":
     # if name == "odb_visualiser":
     # if name == "cartesianview":
+    # if name == "mcont":
     if 1:
         add_icon_rst(name, d_name)

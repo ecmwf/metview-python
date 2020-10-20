@@ -26,8 +26,20 @@ Interval Shading Contour
 .. code-block:: default
 
 
+
+    # (C) Copyright 2017- ECMWF.
+    #
+    # This software is licensed under the terms of the Apache Licence Version 2.0
+    # which can be obtained at http://www.apache.org/licenses/LICENSE-2.0.
+    #
+    # In applying this licence, ECMWF does not waive the privileges and immunities
+    # granted to it by virtue of its status as an intergovernmental organisation
+    # nor does it submit to any jurisdiction.
+    #
+
+
     # ----------------------------------------------------------------------------------
-    # Description: Demonstrates how to define a shading contour using an interval range.
+    # Demonstrates how to define a shading contour using an interval range.
     # ----------------------------------------------------------------------------------
 
     import metview as mv
@@ -119,11 +131,6 @@ Interval Shading Contour
 
     # plot the data onto the map
     mv.plot(my_view, my_coast, my_data, my_contour, my_title)
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.895 seconds)
 
 
 .. _sphx_glr_download_auto_examples_contour9.py:

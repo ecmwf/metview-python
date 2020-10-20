@@ -1,0 +1,42 @@
+
+
+Examples using ``metview.binning``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="GRIB Scatterplot">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_grib_scatterplot_thumb.png
+     :alt: GRIB Scatterplot
+
+     :ref:`sphx_glr_auto_examples_grib_scatterplot.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_grib_scatterplot.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="ODB Scatterplot with Binning">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_odb_scatterplot_binning_thumb.png
+     :alt: ODB Scatterplot with Binning
+
+     :ref:`sphx_glr_auto_examples_odb_scatterplot_binning.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_odb_scatterplot_binning.py`

@@ -126,11 +126,6 @@ Graph Plot with Double Axis
     mv.plot(dw[0], iv1, dots, dw[1])
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.880 seconds)
-
-
 .. _sphx_glr_download_auto_examples_double_axis_1.py:
 
 

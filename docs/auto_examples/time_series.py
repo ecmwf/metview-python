@@ -22,13 +22,13 @@ both_t = mv.read("t2m_td.grib")
 t2m = mv.read(data=both_t, param="2t") - 273.15
 t2d = mv.read(data=both_t, param="2d") - 273.15
 
-# for each temperature type, get the integral over an area
+# for each temperature type, get the weighted averages over an area
 # - returns a list of numbers, one for each field
 area = [75, -12.5, 35, 42.5]  # N,W,S,E
 t2m_int = mv.integrate(t2m, area)
 t2d_int = mv.integrate(t2d, area)
-print("t2m integrals: ", t2m_int)
-print("t2d integrals: ", t2d_int)
+print("t2m averages: ", t2m_int)
+print("t2d averages: ", t2d_int)
 
 # get the valid times for each field
 times_t2m = mv.valid_date(t2m)

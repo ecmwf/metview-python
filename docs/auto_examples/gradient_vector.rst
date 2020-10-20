@@ -110,11 +110,6 @@ Temperature Gradient Vectors
     mv.plot(view, t, t_cont, v, wp, title)
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  1.329 seconds)
-
-
 .. _sphx_glr_download_auto_examples_gradient_vector.py:
 
 

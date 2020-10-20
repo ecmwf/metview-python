@@ -1,0 +1,23 @@
+
+
+Examples using ``metview.percentile``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="ENS Tephigram">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_ens_tephigram_thumb.png
+     :alt: ENS Tephigram
+
+     :ref:`sphx_glr_auto_examples_ens_tephigram.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_ens_tephigram.py`

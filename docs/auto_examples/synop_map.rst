@@ -66,11 +66,6 @@ BUFR Synop Map
     mv.plot(view, bd, obsp)
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  3.271 seconds)
-
-
 .. _sphx_glr_download_auto_examples_synop_map.py:
 
 

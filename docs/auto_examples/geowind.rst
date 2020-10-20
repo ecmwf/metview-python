@@ -37,8 +37,8 @@ Wind Vectors from List Data
     #
 
     # -------------------------------------------------------------------------------
-    # Description: Demonstrates how to plot a set of vectors as coloured arrows using
-    #              advance mode (colour depends on arrow length).
+    # Demonstrates how to plot a set of vectors as coloured arrows using 
+    # advance mode (colour depends on arrow length).
     # -------------------------------------------------------------------------------
 
     import metview as mv
@@ -96,11 +96,6 @@ Wind Vectors from List Data
 
     # plot the data onto the map
     mv.plot(my_view, my_input, my_wind, my_title)
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.350 seconds)
 
 
 .. _sphx_glr_download_auto_examples_geowind.py:

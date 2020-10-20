@@ -39,7 +39,7 @@ Wind Coloured by Temperature
     import metview as mv
 
     # read grib file - contains model level data, one timestep
-    fs = mv.read(source="fc_ml.grib")
+    fs = mv.read("fc_ml.grib")
 
     # define model level to read
     level = 96  # around 500 hPa
@@ -89,11 +89,6 @@ Wind Coloured by Temperature
 
     # generate plot
     mv.plot(view, v, wp)
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  3.237 seconds)
 
 
 .. _sphx_glr_download_auto_examples_wind_coloured_by_t.py:

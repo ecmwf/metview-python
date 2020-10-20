@@ -26,10 +26,17 @@ Boundaries, Cities and Rivers
 .. code-block:: default
 
 
-    # ---------------------------------------------------------------
-    # Description: Demonstrates how to show main cities, rivers, borders
-    #              and admnistrative boundaries.
-    # ---------------------------------------------------------------
+
+    # (C) Copyright 2017- ECMWF.
+    #
+    # This software is licensed under the terms of the Apache Licence Version 2.0
+    # which can be obtained at http://www.apache.org/licenses/LICENSE-2.0.
+    #
+    # In applying this licence, ECMWF does not waive the privileges and immunities
+    # granted to it by virtue of its status as an intergovernmental organisation
+    # nor does it submit to any jurisdiction.
+    #
+
 
     import metview as mv
 
@@ -70,11 +77,6 @@ Boundaries, Cities and Rivers
 
     # plot the map with the given style
     mv.plot(my_view, my_coast, my_text)
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.674 seconds)
 
 
 .. _sphx_glr_download_auto_examples_coastlines2.py:

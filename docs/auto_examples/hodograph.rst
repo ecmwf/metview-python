@@ -9,7 +9,7 @@
     .. _sphx_glr_auto_examples_hodograph.py:
 
 
-BUFR Temp Map
+BUFR Hodograph
 ==============================================
 
 
@@ -195,11 +195,6 @@ BUFR Temp Map
 
     # generate the plot
     mv.plot(dw, gr_lst, gr_wind, legend, title)
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  4.168 seconds)
 
 
 .. _sphx_glr_download_auto_examples_hodograph.py:

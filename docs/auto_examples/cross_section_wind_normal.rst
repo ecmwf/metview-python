@@ -150,11 +150,6 @@ Cross Section Normal Wind Component with Map
     mv.plot(dw[0], f_z, cont_z, vis_line, graph_line, map_title, dw[1], f_uv, wind_shade)
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.675 seconds)
-
-
 .. _sphx_glr_download_auto_examples_cross_section_wind_normal.py:
 
 

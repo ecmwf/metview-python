@@ -133,11 +133,6 @@ Windgust and MSLP with 10m Wind
     mv.plot(view, wg, wgust_shade, mslp, mslp_990, mslp_sub_990, wind10, wind_plotting)
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  1.409 seconds)
-
-
 .. _sphx_glr_download_auto_examples_storm_joachim.py:
 
 

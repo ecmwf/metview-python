@@ -37,8 +37,8 @@ Bar Chart Plotting
     #
 
     # ------------------------------------------------------------------
-    # Description: Demonstrates how to plot time serie vectors using linebars
-    #              and bars in a Cartesian view.
+    # Demonstrates how to plot time serie vectors using linebars
+    # and bars in a Cartesian view.
     # ------------------------------------------------------------------
 
     import metview as mv
@@ -142,11 +142,6 @@ Bar Chart Plotting
 
     # plot the cartesian graph
     mv.plot(my_view, my_input1, my_graph1, my_input2, my_graph2, my_title)
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.228 seconds)
 
 
 .. _sphx_glr_download_auto_examples_graph4.py:

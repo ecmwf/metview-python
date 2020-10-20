@@ -11,7 +11,7 @@ mwind
 
     .. container:: rightside
 
-        This icon performs an ODB/SQL query on an ODB database (ODB-1) or file (ODB-2). The result is always an ODB file (in ODB-2 format).
+        This icon represents the `Wind Plotting <https://confluence.ecmwf.int/display/METV/Wind+Plotting>`_ icon in Metview's user interface.
 
 
 .. py:function:: mwind(**kwargs)
@@ -19,11 +19,16 @@ mwind
     Description comes here!
 
 
-    :param wind_field_type: 
+    :param wind_field_type: Method of wind field plotting. The possible values:
+
+        * flags
+        * arrows
+        * streamlines
+        The default is: arrows.
     :type wind_field_type: str
 
 
-    :param wind_thinning_factor: 
+    :param wind_thinning_factor: Controls the actual number of wind arrows or flags plotted. See main text for explanation. Needs to 1.0 or larger. The default is: 2.0.
     :type wind_thinning_factor: number
 
 
@@ -99,39 +104,58 @@ mwind
     :type wind_advanced_colour_list_policy: str
 
 
-    :param wind_flag_calm_indicator: 
+    :param wind_flag_calm_indicator: Plot calm indicator circle, if wind speed is less than 0.5 m/s (ON / OFF). The possible values:
+
+        * on
+        * off
+        The default is: on.
     :type wind_flag_calm_indicator: str
 
 
-    :param wind_flag_calm_indicator_size: 
+    :param wind_flag_calm_indicator_size: The radius of the circle which indicates calm in centimeter. The default is: 0.3.
     :type wind_flag_calm_indicator_size: number
 
 
-    :param wind_flag_calm_below: 
+    :param wind_flag_calm_below: Winds less than or equal to this value will be drawn as calm. The default is: 0.5.
     :type wind_flag_calm_below: number
 
 
-    :param wind_flag_colour: 
+    :param wind_flag_colour: Colour of wind flag shaft, barbs and pennants. The possible values:
+
+        * background
+        The default is: blue.
     :type wind_flag_colour: str
 
 
-    :param wind_flag_length: 
+    :param wind_flag_length: Physical length of wind flag shaft. The default is: 1.0.
     :type wind_flag_length: number
 
 
-    :param wind_flag_max_speed: 
+    :param wind_flag_max_speed: Highest value of wind speed to be plotted. The default is: 1.0e+21.
     :type wind_flag_max_speed: number
 
 
-    :param wind_flag_min_speed: 
+    :param wind_flag_min_speed: Lowest value of wind speed to be plotted. The default is: -1.0e+21.
     :type wind_flag_min_speed: number
 
 
-    :param wind_flag_style: 
+    :param wind_flag_style: Controls the line style of the wind flag shaft. The possible values:
+
+        * solid
+        * dash
+        * dot
+        * chain_dot
+        * chain_dash
+        The default is: solid.
     :type wind_flag_style: str
 
 
-    :param wind_flag_origin_marker: 
+    :param wind_flag_origin_marker: Symbol for marking the exact location of the current grid point. The possible values:
+
+        * dot
+        * circle
+        * off
+        The default is: circle.
     :type wind_flag_origin_marker: str
 
 
@@ -139,87 +163,111 @@ mwind
     :type wind_flag_origin_marker_size: number
 
 
-    :param wind_flag_thickness: 
+    :param wind_flag_thickness: Thickness of wind flag shaft. The default is: 1.
     :type wind_flag_thickness: int
 
 
-    :param wind_arrow_calm_indicator: 
+    :param wind_arrow_calm_indicator: Plot calm indicator circle if wind speed is less than or equal to the value in ``wind_arrow_calm_below`` (ON / OFF). The possible values:
+
+        * on
+        * off
+        The default is: off.
     :type wind_arrow_calm_indicator: str
 
 
-    :param wind_arrow_calm_indicator_size: 
+    :param wind_arrow_calm_indicator_size: The radius of the circle which indicates calm. The default is: 0.3.
     :type wind_arrow_calm_indicator_size: number
 
 
-    :param wind_arrow_calm_below: 
+    :param wind_arrow_calm_below: Winds less than or equal to this value will be drawn as calm. The default is: 0.5.
     :type wind_arrow_calm_below: number
 
 
-    :param wind_arrow_colour: 
+    :param wind_arrow_colour: Colour of wind arrow. The possible values:
+
+        * background
+        The default is: blue.
     :type wind_arrow_colour: str
 
 
-    :param wind_arrow_head_shape: 
+    :param wind_arrow_head_shape: Table number, XY, indicating shape of arrowhead X. The default is: 0.
     :type wind_arrow_head_shape: int
 
 
-    :param wind_arrow_head_ratio: 
+    :param wind_arrow_head_ratio: Table number, XY, indicating style and shape of arrowhead X. The default is: 0.3.
     :type wind_arrow_head_ratio: number
 
 
-    :param wind_arrow_max_speed: 
+    :param wind_arrow_max_speed: Highest value of wind speed to be plotted. The default is: 1.0e+21.
     :type wind_arrow_max_speed: number
 
 
-    :param wind_arrow_min_speed: 
+    :param wind_arrow_min_speed: Lowest value of wind speed to be plotted. The default is: -1.0e+21.
     :type wind_arrow_min_speed: number
 
 
-    :param wind_arrow_fixed_velocity: 
+    :param wind_arrow_fixed_velocity: Fixed velocity arrows (m/s). The default is: 0.
     :type wind_arrow_fixed_velocity: number
 
 
-    :param wind_arrow_thickness: 
+    :param wind_arrow_thickness: Thickness of wind arrow shaft. The default is: 1.
     :type wind_arrow_thickness: int
 
 
-    :param wind_arrow_style: 
+    :param wind_arrow_style: Controls the line style of the arrow flag shaft. The possible values:
+
+        * solid
+        * dash
+        * dot
+        * chain_dot
+        * chain_dash
+        The default is: solid.
     :type wind_arrow_style: str
 
 
-    :param wind_arrow_unit_velocity: 
+    :param wind_arrow_unit_velocity: Wind speed in m/s represented by a unit vector (1.0 cm or 1.0 user unit depending on the value of wind_arrow_unit_system ). The default is: 25.0.
     :type wind_arrow_unit_velocity: number
 
 
-    :param wind_arrow_legend_text: 
+    :param wind_arrow_legend_text: Text to be used as units in the legend text. The default is: m.
     :type wind_arrow_legend_text: str
 
 
-    :param wind_streamline_min_density: 
+    :param wind_streamline_min_density: The minimum number of streamlines to be plotted in one square cm of the user's subpage. The default is: 1.
     :type wind_streamline_min_density: number
 
 
-    :param wind_streamline_min_speed: 
+    :param wind_streamline_min_speed: Wind speed below which streamline plotting will be stopped. The default is: 1.
     :type wind_streamline_min_speed: number
 
 
-    :param wind_streamline_thickness: 
+    :param wind_streamline_thickness: Thickness of streamlines. The default is: 2.
     :type wind_streamline_thickness: int
 
 
-    :param wind_streamline_colour: 
+    :param wind_streamline_colour: Colour of streamlines. The possible values:
+
+        * background
+        The default is: blue.
     :type wind_streamline_colour: str
 
 
-    :param wind_streamline_style: 
+    :param wind_streamline_style: Line style of streamlines. The possible values:
+
+        * solid
+        * dash
+        * dot
+        * chain_dot
+        * chain_dash
+        The default is: solid.
     :type wind_streamline_style: str
 
 
-    :param wind_streamline_head_shape: 
+    :param wind_streamline_head_shape: Table number, XY, indicating shape of arrowhead X. The default is: 0.
     :type wind_streamline_head_shape: int
 
 
-    :param wind_streamline_head_ratio: 
+    :param wind_streamline_head_ratio: Table number, XY, indicating style and shape of arrowhead X. The default is: 0.3.
     :type wind_streamline_head_ratio: number
 
 

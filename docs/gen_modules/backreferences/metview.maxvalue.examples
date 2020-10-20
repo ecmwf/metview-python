@@ -1,0 +1,80 @@
+
+
+Examples using ``metview.maxvalue``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Field anomalies">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_field_anomalies_thumb.png
+     :alt: Field anomalies
+
+     :ref:`sphx_glr_auto_examples_field_anomalies.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_field_anomalies.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="ODB Radiance Map">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_odb_radiance_thumb.png
+     :alt: ODB Radiance Map
+
+     :ref:`sphx_glr_auto_examples_odb_radiance.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_odb_radiance.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Model-Obs Difference">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_model_obs_diff_plot_thumb.png
+     :alt: Model-Obs Difference
+
+     :ref:`sphx_glr_auto_examples_model_obs_diff_plot.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_model_obs_diff_plot.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="ENS Tephigram">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_ens_tephigram_thumb.png
+     :alt: ENS Tephigram
+
+     :ref:`sphx_glr_auto_examples_ens_tephigram.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_ens_tephigram.py`

@@ -14,8 +14,8 @@ Disjoint Legend
 #
 
 # ------------------------------------------------------------------
-# Description: Demonstrates how to show a disjoint legend with labels
-#              for each level value.
+# Demonstrates how to show a disjoint legend with labels
+# for each level value.
 # ------------------------------------------------------------------
 
 import metview as mv

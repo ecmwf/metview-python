@@ -39,9 +39,7 @@ ODB Temp Wind
     import metview as mv
 
     # -------------------------------------------------------------------------
-    # Tags: ODB, Wind, Map
-    # Title: ODB TEMP wind map
-    # Description: Demonstrates how to plot TEMP wind data from ODB onto a map
+    # Demonstrates how to plot TEMP wind data from ODB onto a map
     # ------------------------------------------------------------------------
 
     # define pressure level
@@ -134,11 +132,6 @@ ODB Temp Wind
 
     # generate the plot
     mv.plot(coast, gpt, colour_wind, title)
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.638 seconds)
 
 
 .. _sphx_glr_download_auto_examples_odb_temp_wind.py:

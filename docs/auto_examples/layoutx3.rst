@@ -37,9 +37,9 @@ Layout with 3 Maps
     #
 
     # ------------------------------------------------------------------
-    # Description: Demonstrates how to use a Display Window icon to
-    #              produce a plot with 3 maps consisting of a) a 24h
-    #              forecast, b) a 96h forecast and c) their difference
+    # Demonstrates how to use a Display Window icon to
+    # produce a plot with 3 maps consisting of a) a 24h
+    # forecast, b) a 96h forecast and c) their difference
     # ------------------------------------------------------------------
 
     import metview as mv
@@ -175,11 +175,6 @@ Layout with 3 Maps
         pos_shade,
         title_diff,
     )
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  1.558 seconds)
 
 
 .. _sphx_glr_download_auto_examples_layoutx3.py:

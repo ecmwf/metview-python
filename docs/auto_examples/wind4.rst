@@ -37,8 +37,8 @@ Vorticity and Wind
     #
 
     # --------------------------------------------------------------------------------
-    # Description: Demonstrates how to combine a contour field and a wind field into a
-    #              single plot (inspired by an ecCharts product).
+    # Demonstrates how to combine a contour field and a wind field into a
+    # single plot (inspired by an ecCharts product).
     # --------------------------------------------------------------------------------
 
     import metview as mv
@@ -163,11 +163,6 @@ Vorticity and Wind
 
     # plot the data onto the map
     mv.plot(my_view, my_vorticity, my_contour, my_uvwind, my_wind, my_title)
-
-
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  5.648 seconds)
 
 
 .. _sphx_glr_download_auto_examples_wind4.py:

@@ -11,7 +11,7 @@ pdf_output
 
     .. container:: rightside
 
-        This icon performs an ODB/SQL query on an ODB database (ODB-1) or file (ODB-2). The result is always an ODB file (in ODB-2 format).
+        This icon represents the `pdf output <https://confluence.ecmwf.int/display/METV/pdf+output>`_ icon in Metview's user interface.
 
 
 .. py:function:: pdf_output(**kwargs)
