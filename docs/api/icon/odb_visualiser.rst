@@ -11,7 +11,7 @@ odb_visualiser
 
     .. container:: rightside
 
-        This icon represents the `ODB Visualiser <https://confluence.ecmwf.int/display/METV/ODB+Visualiser>`_ icon in Metview's user interface.
+        This function represents the `ODB Visualiser <https://confluence.ecmwf.int/display/METV/ODB+Visualiser>`_ icon in Metview's user interface.
 
 
 .. py:function:: odb_visualiser(**kwargs)

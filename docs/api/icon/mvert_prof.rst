@@ -11,7 +11,7 @@ mvert_prof
 
     .. container:: rightside
 
-        This icon represents the `Vertical Profile Data <https://confluence.ecmwf.int/display/METV/Vertical+Profile+Data>`_ icon in Metview's user interface.
+        This function represents the `Vertical Profile Data <https://confluence.ecmwf.int/display/METV/Vertical+Profile+Data>`_ icon in Metview's user interface.
 
 
 .. py:function:: mvert_prof(**kwargs)
@@ -52,8 +52,3 @@ mvert_prof
 
 
     :rtype: None
-
-
-.. minigallery:: metview.mvert_prof
-    :add-heading:
-

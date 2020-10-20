@@ -11,7 +11,7 @@ option_menu
 
     .. container:: rightside
 
-        This icon represents the `option menu <https://confluence.ecmwf.int/display/METV/option+menu>`_ icon in Metview's user interface.
+        This function represents the `Option Menu <https://confluence.ecmwf.int/display/METV/option+menu>`_ icon in Metview's user interface.
 
 
 .. py:function:: option_menu(**kwargs)
@@ -52,8 +52,3 @@ option_menu
 
 
     :rtype: None
-
-
-.. minigallery:: metview.option_menu
-    :add-heading:
-

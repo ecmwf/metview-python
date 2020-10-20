@@ -11,7 +11,7 @@ mthermo
 
     .. container:: rightside
 
-        This icon represents the `Thermo Plotting <https://confluence.ecmwf.int/display/METV/Thermo+Plotting>`_ icon in Metview's user interface.
+        This function represents the `Thermo Plotting <https://confluence.ecmwf.int/display/METV/Thermo+Plotting>`_ icon in Metview's user interface.
 
 
 .. py:function:: mthermo(**kwargs)

@@ -11,7 +11,7 @@ flexpart_run
 
     .. container:: rightside
 
-        This icon represents the `flexpart run <https://confluence.ecmwf.int/display/METV/flexpart+run>`_ icon in Metview's user interface.
+        This function represents the `Flexpart Run <https://confluence.ecmwf.int/display/METV/flexpart+run>`_ icon in Metview's user interface.
 
 
 .. py:function:: flexpart_run(**kwargs)
@@ -203,8 +203,3 @@ flexpart_run
 
 
     :rtype: None
-
-
-.. minigallery:: metview.flexpart_run
-    :add-heading:
-

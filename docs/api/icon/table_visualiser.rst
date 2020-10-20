@@ -11,7 +11,7 @@ table_visualiser
 
     .. container:: rightside
 
-        This icon represents the `table visualiser <https://confluence.ecmwf.int/display/METV/table+visualiser>`_ icon in Metview's user interface.
+        This function represents the `Table Visualiser <https://confluence.ecmwf.int/display/METV/table+visualiser>`_ icon in Metview's user interface.
 
 
 .. py:function:: table_visualiser(**kwargs)
@@ -104,8 +104,3 @@ table_visualiser
 
 
     :rtype: None
-
-
-.. minigallery:: metview.table_visualiser
-    :add-heading:
-

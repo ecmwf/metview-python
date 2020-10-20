@@ -11,7 +11,7 @@ menu
 
     .. container:: rightside
 
-        This icon represents the `menu <https://confluence.ecmwf.int/display/METV/menu>`_ icon in Metview's user interface.
+        This function represents the `Menu <https://confluence.ecmwf.int/display/METV/menu>`_ icon in Metview's user interface.
 
 
 .. py:function:: menu(**kwargs)
@@ -48,8 +48,3 @@ menu
 
 
     :rtype: None
-
-
-.. minigallery:: metview.menu
-    :add-heading:
-

@@ -11,7 +11,7 @@ met3d
 
     .. container:: rightside
 
-        This icon represents the `met3d <https://confluence.ecmwf.int/display/METV/met3d>`_ icon in Metview's user interface.
+        This function represents the `Met3d <https://confluence.ecmwf.int/display/METV/met3d>`_ icon in Metview's user interface.
 
 
 .. py:function:: met3d(**kwargs)
@@ -36,8 +36,3 @@ met3d
 
 
     :rtype: None
-
-
-.. minigallery:: metview.met3d
-    :add-heading:
-

@@ -11,7 +11,7 @@ mxsectview
 
     .. container:: rightside
 
-        This icon represents the `Cross Section View <https://confluence.ecmwf.int/display/METV/Cross+Section+View>`_ icon in Metview's user interface.
+        This function represents the `Cross Section View <https://confluence.ecmwf.int/display/METV/Cross+Section+View>`_ icon in Metview's user interface.
 
 
 .. py:function:: mxsectview(**kwargs)

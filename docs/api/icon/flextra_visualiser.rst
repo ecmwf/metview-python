@@ -11,7 +11,7 @@ flextra_visualiser
 
     .. container:: rightside
 
-        This icon represents the `flextra visualiser <https://confluence.ecmwf.int/display/METV/flextra+visualiser>`_ icon in Metview's user interface.
+        This function represents the `Flextra Visualiser <https://confluence.ecmwf.int/display/METV/flextra+visualiser>`_ icon in Metview's user interface.
 
 
 .. py:function:: flextra_visualiser(**kwargs)

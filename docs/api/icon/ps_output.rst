@@ -11,7 +11,7 @@ ps_output
 
     .. container:: rightside
 
-        This icon represents the `ps output <https://confluence.ecmwf.int/display/METV/ps+output>`_ icon in Metview's user interface.
+        This function represents the `Ps Output <https://confluence.ecmwf.int/display/METV/ps+output>`_ icon in Metview's user interface.
 
 
 .. py:function:: ps_output(**kwargs)
@@ -56,8 +56,3 @@ ps_output
 
 
     :rtype: None
-
-
-.. minigallery:: metview.ps_output
-    :add-heading:
-

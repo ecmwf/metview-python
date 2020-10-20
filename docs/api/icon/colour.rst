@@ -11,7 +11,7 @@ colour
 
     .. container:: rightside
 
-        This icon represents the `colour <https://confluence.ecmwf.int/display/METV/colour>`_ icon in Metview's user interface.
+        This function represents the `Colour <https://confluence.ecmwf.int/display/METV/colour>`_ icon in Metview's user interface.
 
 
 .. py:function:: colour(**kwargs)
@@ -40,8 +40,3 @@ colour
 
 
     :rtype: None
-
-
-.. minigallery:: metview.colour
-    :add-heading:
-

@@ -11,7 +11,7 @@ mxs_average
 
     .. container:: rightside
 
-        This icon represents the `Average View <https://confluence.ecmwf.int/display/METV/Average+View>`_ icon in Metview's user interface.
+        This function represents the `Average View <https://confluence.ecmwf.int/display/METV/Average+View>`_ icon in Metview's user interface.
 
 
 .. py:function:: mxs_average(**kwargs)
@@ -32,8 +32,3 @@ mxs_average
 
 
     :rtype: None
-
-
-.. minigallery:: metview.mxs_average
-    :add-heading:
-

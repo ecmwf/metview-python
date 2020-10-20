@@ -11,7 +11,7 @@ output
 
     .. container:: rightside
 
-        This icon represents the `output <https://confluence.ecmwf.int/display/METV/output>`_ icon in Metview's user interface.
+        This function represents the `Output <https://confluence.ecmwf.int/display/METV/output>`_ icon in Metview's user interface.
 
 
 .. py:function:: output(**kwargs)
@@ -92,8 +92,3 @@ output
 
 
     :rtype: None
-
-
-.. minigallery:: metview.output
-    :add-heading:
-

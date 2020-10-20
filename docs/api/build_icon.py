@@ -72,6 +72,12 @@ class DocFunction:
 
         if self.title == "":
             self.title = self.name.replace("_", " ")
+            
+            
+        self.conf_label = self.title
+        if self.conf_label.lower() == self.conf_label:
+                self.conf_label = " ".join([w.capitalize()  for w in self.conf_label.split(" ")])
+
         self.params = {}
         if self.dtype == "icon":
             if self.pix == "":
@@ -250,6 +256,9 @@ class DocFunction:
 
         return t
 
+    def need_mini_gallery(self):
+        return  os.path.exists("../gen_modules/backreferences/metview.{}.examples".format(self.name))
+
     @staticmethod
     def find(name):
         for f in fn_list:
@@ -290,7 +299,7 @@ def add_icon_rst(name, fname):
 
     .. container:: rightside
 
-        This icon represents the {} icon in Metview's user interface.
+        This function represents the {} icon in Metview's user interface.
 
 
 .. py:function:: {}(**kwargs)
@@ -301,7 +310,7 @@ def add_icon_rst(name, fname):
                     name,
                     fn.pix,
                     "`{} <https://confluence.ecmwf.int/display/METV/{}>`_".format(
-                        fn.title, fn.title.replace(" ", "+")
+                        fn.conf_label, fn.title.replace(" ", "+")
                     ),
                     fn.name,
                 )
@@ -342,7 +351,11 @@ def add_icon_rst(name, fname):
             f.write(
                 """
     :rtype: None
+""")
 
+            if fn.need_mini_gallery():
+                f.write(
+                    """
 
 .. minigallery:: metview.{}
     :add-heading:

@@ -11,7 +11,7 @@ grib_to_geo
 
     .. container:: rightside
 
-        This icon represents the `Grib To Geopoints <https://confluence.ecmwf.int/display/METV/Grib+To+Geopoints>`_ icon in Metview's user interface.
+        This function represents the `Grib To Geopoints <https://confluence.ecmwf.int/display/METV/Grib+To+Geopoints>`_ icon in Metview's user interface.
 
 
 .. py:function:: grib_to_geo(**kwargs)
@@ -32,8 +32,3 @@ grib_to_geo
 
 
     :rtype: None
-
-
-.. minigallery:: metview.grib_to_geo
-    :add-heading:
-

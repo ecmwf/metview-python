@@ -11,7 +11,7 @@ percentile
 
     .. container:: rightside
 
-        This icon represents the `percentile <https://confluence.ecmwf.int/display/METV/percentile>`_ icon in Metview's user interface.
+        This function represents the `Percentile <https://confluence.ecmwf.int/display/METV/percentile>`_ icon in Metview's user interface.
 
 
 .. py:function:: percentile(**kwargs)

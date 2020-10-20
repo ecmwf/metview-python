@@ -11,7 +11,7 @@ mtext
 
     .. container:: rightside
 
-        This icon represents the `Text Plotting <https://confluence.ecmwf.int/display/METV/Text+Plotting>`_ icon in Metview's user interface.
+        This function represents the `Text Plotting <https://confluence.ecmwf.int/display/METV/Text+Plotting>`_ icon in Metview's user interface.
 
 
 .. py:function:: mtext(**kwargs)

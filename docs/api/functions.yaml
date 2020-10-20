@@ -365,6 +365,7 @@
     category: {}
     desc: ''
     type: icon
+    title: Download from URL
 - drawing_priority:
     category: {}
     desc: ''

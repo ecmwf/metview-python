@@ -11,7 +11,7 @@ ui_float
 
     .. container:: rightside
 
-        This icon represents the `ui float <https://confluence.ecmwf.int/display/METV/ui+float>`_ icon in Metview's user interface.
+        This function represents the `Ui Float <https://confluence.ecmwf.int/display/METV/ui+float>`_ icon in Metview's user interface.
 
 
 .. py:function:: ui_float(**kwargs)
@@ -52,8 +52,3 @@ ui_float
 
 
     :rtype: None
-
-
-.. minigallery:: metview.ui_float
-    :add-heading:
-

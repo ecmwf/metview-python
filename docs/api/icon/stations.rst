@@ -11,7 +11,7 @@ stations
 
     .. container:: rightside
 
-        This icon represents the `stations <https://confluence.ecmwf.int/display/METV/stations>`_ icon in Metview's user interface.
+        This function represents the `Stations <https://confluence.ecmwf.int/display/METV/stations>`_ icon in Metview's user interface.
 
 
 .. py:function:: stations(**kwargs)

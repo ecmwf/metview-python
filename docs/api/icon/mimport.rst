@@ -11,7 +11,7 @@ mimport
 
     .. container:: rightside
 
-        This icon represents the `mimport <https://confluence.ecmwf.int/display/METV/mimport>`_ icon in Metview's user interface.
+        This function represents the `Mimport <https://confluence.ecmwf.int/display/METV/mimport>`_ icon in Metview's user interface.
 
 
 .. py:function:: mimport(**kwargs)
@@ -48,8 +48,3 @@ mimport
 
 
     :rtype: None
-
-
-.. minigallery:: metview.mimport
-    :add-heading:
-

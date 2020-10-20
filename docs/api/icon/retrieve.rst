@@ -11,7 +11,7 @@ retrieve
 
     .. container:: rightside
 
-        This icon represents the `retrieve <https://confluence.ecmwf.int/display/METV/retrieve>`_ icon in Metview's user interface.
+        This function represents the `Retrieve <https://confluence.ecmwf.int/display/METV/retrieve>`_ icon in Metview's user interface.
 
 
 .. py:function:: retrieve(**kwargs)

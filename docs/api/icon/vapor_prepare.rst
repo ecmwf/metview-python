@@ -11,7 +11,7 @@ vapor_prepare
 
     .. container:: rightside
 
-        This icon represents the `vapor prepare <https://confluence.ecmwf.int/display/METV/vapor+prepare>`_ icon in Metview's user interface.
+        This function represents the `Vapor Prepare <https://confluence.ecmwf.int/display/METV/vapor+prepare>`_ icon in Metview's user interface.
 
 
 .. py:function:: vapor_prepare(**kwargs)
@@ -100,8 +100,3 @@ vapor_prepare
 
 
     :rtype: None
-
-
-.. minigallery:: metview.vapor_prepare
-    :add-heading:
-

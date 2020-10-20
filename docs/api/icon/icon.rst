@@ -11,7 +11,7 @@ icon
 
     .. container:: rightside
 
-        This icon represents the `icon <https://confluence.ecmwf.int/display/METV/icon>`_ icon in Metview's user interface.
+        This function represents the `Icon <https://confluence.ecmwf.int/display/METV/icon>`_ icon in Metview's user interface.
 
 
 .. py:function:: icon(**kwargs)
@@ -48,8 +48,3 @@ icon
 
 
     :rtype: None
-
-
-.. minigallery:: metview.icon
-    :add-heading:
-

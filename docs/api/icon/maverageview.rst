@@ -11,7 +11,7 @@ maverageview
 
     .. container:: rightside
 
-        This icon represents the `Average View <https://confluence.ecmwf.int/display/METV/Average+View>`_ icon in Metview's user interface.
+        This function represents the `Average View <https://confluence.ecmwf.int/display/METV/Average+View>`_ icon in Metview's user interface.
 
 
 .. py:function:: maverageview(**kwargs)

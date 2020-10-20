@@ -11,7 +11,7 @@ cartesianview
 
     .. container:: rightside
 
-        This icon represents the `Cartesian View <https://confluence.ecmwf.int/display/METV/Cartesian+View>`_ icon in Metview's user interface.
+        This function represents the `Cartesian View <https://confluence.ecmwf.int/display/METV/Cartesian+View>`_ icon in Metview's user interface.
 
 
 .. py:function:: cartesianview(**kwargs)

@@ -11,7 +11,7 @@ rttov_visualiser
 
     .. container:: rightside
 
-        This icon represents the `rttov visualiser <https://confluence.ecmwf.int/display/METV/rttov+visualiser>`_ icon in Metview's user interface.
+        This function represents the `Rttov Visualiser <https://confluence.ecmwf.int/display/METV/rttov+visualiser>`_ icon in Metview's user interface.
 
 
 .. py:function:: rttov_visualiser(**kwargs)
@@ -36,8 +36,3 @@ rttov_visualiser
 
 
     :rtype: None
-
-
-.. minigallery:: metview.rttov_visualiser
-    :add-heading:
-

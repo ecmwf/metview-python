@@ -11,7 +11,7 @@ kml_output
 
     .. container:: rightside
 
-        This icon represents the `kml output <https://confluence.ecmwf.int/display/METV/kml+output>`_ icon in Metview's user interface.
+        This function represents the `Kml Output <https://confluence.ecmwf.int/display/METV/kml+output>`_ icon in Metview's user interface.
 
 
 .. py:function:: kml_output(**kwargs)
@@ -88,8 +88,3 @@ kml_output
 
 
     :rtype: None
-
-
-.. minigallery:: metview.kml_output
-    :add-heading:
-

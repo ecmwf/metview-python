@@ -11,7 +11,7 @@ flextra_run
 
     .. container:: rightside
 
-        This icon represents the `flextra run <https://confluence.ecmwf.int/display/METV/flextra+run>`_ icon in Metview's user interface.
+        This function represents the `Flextra Run <https://confluence.ecmwf.int/display/METV/flextra+run>`_ icon in Metview's user interface.
 
 
 .. py:function:: flextra_run(**kwargs)
@@ -250,8 +250,3 @@ flextra_run
 
 
     :rtype: None
-
-
-.. minigallery:: metview.flextra_run
-    :add-heading:
-

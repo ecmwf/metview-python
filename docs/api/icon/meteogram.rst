@@ -11,7 +11,7 @@ meteogram
 
     .. container:: rightside
 
-        This icon represents the `meteogram <https://confluence.ecmwf.int/display/METV/meteogram>`_ icon in Metview's user interface.
+        This function represents the `Meteogram <https://confluence.ecmwf.int/display/METV/meteogram>`_ icon in Metview's user interface.
 
 
 .. py:function:: meteogram(**kwargs)
@@ -58,8 +58,3 @@ meteogram
 
 
     :rtype: None
-
-
-.. minigallery:: metview.meteogram
-    :add-heading:
-

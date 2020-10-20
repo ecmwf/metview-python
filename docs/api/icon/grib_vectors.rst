@@ -11,7 +11,7 @@ grib_vectors
 
     .. container:: rightside
 
-        This icon represents the `grib vectors <https://confluence.ecmwf.int/display/METV/grib+vectors>`_ icon in Metview's user interface.
+        This function represents the `Grib Vectors <https://confluence.ecmwf.int/display/METV/grib+vectors>`_ icon in Metview's user interface.
 
 
 .. py:function:: grib_vectors(**kwargs)

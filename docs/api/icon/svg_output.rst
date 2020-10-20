@@ -11,7 +11,7 @@ svg_output
 
     .. container:: rightside
 
-        This icon represents the `svg output <https://confluence.ecmwf.int/display/METV/svg+output>`_ icon in Metview's user interface.
+        This function represents the `Svg Output <https://confluence.ecmwf.int/display/METV/svg+output>`_ icon in Metview's user interface.
 
 
 .. py:function:: svg_output(**kwargs)
@@ -68,8 +68,3 @@ svg_output
 
 
     :rtype: None
-
-
-.. minigallery:: metview.svg_output
-    :add-heading:
-

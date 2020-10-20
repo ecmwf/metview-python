@@ -11,7 +11,7 @@ annotationview
 
     .. container:: rightside
 
-        This icon represents the `Annotation View <https://confluence.ecmwf.int/display/METV/Annotation+View>`_ icon in Metview's user interface.
+        This function represents the `Annotation View <https://confluence.ecmwf.int/display/METV/Annotation+View>`_ icon in Metview's user interface.
 
 
 .. py:function:: annotationview(**kwargs)
@@ -84,8 +84,3 @@ annotationview
 
 
     :rtype: None
-
-
-.. minigallery:: metview.annotationview
-    :add-heading:
-

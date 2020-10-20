@@ -11,7 +11,7 @@ read
 
     .. container:: rightside
 
-        This icon represents the `read <https://confluence.ecmwf.int/display/METV/read>`_ icon in Metview's user interface.
+        This function represents the `Read <https://confluence.ecmwf.int/display/METV/read>`_ icon in Metview's user interface.
 
 
 .. py:function:: read(**kwargs)

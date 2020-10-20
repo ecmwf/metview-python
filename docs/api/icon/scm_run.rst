@@ -11,7 +11,7 @@ scm_run
 
     .. container:: rightside
 
-        This icon represents the `scm run <https://confluence.ecmwf.int/display/METV/scm+run>`_ icon in Metview's user interface.
+        This function represents the `Scm Run <https://confluence.ecmwf.int/display/METV/scm+run>`_ icon in Metview's user interface.
 
 
 .. py:function:: scm_run(**kwargs)
@@ -60,8 +60,3 @@ scm_run
 
 
     :rtype: None
-
-
-.. minigallery:: metview.scm_run
-    :add-heading:
-

@@ -11,7 +11,7 @@ msymb
 
     .. container:: rightside
 
-        This icon represents the `Symbol Plotting <https://confluence.ecmwf.int/display/METV/Symbol+Plotting>`_ icon in Metview's user interface.
+        This function represents the `Symbol Plotting <https://confluence.ecmwf.int/display/METV/Symbol+Plotting>`_ icon in Metview's user interface.
 
 
 .. py:function:: msymb(**kwargs)

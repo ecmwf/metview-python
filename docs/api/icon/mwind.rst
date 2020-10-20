@@ -11,7 +11,7 @@ mwind
 
     .. container:: rightside
 
-        This icon represents the `Wind Plotting <https://confluence.ecmwf.int/display/METV/Wind+Plotting>`_ icon in Metview's user interface.
+        This function represents the `Wind Plotting <https://confluence.ecmwf.int/display/METV/Wind+Plotting>`_ icon in Metview's user interface.
 
 
 .. py:function:: mwind(**kwargs)

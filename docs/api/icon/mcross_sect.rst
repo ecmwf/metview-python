@@ -11,7 +11,7 @@ mcross_sect
 
     .. container:: rightside
 
-        This icon represents the `Cross Section Data <https://confluence.ecmwf.int/display/METV/Cross+Section+Data>`_ icon in Metview's user interface.
+        This function represents the `Cross Section Data <https://confluence.ecmwf.int/display/METV/Cross+Section+Data>`_ icon in Metview's user interface.
 
 
 .. py:function:: mcross_sect(**kwargs)

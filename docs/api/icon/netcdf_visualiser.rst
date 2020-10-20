@@ -11,7 +11,7 @@ netcdf_visualiser
 
     .. container:: rightside
 
-        This icon represents the `netcdf visualiser <https://confluence.ecmwf.int/display/METV/netcdf+visualiser>`_ icon in Metview's user interface.
+        This function represents the `Netcdf Visualiser <https://confluence.ecmwf.int/display/METV/netcdf+visualiser>`_ icon in Metview's user interface.
 
 
 .. py:function:: netcdf_visualiser(**kwargs)

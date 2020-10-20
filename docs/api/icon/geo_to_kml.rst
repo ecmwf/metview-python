@@ -11,7 +11,7 @@ geo_to_kml
 
     .. container:: rightside
 
-        This icon represents the `Geopoints To KML <https://confluence.ecmwf.int/display/METV/Geopoints+To+KML>`_ icon in Metview's user interface.
+        This function represents the `Geopoints To KML <https://confluence.ecmwf.int/display/METV/Geopoints+To+KML>`_ icon in Metview's user interface.
 
 
 .. py:function:: geo_to_kml(**kwargs)
@@ -36,8 +36,3 @@ geo_to_kml
 
 
     :rtype: None
-
-
-.. minigallery:: metview.geo_to_kml
-    :add-heading:
-

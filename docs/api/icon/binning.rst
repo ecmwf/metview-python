@@ -11,7 +11,7 @@ binning
 
     .. container:: rightside
 
-        This icon represents the `binning <https://confluence.ecmwf.int/display/METV/binning>`_ icon in Metview's user interface.
+        This function represents the `Binning <https://confluence.ecmwf.int/display/METV/binning>`_ icon in Metview's user interface.
 
 
 .. py:function:: binning(**kwargs)

@@ -11,7 +11,7 @@ scm_visualiser
 
     .. container:: rightside
 
-        This icon represents the `scm visualiser <https://confluence.ecmwf.int/display/METV/scm+visualiser>`_ icon in Metview's user interface.
+        This function represents the `Scm Visualiser <https://confluence.ecmwf.int/display/METV/scm+visualiser>`_ icon in Metview's user interface.
 
 
 .. py:function:: scm_visualiser(**kwargs)
@@ -116,8 +116,3 @@ scm_visualiser
 
 
     :rtype: None
-
-
-.. minigallery:: metview.scm_visualiser
-    :add-heading:
-

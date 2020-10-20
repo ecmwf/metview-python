@@ -11,7 +11,7 @@ plot_subpage
 
     .. container:: rightside
 
-        This icon represents the `plot subpage <https://confluence.ecmwf.int/display/METV/plot+subpage>`_ icon in Metview's user interface.
+        This function represents the `Plot Subpage <https://confluence.ecmwf.int/display/METV/plot+subpage>`_ icon in Metview's user interface.
 
 
 .. py:function:: plot_subpage(**kwargs)
@@ -36,8 +36,3 @@ plot_subpage
 
 
     :rtype: None
-
-
-.. minigallery:: metview.plot_subpage
-    :add-heading:
-

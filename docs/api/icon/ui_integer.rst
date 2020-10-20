@@ -11,7 +11,7 @@ ui_integer
 
     .. container:: rightside
 
-        This icon represents the `ui integer <https://confluence.ecmwf.int/display/METV/ui+integer>`_ icon in Metview's user interface.
+        This function represents the `Ui Integer <https://confluence.ecmwf.int/display/METV/ui+integer>`_ icon in Metview's user interface.
 
 
 .. py:function:: ui_integer(**kwargs)
@@ -52,8 +52,3 @@ ui_integer
 
 
     :rtype: None
-
-
-.. minigallery:: metview.ui_integer
-    :add-heading:
-

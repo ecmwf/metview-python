@@ -11,7 +11,7 @@ reprojection
 
     .. container:: rightside
 
-        This icon represents the `reprojection <https://confluence.ecmwf.int/display/METV/reprojection>`_ icon in Metview's user interface.
+        This function represents the `Reprojection <https://confluence.ecmwf.int/display/METV/reprojection>`_ icon in Metview's user interface.
 
 
 .. py:function:: reprojection(**kwargs)
@@ -44,8 +44,3 @@ reprojection
 
 
     :rtype: None
-
-
-.. minigallery:: metview.reprojection
-    :add-heading:
-

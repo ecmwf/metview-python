@@ -11,7 +11,7 @@ slider
 
     .. container:: rightside
 
-        This icon represents the `slider <https://confluence.ecmwf.int/display/METV/slider>`_ icon in Metview's user interface.
+        This function represents the `Slider <https://confluence.ecmwf.int/display/METV/slider>`_ icon in Metview's user interface.
 
 
 .. py:function:: slider(**kwargs)
@@ -60,8 +60,3 @@ slider
 
 
     :rtype: None
-
-
-.. minigallery:: metview.slider
-    :add-heading:
-

@@ -11,7 +11,7 @@ mlegend
 
     .. container:: rightside
 
-        This icon represents the `Legend <https://confluence.ecmwf.int/display/METV/Legend>`_ icon in Metview's user interface.
+        This function represents the `Legend <https://confluence.ecmwf.int/display/METV/Legend>`_ icon in Metview's user interface.
 
 
 .. py:function:: mlegend(**kwargs)

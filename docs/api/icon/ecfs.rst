@@ -11,7 +11,7 @@ ecfs
 
     .. container:: rightside
 
-        This icon represents the `ecfs <https://confluence.ecmwf.int/display/METV/ecfs>`_ icon in Metview's user interface.
+        This function represents the `Ecfs <https://confluence.ecmwf.int/display/METV/ecfs>`_ icon in Metview's user interface.
 
 
 .. py:function:: ecfs(**kwargs)
@@ -32,8 +32,3 @@ ecfs
 
 
     :rtype: None
-
-
-.. minigallery:: metview.ecfs
-    :add-heading:
-

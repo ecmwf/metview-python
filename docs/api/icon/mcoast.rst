@@ -11,7 +11,7 @@ mcoast
 
     .. container:: rightside
 
-        This icon represents the `Coastlines <https://confluence.ecmwf.int/display/METV/Coastlines>`_ icon in Metview's user interface.
+        This function represents the `Coastlines <https://confluence.ecmwf.int/display/METV/Coastlines>`_ icon in Metview's user interface.
 
 
 .. py:function:: mcoast(**kwargs)

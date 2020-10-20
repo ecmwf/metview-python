@@ -11,7 +11,7 @@ flextra_prepare
 
     .. container:: rightside
 
-        This icon represents the `flextra prepare <https://confluence.ecmwf.int/display/METV/flextra+prepare>`_ icon in Metview's user interface.
+        This function represents the `Flextra Prepare <https://confluence.ecmwf.int/display/METV/flextra+prepare>`_ icon in Metview's user interface.
 
 
 .. py:function:: flextra_prepare(**kwargs)
@@ -112,8 +112,3 @@ flextra_prepare
 
 
     :rtype: None
-
-
-.. minigallery:: metview.flextra_prepare
-    :add-heading:
-

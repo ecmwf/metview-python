@@ -11,7 +11,7 @@ relhum
 
     .. container:: rightside
 
-        This icon represents the `Relative Humidity <https://confluence.ecmwf.int/display/METV/Relative+Humidity>`_ icon in Metview's user interface.
+        This function represents the `Relative Humidity <https://confluence.ecmwf.int/display/METV/Relative+Humidity>`_ icon in Metview's user interface.
 
 
 .. py:function:: relhum(**kwargs)
@@ -24,8 +24,3 @@ relhum
 
 
     :rtype: None
-
-
-.. minigallery:: metview.relhum
-    :add-heading:
-

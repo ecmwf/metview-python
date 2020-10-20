@@ -11,7 +11,7 @@ odb_filter
 
     .. container:: rightside
 
-        This icon represents the `ODB Filter <https://confluence.ecmwf.int/display/METV/ODB+Filter>`_ icon in Metview's user interface.
+        This function represents the `ODB Filter <https://confluence.ecmwf.int/display/METV/ODB+Filter>`_ icon in Metview's user interface.
 
 
 .. py:function:: odb_filter(**kwargs)

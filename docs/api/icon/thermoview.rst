@@ -11,7 +11,7 @@ thermoview
 
     .. container:: rightside
 
-        This icon represents the `Thermo View <https://confluence.ecmwf.int/display/METV/Thermo+View>`_ icon in Metview's user interface.
+        This function represents the `Thermo View <https://confluence.ecmwf.int/display/METV/Thermo+View>`_ icon in Metview's user interface.
 
 
 .. py:function:: thermoview(**kwargs)

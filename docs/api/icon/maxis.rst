@@ -11,7 +11,7 @@ maxis
 
     .. container:: rightside
 
-        This icon represents the `Axis Plotting <https://confluence.ecmwf.int/display/METV/Axis+Plotting>`_ icon in Metview's user interface.
+        This function represents the `Axis Plotting <https://confluence.ecmwf.int/display/METV/Axis+Plotting>`_ icon in Metview's user interface.
 
 
 .. py:function:: maxis(**kwargs)

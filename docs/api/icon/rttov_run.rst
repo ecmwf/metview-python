@@ -11,7 +11,7 @@ rttov_run
 
     .. container:: rightside
 
-        This icon represents the `rttov run <https://confluence.ecmwf.int/display/METV/rttov+run>`_ icon in Metview's user interface.
+        This function represents the `Rttov Run <https://confluence.ecmwf.int/display/METV/rttov+run>`_ icon in Metview's user interface.
 
 
 .. py:function:: rttov_run(**kwargs)
@@ -68,8 +68,3 @@ rttov_run
 
 
     :rtype: None
-
-
-.. minigallery:: metview.rttov_run
-    :add-heading:
-

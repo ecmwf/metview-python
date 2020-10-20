@@ -11,7 +11,7 @@ mvertprofview
 
     .. container:: rightside
 
-        This icon represents the `Vertical Profile View <https://confluence.ecmwf.int/display/METV/Vertical+Profile+View>`_ icon in Metview's user interface.
+        This function represents the `Vertical Profile View <https://confluence.ecmwf.int/display/METV/Vertical+Profile+View>`_ icon in Metview's user interface.
 
 
 .. py:function:: mvertprofview(**kwargs)
@@ -120,8 +120,3 @@ mvertprofview
 
 
     :rtype: None
-
-
-.. minigallery:: metview.mvertprofview
-    :add-heading:
-

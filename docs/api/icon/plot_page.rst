@@ -11,7 +11,7 @@ plot_page
 
     .. container:: rightside
 
-        This icon represents the `plot page <https://confluence.ecmwf.int/display/METV/plot+page>`_ icon in Metview's user interface.
+        This function represents the `Plot Page <https://confluence.ecmwf.int/display/METV/plot+page>`_ icon in Metview's user interface.
 
 
 .. py:function:: plot_page(**kwargs)

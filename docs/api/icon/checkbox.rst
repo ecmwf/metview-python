@@ -11,7 +11,7 @@ checkbox
 
     .. container:: rightside
 
-        This icon represents the `checkbox <https://confluence.ecmwf.int/display/METV/checkbox>`_ icon in Metview's user interface.
+        This function represents the `Checkbox <https://confluence.ecmwf.int/display/METV/checkbox>`_ icon in Metview's user interface.
 
 
 .. py:function:: checkbox(**kwargs)
@@ -52,8 +52,3 @@ checkbox
 
 
     :rtype: None
-
-
-.. minigallery:: metview.checkbox
-    :add-heading:
-

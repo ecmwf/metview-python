@@ -11,7 +11,7 @@ mcont
 
     .. container:: rightside
 
-        This icon represents the `Contouring <https://confluence.ecmwf.int/display/METV/Contouring>`_ icon in Metview's user interface.
+        This function represents the `Contouring <https://confluence.ecmwf.int/display/METV/Contouring>`_ icon in Metview's user interface.
 
 
 .. py:function:: mcont(**kwargs)

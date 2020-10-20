@@ -11,7 +11,7 @@ bufr_picker
 
     .. container:: rightside
 
-        This icon represents the `bufr picker <https://confluence.ecmwf.int/display/METV/bufr+picker>`_ icon in Metview's user interface.
+        This function represents the `Bufr Picker <https://confluence.ecmwf.int/display/METV/bufr+picker>`_ icon in Metview's user interface.
 
 
 .. py:function:: bufr_picker(**kwargs)
@@ -52,8 +52,3 @@ bufr_picker
 
 
     :rtype: None
-
-
-.. minigallery:: metview.bufr_picker
-    :add-heading:
-

@@ -11,7 +11,7 @@ input_visualiser
 
     .. container:: rightside
 
-        This icon represents the `input visualiser <https://confluence.ecmwf.int/display/METV/input+visualiser>`_ icon in Metview's user interface.
+        This function represents the `Input Visualiser <https://confluence.ecmwf.int/display/METV/input+visualiser>`_ icon in Metview's user interface.
 
 
 .. py:function:: input_visualiser(**kwargs)

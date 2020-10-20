@@ -11,7 +11,7 @@ wmsclient
 
     .. container:: rightside
 
-        This icon represents the `WMS Client <https://confluence.ecmwf.int/display/METV/WMS+Client>`_ icon in Metview's user interface.
+        This function represents the `WMS Client <https://confluence.ecmwf.int/display/METV/WMS+Client>`_ icon in Metview's user interface.
 
 
 .. py:function:: wmsclient(**kwargs)
@@ -56,8 +56,3 @@ wmsclient
 
 
     :rtype: None
-
-
-.. minigallery:: metview.wmsclient
-    :add-heading:
-

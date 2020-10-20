@@ -11,7 +11,7 @@ obsfilter
 
     .. container:: rightside
 
-        This icon represents the `Observation Filter <https://confluence.ecmwf.int/display/METV/Observation+Filter>`_ icon in Metview's user interface.
+        This function represents the `Observation Filter <https://confluence.ecmwf.int/display/METV/Observation+Filter>`_ icon in Metview's user interface.
 
 
 .. py:function:: obsfilter(**kwargs)

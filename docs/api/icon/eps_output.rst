@@ -11,7 +11,7 @@ eps_output
 
     .. container:: rightside
 
-        This icon represents the `eps output <https://confluence.ecmwf.int/display/METV/eps+output>`_ icon in Metview's user interface.
+        This function represents the `Eps Output <https://confluence.ecmwf.int/display/METV/eps+output>`_ icon in Metview's user interface.
 
 
 .. py:function:: eps_output(**kwargs)
@@ -56,8 +56,3 @@ eps_output
 
 
     :rtype: None
-
-
-.. minigallery:: metview.eps_output
-    :add-heading:
-

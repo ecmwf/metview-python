@@ -11,7 +11,7 @@ eccharts
 
     .. container:: rightside
 
-        This icon represents the `eccharts <https://confluence.ecmwf.int/display/METV/eccharts>`_ icon in Metview's user interface.
+        This function represents the `Eccharts <https://confluence.ecmwf.int/display/METV/eccharts>`_ icon in Metview's user interface.
 
 
 .. py:function:: eccharts(**kwargs)
@@ -78,8 +78,3 @@ eccharts
 
 
     :rtype: None
-
-
-.. minigallery:: metview.eccharts
-    :add-heading:
-

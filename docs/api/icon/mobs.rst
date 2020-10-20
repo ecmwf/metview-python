@@ -11,7 +11,7 @@ mobs
 
     .. container:: rightside
 
-        This icon represents the `Observation Plotting <https://confluence.ecmwf.int/display/METV/Observation+Plotting>`_ icon in Metview's user interface.
+        This function represents the `Observation Plotting <https://confluence.ecmwf.int/display/METV/Observation+Plotting>`_ icon in Metview's user interface.
 
 
 .. py:function:: mobs(**kwargs)

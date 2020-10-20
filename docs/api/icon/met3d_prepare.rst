@@ -11,7 +11,7 @@ met3d_prepare
 
     .. container:: rightside
 
-        This icon represents the `met3d prepare <https://confluence.ecmwf.int/display/METV/met3d+prepare>`_ icon in Metview's user interface.
+        This function represents the `Met3d Prepare <https://confluence.ecmwf.int/display/METV/met3d+prepare>`_ icon in Metview's user interface.
 
 
 .. py:function:: met3d_prepare(**kwargs)
@@ -100,8 +100,3 @@ met3d_prepare
 
 
     :rtype: None
-
-
-.. minigallery:: metview.met3d_prepare
-    :add-heading:
-

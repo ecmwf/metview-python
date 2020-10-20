@@ -11,7 +11,7 @@ any
 
     .. container:: rightside
 
-        This icon represents the `any <https://confluence.ecmwf.int/display/METV/any>`_ icon in Metview's user interface.
+        This function represents the `Any <https://confluence.ecmwf.int/display/METV/any>`_ icon in Metview's user interface.
 
 
 .. py:function:: any(**kwargs)
@@ -52,8 +52,3 @@ any
 
 
     :rtype: None
-
-
-.. minigallery:: metview.any
-    :add-heading:
-

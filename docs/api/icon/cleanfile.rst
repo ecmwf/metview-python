@@ -11,7 +11,7 @@ cleanfile
 
     .. container:: rightside
 
-        This icon represents the `Clean File <https://confluence.ecmwf.int/display/METV/Clean+File>`_ icon in Metview's user interface.
+        This function represents the `Clean File <https://confluence.ecmwf.int/display/METV/Clean+File>`_ icon in Metview's user interface.
 
 
 .. py:function:: cleanfile(**kwargs)
@@ -32,8 +32,3 @@ cleanfile
 
 
     :rtype: None
-
-
-.. minigallery:: metview.cleanfile
-    :add-heading:
-

@@ -11,7 +11,7 @@ mtaylor
 
     .. container:: rightside
 
-        This icon represents the `Taylor Grid <https://confluence.ecmwf.int/display/METV/Taylor+Grid>`_ icon in Metview's user interface.
+        This function represents the `Taylor Grid <https://confluence.ecmwf.int/display/METV/Taylor+Grid>`_ icon in Metview's user interface.
 
 
 .. py:function:: mtaylor(**kwargs)

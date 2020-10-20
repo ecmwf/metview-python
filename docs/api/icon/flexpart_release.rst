@@ -11,7 +11,7 @@ flexpart_release
 
     .. container:: rightside
 
-        This icon represents the `flexpart release <https://confluence.ecmwf.int/display/METV/flexpart+release>`_ icon in Metview's user interface.
+        This function represents the `Flexpart Release <https://confluence.ecmwf.int/display/METV/flexpart+release>`_ icon in Metview's user interface.
 
 
 .. py:function:: flexpart_release(**kwargs)
@@ -64,8 +64,3 @@ flexpart_release
 
 
     :rtype: None
-
-
-.. minigallery:: metview.flexpart_release
-    :add-heading:
-

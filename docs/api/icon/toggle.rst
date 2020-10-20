@@ -11,7 +11,7 @@ toggle
 
     .. container:: rightside
 
-        This icon represents the `toggle <https://confluence.ecmwf.int/display/METV/toggle>`_ icon in Metview's user interface.
+        This function represents the `Toggle <https://confluence.ecmwf.int/display/METV/toggle>`_ icon in Metview's user interface.
 
 
 .. py:function:: toggle(**kwargs)
@@ -52,8 +52,3 @@ toggle
 
 
     :rtype: None
-
-
-.. minigallery:: metview.toggle
-    :add-heading:
-

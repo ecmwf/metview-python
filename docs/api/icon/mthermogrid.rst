@@ -11,7 +11,7 @@ mthermogrid
 
     .. container:: rightside
 
-        This icon represents the `Thermo Grid <https://confluence.ecmwf.int/display/METV/Thermo+Grid>`_ icon in Metview's user interface.
+        This function represents the `Thermo Grid <https://confluence.ecmwf.int/display/METV/Thermo+Grid>`_ icon in Metview's user interface.
 
 
 .. py:function:: mthermogrid(**kwargs)

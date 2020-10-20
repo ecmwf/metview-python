@@ -11,7 +11,7 @@ epscairo_output
 
     .. container:: rightside
 
-        This icon represents the `epscairo output <https://confluence.ecmwf.int/display/METV/epscairo+output>`_ icon in Metview's user interface.
+        This function represents the `Epscairo Output <https://confluence.ecmwf.int/display/METV/epscairo+output>`_ icon in Metview's user interface.
 
 
 .. py:function:: epscairo_output(**kwargs)
@@ -56,8 +56,3 @@ epscairo_output
 
 
     :rtype: None
-
-
-.. minigallery:: metview.epscairo_output
-    :add-heading:
-

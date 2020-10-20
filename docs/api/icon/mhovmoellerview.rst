@@ -11,7 +11,7 @@ mhovmoellerview
 
     .. container:: rightside
 
-        This icon represents the `mhovmoellerview <https://confluence.ecmwf.int/display/METV/mhovmoellerview>`_ icon in Metview's user interface.
+        This function represents the `Mhovmoellerview <https://confluence.ecmwf.int/display/METV/mhovmoellerview>`_ icon in Metview's user interface.
 
 
 .. py:function:: mhovmoellerview(**kwargs)

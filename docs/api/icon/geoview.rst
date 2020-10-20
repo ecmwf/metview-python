@@ -11,7 +11,7 @@ geoview
 
     .. container:: rightside
 
-        This icon represents the `Geographical View <https://confluence.ecmwf.int/display/METV/Geographical+View>`_ icon in Metview's user interface.
+        This function represents the `Geographical View <https://confluence.ecmwf.int/display/METV/Geographical+View>`_ icon in Metview's user interface.
 
 
 .. py:function:: geoview(**kwargs)

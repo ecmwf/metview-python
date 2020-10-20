@@ -11,7 +11,7 @@ png_output
 
     .. container:: rightside
 
-        This icon represents the `png output <https://confluence.ecmwf.int/display/METV/png+output>`_ icon in Metview's user interface.
+        This function represents the `Png Output <https://confluence.ecmwf.int/display/METV/png+output>`_ icon in Metview's user interface.
 
 
 .. py:function:: png_output(**kwargs)
@@ -56,8 +56,3 @@ png_output
 
 
     :rtype: None
-
-
-.. minigallery:: metview.png_output
-    :add-heading:
-

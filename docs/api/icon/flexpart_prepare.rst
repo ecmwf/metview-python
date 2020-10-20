@@ -11,7 +11,7 @@ flexpart_prepare
 
     .. container:: rightside
 
-        This icon represents the `flexpart prepare <https://confluence.ecmwf.int/display/METV/flexpart+prepare>`_ icon in Metview's user interface.
+        This function represents the `Flexpart Prepare <https://confluence.ecmwf.int/display/METV/flexpart+prepare>`_ icon in Metview's user interface.
 
 
 .. py:function:: flexpart_prepare(**kwargs)
@@ -104,8 +104,3 @@ flexpart_prepare
 
 
     :rtype: None
-
-
-.. minigallery:: metview.flexpart_prepare
-    :add-heading:
-
