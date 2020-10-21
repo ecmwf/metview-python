@@ -102,6 +102,9 @@ Geographic
     * - :func:`grid_cell_area`
       - Computes grid cell area for each gridpoints in a field
 
+    * - :func:`interpolate`
+      - Interpolates field values to the specified location
+
     * - :func:`latitudes`
       - Returns a list/vector of latitudes from the given :class:`Geopoints`.
 
@@ -117,6 +120,9 @@ Geographic
     * - :func:`offset`
       - Offsets the locations of :class:`Geopoints`
 
+    * - :func:`read`
+      - Filters and interpolates GRIB data
+
     * - :func:`reprojection`
       - Repoject satellite view GRIB data onto a latlon grid
 
@@ -126,35 +132,11 @@ Geographic
     * - :func:`subsample`
       - Filters from the first :class:`Geopoints` variable points that exist in the second
 
+    * - :func:`surrounding_points_indexes`
+      - Returns the indexes of the four surrounding grid points
+
     * - :func:`tanlat`
       - Generates a field with the tangent of the gridpoint latitudes
-
-
-Filtering
--------------------------------
-
-.. list-table::
-    :widths: 20 80
-    :header-rows: 0
-
-
-    * - :func:`bufr_picker`
-      - Filters BUFR data with complex structure
-
-    * - :func:`cleanfile`
-      - Removes unwanted header padding from GRIB and BUFR
-
-    * - :func:`filter`
-      - Filters a vector according to the values of a second vector
-
-    * - :func:`obsfilter`
-      - Filters BUFR data
-
-    * - :func:`odb_filter`
-      - Filters ODB data
-
-    * - :func:`read`
-      - Filters and interpolates GRIB data
 
 
 Masking
@@ -182,21 +164,6 @@ Masking
 
     * - :func:`rmask`
       - Generates masks based on a radius around a point for :class:`Fieldset`
-
-
-Grid
--------------------------------
-
-.. list-table::
-    :widths: 20 80
-    :header-rows: 0
-
-
-    * - :func:`interpolate`
-      - Interpolates field values to the specified location
-
-    * - :func:`surrounding_points_indexes`
-      - Returns the indexes of the four surrounding grid points
 
 
 Wind
@@ -241,7 +208,7 @@ Vertical
 
 
     * - :func:`mcross_sect`
-      - Generates input data for a cross section
+      - Generates data for the cross section view
 
     * - :func:`mhovmoeller_area`
       - Generates data for the Hovmoeller area mode
@@ -268,25 +235,25 @@ Vertical
       - Interpolates a :class:`Fieldset` on model levels to pressure levels (in hPa)
 
     * - :func:`mxs_average`
-      - Defines the average view
+      - Generates data for the average view
 
     * - :func:`pressure`
-      - Creates fields of pressure or thickness (input in lat/lon only).
+      - Computes the pressure on model levels in a :class:`Fieldset` (deprecated)
 
     * - :func:`thickness`
-      - Creates fields of pressure or thickness (input in lat/lon only).
+      - Computes the pressure thickness on model levels in a :class:`Fieldset` (deprecated)
 
     * - :func:`unipressure`
-      - Creates fields of pressure or thickness (accepts several grid types)
+      - Computes the pressure on model levels in a :class:`Fieldset`
 
     * - :func:`unithickness`
-      - Creates fields of pressure or thickness (accepts several grid types)
+      - Computes the pressure thickness of model levels in a :class:`Fieldset`
 
     * - :func:`univertint`
-      - Universal vertical integration, also for sparse vertical data
+      - Performs a vertical integration for a :class:`Fieldset`
 
     * - :func:`vertint`
-      - Performs vertical integration
+      - Performs a vertical integration for a :class:`Fieldset` (deprecated)
 
     * - :func:`w_from_omega`
       - Computes the vertical velocity in m/s from pressure velocity

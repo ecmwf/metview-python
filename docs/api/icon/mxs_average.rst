@@ -11,7 +11,7 @@ mxs_average
 
     .. container:: rightside
 
-        This function represents the `Average View <https://confluence.ecmwf.int/display/METV/Average+View>`_ icon in Metview's user interface.
+        This function represents the `Average Data <https://confluence.ecmwf.int/display/METV/Average+Data>`_ icon in Metview's user interface.
 
 
 .. py:function:: mxs_average(**kwargs)
@@ -27,7 +27,7 @@ mxs_average
     :type area: float or list[float]
 
 
-    :param direction: Specifies the ``direction`` along which the averaging of the variable is performed. Options are North South and East West. For North South, the averaging is weighted by cos(latitude).
+    :param direction: Specifies the ``direction`` along which the averaging of the variable is performed. Options are North South and East West. For North South , the averaging is weighted by cos(latitude).
     :type direction: str
 
 

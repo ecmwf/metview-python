@@ -49,7 +49,31 @@ Data conversion
       - Converts :class:`Geopoints` data to KML
 
     * - :func:`grib_to_geo`
-      - 
+      - Converts GRIB data into :class:`Geopoints`
+
+
+Filtering
+-------------------------------
+
+.. list-table::
+    :widths: 20 80
+    :header-rows: 0
+
+
+    * - :func:`bufr_picker`
+      - Filters BUFR data with complex structure
+
+    * - :func:`cleanfile`
+      - Removes unwanted header padding from GRIB and BUFR
+
+    * - :func:`obsfilter`
+      - Filters BUFR data
+
+    * - :func:`odb_filter`
+      - Filters ODB data
+
+    * - :func:`read`
+      - Filters and interpolates GRIB data
 
 
 Grib data
@@ -64,7 +88,7 @@ Grib data
       - Returns the base date(s) of a given :class:`Fieldset`
 
     * - :func:`datainfo`
-      - Returns information on missing values in :class:`Fieldset`
+      - Returns information on missing values in a :class:`Fieldset`
 
     * - :func:`duplicate`
       - Duplicates a field N times
@@ -73,7 +97,7 @@ Grib data
       - Fills missing values along the horizontal line
 
     * - :func:`find`
-      - Find where a number occurs in a vector
+      - Find locations of values in a :class:`Fieldset`
 
     * - :func:`float`
       - Converts int GRIB to float GRIB

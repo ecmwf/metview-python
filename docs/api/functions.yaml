@@ -254,7 +254,7 @@
 - datainfo:
     category:
       fieldset: Returns information on missing values in fieldsets
-    desc: Returns information on missing values in fieldsets
+    desc: Returns information on missing values in a fieldset
     type: script
     group:
       - grib
@@ -378,7 +378,7 @@
     type: script
 - duplicate:
     category:
-      fieldset: Duplicates a field N times
+      fieldset: Duplicates a GRIB field N times
     desc: Duplicates a field N times
     type: script
     group:
@@ -476,6 +476,7 @@
       vector: Filters a vector according to the values of a second vector
     desc: Filters a vector according to the values of a second vector
     type: script
+    exclude: True
     group:
       - filter
 - find:
@@ -483,7 +484,7 @@
       fieldset: Finds values in field
       list: Find where an item occurs in a list
       vector: Find where a number occurs in a vector
-    desc: Find where a number occurs in a vector
+    desc: Find locations of values in a fieldset
     type: script
     group:
       - grib
@@ -708,7 +709,7 @@
       - grib
 - grib_to_geo:
     category: {}
-    desc: ''
+    desc: Converts GRIB data into geopoints
     type: icon
     title: Grib To Geopoints
     group:
@@ -831,7 +832,7 @@
     desc: Interpolates field values to the specified location
     type: script
     group:
-      - grid
+      - geo
 - is_feature_available:
     category:
       info: 'Returns 1 if the given feature is available, otherwise 0. Feature names:
@@ -996,7 +997,7 @@
       - visdef
 - mcross_sect:
     category: {}
-    desc: Generates input data for a cross section
+    desc: Generates data for the cross section view
     type: icon
     title: Cross Section Data
     pix: MXSECTION
@@ -1037,12 +1038,14 @@
     type: icon
     group:
       - plot
+      - met3d
 - met3d_prepare:
     category: {}
     desc: Retrieves and prepare GRIB data for Met3D
     type: icon
     group:
       - retrieve
+      - met3d
 - metadata:
     category:
       geopoints: Returns a metadata definition from the given geopoints.
@@ -1233,9 +1236,9 @@
       - visdef
 - mxs_average:
     category: {}
-    desc: Defines the average view
+    desc: Generates data for the average view
     type: icon
-    title: Average View
+    title: Average Data
     pix: MXAVERAGE
     group:
       - vertical
@@ -1490,8 +1493,8 @@
     exclude: True
 - pressure:
     category:
-      fieldset: Creates fields of pressure or thickness (input in lat/lon only).
-    desc: Creates fields of pressure or thickness (input in lat/lon only).
+      fieldset: Computes the pressure of a model level fieldset
+    desc: Computes the pressure on model levels in a fieldset (deprecated)
     type: script
     group:
       - vertical
@@ -1547,6 +1550,7 @@
     type: icon
     group:
       - filter
+      - geo
 - read:
     category: {}
     desc: ''
@@ -1974,7 +1978,7 @@
     desc: Returns the indexes of the four surrounding grid points
     type: script
     group:
-      - grid
+      - geo
 - svg_output:
     category: {}
     desc: Defines the SVG output format
@@ -2036,7 +2040,7 @@
 - thickness:
     category:
       fieldset: Creates fields of pressure or thickness (input in lat/lon only).
-    desc: Creates fields of pressure or thickness (input in lat/lon only).
+    desc: Computes the pressure thickness on model levels in a fieldset (deprecated)
     type: script
     group:
       - vertical
@@ -2090,7 +2094,7 @@
 - unipressure:
     category:
       fieldset: Creates fields of pressure or thickness (accepts several grid types)
-    desc: Creates fields of pressure or thickness (accepts several grid types)
+    desc: Computes the pressure on model levels in a fieldset
     type: script
     group:
       - vertical
@@ -2104,14 +2108,14 @@
 - unithickness:
     category:
       fieldset: Creates fields of pressure or thickness (accepts several grid types)
-    desc: Creates fields of pressure or thickness (accepts several grid types)
+    desc: Computes the pressure thickness of model levels in a fieldset
     type: script
     group:
       - vertical
 - univertint:
     category:
       fieldset: Universal vertical integration, also for sparse vertical data
-    desc: Universal vertical integration, also for sparse vertical data
+    desc: Performs a vertical integration for a fieldset
     type: script
     group:
       - vertical
@@ -2179,6 +2183,7 @@
     type: icon
     group:
       - retrieve
+      - vapor
 - var:
     category:
       fieldset: Returns the variance of all the fields of a variable
@@ -2235,7 +2240,7 @@
 - vertint: 
     category:
       fieldset: Performs vertical integration
-    desc: Performs vertical integration
+    desc: Performs a vertical integration for a fieldset (deprecated)
     type: script
     group:
       - vertical

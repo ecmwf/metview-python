@@ -31,7 +31,9 @@ groups_def = {
     "table": "Table data",
     "scm" : "Single Column Model",
     "rttov": "RTTOV",
-    "wind": "Wind"
+    "wind": "Wind",
+    "met3d": "Met3D",
+    "vapor": "Vapor"
 }
 
 toc_def = {
@@ -40,9 +42,7 @@ toc_def = {
         "gr": [
             "stats",
             "geo",
-            "filter",
             "mask",
-            "grid",
             "wind",
             "vertical",
             "thermo",
@@ -53,13 +53,17 @@ toc_def = {
     },
     "plot": {
         "title": "Visualisation",
-        "gr": ["plot", "layout", "view", "visdef", "output"],
+        "gr": ["view", "visdef", "plot", "layout", "output"],
     },
-    "ui": {"title": "User interface", "gr": ["widget", "ui"]},
+    # "ui": {"title": "User interface", "gr": ["widget", "ui"]},
     "data": {
         "title": "Data access",
-        "gr": ["retrieve", "conversion", "grib", "geopoints", "netcdf", "flex", "table", "scm", "rttov"],
+        "gr": ["retrieve", "conversion", "filter", "grib",  "geopoints", "netcdf", "flex", "table", "scm", "rttov"],
     },
+    "apps": {
+        "title": "External applications",
+        "gr": ["flex", "met3d", "vapor", "scm", "rttov"]
+    }
 }
 
 groups = {}

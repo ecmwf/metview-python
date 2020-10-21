@@ -4,6 +4,84 @@ Visualisation
 
 
 
+Views
+-------------------------------
+
+.. list-table::
+    :widths: 20 80
+    :header-rows: 0
+
+
+    * - :func:`annotationview`
+      - Creates an annotation view
+
+    * - :func:`cartesianview`
+      - Creates a Cartesian view
+
+    * - :func:`geoview`
+      - Creates a map view
+
+    * - :func:`maverageview`
+      - Creates an average view
+
+    * - :func:`mhovmoellerview`
+      - Creates a Hovmoeller diagram view
+
+    * - :func:`mvertprofview`
+      - Creates a vertical profile view
+
+    * - :func:`mxsectview`
+      - Creates a cross section view
+
+    * - :func:`thermoview`
+      - Creates a thermodynamical diagram view
+
+
+Visual definitions
+-------------------------------
+
+.. list-table::
+    :widths: 20 80
+    :header-rows: 0
+
+
+    * - :func:`maxis`
+      - Defines the axis plotting styles
+
+    * - :func:`mcoast`
+      - Defines the map plotting style
+
+    * - :func:`mcont`
+      - Defines the contouring style
+
+    * - :func:`mgraph`
+      - Defines the graph plotting style
+
+    * - :func:`mlegend`
+      - Defines the legend plotting style
+
+    * - :func:`mobs`
+      - Defines the BUFR observation plotting style
+
+    * - :func:`msymb`
+      - Defines the symbol plotting style
+
+    * - :func:`mtaylor`
+      - Defines the Taylor diagram style
+
+    * - :func:`mtext`
+      - Defines the title plotting style
+
+    * - :func:`mthermo`
+      - Defines the thermodynamical data plotting style
+
+    * - :func:`mthermogrid`
+      - Defines the thermodynamical diagram style
+
+    * - :func:`mwind`
+      - Defines the wind plotting style
+
+
 Plotting
 -------------------------------
 
@@ -101,84 +179,6 @@ Layout
 
     * - :func:`plot_superpage`
       - Creates a top level plot layout
-
-
-Views
--------------------------------
-
-.. list-table::
-    :widths: 20 80
-    :header-rows: 0
-
-
-    * - :func:`annotationview`
-      - Creates an annotation view
-
-    * - :func:`cartesianview`
-      - Creates a Cartesian view
-
-    * - :func:`geoview`
-      - Creates a map view
-
-    * - :func:`maverageview`
-      - Creates an average view
-
-    * - :func:`mhovmoellerview`
-      - Creates a Hovmoeller diagram view
-
-    * - :func:`mvertprofview`
-      - Creates a vertical profile view
-
-    * - :func:`mxsectview`
-      - Creates a cross section view
-
-    * - :func:`thermoview`
-      - Creates a thermodynamical diagram view
-
-
-Visual definitions
--------------------------------
-
-.. list-table::
-    :widths: 20 80
-    :header-rows: 0
-
-
-    * - :func:`maxis`
-      - Defines the axis plotting styles
-
-    * - :func:`mcoast`
-      - Defines the map plotting style
-
-    * - :func:`mcont`
-      - Defines the contouring style
-
-    * - :func:`mgraph`
-      - Defines the graph plotting style
-
-    * - :func:`mlegend`
-      - Defines the legend plotting style
-
-    * - :func:`mobs`
-      - Defines the BUFR observation plotting style
-
-    * - :func:`msymb`
-      - Defines the symbol plotting style
-
-    * - :func:`mtaylor`
-      - Defines the Taylor diagram style
-
-    * - :func:`mtext`
-      - Defines the title plotting style
-
-    * - :func:`mthermo`
-      - Defines the thermodynamical data plotting style
-
-    * - :func:`mthermogrid`
-      - Defines the thermodynamical diagram style
-
-    * - :func:`mwind`
-      - Defines the wind plotting style
 
 
 Graphical output

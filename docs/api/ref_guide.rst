@@ -9,7 +9,7 @@ Reference Guide
    comp_toc
    data_toc
    plot_toc
-   ui_toc
+   apps_toc
 
 
 .. toctree::
