@@ -1865,6 +1865,35 @@ def test_request():
     assert str(r) == "VERB: MCOAST{'param1': 'value1', 'param2': 180}"
 
 
+def test_read_request():
+    # check read function
+    lreq = mv.read_request(file_in_testdir("request.req"))
+    assert isinstance(lreq, list)
+    assert len(lreq) == 2
+
+    # check first request
+    req = lreq[0]
+    assert isinstance(req, mv.Request)
+    assert isinstance(req, dict)
+    assert req.get_verb() == "GRIB"
+    assert req["PATH"] == "t.grib"
+
+    # check second request
+    req = lreq[1]
+    assert isinstance(req, mv.Request)
+    assert isinstance(req, dict)
+    assert req.get_verb() == "mcont"
+    assert req["contour_line_colour"] == "red"
+    assert req["CONTOUR_HIGHLIGHT_FREQUENCY"] == 2
+    assert req["contour_level_selection_type"] == "LEVEL_LIST"
+    assert isinstance(req["CONTOUR_LEVEL_LIST"], list)
+    assert isinstance(req["CONTOUR_LEVEL_LIST"][0], float)
+    assert req["CONTOUR_LEVEL_LIST"] == [-10,0,10]
+    assert isinstance(req["contour_colour_list"], list)
+    assert isinstance(req["contour_colour_list"][0], str)
+    assert req["contour_colour_list"] == ['RGB(0.5,0.2,0.8)','RGB(0.8,0.7,0.3)','RGB(0.4,0.8,0.3)']
+
+
 def test_file():
     grib = mv.read(file_in_testdir("t_for_xs.grib"))
     fpath = file_in_testdir("my_file.grib")
