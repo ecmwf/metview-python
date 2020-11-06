@@ -1886,10 +1886,14 @@ def test_read_request():
     assert req["contour_level_selection_type"] == "LEVEL_LIST"
     assert isinstance(req["CONTOUR_LEVEL_LIST"], list)
     assert isinstance(req["CONTOUR_LEVEL_LIST"][0], float)
-    assert req["CONTOUR_LEVEL_LIST"] == [-10,0,10]
+    assert req["CONTOUR_LEVEL_LIST"] == [-10, 0, 10]
     assert isinstance(req["contour_colour_list"], list)
     assert isinstance(req["contour_colour_list"][0], str)
-    assert req["contour_colour_list"] == ['RGB(0.5,0.2,0.8)','RGB(0.8,0.7,0.3)','RGB(0.4,0.8,0.3)']
+    assert req["contour_colour_list"] == [
+        "RGB(0.5,0.2,0.8)",
+        "RGB(0.8,0.7,0.3)",
+        "RGB(0.4,0.8,0.3)",
+    ]
 
 
 def test_file():
