@@ -2,9 +2,26 @@
 Changelog for Metview's Python interface
 ========================================
 
+1.5.1
+------------------
+- temporarily removed tests that involve writing xarrays as GRIB
+
+
+1.5.0
+------------------
+- added support for int numpy arrays as input to functions and methods
+- added support for bitwise and (&), or (|) and not (~) operators on Fieldsets
+- added div() function (already available via the '/' operator)
+- added mod() function
+- improved timeout message by mentioning how to increase the timeout
+- fixed error when updating an  mv.Request object
+
+
 (No version update)
 -------------------
+- added new Jupyter notebook for data analysis
 - added new Jupyter notebook for computing and plotting ensemble data
+- fixed issue where Metview Request objects did not respect the input data type
 
 1.4.2
 ------------------

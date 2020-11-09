@@ -100,7 +100,8 @@ class MetviewInvoker:
             raise Exception(
                 'Command "metview" did not respond within '
                 + str(self.metview_startup_timeout)
-                + " seconds. "
+                + " seconds. This timeout is configurable by setting "
+                "environment variable METVIEW_PYTHON_START_TIMEOUT in seconds. "
                 "At least Metview 5 is required, so please ensure it is in your PATH, "
                 "as earlier versions will not work with the Python interface."
             )
@@ -274,10 +275,7 @@ class Request(dict, Value):
             n = lib.p_get_req_num_params(req)
             for i in range(0, n):
                 param = string_from_ffi(lib.p_get_req_param(req, i))
-                raw_val = lib.p_get_req_value(req, param.encode("utf-8"))
-                if raw_val != ffi.NULL:
-                    val = string_from_ffi(raw_val)
-                    self[param] = val
+                self[param] = self[param]
             # self['_MACRO'] = 'BLANK'
             # self['_PATH']  = 'BLANK'
 
@@ -286,9 +284,10 @@ class Request(dict, Value):
 
     # translate Python classes into Metview ones where needed
     def to_metview_style(self):
-        for k, v in self.items():
+        for k in list(self):
 
             # bool -> on/off
+            v = self.get(k)  # self[k] returns 1 for True
             if isinstance(v, bool):
                 conversion_dict = {True: "on", False: "off"}
                 self[k] = conversion_dict[v]
@@ -379,6 +378,10 @@ def push_vector(npa):
         f32_array = npa.astype(np.float32)
         cffi_buffer = ffi.cast("float*", f32_array.ctypes.data)
         lib.p_push_vector_from_float32_array(cffi_buffer, len(f32_array), np.nan)
+    elif dtype == np.int:  # convert first to float64
+        f64_array = npa.astype(np.float64)
+        cffi_buffer = ffi.cast("double*", f64_array.ctypes.data)
+        lib.p_push_vector_from_double_array(cffi_buffer, len(f64_array), np.nan)
     else:
         raise TypeError(
             "Only float32 and float64 numPy arrays can be passed to Metview, not ",
@@ -460,6 +463,15 @@ class FileBackedValueWithOperators(FileBackedValue):
 
     def __abs__(self):
         return self.abs()
+
+    def __and__(self, other):
+        return met_and(self, other)
+
+    def __or__(self, other):
+        return met_or(self, other)
+
+    def __invert__(self):
+        return met_not(self)
 
 
 class ContainerValueIterator:
@@ -981,6 +993,8 @@ def bind_functions(namespace, module_name=None):
     # HACK: some fuctions are missing from the 'dictionary' call.
     namespace["neg"] = make("neg")
     namespace["nil"] = make("nil")
+    namespace["div"] = div
+    namespace["mod"] = mod
     # override some functions that need special treatment
     # FIXME: this needs to be more structured
     namespace["plot"] = plot
@@ -1005,6 +1019,7 @@ lower_than = make("<")
 merge = make("&")
 met_not_eq = make("<>")
 met_plot = make("plot")
+mod = make("mod")
 nil = make("nil")
 png_output = make("png_output")
 power = make("^")
@@ -1014,6 +1029,9 @@ read = make("read")
 met_setoutput = make("setoutput")
 sub = make("-")
 subset = make("[]")
+met_and = make("and")
+met_or = make("or")
+met_not = make("not")
 
 
 # -----------------------------------------------------------------------------

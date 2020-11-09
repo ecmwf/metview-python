@@ -25,7 +25,7 @@ def read(fname):
     return io.open(file_path, encoding="utf-8").read()
 
 
-version = "1.4.2"
+version = "1.5.1"
 
 
 setuptools.setup(
@@ -39,9 +39,18 @@ setuptools.setup(
     url="https://github.com/ecmwf/metview-python",
     packages=setuptools.find_packages(),
     include_package_data=True,
-    setup_requires=["pytest-runner",],
-    install_requires=["cffi", "numpy", "pandas", "pyyaml"],
-    tests_require=["pytest",],
+    setup_requires=[
+        "pytest-runner",
+    ],
+    install_requires=[
+        "cffi",
+        "numpy",
+        "pandas",
+        "pyyaml",
+    ],
+    tests_require=[
+        "pytest",
+    ],
     test_suite="tests",
     zip_safe=True,
     classifiers=[
@@ -52,6 +61,8 @@ setuptools.setup(
         "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
         "Operating System :: OS Independent",

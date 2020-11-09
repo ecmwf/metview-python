@@ -74,6 +74,26 @@ def test_definitions():
         assert ps_output_def["OUTPUT_NAME"] == "test"
 
 
+def test_definitions_as_dict():
+    mcont_def = mv.mcont(
+        {
+            "legend": True,
+            "contour_line_thickness": 7,
+            "contour_level_selection_type": "level_list",
+            "contour_level_list": [5, 7, 8.8, 9],
+            "contour_hi_text": "My high text",
+            "CONTOUR_MIN_LEVEL": 4.9,
+        }
+    )
+    mcont_dict = mcont_def.copy()
+    assert mcont_dict["LEGEND"] == "ON"
+    assert mcont_dict["CONTOUR_LINE_THICKNESS"] == 7
+    assert mcont_dict["CONTOUR_LEVEL_SELECTION_TYPE"] == "LEVEL_LIST"
+    assert mcont_dict["CONTOUR_LEVEL_LIST"] == [5, 7, 8.8, 9]
+    assert mcont_dict["CONTOUR_HI_TEXT"] == "My high text"
+    assert mcont_dict["CONTOUR_MIN_LEVEL"] == 4.9
+
+
 def test_print():
     mv.print("Start ", 7, 1, 3, " Finished!")
     mv.print(6, 2, " Middle ", 6)
@@ -280,8 +300,20 @@ def test_division():
     assert np.isclose(maximum, MAX_VALUE / 2)
 
 
+def test_division_via_function():
+    divided_two = mv.div(TEST_FIELDSET, 2)
+    maximum = mv.maxvalue(divided_two)
+    assert np.isclose(maximum, MAX_VALUE / 2)
+
+
 def test_division_reverse():
     divided_two = 2 / TEST_FIELDSET
+    minimum = mv.minvalue(divided_two)
+    assert np.isclose(minimum, 2 / MAX_VALUE)
+
+
+def test_division_reverse_via_function():
+    divided_two = mv.div(2, TEST_FIELDSET)
     minimum = mv.minvalue(divided_two)
     assert np.isclose(minimum, 2 / MAX_VALUE)
 
@@ -306,6 +338,12 @@ def test_power_reverse():
     maximum = mv.maxvalue(raised)
     assert np.isclose(minimum, 2 ** 3)
     assert np.isclose(maximum, 2 ** 4)
+
+
+def test_mod():
+    assert mv.mod(17, 4) == 1
+    assert mv.mod(15, 3) == 0
+    assert mv.mod(15.7, 30) == 15
 
 
 def test_pos():
@@ -341,6 +379,24 @@ def test_distance():
     maximum = mv.maxvalue(dist)
     assert np.isclose(minimum, 0.0)
     assert np.isclose(maximum, SEMI_EQUATOR)
+
+
+def test_fieldset_and():
+    t = (TEST_FIELDSET > 290) & (TEST_FIELDSET < 310)
+    s = mv.accumulate(t)
+    assert s == 43855
+
+
+def test_fieldset_or():
+    t = (TEST_FIELDSET < 250) | (TEST_FIELDSET > 310)
+    s = mv.accumulate(t)
+    assert s == 12427
+
+
+def test_fieldset_not():
+    t = ~(TEST_FIELDSET < 250)
+    s = mv.accumulate(t)
+    assert s == 104821
 
 
 def test_valid_date_len_1():
@@ -413,6 +469,13 @@ def test_fieldset_negative_index_too_high():
 def test_fieldset_array_index():
     grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
     grib_ai = grib[np.array([1.0, 2.0, 0.0, 5.0])]
+    assert len(grib_ai) == 4
+    assert mv.grib_get_long(grib_ai, "level") == [850, 700, 1000, 300]
+
+
+def test_fieldset_array_index_int():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    grib_ai = grib[np.array([1, 2, 0, 5])]
     assert len(grib_ai) == 4
     assert mv.grib_get_long(grib_ai, "level") == [850, 700, 1000, 300]
 
@@ -1071,7 +1134,10 @@ def test_odb_filter():
     assert mv.count(db) == 88
 
     db_res = mv.odb_filter(
-        {"odb_data": db, "odb_query": "select p, t, val where val < -8",}
+        {
+            "odb_data": db,
+            "odb_query": "select p, t, val where val < -8",
+        }
     )
 
     # assert isinstance(db_res,mv.Odb)
@@ -1135,7 +1201,10 @@ def test_odb_to_dataframe_2():
 # as input and output
 def test_cross_section_data():
     grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
-    xs_data = mv.mcross_sect(line=[59.9, -180, -13.5, 158.08], data=grib,)
+    xs_data = mv.mcross_sect(
+        line=[59.9, -180, -13.5, 158.08],
+        data=grib,
+    )
     # the result of this should be a netCDF variable
     assert mv.type(xs_data) == "netcdf"
     mv.setcurrent(xs_data, "t")
@@ -1194,6 +1263,7 @@ def test_netcdf_to_dataset():
     assert isinstance(x["t"], xr.DataArray)
 
 
+@pytest.mark.skip()
 @pytest.mark.filterwarnings("ignore:GRIB write")
 def test_dataset_to_fieldset():
     grib = mv.read(file_in_testdir("t_for_xs.grib"))
@@ -1209,6 +1279,7 @@ def test_bad_type_to_fieldset():
         f = mv.dataset_to_fieldset(gpt)
 
 
+@pytest.mark.skip()
 @pytest.mark.filterwarnings("ignore:GRIB write")
 def test_pass_dataset_as_arg():
     grib = mv.read(file_in_testdir("t_for_xs.grib"))
@@ -1347,7 +1418,12 @@ def test_value_file_path():
     assert os.path.isfile(p.url())
 
 
-@pytest.mark.parametrize("file_name", ["ml_data.grib",])
+@pytest.mark.parametrize(
+    "file_name",
+    [
+        "ml_data.grib",
+    ],
+)
 def test_temporary_file_deletion(file_name):
     g = mv.read(file_in_testdir(file_name))
     h = g + 1  # this will force Metview to write a new temporary file
@@ -1492,8 +1568,23 @@ def test_set_vector_TF_bool_from_numpy_array():
 
 def test_set_vector_from_int_numpy_array():
     r = np.array([5, 8, 7, 1, 2900], dtype=np.int)
-    with pytest.raises(TypeError):
-        a = mv.type(r)
+    assert mv.type(r) == "vector"
+    assert mv.dtype(r) == "float64"
+    assert mv.count(r) == 5
+    assert np.array_equal(mv.abs(r), np.array([5, 8, 7, 1, 2900], dtype=np.float64))
+
+
+#    with pytest.raises(TypeError):
+#        a = mv.type(r)
+
+
+# these are dtype(int) although not explicitly stated
+def test_set_vector_from_int_numpy_array_implicit():
+    r = np.array([5, 8, 7, 1, 2900])
+    assert mv.type(r) == "vector"
+    assert mv.dtype(r) == "float64"
+    assert mv.count(r) == 5
+    assert np.array_equal(mv.abs(r), np.array([5, 8, 7, 1, 2900], dtype=np.float64))
 
 
 def test_simple_vector_with_nans():
@@ -1772,6 +1863,39 @@ def test_request():
     d = {"param1": "value1", "param2": 180}
     r = mv.Request(d, "MCOAST")
     assert str(r) == "VERB: MCOAST{'param1': 'value1', 'param2': 180}"
+
+
+def test_read_request():
+    # check read function
+    lreq = mv.read_request(file_in_testdir("request.req"))
+    assert isinstance(lreq, list)
+    assert len(lreq) == 2
+
+    # check first request
+    req = lreq[0]
+    assert isinstance(req, mv.Request)
+    assert isinstance(req, dict)
+    assert req.get_verb() == "GRIB"
+    assert req["PATH"] == "t.grib"
+
+    # check second request
+    req = lreq[1]
+    assert isinstance(req, mv.Request)
+    assert isinstance(req, dict)
+    assert req.get_verb() == "mcont"
+    assert req["contour_line_colour"] == "red"
+    assert req["CONTOUR_HIGHLIGHT_FREQUENCY"] == 2
+    assert req["contour_level_selection_type"] == "LEVEL_LIST"
+    assert isinstance(req["CONTOUR_LEVEL_LIST"], list)
+    assert isinstance(req["CONTOUR_LEVEL_LIST"][0], float)
+    assert req["CONTOUR_LEVEL_LIST"] == [-10, 0, 10]
+    assert isinstance(req["contour_colour_list"], list)
+    assert isinstance(req["contour_colour_list"][0], str)
+    assert req["contour_colour_list"] == [
+        "RGB(0.5,0.2,0.8)",
+        "RGB(0.8,0.7,0.3)",
+        "RGB(0.4,0.8,0.3)",
+    ]
 
 
 def test_file():
