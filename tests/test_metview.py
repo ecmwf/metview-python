@@ -1882,16 +1882,16 @@ def test_read_request():
     req = lreq[1]
     assert isinstance(req, mv.Request)
     assert isinstance(req, dict)
-    assert req.get_verb() == "mcont"
+    assert req.get_verb() == "MCONT"
     assert req["contour_line_colour"] == "red"
-    assert req["CONTOUR_HIGHLIGHT_FREQUENCY"] == 2
+    assert req["CONTOUR_HIGHLIGHT_FREQUENCy"] == 2
     assert req["contour_level_selection_type"] == "LEVEL_LIST"
     assert isinstance(req["CONTOUR_LEVEL_LIST"], list)
     assert isinstance(req["CONTOUR_LEVEL_LIST"][0], float)
     assert req["CONTOUR_LEVEL_LIST"] == [-10, 0, 10]
-    assert isinstance(req["contour_colour_list"], list)
+    assert isinstance(req["contour_COLOUR_list"], list)
     assert isinstance(req["contour_colour_list"][0], str)
-    assert req["contour_colour_list"] == [
+    assert req["CONTOUR_coLour_liSt"] == [
         "RGB(0.5,0.2,0.8)",
         "RGB(0.8,0.7,0.3)",
         "RGB(0.4,0.8,0.3)",
