@@ -581,10 +581,10 @@ def test_objaction_to_stream():
     actions_stream = modules.objaction_to_stream(actions, 2)
     exp_stream = "state,\n"
     exp_stream += textwrap.indent(
-        "class   = DUMMY1\naction  = action1_1/action1_2\nservice = service1\n\n", "  ")
+        "class   = DUMMY1,\naction  = action1_1/action1_2,\nservice = service1\n\n", "  ")
     exp_stream += "state,\n"
     exp_stream += textwrap.indent(
-        "class   = DUMMY2\naction  = action2_1/action2_2\nservice = service2\n", "  ")
+        "class   = DUMMY2,\naction  = action2_1/action2_2,\nservice = service2\n", "  ")
 
     assert actions_stream == exp_stream
 
@@ -624,13 +624,13 @@ def test_translate_objectspec(tmpdir):
             rules_file      = <rules_path>
     
         state,
-            class   = ACTION1
-            action  = action1_1/action1_2
+            class   = ACTION1,
+            action  = action1_1/action1_2,
             service = service1
         
         state,
-            class   = ACTION2
-            action  = action2_1
+            class   = ACTION2,
+            action  = action2_1,
             service = service2
         
         service,

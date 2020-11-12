@@ -286,8 +286,8 @@ def objaction_to_stream(actions_list, indent_width):
         else:
             list_of_actions = action_dict[key]['action']
         rows = [
-            f"class   = {key.upper()}",
-            f"action  = {list_of_actions}",
+            f"class   = {key.upper()},",
+            f"action  = {list_of_actions},",
             f"service = {action_dict[key]['service']}",
         ]
         rows_stream = textwrap.indent("\n".join(rows), " " * indent_width)
