@@ -1,0 +1,42 @@
+class: grib_vectors_app
+params:
+  - type:
+      type: option
+      values:
+        - vector_field
+        - polar_field
+      default: vector_field
+  - u_component:
+      type: grib
+      interface:
+        multi: false
+        help:
+          type: data
+          name: U component for Vectors
+  - v_component:
+      type: grib
+      interface:
+        multi: false
+        help:
+          type: data
+          name: V component for Vectors
+  - intensity:
+      type: grib
+      interface:
+        multi: true
+        help:
+          type: data
+          name: Intensity for Vectors
+  - direction:
+      type: grib
+      interface:
+        help:
+          type: data
+          name: Direction for Vectors
+  - colouring_field:
+      type: grib
+      interface:
+        multi: false
+        help:
+          type: data
+          name: Colouring field

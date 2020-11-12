@@ -46,6 +46,7 @@ setuptools.setup(
         "cffi",
         "numpy",
         "pandas",
+        "pyyaml",
     ],
     tests_require=[
         "pytest",

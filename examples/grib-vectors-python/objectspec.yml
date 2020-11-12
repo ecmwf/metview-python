@@ -1,0 +1,32 @@
+object:
+    class: grib_vectors_app
+    can_be_created: true
+    icon_box: Plotting
+    definition_file: GribVectorsDef
+    rules_file: GribVectorsRules
+    default_name: Grib Vectors
+    help_page: Grib+Vectors
+    type: Data
+    function: grib_vectors
+    expand: [date,time,lists]
+    editor_type: SimpleEditor
+    pixmap: GribVectors.svg
+
+actions:
+  - grib_vectors_app:
+       action:
+       - execute
+       - visualise
+       - prepare
+       - drop
+       service: GribVectors
+  # actually the output type from this module:
+  - grib_vectors:
+      action: visualise
+      service: uPlotManager
+
+service:
+  timeout: $timeout
+  name: 'GribVectors'
+  fullname: GribVectors
+  cmd: "$metview_command $METVIEW_BIN/GribVectors"
