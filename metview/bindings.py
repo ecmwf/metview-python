@@ -266,7 +266,7 @@ class Request(dict, Value):
                 self.verb = req.verb
                 self.val_pointer = req.val_pointer
             else:
-                if myverb != None:
+                if myverb is not None:
                     self.set_verb(myverb)
 
         # initialise from a Macro pointer

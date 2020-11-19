@@ -22,7 +22,10 @@ import setuptools
 
 def read(fname):
     file_path = os.path.join(os.path.dirname(__file__), fname)
-    return io.open(file_path, encoding="utf-8").read()
+    file_handle = io.open(file_path, encoding="utf-8")
+    contents = file_handle.read()
+    file_handle.close()
+    return contents
 
 
 version = "1.5.2"

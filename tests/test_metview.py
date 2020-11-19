@@ -527,7 +527,7 @@ def test_fieldset_slice():
 def test_empty_fieldset_slice():
     f = mv.Fieldset()
     s = f[0:4:1]
-    assert s == None
+    assert s is None
 
 
 def test_fieldset_iterator():
