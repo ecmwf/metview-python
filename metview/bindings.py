@@ -107,6 +107,7 @@ class MetviewInvoker:
             )
 
         self.read_metview_settings(env_file.name)
+        env_file.close()
 
         # when the Python session terminates, we should destroy this object so that the Metview
         # session is properly cleaned up. We can also do this in a __del__ function, but there can
