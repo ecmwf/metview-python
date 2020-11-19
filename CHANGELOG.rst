@@ -2,6 +2,10 @@
 Changelog for Metview's Python interface
 ========================================
 
+1.5.2
+------------------
+
+
 1.5.1
 ------------------
 - temporarily removed tests that involve writing xarrays as GRIB
