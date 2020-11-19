@@ -4,6 +4,7 @@ Changelog for Metview's Python interface
 
 1.5.2
 ------------------
+- added write(filename) method for classes Fieldset, Geopoints, GeopointSet, Bufr and NetCDF
 
 
 1.5.1

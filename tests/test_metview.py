@@ -189,6 +189,15 @@ def test_write():
     os.remove(file_in_testdir("test_gg_grid.grib"))
 
 
+def test_write_method():
+    gg = mv.read({"SOURCE": file_in_testdir("test.grib"), "GRID": 80})
+    regridded_grib = gg.write(file_in_testdir("test_gg_grid_method.grib"))
+    assert regridded_grib == 0
+    gg2 = mv.read(file_in_testdir("test_gg_grid_method.grib"))
+    assert mv.grib_get_string(gg2, "shortName") == "2t"
+    os.remove(file_in_testdir("test_gg_grid_method.grib"))
+
+
 def test_class_():
     # these generate warnings, but if they pass then they show that the conversion
     # from class_ to class is working
@@ -790,6 +799,15 @@ def test_read_bufr():
     assert mv.type(bufr) == "observations"
 
 
+def test_write_method_bufr():
+    bufr = mv.read(file_in_testdir("obs_3day.bufr"))
+    write_path = file_in_testdir("obs_3day_written.bufr")
+    bufr.write(write_path)
+    b2 = mv.read(write_path)
+    assert mv.type(b2) == "observations"
+    os.remove(write_path)
+
+
 def test_read_gpt():
     gpt = mv.read(file_in_testdir("t2m_3day.gpt"))
     assert mv.type(gpt) == "geopoints"
@@ -797,6 +815,17 @@ def test_read_gpt():
 
 
 TEST_GEOPOINTS = mv.read(os.path.join(PATH, "t2m_3day.gpt"))
+
+
+def test_gpts_write_method():
+    g = mv.read(file_in_testdir("t2m_3day.gpt"))
+    gcount = g.count()
+    write_path = file_in_testdir("t2m_3day_written.gpt")
+    g.write(write_path)
+    h = mv.read(write_path)
+    assert mv.type(h) == "geopoints"
+    assert h.count() == gcount
+    os.remove(write_path)
 
 
 def test_filter_gpt():
@@ -993,6 +1022,19 @@ def test_read_gptset():
     lats = good_filter[0].latitudes()
     assert len(lats) == 1
     assert lats[0] == 60.82
+
+
+def test_gptset_write_method():
+    g = mv.read(file_in_testdir("geopointset_1.gpts"))
+    write_path = file_in_testdir("geopointset_1_written.gpt")
+    g.write(write_path)
+    h = mv.read(write_path)
+    assert mv.type(h) == "geopointset"
+    assert h.count() == g.count()
+    h1 = h[0]
+    assert mv.type(h1) == "geopoints"
+    assert mv.count(h1) == 11
+    os.remove(write_path)
 
 
 def test_date_year():
@@ -1254,6 +1296,18 @@ def test_netcdf_multi_indexed_values_with_all():
     assert len(v) == 5
     assert np.isclose(v[0], 234.714)
     assert np.isclose(v[4], 260.484)
+
+
+def test_netcdf_write_method():
+    nc = mv.read(file_in_testdir("xs_date_mv5.nc"))
+    write_path = file_in_testdir("xs_date_mv5_written.nc")
+    nc.write(write_path)
+    nc2 = mv.read(write_path)
+    mv.setcurrent(nc2, "t")
+    assert mv.attributes(nc2)["long_name"] == "Temperature"
+    assert np.isclose(mv.value(nc2, 0), 234.7144)
+    assert np.isclose(mv.value(nc2, 4), 237.4377)
+    os.remove(write_path)
 
 
 def test_netcdf_to_dataset():

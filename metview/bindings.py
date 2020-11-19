@@ -398,6 +398,9 @@ class FileBackedValue(Value):
     def __init__(self, val_pointer):
         Value.__init__(self, val_pointer)
 
+    def write(self, filename):
+        return write(filename, self)
+
     def url(self):
         # ask Metview for the file relating to this data (Metview will write it if necessary)
         return string_from_ffi(lib.p_data_path(self.val_pointer))
@@ -1032,6 +1035,7 @@ subset = make("[]")
 met_and = make("and")
 met_or = make("or")
 met_not = make("not")
+write = make("write")
 
 
 # -----------------------------------------------------------------------------
