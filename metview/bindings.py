@@ -560,7 +560,7 @@ class ContainerValue(Value):
 
 
 class Fieldset(FileBackedValueWithOperators, ContainerValue):
-    def __init__(self, val_pointer=None, path=None):
+    def __init__(self, val_pointer=None, path=None, fields=None):
         FileBackedValueWithOperators.__init__(self, val_pointer)
         ContainerValue.__init__(
             self,
@@ -570,9 +570,16 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             support_slicing=True,
         )
 
+        if (path is not None) and (fields is not None):
+            raise ValueError("Fieldset cannot take both path and fields")
+
         if path is not None:
             temp = read(path)
             self.steal_val_pointer(temp)
+
+        if fields is not None:
+            for f in fields:
+                self.append(f)
 
     def append(self, other):
         temp = merge(self, other)

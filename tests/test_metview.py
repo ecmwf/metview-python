@@ -755,6 +755,61 @@ def test_fieldset_append_from_empty():
     assert shortnames == ["t", "u", "t", "u", "v"]
 
 
+def test_fieldset_create_from_list_of_fieldsets_1():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    g1 = grib[2]
+    g2 = grib[4]
+    g3 = grib[1]
+    list_of_fields = [g1, g2, g3]
+    gl = mv.Fieldset(fields=list_of_fields)
+    assert gl.count() == 3
+    assert gl.grib_get_long("level") == [700, 400, 850]
+
+
+def test_fieldset_create_from_list_of_fieldsets_2():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    g1 = grib[2]
+    g2 = grib[4]
+    g3 = mv.merge(grib[1], grib[0])
+    list_of_fields = [g1, g2, g3]
+    gl = mv.Fieldset(fields=list_of_fields)
+    assert gl.count() == 4
+    assert gl.grib_get_long("level") == [700, 400, 850, 1000]
+
+
+def test_fieldset_create_from_list_of_fieldsets_3():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    g1 = grib[1:4]
+    g2 = grib[0]
+    g3 = grib[3:]
+    list_of_fields = [g1, g2, g3]
+    gl = mv.Fieldset(fields=list_of_fields)
+    assert gl.count() == 7
+    assert gl.grib_get_long("level") == [850, 700, 500, 1000, 500, 400, 300]
+
+
+def test_fieldset_create_from_list_of_fieldsets_4():
+    grib1 = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    grib2 = mv.read(os.path.join(PATH, "ml_data.grib"))
+    g1 = grib1[1:4]
+    g2 = grib2[5:8]
+    g3 = grib1[0]
+    list_of_fields = [g1, g2, g3]
+    gl = mv.Fieldset(fields=list_of_fields)
+    assert gl.count() == 7
+    assert gl.grib_get_long("level") == [850, 700, 500, 17, 21, 25, 1000]
+
+
+def test_fieldset_create_from_list_of_fieldsets_5():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    g1 = grib[2]
+    g2 = grib[4]
+    g3 = grib[1]
+    list_of_fields = [g1, g2, g3]
+    with pytest.raises(ValueError):
+        gl = mv.Fieldset(path=os.path.join(PATH, "test.grib"), fields=list_of_fields)
+
+
 def test_fieldset_pickling():
     pickled_fname = file_in_testdir("pickled_fieldset.p")
     g = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
