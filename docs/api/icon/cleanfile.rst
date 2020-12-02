@@ -19,15 +19,15 @@ cleanfile
     Description comes here!
 
 
-    :param path: Specifies the ``path`` to the input ``data``.
+    :param path: Specifies the path to the input data.
     :type path: str
 
 
-    :param data: Specifies the input as an icon. If both an icon (in ``data`` ) and a filename (in ``path`` ) are specified the icon takes precedence.
-    :type data: str
+    :param data: Specifies the input as an object. If both ``data`` and ``path``  are specified ``data`` takes precedence.
+    :type data: :class:`Fieldset` or :class:`BUFR`
 
 
-    :param skip_hirlam_custom_record: The possible values are "yes" and "no". The default is "no".
+    :param skip_hirlam_custom_record: Skips custom records for HIRLAM data.
     :type skip_hirlam_custom_record: {"no", "yes"}, default: "no"
 
 

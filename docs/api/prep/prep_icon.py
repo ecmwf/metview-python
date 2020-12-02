@@ -97,7 +97,7 @@ class DocParam:
 
     def as_dict(self):
         d = {
-            "name": self.name,
+            # "name": self.name,
             "default": self.default,
             "values": self.values,
             "desc": self.formatted_desc(),
@@ -361,8 +361,8 @@ class DocFunction:
     def as_dict(self):
         d = []
         for _, item in self.params.items():
-            d.append(item.as_dict())    
-        return d
+            d.append({item.name: item.as_dict()}) 
+        return {"params": d}
 
     @staticmethod
     def find(name):

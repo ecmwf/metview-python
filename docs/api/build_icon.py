@@ -255,8 +255,9 @@ def add_icon_rst(name, fname):
                     )
                 )
 
-            for item in conf:
-                p = DocParam(item.get("name"), item)
+            for item in conf.get("params", {}):
+                ((p_name, p_conf),) = item.items()
+                p = DocParam(p_name, p_conf)
                 f.write(
                     """
     :param {}: {}
@@ -370,12 +371,11 @@ with open("functions.yaml", "r") as f:
 path = os.getenv("HOME", "") + "/icon_desc"
 for d_name in glob.glob(os.path.join(path, "*.yaml")):
     name = format(os.path.basename(d_name).split(".yaml")[0])
-    # if name == "flexpart_run":
+    # if name == "annotationview":
     # if name == "odb_visualiser":
     # if name == "cartesianview":
     # if name == "mcont":
     if 1:
         add_icon_rst(name, d_name)
-        # add_icon_yaml(name, d_name)
 
 make_icon_toc()
