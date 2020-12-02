@@ -11,7 +11,7 @@ scm_visualiser
 
     .. container:: rightside
 
-        This function represents the `Scm Visualiser <https://confluence.ecmwf.int/display/METV/scm+visualiser>`_ icon in Metview's user interface.
+        This function performs the same task as the `Scm Visualiser <https://confluence.ecmwf.int/display/METV/scm+visualiser>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: scm_visualiser(**kwargs)
@@ -20,11 +20,11 @@ scm_visualiser
 
 
     :param scm_plot_type: 
-    :type scm_plot_type: str
+    :type scm_plot_type: {"time_value_curve", "time_height_matrix", "profile"}, default: "time_value_curve"
 
 
     :param scm_data_filename: 
-    :type scm_data_filename: str
+    :type scm_data_filename: str, default: "off"
 
 
     :param scm_data: 
@@ -32,19 +32,19 @@ scm_visualiser
 
 
     :param scm_data_title: 
-    :type scm_data_title: str
+    :type scm_data_title: str, default: "data"
 
 
     :param scm_data_type: 
-    :type scm_data_type: str
+    :type scm_data_type: {"input", "output"}, default: "output"
 
 
     :param scm_compare_data: 
-    :type scm_compare_data: str
+    :type scm_compare_data: {"on", "off"}, default: "off"
 
 
     :param scm_comparison_data_filename: 
-    :type scm_comparison_data_filename: str
+    :type scm_comparison_data_filename: str, default: "off"
 
 
     :param scm_comparison_data: 
@@ -52,31 +52,31 @@ scm_visualiser
 
 
     :param scm_comparison_data_title: 
-    :type scm_comparison_data_title: str
+    :type scm_comparison_data_title: str, default: "comparison data"
 
 
     :param scm_comparison_mode: 
-    :type scm_comparison_mode: str
+    :type scm_comparison_mode: {"overlay", "difference"}, default: "overlay"
 
 
     :param scm_output_1d_variables: 
-    :type scm_output_1d_variables: str or list[str]
+    :type scm_output_1d_variables: str or list[str], default: "t_skin"
 
 
     :param scm_output_2d_variables: 
-    :type scm_output_2d_variables: str or list[str]
+    :type scm_output_2d_variables: str or list[str], default: "t"
 
 
     :param scm_input_1d_variables: 
-    :type scm_input_1d_variables: str or list[str]
+    :type scm_input_1d_variables: str or list[str], default: "t_skin"
 
 
     :param scm_input_2d_variables: 
-    :type scm_input_2d_variables: str or list[str]
+    :type scm_input_2d_variables: str or list[str], default: "t"
 
 
     :param scm_times: 
-    :type scm_times: str or list[str]
+    :type scm_times: str or list[str], default: "0"
 
 
     :param scm_x_min_list: 
@@ -104,15 +104,15 @@ scm_visualiser
 
 
     :param scm_grid: 
-    :type scm_grid: str
+    :type scm_grid: {"on", "off"}, default: "off"
 
 
     :param scm_output_mode: 
-    :type scm_output_mode: str
+    :type scm_output_mode: {"screen", "postscript", "png", "pdf"}, default: "screen"
 
 
     :param scm_output_file_path: 
-    :type scm_output_file_path: str
+    :type scm_output_file_path: str, default: "scm_out.ps"
 
 
     :rtype: None

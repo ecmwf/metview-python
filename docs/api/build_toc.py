@@ -29,11 +29,11 @@ groups_def = {
     "mask": "Masking",
     "flex": "Flextra and Flexpart",
     "table": "Table data",
-    "scm" : "Single Column Model",
+    "scm": "Single Column Model",
     "rttov": "RTTOV",
     "wind": "Wind",
     "met3d": "Met3D",
-    "vapor": "Vapor"
+    "vapor": "Vapor",
 }
 
 toc_def = {
@@ -48,7 +48,6 @@ toc_def = {
             "thermo",
             "calculus",
             "maths",
-
         ],
     },
     "plot": {
@@ -58,12 +57,23 @@ toc_def = {
     # "ui": {"title": "User interface", "gr": ["widget", "ui"]},
     "data": {
         "title": "Data access",
-        "gr": ["retrieve", "conversion", "filter", "grib",  "geopoints", "netcdf", "flex", "table", "scm", "rttov"],
+        "gr": [
+            "retrieve",
+            "conversion",
+            "filter",
+            "grib",
+            "geopoints",
+            "netcdf",
+            "flex",
+            "table",
+            "scm",
+            "rttov",
+        ],
     },
     "apps": {
         "title": "External applications",
-        "gr": ["flex", "met3d", "vapor", "scm", "rttov"]
-    }
+        "gr": ["flex", "met3d", "vapor", "scm", "rttov"],
+    },
 }
 
 groups = {}
@@ -136,7 +146,7 @@ class DocFunction:
     def add_to_group(self, gr):
         gr.fn.append(self)
         self.groups.append(gr)
-     
+
     # def type_str(self):
     #     t = []
     #     for k, v in self.dtype.items():
@@ -146,34 +156,11 @@ class DocFunction:
     #     return ", ".join(t)
 
 
-with open("functions.yaml", "r") as f:
-    for v in yaml.safe_load(f):
-        name = list(v.keys())[0]
-        item = v[name]
-        if item.get("exclude", False):
-            continue
-        
-        fn = DocFunction(
-            name, item.get("type", ""), item.get("desc", "???"), item.get("pix", "")
-        )
-        fn_list.append(fn)
+def make_group_toc(t):
 
-        for gr in item.get("group", []):
-            if gr in groups:
-                # raise Exception("Unknown group: {}".format(gr))
-                # groups[gr] = []
-                # groups[gr].fn.append(fn)
-                fn.add_to_group(groups[gr])
-
-        fn.category = item.get("category", {})
-
-    for _, gr in groups.items():
-        gr.sort()
-
-for _, t in toc.items():
     if len(t.gr) == 0:
         print("Empty toc!")
-        continue
+        return
 
     with open(t.output, "w") as f:
         f.write(
@@ -221,16 +208,94 @@ for _, t in toc.items():
                     )
                 )
 
+
+def make_icon_toc():
+
+    with open("icon.rst", "w") as f:
+        f.write(
+            """
+{}
+===========================
+
+""".format("Icon functions")
+    )
+
+        icons = {}
+        for fn in fn_list:
+            if fn.dtype == "icon":
+                if not fn.name in icons:
+                    icons[fn.name] = []
+                icons[fn.name].append(fn)
+
+        # icons.sort()
+
+        f.write(
+            """
+
+{}
+-------------------------------
+
+.. list-table::
+    :header-rows: 0
+
+""".format(
+                "Icons"
+            )
+        )
+
+        for title, item in icons.items():
+            fn = item[0]
+            f.write(
+                """
+    * - .. image:: /_static/{}
+            :width: 24px
+      - :func:`{}`
+      - {}
+""".format(
+                    fn.pix, fn.name, fn.desc
+                )
+            )
+
+
+with open("functions.yaml", "r") as f:
+    for v in yaml.safe_load(f):
+        name = list(v.keys())[0]
+        item = v[name]
+        if item.get("exclude", False):
+            continue
+
+        fn = DocFunction(
+            name, item.get("type", ""), item.get("desc", "???"), item.get("pix", "")
+        )
+        fn_list.append(fn)
+
+        for gr in item.get("group", []):
+            if gr in groups:
+                # raise Exception("Unknown group: {}".format(gr))
+                # groups[gr] = []
+                # groups[gr].fn.append(fn)
+                fn.add_to_group(groups[gr])
+
+        fn.category = item.get("category", {})
+
+    for _, gr in groups.items():
+        gr.sort()
+
+# make_icon_toc()
+
+for _, t in toc.items():
+    make_group_toc(t)
+
 print("SCRIPT functions without group")
 cnt = 0
 for f in fn_list:
     if f.orphan() and f.dtype != "icon":
         print("[{}] {}".format(cnt, f.name))
-        cnt +=1
+        cnt += 1
 
 print("\nICON functions without group")
 cnt = 0
 for f in fn_list:
     if f.orphan() and f.dtype == "icon":
         print("[{}] {}".format(cnt, f.name))
-        cnt +=1
+        cnt += 1

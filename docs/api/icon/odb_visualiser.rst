@@ -11,7 +11,7 @@ odb_visualiser
 
     .. container:: rightside
 
-        This function represents the `ODB Visualiser <https://confluence.ecmwf.int/display/METV/ODB+Visualiser>`_ icon in Metview's user interface.
+        This function performs the same task as the `ODB Visualiser <https://confluence.ecmwf.int/display/METV/ODB+Visualiser>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: odb_visualiser(**kwargs)
@@ -21,30 +21,30 @@ odb_visualiser
 
     :param odb_plot_type: Specifies the plot type to be generated. The possible values are as follows:
 
-         *  geo_points (points plotted onto a map)
+         *  "geo_points" (points plotted onto a map)
          *  geo_vectors (vectors plotted onto a map)
          *  xy_points (points plotted into a :func:`cartesianview`
          *  xy_vectors (vectors plotted into a :func:`cartesianview`
          *  xy_binning (gridded values by binning plotted into a a :func:`cartesianview`
 
-         The default value is: geo_points.
-    :type odb_plot_type: str
+         The default value is: "geo_points".
+    :type odb_plot_type: str, default: "geo_points"
 
 
     :param odb_filename: Specifies the path to the input ODB.
-    :type odb_filename: str
+    :type odb_filename: str, default: "off"
 
 
     :param odb_data: Specifies the input ODB as an icon. If both an icon (in ``odb_data`` ) and a filename (in ``odb_filename`` ) are specified the icon takes precedence.
     :type odb_data: str
 
 
-    :param odb_x_type: Specifies the type of the x coordinate when ``odb_plot_type`` is set to xy_points , xy_vectors or xy_binning. The possible values are: number and date. The default is number.
-    :type odb_x_type: str
+    :param odb_x_type: Specifies the type of the x coordinate when ``odb_plot_type`` is set to xy_points , xy_vectors or xy_binning. The possible values are: "number" and date. The default is "number".
+    :type odb_x_type: str, default: "number"
 
 
-    :param odb_y_type: Specifies the type of the y coordinate when ``odb_plot_type`` is set to xy_points , xy_vectors or xy_binning. The possible values are: number and date. The default is number.
-    :type odb_y_type: str
+    :param odb_y_type: Specifies the type of the y coordinate when ``odb_plot_type`` is set to xy_points , xy_vectors or xy_binning. The possible values are: "number" and date. The default is "number".
+    :type odb_y_type: str, default: "number"
 
 
     :param odb_x_variable: Specifies the ODB column interpreted as the x coordinate when ``odb_plot_type`` is set to geo_vectors , xy_vectors or xy_binning. The default is an empty string.
@@ -55,24 +55,24 @@ odb_visualiser
     :type odb_y_variable: str
 
 
-    :param odb_latitude_variable: Specifies the ODB column interpreted as latitude when ``odb_plot_type`` is set to geo_points or geo_vectors. The default is lat@hdr.
-    :type odb_latitude_variable: str
+    :param odb_latitude_variable: Specifies the ODB column interpreted as latitude when ``odb_plot_type`` is set to geo_points or geo_vectors. The default is "lat@hdr".
+    :type odb_latitude_variable: str, default: "lat@hdr"
 
 
-    :param odb_longitude_variable: Specifies the ODB column interpreted as longitude when ``odb_plot_type`` is set to geo_points or geo_vectors. The default is lon@hdr.
-    :type odb_longitude_variable: str
+    :param odb_longitude_variable: Specifies the ODB column interpreted as longitude when ``odb_plot_type`` is set to geo_points or geo_vectors. The default is "lon@hdr".
+    :type odb_longitude_variable: str, default: "lon@hdr"
 
 
-    :param odb_x_component_variable: Specifies the ODB column interpreted as the x component of the vector when ``odb_plot_type`` is set to geo_vectors or xy_vectors. The default is obsvalue@body.
-    :type odb_x_component_variable: str
+    :param odb_x_component_variable: Specifies the ODB column interpreted as the x component of the vector when ``odb_plot_type`` is set to geo_vectors or xy_vectors. The default is "obsvalue@body".
+    :type odb_x_component_variable: str, default: "obsvalue@body"
 
 
-    :param odb_y_component_variable: Specifies the ODB column interpreted as the y component of the vector when ``odb_plot_type`` is set to geo_vectors or xy_vectors. The default is obsvalue@body#1.
-    :type odb_y_component_variable: str
+    :param odb_y_component_variable: Specifies the ODB column interpreted as the y component of the vector when ``odb_plot_type`` is set to geo_vectors or xy_vectors. The default is "obsvalue@body#1".
+    :type odb_y_component_variable: str, default: "obsvalue@body#1"
 
 
-    :param odb_value_variable: Specifies the ODB column interpreted as the value in each plot type. The default is obsvalue@body.
-    :type odb_value_variable: str
+    :param odb_value_variable: Specifies the ODB column interpreted as the value in each plot type. The default is "obsvalue@body".
+    :type odb_value_variable: str, default: "obsvalue@body"
 
 
     :param odb_metadata_variables: Specifies the list of columns extracted and added to the resulting ODB file on top of the columns directly used for visualisation. This parameter accepts wildcards (e.g. *.hdr`), to add all the columns from the source ODB to the result use : *`. The default is an empty string (no extra columns added).
@@ -96,21 +96,21 @@ odb_visualiser
 
 
     :param odb_nb_rows: Specifies the maximum number of rows in the result. If -1 is given here the number of rows is not limited in the output. The default value is -1.
-    :type odb_nb_rows: number
+    :type odb_nb_rows: number, default: -1
 
 
-    :param odb_coordinates_unit: Specifies the units of the geographical co-ordinates in the input ODB. The possible values are: degrees and radians. The default is degrees.
+    :param odb_coordinates_unit: Specifies the units of the geographical co-ordinates in the input ODB. The possible values are: "degrees" and radians. The default is "degrees".
 
-         For older ODBs column latlon_rad@desc tells us the geographical co-ordinate units. Its 0 value indicates degrees while 1 means radians. Newer ODBs, especially the ones retrieved from MARS, as a generic rule, always use degrees as geographical co-ordinate units.
-    :type odb_coordinates_unit: str
+         For older ODBs column latlon_rad@desc tells us the geographical co-ordinate units. Its 0 value indicates "degrees" while 1 means radians. Newer ODBs, especially the ones retrieved from MARS, as a generic rule, always use "degrees" as geographical co-ordinate units.
+    :type odb_coordinates_unit: str, default: "degrees"
 
 
     :param odb_binning: Specifies the :func:`binning` to create gridded data out of scattered data when the ``odb_plot_type`` is xy_binning.
     :type odb_binning: str
 
 
-    :param fail_on_empty_output: When it is set to Yes the icon will not fail if the resulting ODB is empty (in Macro the return value is nil while in Python it is None`). Otherwise when it is set to No the icon will ``fail_on_empty_output``. The default value is Yes.
-    :type fail_on_empty_output: str
+    :param fail_on_empty_output: When it is set to "yes" the icon will not fail if the resulting ODB is empty (in Macro the return value is nil while in Python it is None`). Otherwise when it is set to "no" the icon will ``fail_on_empty_output``. The default value is "yes".
+    :type fail_on_empty_output: {"yes", "no"}, default: "yes"
 
 
     :rtype: None

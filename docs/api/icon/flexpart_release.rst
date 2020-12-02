@@ -11,7 +11,7 @@ flexpart_release
 
     .. container:: rightside
 
-        This function represents the `Flexpart Release <https://confluence.ecmwf.int/display/METV/flexpart+release>`_ icon in Metview's user interface.
+        This function performs the same task as the `Flexpart Release <https://confluence.ecmwf.int/display/METV/flexpart+release>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: flexpart_release(**kwargs)
@@ -40,11 +40,11 @@ flexpart_release
 
 
     :param area: Specifies the ``area`` for the release in degrees in S/W/N/E format. The default value is -90/-180/90/180.
-    :type area: float or list[float]
+    :type area: float or list[float], default: -90
 
 
-    :param level_units: Specifies the units for the release vertical extent. The possible values are agl (metres above ground level), asl (metres above sea level) and hPa. The default value is agl.
-    :type level_units: str
+    :param level_units: Specifies the units for the release vertical extent. The possible values are "agl" (metres above ground level), "asl" (metres above sea level) and "hpa". The default value is "agl".
+    :type level_units: {"agl", "asl", "hpa"}, default: "agl"
 
 
     :param top_level: Specifies the ``top_level`` of the release.

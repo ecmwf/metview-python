@@ -11,7 +11,7 @@ rttov_visualiser
 
     .. container:: rightside
 
-        This function represents the `Rttov Visualiser <https://confluence.ecmwf.int/display/METV/rttov+visualiser>`_ icon in Metview's user interface.
+        This function performs the same task as the `Rttov Visualiser <https://confluence.ecmwf.int/display/METV/rttov+visualiser>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: rttov_visualiser(**kwargs)
@@ -20,7 +20,7 @@ rttov_visualiser
 
 
     :param rttov_plot_type: 
-    :type rttov_plot_type: str
+    :type rttov_plot_type: {"channel_tb_graph", "jacobian_channel_curve", "jacobian_matrix"}, default: "channel_tb_graph"
 
 
     :param rttov_data: 
@@ -28,11 +28,11 @@ rttov_visualiser
 
 
     :param rttov_filename: 
-    :type rttov_filename: str
+    :type rttov_filename: str, default: "off"
 
 
     :param rttov_jacobian_channel: 
-    :type rttov_jacobian_channel: number
+    :type rttov_jacobian_channel: number, default: 1
 
 
     :rtype: None

@@ -123,6 +123,9 @@ Geographic
     * - :func:`read`
       - Filters and interpolates GRIB data
 
+    * - :func:`regrid`
+      - Regridding and derivatives
+
     * - :func:`reprojection`
       - Repoject satellite view GRIB data onto a latlon grid
 

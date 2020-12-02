@@ -11,7 +11,7 @@ scm_run
 
     .. container:: rightside
 
-        This function represents the `Scm Run <https://confluence.ecmwf.int/display/METV/scm+run>`_ icon in Metview's user interface.
+        This function performs the same task as the `Scm Run <https://confluence.ecmwf.int/display/METV/scm+run>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: scm_run(**kwargs)
@@ -52,11 +52,11 @@ scm_run
 
 
     :param scm_copy_output_data: 
-    :type scm_copy_output_data: str
+    :type scm_copy_output_data: {"on", "off"}, default: "off"
 
 
     :param scm_output_data_path: 
-    :type scm_output_data_path: str
+    :type scm_output_data_path: str, default: "scm_out.nc"
 
 
     :rtype: None

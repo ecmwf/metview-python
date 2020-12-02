@@ -11,7 +11,7 @@ cleanfile
 
     .. container:: rightside
 
-        This function represents the `Clean File <https://confluence.ecmwf.int/display/METV/Clean+File>`_ icon in Metview's user interface.
+        This function performs the same task as the `Clean File <https://confluence.ecmwf.int/display/METV/Clean+File>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: cleanfile(**kwargs)
@@ -27,8 +27,8 @@ cleanfile
     :type data: str
 
 
-    :param skip_hirlam_custom_record: The possible values are yes and no. The default is no.
-    :type skip_hirlam_custom_record: str
+    :param skip_hirlam_custom_record: The possible values are "yes" and "no". The default is "no".
+    :type skip_hirlam_custom_record: {"no", "yes"}, default: "no"
 
 
     :rtype: None

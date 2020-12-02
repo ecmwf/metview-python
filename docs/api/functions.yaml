@@ -288,6 +288,8 @@
     category: {}
     desc: ''
     type: icon
+    group:
+      - widget
 - describe:
     category:
       info: Describes available function
@@ -348,6 +350,7 @@
     category: {}
     desc: Computes the divergent wind from a divergence fieldset
     type: icon
+    pix: DIVROT
     group:
       - wind
 - divwind_mir:
@@ -413,12 +416,14 @@
     category: {}
     desc: Computes the equivalent potential temperature on model levels
     type: icon
+    pix: POTTF
     group:
       - thermo
 - eqpott_p:
     category: {}
     desc: Computes the equivalent potential temperature on pressure levels
     type: icon
+    pix: POTTF
     group:
       - thermo
 - examine:
@@ -1086,6 +1091,7 @@
     category: {}
     desc: Generates data for the Hovmoeller area mode
     type: icon
+    pix: MHOVMOELLERDATA
     family: hovm_data
     group:
       - vertical
@@ -1093,6 +1099,7 @@
     category: {}
     desc: Generates data for the Hovmoeller expand mode
     type: icon
+    pix: MHOVMOELLERDATA
     family: hovm_data
     group:
       - vertical
@@ -1100,6 +1107,7 @@
     category: {}
     desc: Generates data for the Hovmoeller line mode
     type: icon
+    pix: MHOVMOELLERDATA
     family: hovm_data
     group:
       - vertical
@@ -1107,6 +1115,7 @@
     category: {}
     desc: Generates data for the Hovmoeller vertical mode
     type: icon
+    pix: MHOVMOELLERDATA
     family: hovm_data
     group:
       - vertical
@@ -1430,7 +1439,7 @@
     desc: ''
     type: icon
     exclude: True
-- plot_page:
+- plot:
     category: {}
     desc: Generates a plot
     type: script
@@ -1477,12 +1486,14 @@
     category: {}
     desc: Computes the potential temperature on model levels
     type: icon
+    pix: POTTF
     group:
       - thermo
 - pott_p:
     category: {}
     desc: Computes the potential temperature on pressure levels
     type: icon
+    pix: POTTF
     group:
       - thermo
 - precision:
@@ -1586,6 +1597,12 @@
     desc: ''
     type: icon
     exclude: True
+- regrid:
+    category: {}
+    desc: Regridding and derivatives
+    type: icon
+    group:
+      - geo  
 - relhum:
     category: {}
     desc: Computes relative humidity from specific humidity
@@ -1722,6 +1739,7 @@
 - seqpott_m:
     category: {}
     desc: Computes the saturation equivalent potential temperature on model levels
+    pix: POTTF
     type: icon
     group:
       - thermo
@@ -1729,6 +1747,7 @@
     category: {}
     desc: Computes the saturation equivalent potential temperature on pressure levels
     type: icon
+    pix: POTTF
     group:
       - thermo
 - set_dates:
@@ -1868,10 +1887,12 @@
     category: {}
     desc: ''
     type: icon
+    pix: SPECTRA
 - spec_graph:
     category: {}
     desc: ''
     type: icon
+    pix: SPECTRA
 - sqrt:
     category:
       fieldset: Square root
@@ -1945,6 +1966,7 @@
     category: {}
     desc: Computes the stream function from a vorticity fieldset
     type: icon
+    pix: VELSTR
     family: velpot
     group:
       - wind
@@ -2017,12 +2039,14 @@
     category: {}
     desc: Generates thermodynamical profile from BUFR
     type: icon
+    pix: THERMODATA
     group:
       - thermo
 - thermo_grib:
     category: {}
     desc: Generates thermodynamical profile from GRIB
     type: icon
+    pix: THERMODATA
     group:
       - thermo
 - thermo_odb:
@@ -2129,6 +2153,7 @@
     category: {}
     desc: Computes u/v from a vorticty and divegence fieldset 
     type: icon
+    pix: DIVROT
     family: divrot
     group:
       - wind
@@ -2222,6 +2247,7 @@
     category: {}
     desc: Computes the velocity potential from a divergence fieldset
     type: icon
+    pix: VELSTR
     family: velpot
     group:
       - wind

@@ -10,6 +10,7 @@ Reference Guide
    data_toc
    plot_toc
    apps_toc
+   icon
 
 
 .. toctree::

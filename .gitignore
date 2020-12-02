@@ -39,6 +39,7 @@ coverage.xml
 docs/_build/
 docs/make.bat
 docs/auto_examples/*.zip
+docs/auto_examples/searchindex.db
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -96,3 +97,5 @@ docs/gallery/*.tar
 docs/gallery/*.tar.gz
 docs/gallery/*.gz
 docs/gallery/*/*.grib
+docs/gallery*/*.pdf
+docs/gallery*/*.png

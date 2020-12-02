@@ -11,7 +11,7 @@ netcdf_visualiser
 
     .. container:: rightside
 
-        This function represents the `Netcdf Visualiser <https://confluence.ecmwf.int/display/METV/netcdf+visualiser>`_ icon in Metview's user interface.
+        This function performs the same task as the `Netcdf Visualiser <https://confluence.ecmwf.int/display/METV/netcdf+visualiser>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: netcdf_visualiser(**kwargs)
@@ -20,11 +20,11 @@ netcdf_visualiser
 
 
     :param netcdf_plot_type: 
-    :type netcdf_plot_type: str
+    :type netcdf_plot_type: {"geo_points", "geo_vectors", "geo_matrix", "geo_matrix_vectors", "xy_points", "xy_vectors", "xy_matrix", "xy_matrix_vectors"}, default: "geo_points"
 
 
     :param netcdf_filename: 
-    :type netcdf_filename: str
+    :type netcdf_filename: str, default: "off"
 
 
     :param netcdf_data: 
@@ -76,7 +76,7 @@ netcdf_visualiser
 
 
     :param netcdf_dimension_setting_method: 
-    :type netcdf_dimension_setting_method: str
+    :type netcdf_dimension_setting_method: {"index", "value"}, default: "value"
 
 
     :param netcdf_dimension_setting: 
@@ -84,15 +84,15 @@ netcdf_visualiser
 
 
     :param netcdf_matrix_primary_index: 
-    :type netcdf_matrix_primary_index: str
+    :type netcdf_matrix_primary_index: {"latitude", "longitude"}, default: "longitude"
 
 
     :param netcdf_position_type: 
-    :type netcdf_position_type: str
+    :type netcdf_position_type: {"array", "matrix"}, default: "array"
 
 
     :param netcdf_missing_attribute: 
-    :type netcdf_missing_attribute: str
+    :type netcdf_missing_attribute: str, default: "_fillvalue"
 
 
     :rtype: None

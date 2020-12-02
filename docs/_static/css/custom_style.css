@@ -10,3 +10,9 @@ div.rightside {
     padding-left: 40px;
     /*float: right;*/
   }
+
+.mval {
+  background-color: rgb(236,240,233);
+  font-family: monospace;
+}
+

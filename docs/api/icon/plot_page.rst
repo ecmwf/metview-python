@@ -11,7 +11,7 @@ plot_page
 
     .. container:: rightside
 
-        This function represents the `Plot Page <https://confluence.ecmwf.int/display/METV/plot+page>`_ icon in Metview's user interface.
+        This function performs the same task as the `Plot Page <https://confluence.ecmwf.int/display/METV/plot+page>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: plot_page(**kwargs)
@@ -20,35 +20,35 @@ plot_page
 
 
     :param top: 
-    :type top: number
+    :type top: number, default: 0
 
 
     :param bottom: 
-    :type bottom: number
+    :type bottom: number, default: 100
 
 
     :param left: 
-    :type left: number
+    :type left: number, default: 0
 
 
     :param right: 
-    :type right: number
+    :type right: number, default: 100
 
 
     :param rows: 
-    :type rows: str
+    :type rows: {"1", "2", "3", "4", "5"}, default: "1"
 
 
     :param columns: 
-    :type columns: str
+    :type columns: {"1", "2", "3", "4", "5"}, default: "1"
 
 
     :param page_x_gap: 
-    :type page_x_gap: number
+    :type page_x_gap: number, default: 0
 
 
     :param page_y_gap: 
-    :type page_y_gap: number
+    :type page_y_gap: number, default: 0
 
 
     :param view: 

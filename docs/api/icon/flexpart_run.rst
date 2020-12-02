@@ -11,7 +11,7 @@ flexpart_run
 
     .. container:: rightside
 
-        This function represents the `Flexpart Run <https://confluence.ecmwf.int/display/METV/flexpart+run>`_ icon in Metview's user interface.
+        This function performs the same task as the `Flexpart Run <https://confluence.ecmwf.int/display/METV/flexpart+run>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: flexpart_run(**kwargs)
@@ -39,8 +39,8 @@ flexpart_run
     :type user_resources_path: str
 
 
-    :param simulation_direction: Specifies the FLEXPART ``simulation_direction`` in time. The possible values are: Forward and Backward. The default value is Forward.
-    :type simulation_direction: str
+    :param simulation_direction: Specifies the FLEXPART ``simulation_direction`` in time. The possible values are: "forward" and Backward. The default value is "forward".
+    :type simulation_direction: str, default: "forward"
 
 
     :param starting_date: Specifies the beginning date of the simulation in YYYYMMDD format. Relative dates are allowed: e.g. -1 means yesterday, 0 means today, etc.
@@ -60,15 +60,15 @@ flexpart_run
 
 
     :param output_interval: 
-    :type output_interval: str
+    :type output_interval: str, default: "3"
 
 
-    :param output_averaging_interval: Specifies the averaging interval for the output generation in HHHH[:MM[:SS]]` format. If 0 is given here instantaneous values are written into the output files. The default value is 3 (hours).
-    :type output_averaging_interval: str
+    :param output_averaging_interval: Specifies the averaging interval for the output generation in HHHH[:MM[:SS]]` format. If 0 is given here instantaneous values are written into the output files. The default value is "3" (hours).
+    :type output_averaging_interval: str, default: "3"
 
 
     :param output_sampling_rate: Specifies the sampling rate used for the averaging of the output. This period must be shorter than the ``output_averaging_interval``. The format is `HHHH[:MM[:SS]]`. The default value is 1 (hour).
-    :type output_sampling_rate: str
+    :type output_sampling_rate: str, default: "0:15"
 
 
     :param output_field_type: Specifies the type of the gridded output fields. The possible values are:
@@ -76,7 +76,7 @@ flexpart_run
          for forward simulations :  
 
          *  none (no gridded output)
-         *  conc (concentration)
+         *  "conc" (concentration)
          *  mixr (mass mixing ratio)
          *  both (concentration and mass mixing ratio)
 
@@ -85,24 +85,24 @@ flexpart_run
          *  none (no gridded output)
          *  rtime (residence time/response function)  
 
-         The default value is conc. For more details about gridded output `click here. <https://confluence.ecmwf.int/display/METV/FLEXPART+output>`_
-    :type output_field_type: str
+         The default value is "conc". For more details about gridded output `click here. <https://confluence.ecmwf.int/display/METV/FLEXPART+output>`_
+    :type output_field_type: str, default: "conc"
 
 
-    :param output_flux: Specifies if the fluxes should be computed and written out as a gridded output ( on or off ). Fluxes corresponding to northward, southward, eastward, westward, upward and downward directions are calculated for each grid cell of the ``output_grid``.The control surfaces are placed in the middle of each ``output_grid`` cell. The default value is off. For more details about flux output `click here. <https://confluence.ecmwf.int/display/METV/FLEXPART+output>`_
-    :type output_flux: str
+    :param output_flux: Specifies if the fluxes should be computed and written out as a gridded output ( "on" or "off" ). Fluxes corresponding to northward, southward, eastward, westward, upward and downward directions are calculated for each grid cell of the ``output_grid``.The control surfaces are placed in the middle of each ``output_grid`` cell. The default value is "off". For more details about flux output `click here. <https://confluence.ecmwf.int/display/METV/FLEXPART+output>`_
+    :type output_flux: {"on", "off"}, default: "off"
 
 
-    :param output_trajectory: Specifies if the plume trajectories should be computed ( on or off ). The default value is off. For more details about trajectory output `click here. <https://confluence.ecmwf.int/display/METV/FLEXPART+output>`_
-    :type output_trajectory: str
+    :param output_trajectory: Specifies if the plume trajectories should be computed ( "on" or "off" ). The default value is "off". For more details about trajectory output `click here. <https://confluence.ecmwf.int/display/METV/FLEXPART+output>`_
+    :type output_trajectory: {"on", "off"}, default: "off"
 
 
     :param output_area: Specifies the area for the gridded output in degrees in S/W/N/E format. The default value is -90/-180/90/180.
-    :type output_area: float or list[float]
+    :type output_area: float or list[float], default: -90
 
 
     :param output_grid: Specifies the grid resolution for the gridded output in degrees as `east_west_resolution/north_south_resolution`. The default value is 1/1.
-    :type output_grid: float or list[float]
+    :type output_grid: float or list[float], default: 1
 
 
     :param output_levels: Specifies the list of height levels of the gridded output. The levels are given in metres units. The default value is an empty list.
@@ -117,26 +117,26 @@ flexpart_run
     :type release_species: str or list[str]
 
 
-    :param release_units: Specifies the units of the mass of the released species. The possible options are mass and mixr. The default value is mass. See the table below to find out what the actual units mean.  
+    :param release_units: Specifies the units of the "mass" of the released species. The possible options are "mass" and mixr. The default value is "mass". See the table below to find out what the actual units mean.  
 
          for forward simulations :  
 
-         ``release_units``| ``receptor_units`` ---|--- keyword| units| keyword| units in concentration fields mass| kg| mass| kg m-3 mass| kg| mixr| kg kg-1 mixr| 1| mass| kg m-3 mixr| 1| mixr| kg kg-1  for backward simulations:_
+         ``release_units``| ``receptor_units`` ---|--- keyword| units| keyword| units in concentration fields "mass"| kg| "mass"| kg m-3 "mass"| kg| mixr| kg kg-1 mixr| 1| "mass"| kg m-3 mixr| 1| mixr| kg kg-1  for backward simulations:_
 
-         ``release_units``| ``receptor_units`` ---|--- keyword| units| keyword| units in residence time fields mass| 1| mass| s mass| 1| mixr| s m3 kg-1 mixr| 1| mass| s kg m-3 mixr| 1| mixr| s
-    :type release_units: str
+         ``release_units``| ``receptor_units`` ---|--- keyword| units| keyword| units in residence time fields "mass"| 1| "mass"| s "mass"| 1| mixr| s m3 kg-1 mixr| 1| "mass"| s kg m-3 mixr| 1| mixr| s
+    :type release_units: str, default: "mass"
 
 
     :param releases: Specifies the ``releases`` as a group of :func:`flexpart_release` icons.
     :type releases: str
 
 
-    :param receptor_units: Specifies the concentration units at the receptor. The possible options are mass (mass concentrations) and mixr (mass mixing ratio). The default value is mass. See the table above to find out what the actual units mean.
-    :type receptor_units: str
+    :param receptor_units: Specifies the concentration units at the receptor. The possible options are "mass" ("mass" concentrations) and mixr ("mass" mixing ratio). The default value is "mass". See the table above to find out what the actual units mean.
+    :type receptor_units: str, default: "mass"
 
 
-    :param receptors: Enables the usage of receptor sites ( on or off ). When it is enabled the list of receptor sites can be defined via ``receptor_names`` , ``receptor_latitudes`` and Receptor Longitude. The default value is off.  For more details about receptor output `click here <https://confluence.ecmwf.int/display/METV/FLEXPART+species>`_.
-    :type receptors: str
+    :param receptors: Enables the usage of receptor sites ( "on" or "off" ). When it is enabled the list of receptor sites can be defined via ``receptor_names`` , ``receptor_latitudes`` and Receptor Longitude. The default value is "off".  For more details about receptor output `click here <https://confluence.ecmwf.int/display/METV/FLEXPART+species>`_.
+    :type receptors: {"on", "off"}, default: "off"
 
 
     :param receptor_names: Specifies the list of receptor site names.The default value is an empty list.
@@ -155,36 +155,36 @@ flexpart_run
     :type age_classes: str or list[str]
 
 
-    :param particle_splitting: Specifies the interval for ``particle_splitting`` in HHHH[:MM[:SS]] format. Each particle is split into two after travelling the multiple of this interval. If 0 (default value) is given here ``particle_splitting`` is disabled.
-    :type particle_splitting: str
+    :param particle_splitting: Specifies the interval for ``particle_splitting`` in HHHH[:MM[:SS]] format. Each particle is split into two after travelling the multiple of this interval. If "0" (default value) is given here ``particle_splitting`` is disabled.
+    :type particle_splitting: str, default: "0"
 
 
     :param sync_interval: All processes are synchronized with this time interval, therefore, all other time constants must be multiples of this value. ``output_interval`` and ``output_averaging_interval`` must be at least twice of this value. The default value is 900.
-    :type sync_interval: str
+    :type sync_interval: str, default: "0:15"
 
 
     :param ctl: Specifies the factor by which the time step must be smaller than the Lagrangian time scale (TL). ``ctl`` must be >1 for time steps shorter than the Lagrangian time scale. If ``ctl``<0, a purely random walk simulation is done. The default value -4.
-    :type ctl: number
+    :type ctl: number, default: -5.0
 
 
     :param vertical_timestep_reduction: Specifies the reduction factor (as an integer) for the time step used for vertical wind. The default value is 4.
-    :type vertical_timestep_reduction: number
+    :type vertical_timestep_reduction: number, default: 4
 
 
     :param subgrid_terrain: 
-    :type subgrid_terrain: str
+    :type subgrid_terrain: {"on", "off"}, default: "off"
 
 
-    :param convection: Enables ``convection`` parametrization ( on or off ). The default value is off.
-    :type convection: str
+    :param convection: Enables ``convection`` parametrization ( "on" or "off" ). The default value is "off".
+    :type convection: {"on", "off"}, default: "off"
 
 
     :param output_for_each_release: 
-    :type output_for_each_release: str
+    :type output_for_each_release: {"on", "off"}, default: "off"
 
 
-    :param quasi_lagrangian: Specifies whether particles should be numbered individually ( on ) or identified by the release location number ( off ). The default value is off.
-    :type quasi_lagrangian: str
+    :param quasi_lagrangian: Specifies whether particles should be numbered individually ( "on" ) or identified by the release location number ( "off" ). The default value is "off".
+    :type quasi_lagrangian: {"on", "off"}, default: "off"
 
 
     :param domain_fill: Enables the ``domain_fill`` mode. The possible values are as follows:
@@ -195,11 +195,11 @@ flexpart_run
          *  o3_tracer : in this mode domain-filling is to simulate a stratospheric ozone tracer. This option is similar to fill option, but only particles in the stratosphere (defined by PV < 2 pvu) are released.
 
          The default value is none.
-    :type domain_fill: str
+    :type domain_fill: str, default: "no"
 
 
     :param sensitivity: Enables computing ``sensitivity`` to initial conditions in backward simulations. The possible values are none , mass (mass concentration units) or mixr (mass mixing ratio units). The default value is none.
-    :type sensitivity: str
+    :type sensitivity: str, default: "no"
 
 
     :rtype: None

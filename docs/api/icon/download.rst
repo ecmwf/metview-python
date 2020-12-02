@@ -11,7 +11,7 @@ download
 
     .. container:: rightside
 
-        This function represents the `Download from URL <https://confluence.ecmwf.int/display/METV/Download+from+URL>`_ icon in Metview's user interface.
+        This function performs the same task as the `Download from URL <https://confluence.ecmwf.int/display/METV/Download+from+URL>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: download(**kwargs)

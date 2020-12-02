@@ -11,7 +11,7 @@ wmsclient
 
     .. container:: rightside
 
-        This function represents the `WMS Client <https://confluence.ecmwf.int/display/METV/WMS+Client>`_ icon in Metview's user interface.
+        This function performs the same task as the `WMS Client <https://confluence.ecmwf.int/display/METV/WMS+Client>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: wmsclient(**kwargs)
@@ -20,7 +20,7 @@ wmsclient
 
 
     :param mode: 
-    :type mode: str
+    :type mode: {"expert", "interactive"}, default: "interactive"
 
 
     :param server: 

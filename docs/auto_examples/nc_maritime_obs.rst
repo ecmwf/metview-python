@@ -110,7 +110,7 @@ NetCDF Marine Observations
 
     # define title - get date from the netCDF metadata
     title = mv.mtext(
-        text_lines=["Temperature [C] - " + mv.global_attributes(nc_t).get("cdlDate")],
+        text_lines=["Temperature [C] - " + str(mv.global_attributes(nc_t).get("cdlDate"))],
         text_font_size=0.4,
     )
 

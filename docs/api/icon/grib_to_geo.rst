@@ -11,7 +11,7 @@ grib_to_geo
 
     .. container:: rightside
 
-        This function represents the `Grib To Geopoints <https://confluence.ecmwf.int/display/METV/Grib+To+Geopoints>`_ icon in Metview's user interface.
+        This function performs the same task as the `Grib To Geopoints <https://confluence.ecmwf.int/display/METV/Grib+To+Geopoints>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: grib_to_geo(**kwargs)
@@ -23,12 +23,12 @@ grib_to_geo
     :type data: str
 
 
-    :param geopoints_format: Specifies which of two ``geopoints_format``s should be used for the output - either Traditional (6 columns including date, time and level) or XYV (just 3 columns - longitude, latitude and value). See `Geopoints <https://confluence.ecmwf.int/display/METV/Geopoints>`_ for details of these formats.
-    :type geopoints_format: str
+    :param geopoints_format: Specifies which of two ``geopoints_format``s should be used for the output - either "traditional" (6 columns including date, time and level) or XYV (just 3 columns - longitude, latitude and value). See `Geopoints <https://confluence.ecmwf.int/display/METV/Geopoints>`_ for details of these formats.
+    :type geopoints_format: {"traditional", "x_y_v"}, default: "traditional"
 
 
     :param missing_data: 
-    :type missing_data: str
+    :type missing_data: {"ignore", "include"}, default: "include"
 
 
     :rtype: None

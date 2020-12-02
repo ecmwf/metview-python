@@ -11,7 +11,7 @@ grib_vectors
 
     .. container:: rightside
 
-        This function represents the `Grib Vectors <https://confluence.ecmwf.int/display/METV/grib+vectors>`_ icon in Metview's user interface.
+        This function performs the same task as the `Grib Vectors <https://confluence.ecmwf.int/display/METV/grib+vectors>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: grib_vectors(**kwargs)
@@ -20,7 +20,7 @@ grib_vectors
 
 
     :param type: 
-    :type type: str
+    :type type: {"vector_field", "polar_field"}, default: "vector_field"
 
 
     :param u_component: 

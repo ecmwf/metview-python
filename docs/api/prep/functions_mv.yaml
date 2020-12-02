@@ -1,0 +1,20 @@
+- sum:
+    type: script
+    category: 
+        geopoints: Returns the sum or mean of the values in a geopoints variable
+        vector: Returns the sum or mean of the values in a vector variable
+        fieldset: Returns a field sum of all the fields of a variable
+    desc: Compute the sum
+    group:
+        - calculus
+        - stats
+- var:
+    type: script
+    category: 
+        geopoints: Returns the sum or mean of the values in a geopoints variable
+        vector: Returns the sum or mean of the values in a vector variable
+        fieldset: Returns a field sum of all the fields of a variable
+    desc: Compute the sum
+    group:
+        - stats        
+        

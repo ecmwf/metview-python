@@ -11,7 +11,7 @@ eccharts
 
     .. container:: rightside
 
-        This function represents the `Eccharts <https://confluence.ecmwf.int/display/METV/eccharts>`_ icon in Metview's user interface.
+        This function performs the same task as the `Eccharts <https://confluence.ecmwf.int/display/METV/eccharts>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: eccharts(**kwargs)
@@ -29,7 +29,7 @@ eccharts
 
     :param title: Specifies the type of the ``title`` generated for the plot. The possible values are as follows:
 
-         *  default : the standard Metview automatic ``title`` will be used and the resulting list will not contain a :func:`mtext` icon. This is how it looks:
+         *  "default" : the standard Metview automatic ``title`` will be used and the resulting list will not contain a :func:`mtext` icon. This is how it looks:
 
          ![](/download/attachments/118822740/image2020-2-6_9-36-10.png?version=1&modification``date``=1580981770610&api=v2)
 
@@ -37,32 +37,32 @@ eccharts
 
          ![](/download/attachments/118822740/image2020-2-6_9-34-32.png?version=1&modification``date``=1580981672933&api=v2)
 
-         The default option is default.
+         The "default" option is "default".
 
-         When overlaying an EcCharts icon with other EcCharts icons or fields always use the default option (otherwise the contouring setting could be applied incorrectly to some of the fields).
+         When overlaying an EcCharts icon with other EcCharts icons or fields always use the "default" option (otherwise the contouring setting could be applied incorrectly to some of the fields).
 
          This option was introduced in Metview 5.8.0.
-    :type title: str
+    :type title: {"default", "style_1"}, default: "default"
 
 
     :param expver: 
-    :type expver: str
+    :type expver: str, default: "1"
 
 
     :param date: Specifies the run ``date`` of the forecast. This is the same ``date`` parameter as in the MARS retrieval icon. The ``date`` is given in YYYYMMDD format. Relative ``date``s are allowed: e.g. -1 means yesterday, 0 means today, etc. The default is -1.
-    :type date: str
+    :type date: str, default: "-1"
 
 
     :param time: Specifies the run ``time`` of the forecast. This is the same ``time`` parameter as in the MARS retrieval icon. The default is 0.
-    :type time: number
+    :type time: number, default: 0
 
 
     :param step: Specifies the forecast ``step``s in hours. Here a list of values can be given.
-    :type step: str or list[str]
+    :type step: str or list[str], default: "0"
 
 
     :param interval: 
-    :type interval: str
+    :type interval: {"3", "6", "9", "12", "24", "48", "72"}, default: "3"
 
 
     :param quantile: 
@@ -70,11 +70,11 @@ eccharts
 
 
     :param grid: Specifies the resolution of the resulting global ``grid`` in dx/dy format, where dx is the ``grid`` increment in West-East direction, while dy is the ``grid`` increment in South-North direction (both in units of degrees). The default value is: 1/1.
-    :type grid: float or list[float]
+    :type grid: float or list[float], default: 1
 
 
-    :param fail_on_data_error: When this parameter is set to yes an error in the data retrieval or the post-processing ``step``s will force the icon to fail and a Macro/Python script running the eccharts()`function will fail as well. While if it is set to no the icon will not fail and the eccharts command in Macro/Python will return nil/None. The default value is yes.
-    :type fail_on_data_error: str
+    :param fail_on_data_error: When this parameter is set to "yes" an error in the data retrieval or the post-processing ``step``s will force the icon to fail and a Macro/Python script running the eccharts()`function will fail as well. While if it is set to "no" the icon will not fail and the eccharts command in Macro/Python will return nil/None. The default value is "yes".
+    :type fail_on_data_error: {"yes", "no"}, default: "yes"
 
 
     :rtype: None

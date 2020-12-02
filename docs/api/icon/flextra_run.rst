@@ -11,7 +11,7 @@ flextra_run
 
     .. container:: rightside
 
-        This function represents the `Flextra Run <https://confluence.ecmwf.int/display/METV/flextra+run>`_ icon in Metview's user interface.
+        This function performs the same task as the `Flextra Run <https://confluence.ecmwf.int/display/METV/flextra+run>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: flextra_run(**kwargs)
@@ -23,8 +23,8 @@ flextra_run
     :type flextra_exe_path: str
 
 
-    :param flextra_input_mode: Specifies how the input data path is specified. The possible values are path and icon. When it is set to path we will specify the input data files and the AVAILABLE file by their paths. While in icon mode the input data is specified by a  :func:`flextra_prepare` icon in ``flextra_input_data``. The default value is path.
-    :type flextra_input_mode: str
+    :param flextra_input_mode: Specifies how the input data path is specified. The possible values are path and "icon". When it is set to path we will specify the input data files and the AVAILABLE file by their paths. While in "icon" mode the input data is specified by a  :func:`flextra_prepare` "icon" in ``flextra_input_data``. The default value is path.
+    :type flextra_input_mode: str, default: "icon"
 
 
     :param flextra_input_data: Specifies the location of the input data files using a :func:`flextra_prepare` icon.
@@ -35,30 +35,30 @@ flextra_run
     :type flextra_input_path: str
 
 
-    :param flextra_available_file_path: Specifies the location of the AVAILABLE file. The default is SAME_AS_INPUT_PATH , which means that the AVAILABLE file is located in the same directory as the input data. Enabled when ``flextra_input_mode`` is path.
-    :type flextra_available_file_path: str
+    :param flextra_available_file_path: Specifies the location of the AVAILABLE file. The default is "same_as_input_path" , which means that the AVAILABLE file is located in the same directory as the input data. Enabled when ``flextra_input_mode`` is path.
+    :type flextra_available_file_path: str, default: "same_as_input_path"
 
 
-    :param flextra_run_label: Specifies the ``flextra_run_label``. The default value is: " FLEXTRA RUN ".
-    :type flextra_run_label: str
+    :param flextra_run_label: Specifies the ``flextra_run_label``. The default value is: " "flextra run" ".
+    :type flextra_run_label: str, default: "flextra run"
 
 
     :param flextra_run_mode: Specifies the run mode for the FLEXTRA simulation. The possible values are as follows:
 
-         * In normal mode, a group of trajectories is specified starting from the same point but at different times. Several starting points (thus several groups of trajectories) can be defined for a single FLEXTRA run.
+         * In "normal" mode, a group of trajectories is specified starting from the same point but at different times. Several starting points (thus several groups of trajectories) can be defined for a single FLEXTRA run.
          * In cet mode, trajectories are generated starting from the points of a user-defined uniform grid in a three-dimensional domain.
          * In filight mode, both the starting location and starting time for each trajectory can be set individually. This mode is useful to calculate e.g. trajectories released along the flight track of an aircraft.
 
-         The default value is normal.
-    :type flextra_run_mode: str
+         The default value is "normal".
+    :type flextra_run_mode: str, default: "normal"
 
 
-    :param flextra_trajectory_direction: Specifies the FLEXTRA simulation direction in time. The possible values are: forward and backward. The default value is forward.
-    :type flextra_trajectory_direction: str
+    :param flextra_trajectory_direction: Specifies the FLEXTRA simulation direction in time. The possible values are: "forward" and backward. The default value is "forward".
+    :type flextra_trajectory_direction: str, default: "forward"
 
 
     :param flextra_trajectory_length: 
-    :type flextra_trajectory_length: str
+    :type flextra_trajectory_length: str, default: "48"
 
 
     :param flextra_first_starting_date: 
@@ -77,22 +77,22 @@ flextra_run
     :type flextra_last_starting_time: str
 
 
-    :param flextra_starting_time_interval: Specifies the starting interval of trajectories within the starting period. Enabled when ``flextra_run_mode`` is set to normal or cet. The format is HHH[:MM[:SS]`_. The default value is: 6 (i.e. 6 hours).
-    :type flextra_starting_time_interval: str
+    :param flextra_starting_time_interval: Specifies the starting interval of trajectories within the starting period. Enabled when ``flextra_run_mode`` is set to normal or cet. The format is HHH[:MM[:SS]`_. The default value is: "6" (i.e. "6" hours).
+    :type flextra_starting_time_interval: str, default: "6"
 
 
     :param flextra_output_interval_mode: Specifies how the output data (i.e. trajectory waypoints) will be written out into the output file. It can have three values:
 
          *  original : The trajectory points are written out into the output file exactly at the computational time steps. In the FLEXTRA terminology these are called flexible time steps.
-         *  interval : The trajectory points are written out into the output file at regular intervals specified by parameter ``flextra_output_interval_value``. In the FLEXTRA terminology these are called constant time steps.
+         *  "interval" : The trajectory points are written out into the output file at regular intervals specified by parameter ``flextra_output_interval_value``. In the FLEXTRA terminology these are called constant time steps.
          *  both : Two output files will be generated: one for the flexible time steps and one for the constant time steps.
 
-         The default value is interval.
-    :type flextra_output_interval_mode: str
+         The default value is "interval".
+    :type flextra_output_interval_mode: str, default: "interval"
 
 
-    :param flextra_output_interval_value: Specifies the output frequency when ``flextra_output_interval_mode`` is set to interval or both. The format is HHH[:MM[:SS]`_. The default value is 3 , which means 3 hourly output.
-    :type flextra_output_interval_value: str
+    :param flextra_output_interval_value: Specifies the output frequency when ``flextra_output_interval_mode`` is set to interval or both. The format is HHH[:MM[:SS]`_. The default value is "3" , which means "3" hourly output.
+    :type flextra_output_interval_value: str, default: "3"
 
 
     :param flextra_normal_types: Specifies the list of trajectory types as numerical IDs when ``flextra_run_mode`` is set to normal. The possible values are as follows:
@@ -124,7 +124,7 @@ flextra_run
 
 
     :param flextra_cet_type: 
-    :type flextra_cet_type: str
+    :type flextra_cet_type: str, default: "3d"
 
 
     :param flextra_cet_name: Specifies the trajectory name when ``flextra_run_mode`` is set to cet.
@@ -132,7 +132,7 @@ flextra_run
 
 
     :param flextra_cet_area: Specify the geographical area of the start grid by a S/W/N/E list.
-    :type flextra_cet_area: float or list[float]
+    :type flextra_cet_area: float or list[float], default: -90
 
 
     :param flextra_cet_dx: Specifies the start grid resolution in West-East direction in degrees when ``flextra_run_mode`` is set to cet. The default value is 1.
@@ -157,12 +157,12 @@ flextra_run
 
     :param flextra_cet_level_units: Specifies the level types (as numerical IDs or strings) of the start grid when ``flextra_run_mode`` is set to cet. The possible values are as follows:
 
-         Numerical ID| String (case insensitive)| Description ---|---|--- 1| metres asl| Metres above sea level 2| metres agl| Metres above ground level 3| hPa|   The default value is 1 (metres above sea level).
-    :type flextra_cet_level_units: str
+         Numerical ID| String (case insensitive)| Description ---|---|--- 1| "metres asl"| Metres above sea level 2| "metres agl"| Metres above ground level 3| "hpa"|   The default value is 1 (metres above sea level).
+    :type flextra_cet_level_units: {"metres asl", "metres agl", "hpa"}, default: "hpa"
 
 
     :param flextra_flight_type: 
-    :type flextra_flight_type: str
+    :type flextra_flight_type: str, default: "3d"
 
 
     :param flextra_flight_name: 
@@ -183,8 +183,8 @@ flextra_run
 
     :param flextra_flight_level_units: Specifies the level types (as numerical IDs or strings) of the trajectory start points when ``flextra_run_mode`` is set to flight. The possible values are as follows
 
-         Numerical ID| String (case insensitive)| Description ---|---|--- 1| metres asl| Metres above sea level 2| metres agl| Metres above ground level 3| hPa|   The default value is 1 (metres above sea level).
-    :type flextra_flight_level_units: str
+         Numerical ID| String (case insensitive)| Description ---|---|--- 1| "metres asl"| Metres above sea level 2| "metres agl"| Metres above ground level 3| "hpa"|   The default value is 1 (metres above sea level).
+    :type flextra_flight_level_units: {"metres asl", "metres agl", "hpa"}, default: "hpa"
 
 
     :param flextra_flight_starting_dates: 
@@ -197,56 +197,56 @@ flextra_run
 
     :param flextra_interpolation_type: Specifies the interpolation type. The possible values are as follows:
 
-         Value| Description ---|--- 1|
+         Value| Description ---|--- "1"|
 
          * horizontal interpolation bicubic
          * vertical interpolation polynomial
          * temporal interpolation linear
 
-          >1|
+          >"1"|
 
          * horizontal interpolation bilinear
          * vertical interpolation linear
          * temporal interpolation linear
 
-           The default value is 1.
-    :type flextra_interpolation_type: str
+           The default value is "1".
+    :type flextra_interpolation_type: str, default: "1"
 
 
     :param flextra_cfl_spatial: Specifies the factor by which the time step must be smaller than that determined from the CFL criterion.  This factor must be >1_! The default value is . 2.0.
-    :type flextra_cfl_spatial: number
+    :type flextra_cfl_spatial: number, default: 2.0
 
 
     :param flextra_cfl_temporal: Specifies the factor by which the time step must be smaller than the time interval of the wind fields. This factor must be >1_! The default value is 2.0.
-    :type flextra_cfl_temporal: number
+    :type flextra_cfl_temporal: number, default: 2.0
 
 
     :param flextra_uncertainty_trajectories: 
-    :type flextra_uncertainty_trajectories: str
+    :type flextra_uncertainty_trajectories: str, default: "off"
 
 
     :param flextra_uncertainty_trajectory_number: 
-    :type flextra_uncertainty_trajectory_number: number
+    :type flextra_uncertainty_trajectory_number: number, default: 0
 
 
     :param flextra_uncertainty_trajectory_distance: 
-    :type flextra_uncertainty_trajectory_distance: number
+    :type flextra_uncertainty_trajectory_distance: number, default: 0.5
 
 
     :param flextra_uncertainty_trajectory_time_constant: 
-    :type flextra_uncertainty_trajectory_time_constant: number
+    :type flextra_uncertainty_trajectory_time_constant: number, default: 2.0
 
 
     :param flextra_u_random_error: 
-    :type flextra_u_random_error: number
+    :type flextra_u_random_error: number, default: 0.08
 
 
     :param flextra_v_random_error: 
-    :type flextra_v_random_error: number
+    :type flextra_v_random_error: number, default: 0.08
 
 
     :param flextra_w_random_error: 
-    :type flextra_w_random_error: number
+    :type flextra_w_random_error: number, default: 0.08
 
 
     :rtype: None

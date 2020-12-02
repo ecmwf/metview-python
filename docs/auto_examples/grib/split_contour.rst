@@ -46,7 +46,7 @@ Split contouring
     # ---------------------------------------------------------------
 
 
-    use_mars = 1
+    use_mars = 0
     if use_mars:
         # Retrieve data from MARS
         data = mv.retrieve(param="t", levelist=1000, grid=[1.5, 1.5], date=-10)

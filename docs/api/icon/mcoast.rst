@@ -11,7 +11,7 @@ mcoast
 
     .. container:: rightside
 
-        This function represents the `Coastlines <https://confluence.ecmwf.int/display/METV/Coastlines>`_ icon in Metview's user interface.
+        This function performs the same task as the `Coastlines <https://confluence.ecmwf.int/display/METV/Coastlines>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: mcoast(**kwargs)
@@ -19,253 +19,136 @@ mcoast
     Description comes here!
 
 
-    :param map_coastline: Plot coastlines on map (ON/OFF). The possible values:
-
-        * on
-        * off
-        The default is: on.
-    :type map_coastline: str
+    :param map_coastline: Plot coastlines "on" map ("on"/"off")
+    :type map_coastline: {"on", "off"}, default: "on"
 
 
-    :param map_coastline_colour: Colour of coastlines. The possible values:
-
-        * background
-        The default is: black.
-    :type map_coastline_colour: str
+    :param map_coastline_colour: Colour of coastlines
+    :type map_coastline_colour: str, default: "black"
 
 
-    :param map_coastline_style: Line style of coastlines. The possible values:
-
-        * solid
-        * dash
-        * dot
-        * chain_dot
-        * chain_dash
-        The default is: solid.
-    :type map_coastline_style: str
+    :param map_coastline_style: Line style of coastlines
+    :type map_coastline_style: {"solid", "dash", "dot", "chain_dot", "chain_dash"}, default: "solid"
 
 
-    :param map_coastline_thickness: Line thickness of coastlines. The default is: 1.
-    :type map_coastline_thickness: int
+    :param map_coastline_thickness: Line thickness of coastlines
+    :type map_coastline_thickness: int, default: 1
 
 
-    :param map_coastline_resolution: Select one of the pre-defined resolutions: automatic, low, medium, and high.  When set to AUTOMATIC, a resolution appropriate to the scale of the map is chosen in order to balance quality with speed. The possible values:
-
-        * automatic
-        * low
-        * medium
-        * high
-        * full
-        The default is: automatic.
-    :type map_coastline_resolution: str
+    :param map_coastline_resolution: Select one of the pre-defined resolutions: "automatic", "low", "medium", and "high".  When set to "automatic", a resolution appropriate to the scale of the map is chosen in order to balance quality with speed.
+    :type map_coastline_resolution: {"automatic", "low", "medium", "high", "full"}, default: "automatic"
 
 
-    :param map_coastline_land_shade: Sets if land areas are shaded. The possible values:
-
-        * on
-        * off
-        The default is: off.
-    :type map_coastline_land_shade: str
+    :param map_coastline_land_shade: Sets if land areas are shaded
+    :type map_coastline_land_shade: {"on", "off"}, default: "off"
 
 
-    :param map_coastline_land_shade_colour: Colour of Shading of land areas. The possible values:
-
-        * background
-        The default is: green.
-    :type map_coastline_land_shade_colour: str
+    :param map_coastline_land_shade_colour: Colour of Shading of land areas
+    :type map_coastline_land_shade_colour: str, default: "green"
 
 
-    :param map_coastline_sea_shade: Shade the sea areas. The possible values:
-
-        * on
-        * off
-        The default is: off.
-    :type map_coastline_sea_shade: str
+    :param map_coastline_sea_shade: Shade the sea areas
+    :type map_coastline_sea_shade: {"on", "off"}, default: "off"
 
 
-    :param map_coastline_sea_shade_colour: Colour of Shading of sea areas. The possible values:
-
-        * background
-        The default is: blue.
-    :type map_coastline_sea_shade_colour: str
+    :param map_coastline_sea_shade_colour: Colour of Shading of sea areas
+    :type map_coastline_sea_shade_colour: str, default: "blue"
 
 
-    :param map_boundaries: Add the political boundaries. The possible values:
-
-        * on
-        * off
-        The default is: off.
-    :type map_boundaries: str
+    :param map_boundaries: Add the political boundaries
+    :type map_boundaries: {"on", "off"}, default: "off"
 
 
-    :param map_rivers: Display rivers (on/off). The possible values:
-
-        * on
-        * off
-        The default is: off.
-    :type map_rivers: str
+    :param map_rivers: Display rivers ("on"/"off")
+    :type map_rivers: {"on", "off"}, default: "off"
 
 
-    :param map_rivers_style: Line style for rivers. The possible values:
-
-        * solid
-        * dash
-        * dot
-        * chain_dot
-        * chain_dash
-        The default is: solid.
-    :type map_rivers_style: str
+    :param map_rivers_style: Line style for rivers
+    :type map_rivers_style: {"solid", "dash", "dot", "chain_dot", "chain_dash"}, default: "solid"
 
 
-    :param map_rivers_colour: Colour of the rivers. The possible values:
-
-        * background
-        The default is: blue.
-    :type map_rivers_colour: str
+    :param map_rivers_colour: Colour of the rivers
+    :type map_rivers_colour: str, default: "blue"
 
 
-    :param map_rivers_thickness: Line thickness of rivers. The default is: 1.
-    :type map_rivers_thickness: int
+    :param map_rivers_thickness: Line thickness of rivers
+    :type map_rivers_thickness: int, default: 1
 
 
-    :param map_cities: Add the cities (capitals). The possible values:
-
-        * on
-        * off
-        The default is: off.
-    :type map_cities: str
+    :param map_cities: Add the cities (capitals)
+    :type map_cities: {"on", "off"}, default: "off"
 
 
     :param map_cities_font_name: 
-    :type map_cities_font_name: str
+    :type map_cities_font_name: {"arial", "courier", "helvetica", "times", "serif", "sansserif", "symbol"}, default: "sansserif"
 
 
-    :param map_cities_font_style: Font style used for city names. The possible values:
-
-        * normal
-        * bold
-        * italic
-        * bolditalic
-        The default is: normal.
-    :type map_cities_font_style: str
+    :param map_cities_font_style: Font style used for city names.
+    :type map_cities_font_style: {"normal", "bold", "italic", "bolditalic"}, default: "normal"
 
 
-    :param map_cities_font_size: Font size of city names. The default is: 2.5.
-    :type map_cities_font_size: number
+    :param map_cities_font_size: Font size of city names.
+    :type map_cities_font_size: number, default: 2.5
 
 
-    :param map_cities_unit_system: Unit for city name sizes. The possible values:
-
-        * percent
-        * cm
-        The default is: percent.
-    :type map_cities_unit_system: str
+    :param map_cities_unit_system: Unit for city name sizes.
+    :type map_cities_unit_system: {"percent", "cm"}, default: "percent"
 
 
-    :param map_cities_font_colour: Colour used for city names. The possible values:
-
-        * background
-        The default is: navy.
-    :type map_cities_font_colour: str
+    :param map_cities_font_colour: Colour used for city names.
+    :type map_cities_font_colour: str, default: "navy"
 
 
-    :param map_cities_text_blanking: Use Blanking when plotting the cityes names . The possible values:
-
-        * on
-        * off
-        The default is: on.
-    :type map_cities_text_blanking: str
+    :param map_cities_text_blanking: Use Blanking when plotting the cityes names .
+    :type map_cities_text_blanking: {"on", "off"}, default: "on"
 
 
-    :param map_cities_name_position: Position where to display the city names. The possible values:
-
-        * above
-        * below
-        * left
-        * right
-        The default is: above.
-    :type map_cities_name_position: str
+    :param map_cities_name_position: Position where to display the city names.
+    :type map_cities_name_position: {"above", "below", "left", "right"}, default: "above"
 
 
-    :param map_cities_marker: Marker for cities. The possible values:
-
-        * circle
-        * box
-        * snowflake
-        * plus
-        The default is: plus.
-    :type map_cities_marker: str
+    :param map_cities_marker: Marker for cities.
+    :type map_cities_marker: {"circle", "box", "snowflake", "plus"}, default: "plus"
 
 
-    :param map_cities_marker_height: Height of city markers. The default is: 0.7.
-    :type map_cities_marker_height: number
+    :param map_cities_marker_height: Height of city markers.
+    :type map_cities_marker_height: number, default: 0.7
 
 
-    :param map_cities_marker_colour: Colour for city markers. The possible values:
-
-        * background
-        The default is: evergreen.
-    :type map_cities_marker_colour: str
+    :param map_cities_marker_colour: Colour for city markers.
+    :type map_cities_marker_colour: str, default: "evergreen"
 
 
-    :param map_boundaries_style: Line style of boundaries. The possible values:
-
-        * solid
-        * dash
-        * dot
-        * chain_dot
-        * chain_dash
-        The default is: solid.
-    :type map_boundaries_style: str
+    :param map_boundaries_style: Line style of boundaries.
+    :type map_boundaries_style: {"solid", "dash", "dot", "chain_dot", "chain_dash"}, default: "solid"
 
 
-    :param map_boundaries_colour: Colour of boundaries. The possible values:
-
-        * background
-        The default is: grey.
-    :type map_boundaries_colour: str
+    :param map_boundaries_colour: Colour of boundaries.
+    :type map_boundaries_colour: str, default: "grey"
 
 
-    :param map_boundaries_thickness: Line thickness of boundaries. The default is: 1.
-    :type map_boundaries_thickness: int
+    :param map_boundaries_thickness: Line thickness of boundaries.
+    :type map_boundaries_thickness: int, default: 1
 
 
-    :param map_disputed_boundaries: Display the disputed boundaries. The possible values:
-
-        * on
-        * off
-        The default is: on.
-    :type map_disputed_boundaries: str
+    :param map_disputed_boundaries: Display the disputed boundaries.
+    :type map_disputed_boundaries: {"on", "off"}, default: "on"
 
 
-    :param map_disputed_boundaries_style: Line style of disputed boundaries. The possible values:
-
-        * solid
-        * dash
-        * dot
-        * chain_dot
-        * chain_dash
-        The default is: dash.
-    :type map_disputed_boundaries_style: str
+    :param map_disputed_boundaries_style: Line style of disputed boundaries.
+    :type map_disputed_boundaries_style: {"solid", "dash", "dot", "chain_dot", "chain_dash"}, default: "dash"
 
 
-    :param map_disputed_boundaries_colour: Colour of disputed boundaries. The possible values:
-
-        * background
-        The default is: automatic.
-    :type map_disputed_boundaries_colour: str
+    :param map_disputed_boundaries_colour: Colour of disputed boundaries.
+    :type map_disputed_boundaries_colour: str, default: "automatic"
 
 
-    :param map_disputed_boundaries_thickness: Line thickness of disputed boundaries. The default is: 1.
-    :type map_disputed_boundaries_thickness: int
+    :param map_disputed_boundaries_thickness: Line thickness of disputed boundaries.
+    :type map_disputed_boundaries_thickness: int, default: 1
 
 
-    :param map_administrative_boundaries: Display administrative boundaries. The possible values:
-
-        * on
-        * off
-        The default is: off.
-    :type map_administrative_boundaries: str
+    :param map_administrative_boundaries: Display administrative boundaries.
+    :type map_administrative_boundaries: {"on", "off"}, default: "off"
 
 
     :param map_administrative_boundaries_countries_list: 
@@ -273,228 +156,144 @@ mcoast
 
 
     :param map_administrative_boundaries_style: 
-    :type map_administrative_boundaries_style: str
+    :type map_administrative_boundaries_style: {"solid", "dash", "dot", "chain_dot", "chain_dash"}, default: "dash"
 
 
     :param map_administrative_boundaries_colour: 
-    :type map_administrative_boundaries_colour: str
+    :type map_administrative_boundaries_colour: str, default: "automatic"
 
 
     :param map_administrative_boundaries_thickness: 
-    :type map_administrative_boundaries_thickness: int
+    :type map_administrative_boundaries_thickness: int, default: 1
 
 
-    :param map_grid: Plot grid lines on map (On/OFF). The possible values:
+    :param map_grid: Plot grid lines "on" map ("on"/"off")
+    :type map_grid: {"on", "off"}, default: "on"
 
-        * on
-        * off
-        The default is: on.
-    :type map_grid: str
 
+    :param map_grid_line_style: Line style of map grid lines
+    :type map_grid_line_style: {"solid", "dash", "dot", "chain_dot", "chain_dash"}, default: "solid"
 
-    :param map_grid_line_style: Line style of map grid lines. The possible values:
 
-        * solid
-        * dash
-        * dot
-        * chain_dot
-        * chain_dash
-        The default is: solid.
-    :type map_grid_line_style: str
+    :param map_grid_thickness: Thickness of map grid lines
+    :type map_grid_thickness: int, default: 1
 
 
-    :param map_grid_thickness: Thickness of map grid lines. The default is: 1.
-    :type map_grid_thickness: int
+    :param map_grid_colour: Colour of map grid lines
+    :type map_grid_colour: str, default: "black"
 
 
-    :param map_grid_colour: Colour of map grid lines. The possible values:
+    :param map_grid_latitude_reference: Reference Latitude from which all latitude lines are drawn
+    :type map_grid_latitude_reference: number, default: 0
 
-        * background
-        The default is: black.
-    :type map_grid_colour: str
 
+    :param map_grid_latitude_increment: Interval between latitude grid lines
+    :type map_grid_latitude_increment: number, default: 10
 
-    :param map_grid_latitude_reference: Reference Latitude from which all latitude lines are drawn. The default is: 0.
-    :type map_grid_latitude_reference: number
 
+    :param map_grid_longitude_reference: Reference Longitude from which all longitude lines are drawn
+    :type map_grid_longitude_reference: number, default: 0
 
-    :param map_grid_latitude_increment: Interval between latitude grid lines. The default is: 10.
-    :type map_grid_latitude_increment: number
 
+    :param map_grid_longitude_increment: Interval between longitude grid lines
+    :type map_grid_longitude_increment: number, default: 20
 
-    :param map_grid_longitude_reference: Reference Longitude from which all longitude lines are drawn. The default is: 0.
-    :type map_grid_longitude_reference: number
 
+    :param map_grid_frame: Add a frame around the projection
+    :type map_grid_frame: {"on", "off"}, default: "off"
 
-    :param map_grid_longitude_increment: Interval between longitude grid lines. The default is: 20.
-    :type map_grid_longitude_increment: number
 
+    :param map_grid_frame_line_style: Line style of map grid lines
+    :type map_grid_frame_line_style: {"solid", "dash", "dot", "chain_dot", "chain_dash"}, default: "solid"
 
-    :param map_grid_frame: Add a frame around the projection. The possible values:
 
-        * on
-        * off
-        The default is: off.
-    :type map_grid_frame: str
+    :param map_grid_frame_thickness: Thickness of map grid lines
+    :type map_grid_frame_thickness: int, default: 1
 
 
-    :param map_grid_frame_line_style: Line style of map grid lines. The possible values:
+    :param map_grid_frame_colour: Colour of map grid lines
+    :type map_grid_frame_colour: str, default: "black"
 
-        * solid
-        * dash
-        * dot
-        * chain_dot
-        * chain_dash
-        The default is: solid.
-    :type map_grid_frame_line_style: str
 
+    :param map_label: Plot label  "on" map grid lines ("on"/"off")
+    :type map_label: {"on", "off"}, default: "on"
 
-    :param map_grid_frame_thickness: Thickness of map grid lines. The default is: 1.
-    :type map_grid_frame_thickness: int
 
+    :param map_label_font: Font of grid labels
+    :type map_label_font: {"arial", "courier", "helvetica", "times", "serif", "sansserif", "symbol"}, default: "sansserif"
 
-    :param map_grid_frame_colour: Colour of map grid lines. The possible values:
 
-        * background
-        The default is: black.
-    :type map_grid_frame_colour: str
+    :param map_label_font_style: Font of grid labels
+    :type map_label_font_style: {"normal", "bold", "italic", "bolditalic"}, default: "normal"
 
 
-    :param map_label: Plot label  on map grid lines (On/OFF). The possible values:
+    :param map_label_colour: Colour of map labels
+    :type map_label_colour: str, default: "black"
 
-        * on
-        * off
-        The default is: on.
-    :type map_label: str
 
+    :param map_label_height: Height og grid labels
+    :type map_label_height: number, default: 0.25
 
-    :param map_label_font: Font of grid labels. The possible values:
 
-        * arial
-        * courier
-        * helvetica
-        * times
-        * serif
-        * sansserif
-        * symbol
-        The default is: sansserif.
-    :type map_label_font: str
+    :param map_label_blanking: Blanking of the grid labels
+    :type map_label_blanking: {"on", "off"}, default: "on"
 
 
-    :param map_label_font_style: Font of grid labels. The possible values:
+    :param map_label_latitude_frequency: Evry Nth latitue grid is labelled
+    :type map_label_latitude_frequency: number, default: 1
 
-        * normal
-        * bold
-        * italic
-        * bolditalic
-        The default is: normal.
-    :type map_label_font_style: str
 
+    :param map_label_longitude_frequency: Evry Nth longitude grid is labelled
+    :type map_label_longitude_frequency: number, default: 1
 
-    :param map_label_colour: Colour of map labels. The possible values:
 
-        * background
-        The default is: black.
-    :type map_label_colour: str
+    :param map_label_left: Enable the labels "on" the left of the map
+    :type map_label_left: {"on", "off"}, default: "on"
 
 
-    :param map_label_height: Height og grid labels. The default is: 0.25.
-    :type map_label_height: number
+    :param map_label_right: Enable the labels "on" the right of the map
+    :type map_label_right: {"on", "off"}, default: "on"
 
 
-    :param map_label_blanking: Blanking of the grid labels. The possible values:
+    :param map_label_top: Enable the labels "on" the top of the map
+    :type map_label_top: {"on", "off"}, default: "on"
 
-        * on
-        * off
-        The default is: on.
-    :type map_label_blanking: str
 
+    :param map_label_bottom: Enable the labels "on" the bottom of the map
+    :type map_label_bottom: {"on", "off"}, default: "on"
 
-    :param map_label_latitude_frequency: Evry Nth latitue grid is labelled. The default is: 1.
-    :type map_label_latitude_frequency: number
 
-
-    :param map_label_longitude_frequency: Evry Nth longitude grid is labelled. The default is: 1.
-    :type map_label_longitude_frequency: number
-
-
-    :param map_label_left: Enable the labels on the left of the map. The possible values:
-
-        * on
-        * off
-        The default is: on.
-    :type map_label_left: str
-
-
-    :param map_label_right: Enable the labels on the right of the map. The possible values:
-
-        * on
-        * off
-        The default is: on.
-    :type map_label_right: str
-
-
-    :param map_label_top: Enable the labels on the top of the map. The possible values:
-
-        * on
-        * off
-        The default is: on.
-    :type map_label_top: str
-
-
-    :param map_label_bottom: Enable the labels on the bottom of the map. The possible values:
-
-        * on
-        * off
-        The default is: on.
-    :type map_label_bottom: str
-
-
-    :param map_user_layer: Display user shape file layer. The possible values:
-
-        * on
-        * off
-        The default is: off.
-    :type map_user_layer: str
+    :param map_user_layer: Display user shape file layer
+    :type map_user_layer: {"on", "off"}, default: "off"
 
 
     :param map_user_layer_name: Path + name of the shape file to use
     :type map_user_layer_name: str
 
 
-    :param map_user_layer_colour: Colour of the User Layer. The possible values:
-
-        * background
-        The default is: blue.
-    :type map_user_layer_colour: str
+    :param map_user_layer_colour: Colour of the User Layer
+    :type map_user_layer_colour: str, default: "blue"
 
 
-    :param map_user_layer_style: Line style for User Layer. The possible values:
-
-        * solid
-        * dash
-        * dot
-        * chain_dot
-        * chain_dash
-        The default is: solid.
-    :type map_user_layer_style: str
+    :param map_user_layer_style: Line style for User Layer
+    :type map_user_layer_style: {"solid", "dash", "dot", "chain_dot", "chain_dash"}, default: "solid"
 
 
-    :param map_user_layer_thickness: Line thickness of User Layer. The default is: 1.
-    :type map_user_layer_thickness: int
+    :param map_user_layer_thickness: Line thickness of User Layer
+    :type map_user_layer_thickness: int, default: 1
 
 
-    :param map_layer_mode: Specifies how the background (land-sea shading) and foreground (grid, coastlines, rivers, borders and cities) map layers are rendered into the plot with respect to the data layers. The possible values are as follows:
+    :param map_layer_mode: Specifies how the "background" (land-sea shading) and "foreground" (grid, coastlines, rivers, borders and cities) map layers are rendered into the plot with respect to the data layers. The possible values are as follows:
 
-         *  split : the coastlines icon is split into background and foreground map layers. The background map layer is rendered first, followed by the data layers with the foreground map layers appearing atop
-         *  foreground : all the map layers are rendered on top of the data layers
-         *  background : all the map layers are rendered below the data layers
+         *  "split" : the coastlines icon is "split" into "background" and "foreground" map layers. The "background" map layer is rendered first, followed by the data layers with the "foreground" map layers appearing atop
+         *  "foreground" : all the map layers are rendered on top of the data layers
+         *  "background" : all the map layers are rendered below the data layers
 
-         The default value is split.
+         The default value is "split".
 
          Script (Macro/Python) usage
 
-         If ``map_layer_mode`` is set to split and the Coastlines icon appears after the data objects in the plot(...) command, the coastlines are put on top of the data. This behaviour is required in order to maintain backward compatibility.
+         If ``map_layer_mode`` is set to "split" and the Coastlines icon appears after the data objects in the plot(...) command, the coastlines are put on top of the data. This behaviour is required in order to maintain backward compatibility.
 
          
 
@@ -505,7 +304,7 @@ mcoast
          The following screenshot shows the result of loading a shapefile of UK roads into Metview:
 
          ![](/download/attachments/31920784/uk-roads- shapefile.png?version=1&modificationDate=1563196586094&api=v2)
-    :type map_layer_mode: str
+    :type map_layer_mode: {"split", "foreground", "background"}, default: "split"
 
 
     :rtype: None

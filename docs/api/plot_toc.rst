@@ -129,7 +129,7 @@ Plotting
     * - :func:`odb_visualiser`
       - Defines visualisation for ODB data
 
-    * - :func:`plot_page`
+    * - :func:`plot`
       - Generates a plot
 
     * - :func:`rttov_visualiser`

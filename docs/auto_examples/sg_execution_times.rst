@@ -5,154 +5,154 @@
 
 Computation times
 =================
-**06:29.243** total execution time for **auto_examples** files:
+**00:07.385** total execution time for **auto_examples** files:
 
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_simulated_sat_img.py` (``simulated_sat_img.py``)                       | 00:47.207 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_cross_section_height_ml_orog.py` (``cross_section_height_ml_orog.py``) | 00:07.385 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_field_anomalies.py` (``field_anomalies.py``)                           | 00:38.854 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_advection.py` (``advection.py``)                                       | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_ens_stamp.py` (``ens_stamp.py``)                                       | 00:35.363 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_air_report.py` (``air_report.py``)                                     | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_ens_spag.py` (``ens_spag.py``)                                         | 00:28.821 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_bufr_synop_station_id.py` (``bufr_synop_station_id.py``)               | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_wind4.py` (``wind4.py``)                                               | 00:22.670 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_cdf_curve.py` (``cdf_curve.py``)                                       | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_cross_section_orog_and_blh.py` (``cross_section_orog_and_blh.py``)     | 00:17.057 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_coastlines2.py` (``coastlines2.py``)                                   | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_gradient_shading.py` (``gradient_shading.py``)                         | 00:11.090 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_coloured_obs_values.py` (``coloured_obs_values.py``)                   | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_nc_era5_t2.py` (``nc_era5_t2.py``)                                     | 00:09.715 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_contour10.py` (``contour10.py``)                                       | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_sst_extended_latlon.py` (``sst_extended_latlon.py``)                   | 00:09.393 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_contour5.py` (``contour5.py``)                                         | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_shading_only_over_land.py` (``shading_only_over_land.py``)             | 00:09.084 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_contour9.py` (``contour9.py``)                                         | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_deaccumulate_precip_fc.py` (``deaccumulate_precip_fc.py``)             | 00:08.848 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_cross_section_orog.py` (``cross_section_orog.py``)                     | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_cross_section_orog.py` (``cross_section_orog.py``)                     | 00:07.508 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_cross_section_orog_and_blh.py` (``cross_section_orog_and_blh.py``)     | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_ens_tephigram.py` (``ens_tephigram.py``)                               | 00:05.348 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_cross_section_pl_data.py` (``cross_section_pl_data.py``)               | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_nc_era5_ozone.py` (``nc_era5_ozone.py``)                               | 00:05.195 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_cross_section_via_pole.py` (``cross_section_via_pole.py``)             | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_layoutx3.py` (``layoutx3.py``)                                         | 00:05.164 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_cross_section_wind_3d.py` (``cross_section_wind_3d.py``)               | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_cross_section_height_ml_orog.py` (``cross_section_height_ml_orog.py``) | 00:05.064 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_cross_section_wind_normal.py` (``cross_section_wind_normal.py``)       | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_bufr_synop_station_id.py` (``bufr_synop_station_id.py``)               | 00:04.919 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_cross_section_wind_parallel.py` (``cross_section_wind_parallel.py``)   | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_gradient_vector.py` (``gradient_vector.py``)                           | 00:04.614 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_deaccumulate_precip_fc.py` (``deaccumulate_precip_fc.py``)             | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_tephigram_bufr.py` (``tephigram_bufr.py``)                             | 00:04.481 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_double_axis_1.py` (``double_axis_1.py``)                               | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_storm_joachim.py` (``storm_joachim.py``)                               | 00:04.415 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_ens_prob.py` (``ens_prob.py``)                                         | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_synop_map.py` (``synop_map.py``)                                       | 00:04.390 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_ens_spag.py` (``ens_spag.py``)                                         | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_hodograph.py` (``hodograph.py``)                                       | 00:04.252 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_ens_stamp.py` (``ens_stamp.py``)                                       | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_legend3.py` (``legend3.py``)                                           | 00:04.219 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_ens_tephigram.py` (``ens_tephigram.py``)                               | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_t2m.py` (``plot_t2m.py``)                                         | 00:04.150 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_field_anomalies.py` (``field_anomalies.py``)                           | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_advection.py` (``advection.py``)                                       | 00:03.904 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_fill_between_curves.py` (``fill_between_curves.py``)                   | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_air_report.py` (``air_report.py``)                                     | 00:03.882 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_flextra_forward.py` (``flextra_forward.py``)                           | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_zonal_average.py` (``zonal_average.py``)                               | 00:03.118 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_geocircle_on_map.py` (``geocircle_on_map.py``)                         | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_contour9.py` (``contour9.py``)                                         | 00:03.020 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_geoline_on_map.py` (``geoline_on_map.py``)                             | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_temp_map.py` (``temp_map.py``)                                         | 00:02.869 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_geopolyline_on_map.py` (``geopolyline_on_map.py``)                     | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_wind_coloured_by_t.py` (``wind_coloured_by_t.py``)                     | 00:02.835 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_geowind.py` (``geowind.py``)                                           | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_coloured_obs_values.py` (``coloured_obs_values.py``)                   | 00:02.781 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_gradient_shading.py` (``gradient_shading.py``)                         | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_nc_seacurrent_fixed_vector.py` (``nc_seacurrent_fixed_vector.py``)     | 00:02.728 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_gradient_vector.py` (``gradient_vector.py``)                           | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_time_height_xs.py` (``time_height_xs.py``)                             | 00:02.682 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_graph4.py` (``graph4.py``)                                             | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_legend2.py` (``legend2.py``)                                           | 00:02.529 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_grib_scatterplot.py` (``grib_scatterplot.py``)                         | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_meridional_average.py` (``meridional_average.py``)                     | 00:02.515 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_hodograph.py` (``hodograph.py``)                                       | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_model_obs_diff_plot.py` (``model_obs_diff_plot.py``)                   | 00:02.491 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_hovmoeller_area.py` (``hovmoeller_area.py``)                           | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_cross_section_wind_parallel.py` (``cross_section_wind_parallel.py``)   | 00:02.368 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_layoutx3.py` (``layoutx3.py``)                                         | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_cross_section_wind_normal.py` (``cross_section_wind_normal.py``)       | 00:02.361 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_legend2.py` (``legend2.py``)                                           | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_cross_section_pl_data.py` (``cross_section_pl_data.py``)               | 00:02.342 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_legend3.py` (``legend3.py``)                                           | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_parcel_path_skewt_grib.py` (``parcel_path_skewt_grib.py``)             | 00:02.209 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_meridional_average.py` (``meridional_average.py``)                     | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_hovmoeller_area.py` (``hovmoeller_area.py``)                           | 00:02.078 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_model_obs_diff_plot.py` (``model_obs_diff_plot.py``)                   | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_cross_section_wind_3d.py` (``cross_section_wind_3d.py``)               | 00:01.997 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_nc_era5_ozone.py` (``nc_era5_ozone.py``)                               | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_contour10.py` (``contour10.py``)                                       | 00:01.869 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_nc_era5_t2.py` (``nc_era5_t2.py``)                                     | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_odb_radiance.py` (``odb_radiance.py``)                                 | 00:01.850 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_nc_era5_wind.py` (``nc_era5_wind.py``)                                 | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_rainbow_contour_diffs.py` (``rainbow_contour_diffs.py``)               | 00:01.848 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_nc_maritime_obs.py` (``nc_maritime_obs.py``)                           | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_contour5.py` (``contour5.py``)                                         | 00:01.723 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_nc_seacurrent_fixed_vector.py` (``nc_seacurrent_fixed_vector.py``)     | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_ens_prob.py` (``ens_prob.py``)                                         | 00:01.719 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_odb_radiance.py` (``odb_radiance.py``)                                 | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_coastlines2.py` (``coastlines2.py``)                                   | 00:01.716 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_odb_scatterplot_binning.py` (``odb_scatterplot_binning.py``)           | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_streamline.py` (``streamline.py``)                                     | 00:01.611 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_odb_temp_wind.py` (``odb_temp_wind.py``)                               | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_flextra_forward.py` (``flextra_forward.py``)                           | 00:01.601 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_odb_wind_profiler.py` (``odb_wind_profiler.py``)                       | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_cross_section_via_pole.py` (``cross_section_via_pole.py``)             | 00:01.588 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_parcel_path_skewt_grib.py` (``parcel_path_skewt_grib.py``)             | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_wind_overlay_and_legend_box.py` (``wind_overlay_and_legend_box.py``)   | 00:01.426 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_t2m.py` (``plot_t2m.py``)                                         | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_storm_track.py` (``storm_track.py``)                                   | 00:01.424 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_rainbow_contour_diffs.py` (``rainbow_contour_diffs.py``)               | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_double_axis_1.py` (``double_axis_1.py``)                               | 00:01.414 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_shading_only_over_land.py` (``shading_only_over_land.py``)             | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_storm_quadrants.py` (``storm_quadrants.py``)                           | 00:01.323 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_simulated_sat_img.py` (``simulated_sat_img.py``)                       | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_grib_scatterplot.py` (``grib_scatterplot.py``)                         | 00:01.288 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_spectra.py` (``spectra.py``)                                           | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_tephigram.py` (``tephigram.py``)                                       | 00:01.265 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_sst_extended_latlon.py` (``sst_extended_latlon.py``)                   | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_spectra.py` (``spectra.py``)                                           | 00:01.163 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_storm_joachim.py` (``storm_joachim.py``)                               | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_nc_era5_wind.py` (``nc_era5_wind.py``)                                 | 00:01.117 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_storm_quadrants.py` (``storm_quadrants.py``)                           | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_cdf_curve.py` (``cdf_curve.py``)                                       | 00:01.060 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_storm_track.py` (``storm_track.py``)                                   | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_tephigram_odb.py` (``tephigram_odb.py``)                               | 00:01.014 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_streamline.py` (``streamline.py``)                                     | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_odb_temp_wind.py` (``odb_temp_wind.py``)                               | 00:00.994 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_synop_map.py` (``synop_map.py``)                                       | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_geowind.py` (``geowind.py``)                                           | 00:00.980 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_taylor.py` (``taylor.py``)                                             | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_geocircle_on_map.py` (``geocircle_on_map.py``)                         | 00:00.949 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_temp_map.py` (``temp_map.py``)                                         | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_time_series.py` (``time_series.py``)                                   | 00:00.944 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_tephigram.py` (``tephigram.py``)                                       | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_odb_scatterplot_binning.py` (``odb_scatterplot_binning.py``)           | 00:00.922 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_tephigram_bufr.py` (``tephigram_bufr.py``)                             | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_geoline_on_map.py` (``geoline_on_map.py``)                             | 00:00.851 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_tephigram_odb.py` (``tephigram_odb.py``)                               | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_nc_maritime_obs.py` (``nc_maritime_obs.py``)                           | 00:00.818 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_text_at_geopoints_locations.py` (``text_at_geopoints_locations.py``)   | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_geopolyline_on_map.py` (``geopolyline_on_map.py``)                     | 00:00.814 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_time_height_xs.py` (``time_height_xs.py``)                             | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_odb_wind_profiler.py` (``odb_wind_profiler.py``)                       | 00:00.760 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_time_series.py` (``time_series.py``)                                   | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_taylor.py` (``taylor.py``)                                             | 00:00.757 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_wind4.py` (``wind4.py``)                                               | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_text_at_geopoints_locations.py` (``text_at_geopoints_locations.py``)   | 00:00.715 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_wind_coloured_by_t.py` (``wind_coloured_by_t.py``)                     | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_fill_between_curves.py` (``fill_between_curves.py``)                   | 00:00.626 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_wind_overlay_and_legend_box.py` (``wind_overlay_and_legend_box.py``)   | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_graph4.py` (``graph4.py``)                                             | 00:00.567 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_zonal_average.py` (``zonal_average.py``)                               | 00:00.000 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+

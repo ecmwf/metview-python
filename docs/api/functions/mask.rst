@@ -14,12 +14,12 @@ mask
 
       Non-rectangular masks, and even convex masks can be created by using the operators **and**, **or** and **not**. To create the following mask:
 
-      .. image:: _static/mask_1.png
+      .. image:: /_static/mask_1.png
          :width: 300px
 
       First decompose it into basic rectangles:
 
-      .. image:: _static/mask_2.png
+      .. image:: /_static/mask_2.png
          :width: 300px
 
       Then create a mask for each of them and use **and** and **or** to compose the desired mask like this:

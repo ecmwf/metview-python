@@ -11,7 +11,7 @@ rttov_run
 
     .. container:: rightside
 
-        This function represents the `Rttov Run <https://confluence.ecmwf.int/display/METV/rttov+run>`_ icon in Metview's user interface.
+        This function performs the same task as the `Rttov Run <https://confluence.ecmwf.int/display/METV/rttov+run>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: rttov_run(**kwargs)
@@ -32,7 +32,7 @@ rttov_run
 
 
     :param rttov_sensor: 
-    :type rttov_sensor: str
+    :type rttov_sensor: str, default: "iasi"
 
 
     :param rttov_channels: 
@@ -52,19 +52,19 @@ rttov_run
 
 
     :param rttov_satellite_zenith_angle: 
-    :type rttov_satellite_zenith_angle: number
+    :type rttov_satellite_zenith_angle: number, default: 0
 
 
     :param rttov_satellite_azimuth_angle: 
-    :type rttov_satellite_azimuth_angle: number
+    :type rttov_satellite_azimuth_angle: number, default: 0
 
 
     :param rttov_solar_zenith_angle: 
-    :type rttov_solar_zenith_angle: number
+    :type rttov_solar_zenith_angle: number, default: 0
 
 
     :param rttov_solar_azimuth_angle: 
-    :type rttov_solar_azimuth_angle: number
+    :type rttov_solar_azimuth_angle: number, default: 0
 
 
     :rtype: None

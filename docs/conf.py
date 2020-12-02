@@ -16,6 +16,8 @@ import os
 import sys
 
 import sphinx_rtd_theme
+# import pydata_sphinx_theme
+
 import sphinx_gallery
 
 sys.path.insert(0, os.path.abspath("."))
@@ -38,9 +40,11 @@ author = "ECMWF"
 # ones.
 extensions = [
     "sphinx_rtd_theme",
+    # "pydata_sphinx_theme",
     "sphinx_gallery.gen_gallery",
     "sphinx_gallery.load_style",
-    "nbsphinx"
+    "nbsphinx",
+    "sphinx.ext.intersphinx",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -72,9 +76,15 @@ html_theme = "sphinx_rtd_theme"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 
-html_css_files = ['custom_style.css']
+html_css_files = ['css/custom_style.css']
+
 
 html_logo = "_static/metview.png"
+
+rst_prolog = """
+.. role:: mval
+"""
+
 
 # -- Options for sphinx_gallery -------------------------------------------------
 
@@ -89,4 +99,8 @@ sphinx_gallery_conf = {
     # Modules for which function/class level galleries are created.
     "doc_module": ("metview"),
     "min_reported_time": 1000,
+    "reference_url": {
+         # The module you locally document uses None
+        "metview": None,
+    }
 }

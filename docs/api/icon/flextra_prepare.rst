@@ -11,7 +11,7 @@ flextra_prepare
 
     .. container:: rightside
 
-        This function represents the `Flextra Prepare <https://confluence.ecmwf.int/display/METV/flextra+prepare>`_ icon in Metview's user interface.
+        This function performs the same task as the `Flextra Prepare <https://confluence.ecmwf.int/display/METV/flextra+prepare>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: flextra_prepare(**kwargs)
@@ -19,16 +19,16 @@ flextra_prepare
     Description comes here!
 
 
-    :param flextra_prepare_mode: Specifies the data preparation mode. The possible values are: Forecast and Period.
+    :param flextra_prepare_mode: Specifies the data preparation mode. The possible values are: "forecast" and Period.
 
-         In Forecast mode the selected steps of a given forecast can be used for data generation. If the mode is set to Period a period with a start and end date and constant time-step can be defined. In this case FLEXTRA Prepare_ tries to retrieve analysis fields from MARS whenever it is possible (for dates in the past) and uses forecast fields otherwise (for dates in the future).
-    :type flextra_prepare_mode: str
+         In "forecast" mode the selected steps of a given "forecast" can be used for data generation. If the mode is set to Period a period with a start and end date and constant time-step can be defined. In this case FLEXTRA Prepare_ tries to retrieve analysis fields from MARS whenever it is possible (for dates in the past) and uses "forecast" fields otherwise (for dates in the future).
+    :type flextra_prepare_mode: str, default: "forecast"
 
 
-    :param flextra_input_source: Specifies the source of the input GRIB data. The possible values are: mars and file.The default value is mars.
+    :param flextra_input_source: Specifies the source of the input GRIB data. The possible values are: "mars" and file.The default value is "mars".
 
-         If the input source is mars the input GRIB data is retrieved from the MARS archive. When Prepare Mode is forecast the input source can also be set to file. In this case the GRIB file specified in Input File will be used as input data.
-    :type flextra_input_source: str
+         If the input source is "mars" the input GRIB data is retrieved from the "mars" archive. When Prepare Mode is forecast the input source can also be set to file. In this case the GRIB file specified in Input File will be used as input data.
+    :type flextra_input_source: str, default: "mars"
 
 
     :param flextra_input_file: Specifies the full path to the file containing the input GRIB data. Available when Prepare Mode is forecast and  Input Source is file. The input file must contain the following fields for all the steps specified in ``flextra_step`` :  
@@ -39,12 +39,12 @@ flextra_prepare
     :type flextra_input_file: str
 
 
-    :param flextra_fc_mars_expver: The MARS experiment identifier of the forecast fields. The default value is 1 (operational forecast).
-    :type flextra_fc_mars_expver: str
+    :param flextra_fc_mars_expver: The MARS experiment identifier of the forecast fields. The default value is "1" (operational forecast).
+    :type flextra_fc_mars_expver: str, default: "1"
 
 
-    :param flextra_an_mars_expver: The MARS experiment identifier of the analysis fields. The default value is 1 (operational analysis).
-    :type flextra_an_mars_expver: str
+    :param flextra_an_mars_expver: The MARS experiment identifier of the analysis fields. The default value is "1" (operational analysis).
+    :type flextra_an_mars_expver: str, default: "1"
 
 
     :param flextra_date: Specifies the run date of the forecast. Available when ``flextra_prepare_mode`` is Forecast.
@@ -52,7 +52,7 @@ flextra_prepare
 
 
     :param flextra_time: Specifies the run time of the forecast . Available when ``flextra_prepare_mode`` is Forecast.
-    :type flextra_time: str
+    :type flextra_time: str, default: "0"
 
 
     :param flextra_step: Specifies the forecast steps in hours. Here a list of values is given. Available when ``flextra_prepare_mode`` is Forecast.
@@ -75,12 +75,12 @@ flextra_prepare
     :type flextra_period_end_time: str
 
 
-    :param flextra_period_step: Specifies the time step of the period in hours. The allowed values are as follows: 3 or 6. Available when ``flextra_prepare_mode`` is Period.
-    :type flextra_period_step: str
+    :param flextra_period_step: Specifies the time step of the period in hours. The allowed values are as follows: "3" or 6. Available when ``flextra_prepare_mode`` is Period.
+    :type flextra_period_step: str, default: "3"
 
 
-    :param flextra_grid_interpolation: Specifies if the input GRIB fields need to be interpolated onto a target grid specified by ``flextra_area`` and ``flextra_grid``. The possible values are on / off. Available when Input source is file. The default value is: on.
-    :type flextra_grid_interpolation: str
+    :param flextra_grid_interpolation: Specifies if the input GRIB fields need to be interpolated onto a target grid specified by ``flextra_area`` and ``flextra_grid``. The possible values are "on" / "off". Available when Input source is file. The default value is: "on".
+    :type flextra_grid_interpolation: {"on", "off"}, default: "on"
 
 
     :param flextra_area: Specifies the area of the output grid in south/west/north/east format. The default value is -90/-179/90/180.
@@ -88,23 +88,23 @@ flextra_prepare
          In versions before 5.0.0 the default value is -90/-180/90/180.
 
          Please note that to make global domains work with FLEXTRA the western border must be set to one gridcell east of 180. E.g. if the east-west grid resolution is 1 degree ``flextra_area`` should be set to -90/-179/90/180 etc.
-    :type flextra_area: float or list[float]
+    :type flextra_area: float or list[float], default: -90
 
 
     :param flextra_grid: Specifies the resolution of the output grid in dx/dy format, where dx is the grid increment in east-west direction, while dy is the grid increment in north-south direction (both in units of degrees). The default value is: 1/1.
-    :type flextra_grid: float or list[float]
+    :type flextra_grid: float or list[float], default: 1
 
 
     :param flextra_top_level: Only data on and below this model level will be used to generate the FLEXTRA input fields. This level can be specified either as a model level or as a pressure value. In the latter case FLEXTRA Prepare will use the data retrieved for the first date to determine the topmost model level. The default value of this parameter is 1 , which means that all the model levels will be used if ``flextra_top_level`` Units is set to Model Levels.
-    :type flextra_top_level: number
+    :type flextra_top_level: number, default: 1
 
 
     :param flextra_top_level_units: Specifies the units of the value of ``flextra_top_level``. The allowed values are Model Levels or hPa. The default value is Model Levels.
-    :type flextra_top_level_units: str
+    :type flextra_top_level_units: str, default: "ml"
 
 
     :param flextra_reuse_input: 
-    :type flextra_reuse_input: str
+    :type flextra_reuse_input: str, default: "on"
 
 
     :param flextra_output_path: Specifies the output directory (it has to be an absolute path) where the GRIB files and the AVAILABLE file will be generated. If this directory does not exist Metview will create it. The output GRIB files have the following naming convention: EN yymmddhh._

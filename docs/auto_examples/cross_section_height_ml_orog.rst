@@ -10,6 +10,7 @@
 
 
 Cross Section in Height for Model Level Data with Orography
+==============================================================
 
 
 
@@ -23,7 +24,6 @@ Cross Section in Height for Model Level Data with Orography
 
 
 .. code-block:: default
-
 
 
     # (C) Copyright 2017- ECMWF.

@@ -11,7 +11,7 @@ mobs
 
     .. container:: rightside
 
-        This function represents the `Observation Plotting <https://confluence.ecmwf.int/display/METV/Observation+Plotting>`_ icon in Metview's user interface.
+        This function performs the same task as the `Observation Plotting <https://confluence.ecmwf.int/display/METV/Observation+Plotting>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: mobs(**kwargs)
@@ -19,328 +19,184 @@ mobs
     Description comes here!
 
 
-    :param obs_distance_apart: Minimum distance between the centre of any two observations in cm. The default is: 1.0.
-    :type obs_distance_apart: number
+    :param obs_distance_apart: Minimum distance between the centre of any two observations in cm
+    :type obs_distance_apart: number, default: 1.0
 
 
     :param obs_level: 
-    :type obs_level: number
+    :type obs_level: number, default: 500
 
 
-    :param obs_colour: Observation Colour. The possible values:
+    :param obs_colour: Observation Colour
+    :type obs_colour: str, default: "black"
 
-        * background
-        The default is: black.
-    :type obs_colour: str
 
+    :param obs_size: size of a single onservation in cm
+    :type obs_size: number, default: 0.2
 
-    :param obs_size: size of a single onservation in cm. The default is: 0.2.
-    :type obs_size: number
 
+    :param obs_ring_size: Size of the station ring  in cm
+    :type obs_ring_size: number, default: 0.2
 
-    :param obs_ring_size: Size of the station ring  in cm. The default is: 0.2.
-    :type obs_ring_size: number
 
+    :param obs_present_weather: Turn "on"/"off" the present weather
+    :type obs_present_weather: {"on", "off"}, default: "on"
 
-    :param obs_present_weather: Turn On/off the present weather. The possible values:
 
-        * on
-        * off
-        The default is: on.
-    :type obs_present_weather: str
+    :param obs_present_weather_colour: Colour used to display  the present weather
+    :type obs_present_weather_colour: str, default: "automatic"
 
 
-    :param obs_present_weather_colour: Colour used to display  the present weather. The possible values:
+    :param obs_pressure: Turn "on"/"off" the pressure
+    :type obs_pressure: {"on", "off"}, default: "on"
 
-        * background
-        The default is: automatic.
-    :type obs_present_weather_colour: str
 
+    :param obs_pressure_colour: Colour used to display the pressure
+    :type obs_pressure_colour: str, default: "automatic"
 
-    :param obs_pressure: Turn On/off the pressure. The possible values:
 
-        * on
-        * off
-        The default is: on.
-    :type obs_pressure: str
+    :param obs_upper_air_pressure: Turn "on"/"off" the upper air pressure level (satob)
+    :type obs_upper_air_pressure: {"on", "off"}, default: "off"
 
 
-    :param obs_pressure_colour: Colour used to display the pressure. The possible values:
+    :param obs_upper_air_pressure_colour: Colour used to display the upper air pressure level
+    :type obs_upper_air_pressure_colour: str, default: "automatic"
 
-        * background
-        The default is: automatic.
-    :type obs_pressure_colour: str
 
+    :param obs_pressure_tendency: Turn "on"/"off" the pressure tendency
+    :type obs_pressure_tendency: {"on", "off"}, default: "on"
 
-    :param obs_upper_air_pressure: Turn On/off the upper air pressure level (satob). The possible values:
 
-        * on
-        * off
-        The default is: off.
-    :type obs_upper_air_pressure: str
+    :param obs_pressure_tendency_colour: Colour used to display the pressure tendency
+    :type obs_pressure_tendency_colour: str, default: "automatic"
 
 
-    :param obs_upper_air_pressure_colour: Colour used to display the upper air pressure level. The possible values:
+    :param obs_station_ring: Turn "on"/"off" the station ring
+    :type obs_station_ring: {"on", "off"}, default: "on"
 
-        * background
-        The default is: automatic.
-    :type obs_upper_air_pressure_colour: str
 
+    :param obs_station_ring_colour: Colour used to display the station ring
+    :type obs_station_ring_colour: str, default: "automatic"
 
-    :param obs_pressure_tendency: Turn On/off the pressure tendency. The possible values:
 
-        * on
-        * off
-        The default is: on.
-    :type obs_pressure_tendency: str
+    :param obs_temperature: Turn "on"/"off" the Air temperature
+    :type obs_temperature: {"on", "off"}, default: "on"
 
 
-    :param obs_pressure_tendency_colour: Colour used to display the pressure tendency. The possible values:
+    :param obs_temperature_colour: Colour  used to display the Air temperature
+    :type obs_temperature_colour: str, default: "automatic"
 
-        * background
-        The default is: automatic.
-    :type obs_pressure_tendency_colour: str
 
+    :param obs_thickness: Turn On/off the Thickness
+    :type obs_thickness: int, default: on
 
-    :param obs_station_ring: Turn On/off the station ring. The possible values:
 
-        * on
-        * off
-        The default is: on.
-    :type obs_station_ring: str
+    :param obs_thickness_colour: Colour  used to display the thickness
+    :type obs_thickness_colour: str, default: "automatic"
 
 
-    :param obs_station_ring_colour: Colour used to display the station ring. The possible values:
+    :param obs_height: Turn "on"/"off" the height (geopotential)
+    :type obs_height: {"on", "off"}, default: "on"
 
-        * background
-        The default is: automatic.
-    :type obs_station_ring_colour: str
 
+    :param obs_height_colour: Colour  used to display  the height information
+    :type obs_height_colour: str, default: "automatic"
 
-    :param obs_temperature: Turn On/off the Air temperature. The possible values:
 
-        * on
-        * off
-        The default is: on.
-    :type obs_temperature: str
+    :param obs_identification: Turn "on"/"off" the station identification
+    :type obs_identification: {"on", "off"}, default: "off"
 
 
-    :param obs_temperature_colour: Colour  used to display the Air temperature. The possible values:
+    :param obs_identification_colour: Colour  used to display  the station identification
+    :type obs_identification_colour: str, default: "automatic"
 
-        * background
-        The default is: automatic.
-    :type obs_temperature_colour: str
 
+    :param obs_cloud: Turn "on"/"off" the cloud
+    :type obs_cloud: {"on", "off"}, default: "on"
 
-    :param obs_thickness: Turn On/off the Thickness. The possible values:
 
-        * on
-        * off
-        The default is: on.
-    :type obs_thickness: str
+    :param obs_low_cloud: Turn "on"/"off" the low cloud
+    :type obs_low_cloud: {"on", "off"}, default: "on"
 
 
-    :param obs_thickness_colour: Colour  used to display the thickness. The possible values:
+    :param obs_low_cloud_colour: Colour used to display the low cloud
+    :type obs_low_cloud_colour: str, default: "automatic"
 
-        * background
-        The default is: automatic.
-    :type obs_thickness_colour: str
 
+    :param obs_medium_cloud: Turn "on"/"off" the medium cloud
+    :type obs_medium_cloud: {"on", "off"}, default: "on"
 
-    :param obs_height: Turn On/off the height (geopotential). The possible values:
 
-        * on
-        * off
-        The default is: on.
-    :type obs_height: str
+    :param obs_medium_cloud_colour: Colour used to display the  medium cloud
+    :type obs_medium_cloud_colour: str, default: "automatic"
 
 
-    :param obs_height_colour: Colour  used to display  the height information. The possible values:
+    :param obs_high_cloud: Turn "on"/"off" the high cloud
+    :type obs_high_cloud: {"on", "off"}, default: "on"
 
-        * background
-        The default is: automatic.
-    :type obs_height_colour: str
 
+    :param obs_high_cloud_colour: Colour used to display the high cloud
+    :type obs_high_cloud_colour: str, default: "red"
 
-    :param obs_identification: Turn On/off the station identification. The possible values:
 
-        * on
-        * off
-        The default is: off.
-    :type obs_identification: str
+    :param obs_dewpoint: Turn "on"/"off" the dewpoint
+    :type obs_dewpoint: {"on", "off"}, default: "on"
 
 
-    :param obs_identification_colour: Colour  used to display  the station identification. The possible values:
+    :param obs_dewpoint_colour: Colour used to display the dewpoint
+    :type obs_dewpoint_colour: str, default: "red"
 
-        * background
-        The default is: automatic.
-    :type obs_identification_colour: str
 
+    :param obs_sea_temperature: Turn "on"/"off" the sea temperature
+    :type obs_sea_temperature: {"on", "off"}, default: "on"
 
-    :param obs_cloud: Turn On/off the cloud. The possible values:
 
-        * on
-        * off
-        The default is: on.
-    :type obs_cloud: str
+    :param obs_sea_temperature_colour: Colour sed to display the sea temperature
+    :type obs_sea_temperature_colour: str, default: "black"
 
 
-    :param obs_low_cloud: Turn On/off the low cloud. The possible values:
+    :param obs_waves: Turn "on"/"off" the waves and swell information
+    :type obs_waves: {"on", "off"}, default: "on"
 
-        * on
-        * off
-        The default is: on.
-    :type obs_low_cloud: str
 
+    :param obs_waves_colour: Colour used to display  the waves and swell
+    :type obs_waves_colour: str, default: "black"
 
-    :param obs_low_cloud_colour: Colour used to display the low cloud. The possible values:
 
-        * background
-        The default is: automatic.
-    :type obs_low_cloud_colour: str
+    :param obs_past_weather: Turn "on"/"off" the pas Weather level (satob)
+    :type obs_past_weather: {"on", "off"}, default: "on"
 
 
-    :param obs_medium_cloud: Turn On/off the medium cloud. The possible values:
+    :param obs_past_weather_colour: Colour  used to display  the past weather
+    :type obs_past_weather_colour: str, default: "red"
 
-        * on
-        * off
-        The default is: on.
-    :type obs_medium_cloud: str
 
+    :param obs_time: Turn "on"/"off" the observation time
+    :type obs_time: {"on", "off"}, default: "off"
 
-    :param obs_medium_cloud_colour: Colour used to display the  medium cloud. The possible values:
 
-        * background
-        The default is: automatic.
-    :type obs_medium_cloud_colour: str
+    :param obs_time_colour: Colour used to display the observation time
+    :type obs_time_colour: str, default: "automatic"
 
 
-    :param obs_high_cloud: Turn On/off the high cloud. The possible values:
+    :param obs_visibility: Turn "on"/"off" the visibility
+    :type obs_visibility: {"on", "off"}, default: "on"
 
-        * on
-        * off
-        The default is: on.
-    :type obs_high_cloud: str
 
+    :param obs_visibility_colour: Colour  used to display  the visibility
+    :type obs_visibility_colour: str, default: "automatic"
 
-    :param obs_high_cloud_colour: Colour used to display the high cloud. The possible values:
 
-        * background
-        The default is: red.
-    :type obs_high_cloud_colour: str
+    :param obs_wind: Turn "on"/"off" the wind
+    :type obs_wind: {"on", "off"}, default: "on"
 
 
-    :param obs_dewpoint: Turn On/off the dewpoint. The possible values:
+    :param obs_wind_colour: Colour used to display wind
+    :type obs_wind_colour: str, default: "automatic"
 
-        * on
-        * off
-        The default is: on.
-    :type obs_dewpoint: str
 
-
-    :param obs_dewpoint_colour: Colour used to display the dewpoint. The possible values:
-
-        * background
-        The default is: red.
-    :type obs_dewpoint_colour: str
-
-
-    :param obs_sea_temperature: Turn On/off the sea temperature. The possible values:
-
-        * on
-        * off
-        The default is: on.
-    :type obs_sea_temperature: str
-
-
-    :param obs_sea_temperature_colour: Colour sed to display the sea temperature. The possible values:
-
-        * background
-        The default is: black.
-    :type obs_sea_temperature_colour: str
-
-
-    :param obs_waves: Turn On/off the waves and swell information. The possible values:
-
-        * on
-        * off
-        The default is: on.
-    :type obs_waves: str
-
-
-    :param obs_waves_colour: Colour used to display  the waves and swell. The possible values:
-
-        * background
-        The default is: black.
-    :type obs_waves_colour: str
-
-
-    :param obs_past_weather: Turn On/off the pas Weather level (satob). The possible values:
-
-        * on
-        * off
-        The default is: on.
-    :type obs_past_weather: str
-
-
-    :param obs_past_weather_colour: Colour  used to display  the past weather. The possible values:
-
-        * background
-        The default is: red.
-    :type obs_past_weather_colour: str
-
-
-    :param obs_time: Turn On/off the observation time. The possible values:
-
-        * on
-        * off
-        The default is: off.
-    :type obs_time: str
-
-
-    :param obs_time_colour: Colour used to display the observation time. The possible values:
-
-        * background
-        The default is: automatic.
-    :type obs_time_colour: str
-
-
-    :param obs_visibility: Turn On/off the visibility. The possible values:
-
-        * on
-        * off
-        The default is: on.
-    :type obs_visibility: str
-
-
-    :param obs_visibility_colour: Colour  used to display  the visibility. The possible values:
-
-        * background
-        The default is: automatic.
-    :type obs_visibility_colour: str
-
-
-    :param obs_wind: Turn On/off the wind. The possible values:
-
-        * on
-        * off
-        The default is: on.
-    :type obs_wind: str
-
-
-    :param obs_wind_colour: Colour used to display wind. The possible values:
-
-        * background
-        The default is: automatic.
-    :type obs_wind_colour: str
-
-
-    :param obs_wind_projected: if on (default), the wind will be reprojected according to the projection used in the map. The possible values:
-
-        * on
-        * off
-        The default is: on.
-    :type obs_wind_projected: str
+    :param obs_wind_projected: if "on" (default), the wind will be reprojected according to the projection used in the map.
+    :type obs_wind_projected: {"on", "off"}, default: "on"
 
 
     :rtype: None

@@ -11,7 +11,7 @@ percentile
 
     .. container:: rightside
 
-        This function represents the `Percentile <https://confluence.ecmwf.int/display/METV/percentile>`_ icon in Metview's user interface.
+        This function performs the same task as the `Percentile <https://confluence.ecmwf.int/display/METV/percentile>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: percentile(**kwargs)
@@ -20,7 +20,7 @@ percentile
 
 
     :param source: Specifies the GRIB file path and name. Alternatively, parameter ``data`` can be used.
-    :type source: str
+    :type source: str, default: "off"
 
 
     :param data: Specifies the ``data`` required for the application. This can be any icon returning GRIB ``data`` (e.g. MARS Retrieval, GRIB Filter, Formula, Simple Formula). The icon field assist button provides a tailor made MARS request in case you need some guidance in the ``data`` specification. Alternatively, parameter ``source`` can be used.
@@ -28,10 +28,10 @@ percentile
 
 
     :param percentiles: Specifies a list of values from 0 to 100.
-    :type percentiles: float or list[float]
+    :type percentiles: float or list[float], default: 10.0
 
 
-    :param interpolation: Specifies the ``interpolation`` method used to compute the ``percentiles``: nearest_neighbour or linear. The default value is: nearest_neighbour.
+    :param interpolation: Specifies the ``interpolation`` method used to compute the ``percentiles``: "nearest_neighbour" or "linear". The default value is: "nearest_neighbour".
 
          Given a list of numbers V , the algorithm used to compute a percentile is the following:
 
@@ -45,7 +45,7 @@ percentile
 
          1. If the ``interpolation`` method is Nearest Neighbour , the following equation is used: P-th = V[int(R + 0.5)]
 
-         2. If the ``interpolation`` method is Linear , the following steps are used:
+         2. If the ``interpolation`` method is "linear" , the following steps are used:
 
          1. Define IR as the integer portion of R
 
@@ -54,11 +54,11 @@ percentile
          3. Find the scores with Rank IR and with Rank IR + 1, e.g. V[IR] and V[IR+1]
 
          4. Interpolate by multiplying the difference between the scores by FR and add the result to the lower score, e.g. Pth = FR * (V[IR+1] - V[IR]) + V[IR]
-    :type interpolation: str
+    :type interpolation: {"nearest_neighbour", "linear"}, default: "nearest_neighbour"
 
 
     :param compute_if_missing_present: 
-    :type compute_if_missing_present: str
+    :type compute_if_missing_present: {"on", "off"}, default: "on"
 
 
     :rtype: None
