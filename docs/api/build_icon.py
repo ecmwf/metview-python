@@ -49,6 +49,8 @@ class DocParam:
         if "str" in self.p_type:
             self.default = self.add_double_quote(self.default)
 
+        self.format_desc()
+
     def type_str(self):
         r = ""
         if self.p_type == "str":
@@ -60,7 +62,7 @@ class DocParam:
             r = self.p_type
 
         if self.default:
-            r += ", default: " + self.default
+            r += ", default: " + self.formatted_default()
         
         return r
 
@@ -75,6 +77,17 @@ class DocParam:
             else:
                 v = v.replace("\'", "\"")
         return v
+
+    def format_desc(self):
+        self.desc = self.desc.replace("<tt>", "\t\t")
+
+    def formatted_default(self):
+        if self.default and isinstance(self.default, str) and "/" in self.default:
+            return "[" + ", ".join([v.strip() for v in self.default.split("/")]) + "]"
+            # print(f"  {self.default} -> {v}")
+        else:
+            return self.default
+
 
 class DocFunction:
     def __init__(self, name, conf):

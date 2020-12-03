@@ -96,7 +96,7 @@ vapor_prepare
     :param vapor_output_path: Specifies the output directory (can be a relative path) where the VDF file and VDC directory hierarchy will be generated. If this directory does not exist Metview will create it. The default value is /tmp.
 
          VAPOR data files can be huge (gigabytes) so the output path to store the results of the GRIB to VAPOR conversion should always be carefully selected.
-    :type vapor_output_path: str, default: "/tmp"
+    :type vapor_output_path: str, default: [", tmp"]
 
 
     :rtype: None

@@ -19,29 +19,22 @@ eccharts
     Description comes here!
 
 
-    :param layer: Specifies the name of the ecCharts ``layer``.
+    :param layer: Specifies the name of the ecCharts layer.
     :type layer: str
 
 
-    :param style: Specifies the contouring ``style`` for the selected ``layer``. Each ecCharts ``layer`` is associated with a group of predefined ``style``s. When a given ``layer`` is selected in ``layer`` the icon editor only shows the available ``style``s for that ``layer`` and the default ``style`` is automatically selected.
+    :param style: Specifies a named contouring style for the selected ``layer``. Each ecCharts layer is associated with a group of predefined styles and if this parameter is left empty the default style will be assigned to ``layer``. 
+
+		.. note:: In the user interface the ecCharts icon editor contains a style browser. When a given ``layer`` is selected the style browser only shows the available styles for that layer with the default style automatically selected.
     :type style: str
 
 
-    :param title: Specifies the type of the ``title`` generated for the plot. The possible values are as follows:
+    :param title: Specifies the type of the title generated for the plot. The possible values are as follows:
 
-         *  "default" : the standard Metview automatic ``title`` will be used and the resulting list will not contain a :func:`mtext` icon. This is how it looks:
+		* "default": the automatic Metview title will be used and the returned list will not contain an :func:`mtext` object
+		* "style_1": the returned list will contain an :func:`mtext` object defining a title with a different style. 
 
-         ![](/download/attachments/118822740/image2020-2-6_9-36-10.png?version=1&modification``date``=1580981770610&api=v2)
-
-         *  ``style``_1 : the resulting list will contain a :func:`mtext` icon defining a ``title`` of a different ``style``. This is how it looks:
-
-         ![](/download/attachments/118822740/image2020-2-6_9-34-32.png?version=1&modification``date``=1580981672933&api=v2)
-
-         The "default" option is "default".
-
-         When overlaying an EcCharts icon with other EcCharts icons or fields always use the "default" option (otherwise the contouring setting could be applied incorrectly to some of the fields).
-
-         This option was introduced in Metview 5.8.0.
+		When overlaying an :func:`eccharts` object with other objects always use the "default" option, otherwise the contouring setting will be applied incorrectly to some of the fields.    
     :type title: {"default", "style_1"}, default: "default"
 
 
@@ -49,15 +42,15 @@ eccharts
     :type expver: str, default: "1"
 
 
-    :param date: Specifies the run ``date`` of the forecast. This is the same ``date`` parameter as in the MARS retrieval icon. The ``date`` is given in YYYYMMDD format. Relative ``date``s are allowed: e.g. -1 means yesterday, 0 means today, etc. The default is -1.
+    :param date: Specifies the run date of the forecast in YYYYMMDD format. This is the same ``date`` parameter as in the MARS retrieval icon. Relative dates are allowed: e.g. -1 means yesterday, 0 means today, etc.
     :type date: str, default: "-1"
 
 
-    :param time: Specifies the run ``time`` of the forecast. This is the same ``time`` parameter as in the MARS retrieval icon. The default is 0.
+    :param time: Specifies the run time of the forecast. This is the same ``time`` parameter as in the MARS retrieval icon.
     :type time: number, default: 0
 
 
-    :param step: Specifies the forecast ``step``s in hours. Here a list of values can be given.
+    :param step: Specifies the forecast steps in hours. Here a list of values can be given.
     :type step: str or list[str], default: "0"
 
 
@@ -69,11 +62,11 @@ eccharts
     :type quantile: str or list[str]
 
 
-    :param grid: Specifies the resolution of the resulting global ``grid`` in dx/dy format, where dx is the ``grid`` increment in West-East direction, while dy is the ``grid`` increment in South-North direction (both in units of degrees). The default value is: 1/1.
-    :type grid: float or list[float], default: 1
+    :param grid: Specifies the resolution of the resulting global grid in dx/dy format, where dx is the grid increment in West-East direction, while dy is the grid increment in South-North direction (both in units of degrees).
+    :type grid: list[float], default: [1, 1]
 
 
-    :param fail_on_data_error: When this parameter is set to "yes" an error in the data retrieval or the post-processing ``step``s will force the icon to fail and a Macro/Python script running the eccharts()`function will fail as well. While if it is set to "no" the icon will not fail and the eccharts command in Macro/Python will return nil/None. The default value is "yes".
+    :param fail_on_data_error: When this parameter is set to "yes" an error in the data retrieval or the post-processing steps will force the icon to fail and a Python script running :func:`eccharts` will fail as well. When if it is set to "no" the icon will not fail and :func:`eccharts` will return None.
     :type fail_on_data_error: {"yes", "no"}, default: "yes"
 
 

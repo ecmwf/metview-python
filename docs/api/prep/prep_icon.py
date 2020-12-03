@@ -43,7 +43,7 @@ param_types = {
     "symbol_name": "str",
 }
 
-ignore_group = ["widget", "output"]
+ignore_group = ["widget"]
 
 
 class DocParam:
@@ -81,8 +81,11 @@ class DocParam:
             # print(f"name={name} vals={vals} t={t}") 
             for v in vals:
                 if v:
-                    r = re.compile(r"\b{}\b".format(v), re.IGNORECASE)
-                    t = r.sub("\"{}\"".format(v), t)
+                    try:
+                        r = re.compile(r"\b{}\b".format(v), re.IGNORECASE)
+                        t = r.sub("\"{}\"".format(v), t)
+                    except:
+                        pass
         
             # print(f" -> {t}")
         return t
@@ -377,9 +380,6 @@ class DocFunction:
                 return True
         return False
 
-
-
-
 def add_icon_yaml(name, fname):
 
     with open(fname, "r") as f:
@@ -390,15 +390,20 @@ def add_icon_yaml(name, fname):
         if fn is None or fn.is_group_ignored():
             return
 
+        if not "output" in fn.group:
+            return
+
         print("class={} name={}".format(cls_name, name))
         fn.load_params(conf)
         fn.load_param_desc()
         fn.load_param_desc_magics()
  
         output = os.path.join(os.getenv("HOME", ""), "icon_desc/{}.yaml".format(cls_name))
-        r = yaml.dump(fn.as_dict(), default_flow_style=False)
-        with open(output, "w") as ff:
-            ff.write(r)
+        # if not os.path.exists(output):
+        if "output" in fn.group:
+            r = yaml.dump(fn.as_dict(), default_flow_style=False)
+            with open(output, "w") as ff:
+                ff.write(r)
 
 with open("../functions.yaml", "r") as f:
     for v in yaml.safe_load(f):

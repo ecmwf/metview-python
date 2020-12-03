@@ -24,7 +24,7 @@ mtext
 
 
     :param text_line_1: Character string for holding lines of text (n=1,10)
-    :type text_line_1: str, default: "<magics_title/>"
+    :type text_line_1: str, default: ["<magics_title, >"]
 
 
     :param text_line_2: Character string for holding lines of text (n=1,10)

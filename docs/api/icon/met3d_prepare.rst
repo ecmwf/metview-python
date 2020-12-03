@@ -40,7 +40,7 @@ met3d_prepare
 
 
     :param pl_levelist: 
-    :type pl_levelist: str or list[str], default: "1000/925/850/700/500/400/300"
+    :type pl_levelist: str or list[str], default: ["1000, 925, 850, 700, 500, 400, 300"]
 
 
     :param ml_levelist: 
