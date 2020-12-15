@@ -1010,6 +1010,7 @@ def bind_functions(namespace, module_name=None):
     # FIXME: this needs to be more structured
     namespace["plot"] = plot
     namespace["setoutput"] = setoutput
+    namespace["metzoom"] = metzoom
     namespace["dataset_to_fieldset"] = dataset_to_fieldset
 
     namespace["Fieldset"] = Fieldset
