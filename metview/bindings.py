@@ -1056,6 +1056,7 @@ write = make("write")
 class Plot:
     def __init__(self):
         self.plot_to_jupyter = False
+        self.jupyter_args = {}
 
     def __call__(self, *args, **kwargs):
         if self.plot_to_jupyter:
@@ -1064,8 +1065,9 @@ class Plot:
 
             base, ext = os.path.splitext(tmp)
 
+            self.jupyter_args.update(output_name=base, output_name_first_page_number="off")
             met_setoutput(
-                png_output(output_name=base, output_name_first_page_number="off")
+                png_output(self.jupyter_args)
             )
             met_plot(*args)
 
@@ -1095,7 +1097,7 @@ plot = Plot()
 # under most circumstances, we only import it when the user asks for Jupyter
 # functionality. Since this occurs within a function, we need a little trickery to
 # get the IPython functions into the global namespace so that the plot object can use them
-def setoutput(*args):
+def setoutput(*args, **kwargs):
     if "jupyter" in args:
         try:
             global Image
@@ -1110,6 +1112,7 @@ def setoutput(*args):
         # test whether we're in the Jupyter environment
         if get_ipython() is not None:
             plot.plot_to_jupyter = True
+            plot.jupyter_args = kwargs
         else:
             print(
                 "ERROR: setoutput('jupyter') was set, but we are not in a Jupyter environment"
