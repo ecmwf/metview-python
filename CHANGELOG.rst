@@ -8,6 +8,7 @@ Changelog for Metview's Python interface
 - added ability to construct a Fieldset from a list of Fieldsets: Fieldset([f1, f2, f3])
 - added metzoom function
 - added keyword arguments to setoutput('jupyter') to control output size in notebooks
+- added metview_python member to result of version_info() function
 
 
 1.5.1

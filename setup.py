@@ -28,7 +28,11 @@ def read(fname):
     return contents
 
 
-version = "1.5.2"
+version = None
+for line in read("metview/bindings.py").split("\n"):
+    if line.startswith("__version__"):
+        version = line.split("=")[-1].strip()[1:-1]
+assert version
 
 
 setuptools.setup(

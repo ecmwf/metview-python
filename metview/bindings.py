@@ -21,6 +21,9 @@ import cffi
 import numpy as np
 
 
+__version__ = "1.5.2"
+
+
 def string_from_ffi(s):
     return ffi.string(s).decode("utf-8")
 
@@ -1011,6 +1014,7 @@ def bind_functions(namespace, module_name=None):
     namespace["plot"] = plot
     namespace["setoutput"] = setoutput
     namespace["metzoom"] = metzoom
+    namespace["version_info"] = version_info
     namespace["dataset_to_fieldset"] = dataset_to_fieldset
 
     namespace["Fieldset"] = Fieldset
@@ -1045,7 +1049,16 @@ subset = make("[]")
 met_and = make("and")
 met_or = make("or")
 met_not = make("not")
+met_version_info = make("version_info")
 write = make("write")
+
+
+# call the C++ version_info() function and add the version of the
+# Python bindings to the resulting dict
+def version_info():
+    binary_info = dict(met_version_info())
+    binary_info['metview_python'] = __version__
+    return binary_info
 
 
 # -----------------------------------------------------------------------------

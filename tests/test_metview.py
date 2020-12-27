@@ -50,6 +50,12 @@ def test_version_info():
     assert "metview_version" in out
 
 
+def test_version_info_python():
+    out = mv.version_info()
+    assert "metview_python" in out
+    assert isinstance(out['metview_python'], str)
+
+
 def test_describe():
     mv.describe("type")
 
