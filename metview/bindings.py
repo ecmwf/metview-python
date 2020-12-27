@@ -1057,7 +1057,7 @@ write = make("write")
 # Python bindings to the resulting dict
 def version_info():
     binary_info = dict(met_version_info())
-    binary_info['metview_python'] = __version__
+    binary_info['metview_python_version'] = __version__
     return binary_info
 
 
