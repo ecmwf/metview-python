@@ -61,11 +61,13 @@ Icons
       - :func:`ecfs`
       - Retrieves data from ECFS
     
-    * - 
+    * - .. image:: /_static/empty.png
+            :width: 24px
       - :func:`eps_output`
       - Defines the EPS (Encapsulated PostScript) output format
     
-    * - 
+    * - .. image:: /_static/empty.png
+            :width: 24px
       - :func:`epscairo_output`
       - Defines the EPS output format using the Cairo driver
     
@@ -139,7 +141,8 @@ Icons
       - :func:`input_visualiser`
       - Defines visualisation for array data
     
-    * - 
+    * - .. image:: /_static/empty.png
+            :width: 24px
       - :func:`kml_output`
       - Defines the KML output format
     
@@ -298,7 +301,8 @@ Icons
       - :func:`odb_visualiser`
       - Defines visualisation for ODB data
     
-    * - 
+    * - .. image:: /_static/empty.png
+            :width: 24px
       - :func:`pdf_output`
       - Defines the PDF output format
     
@@ -322,7 +326,8 @@ Icons
       - :func:`plot_superpage`
       - Creates a top level plot layout
     
-    * - 
+    * - .. image:: /_static/empty.png
+            :width: 24px
       - :func:`png_output`
       - Defines the PNG output format
     
@@ -336,11 +341,13 @@ Icons
       - :func:`pott_p`
       - Computes the potential temperature on pressure levels
     
-    * - 
+    * - .. image:: /_static/empty.png
+            :width: 24px
       - :func:`ps_output`
       - Defines the PostScript output format
     
-    * - 
+    * - .. image:: /_static/empty.png
+            :width: 24px
       - :func:`pscairo_output`
       - Defines the PostScript output format using the Cairo driver
     
@@ -419,7 +426,8 @@ Icons
       - :func:`streamfn`
       - Computes the stream function from a vorticity fieldset
     
-    * - 
+    * - .. image:: /_static/empty.png
+            :width: 24px
       - :func:`svg_output`
       - Defines the SVG output format
     

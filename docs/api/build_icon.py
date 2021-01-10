@@ -432,7 +432,8 @@ Icon functions
                 else:
                     f.write(
                         f"""
-    * - 
+    * - .. image:: /_static/empty.png
+            :width: 24px
       - :func:`{fn.name}`
       - {fn.desc}
     """
