@@ -11,39 +11,36 @@ grib_vectors
 
     .. container:: rightside
 
-        This function performs the same task as the `Grib Vectors <https://confluence.ecmwf.int/display/METV/grib+vectors>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
+		Combines scalar GRIB fields (:class:`Fieldset`) into vector fields for the purpose of **plotting**\ . The user supplies GRIB data of vector X and Y components (cartesian coordinates) or intensity/direction (polar coordinates) with the option of colouring the vectorial representation (arrows) according to the magnitude of a user supplied scalar quantity. The classic example is to plot a wind field from u/v components coloured according to temperature.
+
+
+		.. note:: This function performs the same task as the `Grib Vectors <https://confluence.ecmwf.int/display/METV/grib+vectors>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: grib_vectors(**kwargs)
   
-    Description comes here!
+    Combines scalar GRIB fields (:class:`Fieldset`) into vector fields for the purpose of plotting.
 
 
-    :param type: 
+    :param type: Specifies the type of the vector field to make. When it is set to "vector_field" the result is defined by ``u_component`` and ``v_component``. Otherwise when the value is "polar_field" the result is defined by ``intensity`` and ``direction``.
     :type type: {"vector_field", "polar_field"}, default: "vector_field"
 
+    :param u_component: Specifies the :class:`Fieldset` to be used as the vector field's x component. Available when ``type`` is "vector_field".
+    :type u_component: :class:`Fieldset`
 
-    :param u_component: 
-    :type u_component: str
+    :param v_component: Specifies the :class:`Fieldset` to be used as the vector field's y component. Available when ``type`` is "vector_field".
+    :type v_component: :class:`Fieldset`
 
+    :param intensity: Specifies the :class:`Fieldset` to be used as the vector field's intensity component. Available when ``type`` is "polar_field".
+    :type intensity: :class:`Fieldset`
 
-    :param v_component: 
-    :type v_component: str
+    :param direction: Specifies the :class:`Fieldset` to be used as the vector field's direction component. Available when ``type`` is "polar_field".
+    :type direction: :class:`Fieldset`
 
+    :param colouring_field: Specifies the :class:`Fieldset` that the colouring is based on. If not supplied, the computed magnitude of the vector components will be used for colouring.
+    :type colouring_field: :class:`Fieldset`
 
-    :param intensity: Specifies the field to be used as the vector field ``intensity`` component. The parameter accepts any GRIB icon as input. Available when ``type`` is Polar Field.
-    :type intensity: str
-
-
-    :param direction: Specifies the field to be used as the vector field ``direction`` component. The parameter accepts any GRIB icon as input. Available when ``type`` is Polar Field.
-    :type direction: str
-
-
-    :param colouring_field: Specifies the field to be used as the colouring key. If not supplied, the computed magnitude of the vector components will be used for colouring. The parameter accepts any GRIB icon as input.
-    :type colouring_field: str
-
-
-    :rtype: None
+    :rtype: :class:`Request`
 
 
 .. minigallery:: metview.grib_vectors

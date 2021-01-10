@@ -151,6 +151,7 @@ class DocFunction:
         url = "https://confluence.ecmwf.int/display/METV/{}".format(
             self.title.replace(" ", "+")
         )
+        print(url)
         try:
             r = requests.get(url)
         except:
@@ -162,6 +163,7 @@ class DocFunction:
             return
 
         t = html2text.html2text(h)
+        # print(t)
         t = t.split("* No labels \n\nOverview")[0]
         blocks = t.split("### ")
         for name, p in self.params.items():
@@ -389,18 +391,19 @@ def add_icon_yaml(name, fname):
         fn = DocFunction.find(cls_name)
         if fn is None or fn.is_group_ignored():
             return
-
-        if not "output" in fn.group:
-            return
+            
+        # if not "output" in fn.group:
+        #     return
 
         print("class={} name={}".format(cls_name, name))
         fn.load_params(conf)
         fn.load_param_desc()
         fn.load_param_desc_magics()
  
-        output = os.path.join(os.getenv("HOME", ""), "icon_desc/{}.yaml".format(cls_name))
-        # if not os.path.exists(output):
-        if "output" in fn.group:
+        output = os.path.join(os.getenv("HOME", ""), "icon_desc_1/{}.yaml".format(cls_name))
+        if not os.path.exists(output):
+        # if "output" in fn.group:
+            print(f" -> {output}")
             r = yaml.dump(fn.as_dict(), default_flow_style=False)
             with open(output, "w") as ff:
                 ff.write(r)
@@ -422,13 +425,14 @@ with open("../functions.yaml", "r") as f:
 # make_icon_toc()
 # sys.exit(0)
 
-path = os.getenv("HOME", "") + "/git/mplot_style/mplot/_util/icon_def"
+path = os.getenv("HOME", "") + "/git/metzoom_style/metzoom/_util/icon_def"
 for d_name in glob.glob(os.path.join(path, "*.yaml")):
     name = format(os.path.basename(d_name).split("_def.yaml")[0])
     # if name == "annotationview":
     # if name == "odb_visualiser":
     # if name == "cartesianview":
     # if name == "mcont":
-    if 1:
+    if name  == "mhovmoellerview":
+    # if 1:
         # add_icon_rst(name, d_name)
         add_icon_yaml(name, d_name)

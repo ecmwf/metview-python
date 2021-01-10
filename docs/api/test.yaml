@@ -1,0 +1,30 @@
+item1: |-
+  Generates data to recreate the plot layers of the ecCharts web-based visualisation system in the Metview environment performing the following steps:
+  
+  1. retrieves global forecast fields for a given ecCharts layer from the MARS archive
+  2. applies the required post-processing steps on the data
+  3. defines the visualisation using one of the pre-defined ecCharts styles available for the layer. 
+  
+  :func:`eccharts` returns a list that can be directly passed onto :func:`plot` to generate a plot. This list contains the following items:
+  
+  1. the GRIB fields (:class:`Fieldset`) retrieved from MARS then post-processed
+  2. a plot title definition (:func:`mtext`)
+  3. a contouring definition (:func:`mcont`) using the specified pre-defined style associated with the layer
+  4. a legend definition (:func:`mlegend`)
+  
+  The second item in this list is optional and only included if ``title`` is set to "style_1".
+item2: >-
+  Generates data to recreate the plot layers of the ecCharts web-based visualisation system in the Metview environment performing the following steps:
+  
+  1. retrieves global forecast fields for a given ecCharts layer from the MARS archive
+  2. applies the required post-processing steps on the data
+  3. defines the visualisation using one of the pre-defined ecCharts styles available for the layer. 
+  
+  :func:`eccharts` returns a list that can be directly passed onto :func:`plot` to generate a plot. This list contains the following items:
+  
+  1. the GRIB fields (:class:`Fieldset`) retrieved from MARS then post-processed
+  2. a plot title definition (:func:`mtext`)
+  3. a contouring definition (:func:`mcont`) using the specified pre-defined style associated with the layer
+  4. a legend definition (:func:`mlegend`)
+  
+  The second item in this list is optional and only included if ``title`` is set to "style_1".

@@ -61,6 +61,14 @@ Icons
       - :func:`ecfs`
       - Retrieves data from ECFS
     
+    * - A
+      - :func:`eps_output`
+      - Defines the EPS (Encapsulated PostScript) output format
+    
+    * - A
+      - :func:`epscairo_output`
+      - Defines the EPS output format using the Cairo driver
+    
     * - .. image:: /_static/POTTF.png
             :width: 24px
       - :func:`eqpott_m`
@@ -130,6 +138,10 @@ Icons
             :width: 24px
       - :func:`input_visualiser`
       - Defines visualisation for array data
+    
+    * - A
+      - :func:`kml_output`
+      - Defines the KML output format
     
     * - .. image:: /_static/MXAVERAGEVIEW.png
             :width: 24px
@@ -286,6 +298,10 @@ Icons
       - :func:`odb_visualiser`
       - Defines visualisation for ODB data
     
+    * - A
+      - :func:`pdf_output`
+      - Defines the PDF output format
+    
     * - .. image:: /_static/PERCENTILE.png
             :width: 24px
       - :func:`percentile`
@@ -306,6 +322,10 @@ Icons
       - :func:`plot_superpage`
       - Creates a top level plot layout
     
+    * - A
+      - :func:`png_output`
+      - Defines the PNG output format
+    
     * - .. image:: /_static/POTTF.png
             :width: 24px
       - :func:`pott_m`
@@ -316,10 +336,23 @@ Icons
       - :func:`pott_p`
       - Computes the potential temperature on pressure levels
     
+    * - A
+      - :func:`ps_output`
+      - Defines the PostScript output format
+    
+    * - A
+      - :func:`pscairo_output`
+      - Defines the PostScript output format using the Cairo driver
+    
     * - .. image:: /_static/READ.png
             :width: 24px
       - :func:`read`
       - Filters and interpolates GRIB data
+    
+    * - .. image:: /_static/TABLEREADER.png
+            :width: 24px
+      - :func:`read_table`
+      - Reads a table file with parameters for parsing it.
     
     * - .. image:: /_static/REGRID.png
             :width: 24px
@@ -390,6 +423,10 @@ Icons
             :width: 24px
       - :func:`streamfn`
       - Computes the stream function from a vorticity fieldset
+    
+    * - A
+      - :func:`svg_output`
+      - Defines the SVG output format
     
     * - .. image:: /_static/TABLEVISUALISER.png
             :width: 24px

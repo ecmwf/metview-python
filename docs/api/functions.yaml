@@ -337,6 +337,7 @@
 - divrot:
     category: {}
     desc: Computes the rotational wind from a vorticity fieldset
+    title: Rotational or Divergent Wind
     type: icon
     family: divrot
     group:
@@ -349,6 +350,7 @@
 - divwind:
     category: {}
     desc: Computes the divergent wind from a divergence fieldset
+    title: Rotational or Divergent Wind
     type: icon
     pix: DIVROT
     group:
@@ -415,6 +417,7 @@
 - eqpott_m:
     category: {}
     desc: Computes the equivalent potential temperature on model levels
+    title: Potential Temperature
     type: icon
     pix: POTTF
     group:
@@ -422,6 +425,7 @@
 - eqpott_p:
     category: {}
     desc: Computes the equivalent potential temperature on pressure levels
+    title: Potential Temperature
     type: icon
     pix: POTTF
     group:
@@ -1090,6 +1094,7 @@
 - mhovmoeller_area:
     category: {}
     desc: Generates data for the Hovmoeller area mode
+    title: Hovmoeller Data
     type: icon
     pix: MHOVMOELLERDATA
     family: hovm_data
@@ -1098,6 +1103,7 @@
 - mhovmoeller_expand:
     category: {}
     desc: Generates data for the Hovmoeller expand mode
+    title: Hovmoeller Data
     type: icon
     pix: MHOVMOELLERDATA
     family: hovm_data
@@ -1106,6 +1112,7 @@
 - mhovmoeller_line:
     category: {}
     desc: Generates data for the Hovmoeller line mode
+    title: Hovmoeller Data
     type: icon
     pix: MHOVMOELLERDATA
     family: hovm_data
@@ -1114,6 +1121,7 @@
 - mhovmoeller_vertical:
     category: {}
     desc: Generates data for the Hovmoeller vertical mode
+    title: Hovmoeller Data
     type: icon
     pix: MHOVMOELLERDATA
     family: hovm_data
@@ -1122,6 +1130,7 @@
 - mhovmoellerview:
     category: {}
     desc: Creates a Hovmoeller diagram view
+    title: Hovmoeller View
     type: icon
     pix: MHOVMOELLERVIEW
     group:
@@ -1464,6 +1473,7 @@
       plot: Returns a super_page for plotting
     desc: Creates a top level plot layout
     type: icon
+    title: Display Window
     pix: DISPLAYWINDOW
     group:
       - layout
@@ -1485,6 +1495,7 @@
 - pott_m:
     category: {}
     desc: Computes the potential temperature on model levels
+    title: Potential Temperature
     type: icon
     pix: POTTF
     group:
@@ -1492,6 +1503,7 @@
 - pott_p:
     category: {}
     desc: Computes the potential temperature on pressure levels
+    title: Potential Temperature
     type: icon
     pix: POTTF
     group:
@@ -1589,7 +1601,9 @@
     category:
       table: Reads a table file with parameters for parsing it.
     desc: Reads a table file with parameters for parsing it.
-    type: script
+    type: icon
+    title: Table Reader
+    pix: TABLEREADER
     group:
       - table
 - read_tigge:
@@ -1739,6 +1753,7 @@
 - seqpott_m:
     category: {}
     desc: Computes the saturation equivalent potential temperature on model levels
+    title: Potential Temperature
     pix: POTTF
     type: icon
     group:
@@ -1746,6 +1761,7 @@
 - seqpott_p:
     category: {}
     desc: Computes the saturation equivalent potential temperature on pressure levels
+    title: Potential Temperature
     type: icon
     pix: POTTF
     group:
@@ -1891,6 +1907,7 @@
 - spec_graph:
     category: {}
     desc: ''
+    title: Spectra
     type: icon
     pix: SPECTRA
 - sqrt:
@@ -1965,6 +1982,7 @@
 - streamfn:
     category: {}
     desc: Computes the stream function from a vorticity fieldset
+    title: Velocity Potential or Stream Function
     type: icon
     pix: VELSTR
     family: velpot
@@ -2152,6 +2170,7 @@
 - uvwind:
     category: {}
     desc: Computes u/v from a vorticty and divegence fieldset 
+    title: Rotational or Divergent Wind
     type: icon
     pix: DIVROT
     family: divrot
@@ -2246,6 +2265,7 @@
 - velpot:
     category: {}
     desc: Computes the velocity potential from a divergence fieldset
+    title: Velocity Potential or Stream Function
     type: icon
     pix: VELSTR
     family: velpot

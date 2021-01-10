@@ -5,6 +5,7 @@ import glob
 import re
 import requests
 import html2text
+from yamlinclude import YamlIncludeConstructor
 
 fn_list = []
 
@@ -29,7 +30,31 @@ param_types = {
     "symbol_name": "str",
 }
 
-ignore_group = ["widget", "output"]
+ignore_group = ["widget"]
+
+family = {"hovm_data": ["mhovmoeller_area", 
+            "mhovmoeller_expand", 
+            "mhovmoeller_line", "mhovmoeller_vertical"]}
+
+class Loader(yaml.SafeLoader):
+    def __init__(self, stream):
+        self._root = os.path.split(stream.name)[0]
+        super(Loader, self).__init__(stream)
+
+    def include(self, node):
+        filename = os.path.join(self._root, self.construct_scalar(node))
+        with open(filename, 'r') as f:
+            return yaml.load(f, Loader)
+
+Loader.add_constructor('!include', Loader.include)
+
+def indent_summary(txt):
+    r = ""
+    if txt:
+        indent = "\t" * 2
+        for t in txt.split("\n"):
+            r += indent + t + "\n"
+    return r
 
 
 class DocParam:
@@ -49,6 +74,7 @@ class DocParam:
         if "str" in self.p_type:
             self.default = self.add_double_quote(self.default)
 
+        # print(f"  {conf}")
         self.format_desc()
 
     def type_str(self):
@@ -56,6 +82,8 @@ class DocParam:
         if self.p_type == "str":
             if self.values:
                 r = self.format_list(self.values)
+                if len(self.values.split("/")) >= 6 and len(self.values) > 60:
+                   r = self.p_type 
             else:
                 r = self.p_type
         else:
@@ -79,15 +107,34 @@ class DocParam:
         return v
 
     def format_desc(self):
-        self.desc = self.desc.replace("<tt>", "\t\t")
+        self.desc = self.format_text(self.desc)
+        if self.desc:
+            r = ""
+            indent = "\t" * 2
+            for t in self.desc.split("\n"):
+                if r:
+                    r += indent
+                r += t + "\n"
+            if r and r[-1] == "\n":
+                r = r[:-1]
+            self.desc = r
+
+    @staticmethod
+    def format_text(txt):
+        if txt:
+            txt = txt.replace("<tt>", "\t\t")
+            txt = txt.replace("@","\@")
+        return txt
 
     def formatted_default(self):
-        if self.default and isinstance(self.default, str) and "/" in self.default:
-            return "[" + ", ".join([v.strip() for v in self.default.split("/")]) + "]"
+        if self.default and isinstance(self.default, str):
+            if "/" in self.default:
+                return "[" + ", ".join([v.strip() for v in self.default.split("/")]) + "]"
             # print(f"  {self.default} -> {v}")
+            else:
+                return self.default.replace("@","\@")
         else:
-            return self.default
-
+            return str(self.default)
 
 class DocFunction:
     def __init__(self, name, conf):
@@ -203,18 +250,48 @@ class DocFunction:
                 return True
         return False
 
+def parse_conf(conf):
+    d = []
+    # print(f"conf={conf}")
+    for item in conf["params"]:
+        ((p, v),) = item.items()
+        # print(f" p={p}")
+        if p.startswith("_include"):
+            # print(f" --> p {p} {v}")
+            d.extend(v)           
+        else:
+            d.append(item)
+    conf["params"] = d
+    return conf
 
-def add_icon_rst(name, fname):
 
+def add_icon_rst(name, fname, summary_file_name):
     with open(fname, "r") as f:
-        conf = yaml.safe_load(f)
+        conf = yaml.load(f, Loader=yaml.FullLoader)
+        # conf = yaml.safe_load(f)
+        # print(conf)
         cls_name = name # conf.get("name", "")
+        print("class={} name={}".format(cls_name, name))
+        
+        conf = parse_conf(conf)
+        summary = conf.get("summary","")
+        # print(f"summary_file_name={summary_file_name}")
+        if summary == "rst":    
+            with open(summary_file_name, "r") as fs:
+                summary = fs.read()
+
+        # summary = DocParam.format_text(summary)
+        ret_type = conf.get("return","None")
+        one_liner = conf.get("oneliner","")
+
+        # print(conf)
 
         fn = DocFunction.find(cls_name)
         if fn is None or fn.is_group_ignored():
+            print(" -> ignored")
             return
 
-        print("class={} name={}".format(cls_name, name))
+        # print("class={} name={}".format(cls_name, name))
         output = "icon/{}.rst".format(cls_name)
 
         with open(output, "w") as f:
@@ -235,20 +312,24 @@ def add_icon_rst(name, fname):
 
     .. container:: rightside
 
-        This function performs the same task as the {} icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
+{}
+
+\t\t.. note:: This function performs the same task as the {} icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: {}(**kwargs)
   
-    Description comes here!
+    {}
 
 """.format(
                         name,
                         fn.pix,
+                        indent_summary(summary),
                         "`{} <https://confluence.ecmwf.int/display/METV/{}>`_".format(
                             fn.conf_label, fn.title.replace(" ", "+")
                         ),
                         fn.name,
+                        one_liner,
                     )
                 )
 
@@ -258,32 +339,37 @@ def add_icon_rst(name, fname):
 {}
 =========================
 
+{}
+
 .. py:function:: {}(**kwargs)
   
-    Description comes here!
+    {}
 
 """.format(
                         name,
+                        summary,
                         fn.name,
+                        one_liner,
                     )
                 )
 
-            for item in conf.get("params", {}):
+            for item in conf.get("params", []):
                 ((p_name, p_conf),) = item.items()
                 p = DocParam(p_name, p_conf)
+                # print("  " + p_name)
+                # print(f"  {p_conf}")
                 f.write(
                     """
     :param {}: {}
     :type {}: {}
-
 """.format(
                         p.name, p.desc, p.name, p.type_str()
                     )
                 )
 
             f.write(
-                """
-    :rtype: None
+                f"""
+    :rtype: {ret_type}
 """
             )
 
@@ -380,15 +466,22 @@ with open("functions.yaml", "r") as f:
 #     if 1:
 #         add_icon_rst(name, d_name)
 
+# initialise yaml including
+path = os.getenv("HOME", "") + "/icon_desc"
+YamlIncludeConstructor.add_to_loader_class(
+    loader_class=yaml.FullLoader, 
+    base_dir=path)
 
 path = os.getenv("HOME", "") + "/icon_desc"
-for d_name in glob.glob(os.path.join(path, "*.yaml")):
-    name = format(os.path.basename(d_name).split(".yaml")[0])
+for f_name in glob.glob(os.path.join(path, "*.yaml")):
+    name = format(os.path.basename(f_name).split(".yaml")[0])
+    summary_file_name = os.path.join(path, name + ".rst")
     # if name == "annotationview":
-    # if name == "odb_visualiser":
+    # if name == "maverageview":
     # if name == "cartesianview":
     # if name == "mcont":
+    # if name == "flexpart_prepare":
     if 1:
-        add_icon_rst(name, d_name)
+        add_icon_rst(name, f_name, summary_file_name)
 
-make_icon_toc()
+# make_icon_toc()
