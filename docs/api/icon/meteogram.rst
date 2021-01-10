@@ -6,7 +6,7 @@ meteogram
     
     .. container:: leftside
 
-        .. image:: /_static/METPLUS.png
+        .. image:: /_static/MET_PLUS.png
            :width: 48px
 
     .. container:: rightside

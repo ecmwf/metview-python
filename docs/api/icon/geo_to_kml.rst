@@ -6,7 +6,7 @@ geo_to_kml
     
     .. container:: leftside
 
-        .. image:: /_static/GEOTOKML.png
+        .. image:: /_static/GEO_TO_KML.png
            :width: 48px
 
     .. container:: rightside

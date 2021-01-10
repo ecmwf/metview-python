@@ -116,7 +116,7 @@ Icons
       - :func:`geo_to_grib`
       - Converts geopoints data to GRIB
     
-    * - .. image:: /_static/GEOTOKML.png
+    * - .. image:: /_static/GEO_TO_KML.png
             :width: 24px
       - :func:`geo_to_kml`
       - Converts geopoints data to KML
@@ -181,7 +181,7 @@ Icons
       - :func:`met3d_prepare`
       - Retrieves and prepare GRIB data for Met3D
     
-    * - .. image:: /_static/METPLUS.png
+    * - .. image:: /_static/MET_PLUS.png
             :width: 24px
       - :func:`meteogram`
       - Generates a meteogram

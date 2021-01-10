@@ -595,7 +595,7 @@
     desc: Converts geopoints data to KML
     type: icon
     title: Geopoints To KML
-    pix: GEOTOKML
+    pix: GEO_TO_KML
     group:
       - conversion
 - geosort:
@@ -1080,7 +1080,7 @@
     category: {}
     desc: Generates a meteogram
     type: icon
-    pix: METPLUS
+    pix: MET_PLUS
     group:
       - plot
 - mgraph:
