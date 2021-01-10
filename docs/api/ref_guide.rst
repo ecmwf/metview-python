@@ -4,13 +4,12 @@ Reference Guide
 
 .. toctree::
    :maxdepth: 1
-   :caption: Categories
+   :caption: Function categories
 
    comp_toc
    data_toc
    plot_toc
    apps_toc
-   icon
 
 
 .. .. toctree::
@@ -20,10 +19,10 @@ Reference Guide
    
 ..    functions/index
 
-.. .. toctree::
-..    :maxdepth: 0
-..    :caption: Documentation
-..    :titlesonly:
-..    :glob:
+.. toctree::
+   :maxdepth: 0
+   :caption: User interface
+   :titlesonly:
+   :glob:
 
-..    icon/*
+   icon

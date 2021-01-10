@@ -432,7 +432,7 @@ Icon functions
                 else:
                     f.write(
                         f"""
-    * - A
+    * - 
       - :func:`{fn.name}`
       - {fn.desc}
     """
@@ -484,4 +484,4 @@ for f_name in glob.glob(os.path.join(path, "*.yaml")):
     if 1:
         add_icon_rst(name, f_name, summary_file_name)
 
-# make_icon_toc()
+make_icon_toc()

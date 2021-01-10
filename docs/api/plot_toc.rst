@@ -1,5 +1,5 @@
 
-Visualisation
+Visualisation functions
 ===========================
 
 

@@ -19,7 +19,7 @@ Icons
     * - .. image:: /_static/BINNING.png
             :width: 24px
       - :func:`binning`
-      - Defines 1D or 2D binning for scatterplots
+      - Defines 2D binning for scatterplots
     
     * - .. image:: /_static/BUFRPICKER.png
             :width: 24px
@@ -61,11 +61,11 @@ Icons
       - :func:`ecfs`
       - Retrieves data from ECFS
     
-    * - A
+    * - 
       - :func:`eps_output`
       - Defines the EPS (Encapsulated PostScript) output format
     
-    * - A
+    * - 
       - :func:`epscairo_output`
       - Defines the EPS output format using the Cairo driver
     
@@ -139,7 +139,7 @@ Icons
       - :func:`input_visualiser`
       - Defines visualisation for array data
     
-    * - A
+    * - 
       - :func:`kml_output`
       - Defines the KML output format
     
@@ -298,7 +298,7 @@ Icons
       - :func:`odb_visualiser`
       - Defines visualisation for ODB data
     
-    * - A
+    * - 
       - :func:`pdf_output`
       - Defines the PDF output format
     
@@ -322,7 +322,7 @@ Icons
       - :func:`plot_superpage`
       - Creates a top level plot layout
     
-    * - A
+    * - 
       - :func:`png_output`
       - Defines the PNG output format
     
@@ -336,11 +336,11 @@ Icons
       - :func:`pott_p`
       - Computes the potential temperature on pressure levels
     
-    * - A
+    * - 
       - :func:`ps_output`
       - Defines the PostScript output format
     
-    * - A
+    * - 
       - :func:`pscairo_output`
       - Defines the PostScript output format using the Cairo driver
     
@@ -406,13 +406,8 @@ Icons
     
     * - .. image:: /_static/SPECTRA.png
             :width: 24px
-      - :func:`spec_contour`
-      - 
-    
-    * - .. image:: /_static/SPECTRA.png
-            :width: 24px
       - :func:`spec_graph`
-      - 
+      - Defines visualisation for spectrum of GRIB data
     
     * - .. image:: /_static/STATIONS.png
             :width: 24px
@@ -424,7 +419,7 @@ Icons
       - :func:`streamfn`
       - Computes the stream function from a vorticity fieldset
     
-    * - A
+    * - 
       - :func:`svg_output`
       - Defines the SVG output format
     

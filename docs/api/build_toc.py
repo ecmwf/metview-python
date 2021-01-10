@@ -51,12 +51,12 @@ toc_def = {
         ],
     },
     "plot": {
-        "title": "Visualisation",
+        "title": "Visualisation functions",
         "gr": ["view", "visdef", "plot", "layout", "output"],
     },
     # "ui": {"title": "User interface", "gr": ["widget", "ui"]},
     "data": {
-        "title": "Data access",
+        "title": "Data access function",
         "gr": [
             "retrieve",
             "conversion",
@@ -71,7 +71,7 @@ toc_def = {
         ],
     },
     "apps": {
-        "title": "External applications",
+        "title": "External application functions",
         "gr": ["flex", "met3d", "vapor", "scm", "rttov"],
     },
 }

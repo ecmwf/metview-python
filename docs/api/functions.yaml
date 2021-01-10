@@ -131,7 +131,7 @@
       - geo
 - binning:
     category: {}
-    desc: Defines 1D or 2D binning for scatterplots
+    desc: Defines 2D binning for scatterplots
     type: icon
     group:
       - plot
@@ -1901,12 +1901,13 @@
     exclude: True
 - spec_contour:
     category: {}
-    desc: ''
+    desc:  
     type: icon
     pix: SPECTRA
+    exclude: True
 - spec_graph:
     category: {}
-    desc: ''
+    desc:  Defines visualisation for spectrum of GRIB data
     title: Spectra
     type: icon
     pix: SPECTRA
