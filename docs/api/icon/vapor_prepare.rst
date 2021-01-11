@@ -70,7 +70,7 @@ vapor_prepare
 
     :param vapor_elevation_param: Specifies the short name or parameter id of of the 3D parameter interpreted as the elevation of the 3D levels. Available when ``vapor_vertical_grid_type`` is "layered". This parameter has to be either the height or the geopotential ("z") of the levels. If geopotential is specified it is converted into metres by Metview for VAPOR.         
 		
-		.. note:: Neither the height nor the geopotential of model levels are archived in MARS. It means that for model level data either of these fields has to be computed for "layered" mode. These computations can be done with _VAPOR Prepare by simply specifying "z\ for ``vapor_elevation_param``. The computations can only be carried out if the input data contains temperature (t) and specific humidity (q) on model levels and geopotential ("z") and logarithm of surface pressure (lnsp) on the bottommost model level.
+		.. note:: Neither the height nor the geopotential of model levels are archived in MARS. It means that for model level data either of these fields has to be computed for "layered" mode. These computations can be done with :func:`vapor_prepare`` by simply specifying "z" for ``vapor_elevation_param``. The computations can only be carried out if the input data contains temperature (t) and specific humidity (q) on model levels and geopotential ("z") and logarithm of surface pressure (lnsp) on the bottommost model level.
     :type vapor_elevation_param: str, default: "z"
 
     :param vapor_bottom_coordinate: The bottom elevation level. Available when ``vapor_vertical_grid_type`` is "layered".

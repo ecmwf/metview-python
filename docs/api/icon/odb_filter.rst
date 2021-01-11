@@ -27,8 +27,8 @@ odb_filter
     :param odb_filename: Specifies the path to the input ODB.
     :type odb_filename: str, default: "off"
 
-    :param odb_data: Specifies the input as an :class:`ODB`. If both ``odb_data`` and ``odb_filename`` are specified ``odb_data`` takes precedence.
-    :type odb_data: :class:`ODB`
+    :param odb_data: Specifies the input as an :class:`Odb`. If both ``odb_data`` and ``odb_filename`` are specified ``odb_data`` takes precedence.
+    :type odb_data: :class:`Odb`
 
     :param odb_query: Specifies the ODB/SQL query to run.
     :type odb_query: str
@@ -36,10 +36,10 @@ odb_filter
     :param odb_nb_rows: Specifies the maximum number of rows in the result. If -1 is given here the number of rows is not limited in the output.
     :type odb_nb_rows: number, default: -1
 
-    :param fail_on_empty_output: Controls the behaviour when the resulting :class:`ODB` is empty. If it is set to "no" :func:`odb_filter` will return None, while if the value is "yes" the Python script running :func:`odb_filter` will abort.
+    :param fail_on_empty_output: Controls the behaviour when the resulting :class:`Odb` is empty. If it is set to "no" :func:`odb_filter` will return None, while if the value is "yes" the Python script running :func:`odb_filter` will abort.
     :type fail_on_empty_output: {"yes", "no"}, default: "yes"
 
-    :rtype: :class:`ODB`
+    :rtype: :class:`Odb`
 
 
 .. minigallery:: metview.odb_filter

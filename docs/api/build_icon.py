@@ -406,16 +406,12 @@ Icon functions
         f.write(
             """
 
-{}
--------------------------------
+This is the list of the functions that are represented as an icon in Metviews' user interface.
 
 .. list-table::
     :header-rows: 0
 
-""".format(
-                "Icons"
-            )
-        )
+""")
 
         for fn in fn_list:
             if not fn.is_group_ignored():

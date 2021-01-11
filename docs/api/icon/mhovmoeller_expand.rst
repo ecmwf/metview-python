@@ -29,8 +29,8 @@ mhovmoeller_expand
     :param netcdf_path: Specifies the NetCDF file path and name. Alternatively, ``netcdf_data`` can be used.
     :type netcdf_path: str
 
-    :param netcdf_data: Specifies the data (:class:`Netcdf`) from which to expand the Hovmoeller diagram. Takes precedence over ``netcdf_path``.
-    :type netcdf_data: class:`Netcdf`
+    :param netcdf_data: Specifies the data (:class:`NetCDF`) from which to expand the Hovmoeller diagram. Takes precedence over ``netcdf_path``.
+    :type netcdf_data: class:`NetCDF`
 
     :param data_path: Specifies the input GRIB file path and name. Alternatively, ``data`` can be used.
     :type data_path: str
@@ -38,4 +38,4 @@ mhovmoeller_expand
     :param data: Specifies the GRIB data (:class:`Fieldset`) from which to derive the Hovmeller diagram. ``data`` must specify a time-series of a meteorological variable in a latitude-longitude or Gaussian grid.
     :type data: :class:`Fieldset`
 
-    :rtype: :class:`Netcdf`
+    :rtype: :class:`NetCDF`

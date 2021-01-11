@@ -35,4 +35,4 @@ mhovmoeller_vertical
     :param vertical_level_type: Specifies if a conversion from ECMWF model level to pressure level needs to be performed. If it is set to "pressure" and the input data is specified on ECMWF model levels, the LNSP field should be added to the input data.
     :type vertical_level_type: {"as_in_data", "pressure"}, default: "as_in_data"
 
-    :rtype: :class:`Netcdf`
+    :rtype: :class:`NetCDF`

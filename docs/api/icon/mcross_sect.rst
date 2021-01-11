@@ -13,7 +13,7 @@ mcross_sect
 
 		Derives (and returns) a vertical cross section data unit of upper air fields along a specified transect line. For each upper air field, point values are interpolated along the transect line, with a spacing consistent with the resolution of the input GRIB data.
 		
-		The cross section data can be plotted (using a default visualisation based on the range of data values) or saved as a NetCDF data file (:class:`Netcdf`) using :func:`write`.
+		The cross section data can be plotted (using a default visualisation based on the range of data values) or saved as a NetCDF data file (:class:`NetCDF`) using :func:`write`.
 		
 		If an orography is plotted it can be customised by applying an :func:`mgraph` visual definition.
 		
@@ -114,7 +114,7 @@ mcross_sect
     :param top_level: Specifies the upper limit of the cross section, as a pressure level (hPa) or model level number (hybrid levels). Available when "level_selection_type" is "count".
     :type top_level: number, default: 0.01
 
-    :rtype: :class:`Netcdf`
+    :rtype: :class:`NetCDF`
 
 
 .. minigallery:: metview.mcross_sect

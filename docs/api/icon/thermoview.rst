@@ -13,7 +13,7 @@ thermoview
 
 		
 		
-		Specifies the view for thermodynamic diagram plots from a suitable :class:`Fieldset` (GRIB), :class:`BUFR` and :func:`input_visualiser` data source. It can also take the output from :func:`thermo_data` as an input. In this case, a consistency check is performed between the parameters that are common to both functions.
+		Specifies the view for thermodynamic diagram plots from a suitable :class:`Fieldset` (GRIB), :class:`Bufr` and :func:`input_visualiser` data source. It can also take the output from :func:`thermo_data` as an input. In this case, a consistency check is performed between the parameters that are common to both functions.
 		
 		In addition to the parameters required for the thermodynamic computation, :func:`thermoview` specifies the axis details as well as the plot positioning in the plot frame of the display window/paper sheet and the overlay of different data units in the same plot. 
 		
@@ -58,7 +58,7 @@ thermoview
     :param area_average: Specifies a geographical area over which an area average value will be used, instead of a point value, to produce the diagram.  The area is defined as [north, west, south, east]. Available when ``point_selection`` is "area_average".
     :type area_average: list[float], default: [30, -30, -30, 30]
 
-    :param station: Specifies the location as a :func:`stations`` object for which the diagram is to be plotted. Available if ``point_selection`` is "station".
+    :param station: Specifies the location as a :func:`stations`` object for which the diagram is to be plotted. Available if ``point_selection` is "station".
     :type station: :func:`stations``
 
     :param point_extraction: Specifies the way to calculate values at the point location for GRIB thermodynamic diagrams. The possible options are:

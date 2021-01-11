@@ -23,7 +23,7 @@ bufr_picker
 
 
     :param data: Specifies the input data.
-    :type data: :class:`BUFR`
+    :type data: :class:`Bufr`
 
     :param output: Specifies the output :class:`Geopoints` format.
     :type output: {"geopoints", "polar_vector", "xy_vector", "ncols"}, default: "geopoints"

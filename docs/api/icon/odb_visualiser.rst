@@ -69,8 +69,8 @@ odb_visualiser
     :param odb_filename: Specifies the path to the input ODB.
     :type odb_filename: str, default: "off"
 
-    :param odb_data: Specifies the input :class:`ODB`. If both ``odb_data`` and ``odb_filename`` are specified ``odb_data`` takes precedence.
-    :type odb_data: :class:`ODB`
+    :param odb_data: Specifies the input :class:`Odb`. If both ``odb_data`` and ``odb_filename`` are specified ``odb_data`` takes precedence.
+    :type odb_data: :class:`Odb`
 
     :param odb_x_type: Specifies the type of the x coordinate when ``odb_plot_type`` is set to "xy_points", "xy_vectors" or "xy_binning".
     :type odb_x_type: {"number", "date"}, default: "number"
@@ -123,7 +123,7 @@ odb_visualiser
     :param odb_binning: Specifies the :func:`binning` to create gridded data out of scattered data when the ``odb_plot_type`` is "xy_binning".
     :type odb_binning: :class:`Request`
 
-    :param fail_on_empty_output: Controls the behaviour when the resulting :class:`ODB` is empty. If it is set to "no" :func:`odb_visualiser` will return None, while if the value is "yes" the Python script running :func:`odb_visualiser` will abort.
+    :param fail_on_empty_output: Controls the behaviour when the resulting :class:`Odb` is empty. If it is set to "no" :func:`odb_visualiser` will return None, while if the value is "yes" the Python script running :func:`odb_visualiser` will abort.
     :type fail_on_empty_output: {"yes", "no"}, default: "yes"
 
     :rtype: :class:`Request`

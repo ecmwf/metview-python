@@ -41,4 +41,4 @@ mhovmoeller_area
     :param resolution: Used to interpolate the data onto a regular grid, and applies to both the horizontal and vertical axes where appropriate. This parameter is essential for creating a Hovmoeller diagram from satellite data.
     :type resolution: number, default: 1.0
 
-    :rtype: :class:`Netcdf`
+    :rtype: :class:`NetCDF`

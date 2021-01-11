@@ -2058,6 +2058,7 @@
     category: {}
     desc: Generates thermodynamical profile from BUFR
     type: icon
+    title: Thermo Data
     pix: THERMODATA
     group:
       - thermo
@@ -2065,6 +2066,7 @@
     category: {}
     desc: Generates thermodynamical profile from GRIB
     type: icon
+    title: Thermo Data
     pix: THERMODATA
     group:
       - thermo

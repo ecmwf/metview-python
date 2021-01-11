@@ -271,7 +271,7 @@ retrieve
     :param ppengine: 
     :type ppengine: {"emos", "mir", "off"}, default: "off"
 
-    :rtype: :class:`fieldset`, :class:`BUFR` or :class:`ODB`
+    :rtype: :class:`Fieldset`, :class:`Bufr` or :class:`Odb`
 
 
 .. minigallery:: metview.retrieve

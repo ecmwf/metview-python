@@ -7,7 +7,7 @@ read
 
     :param path: file path
     :type path: str
-    :rtype: :class:`Fieldset` or :class:`Geopoints` or :class:`Bufr` or :class:`NetCDF` or :class:`ODB`
+    :rtype: :class:`Fieldset` or :class:`Geopoints` or :class:`Bufr` or :class:`NetCDF` or :class:`Odb`
 
     The function returns an object of the corresponding type.
 

@@ -432,7 +432,8 @@ for d_name in glob.glob(os.path.join(path, "*.yaml")):
     # if name == "odb_visualiser":
     # if name == "cartesianview":
     # if name == "mcont":
-    if name  == "mhovmoellerview":
+    # if name  == "mhovmoellerview":
+    if name == "regrid":
     # if 1:
         # add_icon_rst(name, d_name)
         add_icon_yaml(name, d_name)

@@ -32,7 +32,12 @@ uvwind
 		
 		.. math::
 		  
-		  sn = exp^{(-\frac {n*(n+1)}{fltc} (fltc+1))^{mfltexp}}
+		  exp^{(-\frac {n(n+1)}{fltc(fltc+1)})^{mfltexp}}
+		
+		where:
+		
+		* n: is the wavenumber
+		* fltc, mfltexp: see below
 		
 		This is roughly equivalent to a :math:`\nabla^{2 \times mfltexp}` operator in grid point space.
     :type smoothing: {"yes", "no"}, default: "no"

@@ -8,7 +8,7 @@ potential_temperature
     :param t: temperature (K)
     :type t: float
     :param p: pressure (Pa)
-    :type : float
+    :type p: float
     :rtype: float or None
     
     The result is the potential temperature in K units. On error None is returned.

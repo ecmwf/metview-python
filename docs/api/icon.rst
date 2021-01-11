@@ -4,8 +4,7 @@ Icon functions
 
 
 
-Icons
--------------------------------
+This is the list of the functions that are represented as an icon in Metviews' user interface.
 
 .. list-table::
     :header-rows: 0

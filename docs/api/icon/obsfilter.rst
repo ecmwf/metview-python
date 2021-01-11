@@ -11,7 +11,7 @@ obsfilter
 
     .. container:: rightside
 
-		Filters data from a BUFR file and produces output either as :class:`BUFR`, :class:`Geopoints` or :class:`CSV`. A tutorial about the use of :func:`obsfilter` can be found `here <https://confluence.ecmwf.int/display/METV/Observation+Filter?preview=/14158627/18482215/mv_bufr_tutorial.pdf>`_. 
+		Filters data from a BUFR file and produces output either as :class:`Bufr`, :class:`Geopoints` or :class:`Table`. A tutorial about the use of :func:`obsfilter` can be found `here <https://confluence.ecmwf.int/display/METV/Observation+Filter?preview=/14158627/18482215/mv_bufr_tutorial.pdf>`_. 
 		
 		**What is BUFR?**
 		
@@ -39,11 +39,11 @@ obsfilter
 
 
     :param data: The input data.
-    :type data: :class:`BUFR`
+    :type data: :class:`Bufr`
 
     :param output: Specifies the output format you want. The possible options are as follows:
 		  
-		* "bufr": the output is a new :class:`BUFR`. Messages containing subsets are split each subset forming an individual message in the output. Not all the filtering options are available in this mode. 
+		* "bufr": the output is a new :class:`Bufr`. Messages containing subsets are split each subset forming an individual message in the output. Not all the filtering options are available in this mode. 
 		* "geopoints": the output is a standard 6-column :class:`Geopoints`.
 		* "polar_vector": the output is a :class:`Geopoints` with polar vector data.
 		* "xy_vector": the output is a :class:`Geopoints` with xy vector data.
@@ -134,7 +134,7 @@ obsfilter
     :param fail_on_empty_output: Controls the behaviour when the resulting output is empty. If it is set to "no" :func:`obs_filter` will return None, while if the value is "yes" the Python script running :func:`obs_filter` will abort.
     :type fail_on_empty_output: {"yes", "no"}, default: "no"
 
-    :rtype: :class:`BUFR`, :class:`Geopoints` or :class:`CSV`
+    :rtype: :class:`Bufr`, :class:`Geopoints` or :class:`Table`
 
 
 .. minigallery:: metview.obsfilter
