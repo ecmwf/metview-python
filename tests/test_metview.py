@@ -2027,3 +2027,24 @@ def test_file():
     assert len(result) == 3
     assert result.grib_get_long("level") == [700, 300, 850]
     os.remove(fpath)
+
+
+def test_download():
+    url = "http://download.ecmwf.org/test-data/metview/gallery/city_loc.gpt"
+    g = mv.download(url=url)
+    assert mv.type(g) == "geopoints"
+
+
+def test_download_gallery_data():
+    fname = "z_for_spectra.grib"
+    assert not os.path.isfile(fname)
+    g = mv.download_gallery_data(fname)
+    assert mv.type(g) == "fieldset"
+    assert os.path.isfile(fname)
+    os.remove(fname)
+
+
+def test_download_gallery_data_bad_fname():
+    fname = "zzz_for_spectra.grib"
+    with pytest.raises(Exception):
+        g = mv.download_gallery_data(fname)

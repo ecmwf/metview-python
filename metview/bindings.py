@@ -1016,6 +1016,7 @@ def bind_functions(namespace, module_name=None):
     namespace["metzoom"] = metzoom
     namespace["version_info"] = version_info
     namespace["dataset_to_fieldset"] = dataset_to_fieldset
+    namespace["download_gallery_data"] = download_gallery_data
 
     namespace["Fieldset"] = Fieldset
     namespace["Request"] = Request
@@ -1026,6 +1027,7 @@ add = make("+")
 call = make("call")
 count = make("count")
 div = make("/")
+download = make("download")
 equal = make("=")
 filter = make("filter")
 greater_equal_than = make(">=")
@@ -1134,3 +1136,16 @@ def setoutput(*args, **kwargs):
     else:
         plot.plot_to_jupyter = False
         met_setoutput(*args)
+
+
+# -----------------------------------------------------------------------------
+#                        Other user-visible utiliy functions
+# -----------------------------------------------------------------------------
+
+def download_gallery_data(filename):
+    base_url = "http://download.ecmwf.org/test-data/metview/gallery/"
+    try:
+        d = download(url=base_url + filename, target=filename)
+        return d
+    except:
+        raise Exception("Could not download file " + filename + " from the download server")
