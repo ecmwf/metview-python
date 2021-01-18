@@ -21,6 +21,9 @@ import cffi
 import numpy as np
 
 
+__version__ = "1.6.0"
+
+
 def string_from_ffi(s):
     return ffi.string(s).decode("utf-8")
 
@@ -100,12 +103,14 @@ class MetviewInvoker:
             raise Exception(
                 'Command "metview" did not respond within '
                 + str(self.metview_startup_timeout)
-                + " seconds. "
+                + " seconds. This timeout is configurable by setting "
+                "environment variable METVIEW_PYTHON_START_TIMEOUT in seconds. "
                 "At least Metview 5 is required, so please ensure it is in your PATH, "
                 "as earlier versions will not work with the Python interface."
             )
 
         self.read_metview_settings(env_file.name)
+        env_file.close()
 
         # when the Python session terminates, we should destroy this object so that the Metview
         # session is properly cleaned up. We can also do this in a __del__ function, but there can
@@ -264,7 +269,7 @@ class Request(dict, Value):
                 self.verb = req.verb
                 self.val_pointer = req.val_pointer
             else:
-                if myverb != None:
+                if myverb is not None:
                     self.set_verb(myverb)
 
         # initialise from a Macro pointer
@@ -283,9 +288,10 @@ class Request(dict, Value):
 
     # translate Python classes into Metview ones where needed
     def to_metview_style(self):
-        for k, v in self.items():
+        for k in list(self):
 
             # bool -> on/off
+            v = self.get(k)  # self[k] returns 1 for True
             if isinstance(v, bool):
                 conversion_dict = {True: "on", False: "off"}
                 self[k] = conversion_dict[v]
@@ -376,6 +382,10 @@ def push_vector(npa):
         f32_array = npa.astype(np.float32)
         cffi_buffer = ffi.cast("float*", f32_array.ctypes.data)
         lib.p_push_vector_from_float32_array(cffi_buffer, len(f32_array), np.nan)
+    elif dtype == np.int:  # convert first to float64
+        f64_array = npa.astype(np.float64)
+        cffi_buffer = ffi.cast("double*", f64_array.ctypes.data)
+        lib.p_push_vector_from_double_array(cffi_buffer, len(f64_array), np.nan)
     else:
         raise TypeError(
             "Only float32 and float64 numPy arrays can be passed to Metview, not ",
@@ -391,6 +401,9 @@ class File(Value):
 class FileBackedValue(Value):
     def __init__(self, val_pointer):
         Value.__init__(self, val_pointer)
+
+    def write(self, filename):
+        return write(filename, self)
 
     def url(self):
         # ask Metview for the file relating to this data (Metview will write it if necessary)
@@ -457,6 +470,15 @@ class FileBackedValueWithOperators(FileBackedValue):
 
     def __abs__(self):
         return self.abs()
+
+    def __and__(self, other):
+        return met_and(self, other)
+
+    def __or__(self, other):
+        return met_or(self, other)
+
+    def __invert__(self):
+        return met_not(self)
 
 
 class ContainerValueIterator:
@@ -541,7 +563,7 @@ class ContainerValue(Value):
 
 
 class Fieldset(FileBackedValueWithOperators, ContainerValue):
-    def __init__(self, val_pointer=None, path=None):
+    def __init__(self, val_pointer=None, path=None, fields=None):
         FileBackedValueWithOperators.__init__(self, val_pointer)
         ContainerValue.__init__(
             self,
@@ -551,9 +573,16 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             support_slicing=True,
         )
 
+        if (path is not None) and (fields is not None):
+            raise ValueError("Fieldset cannot take both path and fields")
+
         if path is not None:
             temp = read(path)
             self.steal_val_pointer(temp)
+
+        if fields is not None:
+            for f in fields:
+                self.append(f)
 
     def append(self, other):
         temp = merge(self, other)
@@ -978,10 +1007,14 @@ def bind_functions(namespace, module_name=None):
     # HACK: some fuctions are missing from the 'dictionary' call.
     namespace["neg"] = make("neg")
     namespace["nil"] = make("nil")
+    namespace["div"] = div
+    namespace["mod"] = mod
     # override some functions that need special treatment
     # FIXME: this needs to be more structured
     namespace["plot"] = plot
     namespace["setoutput"] = setoutput
+    namespace["metzoom"] = metzoom
+    namespace["version_info"] = version_info
     namespace["dataset_to_fieldset"] = dataset_to_fieldset
 
     namespace["Fieldset"] = Fieldset
@@ -1002,6 +1035,7 @@ lower_than = make("<")
 merge = make("&")
 met_not_eq = make("<>")
 met_plot = make("plot")
+mod = make("mod")
 nil = make("nil")
 png_output = make("png_output")
 power = make("^")
@@ -1009,8 +1043,22 @@ prod = make("*")
 ps_output = make("ps_output")
 read = make("read")
 met_setoutput = make("setoutput")
+metzoom = make("metzoom")
 sub = make("-")
 subset = make("[]")
+met_and = make("and")
+met_or = make("or")
+met_not = make("not")
+met_version_info = make("version_info")
+write = make("write")
+
+
+# call the C++ version_info() function and add the version of the
+# Python bindings to the resulting dict
+def version_info():
+    binary_info = dict(met_version_info())
+    binary_info['metview_python_version'] = __version__
+    return binary_info
 
 
 # -----------------------------------------------------------------------------
@@ -1021,6 +1069,7 @@ subset = make("[]")
 class Plot:
     def __init__(self):
         self.plot_to_jupyter = False
+        self.jupyter_args = {}
 
     def __call__(self, *args, **kwargs):
         if self.plot_to_jupyter:
@@ -1029,8 +1078,9 @@ class Plot:
 
             base, ext = os.path.splitext(tmp)
 
+            self.jupyter_args.update(output_name=base, output_name_first_page_number="off")
             met_setoutput(
-                png_output(output_name=base, output_name_first_page_number="off")
+                png_output(self.jupyter_args)
             )
             met_plot(*args)
 
@@ -1060,7 +1110,7 @@ plot = Plot()
 # under most circumstances, we only import it when the user asks for Jupyter
 # functionality. Since this occurs within a function, we need a little trickery to
 # get the IPython functions into the global namespace so that the plot object can use them
-def setoutput(*args):
+def setoutput(*args, **kwargs):
     if "jupyter" in args:
         try:
             global Image
@@ -1075,6 +1125,7 @@ def setoutput(*args):
         # test whether we're in the Jupyter environment
         if get_ipython() is not None:
             plot.plot_to_jupyter = True
+            plot.jupyter_args = kwargs
         else:
             print(
                 "ERROR: setoutput('jupyter') was set, but we are not in a Jupyter environment"

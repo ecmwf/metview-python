@@ -1,0 +1,9 @@
+GRIB,
+    PATH = 't.grib'
+
+mcont,
+    contour_line_colour = 'red',
+    CONTOUR_HIGHLIGHT_FREQUENCY = 2,
+    contour_level_selection_type = LEVEL_LIST,
+    CONTOUR_LEVEL_LIST = -10/0/10,
+    contour_colour_list = 'RGB(0.5,0.2,0.8)'/'RGB(0.8,0.7,0.3)'/'RGB(0.4,0.8,0.3)'

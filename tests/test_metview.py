@@ -50,6 +50,12 @@ def test_version_info():
     assert "metview_version" in out
 
 
+def test_version_info_python():
+    out = mv.version_info()
+    assert "metview_python_version" in out
+    assert isinstance(out['metview_python_version'], str)
+
+
 def test_describe():
     mv.describe("type")
 
@@ -189,6 +195,15 @@ def test_write():
     os.remove(file_in_testdir("test_gg_grid.grib"))
 
 
+def test_write_method():
+    gg = mv.read({"SOURCE": file_in_testdir("test.grib"), "GRID": 80})
+    regridded_grib = gg.write(file_in_testdir("test_gg_grid_method.grib"))
+    assert regridded_grib == 0
+    gg2 = mv.read(file_in_testdir("test_gg_grid_method.grib"))
+    assert mv.grib_get_string(gg2, "shortName") == "2t"
+    os.remove(file_in_testdir("test_gg_grid_method.grib"))
+
+
 def test_class_():
     # these generate warnings, but if they pass then they show that the conversion
     # from class_ to class is working
@@ -300,8 +315,20 @@ def test_division():
     assert np.isclose(maximum, MAX_VALUE / 2)
 
 
+def test_division_via_function():
+    divided_two = mv.div(TEST_FIELDSET, 2)
+    maximum = mv.maxvalue(divided_two)
+    assert np.isclose(maximum, MAX_VALUE / 2)
+
+
 def test_division_reverse():
     divided_two = 2 / TEST_FIELDSET
+    minimum = mv.minvalue(divided_two)
+    assert np.isclose(minimum, 2 / MAX_VALUE)
+
+
+def test_division_reverse_via_function():
+    divided_two = mv.div(2, TEST_FIELDSET)
     minimum = mv.minvalue(divided_two)
     assert np.isclose(minimum, 2 / MAX_VALUE)
 
@@ -326,6 +353,12 @@ def test_power_reverse():
     maximum = mv.maxvalue(raised)
     assert np.isclose(minimum, 2 ** 3)
     assert np.isclose(maximum, 2 ** 4)
+
+
+def test_mod():
+    assert mv.mod(17, 4) == 1
+    assert mv.mod(15, 3) == 0
+    assert mv.mod(15.7, 30) == 15
 
 
 def test_pos():
@@ -361,6 +394,24 @@ def test_distance():
     maximum = mv.maxvalue(dist)
     assert np.isclose(minimum, 0.0)
     assert np.isclose(maximum, SEMI_EQUATOR)
+
+
+def test_fieldset_and():
+    t = (TEST_FIELDSET > 290) & (TEST_FIELDSET < 310)
+    s = mv.accumulate(t)
+    assert s == 43855
+
+
+def test_fieldset_or():
+    t = (TEST_FIELDSET < 250) | (TEST_FIELDSET > 310)
+    s = mv.accumulate(t)
+    assert s == 12427
+
+
+def test_fieldset_not():
+    t = ~(TEST_FIELDSET < 250)
+    s = mv.accumulate(t)
+    assert s == 104821
 
 
 def test_valid_date_len_1():
@@ -437,6 +488,13 @@ def test_fieldset_array_index():
     assert mv.grib_get_long(grib_ai, "level") == [850, 700, 1000, 300]
 
 
+def test_fieldset_array_index_int():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    grib_ai = grib[np.array([1, 2, 0, 5])]
+    assert len(grib_ai) == 4
+    assert mv.grib_get_long(grib_ai, "level") == [850, 700, 1000, 300]
+
+
 def test_fieldset_slice():
     grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
     # slice [start,stop+1,step]
@@ -475,7 +533,7 @@ def test_fieldset_slice():
 def test_empty_fieldset_slice():
     f = mv.Fieldset()
     s = f[0:4:1]
-    assert s == None
+    assert s is None
 
 
 def test_fieldset_iterator():
@@ -703,6 +761,61 @@ def test_fieldset_append_from_empty():
     assert shortnames == ["t", "u", "t", "u", "v"]
 
 
+def test_fieldset_create_from_list_of_fieldsets_1():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    g1 = grib[2]
+    g2 = grib[4]
+    g3 = grib[1]
+    list_of_fields = [g1, g2, g3]
+    gl = mv.Fieldset(fields=list_of_fields)
+    assert gl.count() == 3
+    assert gl.grib_get_long("level") == [700, 400, 850]
+
+
+def test_fieldset_create_from_list_of_fieldsets_2():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    g1 = grib[2]
+    g2 = grib[4]
+    g3 = mv.merge(grib[1], grib[0])
+    list_of_fields = [g1, g2, g3]
+    gl = mv.Fieldset(fields=list_of_fields)
+    assert gl.count() == 4
+    assert gl.grib_get_long("level") == [700, 400, 850, 1000]
+
+
+def test_fieldset_create_from_list_of_fieldsets_3():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    g1 = grib[1:4]
+    g2 = grib[0]
+    g3 = grib[3:]
+    list_of_fields = [g1, g2, g3]
+    gl = mv.Fieldset(fields=list_of_fields)
+    assert gl.count() == 7
+    assert gl.grib_get_long("level") == [850, 700, 500, 1000, 500, 400, 300]
+
+
+def test_fieldset_create_from_list_of_fieldsets_4():
+    grib1 = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    grib2 = mv.read(os.path.join(PATH, "ml_data.grib"))
+    g1 = grib1[1:4]
+    g2 = grib2[5:8]
+    g3 = grib1[0]
+    list_of_fields = [g1, g2, g3]
+    gl = mv.Fieldset(fields=list_of_fields)
+    assert gl.count() == 7
+    assert gl.grib_get_long("level") == [850, 700, 500, 17, 21, 25, 1000]
+
+
+def test_fieldset_create_from_list_of_fieldsets_5():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    g1 = grib[2]
+    g2 = grib[4]
+    g3 = grib[1]
+    list_of_fields = [g1, g2, g3]
+    with pytest.raises(ValueError):
+        gl = mv.Fieldset(path=os.path.join(PATH, "test.grib"), fields=list_of_fields)
+
+
 def test_fieldset_pickling():
     pickled_fname = file_in_testdir("pickled_fieldset.p")
     g = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
@@ -747,6 +860,15 @@ def test_read_bufr():
     assert mv.type(bufr) == "observations"
 
 
+def test_write_method_bufr():
+    bufr = mv.read(file_in_testdir("obs_3day.bufr"))
+    write_path = file_in_testdir("obs_3day_written.bufr")
+    bufr.write(write_path)
+    b2 = mv.read(write_path)
+    assert mv.type(b2) == "observations"
+    os.remove(write_path)
+
+
 def test_read_gpt():
     gpt = mv.read(file_in_testdir("t2m_3day.gpt"))
     assert mv.type(gpt) == "geopoints"
@@ -754,6 +876,17 @@ def test_read_gpt():
 
 
 TEST_GEOPOINTS = mv.read(os.path.join(PATH, "t2m_3day.gpt"))
+
+
+def test_gpts_write_method():
+    g = mv.read(file_in_testdir("t2m_3day.gpt"))
+    gcount = g.count()
+    write_path = file_in_testdir("t2m_3day_written.gpt")
+    g.write(write_path)
+    h = mv.read(write_path)
+    assert mv.type(h) == "geopoints"
+    assert h.count() == gcount
+    os.remove(write_path)
 
 
 def test_filter_gpt():
@@ -952,6 +1085,19 @@ def test_read_gptset():
     assert lats[0] == 60.82
 
 
+def test_gptset_write_method():
+    g = mv.read(file_in_testdir("geopointset_1.gpts"))
+    write_path = file_in_testdir("geopointset_1_written.gpt")
+    g.write(write_path)
+    h = mv.read(write_path)
+    assert mv.type(h) == "geopointset"
+    assert h.count() == g.count()
+    h1 = h[0]
+    assert mv.type(h1) == "geopoints"
+    assert mv.count(h1) == 11
+    os.remove(write_path)
+
+
 def test_date_year():
     npd1 = np.datetime64("2017-04-27T06:18:02")
     assert mv.year(npd1) == 2017
@@ -1091,7 +1237,10 @@ def test_odb_filter():
     assert mv.count(db) == 88
 
     db_res = mv.odb_filter(
-        {"odb_data": db, "odb_query": "select p, t, val where val < -8",}
+        {
+            "odb_data": db,
+            "odb_query": "select p, t, val where val < -8",
+        }
     )
 
     # assert isinstance(db_res,mv.Odb)
@@ -1155,7 +1304,10 @@ def test_odb_to_dataframe_2():
 # as input and output
 def test_cross_section_data():
     grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
-    xs_data = mv.mcross_sect(line=[59.9, -180, -13.5, 158.08], data=grib,)
+    xs_data = mv.mcross_sect(
+        line=[59.9, -180, -13.5, 158.08],
+        data=grib,
+    )
     # the result of this should be a netCDF variable
     assert mv.type(xs_data) == "netcdf"
     mv.setcurrent(xs_data, "t")
@@ -1207,6 +1359,18 @@ def test_netcdf_multi_indexed_values_with_all():
     assert np.isclose(v[4], 260.484)
 
 
+def test_netcdf_write_method():
+    nc = mv.read(file_in_testdir("xs_date_mv5.nc"))
+    write_path = file_in_testdir("xs_date_mv5_written.nc")
+    nc.write(write_path)
+    nc2 = mv.read(write_path)
+    mv.setcurrent(nc2, "t")
+    assert mv.attributes(nc2)["long_name"] == "Temperature"
+    assert np.isclose(mv.value(nc2, 0), 234.7144)
+    assert np.isclose(mv.value(nc2, 4), 237.4377)
+    os.remove(write_path)
+
+
 def test_netcdf_to_dataset():
     nc = mv.read(file_in_testdir("xs_date_mv5.nc"))
     x = nc.to_dataset()
@@ -1214,6 +1378,7 @@ def test_netcdf_to_dataset():
     assert isinstance(x["t"], xr.DataArray)
 
 
+@pytest.mark.skip()
 @pytest.mark.filterwarnings("ignore:GRIB write")
 def test_dataset_to_fieldset():
     grib = mv.read(file_in_testdir("t_for_xs.grib"))
@@ -1229,6 +1394,7 @@ def test_bad_type_to_fieldset():
         f = mv.dataset_to_fieldset(gpt)
 
 
+@pytest.mark.skip()
 @pytest.mark.filterwarnings("ignore:GRIB write")
 def test_pass_dataset_as_arg():
     grib = mv.read(file_in_testdir("t_for_xs.grib"))
@@ -1367,7 +1533,12 @@ def test_value_file_path():
     assert os.path.isfile(p.url())
 
 
-@pytest.mark.parametrize("file_name", ["ml_data.grib",])
+@pytest.mark.parametrize(
+    "file_name",
+    [
+        "ml_data.grib",
+    ],
+)
 def test_temporary_file_deletion(file_name):
     g = mv.read(file_in_testdir(file_name))
     h = g + 1  # this will force Metview to write a new temporary file
@@ -1512,8 +1683,23 @@ def test_set_vector_TF_bool_from_numpy_array():
 
 def test_set_vector_from_int_numpy_array():
     r = np.array([5, 8, 7, 1, 2900], dtype=np.int)
-    with pytest.raises(TypeError):
-        a = mv.type(r)
+    assert mv.type(r) == "vector"
+    assert mv.dtype(r) == "float64"
+    assert mv.count(r) == 5
+    assert np.array_equal(mv.abs(r), np.array([5, 8, 7, 1, 2900], dtype=np.float64))
+
+
+#    with pytest.raises(TypeError):
+#        a = mv.type(r)
+
+
+# these are dtype(int) although not explicitly stated
+def test_set_vector_from_int_numpy_array_implicit():
+    r = np.array([5, 8, 7, 1, 2900])
+    assert mv.type(r) == "vector"
+    assert mv.dtype(r) == "float64"
+    assert mv.count(r) == 5
+    assert np.array_equal(mv.abs(r), np.array([5, 8, 7, 1, 2900], dtype=np.float64))
 
 
 def test_simple_vector_with_nans():
@@ -1792,6 +1978,39 @@ def test_request():
     d = {"param1": "value1", "param2": 180}
     r = mv.Request(d, "MCOAST")
     assert str(r) == "VERB: MCOAST{'param1': 'value1', 'param2': 180}"
+
+
+def test_read_request():
+    # check read function
+    lreq = mv.read_request(file_in_testdir("request.req"))
+    assert isinstance(lreq, list)
+    assert len(lreq) == 2
+
+    # check first request
+    req = lreq[0]
+    assert isinstance(req, mv.Request)
+    assert isinstance(req, dict)
+    assert req.get_verb() == "GRIB"
+    assert req["PATH"] == "t.grib"
+
+    # check second request
+    req = lreq[1]
+    assert isinstance(req, mv.Request)
+    assert isinstance(req, dict)
+    assert req.get_verb() == "MCONT"
+    assert req["contour_line_colour"] == "red"
+    assert req["CONTOUR_HIGHLIGHT_FREQUENCy"] == 2
+    assert req["contour_level_selection_type"] == "LEVEL_LIST"
+    assert isinstance(req["CONTOUR_LEVEL_LIST"], list)
+    assert isinstance(req["CONTOUR_LEVEL_LIST"][0], float)
+    assert req["CONTOUR_LEVEL_LIST"] == [-10, 0, 10]
+    assert isinstance(req["contour_COLOUR_list"], list)
+    assert isinstance(req["contour_colour_list"][0], str)
+    assert req["CONTOUR_coLour_liSt"] == [
+        "RGB(0.5,0.2,0.8)",
+        "RGB(0.8,0.7,0.3)",
+        "RGB(0.4,0.8,0.3)",
+    ]
 
 
 def test_file():

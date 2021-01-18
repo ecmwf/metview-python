@@ -2,6 +2,30 @@
 Changelog for Metview's Python interface
 ========================================
 
+1.6.0
+------------------
+- added write(filename) method for classes Fieldset, Geopoints, GeopointSet, Bufr and NetCDF
+- added ability to construct a Fieldset from a list of Fieldsets: Fieldset([f1, f2, f3])
+- added metzoom function
+- added keyword arguments to setoutput('jupyter') to control output size in notebooks
+- added metview_python member to result of version_info() function
+
+
+1.5.1
+------------------
+- temporarily removed tests that involve writing xarrays as GRIB
+
+
+1.5.0
+------------------
+- added support for int numpy arrays as input to functions and methods
+- added support for bitwise and (&), or (|) and not (~) operators on Fieldsets
+- added div() function (already available via the '/' operator)
+- added mod() function
+- improved timeout message by mentioning how to increase the timeout
+- fixed error when updating an  mv.Request object
+
+
 (No version update)
 -------------------
 - added new Jupyter notebook for data analysis
