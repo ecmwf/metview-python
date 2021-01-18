@@ -5,14 +5,14 @@ Examples using ``metview.geoview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Humidity advection">
+    <div class="sphx-glr-thumbcontainer" tooltip="Contouring with gradient shading">
 
 .. only:: html
 
- .. figure:: /auto_examples/images/thumb/sphx_glr_advection_thumb.png
-     :alt: Humidity advection
+ .. figure:: /auto_examples/images/thumb/sphx_glr_gradient_shading_thumb.png
+     :alt: Contouring with gradient shading
 
-     :ref:`sphx_glr_auto_examples_advection.py`
+     :ref:`sphx_glr_auto_examples_gradient_shading.py`
 
 .. raw:: html
 
@@ -20,4 +20,23 @@ Examples using ``metview.geoview``
 
 .. only:: not html
 
- * :ref:`sphx_glr_auto_examples_advection.py`
+ * :ref:`sphx_glr_auto_examples_gradient_shading.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Layout with 3 Maps">
+
+.. only:: html
+
+ .. figure:: /auto_examples/grib/images/thumb/sphx_glr_layoutx3_thumb.png
+     :alt: Layout with 3 Maps
+
+     :ref:`sphx_glr_auto_examples_grib_layoutx3.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_grib_layoutx3.py`

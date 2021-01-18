@@ -39,7 +39,11 @@ Cross Section Normal Wind Component with Map
     import metview as mv
 
     # read pressure level data - superstorm Sandy
-    g = mv.read("sandy_pl.grib")
+    filename = "sandy_pl.grib"
+    if mv.exist(filename):
+        g = mv.read(filename)
+    else:
+        g = mv.download_gallery_data(filename)
 
     # read wind fields and z500
     f_uv = mv.read(data=g, param=["u", "v"])

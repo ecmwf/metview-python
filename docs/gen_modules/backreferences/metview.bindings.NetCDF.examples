@@ -5,14 +5,14 @@ Examples using ``metview.bindings.NetCDF``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section in Height for Model Level Data with Orography">
+    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF Ozone Layout 2x2">
 
 .. only:: html
 
- .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_height_ml_orog_thumb.png
-     :alt: Cross Section in Height for Model Level Data with Orography
+ .. figure:: /auto_examples/images/thumb/sphx_glr_nc_era5_ozone_thumb.png
+     :alt: NetCDF Ozone Layout 2x2
 
-     :ref:`sphx_glr_auto_examples_cross_section_height_ml_orog.py`
+     :ref:`sphx_glr_auto_examples_nc_era5_ozone.py`
 
 .. raw:: html
 
@@ -20,4 +20,42 @@ Examples using ``metview.bindings.NetCDF``
 
 .. only:: not html
 
- * :ref:`sphx_glr_auto_examples_cross_section_height_ml_orog.py`
+ * :ref:`sphx_glr_auto_examples_nc_era5_ozone.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section with Orography and Boundary Layer Height">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_orog_and_blh_thumb.png
+     :alt: Cross Section with Orography and Boundary Layer Height
+
+     :ref:`sphx_glr_auto_examples_cross_section_orog_and_blh.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_cross_section_orog_and_blh.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="ENS Tephigram">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_ens_tephigram_thumb.png
+     :alt: ENS Tephigram
+
+     :ref:`sphx_glr_auto_examples_ens_tephigram.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_ens_tephigram.py`

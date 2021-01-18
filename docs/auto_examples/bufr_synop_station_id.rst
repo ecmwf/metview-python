@@ -26,7 +26,6 @@ Plotting Station Ids from SYNOP BUFR
 .. code-block:: default
 
 
-
     # (C) Copyright 2017- ECMWF.
     #
     # This software is licensed under the terms of the Apache Licence Version 2.0
@@ -35,12 +34,16 @@ Plotting Station Ids from SYNOP BUFR
     # In applying this licence, ECMWF does not waive the privileges and immunities
     # granted to it by virtue of its status as an intergovernmental organisation
     # nor does it submit to any jurisdiction.
-
+    #
 
     import metview as mv
 
     # read synop bufr
-    bf = mv.read("synop.bufr")
+    filename = "synop.bufr"
+    if mv.exist(filename):
+        bf = mv.read(filename)
+    else:
+        bf = mv.download_gallery_data(filename)
 
     # extract station ids. The problem with SYNOP station id is that it is the
     # combination of two bufr parameters= blockNumber abd stationNumber.

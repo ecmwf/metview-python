@@ -44,10 +44,23 @@ Layout with 3 Maps
 
     import metview as mv
 
-    # read the GRIB data from file
-    t_fc24 = mv.read(source="t_fc24.grib", levelist=850)  # filter just the 850hPa level
-    t_fc96 = mv.read(source="t_fc96.grib", levelist=850)  # filter just the 850hPa level
+    # read the 24h forecast GRIB data from file
+    filename = "t_fc24.grib"
+    if mv.exist(filename):
+        f24 = mv.read(filename)
+    else:
+        f24 = mv.download_gallery_data(filename)
 
+    # read the 96h forecast GRIB data from file
+    filename = "t_fc96.grib"
+    if mv.exist(filename):
+        f96 = mv.read(filename)
+    else:
+        f96 = mv.download_gallery_data(filename)
+
+    # filter just the 850hPa level
+    t_fc24 = mv.read(data=f24, levelist=850)
+    t_fc96 = mv.read(data=f96, levelist=850)
 
     # we will use the same view in all the plots, but we could also use different
     # views for each plot

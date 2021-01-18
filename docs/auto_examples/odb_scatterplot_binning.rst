@@ -43,7 +43,7 @@ ODB Scatterplot with Binning
 
     import metview as mv
 
-    use_mars = 0
+    use_mars = False
     if use_mars:
         #  retrieve from MARS - for AMSUA channel 5 (all satellites)
         db = mv.retrieve(
@@ -55,7 +55,11 @@ ODB Scatterplot with Binning
             filter="select an_depar@body,fg_depar@body " + "where vertco_reference_1=5",
         )
     else:
-        db = mv.read("amsua.odb")
+        filename = "amsua.odb"
+        if mv.exist(filename):
+            db = mv.read(filename)
+        else:
+            db = mv.download_gallery_data(filename)
 
     # Define binning - with 100 bins both in the horizontal and vertical axes
     bin_100 = mv.binning(binning_x_count=100, binning_y_count=100)

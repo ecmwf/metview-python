@@ -36,7 +36,6 @@ Cross Section in Height for Model Level Data with Orography
     # nor does it submit to any jurisdiction.
     #
 
-
     import metview as mv
 
     # get data
@@ -66,7 +65,11 @@ Cross Section in Height for Model Level Data with Orography
         zs = mv.retrieve(**ret_core, type="an", levtype="ml", levelist=1, param="z")
     else:
         # read data from GRIB file
-        fs_ml = mv.read("xs_ml_orog.grib")
+        filename = "xs_ml_orog.grib"
+        if mv.exist(filename):
+            fs_ml = mv.read(filename)
+        else:
+            fs_ml = mv.download_gallery_data(filename)
         zs = mv.read(data=fs_ml, param="z")
 
     # extract ml data

@@ -10,7 +10,7 @@
 
 
 Difference Plot with Rainbow Contour Settings
-==============================================
+================================================
 
 
 
@@ -53,12 +53,20 @@ Difference Plot with Rainbow Contour Settings
             param="t", levelist=1000, grid=[1.5, 1.5], date=-12, type="fc", step=48
         )
     else:
-        analysis_data = mv.read("an_data_for_diff.grib")
-        forecast_data = mv.read("fc_data_for_diff.grib")
+        filename = "an_data_for_diff.grib"
+        if mv.exist(filename):
+            analysis_data = mv.read(filename)
+        else:
+            analysis_data = mv.download_gallery_data(filename)
+    
+        filename = "fc_data_for_diff.grib"
+        if mv.exist(filename):
+            forecast_data = mv.read(filename)
+        else:
+            forecast_data = mv.download_gallery_data(filename)
 
 
     difference = forecast_data - analysis_data
-
 
     # define the contouring visdef
     split = mv.mcont(
@@ -89,7 +97,6 @@ Difference Plot with Rainbow Contour Settings
         contour_level_list=[-1, -0.5, -0.2, 0, 0.2, 0.5, 1],
     )
 
-
     # define the coastlines visdef and the view
     land_sea_shade = mv.mcoast(
         map_coastline_land_shade="on", map_coastline_land_shade_colour="RGB(0.89,0.85,0.82)"
@@ -100,7 +107,6 @@ Difference Plot with Rainbow Contour Settings
         area=[37.9, -28.57, 69.85, 20.65],
         coastlines=land_sea_shade,
     )
-
 
     # define the output plot file (extension will be added automatically)
     # - remove this line to get an interactive plot window

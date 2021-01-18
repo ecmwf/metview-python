@@ -10,7 +10,7 @@
 
 
 Temperature Below 0 Celsius
-============================
+=============================
 
 
 
@@ -35,7 +35,7 @@ Temperature Below 0 Celsius
     # In applying this licence, ECMWF does not waive the privileges and immunities
     # granted to it by virtue of its status as an intergovernmental organisation
     # nor does it submit to any jurisdiction.
-
+    #
 
     # -------------------------------------------------------------------------
     # Demonstrates how to define a contour level list so that only
@@ -45,7 +45,11 @@ Temperature Below 0 Celsius
     import metview as mv
 
     # read the input grib file
-    my_data = mv.read("2m_temperature.grib")
+    filename = "2m_temperature.grib"
+    if mv.exist(filename):
+        my_data = mv.read(filename)
+    else:
+        my_data = mv.download_gallery_data(filename)
 
     # set up the background coastlines
     my_background = mv.mcoast(
@@ -78,7 +82,6 @@ Temperature Below 0 Celsius
         contour_shade_colour_direction="ANTI_CLOCKWISE",
         contour_shade_colour_list=["rgba(0.498,0.8,0.8,0.6)"],
     )
-
 
     # set-up the title
     my_title = mv.mtext(

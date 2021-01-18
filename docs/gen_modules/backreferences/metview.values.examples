@@ -24,25 +24,6 @@ Examples using ``metview.values``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB Scatterplot">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_grib_scatterplot_thumb.png
-     :alt: GRIB Scatterplot
-
-     :ref:`sphx_glr_auto_examples_grib_scatterplot.py`
-
-.. raw:: html
-
-    </div>
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_grib_scatterplot.py`
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Storm Wind Quadrants">
 
 .. only:: html
@@ -62,25 +43,6 @@ Examples using ``metview.values``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Model-Obs Difference">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_model_obs_diff_plot_thumb.png
-     :alt: Model-Obs Difference
-
-     :ref:`sphx_glr_auto_examples_model_obs_diff_plot.py`
-
-.. raw:: html
-
-    </div>
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_model_obs_diff_plot.py`
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="ODB Temp Wind">
 
 .. only:: html
@@ -97,25 +59,6 @@ Examples using ``metview.values``
 .. only:: not html
 
  * :ref:`sphx_glr_auto_examples_odb_temp_wind.py`
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Storm Track">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_storm_track_thumb.png
-     :alt: Storm Track
-
-     :ref:`sphx_glr_auto_examples_storm_track.py`
-
-.. raw:: html
-
-    </div>
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_storm_track.py`
 
 .. raw:: html
 

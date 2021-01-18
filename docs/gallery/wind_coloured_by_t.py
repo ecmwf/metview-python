@@ -16,7 +16,11 @@ Wind Coloured by Temperature
 import metview as mv
 
 # read grib file - contains model level data, one timestep
-fs = mv.read("fc_ml.grib")
+filename = "fc_ml.grib"
+if mv.exist(filename):
+    fs = mv.read(filename)
+else:
+    fs = mv.download_gallery_data(filename)
 
 # define model level to read
 level = 96  # around 500 hPa
@@ -41,7 +45,6 @@ wp = mv.mwind(
     wind_arrow_unit_velocity=35,
     wind_arrow_thickness=2,
 )
-
 
 # define coastlines
 coast = mv.mcoast(

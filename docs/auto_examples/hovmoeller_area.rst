@@ -44,8 +44,11 @@ Hovmoeller Area Average
     import metview as mv
 
     # read the GRIB data from file
-    t_ts = mv.read("t_ts.grib")
-
+    filename = "t_ts.grib"
+    if mv.exist(filename):
+        t_ts = mv.read(filename)
+    else:
+        t_ts = mv.download_gallery_data(filename)
 
     # set up the view to plot the data into
     # we will compute the average value along North/South lines over the
@@ -87,10 +90,8 @@ Hovmoeller Area Average
         ],
     )
 
-
     # set up the title, just to make the font bigger
     title = mv.mtext(text_font_size=0.5)
-
 
     # define the output plot file
     mv.setoutput(mv.pdf_output(output_name="hovmoeller_area"))

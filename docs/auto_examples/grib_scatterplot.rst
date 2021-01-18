@@ -60,10 +60,14 @@ GRIB Scatterplot
         )
     else:
         # read data from GRIB file
-        f = mv.read("an_incr.grib")
+        filename = "an_incr.grib"
+        if mv.exist(filename):
+            f = mv.read(filename)
+        else:
+            f = mv.download_gallery_data(filename)
+
         an = f[0]
         an_incr = f[1]
-
 
     # extract field values into numpy arrays
     v1 = mv.values(an)

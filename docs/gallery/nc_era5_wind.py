@@ -16,7 +16,12 @@ NetCDF Wind
 import metview as mv
 
 # read ERA5 monthly mean
-nc = mv.read("era5_2000_aug.nc")
+filename = "era5_2000_aug.nc"
+if mv.exist(filename):
+    nc = mv.read(filename)
+else:
+    nc = mv.download_gallery_data(filename)
+
 
 # this NetCDF data has the following structure:
 #

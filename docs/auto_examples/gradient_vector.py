@@ -13,11 +13,14 @@ Temperature Gradient Vectors
 # nor does it submit to any jurisdiction.
 #
 
-
 import metview as mv
 
 # read t field (the only field in the file)
-t = mv.read(source="t850.grb", param="t")
+filename = "t850.grb"
+if mv.exist(filename):
+    t = mv.read(filename)
+else:
+    t = mv.download_gallery_data(filename)
 
 # compute gradient
 grad = mv.gradient(t)
@@ -27,7 +30,6 @@ grad = grad * 1e5
 
 # define the vector structure for plotting
 v = mv.grib_vectors(u_component=grad[0], v_component=grad[1])
-
 
 # define wind plotting for gradient
 wp = mv.mwind(

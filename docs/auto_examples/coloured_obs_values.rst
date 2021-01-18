@@ -26,7 +26,6 @@ Coloured observation values
 .. code-block:: default
 
 
-
     # (C) Copyright 2017- ECMWF.
     #
     # This software is licensed under the terms of the Apache Licence Version 2.0
@@ -36,11 +35,14 @@ Coloured observation values
     # granted to it by virtue of its status as an intergovernmental organisation
     # nor does it submit to any jurisdiction.
 
-
     import metview as mv
 
     # read BUFR data
-    temp = mv.read("temp.bufr")
+    filename = "temp.bufr"
+    if mv.exist(filename):
+        temp = mv.read(filename)
+    else:
+        temp = mv.download_gallery_data(filename)
 
     # filter just the 500 hPa temperature from the obs data (Geopoints)
     gpt = mv.obsfilter(

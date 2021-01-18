@@ -39,7 +39,11 @@ Streamlines
     import metview as mv
 
     # read grib file - contains only one timestep and level
-    f = mv.read("advection_850.grib")
+    filename = "advection_850.grib"
+    if mv.exist(filename):
+        f = mv.read(filename)
+    else:
+        f = mv.download_gallery_data(filename)
 
     # filter u and v wind components
     u = mv.read(data=f, param="u")

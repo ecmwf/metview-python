@@ -17,7 +17,11 @@ import metview as mv
 
 # read grib file - contains only one
 # spherical harmonic (spectral) field
-f = mv.read("z_for_spectra.grib")
+filename = "z_for_spectra.grib"
+if mv.exist(filename):
+    f = mv.read(filename)
+else:
+    f = mv.download_gallery_data(filename)
 
 # generate spectra plot definition
 sp = mv.spec_graph(data=f, truncation=106, y_axis_type="logartihmic")

@@ -39,7 +39,12 @@ NetCDF Temperature
     import metview as mv
 
     # read ERA5 monthly mean - downloaded from CDS
-    nc = mv.read("era5_2000_aug.nc")
+    filename = "era5_2000_aug.nc"
+    if mv.exist(filename):
+        nc = mv.read(filename)
+    else:
+        nc = mv.download_gallery_data(filename)
+
 
     # our NetCDF data is CF-compliant and has the following
     # structure:

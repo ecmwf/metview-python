@@ -21,3 +21,22 @@ Examples using ``metview.valid_date``
 .. only:: not html
 
  * :ref:`sphx_glr_auto_examples_time_series.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Graph Plot with Different Y Scales">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_double_axis_2_thumb.png
+     :alt: Graph Plot with Different Y Scales
+
+     :ref:`sphx_glr_auto_examples_double_axis_2.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_double_axis_2.py`

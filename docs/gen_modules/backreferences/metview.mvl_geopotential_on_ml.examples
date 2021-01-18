@@ -5,14 +5,14 @@ Examples using ``metview.mvl_geopotential_on_ml``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section in Height for Model Level Data with Orography">
+    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section with Orography and Boundary Layer Height">
 
 .. only:: html
 
- .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_height_ml_orog_thumb.png
-     :alt: Cross Section in Height for Model Level Data with Orography
+ .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_orog_and_blh_thumb.png
+     :alt: Cross Section with Orography and Boundary Layer Height
 
-     :ref:`sphx_glr_auto_examples_cross_section_height_ml_orog.py`
+     :ref:`sphx_glr_auto_examples_cross_section_orog_and_blh.py`
 
 .. raw:: html
 
@@ -20,4 +20,4 @@ Examples using ``metview.mvl_geopotential_on_ml``
 
 .. only:: not html
 
- * :ref:`sphx_glr_auto_examples_cross_section_height_ml_orog.py`
+ * :ref:`sphx_glr_auto_examples_cross_section_orog_and_blh.py`

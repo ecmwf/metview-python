@@ -36,8 +36,7 @@ Split contouring
     # nor does it submit to any jurisdiction.
     #
 
-
-    import metview as mv 
+    import metview as mv
 
     # ---------------------------------------------------------------
     # Demonstrates one way to emulate Metview 3's split
@@ -45,14 +44,16 @@ Split contouring
     # definitions in later Metview versions
     # ---------------------------------------------------------------
 
-
-    use_mars = 0
+    use_mars = False
     if use_mars:
         # Retrieve data from MARS
         data = mv.retrieve(param="t", levelist=1000, grid=[1.5, 1.5], date=-10)
     else:
-        data = mv.read("t1000.grib")
-
+        filename = "t1000.grib"
+        if mv.exist(filename):
+            data = mv.read(filename)
+        else:
+            data = mv.download_gallery_data(filename)
 
     split_below = mv.mcont(
         contour_line_style="dash",
@@ -75,7 +76,6 @@ Split contouring
         contour_max_level=0,
         contour_min_level=0,
     )
-
 
     # define the output plot file
     mv.setoutput(mv.pdf_output(output_name="split_contour"))

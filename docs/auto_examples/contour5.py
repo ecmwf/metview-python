@@ -3,7 +3,6 @@ Contour Shading and Positional Legend
 ======================================
 """
 
-
 # (C) Copyright 2017- ECMWF.
 #
 # This software is licensed under the terms of the Apache Licence Version 2.0
@@ -12,7 +11,7 @@ Contour Shading and Positional Legend
 # In applying this licence, ECMWF does not waive the privileges and immunities
 # granted to it by virtue of its status as an intergovernmental organisation
 # nor does it submit to any jurisdiction.
-
+#
 
 # ------------------------------------------------------------------
 # Demonstrates how to show a field using contour shading and
@@ -22,7 +21,11 @@ Contour Shading and Positional Legend
 import metview as mv
 
 # read the input grib file
-my_data = mv.read("t850.grb")
+filename = "t850.grb"
+if mv.exist(filename):
+    my_data = mv.read(filename)
+else:
+    my_data = mv.download_gallery_data(filename)
 
 # set up the geographical view
 my_view = mv.geoview(
@@ -84,7 +87,6 @@ my_title = mv.mtext(
     text_justification="LEFT",
     text_colour="CHARCOAL",
 )
-
 
 # define the output plot file
 mv.setoutput(mv.pdf_output(output_name="contour5"))

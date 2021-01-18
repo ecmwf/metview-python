@@ -39,7 +39,11 @@ ENS Stamp Map
     import metview as mv
 
     # read ENS forecast
-    g = mv.read("wgust_ens.grib")
+    filename = "wgust_ens.grib"
+    if mv.exist(filename):
+        g = mv.read(filename)
+    else:
+        g = mv.download_gallery_data(filename)
 
     # filter out a timestep
     wg = mv.read(data=g, step=78)

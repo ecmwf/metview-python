@@ -30,7 +30,13 @@ if use_mars:
     )
 else:
     # read data from GRIB file
-    t = mv.read("era5_t2_jan.grib")
+    filename = "era5_t2_jan.grib"
+    if mv.exist(filename):
+        t = mv.read(filename)
+    else:
+        t = mv.download_gallery_data(filename)
+
+print(mv.version_info())
 
 # define coastlines
 coast = mv.mcoast(map_grid="off", map_label="off")
@@ -84,4 +90,5 @@ title = mv.mtext(
 mv.setoutput(mv.pdf_output(output_name="gradient_shading"))
 
 # generate plot
-mv.plot(view, t, cont, title, legend)
+# mv.plot(view, t, cont, title, legend)
+mv.plot(view, t)

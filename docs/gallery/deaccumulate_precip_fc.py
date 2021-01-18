@@ -13,7 +13,6 @@ De-accumulate Precipitation Forecast
 # nor does it submit to any jurisdiction.
 #
 
-
 import metview as mv
 
 # getting data
@@ -33,7 +32,11 @@ if use_mars:
     )
 # read data from file
 else:
-    prec = mv.read("lekima_prec.grib")
+    filename = "lekima_prec.grib"
+    if mv.exist(filename):
+        prec = mv.read(filename)
+    else:
+        prec = mv.download_gallery_data(filename)    
 
 # de-accumulate precipitation by subtracting consecutive steps.
 # The result is accumulated precipitation for 12 h intervals

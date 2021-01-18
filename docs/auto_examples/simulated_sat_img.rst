@@ -39,7 +39,11 @@ Simulated Satellite Image
     import metview as mv
 
     # read simulated satellite image
-    g = mv.read("sim_ir9.grib")
+    filename = "sim_ir9.grib"
+    if mv.exist(filename):
+        g = mv.read(filename)
+    else:
+        g = mv.download_gallery_data(filename)
 
     # define automatic contour shading
     shading = mv.mcont(contour_automatic_setting="ecmwf", legend="on")

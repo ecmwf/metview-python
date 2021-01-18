@@ -16,11 +16,15 @@ ODB Wind Profiler
 import metview as mv
 from datetime import datetime
 
+# read db
+filename = "wprof.odb"
+if mv.exist(filename):
+    db = mv.read(filename)
+else:
+    db = mv.download_gallery_data(filename)
+
 # define station id
 statid = "95759"
-
-# read db
-db = mv.read("wprof.odb")
 
 # define query for u wind component
 q_u = """select obsvalue as val,

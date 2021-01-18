@@ -13,14 +13,28 @@ Contouring with gradient shading
 ====================================
 
 
-
-.. image:: /auto_examples/images/sphx_glr_gradient_shading_001.png
-    :alt: gradient shading
-    :class: sphx-glr-single-img
+.. rst-class:: sphx-glr-script-out
 
 
+.. code-block:: pytb
+
+    Traceback (most recent call last):
+      File "/Users/sandor/git/mpy/docs/gallery/gradient_shading.py", line 94, in <module>
+        mv.plot(view, t)
+      File "/Users/sandor/git/mpy/metview/bindings.py", line 1102, in __call__
+        met_plot(*args)
+      File "/Users/sandor/git/mpy/metview/bindings.py", line 984, in wrapped
+        return value_from_metview(val)
+      File "/Users/sandor/git/mpy/metview/bindings.py", line 951, in value_from_metview
+        raise retval
+    Exception: Metview error: Error calling Metview function
 
 
+
+
+
+
+|
 
 
 .. code-block:: default
@@ -53,7 +67,13 @@ Contouring with gradient shading
         )
     else:
         # read data from GRIB file
-        t = mv.read("era5_t2_jan.grib")
+        filename = "era5_t2_jan.grib"
+        if mv.exist(filename):
+            t = mv.read(filename)
+        else:
+            t = mv.download_gallery_data(filename)
+
+    print(mv.version_info())
 
     # define coastlines
     coast = mv.mcoast(map_grid="off", map_label="off")
@@ -107,8 +127,8 @@ Contouring with gradient shading
     mv.setoutput(mv.pdf_output(output_name="gradient_shading"))
 
     # generate plot
-    mv.plot(view, t, cont, title, legend)
-
+    # mv.plot(view, t, cont, title, legend)
+    mv.plot(view, t)
 
 .. _sphx_glr_download_auto_examples_gradient_shading.py:
 

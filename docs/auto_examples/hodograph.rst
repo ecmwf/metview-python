@@ -40,7 +40,11 @@ BUFR Hodograph
     import math
 
     # read BUFR data
-    b = mv.read("temp.bufr")
+    filename = "temp.bufr"
+    if mv.exist(filename):
+        b = mv.read(filename)
+    else:
+        b = mv.download_gallery_data(filename)
 
     # define station id
     statid = "78583"

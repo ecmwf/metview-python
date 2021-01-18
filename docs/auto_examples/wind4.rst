@@ -44,8 +44,17 @@ Vorticity and Wind
     import metview as mv
 
     # read input grib files
-    my_vorticity = mv.read("vorticity.grib")
-    my_uvwind = mv.read("wind.grib")
+    filename = "vorticity.grib"
+    if mv.exist(filename):
+        my_vorticity = mv.read(filename)
+    else:
+        my_vorticity = mv.download_gallery_data(filename)
+
+    filename = "wind.grib"
+    if mv.exist(filename):
+        my_uvwind = mv.read(filename)
+    else:
+        my_uvwind = mv.download_gallery_data(filename)
 
     # set up the contour for vorticity field
     my_contour = mv.mcont(

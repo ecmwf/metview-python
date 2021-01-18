@@ -39,7 +39,11 @@ Meridional Average
     import metview as mv
 
     # read pressure level data
-    g = mv.read("avg_tuv.grib")
+    filename = "avg_tuv.grib"
+    if mv.exist(filename):
+        g = mv.read(filename)
+    else:
+        g = mv.download_gallery_data(filename)
 
     # filter v (meridional component)
     v = mv.read(data=g, param="v")

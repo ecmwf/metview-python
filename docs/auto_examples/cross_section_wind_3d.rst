@@ -39,7 +39,11 @@ Cross Section 3D Parallel Wind
     import metview as mv
 
     # read grib file - contains model level data with u, v, w, t and lnsp
-    fs = mv.read("joachim_ml.grib")
+    filename = "joachim_ml.grib"
+    if mv.exist(filename):
+        fs = mv.read(filename)
+    else:
+        fs = mv.download_gallery_data(filename)
 
     # define cross section line
     line = [48.32, 1.18, 40.43, 2.44]

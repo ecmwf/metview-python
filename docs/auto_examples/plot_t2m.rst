@@ -39,7 +39,11 @@
     import metview as mv
 
     # read the data from a GRIB file
-    data = mv.read("2m_temperature.grib")
+    filename = "2m_temperature.grib"
+    if mv.exist(filename):
+        data = mv.read(filename)
+    else:
+        data = mv.download_gallery_data(filename)
 
     # use the automatic ecCharts style for contouring
     contours = mv.mcont(contour_automatic_setting="ecchart")

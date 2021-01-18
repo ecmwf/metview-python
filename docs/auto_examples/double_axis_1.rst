@@ -47,11 +47,26 @@ Graph Plot with Double Axis
     # as the left-hand vertical axis, and computed pressure levels on the
     # right-hand vertical axis.
 
+    # read the input model level grib file
+    filename = "fc_ml.grib"
+    if mv.exist(filename):
+        g = mv.read(filename)
+    else:
+        g = mv.download_gallery_data(filename) 
 
+    # read the LNSP file 
+    filename = "lnsp.grib"
+    if mv.exist(filename):
+        lnsp_data = mv.read(filename)
+    else:
+        lnsp_data = mv.download_gallery_data(filename) 
+
+
+    # define profile location
     lat_lon_point = [56.9, -2.6]
 
-    # read the input model level grib file and compute a profile curve from it
-    t_data = mv.read(source="fc_ml.grib", parameter="t")
+    # read temperature data
+    t_data = mv.read(data=g, parameter="t")
 
     model_levels = mv.grib_get_long(t_data, "level")
 
@@ -62,14 +77,10 @@ Graph Plot with Double Axis
 
     dots = mv.msymb(symbol_type="marker", symbol_outline="on", symbol_marker_index=15)
 
-
-    # read the LNSP file and compute pressure levels for the input model levels
-    lnsp_data = mv.read("lnsp.grib")
-
+    # compute pressure levels for the input model levels
     pressure_fields = mv.pressure(lnsp_data, t_data)
     pressure_levels = mv.nearest_gridpoint(pressure_fields, lat_lon_point)
     pressure_levels = [x / 100 for x in pressure_levels]
-
 
     # Construct two Cartesian views; the first will be plotted with data, the
     # second will be plotted without data in order to plot just its vertical axis
@@ -89,7 +100,6 @@ Graph Plot with Double Axis
         x_max=320,  # Kelvin
         vertical_axis=primary_vertical_axis,
     )
-
 
     # set up the secondary Cartesian view with a right-hand vertical axis
     secondary_vertical_axis = mv.maxis(
@@ -112,12 +122,10 @@ Graph Plot with Double Axis
         horizontal_axis=secondary_horizontal_axis,
     )
 
-
     # set up the pages that will use these views
     p1 = mv.plot_page(view=c1)
     p2 = mv.plot_page(view=c2)
     dw = mv.plot_superpage(pages=[p1, p2])
-
 
     # define the output plot file
     mv.setoutput(mv.pdf_output(output_name="double_axis_1"))

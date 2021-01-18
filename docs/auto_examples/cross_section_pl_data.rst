@@ -9,7 +9,7 @@
     .. _sphx_glr_auto_examples_cross_section_pl_data.py:
 
 
-Cross Section
+Cross Section 
 =============================
 
 
@@ -36,7 +36,6 @@ Cross Section
     # nor does it submit to any jurisdiction.
     #
 
-
     # ------------------------------------------------------------------
     # Demonstrates how to use a Cross Section View to
     # compute and plot a vertical cross section of GRIB data
@@ -45,7 +44,11 @@ Cross Section
     import metview as mv
 
     # read the GRIB data from file
-    t_fc = mv.read("t_fc24.grib")
+    filename = "t_fc24.grib"
+    if mv.exist(filename):
+        t_fc = mv.read(filename)
+    else:
+        t_fc = mv.download_gallery_data(filename)
 
     # set up the view to plot the data into
     cross_section_view = mv.mxsectview(
@@ -53,7 +56,6 @@ Cross Section
         top_level=1,
         line=[-40.1, -105.6, 61.5, 85.1],  # lat,lon,lat,lon
     )
-
 
     # set up the contouring style
     shading = mv.mcont(

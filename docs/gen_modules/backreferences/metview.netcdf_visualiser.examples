@@ -5,44 +5,6 @@ Examples using ``metview.netcdf_visualiser``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF Temperature">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_nc_era5_t2_thumb.png
-     :alt: NetCDF Temperature
-
-     :ref:`sphx_glr_auto_examples_nc_era5_t2.py`
-
-.. raw:: html
-
-    </div>
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_nc_era5_t2.py`
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF Wind">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_nc_era5_wind_thumb.png
-     :alt: NetCDF Wind
-
-     :ref:`sphx_glr_auto_examples_nc_era5_wind.py`
-
-.. raw:: html
-
-    </div>
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_nc_era5_wind.py`
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="NetCDF Ozone Layout 2x2">
 
 .. only:: html
@@ -59,41 +21,3 @@ Examples using ``metview.netcdf_visualiser``
 .. only:: not html
 
  * :ref:`sphx_glr_auto_examples_nc_era5_ozone.py`
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF Marine Observations">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_nc_maritime_obs_thumb.png
-     :alt: NetCDF Marine Observations
-
-     :ref:`sphx_glr_auto_examples_nc_maritime_obs.py`
-
-.. raw:: html
-
-    </div>
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_nc_maritime_obs.py`
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF Sea Currents with Fix-sized Vectors">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_nc_seacurrent_fixed_vector_thumb.png
-     :alt: NetCDF Sea Currents with Fix-sized Vectors
-
-     :ref:`sphx_glr_auto_examples_nc_seacurrent_fixed_vector.py`
-
-.. raw:: html
-
-    </div>
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_nc_seacurrent_fixed_vector.py`

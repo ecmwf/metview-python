@@ -16,7 +16,11 @@ Time Series from GRIB
 import metview as mv
 
 # read a set of t2m and t2d forecast steps from a GRIB file
-both_t = mv.read("t2m_td.grib")
+filename = "t2m_td.grib"
+if mv.exist(filename):
+    both_t = mv.read(filename)
+else:
+    both_t = mv.download_gallery_data(filename)
 
 # filter the t2m and dewpoint t into separate fieldsets (and K->C)
 t2m = mv.read(data=both_t, param="2t") - 273.15

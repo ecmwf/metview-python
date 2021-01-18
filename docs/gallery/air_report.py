@@ -1,10 +1,7 @@
-
-
 """
 Aircraft observations
 ======================
 """
-
 
 # (C) Copyright 2017- ECMWF.
 #
@@ -16,11 +13,14 @@ Aircraft observations
 # nor does it submit to any jurisdiction.
 #
 
-
 import metview as mv
 
 # read the input geopoints file
-my_data = mv.read("airep.geo")
+filename = "airep.geo"
+if mv.exist(filename):
+    my_data = mv.read(filename)
+else:
+    my_data = mv.download_gallery_data(filename)
 
 # set up the data symbol and colour
 my_symbol = mv.msymb(
@@ -76,7 +76,6 @@ my_title = mv.mtext(
     text_box_y_position=16.50,
     text_colour="navy",
 )
-
 
 # define the output plot file
 mv.setoutput(mv.pdf_output(output_name="air_report"))

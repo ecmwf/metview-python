@@ -36,11 +36,14 @@ Wind Field Overlay and Legend Box
     # nor does it submit to any jurisdiction.
     #
 
-
     import metview as mv
 
     # read grib data
-    f = mv.read("sandy_pl.grib")
+    filename = "sandy_pl.grib"
+    if mv.exist(filename):
+        f = mv.read(filename)
+    else:
+        f = mv.download_gallery_data(filename)
 
     # filter wind on tow pressure levels
     f1 = mv.read(data=f, param=["u", "v"], levelist=850)

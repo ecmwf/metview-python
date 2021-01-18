@@ -43,7 +43,11 @@ Field anomalies
     import metview as mv
 
     # read the GRIB data into a Fieldset
-    diff = mv.read("1month_anomaly_Global_ea_2t_201805_v02.grib")
+    filename = "1month_anomaly_Global_ea_2t_201805_v02.grib"
+    if mv.exist(filename):
+        diff = mv.read(filename)
+    else:
+        diff = mv.download_gallery_data(filename)
 
     # compute the absolute maximum value and compute a scale for the contouring
     maxdiff = mv.maxvalue(abs(diff))

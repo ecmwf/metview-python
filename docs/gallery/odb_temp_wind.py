@@ -19,11 +19,15 @@ import metview as mv
 # Demonstrates how to plot TEMP wind data from ODB onto a map
 # ------------------------------------------------------------------------
 
+# read db
+filename = "temp.odb"
+if mv.exist(filename):
+    db = mv.read(filename)
+else:
+    db = mv.download_gallery_data(filename)
+
 # define pressure level
 lev = 250
-
-# read db
-db = mv.read("temp.odb")
 
 # define query for u wind component
 q_u = """select lat@hdr as lat,

@@ -49,8 +49,17 @@ Model-Obs Difference
         # retrieve obs data (BUFR)
         synop = mv.retrieve(type="ob", repres="bu", date=-3)
     else:
-        t2m_fc48 = mv.read("t2m_fc48.grib")
-        synop = mv.read("t2m_obs.bufr")
+        filename = "t2m_fc48.grib"
+        if mv.exist(filename):
+            t2m_fc48 = mv.read(filename)
+        else:
+            t2m_fc48 = mv.download_gallery_data(filename)
+    
+        filename = "t2m_obs.bufr"
+        if mv.exist(filename):
+            synop = mv.read(filename)
+        else:
+            synop = mv.download_gallery_data(filename)
 
 
     # filter just the 2m temperature from the obs data (Geopoints)

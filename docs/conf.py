@@ -19,6 +19,7 @@ import sphinx_rtd_theme
 # import pydata_sphinx_theme
 
 import sphinx_gallery
+from sphinx_gallery.sorting import ExampleTitleSortKey
 
 sys.path.insert(0, os.path.abspath("."))
 # top = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
@@ -97,10 +98,11 @@ sphinx_gallery_conf = {
     # directory where function/class granular galleries are stored
     "backreferences_dir": "gen_modules/backreferences",
     # Modules for which function/class level galleries are created.
-    "doc_module": ("metview"),
+    'within_subsection_order': ExampleTitleSortKey,
+    # "doc_module": ("metview"),
     "min_reported_time": 1000,
     "reference_url": {
          # The module you locally document uses None
-        "metview": None,
+        "sphinx_gallery": None,
     }
 }

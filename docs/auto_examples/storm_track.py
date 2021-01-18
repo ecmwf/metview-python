@@ -16,6 +16,10 @@ Storm Track
 import metview as mv
 
 # read CSV file with the track positions and dates
+filename = "sandy_track.txt"
+if not mv.exist(filename):
+    mv.download_gallery_data(filename)
+    
 tbl = mv.read_table(
     table_delimiter=" ",
     table_combine_delimiters="on",
@@ -65,7 +69,11 @@ track_vis = mv.input_visualiser(
 )
 
 # read mslp forecast from grib file
-g_mslp = mv.read("sandy_mslp.grib")
+filename = "sandy_mslp.grib"
+if mv.exist(filename):
+    g_mslp = mv.read(filename)
+else:
+    g_mslp = mv.download_gallery_data(filename)
 
 # define mslp contouring
 cont_mslp = mv.mcont(

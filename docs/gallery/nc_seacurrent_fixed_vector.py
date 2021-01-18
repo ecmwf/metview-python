@@ -16,7 +16,12 @@ NetCDF Sea Currents with Fix-sized Vectors
 import metview as mv
 
 # read NetCDF file with gridded data over the Mediterranean Sea
-nc = mv.read("sea_current.nc")
+filename = "sea_current.nc"
+if mv.exist(filename):
+    nc = mv.read(filename)
+else:
+    nc = mv.download_gallery_data(filename)
+
 
 # this NetCDF data has the following structure:
 

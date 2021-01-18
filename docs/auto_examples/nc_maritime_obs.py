@@ -17,7 +17,11 @@ import metview as mv
 
 # read maritime observations
 # data available at: https://www.unidata.ucar.edu/software/netcdf/examples/files.html
-nc = mv.read("madis-maritime.nc")
+filename = "madis-maritime.nc"
+if mv.exist(filename):
+    nc = mv.read(filename)
+else:
+    nc = mv.download_gallery_data(filename)
 
 # This netCDF has the following structure:
 #

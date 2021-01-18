@@ -37,11 +37,14 @@ Plot test labels at geopoints locations
     # nor does it submit to any jurisdiction.
     #
 
-
     import metview as mv
 
     # read geopoints containing 4 city locations
-    gpt = mv.read("city_loc.gpt")
+    filename = "city_loc.gpt"
+    if mv.exist(filename):
+        gpt = mv.read(filename)
+    else:
+        gpt = mv.download_gallery_data(filename)
 
     # define text labels
     txt_lst = ["London", "New York", "Rio de Janeiro", "Tokyo"]

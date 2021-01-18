@@ -21,9 +21,19 @@ Histogram Legend
 
 import metview as mv
 
-# read the input grib files (temperature and geopotential)
-my_data1 = mv.read("./t850.grb")
-my_data2 = mv.read("./z500.grb")
+# read the input grib temperature
+filename = "t850.grb"
+if mv.exist(filename):
+    my_data1 = mv.read(filename)
+else:
+    my_data1 = mv.download_gallery_data(filename)
+
+# read the input grib geopotential
+filename = "z500.grb"
+if mv.exist(filename):
+    my_data2 = mv.read(filename)
+else:
+    my_data2 = mv.download_gallery_data(filename)
 
 # set up the geographical view
 my_view = mv.geoview(

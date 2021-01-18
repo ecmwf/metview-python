@@ -3,19 +3,18 @@ CDF Curve
 ===================
 """
 
+# (C) Copyright 2017- ECMWF.
+#
+# This software is licensed under the terms of the Apache Licence Version 2.0
+# which can be obtained at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# In applying this licence, ECMWF does not waive the privileges and immunities
+# granted to it by virtue of its status as an intergovernmental organisation
+# nor does it submit to any jurisdiction.
+#
+
 import numpy as np
 import metview as mv
-
-#  **************************** LICENSE START ***********************************
-#
-#  Copyright 2020 ECMWF. This software is distributed under the terms
-#  of the Apache License version 2.0. In applying this license, ECMWF does not
-#  waive the privileges and immunities granted to it by virtue of its status as
-#  an Intergovernmental Organization or submit itself to any jurisdiction.
-#
-#  ***************************** LICENSE END ************************************
-#
-
 
 # define location
 lat = 51.5
@@ -27,7 +26,11 @@ legend_lst = []
 linecolor = ["red", "blue", "green", "black", "cyan", "evergreen", "gold", "pink"]
 
 # get ENS data
-g = mv.read("wgust_ens.grib")
+filename = "wgust_ens.grib"
+if mv.exist(filename):
+    g = mv.read(filename)
+else:
+    g = mv.download_gallery_data(filename)
 
 # compute CDF and build curve for each timestep
 steps = [78, 84, 90]

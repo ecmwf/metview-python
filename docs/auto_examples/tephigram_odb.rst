@@ -38,11 +38,15 @@ Tephigram from ODB
 
     import metview as mv
 
+    # read db
+    filename = "temp.odb"
+    if mv.exist(filename):
+        db = mv.read(filename)
+    else:
+        db = mv.download_gallery_data(filename)
+
     # station id
     statid = "40417"
-
-    # read db
-    db = mv.read("temp.odb")
 
     # run queries to get profile data
     f_t = mv.odb_filter(

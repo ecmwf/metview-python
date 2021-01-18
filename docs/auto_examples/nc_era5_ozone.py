@@ -16,7 +16,11 @@ NetCDF Ozone Layout 2x2
 import metview as mv
 
 # read ERA5 monthly mean O3 on 70 hPa
-nc = mv.read("era5_ozone_1999.nc")
+filename = "era5_ozone_1999.nc"
+if mv.exist(filename):
+    nc = mv.read(filename)
+else:
+    nc = mv.download_gallery_data(filename)
 
 # this NetCDF data has the following structure:
 #

@@ -44,7 +44,11 @@ Disjoint Legend
     import metview as mv
 
     # read the input grib file (temperature)
-    my_data = mv.read("./t850.grb")
+    filename = "t850.grb"
+    if mv.exist(filename):
+        my_data = mv.read(filename)
+    else:
+        my_data = mv.download_gallery_data(filename)
 
     # set up the geographical view
     my_view = mv.geoview(

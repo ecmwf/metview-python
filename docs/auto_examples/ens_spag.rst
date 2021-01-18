@@ -35,10 +35,15 @@ ENS Spaghetti Map
     # granted to it by virtue of its status as an intergovernmental organisation
     # nor does it submit to any jurisdiction.
     #
+
     import metview as mv
 
     # read the ENS forecast
-    z = mv.read("z850_ens.grib")
+    filename = "z850_ens.grib"
+    if mv.exist(filename):
+        z = mv.read(filename)
+    else:
+        z = mv.download_gallery_data(filename)
 
     # define contour line for perturbed members (pf)
     cont_pf = mv.mcont(

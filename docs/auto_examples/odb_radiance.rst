@@ -36,14 +36,17 @@ ODB Radiance Map
     # nor does it submit to any jurisdiction.
     #
 
-
     import metview as mv
+
+    # read ODB
+    filename = "amsua.odb"
+    if mv.exist(filename):
+        amsua_odb = mv.read(filename)
+    else:
+        amsua_odb = mv.download_gallery_data(filename)
 
     # define channel
     channel = 5  # 5,6
-
-    # read ODB
-    amsua_odb = mv.read("amsua.odb")
 
     # filter channel and define plot data
     vis = mv.odb_visualiser(

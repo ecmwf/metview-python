@@ -39,11 +39,14 @@ Parcel Method on Skew-T
     import metview as mv
 
     # read GRIB data
-    g = mv.read("thermo_profile.grib")
+    filename = "thermo_profile.grib"
+    if mv.exist(filename):
+        g = mv.read(filename)
+    else:
+        g = mv.download_gallery_data(filename)
 
     # extract thermo profile
     prof = mv.thermo_grib(coordinates=[5, 0], data=g)
-
 
     # compute parcel path - start from surface
     parcel = mv.thermo_parcel_path(prof)

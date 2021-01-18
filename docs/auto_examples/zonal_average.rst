@@ -39,7 +39,11 @@ Zonal Average
     import metview as mv
 
     # read pressure level data
-    g = mv.read("avg_tuv.grib")
+    filename = "avg_tuv.grib"
+    if mv.exist(filename):
+        g = mv.read(filename)
+    else:
+        g = mv.download_gallery_data(filename)
 
     # filter u (zonal wind component) and t
     u = mv.read(data=g, param="u")

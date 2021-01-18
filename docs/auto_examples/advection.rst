@@ -13,22 +13,14 @@ Humidity advection
 ===================
 
 
-.. rst-class:: sphx-glr-script-out
 
-
-.. code-block:: pytb
-
-    Traceback (most recent call last):
-      File "/Users/sandor/git/mpy/docs/gallery/advection.py", line 23, in <module>
-        f = mv.download_gallery_data(filename)
-    AttributeError: module 'metview' has no attribute 'download_gallery_data'
+.. image:: /auto_examples/images/sphx_glr_advection_001.png
+    :alt: advection
+    :class: sphx-glr-single-img
 
 
 
 
-
-
-|
 
 
 .. code-block:: default

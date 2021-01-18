@@ -5,25 +5,6 @@ Examples using ``metview.nearest_gridpoint``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="CDF Curve">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_cdf_curve_thumb.png
-     :alt: CDF Curve
-
-     :ref:`sphx_glr_auto_examples_cdf_curve.py`
-
-.. raw:: html
-
-    </div>
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_cdf_curve.py`
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Graph Plot with Double Axis">
 
 .. only:: html

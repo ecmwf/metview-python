@@ -14,20 +14,9 @@ Cross Section with Orography
 
 
 
-.. rst-class:: sphx-glr-horizontal
-
-
-    *
-
-      .. image:: /auto_examples/images/sphx_glr_cross_section_orog_001.png
-          :alt: cross section orog
-          :class: sphx-glr-multi-img
-
-    *
-
-      .. image:: /auto_examples/images/sphx_glr_cross_section_orog_002.png
-          :alt: cross section orog
-          :class: sphx-glr-multi-img
+.. image:: /auto_examples/images/sphx_glr_cross_section_orog_001.png
+    :alt: cross section orog
+    :class: sphx-glr-single-img
 
 
 
@@ -50,7 +39,11 @@ Cross Section with Orography
     import metview as mv
 
     # read grib file - contains model level data
-    fs = mv.read("fc_ml.grib")
+    filename = "fc_ml.grib"
+    if mv.exist(filename):
+        fs = mv.read(filename)
+    else:
+        fs = mv.download_gallery_data(filename)
 
     # read temperature and scale it to C
     t = mv.read(data=fs, param="t")
@@ -88,7 +81,10 @@ Cross Section with Orography
     xs_view = mv.mxsectview(line=line, top_level=80, vertical_scaling="log")
 
     # define orography area
-    orog_graph = mv.mgraph(graph_type="area", graph_shade_colour="charcoal",)
+    orog_graph = mv.mgraph(
+        graph_type="area",
+        graph_shade_colour="charcoal",
+    )
 
     # define cross section data (field + lnsp)
     xs_t_data = mv.merge(t, lnsp)

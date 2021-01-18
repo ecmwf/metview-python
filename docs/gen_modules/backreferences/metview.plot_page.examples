@@ -5,90 +5,14 @@ Examples using ``metview.plot_page``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Graph Plot with Double Axis">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_double_axis_1_thumb.png
-     :alt: Graph Plot with Double Axis
-
-     :ref:`sphx_glr_auto_examples_double_axis_1.py`
-
-.. raw:: html
-
-    </div>
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_double_axis_1.py`
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section Parallel Wind Component with Map">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_wind_parallel_thumb.png
-     :alt: Cross Section Parallel Wind Component with Map
-
-     :ref:`sphx_glr_auto_examples_cross_section_wind_parallel.py`
-
-.. raw:: html
-
-    </div>
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_cross_section_wind_parallel.py`
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section Normal Wind Component with Map">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_wind_normal_thumb.png
-     :alt: Cross Section Normal Wind Component with Map
-
-     :ref:`sphx_glr_auto_examples_cross_section_wind_normal.py`
-
-.. raw:: html
-
-    </div>
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_cross_section_wind_normal.py`
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section Going Through the South Pole">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_cross_section_via_pole_thumb.png
-     :alt: Cross Section Going Through the South Pole
-
-     :ref:`sphx_glr_auto_examples_cross_section_via_pole.py`
-
-.. raw:: html
-
-    </div>
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_cross_section_via_pole.py`
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Layout with 3 Maps">
 
 .. only:: html
 
- .. figure:: /auto_examples/images/thumb/sphx_glr_layoutx3_thumb.png
+ .. figure:: /auto_examples/grib/images/thumb/sphx_glr_layoutx3_thumb.png
      :alt: Layout with 3 Maps
 
-     :ref:`sphx_glr_auto_examples_layoutx3.py`
+     :ref:`sphx_glr_auto_examples_grib_layoutx3.py`
 
 .. raw:: html
 
@@ -96,23 +20,4 @@ Examples using ``metview.plot_page``
 
 .. only:: not html
 
- * :ref:`sphx_glr_auto_examples_layoutx3.py`
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR Hodograph">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_hodograph_thumb.png
-     :alt: BUFR Hodograph
-
-     :ref:`sphx_glr_auto_examples_hodograph.py`
-
-.. raw:: html
-
-    </div>
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_hodograph.py`
+ * :ref:`sphx_glr_auto_examples_grib_layoutx3.py`

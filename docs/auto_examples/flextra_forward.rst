@@ -36,14 +36,17 @@ FLEXTRA Forward Trajectories
     # nor does it submit to any jurisdiction.
     #
 
-
     import metview as mv
 
     # read file containing the results of a FLEXTRA
     # forward simulation with 5 trajectories started at the
     # same location and height at different times
     # (i.e. a FLEXTRA simulation with mode="normal")
-    f = mv.read("flextra_res_normal.txt")
+    filename = "flextra_res_normal.txt"
+    if mv.exist(filename):
+        f = mv.read(filename)
+    else:
+        f = mv.download_gallery_data(filename)
 
     # define visualiser
     vis = mv.flextra_visualiser(flextra_data=f)

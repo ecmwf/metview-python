@@ -36,11 +36,14 @@ Contour Shading Only Over Land
     # nor does it submit to any jurisdiction.
     #
 
-
     import metview as mv
 
     # read grib data
-    f = mv.read("2m_temperature.grib")
+    filename = "2m_temperature.grib"
+    if mv.exist(filename):
+        f = mv.read(filename)
+    else:
+        f = mv.download_gallery_data(filename)
 
     # define coastlines with sea shading but no land shading.
     # We set map_layer_mode="foreground" to make the

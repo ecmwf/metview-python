@@ -16,7 +16,11 @@ Time-height Section
 import metview as mv
 
 # read GRIB forecast data
-data = mv.read("joachim_pl.grib")
+filename = "joachim_pl.grib"
+if mv.exist(filename):
+    data = mv.read(filename)
+else:
+    data = mv.download_gallery_data(filename)
 
 # the hovmoeller view takes an area as an input.
 # We define the location by shrinking down the area to a point

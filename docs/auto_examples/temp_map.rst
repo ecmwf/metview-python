@@ -39,7 +39,11 @@ BUFR Temp Map
     import metview as mv
 
     # read TEMP bufr file
-    bd = mv.read("temp.bufr")
+    filename = "temp.bufr"
+    if mv.exist(filename):
+        bd = mv.read(filename)
+    else:
+        bd = mv.download_gallery_data(filename)
 
     # define observation plotting - selecting level 250 hPa
     obsp = mv.mobs(

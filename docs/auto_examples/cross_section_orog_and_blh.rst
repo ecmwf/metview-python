@@ -36,7 +36,6 @@ Cross Section with Orography and Boundary Layer Height
     # nor does it submit to any jurisdiction.
     #
 
-
     import metview as mv
 
     # get data
@@ -69,7 +68,11 @@ Cross Section with Orography and Boundary Layer Height
         blh = mv.retrieve(**ret_core, type="fc", levtype="sfc", param="blh", step=12)
     else:
         # read data from GRIB file
-        fs_in = mv.read("xs_blh.grib")
+        filename = "xs_blh.grib"
+        if mv.exist(filename):
+            fs_in = mv.read(filename)
+        else:
+            fs_in = mv.download_gallery_data(filename)
         fs_ml = mv.read(data=fs_in, levtype="ml")
         zs = mv.read(data=fs_ml, param="z")
         blh = mv.read(data=fs_in, param="blh")

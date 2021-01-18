@@ -5,25 +5,6 @@ Examples using ``metview.binning``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB Scatterplot">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_grib_scatterplot_thumb.png
-     :alt: GRIB Scatterplot
-
-     :ref:`sphx_glr_auto_examples_grib_scatterplot.py`
-
-.. raw:: html
-
-    </div>
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_grib_scatterplot.py`
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="ODB Scatterplot with Binning">
 
 .. only:: html

@@ -37,7 +37,7 @@ Wind Vectors from List Data
     #
 
     # -------------------------------------------------------------------------------
-    # Demonstrates how to plot a set of vectors as coloured arrows using 
+    # Demonstrates how to plot a set of vectors as coloured arrows using
     # advance mode (colour depends on arrow length).
     # -------------------------------------------------------------------------------
 
@@ -81,7 +81,6 @@ Wind Vectors from List Data
         wind_arrow_legend_text="M/S",
     )
 
-
     # set up the title
     my_title = mv.mtext(
         text_font_size=0.7,
@@ -89,7 +88,6 @@ Wind Vectors from List Data
         text_justification="LEFT",
         text_colour="CHARCOAL",
     )
-
 
     # define the output plot file
     mv.setoutput(mv.pdf_output(output_name="geowind"))

@@ -40,7 +40,11 @@ ENS Tephigram
     import metview as mv
 
     # read ENS data
-    data = mv.read("ens_prof.grib")
+    filename = "ens_prof.grib"
+    if mv.exist(filename):
+        data = mv.read(filename)
+    else:
+        data = mv.download_gallery_data(filename)
 
     # define profile location
     location = [17.51, -7.04]

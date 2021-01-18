@@ -1,9 +1,7 @@
-
 """
 Boundaries, Cities and Rivers
 ==============================
 """
-
 
 # (C) Copyright 2017- ECMWF.
 #
@@ -14,7 +12,6 @@ Boundaries, Cities and Rivers
 # granted to it by virtue of its status as an intergovernmental organisation
 # nor does it submit to any jurisdiction.
 #
-
 
 import metview as mv
 

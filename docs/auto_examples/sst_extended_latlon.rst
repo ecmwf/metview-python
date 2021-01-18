@@ -39,7 +39,11 @@ SSt on Extended Cylindrical Map
     import metview as mv
 
     # read GRIB
-    sst = mv.read("sst.grib")
+    filename = "sst.grib"
+    if mv.exist(filename):
+        sst = mv.read(filename)
+    else:
+        sst = mv.download_gallery_data(filename)
 
     # define contouring
     cont = mv.mcont(contour_automatic_setting="ecmwf", legend="on")

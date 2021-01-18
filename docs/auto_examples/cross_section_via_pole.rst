@@ -36,7 +36,6 @@ Cross Section Going Through the South Pole
     # nor does it submit to any jurisdiction.
     #
 
-
     import metview as mv
 
     # get input (pressure level) data
@@ -75,8 +74,12 @@ Cross Section Going Through the South Pole
         )
     # read data from file
     else:
-        f_o3 = mv.read("ozone_pl.grib")
-
+        filename = "ozone_pl.grib"
+        if mv.exist(filename):
+            f_o3 = mv.read(filename)
+        else:
+            f_o3 = mv.download_gallery_data(filename)
+   
     # ---------------------------
     # Cross section
     # ----------------------------

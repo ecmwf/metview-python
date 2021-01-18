@@ -36,7 +36,6 @@ Fill the area between two curves
     # nor does it submit to any jurisdiction.
     #
 
-
     import metview as mv
     import numpy as np
 

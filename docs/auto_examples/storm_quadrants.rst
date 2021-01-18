@@ -39,6 +39,10 @@ Storm Wind Quadrants
     import metview as mv
 
     # read CSV file with the track positions and quadrant sizes in (km)
+    filename = "dorian_track.csv"
+    if not mv.exist(filename):
+        mv.download_gallery_data(filename)
+    
     tbl = mv.read_table(
         table_delimiter=" ",
         table_combine_delimiters="on",
