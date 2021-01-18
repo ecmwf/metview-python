@@ -14,9 +14,26 @@ Tephigram from List Data
 
 
 
-.. image:: /auto_examples/thermo/images/sphx_glr_tephigram_001.png
-    :alt: tephigram
-    :class: sphx-glr-single-img
+.. rst-class:: sphx-glr-horizontal
+
+
+    *
+
+      .. image:: /auto_examples/thermo/images/sphx_glr_tephigram_001.png
+          :alt: tephigram
+          :class: sphx-glr-multi-img
+
+    *
+
+      .. image:: /auto_examples/thermo/images/sphx_glr_tephigram_002.png
+          :alt: tephigram
+          :class: sphx-glr-multi-img
+
+    *
+
+      .. image:: /auto_examples/thermo/images/sphx_glr_tephigram_003.png
+          :alt: tephigram
+          :class: sphx-glr-multi-img
 
 
 

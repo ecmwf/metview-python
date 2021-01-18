@@ -13,14 +13,24 @@ Meridional Average
 ==============================================
 
 
-
-.. image:: /auto_examples/sections/images/sphx_glr_meridional_average_001.png
-    :alt: meridional average
-    :class: sphx-glr-single-img
+.. rst-class:: sphx-glr-script-out
 
 
+.. code-block:: pytb
+
+    Traceback (most recent call last):
+      File "/Users/sandor/git/mpy/docs/gallery/sections/meridional_average.py", line 23, in <module>
+        g = mv.download_gallery_data(filename)
+      File "/Users/sandor/git/mpy/metview/bindings.py", line 1151, in download_gallery_data
+        raise Exception("Could not download file " + filename + " from the download server")
+    Exception: Could not download file avg_tuv.grib from the download server
 
 
+
+
+
+
+|
 
 
 .. code-block:: default

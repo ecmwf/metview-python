@@ -13,14 +13,24 @@ BUFR Hodograph
 ==============================================
 
 
-
-.. image:: /auto_examples/thermo/images/sphx_glr_hodograph_001.png
-    :alt: hodograph
-    :class: sphx-glr-single-img
+.. rst-class:: sphx-glr-script-out
 
 
+.. code-block:: pytb
+
+    Traceback (most recent call last):
+      File "/Users/sandor/git/mpy/docs/gallery/thermo/hodograph.py", line 24, in <module>
+        b = mv.download_gallery_data(filename)
+      File "/Users/sandor/git/mpy/metview/bindings.py", line 1151, in download_gallery_data
+        raise Exception("Could not download file " + filename + " from the download server")
+    Exception: Could not download file temp.bufr from the download server
 
 
+
+
+
+
+|
 
 
 .. code-block:: default

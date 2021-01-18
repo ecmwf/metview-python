@@ -9,7 +9,7 @@
     .. _sphx_glr_auto_examples_grib_ens_spag.py:
 
 
-ENS Spaghetti Map
+GRIB - ENS Spaghetti Map
 ==============================================
 
 

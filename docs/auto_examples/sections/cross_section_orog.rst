@@ -14,9 +14,20 @@ Cross Section with Orography
 
 
 
-.. image:: /auto_examples/sections/images/sphx_glr_cross_section_orog_001.png
-    :alt: cross section orog
-    :class: sphx-glr-single-img
+.. rst-class:: sphx-glr-horizontal
+
+
+    *
+
+      .. image:: /auto_examples/sections/images/sphx_glr_cross_section_orog_001.png
+          :alt: cross section orog
+          :class: sphx-glr-multi-img
+
+    *
+
+      .. image:: /auto_examples/sections/images/sphx_glr_cross_section_orog_002.png
+          :alt: cross section orog
+          :class: sphx-glr-multi-img
 
 
 

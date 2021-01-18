@@ -13,14 +13,24 @@ Cross Section Normal Wind Component with Map
 ==============================================
 
 
-
-.. image:: /auto_examples/sections/images/sphx_glr_cross_section_wind_normal_001.png
-    :alt: cross section wind normal
-    :class: sphx-glr-single-img
+.. rst-class:: sphx-glr-script-out
 
 
+.. code-block:: pytb
+
+    Traceback (most recent call last):
+      File "/Users/sandor/git/mpy/docs/gallery/sections/cross_section_wind_normal.py", line 23, in <module>
+        g = mv.download_gallery_data(filename)
+      File "/Users/sandor/git/mpy/metview/bindings.py", line 1151, in download_gallery_data
+        raise Exception("Could not download file " + filename + " from the download server")
+    Exception: Could not download file sandy_pl.grib from the download server
 
 
+
+
+
+
+|
 
 
 .. code-block:: default

@@ -9,8 +9,8 @@
     .. _sphx_glr_auto_examples_grib_contour10.py:
 
 
-Temperature Below 0 Celsius
-=============================
+GRIB - Temperature Below 0 Celsius
+===================================
 
 
 
@@ -24,7 +24,6 @@ Temperature Below 0 Celsius
 
 
 .. code-block:: default
-
 
 
     # (C) Copyright 2017- ECMWF.

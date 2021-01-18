@@ -1,6 +1,6 @@
 """
-Field anomalies
-===================
+GRIB - Field anomalies
+=========================
 """
 
 # (C) Copyright 2017- ECMWF.

@@ -13,14 +13,24 @@ Hovmoeller Area Average
 ==============================================
 
 
-
-.. image:: /auto_examples/sections/images/sphx_glr_hovmoeller_area_001.png
-    :alt: hovmoeller area
-    :class: sphx-glr-single-img
+.. rst-class:: sphx-glr-script-out
 
 
+.. code-block:: pytb
+
+    Traceback (most recent call last):
+      File "/Users/sandor/git/mpy/docs/gallery/sections/hovmoeller_area.py", line 28, in <module>
+        t_ts = mv.download_gallery_data(filename)
+      File "/Users/sandor/git/mpy/metview/bindings.py", line 1151, in download_gallery_data
+        raise Exception("Could not download file " + filename + " from the download server")
+    Exception: Could not download file t_ts.grib from the download server
 
 
+
+
+
+
+|
 
 
 .. code-block:: default

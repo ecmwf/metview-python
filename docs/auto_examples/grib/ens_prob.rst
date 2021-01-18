@@ -9,7 +9,7 @@
     .. _sphx_glr_auto_examples_grib_ens_prob.py:
 
 
-ENS Windgust Probability
+GRIB - ENS Windgust Probability
 ==============================================
 
 

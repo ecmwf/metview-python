@@ -9,8 +9,8 @@
     .. _sphx_glr_auto_examples_grib_split_contour.py:
 
 
-Split contouring
-======================
+GRIB - Split contouring
+============================
 
 
 

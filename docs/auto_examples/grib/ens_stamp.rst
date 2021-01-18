@@ -9,7 +9,7 @@
     .. _sphx_glr_auto_examples_grib_ens_stamp.py:
 
 
-ENS Stamp Map
+GRIB - ENS Stamp Map
 ==============================================
 
 

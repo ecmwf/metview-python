@@ -1,6 +1,6 @@
 """
-Split contouring
-======================
+GRIB - Split contouring
+============================
 """
 
 # (C) Copyright 2017- ECMWF.

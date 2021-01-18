@@ -5,16 +5,16 @@
 
 Computation times
 =================
-**00:04.765** total execution time for **auto_examples_thermo** files:
+**00:05.836** total execution time for **auto_examples_thermo** files:
 
 +------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_thermo_tephigram_bufr.py` (``tephigram_bufr.py``)                 | 00:04.765 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_thermo_tephigram_bufr.py` (``tephigram_bufr.py``)                 | 00:04.756 | 0.0 MB |
 +------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_thermo_ens_tephigram.py` (``ens_tephigram.py``)                   | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_thermo_parcel_path_skewt_grib.py` (``parcel_path_skewt_grib.py``) | 00:00.386 | 0.0 MB |
 +------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_thermo_hodograph.py` (``hodograph.py``)                           | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_thermo_ens_tephigram.py` (``ens_tephigram.py``)                   | 00:00.367 | 0.0 MB |
 +------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_thermo_parcel_path_skewt_grib.py` (``parcel_path_skewt_grib.py``) | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_thermo_hodograph.py` (``hodograph.py``)                           | 00:00.326 | 0.0 MB |
 +------------------------------------------------------------------------------------------------+-----------+--------+
 | :ref:`sphx_glr_auto_examples_thermo_tephigram.py` (``tephigram.py``)                           | 00:00.000 | 0.0 MB |
 +------------------------------------------------------------------------------------------------+-----------+--------+

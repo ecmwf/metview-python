@@ -1,8 +1,7 @@
 """
-Temperature Below 0 Celsius
-=============================
+GRIB - Temperature Below 0 Celsius
+===================================
 """
-
 
 # (C) Copyright 2017- ECMWF.
 #

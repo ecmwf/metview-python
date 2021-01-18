@@ -9,8 +9,8 @@
     .. _sphx_glr_auto_examples_grib_field_anomalies.py:
 
 
-Field anomalies
-===================
+GRIB - Field anomalies
+=========================
 
 
 

@@ -13,14 +13,24 @@ Cross Section 3D Parallel Wind
 ================================
 
 
-
-.. image:: /auto_examples/sections/images/sphx_glr_cross_section_wind_3d_001.png
-    :alt: cross section wind 3d
-    :class: sphx-glr-single-img
+.. rst-class:: sphx-glr-script-out
 
 
+.. code-block:: pytb
+
+    Traceback (most recent call last):
+      File "/Users/sandor/git/mpy/docs/gallery/sections/cross_section_wind_3d.py", line 23, in <module>
+        fs = mv.download_gallery_data(filename)
+      File "/Users/sandor/git/mpy/metview/bindings.py", line 1151, in download_gallery_data
+        raise Exception("Could not download file " + filename + " from the download server")
+    Exception: Could not download file joachim_ml.grib from the download server
 
 
+
+
+
+
+|
 
 
 .. code-block:: default

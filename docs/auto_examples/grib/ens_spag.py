@@ -1,5 +1,5 @@
 """
-ENS Spaghetti Map
+GRIB - ENS Spaghetti Map
 ==============================================
 """
 

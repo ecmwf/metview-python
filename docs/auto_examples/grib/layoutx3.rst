@@ -9,7 +9,7 @@
     .. _sphx_glr_auto_examples_grib_layoutx3.py:
 
 
-Layout with 3 Maps
+GRIB - Layout with 3 Maps
 ==============================================
 
 

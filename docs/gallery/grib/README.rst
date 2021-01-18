@@ -1,2 +1,2 @@
-GRIB map plotting
+Map-based plots
 ===========================
