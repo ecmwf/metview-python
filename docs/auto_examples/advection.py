@@ -16,7 +16,11 @@ Humidity advection
 import metview as mv
 
 # read grib - contains fields on 850 hPa
-f = mv.read("advection_850.grib")
+filename = "advection_850.grib"
+if mv.exist(filename):
+    f = mv.read(filename)
+else:
+    f = mv.download_gallery_data(filename)
 
 # extract fields
 q = mv.read(data=f, param="q")

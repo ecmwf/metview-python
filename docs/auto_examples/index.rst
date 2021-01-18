@@ -390,27 +390,6 @@ Below is a gallery of examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Humidity advection">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_advection_thumb.png
-     :alt: Humidity advection
-
-     :ref:`sphx_glr_auto_examples_advection.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/advection
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Cross Section with Orography">
 
 .. only:: html
@@ -450,6 +429,27 @@ Below is a gallery of examples
    :hidden:
 
    /auto_examples/cross_section_wind_3d
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Humidity advection">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_advection_thumb.png
+     :alt: Humidity advection
+
+     :ref:`sphx_glr_auto_examples_advection.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/advection
 
 .. raw:: html
 
