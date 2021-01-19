@@ -6,7 +6,7 @@
 #
 apipkg==1.4               # via execnet
 atomicwrites==1.1.5       # via pytest
-attrs==18.1.0             # via cfgrib, pytest
+attrs==20.3.0             # via cfgrib, pytest
 cffi==1.11.5
 cfgrib==0.9.4.2
 cftime==1.0.3.4           # via netcdf4

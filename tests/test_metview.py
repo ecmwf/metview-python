@@ -50,6 +50,12 @@ def test_version_info():
     assert "metview_version" in out
 
 
+def test_version_info_python():
+    out = mv.version_info()
+    assert "metview_python_version" in out
+    assert isinstance(out['metview_python_version'], str)
+
+
 def test_describe():
     mv.describe("type")
 
@@ -187,6 +193,15 @@ def test_write():
     regridded_grib = mv.write(file_in_testdir("test_gg_grid.grib"), gg)
     assert regridded_grib == 0
     os.remove(file_in_testdir("test_gg_grid.grib"))
+
+
+def test_write_method():
+    gg = mv.read({"SOURCE": file_in_testdir("test.grib"), "GRID": 80})
+    regridded_grib = gg.write(file_in_testdir("test_gg_grid_method.grib"))
+    assert regridded_grib == 0
+    gg2 = mv.read(file_in_testdir("test_gg_grid_method.grib"))
+    assert mv.grib_get_string(gg2, "shortName") == "2t"
+    os.remove(file_in_testdir("test_gg_grid_method.grib"))
 
 
 def test_class_():
@@ -518,7 +533,7 @@ def test_fieldset_slice():
 def test_empty_fieldset_slice():
     f = mv.Fieldset()
     s = f[0:4:1]
-    assert s == None
+    assert s is None
 
 
 def test_fieldset_iterator():
@@ -746,6 +761,61 @@ def test_fieldset_append_from_empty():
     assert shortnames == ["t", "u", "t", "u", "v"]
 
 
+def test_fieldset_create_from_list_of_fieldsets_1():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    g1 = grib[2]
+    g2 = grib[4]
+    g3 = grib[1]
+    list_of_fields = [g1, g2, g3]
+    gl = mv.Fieldset(fields=list_of_fields)
+    assert gl.count() == 3
+    assert gl.grib_get_long("level") == [700, 400, 850]
+
+
+def test_fieldset_create_from_list_of_fieldsets_2():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    g1 = grib[2]
+    g2 = grib[4]
+    g3 = mv.merge(grib[1], grib[0])
+    list_of_fields = [g1, g2, g3]
+    gl = mv.Fieldset(fields=list_of_fields)
+    assert gl.count() == 4
+    assert gl.grib_get_long("level") == [700, 400, 850, 1000]
+
+
+def test_fieldset_create_from_list_of_fieldsets_3():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    g1 = grib[1:4]
+    g2 = grib[0]
+    g3 = grib[3:]
+    list_of_fields = [g1, g2, g3]
+    gl = mv.Fieldset(fields=list_of_fields)
+    assert gl.count() == 7
+    assert gl.grib_get_long("level") == [850, 700, 500, 1000, 500, 400, 300]
+
+
+def test_fieldset_create_from_list_of_fieldsets_4():
+    grib1 = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    grib2 = mv.read(os.path.join(PATH, "ml_data.grib"))
+    g1 = grib1[1:4]
+    g2 = grib2[5:8]
+    g3 = grib1[0]
+    list_of_fields = [g1, g2, g3]
+    gl = mv.Fieldset(fields=list_of_fields)
+    assert gl.count() == 7
+    assert gl.grib_get_long("level") == [850, 700, 500, 17, 21, 25, 1000]
+
+
+def test_fieldset_create_from_list_of_fieldsets_5():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    g1 = grib[2]
+    g2 = grib[4]
+    g3 = grib[1]
+    list_of_fields = [g1, g2, g3]
+    with pytest.raises(ValueError):
+        gl = mv.Fieldset(path=os.path.join(PATH, "test.grib"), fields=list_of_fields)
+
+
 def test_fieldset_pickling():
     pickled_fname = file_in_testdir("pickled_fieldset.p")
     g = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
@@ -790,6 +860,15 @@ def test_read_bufr():
     assert mv.type(bufr) == "observations"
 
 
+def test_write_method_bufr():
+    bufr = mv.read(file_in_testdir("obs_3day.bufr"))
+    write_path = file_in_testdir("obs_3day_written.bufr")
+    bufr.write(write_path)
+    b2 = mv.read(write_path)
+    assert mv.type(b2) == "observations"
+    os.remove(write_path)
+
+
 def test_read_gpt():
     gpt = mv.read(file_in_testdir("t2m_3day.gpt"))
     assert mv.type(gpt) == "geopoints"
@@ -797,6 +876,17 @@ def test_read_gpt():
 
 
 TEST_GEOPOINTS = mv.read(os.path.join(PATH, "t2m_3day.gpt"))
+
+
+def test_gpts_write_method():
+    g = mv.read(file_in_testdir("t2m_3day.gpt"))
+    gcount = g.count()
+    write_path = file_in_testdir("t2m_3day_written.gpt")
+    g.write(write_path)
+    h = mv.read(write_path)
+    assert mv.type(h) == "geopoints"
+    assert h.count() == gcount
+    os.remove(write_path)
 
 
 def test_filter_gpt():
@@ -993,6 +1083,19 @@ def test_read_gptset():
     lats = good_filter[0].latitudes()
     assert len(lats) == 1
     assert lats[0] == 60.82
+
+
+def test_gptset_write_method():
+    g = mv.read(file_in_testdir("geopointset_1.gpts"))
+    write_path = file_in_testdir("geopointset_1_written.gpt")
+    g.write(write_path)
+    h = mv.read(write_path)
+    assert mv.type(h) == "geopointset"
+    assert h.count() == g.count()
+    h1 = h[0]
+    assert mv.type(h1) == "geopoints"
+    assert mv.count(h1) == 11
+    os.remove(write_path)
 
 
 def test_date_year():
@@ -1254,6 +1357,18 @@ def test_netcdf_multi_indexed_values_with_all():
     assert len(v) == 5
     assert np.isclose(v[0], 234.714)
     assert np.isclose(v[4], 260.484)
+
+
+def test_netcdf_write_method():
+    nc = mv.read(file_in_testdir("xs_date_mv5.nc"))
+    write_path = file_in_testdir("xs_date_mv5_written.nc")
+    nc.write(write_path)
+    nc2 = mv.read(write_path)
+    mv.setcurrent(nc2, "t")
+    assert mv.attributes(nc2)["long_name"] == "Temperature"
+    assert np.isclose(mv.value(nc2, 0), 234.7144)
+    assert np.isclose(mv.value(nc2, 4), 237.4377)
+    os.remove(write_path)
 
 
 def test_netcdf_to_dataset():
@@ -1865,6 +1980,39 @@ def test_request():
     assert str(r) == "VERB: MCOAST{'param1': 'value1', 'param2': 180}"
 
 
+def test_read_request():
+    # check read function
+    lreq = mv.read_request(file_in_testdir("request.req"))
+    assert isinstance(lreq, list)
+    assert len(lreq) == 2
+
+    # check first request
+    req = lreq[0]
+    assert isinstance(req, mv.Request)
+    assert isinstance(req, dict)
+    assert req.get_verb() == "GRIB"
+    assert req["PATH"] == "t.grib"
+
+    # check second request
+    req = lreq[1]
+    assert isinstance(req, mv.Request)
+    assert isinstance(req, dict)
+    assert req.get_verb() == "MCONT"
+    assert req["contour_line_colour"] == "red"
+    assert req["CONTOUR_HIGHLIGHT_FREQUENCy"] == 2
+    assert req["contour_level_selection_type"] == "LEVEL_LIST"
+    assert isinstance(req["CONTOUR_LEVEL_LIST"], list)
+    assert isinstance(req["CONTOUR_LEVEL_LIST"][0], float)
+    assert req["CONTOUR_LEVEL_LIST"] == [-10, 0, 10]
+    assert isinstance(req["contour_COLOUR_list"], list)
+    assert isinstance(req["contour_colour_list"][0], str)
+    assert req["CONTOUR_coLour_liSt"] == [
+        "RGB(0.5,0.2,0.8)",
+        "RGB(0.8,0.7,0.3)",
+        "RGB(0.4,0.8,0.3)",
+    ]
+
+
 def test_file():
     grib = mv.read(file_in_testdir("t_for_xs.grib"))
     fpath = file_in_testdir("my_file.grib")
@@ -1879,3 +2027,24 @@ def test_file():
     assert len(result) == 3
     assert result.grib_get_long("level") == [700, 300, 850]
     os.remove(fpath)
+
+
+def test_download():
+    url = "http://download.ecmwf.org/test-data/metview/gallery/city_loc.gpt"
+    g = mv.download(url=url)
+    assert mv.type(g) == "geopoints"
+
+
+def test_download_gallery_data():
+    fname = "z_for_spectra.grib"
+    assert not os.path.isfile(fname)
+    g = mv.download_gallery_data(fname)
+    assert mv.type(g) == "fieldset"
+    assert os.path.isfile(fname)
+    os.remove(fname)
+
+
+def test_download_gallery_data_bad_fname():
+    fname = "zzz_for_spectra.grib"
+    with pytest.raises(Exception):
+        g = mv.download_gallery_data(fname)

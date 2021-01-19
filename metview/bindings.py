@@ -21,6 +21,9 @@ import cffi
 import numpy as np
 
 
+__version__ = "1.6.0"
+
+
 def string_from_ffi(s):
     return ffi.string(s).decode("utf-8")
 
@@ -107,6 +110,7 @@ class MetviewInvoker:
             )
 
         self.read_metview_settings(env_file.name)
+        env_file.close()
 
         # when the Python session terminates, we should destroy this object so that the Metview
         # session is properly cleaned up. We can also do this in a __del__ function, but there can
@@ -265,7 +269,7 @@ class Request(dict, Value):
                 self.verb = req.verb
                 self.val_pointer = req.val_pointer
             else:
-                if myverb != None:
+                if myverb is not None:
                     self.set_verb(myverb)
 
         # initialise from a Macro pointer
@@ -397,6 +401,9 @@ class File(Value):
 class FileBackedValue(Value):
     def __init__(self, val_pointer):
         Value.__init__(self, val_pointer)
+
+    def write(self, filename):
+        return write(filename, self)
 
     def url(self):
         # ask Metview for the file relating to this data (Metview will write it if necessary)
@@ -556,7 +563,7 @@ class ContainerValue(Value):
 
 
 class Fieldset(FileBackedValueWithOperators, ContainerValue):
-    def __init__(self, val_pointer=None, path=None):
+    def __init__(self, val_pointer=None, path=None, fields=None):
         FileBackedValueWithOperators.__init__(self, val_pointer)
         ContainerValue.__init__(
             self,
@@ -566,9 +573,16 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             support_slicing=True,
         )
 
+        if (path is not None) and (fields is not None):
+            raise ValueError("Fieldset cannot take both path and fields")
+
         if path is not None:
             temp = read(path)
             self.steal_val_pointer(temp)
+
+        if fields is not None:
+            for f in fields:
+                self.append(f)
 
     def append(self, other):
         temp = merge(self, other)
@@ -999,7 +1013,10 @@ def bind_functions(namespace, module_name=None):
     # FIXME: this needs to be more structured
     namespace["plot"] = plot
     namespace["setoutput"] = setoutput
+    namespace["metzoom"] = metzoom
+    namespace["version_info"] = version_info
     namespace["dataset_to_fieldset"] = dataset_to_fieldset
+    namespace["download_gallery_data"] = download_gallery_data
 
     namespace["Fieldset"] = Fieldset
     namespace["Request"] = Request
@@ -1010,6 +1027,7 @@ add = make("+")
 call = make("call")
 count = make("count")
 div = make("/")
+download = make("download")
 equal = make("=")
 filter = make("filter")
 greater_equal_than = make(">=")
@@ -1027,11 +1045,22 @@ prod = make("*")
 ps_output = make("ps_output")
 read = make("read")
 met_setoutput = make("setoutput")
+metzoom = make("metzoom")
 sub = make("-")
 subset = make("[]")
 met_and = make("and")
 met_or = make("or")
 met_not = make("not")
+met_version_info = make("version_info")
+write = make("write")
+
+
+# call the C++ version_info() function and add the version of the
+# Python bindings to the resulting dict
+def version_info():
+    binary_info = dict(met_version_info())
+    binary_info['metview_python_version'] = __version__
+    return binary_info
 
 
 # -----------------------------------------------------------------------------
@@ -1042,6 +1071,7 @@ met_not = make("not")
 class Plot:
     def __init__(self):
         self.plot_to_jupyter = False
+        self.jupyter_args = {}
 
     def __call__(self, *args, **kwargs):
         if self.plot_to_jupyter:
@@ -1050,8 +1080,9 @@ class Plot:
 
             base, ext = os.path.splitext(tmp)
 
+            self.jupyter_args.update(output_name=base, output_name_first_page_number="off")
             met_setoutput(
-                png_output(output_name=base, output_name_first_page_number="off")
+                png_output(self.jupyter_args)
             )
             met_plot(*args)
 
@@ -1081,7 +1112,7 @@ plot = Plot()
 # under most circumstances, we only import it when the user asks for Jupyter
 # functionality. Since this occurs within a function, we need a little trickery to
 # get the IPython functions into the global namespace so that the plot object can use them
-def setoutput(*args):
+def setoutput(*args, **kwargs):
     if "jupyter" in args:
         try:
             global Image
@@ -1096,6 +1127,7 @@ def setoutput(*args):
         # test whether we're in the Jupyter environment
         if get_ipython() is not None:
             plot.plot_to_jupyter = True
+            plot.jupyter_args = kwargs
         else:
             print(
                 "ERROR: setoutput('jupyter') was set, but we are not in a Jupyter environment"
@@ -1104,3 +1136,16 @@ def setoutput(*args):
     else:
         plot.plot_to_jupyter = False
         met_setoutput(*args)
+
+
+# -----------------------------------------------------------------------------
+#                        Other user-visible utiliy functions
+# -----------------------------------------------------------------------------
+
+def download_gallery_data(filename):
+    base_url = "http://download.ecmwf.org/test-data/metview/gallery/"
+    try:
+        d = download(url=base_url + filename, target=filename)
+        return d
+    except:
+        raise Exception("Could not download file " + filename + " from the download server")
