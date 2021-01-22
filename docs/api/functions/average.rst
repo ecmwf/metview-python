@@ -19,3 +19,6 @@ average
          average = \frac {1}{N} \sum_{i}^{N}f_{i}
         
       To get the physically correct average based on the grid cell areas use :func:`integrate`.
+
+
+.. mv-minigallery:: average

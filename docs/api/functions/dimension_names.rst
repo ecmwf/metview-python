@@ -8,3 +8,6 @@ dimension_names
     :param nc: input nectdf
     :type nc: :class:`NetCDF`
     :rtype: list
+
+
+.. mv-minigallery:: dimension_names

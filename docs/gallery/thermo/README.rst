@@ -1,2 +1,0 @@
-Thermodynamic diagrams
-===========================

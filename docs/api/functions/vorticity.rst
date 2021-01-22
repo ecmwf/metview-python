@@ -27,3 +27,5 @@ vorticity
 
    .. warning::
       :func:`vorticity` is only implemented for regular latitude-longitude grids. 
+
+.. mv-minigallery:: vorticity

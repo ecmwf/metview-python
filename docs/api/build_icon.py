@@ -1,3 +1,13 @@
+#
+# (C) Copyright 2017- ECMWF.
+#
+# This software is licensed under the terms of the Apache Licence Version 2.0
+# which can be obtained at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# In applying this licence, ECMWF does not waive the privileges and immunities
+# granted to it by virtue of its status as an intergovernmental organisation
+# nor does it submit to any jurisdiction.
+
 import os
 import sys
 import yaml
@@ -226,10 +236,8 @@ class DocFunction:
 
         return t
 
-    def need_mini_gallery(self):
-        return os.path.exists(
-            "../gen_modules/backreferences/metview.{}.examples".format(self.name)
-        )
+    def add_mini_gallery(self, f):
+        f.write(f".. mv-minigallery:: {self.name}")
 
     def as_dict(self):
         d = []
@@ -373,17 +381,10 @@ def add_icon_rst(name, fname, summary_file_name):
 """
             )
 
-            if fn.need_mini_gallery():
-                f.write(
-                    """
+            fn.add_mini_gallery(f)
+# .. minigallery:: metview.{}
+#     :add-heading:
 
-.. minigallery:: metview.{}
-    :add-heading:
-
-""".format(
-                        name
-                    )
-                )
 
 def make_icon_toc():
 

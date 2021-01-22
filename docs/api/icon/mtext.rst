@@ -107,8 +107,4 @@ mtext
     :type text_border_thickness: int, default: 1
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.mtext
-    :add-heading:
-
+.. include:: /gallery/backref/mtext.rst

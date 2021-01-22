@@ -24,3 +24,6 @@ frequencies
    
    .. warning::
       Note that this function accumulates its results between fields in ``fs``!
+
+
+.. mv-minigallery:: frequencies

@@ -18,3 +18,5 @@ longitudes
     :param fs: input geopoints
     :type fs: :class:`Geopoints`
     :rtype: ndarray
+
+.. mv-minigallery:: longitudes

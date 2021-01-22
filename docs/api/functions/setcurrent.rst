@@ -25,3 +25,6 @@ setcurrent
                 mv.setcurrent(nc, v)
                 # acts on current variable only
                 nc = nc - 273.16
+
+
+.. mv-minigallery:: setcurrent

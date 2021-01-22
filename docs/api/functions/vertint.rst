@@ -31,3 +31,5 @@ vertint
 
    .. warning::
       This function is obsolete, use :func:`univertint` instead.
+
+.. mv-minigallery:: vertint

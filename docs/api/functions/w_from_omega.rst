@@ -30,3 +30,5 @@ w_from_omega
     * Rd is the specific gas constant for dry air (287.058 J/(kg K)).
     * g is the gravitational acceleration (9.81 m/s\ :sup:`2`)
     
+
+.. mv-minigallery:: w_from_omega

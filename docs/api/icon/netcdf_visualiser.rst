@@ -80,8 +80,4 @@ netcdf_visualiser
     :type netcdf_missing_attribute: str, default: "_fillvalue"
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.netcdf_visualiser
-    :add-heading:
-
+.. include:: /gallery/backref/netcdf_visualiser.rst

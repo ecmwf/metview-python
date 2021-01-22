@@ -15,3 +15,6 @@ set_stnids
 
     .. warning::
       :func:`set_stnids` only works for :class:`Geopoints` with 'ncols' type.
+
+
+.. mv-minigallery:: set_stnids

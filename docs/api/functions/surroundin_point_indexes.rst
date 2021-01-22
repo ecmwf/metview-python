@@ -28,3 +28,5 @@ surrounding_points_indexes
    
    If any of the surrounding points are **missing**, :func:`surrounding_points_indexes` will return nan. To prevent this, and to return all the points regardless, option ``mode`` has to be set to "all".
    
+
+.. mv-minigallery:: surroundin_point_indexes

@@ -23,3 +23,6 @@ dewpoint_from_relative_humidity
         * e\ :sub:`wsat` is the saturation vapour pressure over water
         * td is the dewpoint temperature
 
+
+
+.. mv-minigallery:: dewpoint_from_relative_humidity

@@ -12,3 +12,6 @@ nobitmap
 
    .. note::
       See also :func:`bitmap`.
+
+
+.. mv-minigallery:: nobitmap

@@ -8,3 +8,6 @@ dimensions
     :param nc: input nectdf
     :type nc: :class:`NetCDF`
     :rtype: ndarray
+
+
+.. mv-minigallery:: dimensions

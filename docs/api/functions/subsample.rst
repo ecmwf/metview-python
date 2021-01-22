@@ -17,3 +17,6 @@ subsample
     
     .. note::
         It is advised to remove missing lat/lon points using :func:`remove_missing_latlons` before using :func:`subsample` or :func:`geosort`.
+
+
+.. mv-minigallery:: subsample

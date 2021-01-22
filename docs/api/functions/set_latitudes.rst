@@ -12,3 +12,5 @@ set_latitudes
     :rtype: :class:`Geopoints`
 
     If ``latitudes`` is a number all the latitudes are replaced with it. If ``latitudes`` is a list or ndarray and is shorter than the geopoints count then only the first values that have a corresponding value in ``latitudes`` are changed.
+
+.. mv-minigallery:: set_latitudes

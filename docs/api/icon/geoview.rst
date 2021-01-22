@@ -128,8 +128,4 @@ geoview
     :type subpage_background_colour: str, default: "white"
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.geoview
-    :add-heading:
-
+.. include:: /gallery/backref/geoview.rst

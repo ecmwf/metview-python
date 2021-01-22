@@ -52,8 +52,4 @@ flextra_visualiser
     :type flextra_label_period: {"6h", "12h", "24h", "48h"}, default: "12h"
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.flextra_visualiser
-    :add-heading:
-
+.. include:: /gallery/backref/flextra_visualiser.rst

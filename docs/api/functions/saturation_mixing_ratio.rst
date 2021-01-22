@@ -19,3 +19,5 @@ saturation_mixing_ratio
     .. code-block:: python
 
         ws = mv.mixing_ratio(p, mv.saturation_vapour_pressure(t, phase))
+
+.. mv-minigallery:: saturation_mixing_ratio

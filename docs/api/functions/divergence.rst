@@ -28,3 +28,6 @@ divergence
    .. warning::
       :func:`divergence` is only implemented for regular latitude-longitude grids.
 
+
+
+.. mv-minigallery:: divergence

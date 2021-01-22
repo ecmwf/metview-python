@@ -27,3 +27,6 @@ covar
          z = covar(x,y)
          z = mean(x*y)-mean(x)*mean(y)
 
+
+
+.. mv-minigallery:: covar

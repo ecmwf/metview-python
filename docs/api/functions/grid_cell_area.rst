@@ -10,3 +10,5 @@ grib_cell_area
    :rtype: :class:`Fieldset` 
 
    The grid cell area is returned in m\ :sup:`2` units. This function only works for regular latitude-longitude grids and Gaussian grids.
+
+.. mv-minigallery:: grid_cell_area

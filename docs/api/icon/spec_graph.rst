@@ -29,8 +29,4 @@ spec_graph
     :type truncation: number, default: 216
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.spec_graph
-    :add-heading:
-
+.. include:: /gallery/backref/spec_graph.rst

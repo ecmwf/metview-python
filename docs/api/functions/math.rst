@@ -235,3 +235,6 @@ Mathematical functions
    :rtype: same type as ``data``
 
    Input values must be in radians. Missing values are retained, unaltered by the calculation.
+
+
+.. mv-minigallery:: math

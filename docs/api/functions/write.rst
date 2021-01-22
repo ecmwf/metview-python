@@ -15,3 +15,5 @@ write
     If you use write() sequentially, note that it will overwrite any previous output if called with a file name, but will add to previous output if called with a filehandler.
 
     Note that special characters such as newline and tab can be written to text files.
+
+.. mv-minigallery:: write

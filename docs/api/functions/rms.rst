@@ -24,3 +24,5 @@ rms
 
          y = mv.rms(x)
          y = mv.sqrt(mv.mean(x^2)
+
+.. mv-minigallery:: rms

@@ -229,8 +229,4 @@ mcoast
     :type map_layer_mode: {"split", "foreground", "background"}, default: "split"
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.mcoast
-    :add-heading:
-
+.. include:: /gallery/backref/mcoast.rst

@@ -73,3 +73,5 @@ integrate
    .. warning:: 
    
       Please note that for **Gaussian grids** the formula can only be only regarded as an approximation since :math:`\Delta\phi_{i}` is not constant!
+
+.. mv-minigallery:: integrate

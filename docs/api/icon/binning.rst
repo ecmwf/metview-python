@@ -65,8 +65,4 @@ binning
     :type binning_y_reference: number, default: 0
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.binning
-    :add-heading:
-
+.. include:: /gallery/backref/binning.rst

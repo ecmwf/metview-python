@@ -11,3 +11,6 @@ netcdf_auto_translate_times
     
     Setting ``status`` to 1 enables the translation (which is the default behaviour), setting it to 0 disables it. If disabled, :func:`value` and :func:`values` will instead return the raw numbers encoded in the NetCDF variable. This is a global option, not specific to a particular NetCDF file.
 
+
+
+.. mv-minigallery:: netcdf_auto_translate_times

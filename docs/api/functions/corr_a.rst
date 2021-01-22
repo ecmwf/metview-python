@@ -29,3 +29,5 @@ corr_a
 
          z = corr_a (x, y)
          z = covar_a (x, y) / (sqrt(var_a(x)) * sqrt(var_a(y)))
+
+.. mv-minigallery:: corr_a

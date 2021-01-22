@@ -12,3 +12,6 @@ set_dates
     :rtype: :class:`Geopoints`
 
     If ``dates`` is a single date all the dates are replaced with it.  If ``dates`` is a list or ndarray and is shorter than the geopoints count then only the first dates that have a corresponding value in ``dates`` are changed.
+
+
+.. mv-minigallery:: set_dates

@@ -27,5 +27,7 @@ gradient
       :func:`gradient` is only implemented for regular latitude-longitude grids.
 
 
-.. minigallery:: metview.gradient
-    :add-heading:
+.. mv-minigallery:: gradient
+
+
+.. mv-minigallery:: gradient

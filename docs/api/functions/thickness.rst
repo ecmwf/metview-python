@@ -25,3 +25,6 @@ thickness
 
    .. warning::
       This function is obsolete, use :func:`unithickness` instead.
+
+
+.. mv-minigallery:: thickness

@@ -179,8 +179,4 @@ mlegend
     :type legend_histogram_grid_thickness: int, default: 1
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.mlegend
-    :add-heading:
-
+.. include:: /gallery/backref/mlegend.rst

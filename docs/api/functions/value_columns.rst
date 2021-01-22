@@ -8,3 +8,6 @@ value_columns
     :param fs: input geopoints
     :type fs: :class:`Geopoints`
     :rtype: list of str
+
+
+.. mv-minigallery:: value_columns

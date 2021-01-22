@@ -13,3 +13,6 @@ polar_vector
 
     ``gpt_magnitude`` and ``gpt_dir`` should contain the same number of points.
 
+
+
+.. mv-minigallery:: polar_vector

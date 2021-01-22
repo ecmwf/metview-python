@@ -97,8 +97,4 @@ maverageview
     :type subpage_background_colour: str, default: "white"
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.maverageview
-    :add-heading:
-
+.. include:: /gallery/backref/maverageview.rst

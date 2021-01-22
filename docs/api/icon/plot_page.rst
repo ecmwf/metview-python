@@ -53,8 +53,4 @@ plot_page
     :type sub_pages: str
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.plot_page
-    :add-heading:
-
+.. include:: /gallery/backref/plot_page.rst

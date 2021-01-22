@@ -12,3 +12,5 @@ thermo_data_values
     :rtype: dict
     
     See the Parcel method on Skew-T Example from the Gallery for its usage.
+
+.. mv-minigallery:: thermo_data_values

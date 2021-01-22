@@ -18,14 +18,10 @@ import sys
 import sphinx_rtd_theme
 # import pydata_sphinx_theme
 
-import sphinx_gallery
-from sphinx_gallery.sorting import ExampleTitleSortKey
-
 sys.path.insert(0, os.path.abspath("."))
+sys.path.append(os.path.abspath("./_ext"))
 # top = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
 # sys.path.insert(0, top)
-
-from scraper import PNGScraper
 
 # -- Project information -----------------------------------------------------
 
@@ -42,10 +38,9 @@ author = "ECMWF"
 extensions = [
     "sphinx_rtd_theme",
     # "pydata_sphinx_theme",
-    "sphinx_gallery.gen_gallery",
-    "sphinx_gallery.load_style",
     "nbsphinx",
     "sphinx.ext.intersphinx",
+    "metview_sphinx"
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -77,7 +72,7 @@ html_theme = "sphinx_rtd_theme"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 
-html_css_files = ['css/custom_style.css']
+html_css_files = ["css/custom_style.css", "css/gallery.css"]
 
 
 html_logo = "_static/metview.png"
@@ -85,24 +80,3 @@ html_logo = "_static/metview.png"
 rst_prolog = """
 .. role:: mval
 """
-
-
-# -- Options for sphinx_gallery -------------------------------------------------
-
-sphinx_gallery_conf = {
-    "examples_dirs": "gallery",  # path to your example scripts
-    "gallery_dirs": "auto_examples",  # path to where to save gallery generated output
-    "filename_pattern": "/*.py",
-    # "ignore_pattern": "[seaIce_].",
-    "image_scrapers": (PNGScraper()),
-    # directory where function/class granular galleries are stored
-    "backreferences_dir": "gen_modules/backreferences",
-    # Modules for which function/class level galleries are created.
-    'within_subsection_order': ExampleTitleSortKey,
-    # "doc_module": ("metview"),
-    "min_reported_time": 1000,
-    "reference_url": {
-         # The module you locally document uses None
-        "sphinx_gallery": None,
-    }
-}

@@ -251,8 +251,4 @@ maxis
     :type axis_hours_label_height: number, default: 0.2
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.maxis
-    :add-heading:
-
+.. include:: /gallery/backref/maxis.rst

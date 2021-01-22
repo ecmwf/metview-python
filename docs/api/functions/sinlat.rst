@@ -23,3 +23,5 @@ sinlat
          omega = 2 * math.pi / 86400
          coriolis = 2 * omega * mv.sinlat(vort)
          absvort = vort + coriolis
+
+.. mv-minigallery:: sinlat

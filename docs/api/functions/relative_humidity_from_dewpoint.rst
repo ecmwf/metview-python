@@ -18,3 +18,5 @@ relative_humidity_from_dewpoint
         r = \frac {e_{wsat}(Td)}{e_{wsat}(T)}
 
     where e w\ :sub:`sat` is the saturation vapour pressure over water.
+
+.. mv-minigallery:: relative_humidity_from_dewpoint

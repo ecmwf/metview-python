@@ -22,3 +22,5 @@ lookup
    The output will have has as many fields as there are in ``indexer``.
 
    Any missing values in ``indexer`` will cause the function to fail with a "value out of range" error message.
+
+.. mv-minigallery:: lookup

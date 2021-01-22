@@ -30,3 +30,6 @@ mvl_ml2hPa
          # interpolate onto a list of pressure levels
          p_levels = [1000, 900, 850, 500, 300, 100, 10, 1, 0.1]
          t_pres = mv.mvl_ml2hPa(lnsp, t_ml, p_levels)
+
+
+.. mv-minigallery:: mvl_ml2hPa

@@ -26,3 +26,5 @@ find
    * if ``area_or_mask`` is a :class:`Fieldset` with one field it defines a mask for the search, e.i. only those gridpoints are checked where the mask value is non-zero.
    
    Missing values in ``fs`` are not returned.
+
+.. mv-minigallery:: find

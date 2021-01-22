@@ -26,3 +26,6 @@ second_derivative_x
    
    .. warning::
       :func:`second_derivative_x` is only implemented for regular latitude-longitude grids.
+
+
+.. mv-minigallery:: second_derivative_x

@@ -37,3 +37,6 @@ min
     :param value: value
     :type value: float
     :rtype:  :class:`NetCDF`
+
+
+.. mv-minigallery:: min

@@ -25,3 +25,5 @@ average_ew
 
    .. note::
       See also :func:`average_ns`.
+
+.. mv-minigallery:: average_ew

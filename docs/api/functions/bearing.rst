@@ -18,3 +18,6 @@ bearing
    :rtype: :class:`Fieldset`
    
    The **bearing** is the angle between the Northward meridian going through the reference point and the great circle connecting the reference point and the given gridpoint. It is measured in degrees clockwise from North. If a gridpoint is located on the same latitude as the reference point the bearing is regarded constant: it is either 90° (East) or 270° (West). If the gridpoint is co-located with the reference point the bearing is set to a missing value. The reference location should be specified in degrees.
+
+
+.. mv-minigallery:: bearing

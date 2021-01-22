@@ -18,3 +18,6 @@ rmask
 
    .. note::
       See also :func:`mask` to define a rectangular mask.  
+
+
+.. mv-minigallery:: rmask

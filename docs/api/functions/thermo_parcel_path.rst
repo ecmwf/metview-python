@@ -87,3 +87,6 @@ thermo_parcel_path
     * top: Cloud Top Level. It is a definition with two members: t and p. If no TOP exists it is set to None.
 
     * start: start conditions of the parcel with four members: mode, t, td and p.
+
+
+.. mv-minigallery:: thermo_parcel_path

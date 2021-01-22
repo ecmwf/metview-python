@@ -67,3 +67,6 @@ set_values
             gpt['value'] = np.array([2.4, 13.3, 1.1])
             gpt[name_of_column_4] = np.array([3.3, 4.4, 5.5])
             gpt["precip"] = np.array([0.3, 0.2, 0.1])
+
+
+.. mv-minigallery:: set_values

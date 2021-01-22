@@ -43,3 +43,5 @@ filter
     * if ``cond`` is **datetime.datetime** or **list** of it in the format of **[min_date, max_date]** it defines a filter on the date column of ``gpt``.  The result will contain the values of ``gpt`` where the date equals to ``cond`` (if it is a datetime.datetime) or in the interval specified by ``cond`` (if it is a list). 
 
     * if ``cond`` is a **list**  in the format of **[North, West, South, East]** format it defines a filter with a geographical area.  The result will contain the values of ``gpt`` where the locations are within ``cond``.
+
+.. mv-minigallery:: filter

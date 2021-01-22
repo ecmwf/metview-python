@@ -24,3 +24,6 @@ var
 
          y = mv.var(x)
          y = mv.mean(x*x)-mv.mean(x)**2
+
+
+.. mv-minigallery:: var

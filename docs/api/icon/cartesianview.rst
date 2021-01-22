@@ -165,8 +165,4 @@ cartesianview
     :type subpage_background_colour: str, default: "white"
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.cartesianview
-    :add-heading:
-
+.. include:: /gallery/backref/cartesianview.rst

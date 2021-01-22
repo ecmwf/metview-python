@@ -10,3 +10,5 @@ value
     :param index: value index (zero-based)
     :type index: int
     :rtype: float, str or datetime.datetime
+
+.. mv-minigallery:: value

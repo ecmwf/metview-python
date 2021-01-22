@@ -39,7 +39,7 @@ Metview was developed as part of a cooperation between ECMWF and INPE (Brazilian
    :caption: Examples
    :titlesonly:
 
-   auto_examples/index
+   gallery/rst/index
    notebook_gallery
 
 .. toctree::
@@ -54,5 +54,5 @@ Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. * :ref:`modindex`
+.. * :ref:`search`

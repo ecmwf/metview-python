@@ -10,3 +10,5 @@ netcdf_auto_scale_values
     :rtype: None
     
     Setting ``status`` to 1 enables the scaling (which is the default behaviour), setting it to 0 disables it. If disabled, the the raw numbers encoded in the NetCDF variable will be used in any calculations. This is a global option, not specific to a particular NetCDF file.
+
+.. mv-minigallery:: netcdf_auto_scale_values

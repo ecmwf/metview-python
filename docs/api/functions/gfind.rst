@@ -12,3 +12,5 @@ gfind
    :rtype: :class:`Geopoints`  
   
    Missing values in ``fs`` are not returned.
+
+.. mv-minigallery:: gfind

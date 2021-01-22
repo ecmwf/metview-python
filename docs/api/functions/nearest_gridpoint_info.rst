@@ -52,3 +52,5 @@ nearest_gridpoint_info
               {'latitude': 46.5, 'longitude': 19.5, 
                'index': 6973.0, 'distance': 67.3506,
                'value': 294.011'}]
+
+.. mv-minigallery:: nearest_gridpoint_info

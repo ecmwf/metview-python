@@ -10,3 +10,6 @@ base_date
    :rtype: datetime.datetime or list of datetime.datetime objects
 
    If ``fs`` has only one field, a date is returned; otherwise a list of dates is returned.
+
+
+.. mv-minigallery:: base_date

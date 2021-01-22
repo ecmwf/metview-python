@@ -10,3 +10,5 @@ filetype
     :rtype: str
 
     When Metview cannot determine the type it returns the string "BAD". For Metview icons not representing data it returns "NOTE".
+
+.. mv-minigallery:: filetype

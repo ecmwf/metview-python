@@ -8,3 +8,5 @@ remove_duplicates
     :param gpt: input geopoints
     :type gpt: :class:`Geopoints`
     :rtype: :class:`Geopoints`
+
+.. mv-minigallery:: remove_duplicates

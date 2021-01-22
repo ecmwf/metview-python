@@ -24,3 +24,5 @@ second_derivative_y
    
    .. warning::
       :func:`second_derivative_y` is only implemented for regular latitude-longitude grids.
+
+.. mv-minigallery:: second_derivative_y

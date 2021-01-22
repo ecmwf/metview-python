@@ -38,3 +38,6 @@ index
              1 3 5 5
          g = 2 4 5 5
              1 0 3 1
+
+
+.. mv-minigallery:: indexes

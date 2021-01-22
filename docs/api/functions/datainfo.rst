@@ -17,3 +17,5 @@ datainfo
    * proportion_present: the normalised proportion of the non-missing values to the total number of values ([0-1])
    * proportion_missing: normalised the proportion of the missing values to the total number of values ([0-1])
    
+
+.. mv-minigallery:: datainfo

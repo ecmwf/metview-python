@@ -13,3 +13,6 @@ integer
    
    .. note::
       :func:`integer` was used in Metview 3 to enable the plotting of certain types of satellite imagery.
+
+
+.. mv-minigallery:: integer

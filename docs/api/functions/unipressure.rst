@@ -26,3 +26,5 @@ unipressure
    * if ``levels`` is specified it defines the list of target model levels the pressure will be computed on. 
          
    A missing value in ``lnsp`` will result in a missing value in the corresponding place in the output fieldset.
+
+.. mv-minigallery:: unipressure

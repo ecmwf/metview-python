@@ -37,8 +37,3 @@ Defines a PDF plot output driver.
     :type output_cairo_antialias: {"on", "off"}, default: "on"
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.pdf_output
-    :add-heading:
-

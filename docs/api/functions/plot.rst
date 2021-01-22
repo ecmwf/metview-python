@@ -6,6 +6,4 @@ plot
     Generates a plot using the specified output device.
 
 
-
-.. minigallery:: metview.plot
-    :add-heading:
+.. mv-minigallery:: plot

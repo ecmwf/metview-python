@@ -1,0 +1,98 @@
+grib:
+  title: Map plots
+  desc: These examples feature various map based plots.
+  examples:
+  - contour9
+  - contour5
+  - plot_t2m
+  - field_anomalies
+  - layoutx3
+  - wind4
+  - wind_coloured_by_t
+  - gradient_vector
+  - coloured_wind
+  - wind_overlay_and_legend_box
+  - storm_joachim
+  - gradient_shading
+  - shading_only_over_land
+  - advection
+  - deaccumulate_precip_fc
+  - ens_prob
+  - ens_stamp
+  - ens_spag
+  - streamline
+  - simulated_sat_img
+  - sst_extended_latlon
+  - legend3
+  - legend2
+  - contour3
+  - contour10
+  - coastlines2
+  - rainbow_contour_diffs
+  - split_contour
+  - nc_era5_t2
+  - nc_era5_ozone
+  - nc_era5_wind
+  - nc_seacurrent_fixed_vector
+  - nc_maritime_obs
+  - model_obs_diff_plot
+  - synop_map
+  - bufr_synop_station_id
+  - temp_map
+  - coloured_obs_values
+  - odb_radiance
+  - odb_temp_wind
+  - air_report
+  - text_at_geopoints_locations
+  - geoline_on_map
+  - geopolyline_on_map
+  - geocircle_on_map
+  - storm_track
+  - storm_quadrants
+  - flextra_forward
+  - geowind
+sections:
+  title: Vertical and temporal sections
+  desc: These examples feature vertical cross sections, average
+    cross sections and Hovmoeller diagrams.
+  examples:
+  - cross_section_pl_data
+  - cross_section_orog
+  - cross_section_orog_and_blh
+  - cross_section_height_ml_orog
+  - cross_section_via_pole
+  - cross_section_wind_normal
+  - cross_section_wind_parallel
+  - cross_section_wind_3d
+  - time_height_xs
+  - hovmoeller_area
+  - zonal_average
+  - meridional_average
+thermo:
+  title: Thermodinamic diagrams
+  desc: These examples feature thermodynamic 
+    diagrams (tephigram and skew-t) and hodographs.
+  examples:
+  - tephigram
+  - tephigram_bufr
+  - tephigram_odb
+  - parcel_path_skewt_grib
+  - ens_tephigram
+  - hodograph 
+xy:
+  title: XY plots
+  desc: >-
+    These examples feature various xy plots: time-series, profiles, scatterplots and Taylor diagrams.
+  examples:
+  - time_series
+  - fill_between_curves
+  - cartesian_log_y_axis
+  - cdf_curve
+  - grib_scatterplot
+  - odb_scatterplot_binning
+  - odb_wind_profiler
+  - graph4
+  - double_axis_1
+  - double_axis_2
+  - spectra
+  - taylor

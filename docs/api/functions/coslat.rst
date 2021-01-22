@@ -10,3 +10,6 @@ coslat
    :rtype: :class:`Fieldset` 
 
    Missing values are retained, unaltered by the calculation. 
+
+
+.. mv-minigallery:: coslat

@@ -9,3 +9,5 @@ gribsetbits
    :rtype: float 
 
    This function is particularly useful when dealing with 10-bit satellite images as these require GRIB packing to be set to 10 bits.
+
+.. mv-minigallery:: gribsetbits

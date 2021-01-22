@@ -10,3 +10,6 @@ mean_ew
    :rtype: :class:`Fieldset`
 
    The result is a fieldset where the value at each point is the mean of all the points at that latitude. Missing values are excluded; if there are no valid values, then the grib missing value indicator will be returned for those points.
+
+
+.. mv-minigallery:: mean_ew

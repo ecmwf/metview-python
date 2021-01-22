@@ -92,8 +92,4 @@ mtaylor
     :type taylor_secondary_label_height: number, default: 0.35
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.mtaylor
-    :add-heading:
-
+.. include:: /gallery/backref/mtaylor.rst

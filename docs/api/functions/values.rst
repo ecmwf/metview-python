@@ -85,3 +85,5 @@ values
 
             v = mv.values(nc, ['all', 1, 4])
 
+
+.. mv-minigallery:: values

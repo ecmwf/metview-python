@@ -28,3 +28,5 @@ geostrophic_wind
    
    .. warning::
       :func:`geostrophic_wind` is only implemented for regular latitude-longitude grids.
+
+.. mv-minigallery:: geostrophic_wind

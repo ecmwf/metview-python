@@ -8,3 +8,5 @@ times
     :param fs: input geopoints
     :type fs: :class:`Geopoints`
     :rtype: ndarray
+
+.. mv-minigallery:: times

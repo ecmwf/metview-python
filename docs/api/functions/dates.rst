@@ -11,3 +11,6 @@ dates
     :rtype: list of datetime.datetime
 
     The return values also contain the time components.
+
+
+.. mv-minigallery:: dates

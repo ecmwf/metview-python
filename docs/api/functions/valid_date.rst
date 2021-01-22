@@ -10,3 +10,5 @@ valid_date
    :rtype: datetime.datetime or list of datetime.datetime objects
 
    If ``fs`` has only one field, a date is returned; otherwise a list of dates are returned.
+
+.. mv-minigallery:: valid_date

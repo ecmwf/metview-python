@@ -25,3 +25,6 @@ first_derivative_y
 
    .. warning::
       :func:`first_derivative_y` is only implemented for regular latitude-longitude grids.
+
+
+.. mv-minigallery:: first_derivative_y

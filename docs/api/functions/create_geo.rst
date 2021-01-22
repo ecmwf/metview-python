@@ -64,3 +64,5 @@ create_geo
                         temp=np.array([273.15, 269.78, 281.45]),
                         precip=[4, 5, 1],  # lists also work, but are less efficient
                         speed=np.array([2, 3, 5]))
+
+.. mv-minigallery:: create_geo

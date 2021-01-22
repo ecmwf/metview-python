@@ -77,8 +77,4 @@ mthermo
     :type thermo_dewpoint_missing_data_thickness: int, default: 8
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.mthermo
-    :add-heading:
-
+.. include:: /gallery/backref/mthermo.rst

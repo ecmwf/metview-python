@@ -23,3 +23,6 @@ xy_from_polar
     * if the input is number the result is a list of two numbers
     * if the input is vector the result is a list of two vectors, the first vector contains the x components while the second vector the y components
     * if the input is fieldset the result is a fieldset where an x component field is immediately followed by the corresponding y component field.
+
+
+.. mv-minigallery:: xy_from_polar

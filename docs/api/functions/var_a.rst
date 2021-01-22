@@ -11,3 +11,6 @@ var_a
    :rtype: float or list 
    
    If the ``area`` is not specified the whole field will be used in the calculation. The result is a number for a single field or a list for a multi-field :class:`Fieldset`.
+
+
+.. mv-minigallery:: var_a

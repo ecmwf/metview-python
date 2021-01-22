@@ -115,8 +115,4 @@ mcross_sect
     :type top_level: number, default: 0.01
 
     :rtype: :class:`NetCDF`
-
-
-.. minigallery:: metview.mcross_sect
-    :add-heading:
-
+.. include:: /gallery/backref/mcross_sect.rst

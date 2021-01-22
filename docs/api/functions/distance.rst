@@ -35,3 +35,6 @@ distance
    :rtype: :class:`Geopoints`
    
    The reference location should be specified in degrees. A geopoint with either latitude or longitude set to missing value will have a distance of missing value.
+
+
+.. mv-minigallery:: distance

@@ -38,8 +38,4 @@ plot_superpage
     :type pages: list of :func:`plot_page`
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.plot_superpage
-    :add-heading:
-
+.. include:: /gallery/backref/plot_superpage.rst

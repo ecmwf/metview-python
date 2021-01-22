@@ -50,8 +50,4 @@ read_table
     :type table_column_types: list
 
     :rtype: :class:`Table`
-
-
-.. minigallery:: metview.read_table
-    :add-heading:
-
+.. include:: /gallery/backref/read_table.rst

@@ -8,3 +8,6 @@ variables
     :param nc: input NetCDF
     :type nc: :class:`NetCDF`
     :rtype: list of str
+
+
+.. mv-minigallery:: variables

@@ -8,3 +8,6 @@ remove_missing_latlons
     :param gpt: input geopoints
     :type gpt: :class:`Geopoints`
     :rtype: :class:`Geopoints`
+
+
+.. mv-minigallery:: remove_missing_latlons

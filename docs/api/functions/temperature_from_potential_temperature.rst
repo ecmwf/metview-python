@@ -12,3 +12,5 @@ temperature_from_potential_temperature
     :rtype: float or None
 
     The result is the temperature in K units. On error None is returned.
+
+.. mv-minigallery:: temperature_from_potential_temperature

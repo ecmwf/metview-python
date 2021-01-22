@@ -10,3 +10,6 @@ tanlat
    :rtype: :class:`Fieldset` 
 
    Missing values are retained, unaltered by the calculation. The resulting fields contain missing values on the poles.
+
+
+.. mv-minigallery:: tanlat

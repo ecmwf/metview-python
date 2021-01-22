@@ -29,3 +29,5 @@ Functions
 ..    laplacian
 ..    maths
 ..    odb_filter
+
+.. mv-minigallery:: index

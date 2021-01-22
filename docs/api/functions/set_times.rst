@@ -14,3 +14,5 @@ set_times
     A time value has to specified as a number in the format of **hhmm** (without leading zeros).
 
     If ``times`` is a single time all the times are replaced with it. If ``times`` is a list or ndarray and is shorter than the geopoints count then only the first times that have a corresponding value in ``times`` are changed.
+
+.. mv-minigallery:: set_times

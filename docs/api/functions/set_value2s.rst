@@ -17,3 +17,6 @@ set_value2s
     .. warning::
         :func:`set_value2s` only works for :class:`Geopoints` with 'xy_vector' or 'polar_vector' type.
 
+
+
+.. mv-minigallery:: set_value2s

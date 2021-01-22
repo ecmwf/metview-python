@@ -13,3 +13,6 @@ offset
     :param float lon_offset: longitude offset
     :type list offset:  latitude and longitude offsets as [lat_offset, lon_offset]
     :rtype: :class:`Geopoints`
+
+
+.. mv-minigallery:: offset

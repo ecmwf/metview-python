@@ -37,3 +37,6 @@ max
     :type value: float
     :rtype:  :class:`NetCDF`
 
+
+
+.. mv-minigallery:: max

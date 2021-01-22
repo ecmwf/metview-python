@@ -8,3 +8,5 @@ global_attributes
     :param nc: input nectdf
     :type nc: :class:`NetCDF`
     :rtype: dict
+
+.. mv-minigallery:: global_attributes

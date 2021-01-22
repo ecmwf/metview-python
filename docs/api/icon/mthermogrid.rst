@@ -194,8 +194,4 @@ mthermogrid
     :type thermo_mixing_ratio_label_frequency: number, default: 1
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.mthermogrid
-    :add-heading:
-
+.. include:: /gallery/backref/mthermogrid.rst

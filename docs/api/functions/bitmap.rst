@@ -22,3 +22,6 @@ bitmap
    * if ``field`` contains only one field the arrangement of missing values from that field are copied into all fields of the output fieldset. 
    
    See also :func:`nobitmap`.
+
+
+.. mv-minigallery:: bitmap

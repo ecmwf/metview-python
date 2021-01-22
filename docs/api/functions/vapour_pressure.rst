@@ -29,3 +29,6 @@ vapour_pressure
 
         \epsilon = \frac{R_{dry}}{R_{vapour}} = 0.621981
 
+
+
+.. mv-minigallery:: vapour_pressure

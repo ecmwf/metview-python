@@ -150,8 +150,4 @@ mhovmoellerview
     :type subpage_background_colour: str, default: "white"
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.mhovmoellerview
-    :add-heading:
-
+.. include:: /gallery/backref/mhovmoellerview.rst

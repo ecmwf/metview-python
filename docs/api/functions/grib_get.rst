@@ -112,3 +112,6 @@ grib_get
          pl = mv.grib_get_long_array (g, 'pl')
          print(len(pl))
          print(pl)
+
+
+.. mv-minigallery:: grib_get

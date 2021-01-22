@@ -12,3 +12,5 @@ xy_vector
     :rtype: :class:`Geopoints` of 'xy_vector' type.
 
     ``gpt_x`` and ``gpt_y`` should contain the same number of points.
+
+.. mv-minigallery:: xy_vector

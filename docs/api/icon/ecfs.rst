@@ -11,11 +11,12 @@ ecfs
 
     .. container:: rightside
 
-        Retrieves files from ECFS (European Centre File Store).
-				
-		.. warning:: Only available and intented to be used at ECMWF.
+		Retrieves files from ECFS (European Centre File Store).
+		
+		.. warning:: :func:`ecfs` is only available and intended to be used at ECMWF.
 
-        .. note:: This function performs the same task as the `Ecfs <https://confluence.ecmwf.int/display/METV/ecfs>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
+
+		.. note:: This function performs the same task as the `Ecfs <https://confluence.ecmwf.int/display/METV/ecfs>`_ icon in Metview’s user interface. It accepts its parameters as keyword arguments, described below.
 
 
 .. py:function:: ecfs(**kwargs)

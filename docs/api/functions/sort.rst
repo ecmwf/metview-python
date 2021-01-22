@@ -32,3 +32,5 @@ sort
 
    * if it is a str the sorting direction applies to all the ``keys``
    * if it is a list ``keys`` must also be a list with the same number of elements - the sorting directions apply to each sorting key specified.
+
+.. mv-minigallery:: sort

@@ -79,7 +79,9 @@ docs/api/functions_mv.yaml
 docs/api/depot
 docs/api/depot_2
 docs/api/icon_base
+docs/api/_utils
 docs/_test
+
 
 
 # gallery
@@ -97,17 +99,4 @@ docs/gallery/*.png
 docs/gallery/*.tar
 docs/gallery/*.tar.gz
 docs/gallery/*.gz
-docs/gallery/*/*.grib
-docs/gallery/*/*.grb
-docs/gallery/*/*.bufr
-docs/gallery/*/*.gpt
-docs/gallery/*/*.geo
-docs/gallery/*/*.nc
-docs/gallery/*/*.odb
-docs/gallery/*/*.txt
-docs/gallery/*/*.csv
-docs/gallery/*/*.pdf
-docs/gallery/*/*.png
-docs/gallery/*/*.tar
-docs/gallery/*/*.tar.gz
-docs/gallery/*/*.gz
+docs/gallery/_*.py

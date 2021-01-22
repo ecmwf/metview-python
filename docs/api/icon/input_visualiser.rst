@@ -104,8 +104,4 @@ input_visualiser
     :type input_binning: :func:`binning`
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.input_visualiser
-    :add-heading:
-
+.. include:: /gallery/backref/input_visualiser.rst

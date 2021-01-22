@@ -20,3 +20,6 @@ average_ns
          ave = average_ns(fs, [30,0,-30,360], 5)
 
       Here we compute the averages over longitude strips bounded by 30N and 30S, in 5 degree intervals around the globe. The result for each field in ``fs`` is vector of 73 values (in this case values for 0 and 360 are duplicated values). Each value returned (representing the average at longitude Lon) is the average of non-missing values in those grid points whose longitude coordinate is between Lon-2.5 and Lon+2.5 (2.5 is 5/2), in the strip between 30N and 30S.
+
+
+.. mv-minigallery:: average_ns

@@ -21,3 +21,6 @@ db_info
 
     .. note::
         This information is derived from the **DB_INFO** section (if it exists) in the geopoints file header (see Storing Data Origin Information in a Geopoints File).
+
+
+.. mv-minigallery:: db_info

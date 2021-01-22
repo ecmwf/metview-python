@@ -25,3 +25,5 @@ pressure
 
    .. warning::
       This function is obsolete, use :func:`unipressure` instead.
+
+.. mv-minigallery:: pressure

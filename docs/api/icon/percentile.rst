@@ -52,8 +52,4 @@ percentile
     :type compute_if_missing_present: {"on", "off"}, default: "on"
 
     :rtype: :class:`Filedset`
-
-
-.. minigallery:: metview.percentile
-    :add-heading:
-
+.. include:: /gallery/backref/percentile.rst

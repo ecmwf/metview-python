@@ -219,8 +219,4 @@ read
     :type intgrid: str or list[str], default: "off"
 
     :rtype: :class:`Fieldset`
-
-
-.. minigallery:: metview.read
-    :add-heading:
-
+.. include:: /gallery/backref/read.rst

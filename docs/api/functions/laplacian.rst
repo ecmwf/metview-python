@@ -25,3 +25,5 @@ laplacian
 
    .. warning::
       :func:`laplacian` is only implemented for regular latitude-longitude grids.
+
+.. mv-minigallery:: laplacian

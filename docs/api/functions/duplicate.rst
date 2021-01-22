@@ -9,3 +9,5 @@ duplicate
    :type fs: :class:`Fieldset`
    :param int number_of_copies: the number of copies required
    :rtype: :class:`Fieldset` 
+
+.. mv-minigallery:: duplicate

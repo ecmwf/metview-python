@@ -47,3 +47,6 @@ grib_set
          f = mv.grib_set_long(f,
             ["centre", 99,
              "level", 200])
+
+
+.. mv-minigallery:: grib_set

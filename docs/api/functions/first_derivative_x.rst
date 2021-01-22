@@ -26,3 +26,6 @@ first_derivative_x
    .. warning::
       :func:`first_derivative_x` is only implemented for regular latitude-longitude grids.
 
+
+
+.. mv-minigallery:: first_derivative_x

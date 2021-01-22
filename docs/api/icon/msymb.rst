@@ -230,8 +230,4 @@ msymb
     :type symbol_advanced_table_outlayer_method: {"none"}, default: "none"
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.msymb
-    :add-heading:
-
+.. include:: /gallery/backref/msymb.rst

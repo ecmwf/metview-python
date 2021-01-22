@@ -14,3 +14,6 @@ mixing_ratio
     .. math:: 
       
         w = \frac {q}{1-q}
+
+
+.. mv-minigallery:: mixing_ratio

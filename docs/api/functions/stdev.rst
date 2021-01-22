@@ -25,3 +25,5 @@ stdev
          y = mv.stdev(x)
          y = mv.sqrt(mv.mean(x*x)-mv.mean(x)^2)
          y = mv.sqrt(mv.var(x))
+
+.. mv-minigallery:: stdev

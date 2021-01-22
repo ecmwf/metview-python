@@ -158,8 +158,4 @@ mobs
     :type obs_wind_projected: {"on", "off"}, default: "on"
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.mobs
-    :add-heading:
-
+.. include:: /gallery/backref/mobs.rst

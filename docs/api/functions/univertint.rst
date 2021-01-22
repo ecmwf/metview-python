@@ -68,3 +68,6 @@ univertint
          # Compute total amount of liquid water
          r = mv.univertint(lnsp,clwc)
 
+
+
+.. mv-minigallery:: univertint

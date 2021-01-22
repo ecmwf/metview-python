@@ -40,8 +40,4 @@ odb_filter
     :type fail_on_empty_output: {"yes", "no"}, default: "yes"
 
     :rtype: :class:`Odb`
-
-
-.. minigallery:: metview.odb_filter
-    :add-heading:
-
+.. include:: /gallery/backref/odb_filter.rst

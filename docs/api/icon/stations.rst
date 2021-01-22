@@ -53,8 +53,4 @@ stations
     :type fail_on_error: {"yes", "no"}, default: "yes"
 
     :rtype: :class:`Request`
-
-
-.. minigallery:: metview.stations
-    :add-heading:
-
+.. include:: /gallery/backref/stations.rst

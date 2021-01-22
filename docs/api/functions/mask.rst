@@ -54,3 +54,5 @@ mask
     :rtype: :class:`Geopoints`
    
     Points with missing latitudes or longitudes are considered to be outside any area. See the documentation for the fieldset version of this function to see how to compose more complex regions than a simple rectangular area.
+
+.. mv-minigallery:: mask

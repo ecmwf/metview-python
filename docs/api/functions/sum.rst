@@ -27,3 +27,5 @@ sum
     :rtype: float
     
     Missing values are bypassed in this calculation. If there are no valid values None is returned.
+
+.. mv-minigallery:: sum
