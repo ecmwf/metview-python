@@ -115,3 +115,7 @@ grib_get
 
 
 .. mv-minigallery:: grib_get
+
+.. mv-minigallery:: grib_get_double
+
+.. mv-minigallery:: grib_get_long

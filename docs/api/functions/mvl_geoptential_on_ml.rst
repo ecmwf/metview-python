@@ -51,4 +51,4 @@ mvl_geopotential_on_ml
          # compute geopotential on model levels
          z = mv.mvl_geopotential_on_ml(t, q, lnsp, zs)
 
-.. mv-minigallery:: mvl_geoptential_on_ml
+.. mv-minigallery:: mvl_geopotential_on_ml

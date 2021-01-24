@@ -50,3 +50,5 @@ grib_set
 
 
 .. mv-minigallery:: grib_set
+
+.. mv-minigallery:: grib_set_long

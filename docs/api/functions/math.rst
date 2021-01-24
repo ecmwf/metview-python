@@ -237,4 +237,6 @@ Mathematical functions
    Input values must be in radians. Missing values are retained, unaltered by the calculation.
 
 
-.. mv-minigallery:: math
+.. mv-minigallery:: abs
+.. mv-minigallery:: sqrt
+
