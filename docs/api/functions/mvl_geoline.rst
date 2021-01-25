@@ -3,7 +3,7 @@ mvl_geoline
 
 .. py:function:: mvl_geoline(lat1, lon1, lat2, lon2, incrm)
 
-   Plots a straight line linearly sampled on the cylindrical projection onto any map projections.
+   Plots a straight line linearly sampled in lat-lon onto any map projections.
    
    :param lat1: start latitude of the line
    :type lat1: float

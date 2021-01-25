@@ -6,11 +6,10 @@ thermo_data_values
     Convenience function to access profiles from ``data`` for a given ``time_dimension_index``.
     
     :param data: thermo data object containing vertical profiles
-    :type data: thermo data
+    :type data: :func:`mthermo`
     :param time_dim_index: the (zero-based) index of the selected time dimension from ``data``
     :type time_dim_index: int
     :rtype: dict
     
-    See the Parcel method on Skew-T Example from the Gallery for its usage.
 
 .. mv-minigallery:: thermo_data_values
