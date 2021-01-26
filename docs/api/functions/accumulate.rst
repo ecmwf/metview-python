@@ -1,5 +1,5 @@
 accumulate
-============
+************
 
 .. py:function:: accumulate(fs)
 
