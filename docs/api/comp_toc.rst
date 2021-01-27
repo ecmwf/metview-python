@@ -19,22 +19,22 @@ Statistics
       - Computes the average per field in a :class:`Fieldset`
 
     * - :func:`average_ew`
-      - Returns the zonal averages as a list (or list of lists) of numbers.
+      - Computes the zonal averages for each field in a :class:`Fieldset`
 
     * - :func:`average_ns`
-      - Returns the meridional averages as a list (or list of lists) of numbers.
+      - Computes the meridional averages for each field in a :class:`Fieldset`
 
     * - :func:`corr_a`
       - Computes the area-weighted correlation for each field in a :class:`Fieldset`
 
     * - :func:`covar`
-      - Returns the covariance of all two :class:`Fieldset`
+      - Returns the covariance of two :class:`Fieldset` objects
 
     * - :func:`covar_a`
       - Computes the area-weighted covariance for each field in a :class:`Fieldset`
 
     * - :func:`frequencies`
-      - Computes frequencies of a field
+      - Computes the frequencies of a :class:`Fieldset`
 
     * - :func:`integrate`
       - Computes the average weighted by the gridcell area for each field in :class:`Fieldset`
@@ -43,10 +43,10 @@ Statistics
       - Maximum
 
     * - :func:`maxvalue`
-      - Computes the maximum of all the values in a :class:`Fieldset`
+      - Maximum value of a :class:`Fieldset`
 
     * - :func:`mean`
-      - Returns the sum or mean of the values in a :class:`Geopoints` variable
+      - Returns the mean of the values in a :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`mean_ew`
       - Generates a :class:`Fieldset` out of East-West means
@@ -55,25 +55,25 @@ Statistics
       - Minimum
 
     * - :func:`minvalue`
-      - Minimum value of a variable
+      - Minimum value of a :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`percentile`
-      - Computes a set of percentiles of GRIB data
+      - Computes a set of percentiles in a :class:`Fieldset`
 
     * - :func:`rms`
-      - Returns the root mean square of all the fields of a variable
+      - Returns the root mean square of all the fields in a :class:`Fieldset`
 
     * - :func:`stdev`
-      - Returns the standard deviation of all the fields of a variable
+      - Returns the standard deviation of all the fields in a :class:`Fieldset`
 
     * - :func:`stdev_a`
       - Computes the area-weighted standard deviation for each field in a :class:`Fieldset`
 
     * - :func:`sum`
-      - Returns the sum or mean of the values in a :class:`Geopoints` variable
+      - Returns the sum of the values in a :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`var`
-      - Returns the variance of all the fields of a variable
+      - Returns the variance of all the fields in a :class:`Fieldset`
 
     * - :func:`var_a`
       - Computes the area-weighted variance for each field in a :class:`Fieldset`
@@ -88,40 +88,40 @@ Geographic
 
 
     * - :func:`bearing`
-      - Computes the bearings for all the gridpoints with respect to a reference point
+      - Computes the bearings with respect to a reference in a :class:`Fieldset` point
 
     * - :func:`coslat`
-      - Generates a field with the cosine of the gridpoint latitudes
+      - Generates a field with the cosine of the latitudes in a :class:`Fieldset`
 
     * - :func:`distance`
-      - Computes the distances of all the gridpoints from a point
+      - Computes the distances in a :class:`Fieldset` or :class:`Geopoints` to a reference point
 
     * - :func:`geosort`
       - Sorts the :class:`Geopoints` North to South and West to East
 
     * - :func:`grid_cell_area`
-      - Computes grid cell area for each gridpoints in a field
+      - Computes the grid cell area in a :class:`Fieldset`
 
     * - :func:`interpolate`
-      - Interpolates field values to the specified location
+      - Interpolates :class:`Fieldset` values to the specified location
 
     * - :func:`latitudes`
-      - Returns a list/vector of latitudes from the given :class:`Geopoints`.
+      - Returns the latitudes of a :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`longitudes`
-      - Returns a list/vector of longitudes from the given :class:`Geopoints`.
+      - Returns the longitudes from a :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`nearest_gridpoint`
-      - Returns the nearest grid point value from a field
+      - Returns the nearest grid point value from a :class:`Fieldset`
 
     * - :func:`nearest_gridpoint_info`
-      - Returns the nearest grid point value from a field
+      - Returns the nearest grid point value from a :class:`Fieldset`
 
     * - :func:`offset`
       - Offsets the locations of :class:`Geopoints`
 
     * - :func:`read`
-      - Filters and interpolates GRIB data
+      - Filters and interpolates :class:`Fieldset` data
 
     * - :func:`regrid`
       - Regridding and derivatives
@@ -130,16 +130,16 @@ Geographic
       - Repoject satellite view GRIB data onto a latlon grid
 
     * - :func:`sinlat`
-      - Generates a field with the sine of the gridpoint latitudes
+      - Generates a field with the cosine of the latitudes in a :class:`Fieldset`
 
     * - :func:`subsample`
       - Filters from the first :class:`Geopoints` variable points that exist in the second
 
     * - :func:`surrounding_points_indexes`
-      - Returns the indexes of the four surrounding grid points
+      - Returns the indexes of the four surrounding grid points in a :class:`Fieldset`
 
     * - :func:`tanlat`
-      - Generates a field with the tangent of the gridpoint latitudes
+      - Generates a field with the tangent of the latitudes in a :class:`Fieldset`
 
 
 Masking
@@ -151,13 +151,13 @@ Masking
 
 
     * - :func:`bitmap`
-      - Converts numbers to missing values in a vector
+      - Converts numbers to missing values in a :class:`Fieldset`
 
     * - :func:`mask`
-      - Generates masks for :class:`Geopoints`
+      - Generates masks for a :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`nobitmap`
-      - Converts missing values to numbers in a vector
+      - Converts missing values to numbers in a :class:`Fieldset`
 
     * - :func:`remove_missing_latlons`
       - Copies a set of :class:`Geopoints`, removing missing lat/lons
@@ -178,25 +178,25 @@ Wind
 
 
     * - :func:`direction`
-      - Computes meteorological wind direction using U and V wind components
+      - Computes the wind direction
 
     * - :func:`divrot`
-      - Computes the rotational wind from a vorticity :class:`Fieldset`
+      - Computes the rotational wind from a spectral vorticity :class:`Fieldset`
 
     * - :func:`divwind`
-      - Computes the divergent wind from a divergence :class:`Fieldset`
+      - Computes the divergent wind from a spectral divergence :class:`Fieldset`
 
     * - :func:`geostrophic_wind`
-      - Computes geostrophic wind on pressure levels
+      - Computes geostrophic wind on pressure levels in a :class:`Fieldset`
 
     * - :func:`streamfn`
-      - Computes the stream function from a vorticity :class:`Fieldset`
+      - Computes the stream function from a spectral vorticity :class:`Fieldset`
 
     * - :func:`uvwind`
-      - Computes u/v from a vorticty and divegence :class:`Fieldset`
+      - Computes u/v from a spectral vorticty and divegence :class:`Fieldset`
 
     * - :func:`velpot`
-      - Computes the velocity potential from a divergence :class:`Fieldset`
+      - Computes the velocity potential from a spectral divergence :class:`Fieldset`
 
     * - :func:`xy_from_polar`
       - Computes the x and y components from polar components
@@ -226,13 +226,13 @@ Vertical
       - Generates data for the Hovmoeller vertical mode
 
     * - :func:`ml_to_hl`
-      - Interpolates model level fields to height levels
+      - Interpolates a model level :class:`Fieldset` to height levels
 
     * - :func:`mvert_prof`
       - Generates data for the vertical profile view
 
     * - :func:`mvl_geopotential_on_ml`
-      - Computes the geopotential on model levels
+      - Computes the geopotential on model levels for a :class:`Fieldset`
 
     * - :func:`mvl_ml2hPa`
       - Interpolates a :class:`Fieldset` on model levels to pressure levels (in hPa)
@@ -397,7 +397,7 @@ Basic mathematics
       - Computes the arc tangent
 
     * - :func:`atan2`
-      - Computes the arc tangent of 2 variables
+      - Computes the arc tangent of 2 :class:`Fieldset` objects
 
     * - :func:`cos`
       - Computes the cosine

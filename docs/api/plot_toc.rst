@@ -91,7 +91,7 @@ Plotting
 
 
     * - :func:`binning`
-      - Defines 1D or 2D binning for scatterplots
+      - Defines 2D binning for scatterplots
 
     * - :func:`eccharts`
       - Retrieves and plots ecCharts layers

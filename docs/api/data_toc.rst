@@ -73,7 +73,7 @@ Filtering
       - Filters ODB data
 
     * - :func:`read`
-      - Filters and interpolates GRIB data
+      - Filters and interpolates :class:`Fieldset` data
 
 
 Grib data
@@ -139,7 +139,7 @@ Grib data
       - Sets GRIB packing bit width
 
     * - :func:`indexes`
-      - Builds an output :class:`Fieldset` containing each gridpoint's indexed position in the given vector
+      - Builds a :class:`Fieldset` containing each gridpoint's indexed position in the given vector
 
     * - :func:`int`
       - Integer part
@@ -151,13 +151,13 @@ Grib data
       - Builds an output :class:`Fieldset` using the values in the first as indices into the second
 
     * - :func:`set_values`
-      - Sets the value column in the :class:`Geopoints` variable.
+      - Sets the values in a :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`sort`
       - Sorts a vector according to an operator '<' (default) or '>'
 
     * - :func:`values`
-      - Returns a list of values from the given ODB column.
+      - Returns the values from a data object
 
 
 Geopoints data
@@ -199,43 +199,43 @@ Geopoints data
       - Sets the date column in the :class:`Geopoints` variable.
 
     * - :func:`set_latitudes`
-      - Sets the latitude column in the :class:`Geopoints` variable.
+      - Sets the latitudes in a :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`set_levels`
-      - Sets the level column in the :class:`Geopoints` variable.
+      - Sets the level column in a :class:`Geopoints`
 
     * - :func:`set_longitudes`
-      - Sets the longitude column in the :class:`Geopoints` variable.
+      - Sets the longitudes in a :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`set_metadata`
       - Sets a :class:`Geopoints` metadata from a definition
 
     * - :func:`set_stnids`
-      - Sets the stnid column in the :class:`Geopoints` variable.
+      - Sets the stnid column in a :class:`Geopoints`
 
     * - :func:`set_times`
-      - Sets the time column in the :class:`Geopoints` variable.
+      - Sets the time column in a :class:`Geopoints`
 
     * - :func:`set_value2s`
-      - Sets the value2 column in the :class:`Geopoints` variable.
+      - Sets the value2 column a :class:`Geopoints`
 
     * - :func:`set_values`
-      - Sets the value column in the :class:`Geopoints` variable.
+      - Sets the values in a :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`stnids`
-      - Returns a list/vector of station ids from the given :class:`Geopoints`.
+      - Returns thestation ids from a :class:`Geopoints`
 
     * - :func:`subsample`
       - Filters from the first :class:`Geopoints` variable points that exist in the second
 
     * - :func:`times`
-      - Returns a list/vector of times from the given :class:`Geopoints`.
+      - Returns the times from a :class:`Geopoints`
 
     * - :func:`value2s`
-      - Returns a list/vector of 2nd values from the given :class:`Geopoints`.
+      - Returns the 2nd values column from a :class:`Geopoints`
 
     * - :func:`values`
-      - Returns a list of values from the given ODB column.
+      - Returns the values from a data object
 
     * - :func:`xy_vector`
       - Combines two 1-parameter :class:`Geopoints` variables into u/v vector style
@@ -280,10 +280,10 @@ NetCDF data
       - Returns the n:th value from the current netcdf variable.
 
     * - :func:`value_columns`
-      - Returns a list of column names for a :class:`Geopoints` variable
+      - Returns a list of value column names for a :class:`Geopoints`
 
     * - :func:`values`
-      - Returns a list of values from the given ODB column.
+      - Returns the values from a data object
 
     * - :func:`variables`
       - Returns a list of the names of the given netcdf file's variables.
@@ -352,7 +352,7 @@ Table data
       - Reads a table file with parameters for parsing it.
 
     * - :func:`values`
-      - Returns a list of values from the given ODB column.
+      - Returns the values from a data object
 
 
 Single Column Model

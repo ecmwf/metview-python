@@ -68,7 +68,7 @@ integrate
 
          \frac {\sum_{i}f_{i} A_{i}}{\sum_{i}A_{i}} = \frac {\sum_{i}f_{i}cos\phi_{i}\Delta\lambda_{i}}{\sum_{i}cos\phi_{i}\Delta\lambda_{i}}
 
-   The formula above is only used for regular **latitude-longitude and Gaussian grids**. For all other grid types :func:`integrate` simply returns the mathematical average of the values (just like :func:`average` does).
+   The formula above is only used for reduced or regular **latitude-longitude and Gaussian grids**. For all other grid types :func:`integrate` simply returns the mathematical average of the values (just like :func:`average` does).
 
    .. warning:: 
    
