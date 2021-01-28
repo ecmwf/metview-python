@@ -1,5 +1,5 @@
-Examples using ``metview.mvl_regular_layout``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Gallery examples using ``metview.mvl_regular_layout``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
     <div class="sphx-glr-thumbcontainer">

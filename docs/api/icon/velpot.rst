@@ -49,3 +49,7 @@ velpot
     :type mfltexp: number, default: 2
 
     :rtype: :class:`Fieldset`
+
+
+.. mv-minigallery:: velpot
+

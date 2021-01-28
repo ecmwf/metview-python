@@ -40,4 +40,7 @@ odb_filter
     :type fail_on_empty_output: {"yes", "no"}, default: "yes"
 
     :rtype: :class:`Odb`
-.. include:: /gallery/backref/odb_filter.rst
+
+
+.. mv-minigallery:: odb_filter
+

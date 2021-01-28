@@ -37,3 +37,7 @@ Defines a Postscript plot output driver.
     :type output_ps_split: {"on", "off"}, default: "off"
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: ps_output
+

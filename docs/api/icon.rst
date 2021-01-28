@@ -38,12 +38,12 @@ This is the list of the functions that are represented as an icon in Metviews' u
     * - .. image:: /_static/DIVROT.png
             :width: 24px
       - :func:`divrot`
-      - Computes the rotational wind from a vorticity fieldset
+      - Computes the rotational wind from a spectral vorticity fieldset
     
     * - .. image:: /_static/DIVROT.png
             :width: 24px
       - :func:`divwind`
-      - Computes the divergent wind from a divergence fieldset
+      - Computes the divergent wind from a spectral divergence fieldset
     
     * - .. image:: /_static/DOWNLOAD.png
             :width: 24px
@@ -308,7 +308,7 @@ This is the list of the functions that are represented as an icon in Metviews' u
     * - .. image:: /_static/PERCENTILE.png
             :width: 24px
       - :func:`percentile`
-      - Computes a set of percentiles of GRIB data
+      - Computes a set of percentiles in a fieldset
     
     * - .. image:: /_static/DISPLAYWINDOW.png
             :width: 24px
@@ -353,7 +353,7 @@ This is the list of the functions that are represented as an icon in Metviews' u
     * - .. image:: /_static/READ.png
             :width: 24px
       - :func:`read`
-      - Filters and interpolates GRIB data
+      - Filters and interpolates fieldset data
     
     * - .. image:: /_static/TABLEREADER.png
             :width: 24px
@@ -423,7 +423,7 @@ This is the list of the functions that are represented as an icon in Metviews' u
     * - .. image:: /_static/VELSTR.png
             :width: 24px
       - :func:`streamfn`
-      - Computes the stream function from a vorticity fieldset
+      - Computes the stream function from a spectral vorticity fieldset
     
     * - .. image:: /_static/empty.png
             :width: 24px
@@ -453,7 +453,7 @@ This is the list of the functions that are represented as an icon in Metviews' u
     * - .. image:: /_static/DIVROT.png
             :width: 24px
       - :func:`uvwind`
-      - Computes u/v from a vorticty and divegence fieldset
+      - Computes u/v from a spectral vorticty and divegence fieldset
     
     * - .. image:: /_static/VAPOR_PREPARE.png
             :width: 24px
@@ -463,7 +463,7 @@ This is the list of the functions that are represented as an icon in Metviews' u
     * - .. image:: /_static/VELSTR.png
             :width: 24px
       - :func:`velpot`
-      - Computes the velocity potential from a divergence fieldset
+      - Computes the velocity potential from a spectral divergence fieldset
     
     * - .. image:: /_static/WMS_CLIENT.png
             :width: 24px

@@ -37,3 +37,7 @@ Defines a PDF plot output driver.
     :type output_cairo_antialias: {"on", "off"}, default: "on"
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: pdf_output
+

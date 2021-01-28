@@ -65,4 +65,7 @@ binning
     :type binning_y_reference: number, default: 0
 
     :rtype: :class:`Request`
-.. include:: /gallery/backref/binning.rst
+
+
+.. mv-minigallery:: binning
+

@@ -1,5 +1,5 @@
-Examples using ``metview.mlegend``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Gallery examples using ``metview.mlegend``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
     <div class="sphx-glr-thumbcontainer">

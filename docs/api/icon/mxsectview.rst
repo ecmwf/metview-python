@@ -163,4 +163,7 @@ mxsectview
     :type subpage_background_colour: str, default: "white"
 
     :rtype: :class:`Request`
-.. include:: /gallery/backref/mxsectview.rst
+
+
+.. mv-minigallery:: mxsectview
+

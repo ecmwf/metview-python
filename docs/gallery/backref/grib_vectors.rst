@@ -1,5 +1,5 @@
-Examples using ``metview.grib_vectors``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Gallery examples using ``metview.grib_vectors``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
     <div class="sphx-glr-thumbcontainer">

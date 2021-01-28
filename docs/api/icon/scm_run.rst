@@ -57,3 +57,7 @@ scm_run
     :type scm_output_data_path: str, default: "scm_out.nc"
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: scm_run
+

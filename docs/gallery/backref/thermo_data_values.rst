@@ -1,5 +1,5 @@
-Examples using ``metview.thermo_data_values``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Gallery examples using ``metview.thermo_data_values``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
     <div class="sphx-glr-thumbcontainer">

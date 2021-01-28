@@ -34,3 +34,7 @@ plot_subpage
     :type right: number, default: 100
 
     :rtype: None
+
+
+.. mv-minigallery:: plot_subpage
+

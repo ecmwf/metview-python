@@ -150,4 +150,7 @@ mhovmoellerview
     :type subpage_background_colour: str, default: "white"
 
     :rtype: :class:`Request`
-.. include:: /gallery/backref/mhovmoellerview.rst
+
+
+.. mv-minigallery:: mhovmoellerview
+

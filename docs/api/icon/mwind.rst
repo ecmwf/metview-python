@@ -176,4 +176,7 @@ mwind
     :type wind_streamline_head_ratio: number, default: 0.3
 
     :rtype: :class:`Request`
-.. include:: /gallery/backref/mwind.rst
+
+
+.. mv-minigallery:: mwind
+

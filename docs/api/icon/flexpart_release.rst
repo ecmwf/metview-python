@@ -60,3 +60,7 @@ flexpart_release
     :type masses: float or list[float]
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: flexpart_release
+

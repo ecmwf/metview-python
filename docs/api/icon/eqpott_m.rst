@@ -32,3 +32,7 @@ eqpott_m
     :type humidity: :class:`Fieldset`
 
     :rtype: :class:`Fieldset`
+
+
+.. mv-minigallery:: eqpott_m
+

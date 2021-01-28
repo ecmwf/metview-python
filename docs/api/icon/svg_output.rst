@@ -46,3 +46,7 @@ Defines an SVG plot output driver.
     :type output_svg_logo_location: {"inline", "share", "local"}, default: "inline"
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: svg_output
+

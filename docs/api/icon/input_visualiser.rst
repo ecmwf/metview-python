@@ -104,4 +104,7 @@ input_visualiser
     :type input_binning: :func:`binning`
 
     :rtype: :class:`Request`
-.. include:: /gallery/backref/input_visualiser.rst
+
+
+.. mv-minigallery:: input_visualiser
+

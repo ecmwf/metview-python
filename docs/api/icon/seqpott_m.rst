@@ -29,3 +29,7 @@ seqpott_m
     :type temperature: :class:`Fieldset`
 
     :rtype: :class:`Fieldset`
+
+
+.. mv-minigallery:: seqpott_m
+

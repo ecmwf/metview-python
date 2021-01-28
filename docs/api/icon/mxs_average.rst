@@ -37,3 +37,7 @@ mxs_average
     :type direction: {"ns", "ew"}, default: "ns"
 
     :rtype: :class:`NetCDF`
+
+
+.. mv-minigallery:: mxs_average
+

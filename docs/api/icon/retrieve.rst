@@ -272,4 +272,7 @@ retrieve
     :type ppengine: {"emos", "mir", "off"}, default: "off"
 
     :rtype: :class:`Fieldset`, :class:`Bufr` or :class:`Odb`
-.. include:: /gallery/backref/retrieve.rst
+
+
+.. mv-minigallery:: retrieve
+

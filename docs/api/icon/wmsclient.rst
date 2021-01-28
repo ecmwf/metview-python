@@ -55,3 +55,7 @@ wmsclient
     :type time_dimensions: str
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: wmsclient
+

@@ -36,3 +36,7 @@ mhovmoeller_vertical
     :type vertical_level_type: {"as_in_data", "pressure"}, default: "as_in_data"
 
     :rtype: :class:`NetCDF`
+
+
+.. mv-minigallery:: mhovmoeller_vertical
+

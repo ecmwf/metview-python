@@ -28,6 +28,3 @@ gradient
 
 
 .. mv-minigallery:: gradient
-
-
-.. mv-minigallery:: gradient

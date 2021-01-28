@@ -165,4 +165,7 @@ cartesianview
     :type subpage_background_colour: str, default: "white"
 
     :rtype: :class:`Request`
-.. include:: /gallery/backref/cartesianview.rst
+
+
+.. mv-minigallery:: cartesianview
+

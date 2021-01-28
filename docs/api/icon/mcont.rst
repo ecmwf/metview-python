@@ -406,4 +406,7 @@ mcont
     :type contour_sample_y_interval: number, default: 2
 
     :rtype: :class:`Request`
-.. include:: /gallery/backref/mcont.rst
+
+
+.. mv-minigallery:: mcont
+

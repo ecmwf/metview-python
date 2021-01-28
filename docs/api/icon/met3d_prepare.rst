@@ -89,3 +89,7 @@ met3d_prepare
     :type retrieve_group_by_time: {"on", "off"}, default: "on"
 
     :rtype: :class:`Fieldset`
+
+
+.. mv-minigallery:: met3d_prepare
+

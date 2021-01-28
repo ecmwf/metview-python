@@ -42,3 +42,7 @@ mhovmoeller_area
     :type resolution: number, default: 1.0
 
     :rtype: :class:`NetCDF`
+
+
+.. mv-minigallery:: mhovmoeller_area
+

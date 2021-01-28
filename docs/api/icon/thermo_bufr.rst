@@ -33,4 +33,7 @@ thermo_bufr
     :type station: :func:`stations``
 
     :rtype: :class:`NetCDF`
-.. include:: /gallery/backref/thermo_bufr.rst
+
+
+.. mv-minigallery:: thermo_bufr
+

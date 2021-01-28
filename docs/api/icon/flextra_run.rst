@@ -207,3 +207,7 @@ flextra_run
     :type flextra_w_random_error: number, default: 0.08
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: flextra_run
+

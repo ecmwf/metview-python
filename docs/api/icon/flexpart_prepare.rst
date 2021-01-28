@@ -102,3 +102,7 @@ flexpart_prepare
     :type output_path: str
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: flexpart_prepare
+

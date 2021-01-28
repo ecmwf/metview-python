@@ -1,5 +1,5 @@
-Examples using ``metview.download_gallery_data``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Gallery examples using ``metview.download_gallery_data``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Most/all of the :ref:`gallery_index` examples demonstrate the use of this function.
 

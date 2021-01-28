@@ -135,4 +135,7 @@ obsfilter
     :type fail_on_empty_output: {"yes", "no"}, default: "no"
 
     :rtype: :class:`Bufr`, :class:`Geopoints` or :class:`Table`
-.. include:: /gallery/backref/obsfilter.rst
+
+
+.. mv-minigallery:: obsfilter
+

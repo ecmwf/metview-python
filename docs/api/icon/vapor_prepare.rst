@@ -101,3 +101,7 @@ vapor_prepare
     :type vapor_output_path: str, default: [", tmp"]
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: vapor_prepare
+

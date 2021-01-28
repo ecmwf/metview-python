@@ -107,3 +107,7 @@ mvertprofview
     :type subpage_background_colour: str, default: "white"
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: mvertprofview
+

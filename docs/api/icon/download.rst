@@ -29,3 +29,7 @@ download
     :type target: str
 
     :rtype: Metview object representing the type of the downloaded data.
+
+
+.. mv-minigallery:: download
+

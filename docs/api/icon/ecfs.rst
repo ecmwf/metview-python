@@ -31,3 +31,7 @@ ecfs
     :type file_name: str
 
     :rtype: Metview object representing the type of the retrieved data.
+
+
+.. mv-minigallery:: ecfs
+

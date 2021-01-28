@@ -53,4 +53,7 @@ plot_page
     :type sub_pages: str
 
     :rtype: :class:`Request`
-.. include:: /gallery/backref/plot_page.rst
+
+
+.. mv-minigallery:: plot_page
+

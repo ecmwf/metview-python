@@ -127,4 +127,7 @@ odb_visualiser
     :type fail_on_empty_output: {"yes", "no"}, default: "yes"
 
     :rtype: :class:`Request`
-.. include:: /gallery/backref/odb_visualiser.rst
+
+
+.. mv-minigallery:: odb_visualiser
+

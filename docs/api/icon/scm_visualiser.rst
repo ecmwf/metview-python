@@ -99,3 +99,7 @@ scm_visualiser
     :type scm_output_file_path: str, default: "scm_out.ps"
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: scm_visualiser
+

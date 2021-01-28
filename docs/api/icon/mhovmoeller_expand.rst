@@ -39,3 +39,7 @@ mhovmoeller_expand
     :type data: :class:`Fieldset`
 
     :rtype: :class:`NetCDF`
+
+
+.. mv-minigallery:: mhovmoeller_expand
+

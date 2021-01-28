@@ -50,4 +50,7 @@ read_table
     :type table_column_types: list
 
     :rtype: :class:`Table`
-.. include:: /gallery/backref/read_table.rst
+
+
+.. mv-minigallery:: read_table
+

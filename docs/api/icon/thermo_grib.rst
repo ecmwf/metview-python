@@ -66,4 +66,7 @@ thermo_grib
     :type v_wind_param: number, default: 132
 
     :rtype: :class:`NetCDF`
-.. include:: /gallery/backref/thermo_grib.rst
+
+
+.. mv-minigallery:: thermo_grib
+

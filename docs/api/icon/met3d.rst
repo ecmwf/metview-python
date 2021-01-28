@@ -35,3 +35,7 @@ met3d
     :type frontend_file: str, default: "default"
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: met3d
+

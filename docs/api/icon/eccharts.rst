@@ -76,3 +76,7 @@ eccharts
     :type fail_on_data_error: {"yes", "no"}, default: "yes"
 
     :rtype: list
+
+
+.. mv-minigallery:: eccharts
+

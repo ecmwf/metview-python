@@ -32,3 +32,7 @@ cleanfile
     :type skip_hirlam_custom_record: {"no", "yes"}, default: "no"
 
     :rtype: :class:`Fieldset` or :class:`Bufr`
+
+
+.. mv-minigallery:: cleanfile
+

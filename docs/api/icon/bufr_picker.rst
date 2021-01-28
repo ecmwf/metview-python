@@ -47,3 +47,7 @@ bufr_picker
     :type fail_on_error: {"yes", "no"}, default: "yes"
 
     :rtype: :class:`Geopoints`
+
+
+.. mv-minigallery:: bufr_picker
+

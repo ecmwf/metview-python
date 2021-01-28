@@ -61,3 +61,7 @@ geo_to_grib
     :type grib_table2_version: number, default: 1
 
     :rtype: :class:`Fieldset`
+
+
+.. mv-minigallery:: geo_to_grib
+

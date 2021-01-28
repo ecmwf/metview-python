@@ -52,4 +52,7 @@ percentile
     :type compute_if_missing_present: {"on", "off"}, default: "on"
 
     :rtype: :class:`Filedset`
-.. include:: /gallery/backref/percentile.rst
+
+
+.. mv-minigallery:: percentile
+

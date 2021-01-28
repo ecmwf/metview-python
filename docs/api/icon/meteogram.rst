@@ -59,3 +59,7 @@ meteogram
     :type database: str, default: "latest"
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: meteogram
+

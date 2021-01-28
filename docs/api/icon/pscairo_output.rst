@@ -37,3 +37,7 @@ Defines a Postscript plot output driver based on the Cairo library.
     :type output_ps_split: {"on", "off"}, default: "off"
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: pscairo_output
+

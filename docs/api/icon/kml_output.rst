@@ -61,3 +61,7 @@ Defines a KML plot output driver.
     :type kml_coastlines: {"on", "off"}, default: "off"
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: kml_output
+

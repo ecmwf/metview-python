@@ -105,18 +105,29 @@ class MvMiniGallery(Directive):
     def run(self):
         # Get the name of the function
         fn = self.arguments[0]
-       
-        # the minigallery path
-        f_path = os.path.join("gallery", "backref", fn + ".rst")
+    
+        has_file = False
 
-        # if the minigallery exists we include it with an include directive
+        # if the notebook minigallery exists we include it with an include directive
+        f_path = os.path.join("nb", fn + ".rst")
         if os.path.exists(f_path):
+            has_file = True
+            t = f".. include:: /nb/{fn}.rst" 
+            lines = statemachine.string2lines(t, convert_whitespace=True)                                   
+            self.state_machine.insert_input(lines, "/" + f_path)
+            # return []
+
+        # if the gallery minigallery exists we include it with an include directive
+        f_path = os.path.join("gallery", "backref", fn + ".rst")
+        if os.path.exists(f_path):
+            has_file = True
             t = f".. include:: /gallery/backref/{fn}.rst" 
             lines = statemachine.string2lines(t, convert_whitespace=True)                                   
             self.state_machine.insert_input(lines, "/" + f_path)
-            return []
-        # otherwise we replace it with an empty string
-        else:
+            # return []
+        
+        # if thre is no minigallery we replace the directive with an empty string
+        if not has_file:
             paragraph_node = nodes.paragraph(text="")
             return [paragraph_node]
         
@@ -126,7 +137,7 @@ class MvMiniGallery(Directive):
 def setup(app):
     app.add_directive("mv-include-code", MvIncludeCode)
     app.add_directive("mv-minigallery", MvMiniGallery)
-
+   
     return {
         "version": "0.1",
         "parallel_read_safe": True,

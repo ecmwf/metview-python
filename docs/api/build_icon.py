@@ -237,7 +237,11 @@ class DocFunction:
         return t
 
     def add_mini_gallery(self, f):
-        f.write(f".. mv-minigallery:: {self.name}")
+        f.write(f"""
+
+.. mv-minigallery:: {self.name}
+
+""")
 
     def as_dict(self):
         d = []

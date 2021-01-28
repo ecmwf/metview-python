@@ -37,3 +37,7 @@ Defines a PNG plot output driver.
     :type output_cairo_antialias: {"on", "off"}, default: "on"
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: png_output
+

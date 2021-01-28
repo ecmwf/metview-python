@@ -1,5 +1,5 @@
-Examples using ``metview.setoutput``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Gallery examples using ``metview.setoutput``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Most/all of the :ref:`gallery_index` examples demonstrate the use of this function.
 

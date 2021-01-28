@@ -25,4 +25,5 @@ interpolate
    .. note::
       A similar function, :func:`nearest_gridpoint`, also exists.
 
+
 .. mv-minigallery:: interpolate

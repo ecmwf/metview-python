@@ -41,4 +41,7 @@ grib_vectors
     :type colouring_field: :class:`Fieldset`
 
     :rtype: :class:`Request`
-.. include:: /gallery/backref/grib_vectors.rst
+
+
+.. mv-minigallery:: grib_vectors
+

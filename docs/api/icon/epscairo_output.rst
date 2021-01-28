@@ -37,3 +37,7 @@ Defines an Encapsulated Postscript (EPS) plot output driver based on the Cairo l
     :type output_ps_split: {"on", "off"}, default: "off"
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: epscairo_output
+

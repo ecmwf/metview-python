@@ -44,3 +44,7 @@ mimport
     :type import_height: number, default: -1
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: mimport
+

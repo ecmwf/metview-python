@@ -26,3 +26,7 @@ relhum
     :type data: :class:`Fieldset`
 
     :rtype: :class:`fieldset`
+
+
+.. mv-minigallery:: relhum
+

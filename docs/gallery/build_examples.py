@@ -134,7 +134,7 @@ class BackReference:
         for fn_name, fn_items in self.func.items():
             output = os.path.join(BACKREF_DIR, f"{fn_name}.rst")
             with open(output, "w") as f:
-                title = f"Examples using ``metview.{fn_name}``"
+                title = f"Gallery examples using ``metview.{fn_name}``"
                 f.write(f"""{title}\n{"^" * (len(title)+1)}""")  
                 # for some functions just a link to the gallery is inserted
                 if fn_name in self.use_link:
@@ -294,9 +294,9 @@ def main():
         r.append(gr_item)
 
     if len(item_failed) == 0:
-        print_green(f"All the {total}/{total} examples were generated")
+        print_green(f"{total}/{total} examples were generated")
     else:
-        print_red(f"Total of {len(item_failed)}/{total} examples failed:")
+        print_red(f"{total-len(item_failed)}/{total} examples were generated, {len(item_failed)}/{total} examples failed:")
         for v in item_failed:
             print_red(f"  {v.name}")
 

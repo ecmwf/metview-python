@@ -210,3 +210,7 @@ regrid
     :type edition: {"1", "2", "as_input"}, default: "as_input"
 
     :rtype: :class:`Fieldset`
+
+
+.. mv-minigallery:: regrid
+

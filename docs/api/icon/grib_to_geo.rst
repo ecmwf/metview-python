@@ -32,3 +32,7 @@ grib_to_geo
     :type missing_data: {"ignore", "include"}, default: "include"
 
     :rtype: :class:`Geopoints`
+
+
+.. mv-minigallery:: grib_to_geo
+

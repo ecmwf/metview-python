@@ -52,3 +52,7 @@ mvert_prof
     :type cloud_fraction: number, default: 0.0
 
     :rtype: :class:`NetCDF`
+
+
+.. mv-minigallery:: mvert_prof
+

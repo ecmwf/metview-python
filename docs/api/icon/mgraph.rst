@@ -161,4 +161,7 @@ mgraph
     :type graph_shade_hatch_index: number, default: 0
 
     :rtype: :class:`Request`
-.. include:: /gallery/backref/mgraph.rst
+
+
+.. mv-minigallery:: mgraph
+

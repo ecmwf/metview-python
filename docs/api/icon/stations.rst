@@ -53,4 +53,7 @@ stations
     :type fail_on_error: {"yes", "no"}, default: "yes"
 
     :rtype: :class:`Request`
-.. include:: /gallery/backref/stations.rst
+
+
+.. mv-minigallery:: stations
+

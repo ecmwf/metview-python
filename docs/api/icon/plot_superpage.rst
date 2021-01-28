@@ -38,4 +38,7 @@ plot_superpage
     :type pages: list of :func:`plot_page`
 
     :rtype: :class:`Request`
-.. include:: /gallery/backref/plot_superpage.rst
+
+
+.. mv-minigallery:: plot_superpage
+

@@ -230,4 +230,7 @@ msymb
     :type symbol_advanced_table_outlayer_method: {"none"}, default: "none"
 
     :rtype: :class:`Request`
-.. include:: /gallery/backref/msymb.rst
+
+
+.. mv-minigallery:: msymb
+

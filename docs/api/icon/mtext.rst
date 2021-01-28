@@ -107,4 +107,7 @@ mtext
     :type text_border_thickness: int, default: 1
 
     :rtype: :class:`Request`
-.. include:: /gallery/backref/mtext.rst
+
+
+.. mv-minigallery:: mtext
+

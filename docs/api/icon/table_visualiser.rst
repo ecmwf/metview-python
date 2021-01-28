@@ -93,3 +93,7 @@ table_visualiser
     :type table_meta_data_rows: int or list[int]
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: table_visualiser
+

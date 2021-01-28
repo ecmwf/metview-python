@@ -61,3 +61,7 @@ rttov_run
     :type rttov_solar_azimuth_angle: number, default: 0
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: rttov_run
+

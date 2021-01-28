@@ -41,3 +41,7 @@ reprojection
     :type interpolation: {"nearest_neighbour"}, default: "nearest_neighbour"
 
     :rtype: :class:`fieldset`
+
+
+.. mv-minigallery:: reprojection
+

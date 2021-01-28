@@ -219,4 +219,7 @@ read
     :type intgrid: str or list[str], default: "off"
 
     :rtype: :class:`Fieldset`
-.. include:: /gallery/backref/read.rst
+
+
+.. mv-minigallery:: read
+

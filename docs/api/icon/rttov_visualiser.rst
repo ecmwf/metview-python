@@ -37,3 +37,7 @@ rttov_visualiser
     :type rttov_jacobian_channel: number, default: 1
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: rttov_visualiser
+

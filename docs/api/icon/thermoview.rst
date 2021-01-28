@@ -134,4 +134,7 @@ thermoview
     :type subpage_background_colour: str, default: "white"
 
     :rtype: :class:`Request`
-.. include:: /gallery/backref/thermoview.rst
+
+
+.. mv-minigallery:: thermoview
+

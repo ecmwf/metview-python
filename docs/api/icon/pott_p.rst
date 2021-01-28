@@ -26,3 +26,7 @@ pott_p
     :type temperature: :class:`Fieldset`
 
     :rtype: :class:`Fieldset`
+
+
+.. mv-minigallery:: pott_p
+

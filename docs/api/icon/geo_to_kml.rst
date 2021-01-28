@@ -35,3 +35,7 @@ geo_to_kml
     :type area: float or list[float], default: 90
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: geo_to_kml
+

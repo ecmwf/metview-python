@@ -105,3 +105,7 @@ flextra_prepare
     :type flextra_output_path: str
 
     :rtype: :class:`Request`
+
+
+.. mv-minigallery:: flextra_prepare
+

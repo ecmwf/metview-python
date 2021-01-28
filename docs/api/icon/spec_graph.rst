@@ -29,4 +29,7 @@ spec_graph
     :type truncation: number, default: 216
 
     :rtype: :class:`Request`
-.. include:: /gallery/backref/spec_graph.rst
+
+
+.. mv-minigallery:: spec_graph
+
