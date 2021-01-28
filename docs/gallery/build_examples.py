@@ -31,10 +31,11 @@ Path(BACKREF_DIR).mkdir(exist_ok=True)
 
 
 # template for example blocks/items in the main gallery page or in backreference
+# use <div class="sphx-glr-thumbcontainer" tooltip="{}"> for a tooltip
 ITEM_TEMPLATE = """
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="{}">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -82,6 +83,10 @@ CLEAR_BLOCK = """
     <div class="sphx-glr-clear"></div>
 """
 
+LINK_BACKREF = """
+
+Most/all of the :ref:`gallery_index` examples demonstrate the use of this function.
+"""
 
 def print_red(t):
     print("\033[91m {}\033[00m".format(t))
@@ -100,12 +105,14 @@ class BackReference:
     def __init__(self):
         self.func = {}
         self.skip = [
+            "print",
+        ]
+        self.use_link = [
             "plot",
             "pdf_output",
             "setoutput",
             "exist",
             "download_gallery_data",
-            "print",
         ]
 
     def add(self, vals, item):
@@ -128,9 +135,14 @@ class BackReference:
             output = os.path.join(BACKREF_DIR, f"{fn_name}.rst")
             with open(output, "w") as f:
                 title = f"Examples using ``metview.{fn_name}``"
-                f.write(f"""{title}\n{"^" * (len(title)+1)}""")
-                for item in fn_items:
-                    item.build_item(f)
+                f.write(f"""{title}\n{"^" * (len(title)+1)}""")  
+                # for some functions just a link to the gallery is inserted
+                if fn_name in self.use_link:
+                    f.write(LINK_BACKREF) 
+                # otherwise we add a minigallery
+                else:
+                    for item in fn_items:
+                        item.build_item(f)
                 f.write(CLEAR_BLOCK)
 
 
@@ -210,7 +222,7 @@ class GalleryItem:
     def build_item(self, f):
         f.write(
             ITEM_TEMPLATE.format(
-                self.title, to_rst_path(self.f_thumbnail), self.title, self.label
+                to_rst_path(self.f_thumbnail), self.title, self.label
             )
         )
 
@@ -236,6 +248,8 @@ def build_gallery(r):
         f.write(
             """
 :orphan:
+
+.. _gallery_index:
 
 Gallery
 =========================

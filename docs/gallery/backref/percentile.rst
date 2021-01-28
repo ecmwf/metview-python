@@ -2,7 +2,7 @@ Examples using ``metview.percentile``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - ENS Tephigram">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

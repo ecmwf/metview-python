@@ -2,7 +2,7 @@ Examples using ``metview.binning``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB Scatterplot">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.binning``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="ODB - Scatterplot with Binning">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

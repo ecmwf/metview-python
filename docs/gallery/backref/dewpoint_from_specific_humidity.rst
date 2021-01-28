@@ -2,7 +2,7 @@ Examples using ``metview.dewpoint_from_specific_humidity``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="ODB - Tephigram">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

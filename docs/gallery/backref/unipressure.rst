@@ -2,7 +2,7 @@ Examples using ``metview.unipressure``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section with Orography and Boundary Layer Height">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

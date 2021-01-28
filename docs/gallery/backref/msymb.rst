@@ -2,7 +2,7 @@ Examples using ``metview.msymb``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF - Marine Observations">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.msymb``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB, BUFR - Model minus Obs Difference">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -34,7 +34,7 @@ Examples using ``metview.msymb``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR - Plotting SYNOP Station Ids">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -50,7 +50,7 @@ Examples using ``metview.msymb``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR, Geopoints - Coloured Observation Values">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -66,7 +66,7 @@ Examples using ``metview.msymb``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="ODB - AMSU-A Radiance Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -82,7 +82,7 @@ Examples using ``metview.msymb``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Geopoints - Aircraft observations">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -98,7 +98,7 @@ Examples using ``metview.msymb``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Geopoints - Plot Text Labels at Geopoints Locations">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -114,7 +114,7 @@ Examples using ``metview.msymb``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB, CSV - Storm Track">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -130,7 +130,7 @@ Examples using ``metview.msymb``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="FLEXTRA - Forward Trajectories">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -146,7 +146,7 @@ Examples using ``metview.msymb``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR - Hodograph">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -162,7 +162,7 @@ Examples using ``metview.msymb``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Graph Plot with Double Y Axis">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -178,7 +178,7 @@ Examples using ``metview.msymb``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Taylor Diagram">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

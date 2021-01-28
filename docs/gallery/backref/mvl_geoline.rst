@@ -2,7 +2,7 @@ Examples using ``metview.mvl_geoline``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Geoline on Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

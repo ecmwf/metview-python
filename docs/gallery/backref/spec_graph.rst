@@ -2,7 +2,7 @@ Examples using ``metview.spec_graph``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Spherical Harmonics Spectrum">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

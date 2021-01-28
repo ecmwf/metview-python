@@ -2,7 +2,7 @@ Examples using ``metview.nearest_gridpoint``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cartesian View Curve with Logarithmic Y Axis">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.nearest_gridpoint``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - CDF Curve">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -34,7 +34,7 @@ Examples using ``metview.nearest_gridpoint``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Graph Plot with Double Y Axis">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -50,7 +50,7 @@ Examples using ``metview.nearest_gridpoint``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Graph Plot with Different Y Scales">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

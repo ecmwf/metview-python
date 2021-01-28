@@ -2,7 +2,7 @@ Examples using ``metview.maverageview``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Zonal Average">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.maverageview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Meridional Average">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

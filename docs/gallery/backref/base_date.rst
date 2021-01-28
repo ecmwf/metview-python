@@ -2,7 +2,7 @@ Examples using ``metview.base_date``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB Scatterplot">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

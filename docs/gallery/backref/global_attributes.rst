@@ -2,7 +2,7 @@ Examples using ``metview.global_attributes``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF - Marine Observations">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

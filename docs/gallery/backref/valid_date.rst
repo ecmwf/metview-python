@@ -2,7 +2,7 @@ Examples using ``metview.valid_date``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Time Series">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.valid_date``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Graph Plot with Different Y Scales">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

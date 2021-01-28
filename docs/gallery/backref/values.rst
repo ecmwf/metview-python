@@ -2,7 +2,7 @@ Examples using ``metview.values``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB, BUFR - Model minus Obs Difference">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.values``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="ODB - AMSU-A Radiance Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -34,7 +34,7 @@ Examples using ``metview.values``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="ODB - TEMP Wind">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -50,7 +50,7 @@ Examples using ``metview.values``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB, CSV - Storm Track">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -66,7 +66,7 @@ Examples using ``metview.values``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="CSV - Storm Wind Quadrants">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -82,7 +82,7 @@ Examples using ``metview.values``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="ODB - Tephigram">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -98,7 +98,7 @@ Examples using ``metview.values``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB Scatterplot">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -114,7 +114,7 @@ Examples using ``metview.values``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="ODB - Wind Profiler">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

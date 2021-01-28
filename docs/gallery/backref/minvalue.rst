@@ -2,7 +2,7 @@ Examples using ``metview.minvalue``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="ODB - AMSU-A Radiance Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.minvalue``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - ENS Tephigram">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

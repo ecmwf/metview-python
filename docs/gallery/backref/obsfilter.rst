@@ -2,7 +2,7 @@ Examples using ``metview.obsfilter``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB, BUFR - Model minus Obs Difference">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.obsfilter``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR - Plotting SYNOP Station Ids">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -34,7 +34,7 @@ Examples using ``metview.obsfilter``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR, Geopoints - Coloured Observation Values">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

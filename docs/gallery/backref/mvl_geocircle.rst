@@ -2,7 +2,7 @@ Examples using ``metview.mvl_geocircle``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Geocircle on Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.mvl_geocircle``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="CSV - Storm Wind Quadrants">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

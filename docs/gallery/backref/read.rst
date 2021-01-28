@@ -2,7 +2,7 @@ Examples using ``metview.read``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Interval Shading Contour">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Contour Shading and Positional Legend">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -34,7 +34,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - 2m Temperature with ecCharts Style">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -50,7 +50,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Field Anomalies">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -66,7 +66,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Layout with 3 Maps">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -82,7 +82,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Vorticity and Wind">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -98,7 +98,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Wind Coloured by Temperature">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -114,7 +114,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Temperature Gradient Vectors">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -130,7 +130,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Coloured Wind Vectors">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -146,7 +146,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Wind Field Overlay and Legend Box">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -162,7 +162,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Windgust and MSLP with 10m Wind">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -178,7 +178,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Contouring with Gradient Shading">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -194,7 +194,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Contour Shading Only Over Land">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -210,7 +210,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Humidity advection">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -226,7 +226,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - De-accumulate Precipitation Forecast">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -242,7 +242,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - ENS Windgust Probability">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -258,7 +258,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - ENS Stamp Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -274,7 +274,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - ENS Spaghetti Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -290,7 +290,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Streamlines">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -306,7 +306,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Simulated Satellite Image">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -322,7 +322,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - SST on Extended Cylindrical Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -338,7 +338,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Histogram Legend">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -354,7 +354,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Disjoint Legend">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -370,7 +370,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Grid Values and Contour Levels">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -386,7 +386,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Temperature Below 0 Celsius">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -402,7 +402,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Difference Plot with Rainbow Contour Settings">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -418,7 +418,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Split contouring">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -434,7 +434,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF - Temperature">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -450,7 +450,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF - Ozone Layout 2x2">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -466,7 +466,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF - Wind">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -482,7 +482,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF - Sea Currents with Fix-sized Vectors">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -498,7 +498,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF - Marine Observations">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -514,7 +514,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB, BUFR - Model minus Obs Difference">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -530,7 +530,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR - SYNOP Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -546,7 +546,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR - Plotting SYNOP Station Ids">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -562,7 +562,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR - TEMP Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -578,7 +578,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR, Geopoints - Coloured Observation Values">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -594,7 +594,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="ODB - AMSU-A Radiance Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -610,7 +610,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="ODB - TEMP Wind">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -626,7 +626,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Geopoints - Aircraft observations">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -642,7 +642,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Geopoints - Plot Text Labels at Geopoints Locations">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -658,7 +658,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB, CSV - Storm Track">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -674,7 +674,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="FLEXTRA - Forward Trajectories">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -690,7 +690,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section for Pressure Level Data">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -706,7 +706,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section for Model Level Data with Orography">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -722,7 +722,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section with Orography and Boundary Layer Height">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -738,7 +738,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section in Height for Model Level Data with Orography">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -754,7 +754,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section Going Through the South Pole">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -770,7 +770,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section Normal Wind Component with Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -786,7 +786,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section Parallel Wind Component with Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -802,7 +802,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section 3D Parallel Wind">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -818,7 +818,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Time-height Section">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -834,7 +834,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Hovmoeller Area Average">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -850,7 +850,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Zonal Average">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -866,7 +866,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Meridional Average">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -882,7 +882,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR - Tephigram">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -898,7 +898,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="ODB - Tephigram">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -914,7 +914,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Parcel Method on Skew-T">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -930,7 +930,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - ENS Tephigram">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -946,7 +946,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR - Hodograph">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -962,7 +962,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Time Series">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -978,7 +978,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cartesian View Curve with Logarithmic Y Axis">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -994,7 +994,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - CDF Curve">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -1010,7 +1010,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB Scatterplot">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -1026,7 +1026,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="ODB - Scatterplot with Binning">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -1042,7 +1042,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="ODB - Wind Profiler">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -1058,7 +1058,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Graph Plot with Double Y Axis">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -1074,7 +1074,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Graph Plot with Different Y Scales">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -1090,7 +1090,7 @@ Examples using ``metview.read``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Spherical Harmonics Spectrum">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

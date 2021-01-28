@@ -2,7 +2,7 @@ Examples using ``metview.stations``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR - Tephigram">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.stations``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR - Hodograph">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

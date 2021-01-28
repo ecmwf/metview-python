@@ -2,7 +2,7 @@ Examples using ``metview.mthermo``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR - Tephigram">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.mthermo``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Parcel Method on Skew-T">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

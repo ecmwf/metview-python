@@ -2,7 +2,7 @@ Examples using ``metview.mvl_regular_layout``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - De-accumulate Precipitation Forecast">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.mvl_regular_layout``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - ENS Stamp Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -34,7 +34,7 @@ Examples using ``metview.mvl_regular_layout``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF - Ozone Layout 2x2">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

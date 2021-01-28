@@ -2,7 +2,7 @@ Examples using ``metview.integrate``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Time Series">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

@@ -2,7 +2,7 @@ Examples using ``metview.mxsectview``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section for Pressure Level Data">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.mxsectview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section for Model Level Data with Orography">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -34,7 +34,7 @@ Examples using ``metview.mxsectview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section with Orography and Boundary Layer Height">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -50,7 +50,7 @@ Examples using ``metview.mxsectview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section in Height for Model Level Data with Orography">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -66,7 +66,7 @@ Examples using ``metview.mxsectview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section Going Through the South Pole">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -82,7 +82,7 @@ Examples using ``metview.mxsectview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section Normal Wind Component with Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -98,7 +98,7 @@ Examples using ``metview.mxsectview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section Parallel Wind Component with Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -114,7 +114,7 @@ Examples using ``metview.mxsectview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section 3D Parallel Wind">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

@@ -2,7 +2,7 @@ Examples using ``metview.sqrt``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section for Model Level Data with Orography">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.sqrt``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section with Orography and Boundary Layer Height">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -34,7 +34,7 @@ Examples using ``metview.sqrt``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Time-height Section">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

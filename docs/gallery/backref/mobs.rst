@@ -2,7 +2,7 @@ Examples using ``metview.mobs``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR - SYNOP Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.mobs``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR - TEMP Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

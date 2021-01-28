@@ -2,6 +2,8 @@ accumulate
 ************
 
 .. py:function:: accumulate(fs)
+.. py:function:: Fieldset.accumulate()
+   :noindex:
 
    Computes the sum of all the values for each field in ``fs``.
 

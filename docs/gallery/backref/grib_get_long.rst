@@ -2,7 +2,7 @@ Examples using ``metview.grib_get_long``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Graph Plot with Double Y Axis">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

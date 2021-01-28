@@ -2,7 +2,7 @@ Examples using ``metview.mwind``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Vorticity and Wind">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.mwind``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Wind Coloured by Temperature">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -34,7 +34,7 @@ Examples using ``metview.mwind``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Temperature Gradient Vectors">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -50,7 +50,7 @@ Examples using ``metview.mwind``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Coloured Wind Vectors">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -66,7 +66,7 @@ Examples using ``metview.mwind``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Wind Field Overlay and Legend Box">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -82,7 +82,7 @@ Examples using ``metview.mwind``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Windgust and MSLP with 10m Wind">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -98,7 +98,7 @@ Examples using ``metview.mwind``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Streamlines">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -114,7 +114,7 @@ Examples using ``metview.mwind``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF - Wind">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -130,7 +130,7 @@ Examples using ``metview.mwind``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="NetCDF - Sea Currents with Fix-sized Vectors">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -146,7 +146,7 @@ Examples using ``metview.mwind``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="ODB - TEMP Wind">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -162,7 +162,7 @@ Examples using ``metview.mwind``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Wind Vectors from List Data">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -178,7 +178,7 @@ Examples using ``metview.mwind``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section 3D Parallel Wind">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -194,7 +194,7 @@ Examples using ``metview.mwind``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Tephigram from List Data">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -210,7 +210,7 @@ Examples using ``metview.mwind``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="ODB - Tephigram">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -226,7 +226,7 @@ Examples using ``metview.mwind``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - ENS Tephigram">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -242,7 +242,7 @@ Examples using ``metview.mwind``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="ODB - Wind Profiler">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

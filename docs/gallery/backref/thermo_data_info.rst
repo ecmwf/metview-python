@@ -2,7 +2,7 @@ Examples using ``metview.thermo_data_info``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Parcel Method on Skew-T">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

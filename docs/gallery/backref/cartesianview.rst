@@ -2,7 +2,7 @@ Examples using ``metview.cartesianview``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="ODB - Tephigram">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.cartesianview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR - Hodograph">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -34,7 +34,7 @@ Examples using ``metview.cartesianview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Time Series">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -50,7 +50,7 @@ Examples using ``metview.cartesianview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Fill the area between two curves">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -66,7 +66,7 @@ Examples using ``metview.cartesianview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cartesian View Curve with Logarithmic Y Axis">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -82,7 +82,7 @@ Examples using ``metview.cartesianview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - CDF Curve">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -98,7 +98,7 @@ Examples using ``metview.cartesianview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB Scatterplot">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -114,7 +114,7 @@ Examples using ``metview.cartesianview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="ODB - Scatterplot with Binning">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -130,7 +130,7 @@ Examples using ``metview.cartesianview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="ODB - Wind Profiler">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -146,7 +146,7 @@ Examples using ``metview.cartesianview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Bar Chart Plotting">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -162,7 +162,7 @@ Examples using ``metview.cartesianview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Graph Plot with Double Y Axis">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -178,7 +178,7 @@ Examples using ``metview.cartesianview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Graph Plot with Different Y Scales">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -194,7 +194,7 @@ Examples using ``metview.cartesianview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Taylor Diagram">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

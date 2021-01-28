@@ -2,7 +2,7 @@ Examples using ``metview.mtaylor``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Taylor Diagram">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

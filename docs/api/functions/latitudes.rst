@@ -2,6 +2,8 @@ latitudes
 ============
 
 .. py:function:: latitudes(fs)
+.. py:function:: Fieldset.latitudes()
+   :noindex:
 
    Returns the latitudes of the grid points in ``fs`` as an ndarray. 
    
@@ -13,6 +15,8 @@ latitudes
 
 
 .. py:function:: latitudes(gpt)
+.. py:function:: Geopoints.latitudes()
+   :noindex:
 
     Returns the latitudes column of ``gpt`` as an ndarray.
     

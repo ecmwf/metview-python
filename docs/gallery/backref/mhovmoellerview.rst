@@ -2,7 +2,7 @@ Examples using ``metview.mhovmoellerview``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Time-height Section">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.mhovmoellerview``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Hovmoeller Area Average">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

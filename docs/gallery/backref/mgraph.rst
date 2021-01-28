@@ -2,7 +2,7 @@ Examples using ``metview.mgraph``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Geoline on Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.mgraph``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Geopolyline on Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -34,7 +34,7 @@ Examples using ``metview.mgraph``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Geocircle on Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -50,7 +50,7 @@ Examples using ``metview.mgraph``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB, CSV - Storm Track">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -66,7 +66,7 @@ Examples using ``metview.mgraph``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="CSV - Storm Wind Quadrants">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -82,7 +82,7 @@ Examples using ``metview.mgraph``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section for Model Level Data with Orography">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -98,7 +98,7 @@ Examples using ``metview.mgraph``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section with Orography and Boundary Layer Height">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -114,7 +114,7 @@ Examples using ``metview.mgraph``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section Going Through the South Pole">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -130,7 +130,7 @@ Examples using ``metview.mgraph``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section Normal Wind Component with Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -146,7 +146,7 @@ Examples using ``metview.mgraph``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section Parallel Wind Component with Map">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -162,7 +162,7 @@ Examples using ``metview.mgraph``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cross Section 3D Parallel Wind">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -178,7 +178,7 @@ Examples using ``metview.mgraph``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Tephigram from List Data">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -194,7 +194,7 @@ Examples using ``metview.mgraph``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR - Hodograph">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -210,7 +210,7 @@ Examples using ``metview.mgraph``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Time Series">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -226,7 +226,7 @@ Examples using ``metview.mgraph``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Fill the area between two curves">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -242,7 +242,7 @@ Examples using ``metview.mgraph``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cartesian View Curve with Logarithmic Y Axis">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -258,7 +258,7 @@ Examples using ``metview.mgraph``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - CDF Curve">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -274,7 +274,7 @@ Examples using ``metview.mgraph``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Bar Chart Plotting">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -290,7 +290,7 @@ Examples using ``metview.mgraph``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Graph Plot with Different Y Scales">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

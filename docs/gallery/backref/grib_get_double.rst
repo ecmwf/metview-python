@@ -2,7 +2,7 @@ Examples using ``metview.grib_get_double``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cartesian View Curve with Logarithmic Y Axis">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

@@ -2,7 +2,7 @@ Examples using ``metview.grib_vectors``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Wind Coloured by Temperature">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.grib_vectors``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB - Temperature Gradient Vectors">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

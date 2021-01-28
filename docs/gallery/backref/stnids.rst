@@ -2,7 +2,7 @@ Examples using ``metview.stnids``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="BUFR - Plotting SYNOP Station Ids">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 

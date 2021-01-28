@@ -2,7 +2,7 @@ Examples using ``metview.read_table``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="GRIB, CSV - Storm Track">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
@@ -18,7 +18,7 @@ Examples using ``metview.read_table``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="CSV - Storm Wind Quadrants">
+    <div class="sphx-glr-thumbcontainer">
 
 .. only:: html
 
