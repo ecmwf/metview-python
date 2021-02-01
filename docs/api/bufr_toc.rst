@@ -24,4 +24,4 @@ This is the list of all functions related to :class:`Bufr` data.
       - Generates thermodynamical profile from BUFR
 
     * - :func:`write`
-      - Writes/appends the given data to file. args: (filehandler, any)
+      - Writes/appends the given data to file

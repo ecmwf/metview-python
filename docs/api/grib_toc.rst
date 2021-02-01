@@ -432,7 +432,7 @@ This is the list of all functions related to GRIB (:class:`Fieldset`) data.
       - Computes the vertical velocity in m/s from pressure velocity
 
     * - :func:`write`
-      - Writes/appends the given data to file. args: (filehandler, any)
+      - Writes/appends the given data to file
 
     * - :func:`xy_from_polar`
       - Computes the x and y components from polar components

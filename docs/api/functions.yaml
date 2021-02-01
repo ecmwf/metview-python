@@ -689,7 +689,7 @@
 - global_attributes:
     category:
       netcdf: Returns a definition variable holding the netcdf's global metadata.
-    desc: Returns a definition variable holding the netcdf's global metadata.
+    desc: Returns a definition variable holding the netcdf global metadata.
     type: script
     group:
       - netcdf_object
@@ -2537,7 +2537,7 @@
 - write:
     category:
       io: 'Writes/appends the given data to file. args: (filehandler, any)'
-    desc: 'Writes/appends the given data to file. args: (filehandler, any)'
+    desc: Writes/appends the given data to file
     type: script
     group: 
       - grib 

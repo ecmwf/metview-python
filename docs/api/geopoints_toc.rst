@@ -180,7 +180,7 @@ This is the list of all functions related to :class:`Geopoints` data.
       - Returns the values from a data object
 
     * - :func:`write`
-      - Writes/appends the given data to file. args: (filehandler, any)
+      - Writes/appends the given data to file
 
     * - :func:`xy_vector`
       - Combines two 1-parameter :class:`Geopoints` variables into u/v vector style

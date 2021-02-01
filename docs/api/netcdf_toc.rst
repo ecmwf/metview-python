@@ -18,7 +18,7 @@ This is the list of all functions related to :class:`NetCDF` data.
       - Returns a list of the :class:`NetCdf`'s dimensions.
 
     * - :func:`global_attributes`
-      - Returns a definition variable holding the :class:`NetCdf`'s global metadata.
+      - Returns a definition variable holding the :class:`NetCdf` global metadata.
 
     * - :func:`max`
       - Maximum

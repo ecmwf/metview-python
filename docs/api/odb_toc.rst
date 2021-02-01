@@ -18,4 +18,4 @@ This is the list of all functions related to :class:`Odb` data.
       - Retrieves data from MARS
 
     * - :func:`write`
-      - Writes/appends the given data to file. args: (filehandler, any)
+      - Writes/appends the given data to file
