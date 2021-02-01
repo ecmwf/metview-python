@@ -30,7 +30,7 @@ thermo_bufr
     :type data: :class:`Bufr`
 
     :param station: Specifies the location as a :func:`stations` object for which the diagram is to be plotted.
-    :type station: :func:`stations``
+    :type station: :func:`stations`
 
     :rtype: :class:`NetCDF`
 

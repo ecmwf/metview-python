@@ -1,11 +1,12 @@
 
 Visualisation functions
-===========================
+=========================
 
 
 
 Views
--------------------------------
+-------
+
 
 .. list-table::
     :widths: 20 80
@@ -38,7 +39,8 @@ Views
 
 
 Visual definitions
--------------------------------
+--------------------
+
 
 .. list-table::
     :widths: 20 80
@@ -83,7 +85,8 @@ Visual definitions
 
 
 Plotting
--------------------------------
+----------
+
 
 .. list-table::
     :widths: 20 80
@@ -158,7 +161,8 @@ Plotting
 
 
 Layout
--------------------------------
+--------
+
 
 .. list-table::
     :widths: 20 80
@@ -182,7 +186,8 @@ Layout
 
 
 Graphical output
--------------------------------
+------------------
+
 
 .. list-table::
     :widths: 20 80

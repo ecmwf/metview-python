@@ -21,9 +21,17 @@ groups_def = {
     "widget": "Widgets",
     "conversion": "Data conversion",
     "output": "Graphical output",
-    "grib": "Grib data",
-    "geopoints": "Geopoints data",
-    "netcdf": "NetCDF data",
+    "grib_access": "Grib data",
+    "geopoints_access": "Geopoints data",
+    "netcdf_access": "NetCDF data",
+    "grib_object": "Grib methods",
+    "geopoints_object": "Geopoints methods",
+    "netcdf_object": "NetCDF methods",
+    "grib": "Grib related functions",
+    "geopoints": "Geopoints related functions",
+    "netcdf": "NetCDF related functions",
+    "odb": "ODB related functions",
+    "bufr": "BUFR related functions",
     "visdef": "Visual definitions",
     "retrieve": "Data retrieval",
     "mask": "Masking",
@@ -61,9 +69,9 @@ toc_def = {
             "retrieve",
             "conversion",
             "filter",
-            "grib",
-            "geopoints",
-            "netcdf",
+            "grib_access",
+            "geopoints_access",
+            "netcdf_access",
             "flex",
             "table",
             "scm",
@@ -73,6 +81,39 @@ toc_def = {
     "apps": {
         "title": "External application functions",
         "gr": ["flex", "met3d", "vapor", "scm", "rttov"],
+    },
+    "object": {
+        "title": "Object functions",
+        "gr": [
+            "grib_object",
+            "geopoints_object",
+            "netcdf_object",
+        ],
+    },
+    "grib": {
+        "title": "GRIB (Fieldset) functions",
+        "desc": "This is the list of all functions related to GRIB (:class:`Fieldset`) data.",
+        "gr": ["grib"],
+    },
+    "geopoints": {
+        "title": "Geopoints functions",
+        "desc": "This is the list of all functions related to :class:`Geopoints` data.",      
+        "gr": ["geopoints"],
+    },
+    "netcdf": {
+        "title": "NetCDF functions",
+        "desc": "This is the list of all functions related to :class:`NetCDF` data.",
+        "gr": ["netcdf"],
+    },
+    "odb": {
+        "title": "ODB functions",
+        "desc": "This is the list of all functions related to :class:`Odb` data.",
+        "gr": ["odb"],
+    },
+    "bufr": {
+        "title": "BUFR functions",
+        "desc": "This is the list of all functions related to :class:`Bufr` data.",
+        "gr": ["bufr"],
     },
 }
 
@@ -92,6 +133,7 @@ class TocGroup:
     def __init__(self, name, item):
         self.name = name
         self.title = item.get("title", "")
+        self.desc = item.get("desc", "")
         self.output = name + "_toc.rst"
         self.gr = []
         for gn in item.get("gr", []):
@@ -163,35 +205,34 @@ def make_group_toc(t):
         return
 
     with open(t.output, "w") as f:
+        title_len = len(t.title) + 2
         f.write(
-            """
-{}
-===========================
-
-""".format(
-                t.title
-            )
-        )
+            f"""
+{t.title}
+{"=" * title_len}
+{t.desc}
+""")
         for gr in t.gr:
             if len(gr.fn) == 0:
                 print("Empty group")
                 continue
 
+            if len(t.gr) > 1:
+                title_len = len(gr.title) + 2
+                f.write(
+                    f"""
+
+{gr.title}
+{"-" * title_len}
+
+""")
             f.write(
-                """
-
-{}
--------------------------------
-
+                f"""
 .. list-table::
     :widths: 20 80
     :header-rows: 0
 
-""".format(
-                    gr.title
-                )
-            )
-
+""")
             for fn in gr.fn:
                 #                 f.write("""
                 #     * - :func:`{}`
@@ -217,8 +258,10 @@ def make_icon_toc():
 {}
 ===========================
 
-""".format("Icon functions")
-    )
+""".format(
+                "Icon functions"
+            )
+        )
 
         icons = {}
         for fn in fn_list:
@@ -269,7 +312,14 @@ with open("functions.yaml", "r") as f:
         )
         fn_list.append(fn)
 
-        for gr in item.get("group", []):
+        item_groups = item.get("group", [])
+        for d_type in ["grib", "geopoints", "netcdf"]:
+            if (not d_type in item_groups) and (
+                d_type + "_access" in item_groups or d_type + "_object" in item_groups
+            ):
+                item_groups.append(d_type)
+
+        for gr in item_groups:
             if gr in groups:
                 # raise Exception("Unknown group: {}".format(gr))
                 # groups[gr] = []

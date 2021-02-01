@@ -1,11 +1,12 @@
 
 External application functions
-===========================
+================================
 
 
 
 Flextra and Flexpart
--------------------------------
+----------------------
+
 
 .. list-table::
     :widths: 20 80
@@ -47,7 +48,8 @@ Flextra and Flexpart
 
 
 Met3D
--------------------------------
+-------
+
 
 .. list-table::
     :widths: 20 80
@@ -62,7 +64,8 @@ Met3D
 
 
 Vapor
--------------------------------
+-------
+
 
 .. list-table::
     :widths: 20 80
@@ -74,7 +77,8 @@ Vapor
 
 
 Single Column Model
--------------------------------
+---------------------
+
 
 .. list-table::
     :widths: 20 80
@@ -89,7 +93,8 @@ Single Column Model
 
 
 RTTOV
--------------------------------
+-------
+
 
 .. list-table::
     :widths: 20 80

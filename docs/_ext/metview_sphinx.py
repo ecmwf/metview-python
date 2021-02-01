@@ -126,7 +126,7 @@ class MvMiniGallery(Directive):
             self.state_machine.insert_input(lines, "/" + f_path)
             # return []
         
-        # if thre is no minigallery we replace the directive with an empty string
+        # if there is no minigallery we replace the directive with an empty string
         if not has_file:
             paragraph_node = nodes.paragraph(text="")
             return [paragraph_node]

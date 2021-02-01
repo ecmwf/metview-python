@@ -1,11 +1,12 @@
 
 Data access function
-===========================
+======================
 
 
 
 Data retrieval
--------------------------------
+----------------
+
 
 .. list-table::
     :widths: 20 80
@@ -35,7 +36,8 @@ Data retrieval
 
 
 Data conversion
--------------------------------
+-----------------
+
 
 .. list-table::
     :widths: 20 80
@@ -53,7 +55,8 @@ Data conversion
 
 
 Filtering
--------------------------------
+-----------
+
 
 .. list-table::
     :widths: 20 80
@@ -77,7 +80,8 @@ Filtering
 
 
 Grib data
--------------------------------
+-----------
+
 
 .. list-table::
     :widths: 20 80
@@ -150,18 +154,19 @@ Grib data
     * - :func:`lookup`
       - Builds an output :class:`Fieldset` using the values in the first as indices into the second
 
-    * - :func:`set_values`
-      - Sets the values in a :class:`Fieldset` or :class:`Geopoints`
-
     * - :func:`sort`
       - Sorts a vector according to an operator '<' (default) or '>'
+
+    * - :func:`valid_date`
+      - Returns the valid date(s) of a given :class:`Fieldset`
 
     * - :func:`values`
       - Returns the values from a data object
 
 
 Geopoints data
--------------------------------
+----------------
+
 
 .. list-table::
     :widths: 20 80
@@ -177,9 +182,6 @@ Geopoints data
     * - :func:`create_geo_set`
       - Creates a new :class:`Geopoints` set
 
-    * - :func:`dates`
-      - Returns a list/vector of dates from the given :class:`Geopoints`.
-
     * - :func:`db_info`
       - Returns a string of the database from the given :class:`Geopoints`.
 
@@ -194,6 +196,12 @@ Geopoints data
 
     * - :func:`remove_duplicates`
       - Removes geopoint duplicates
+
+    * - :func:`remove_missing_latlons`
+      - Copies a set of :class:`Geopoints`, removing missing lat/lons
+
+    * - :func:`remove_missing_values`
+      - Copies a set of :class:`Geopoints`, removing missing values
 
     * - :func:`set_dates`
       - Sets the date column in the :class:`Geopoints` variable.
@@ -234,6 +242,9 @@ Geopoints data
     * - :func:`value2s`
       - Returns the 2nd values column from a :class:`Geopoints`
 
+    * - :func:`value_columns`
+      - Returns a list of value column names for a :class:`Geopoints`
+
     * - :func:`values`
       - Returns the values from a data object
 
@@ -242,24 +253,19 @@ Geopoints data
 
 
 NetCDF data
--------------------------------
+-------------
+
 
 .. list-table::
     :widths: 20 80
     :header-rows: 0
 
 
-    * - :func:`attributes`
-      - Returns the attributes of the current NetCDF variable
-
     * - :func:`dimension_names`
       - Returns a list of the netcdf's dimension names.
 
     * - :func:`dimensions`
       - Returns a list of the netcdf's dimensions.
-
-    * - :func:`global_attributes`
-      - Returns a definition variable holding the netcdf's global metadata.
 
     * - :func:`netcdf_auto_rescale_values_to_fit_packed_type`
       - Sets the behaviour of netcdf value handling: 1=on, 0=off
@@ -273,14 +279,8 @@ NetCDF data
     * - :func:`netcdf_preserve_missing_values`
       - Sets the behaviour of netcdf value handling: 1=on, 0=off
 
-    * - :func:`setcurrent`
-      - Sets the variable number on which netcdf functions will operate.
-
     * - :func:`value`
       - Returns the n:th value from the current netcdf variable.
-
-    * - :func:`value_columns`
-      - Returns a list of value column names for a :class:`Geopoints`
 
     * - :func:`values`
       - Returns the values from a data object
@@ -290,7 +290,8 @@ NetCDF data
 
 
 Flextra and Flexpart
--------------------------------
+----------------------
+
 
 .. list-table::
     :widths: 20 80
@@ -332,7 +333,8 @@ Flextra and Flexpart
 
 
 Table data
--------------------------------
+------------
+
 
 .. list-table::
     :widths: 20 80
@@ -356,7 +358,8 @@ Table data
 
 
 Single Column Model
--------------------------------
+---------------------
+
 
 .. list-table::
     :widths: 20 80
@@ -371,7 +374,8 @@ Single Column Model
 
 
 RTTOV
--------------------------------
+-------
+
 
 .. list-table::
     :widths: 20 80

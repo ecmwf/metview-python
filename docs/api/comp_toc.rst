@@ -1,11 +1,12 @@
 
 Computation functions
-===========================
+=======================
 
 
 
 Statistics
--------------------------------
+------------
+
 
 .. list-table::
     :widths: 20 80
@@ -80,7 +81,8 @@ Statistics
 
 
 Geographic
--------------------------------
+------------
+
 
 .. list-table::
     :widths: 20 80
@@ -143,7 +145,8 @@ Geographic
 
 
 Masking
--------------------------------
+---------
+
 
 .. list-table::
     :widths: 20 80
@@ -170,7 +173,8 @@ Masking
 
 
 Wind
--------------------------------
+------
+
 
 .. list-table::
     :widths: 20 80
@@ -203,7 +207,8 @@ Wind
 
 
 Vertical
--------------------------------
+----------
+
 
 .. list-table::
     :widths: 20 80
@@ -263,7 +268,8 @@ Vertical
 
 
 Thermodynamics
--------------------------------
+----------------
+
 
 .. list-table::
     :widths: 20 80
@@ -341,7 +347,8 @@ Thermodynamics
 
 
 Calculus
--------------------------------
+----------
+
 
 .. list-table::
     :widths: 20 80
@@ -377,7 +384,8 @@ Calculus
 
 
 Basic mathematics
--------------------------------
+-------------------
+
 
 .. list-table::
     :widths: 20 80

@@ -39,7 +39,7 @@ thermo_grib
     :type area_average: list[float], default: [30, -30, -30, 30]
 
     :param station: Specifies the location as a :func:`stations`` object for which the diagram is to be plotted. Available if ``point_selection` is "station".
-    :type station: :func:`stations``
+    :type station: :func:`stations`
 
     :param point_extraction: Specifies the way to calculate values at the point location for GRIB thermodynamic diagrams. The possible options are:
 		
