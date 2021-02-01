@@ -174,7 +174,7 @@ Geopoints data
 
 
     * - :func:`columns`
-      - Returns the list of columns from the given ODB.
+      - Returns the list of column name from a :class:`Geopoints` or :class:`Odb`
 
     * - :func:`create_geo`
       - Creates a new set of :class:`Geopoints`
@@ -262,31 +262,31 @@ NetCDF data
 
 
     * - :func:`dimension_names`
-      - Returns a list of the netcdf's dimension names.
+      - Returns a list of the :class:`NetCdf`'s dimension names.
 
     * - :func:`dimensions`
-      - Returns a list of the netcdf's dimensions.
+      - Returns a list of the :class:`NetCdf`'s dimensions.
 
     * - :func:`netcdf_auto_rescale_values_to_fit_packed_type`
-      - Sets the behaviour of netcdf value handling: 1=on, 0=off
+      - Sets the behaviour of :class:`NetCdf` value handling: 1=on, 0=off
 
     * - :func:`netcdf_auto_scale_values`
-      - Sets the behaviour of netcdf value handling: 1=on, 0=off
+      - Sets the behaviour of :class:`NetCdf` value handling: 1=on, 0=off
 
     * - :func:`netcdf_auto_translate_times`
-      - Sets the behaviour of netcdf value handling: 1=on, 0=off
+      - Sets the behaviour of :class:`NetCdf` value handling: 1=on, 0=off
 
     * - :func:`netcdf_preserve_missing_values`
-      - Sets the behaviour of netcdf value handling: 1=on, 0=off
+      - Sets the behaviour of :class:`NetCdf` value handling: 1=on, 0=off
 
     * - :func:`value`
-      - Returns the n:th value from the current netcdf variable.
+      - Returns the n:th value from the current :class:`NetCdf` variable.
 
     * - :func:`values`
       - Returns the values from a data object
 
     * - :func:`variables`
-      - Returns a list of the names of the given netcdf file's variables.
+      - Returns a list of the names of the given :class:`NetCdf` file's variables.
 
 
 Flextra and Flexpart

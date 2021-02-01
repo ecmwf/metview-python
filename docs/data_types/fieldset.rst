@@ -28,6 +28,9 @@ Fieldset object
    .. code-block:: python
 
       f = f.append(g)
+
+
+.. include:: /api/grib_obj_toc.rst
    
       
 

@@ -27,6 +27,7 @@ groups_def = {
     "grib_object": "Grib methods",
     "geopoints_object": "Geopoints methods",
     "netcdf_object": "NetCDF methods",
+    "odb_object": "Odb methods",
     "grib": "Grib related functions",
     "geopoints": "Geopoints related functions",
     "netcdf": "NetCDF related functions",
@@ -115,6 +116,22 @@ toc_def = {
         "desc": "This is the list of all functions related to :class:`Bufr` data.",
         "gr": ["bufr"],
     },
+    "grib_obj": {
+        "title": "List of methods",
+        "gr": ["grib_object"],
+    },
+    "geopoints_obj": {
+        "title": "List of methods",
+        "gr": ["geopoints_object"],
+    },
+    "netcdf_obj": {
+        "title": "List of methods",
+        "gr": ["netcdf_object"],
+    },
+    "odb_obj": {
+        "title": "List of methods",
+        "gr": ["odb_object"],
+    },
 }
 
 groups = {}
@@ -124,6 +141,9 @@ dtypes = {
     "fieldsets": ":class:`Fieldset`",
     "fieldset": ":class:`Fieldset`",
     "geopoints": ":class:`Geopoints`",
+    "netcdf": ":class:`NetCdf`",
+    "bufr": ":class:`Bufr`",
+    "odb": ":class:`Odb`",
     "array": "ndarray",
     "number": "number",
 }

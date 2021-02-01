@@ -1,7 +1,7 @@
 
-Geopoints functions
-=====================
-This is the list of all functions related to :class:`Geopoints` data.
+List of methods
+=================
+
 
 .. list-table::
     :widths: 20 80
@@ -29,15 +29,6 @@ This is the list of all functions related to :class:`Geopoints` data.
     * - :func:`cos`
       - Computes the cosine
 
-    * - :func:`create_geo`
-      - Creates a new set of :class:`Geopoints`
-
-    * - :func:`create_geo_set`
-      - Creates a new :class:`Geopoints` set
-
-    * - :func:`dates`
-      - Returns a list/vector of dates from the given :class:`Geopoints`.
-
     * - :func:`db_info`
       - Returns a string of the database from the given :class:`Geopoints`.
 
@@ -50,17 +41,8 @@ This is the list of all functions related to :class:`Geopoints` data.
     * - :func:`exp`
       - Computes the exponential
 
-    * - :func:`geo_to_grib`
-      - Converts :class:`Geopoints` data to GRIB
-
-    * - :func:`geo_to_kml`
-      - Converts :class:`Geopoints` data to KML
-
     * - :func:`geosort`
       - Sorts the :class:`Geopoints` North to South and West to East
-
-    * - :func:`grib_to_geo`
-      - Converts GRIB data into :class:`Geopoints`
 
     * - :func:`intbits`
       - Returns ranges of bits
@@ -106,15 +88,6 @@ This is the list of all functions related to :class:`Geopoints` data.
 
     * - :func:`polar_vector`
       - Combines two 1-parameter :class:`Geopoints` variables into polar vector style
-
-    * - :func:`remove_duplicates`
-      - Removes geopoint duplicates
-
-    * - :func:`remove_missing_latlons`
-      - Copies a set of :class:`Geopoints`, removing missing lat/lons
-
-    * - :func:`remove_missing_values`
-      - Copies a set of :class:`Geopoints`, removing missing values
 
     * - :func:`set_dates`
       - Sets the date column in the :class:`Geopoints` variable.
@@ -178,9 +151,6 @@ This is the list of all functions related to :class:`Geopoints` data.
 
     * - :func:`values`
       - Returns the values from a data object
-
-    * - :func:`write`
-      - Writes/appends the given data to file. args: (filehandler, any)
 
     * - :func:`xy_vector`
       - Combines two 1-parameter :class:`Geopoints` variables into u/v vector style

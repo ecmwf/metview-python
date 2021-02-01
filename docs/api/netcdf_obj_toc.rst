@@ -1,15 +1,12 @@
 
-NetCDF functions
-==================
-This is the list of all functions related to :class:`NetCDF` data.
+List of methods
+=================
+
 
 .. list-table::
     :widths: 20 80
     :header-rows: 0
 
-
-    * - :func:`attributes`
-      - Returns the attributes of the current NetCDF variable
 
     * - :func:`dimension_names`
       - Returns a list of the :class:`NetCdf`'s dimension names.
@@ -37,9 +34,6 @@ This is the list of all functions related to :class:`NetCDF` data.
 
     * - :func:`netcdf_preserve_missing_values`
       - Sets the behaviour of :class:`NetCdf` value handling: 1=on, 0=off
-
-    * - :func:`netcdf_visualiser`
-      - Defines visualisation for NetCDF data
 
     * - :func:`setcurrent`
       - Sets the variable number on which :class:`NetCdf` functions will operate.

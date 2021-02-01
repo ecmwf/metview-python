@@ -200,11 +200,13 @@
     category:
       geopoints: Returns a list of column names for a geopoints variable
       odb: Returns the list of columns from the given ODB.
-    desc: Returns the list of columns from the given ODB.
+    desc: Returns the list of column name from a geopoints or odb
     type: script
     group:
       - geopoints_access
       - geopoints_object
+      - odb_access
+      - odb_object
 - compute:
     category: {}
     desc: ''
