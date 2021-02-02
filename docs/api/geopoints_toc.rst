@@ -1,7 +1,7 @@
 
 Geopoints functions
 =====================
-This is the list of all functions related to :class:`Geopoints` data.
+This is the list of all the functions related to :class:`Geopoints` data.
 
 .. list-table::
     :widths: 20 80
@@ -10,9 +10,6 @@ This is the list of all functions related to :class:`Geopoints` data.
 
     * - :func:`abs`
       - Computes the absolute value
-
-    * - :func:`accumulate`
-      - Adds up the values per field in a :class:`Fieldset`
 
     * - :func:`acos`
       - Computes the arc cosine
@@ -24,7 +21,7 @@ This is the list of all functions related to :class:`Geopoints` data.
       - Computes the arc tangent
 
     * - :func:`columns`
-      - Returns the list of column name from a :class:`Geopoints` or :class:`Odb`
+      - Returns column names from a :class:`Geopoints` or :class:`Odb`
 
     * - :func:`cos`
       - Computes the cosine
@@ -36,10 +33,10 @@ This is the list of all functions related to :class:`Geopoints` data.
       - Creates a new :class:`Geopoints` set
 
     * - :func:`dates`
-      - Returns a list/vector of dates from the given :class:`Geopoints`.
+      - Returns the dates from a :class:`Geopoints`
 
     * - :func:`db_info`
-      - Returns a string of the database from the given :class:`Geopoints`.
+      - Returns the database description from a :class:`Geopoints`
 
     * - :func:`distance`
       - Computes the distances in a :class:`Fieldset` or :class:`Geopoints` to a reference point
@@ -57,7 +54,7 @@ This is the list of all functions related to :class:`Geopoints` data.
       - Converts :class:`Geopoints` data to KML
 
     * - :func:`geosort`
-      - Sorts the :class:`Geopoints` North to South and West to East
+      - Sorts a :class:`Geopoints` North to South and West to East
 
     * - :func:`grib_to_geo`
       - Converts GRIB data into :class:`Geopoints`
@@ -69,7 +66,7 @@ This is the list of all functions related to :class:`Geopoints` data.
       - Returns the latitudes of a :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`levels`
-      - Returns a list/vector of heights from the given :class:`Geopoints`.
+      - Returns the levels from a :class:`Geopoints`
 
     * - :func:`log`
       - Computes the natural logarithm
@@ -93,7 +90,7 @@ This is the list of all functions related to :class:`Geopoints` data.
       - Merges 2 sets of :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`metadata`
-      - Returns a metadata definition from the given :class:`Geopoints`.
+      - Returns metadata from a :class:`Geopoints`
 
     * - :func:`min`
       - Minimum
@@ -108,13 +105,13 @@ This is the list of all functions related to :class:`Geopoints` data.
       - Combines two 1-parameter :class:`Geopoints` variables into polar vector style
 
     * - :func:`remove_duplicates`
-      - Removes geopoint duplicates
+      - Removes duplicates from a :class:`Geopoints`
 
     * - :func:`remove_missing_latlons`
-      - Copies a set of :class:`Geopoints`, removing missing lat/lons
+      - Removing missing lat/lons form a :class:`Geopoints`
 
     * - :func:`remove_missing_values`
-      - Copies a set of :class:`Geopoints`, removing missing values
+      - Removes missing values from a :class:`Geopoints`
 
     * - :func:`set_dates`
       - Sets the date column in the :class:`Geopoints` variable.
@@ -138,7 +135,7 @@ This is the list of all functions related to :class:`Geopoints` data.
       - Sets the time column in a :class:`Geopoints`
 
     * - :func:`set_value2s`
-      - Sets the value2 column a :class:`Geopoints`
+      - Sets the value2 column in a :class:`Geopoints`
 
     * - :func:`set_values`
       - Sets the values in a :class:`Fieldset` or :class:`Geopoints`
@@ -153,13 +150,13 @@ This is the list of all functions related to :class:`Geopoints` data.
       - Computes the square root
 
     * - :func:`stnids`
-      - Returns thestation ids from a :class:`Geopoints`
+      - Returns thes tation ids from a :class:`Geopoints`
 
     * - :func:`subsample`
-      - Filters from the first :class:`Geopoints` variable points that exist in the second
+      - Filters the points of the first :class:`Geopoints` that exist in the second one
 
     * - :func:`sum`
-      - Returns the sum of the values in a :class:`Fieldset` or :class:`Geopoints`
+      - Computes the sum of the values in a :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`tan`
       - Computes the tangent
@@ -168,7 +165,7 @@ This is the list of all functions related to :class:`Geopoints` data.
       - Returns the times from a :class:`Geopoints`
 
     * - :func:`to_dataframe`
-      - Convert :class:`Geopoints` to Pandas dataframe
+      - Converts a :class:`Geopoints` to a Pandas dataframe
 
     * - :func:`value2s`
       - Returns the 2nd values column from a :class:`Geopoints`

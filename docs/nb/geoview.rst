@@ -2,7 +2,7 @@ Notebooks using ``metview.geoview``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. nbgallery::
-   :name: rst-gallery
+   :name:
    :glob:
    :reversed:
 

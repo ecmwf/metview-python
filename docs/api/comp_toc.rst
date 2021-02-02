@@ -71,7 +71,7 @@ Statistics
       - Computes the area-weighted standard deviation for each field in a :class:`Fieldset`
 
     * - :func:`sum`
-      - Returns the sum of the values in a :class:`Fieldset` or :class:`Geopoints`
+      - Computes the sum of the values in a :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`var`
       - Returns the variance of all the fields in a :class:`Fieldset`
@@ -99,7 +99,7 @@ Geographic
       - Computes the distances in a :class:`Fieldset` or :class:`Geopoints` to a reference point
 
     * - :func:`geosort`
-      - Sorts the :class:`Geopoints` North to South and West to East
+      - Sorts a :class:`Geopoints` North to South and West to East
 
     * - :func:`grid_cell_area`
       - Computes the grid cell area in a :class:`Fieldset`
@@ -135,7 +135,7 @@ Geographic
       - Generates a field with the cosine of the latitudes in a :class:`Fieldset`
 
     * - :func:`subsample`
-      - Filters from the first :class:`Geopoints` variable points that exist in the second
+      - Filters the points of the first :class:`Geopoints` that exist in the second one
 
     * - :func:`surrounding_points_indexes`
       - Returns the indexes of the four surrounding grid points in a :class:`Fieldset`
@@ -163,10 +163,10 @@ Masking
       - Converts missing values to numbers in a :class:`Fieldset`
 
     * - :func:`remove_missing_latlons`
-      - Copies a set of :class:`Geopoints`, removing missing lat/lons
+      - Removing missing lat/lons form a :class:`Geopoints`
 
     * - :func:`remove_missing_values`
-      - Copies a set of :class:`Geopoints`, removing missing values
+      - Removes missing values from a :class:`Geopoints`
 
     * - :func:`rmask`
       - Generates masks based on a radius around a point for :class:`Fieldset`
@@ -191,7 +191,7 @@ Wind
       - Computes the divergent wind from a spectral divergence :class:`Fieldset`
 
     * - :func:`geostrophic_wind`
-      - Computes geostrophic wind on pressure levels in a :class:`Fieldset`
+      - Computes the geostrophic wind on pressure levels in a :class:`Fieldset`
 
     * - :func:`streamfn`
       - Computes the stream function from a spectral vorticity :class:`Fieldset`
@@ -325,7 +325,7 @@ Thermodynamics
       - Computes the temperature from potential tempearture and pressure
 
     * - :func:`thermo_bufr`
-      - Generates thermodynamical profile from BUFR
+      - Generates thermodynamical profile from :class:`Bufr`
 
     * - :func:`thermo_data_info`
       - extracts information from a thermo data object

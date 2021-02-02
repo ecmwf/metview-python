@@ -33,7 +33,7 @@ CLEAR_BLOCK = """
 GALLERY_BACKREF = """
 
 .. nbgallery::
-   :name: rst-gallery
+   :name:
    :glob:
    :reversed:
 
@@ -43,6 +43,8 @@ LINK_BACKREF = """
 
 Most/all of the :ref:`gallery_index` examples demonstrate the use of this function.
 """
+
+OBJ_METHODS = ["to_dataset", "to_dataframe"]
 
 
 class BackReference:
@@ -106,6 +108,9 @@ class NbItem:
     def backref(self, t):
         m = re.findall(r"mv\.(\w+)\(", t)
         BACKREF.add(m, self)
+        for fn in OBJ_METHODS:
+            m = re.findall(r"\.({})\(".format(fn), t)
+            BACKREF.add(m, self)
 
     def to_python(self, path):
         r = ""

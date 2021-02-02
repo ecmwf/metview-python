@@ -2,7 +2,7 @@ Notebooks using ``metview.plot_superpage``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. nbgallery::
-   :name: rst-gallery
+   :name:
    :glob:
    :reversed:
 

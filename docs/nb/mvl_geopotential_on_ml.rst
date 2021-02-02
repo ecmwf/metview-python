@@ -2,7 +2,7 @@ Notebooks using ``metview.mvl_geopotential_on_ml``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. nbgallery::
-   :name: rst-gallery
+   :name:
    :glob:
    :reversed:
 

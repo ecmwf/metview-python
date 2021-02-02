@@ -1,12 +1,11 @@
-Notebooks using ``metview.examine``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Notebooks using ``metview.to_dataframe``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. nbgallery::
    :name:
    :glob:
    :reversed:
 
-   /examples/principal_component_analysis
    /examples/field_obs_difference
 
 

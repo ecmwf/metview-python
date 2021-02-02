@@ -63,7 +63,7 @@ List of methods
       - Returns information on missing values in a :class:`Fieldset`
 
     * - :func:`dataset_to_fieldset`
-      - Convert xndarray dataset to :class:`Fieldset`
+      - Converts an xndarray dataset to a :class:`Fieldset`
 
     * - :func:`direction`
       - Computes the wind direction
@@ -99,7 +99,7 @@ List of methods
       - Computes the frequencies of a :class:`Fieldset`
 
     * - :func:`geostrophic_wind`
-      - Computes geostrophic wind on pressure levels in a :class:`Fieldset`
+      - Computes the geostrophic wind on pressure levels in a :class:`Fieldset`
 
     * - :func:`gfind`
       - Finds values in field and returns the result as :class:`Geopoints`
@@ -270,7 +270,7 @@ List of methods
       - Computes the area-weighted standard deviation for each field in a :class:`Fieldset`
 
     * - :func:`sum`
-      - Returns the sum of the values in a :class:`Fieldset` or :class:`Geopoints`
+      - Computes the sum of the values in a :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`surrounding_points_indexes`
       - Returns the indexes of the four surrounding grid points in a :class:`Fieldset`
@@ -285,7 +285,7 @@ List of methods
       - Computes the pressure thickness on model levels in a :class:`Fieldset` (deprecated)
 
     * - :func:`to_dataset`
-      - Convert :class:`Fieldset` to xndarray dataset
+      - Converts a :class:`Fieldset` to an xndarray dataset
 
     * - :func:`unipressure`
       - Computes the pressure on model levels in a :class:`Fieldset`

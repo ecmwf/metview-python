@@ -2,7 +2,7 @@ Notebooks using ``metview.maxis``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. nbgallery::
-   :name: rst-gallery
+   :name:
    :glob:
    :reversed:
 

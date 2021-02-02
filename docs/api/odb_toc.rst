@@ -1,7 +1,7 @@
 
 ODB functions
 ===============
-This is the list of all functions related to :class:`Odb` data.
+This is the list of all the functions related to :class:`Odb` data.
 
 .. list-table::
     :widths: 20 80

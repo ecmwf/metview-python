@@ -2,7 +2,7 @@ Notebooks using ``metview.mcoast``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. nbgallery::
-   :name: rst-gallery
+   :name:
    :glob:
    :reversed:
 

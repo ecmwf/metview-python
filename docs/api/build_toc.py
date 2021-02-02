@@ -93,27 +93,27 @@ toc_def = {
     },
     "grib": {
         "title": "GRIB (Fieldset) functions",
-        "desc": "This is the list of all functions related to GRIB (:class:`Fieldset`) data.",
+        "desc": "This is the list of all the functions related to GRIB (:class:`Fieldset`) data.",
         "gr": ["grib"],
     },
     "geopoints": {
         "title": "Geopoints functions",
-        "desc": "This is the list of all functions related to :class:`Geopoints` data.",      
+        "desc": "This is the list of all the functions related to :class:`Geopoints` data.",      
         "gr": ["geopoints"],
     },
     "netcdf": {
         "title": "NetCDF functions",
-        "desc": "This is the list of all functions related to :class:`NetCDF` data.",
+        "desc": "This is the list of all the functions related to :class:`NetCDF` data.",
         "gr": ["netcdf"],
     },
     "odb": {
         "title": "ODB functions",
-        "desc": "This is the list of all functions related to :class:`Odb` data.",
+        "desc": "This is the list of all the functions related to :class:`Odb` data.",
         "gr": ["odb"],
     },
     "bufr": {
         "title": "BUFR functions",
-        "desc": "This is the list of all functions related to :class:`Bufr` data.",
+        "desc": "This is the list of all the functions related to :class:`Bufr` data.",
         "gr": ["bufr"],
     },
     "grib_obj": {

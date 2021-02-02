@@ -2,7 +2,7 @@ Notebooks using ``metview.gfind``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. nbgallery::
-   :name: rst-gallery
+   :name:
    :glob:
    :reversed:
 

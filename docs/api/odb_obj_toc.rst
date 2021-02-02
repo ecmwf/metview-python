@@ -9,7 +9,7 @@ List of methods
 
 
     * - :func:`columns`
-      - Returns the list of column name from a :class:`Geopoints` or :class:`Odb`
+      - Returns column names from a :class:`Geopoints` or :class:`Odb`
 
     * - :func:`values`
       - Returns the values from a data object

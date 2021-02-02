@@ -2,7 +2,7 @@ Notebooks using ``metview.mobs``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. nbgallery::
-   :name: rst-gallery
+   :name:
    :glob:
    :reversed:
 

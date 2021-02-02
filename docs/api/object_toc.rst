@@ -68,7 +68,7 @@ Grib methods
       - Returns information on missing values in a :class:`Fieldset`
 
     * - :func:`dataset_to_fieldset`
-      - Convert xndarray dataset to :class:`Fieldset`
+      - Converts an xndarray dataset to a :class:`Fieldset`
 
     * - :func:`direction`
       - Computes the wind direction
@@ -104,7 +104,7 @@ Grib methods
       - Computes the frequencies of a :class:`Fieldset`
 
     * - :func:`geostrophic_wind`
-      - Computes geostrophic wind on pressure levels in a :class:`Fieldset`
+      - Computes the geostrophic wind on pressure levels in a :class:`Fieldset`
 
     * - :func:`gfind`
       - Finds values in field and returns the result as :class:`Geopoints`
@@ -275,7 +275,7 @@ Grib methods
       - Computes the area-weighted standard deviation for each field in a :class:`Fieldset`
 
     * - :func:`sum`
-      - Returns the sum of the values in a :class:`Fieldset` or :class:`Geopoints`
+      - Computes the sum of the values in a :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`surrounding_points_indexes`
       - Returns the indexes of the four surrounding grid points in a :class:`Fieldset`
@@ -290,7 +290,7 @@ Grib methods
       - Computes the pressure thickness on model levels in a :class:`Fieldset` (deprecated)
 
     * - :func:`to_dataset`
-      - Convert :class:`Fieldset` to xndarray dataset
+      - Converts a :class:`Fieldset` to an xndarray dataset
 
     * - :func:`unipressure`
       - Computes the pressure on model levels in a :class:`Fieldset`
@@ -332,9 +332,6 @@ Geopoints methods
     * - :func:`abs`
       - Computes the absolute value
 
-    * - :func:`accumulate`
-      - Adds up the values per field in a :class:`Fieldset`
-
     * - :func:`acos`
       - Computes the arc cosine
 
@@ -345,13 +342,13 @@ Geopoints methods
       - Computes the arc tangent
 
     * - :func:`columns`
-      - Returns the list of column name from a :class:`Geopoints` or :class:`Odb`
+      - Returns column names from a :class:`Geopoints` or :class:`Odb`
 
     * - :func:`cos`
       - Computes the cosine
 
     * - :func:`db_info`
-      - Returns a string of the database from the given :class:`Geopoints`.
+      - Returns the database description from a :class:`Geopoints`
 
     * - :func:`distance`
       - Computes the distances in a :class:`Fieldset` or :class:`Geopoints` to a reference point
@@ -363,7 +360,7 @@ Geopoints methods
       - Computes the exponential
 
     * - :func:`geosort`
-      - Sorts the :class:`Geopoints` North to South and West to East
+      - Sorts a :class:`Geopoints` North to South and West to East
 
     * - :func:`intbits`
       - Returns ranges of bits
@@ -372,7 +369,7 @@ Geopoints methods
       - Returns the latitudes of a :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`levels`
-      - Returns a list/vector of heights from the given :class:`Geopoints`.
+      - Returns the levels from a :class:`Geopoints`
 
     * - :func:`log`
       - Computes the natural logarithm
@@ -396,7 +393,7 @@ Geopoints methods
       - Merges 2 sets of :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`metadata`
-      - Returns a metadata definition from the given :class:`Geopoints`.
+      - Returns metadata from a :class:`Geopoints`
 
     * - :func:`min`
       - Minimum
@@ -432,7 +429,7 @@ Geopoints methods
       - Sets the time column in a :class:`Geopoints`
 
     * - :func:`set_value2s`
-      - Sets the value2 column a :class:`Geopoints`
+      - Sets the value2 column in a :class:`Geopoints`
 
     * - :func:`set_values`
       - Sets the values in a :class:`Fieldset` or :class:`Geopoints`
@@ -447,13 +444,13 @@ Geopoints methods
       - Computes the square root
 
     * - :func:`stnids`
-      - Returns thestation ids from a :class:`Geopoints`
+      - Returns thes tation ids from a :class:`Geopoints`
 
     * - :func:`subsample`
-      - Filters from the first :class:`Geopoints` variable points that exist in the second
+      - Filters the points of the first :class:`Geopoints` that exist in the second one
 
     * - :func:`sum`
-      - Returns the sum of the values in a :class:`Fieldset` or :class:`Geopoints`
+      - Computes the sum of the values in a :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`tan`
       - Computes the tangent
@@ -462,7 +459,7 @@ Geopoints methods
       - Returns the times from a :class:`Geopoints`
 
     * - :func:`to_dataframe`
-      - Convert :class:`Geopoints` to Pandas dataframe
+      - Converts a :class:`Geopoints` to a Pandas dataframe
 
     * - :func:`value2s`
       - Returns the 2nd values column from a :class:`Geopoints`
@@ -493,7 +490,7 @@ NetCDF methods
       - Returns a list of the :class:`NetCdf`'s dimensions.
 
     * - :func:`global_attributes`
-      - Returns a definition variable holding the :class:`NetCdf` global metadata.
+      - Returns the :class:`NetCdf` global metadata
 
     * - :func:`max`
       - Maximum
@@ -502,25 +499,25 @@ NetCDF methods
       - Minimum
 
     * - :func:`netcdf_auto_rescale_values_to_fit_packed_type`
-      - Sets the behaviour of :class:`NetCdf` value handling: 1=on, 0=off
+      - Sets the behaviour of :class:`NetCdf` value handling
 
     * - :func:`netcdf_auto_scale_values`
-      - Sets the behaviour of :class:`NetCdf` value handling: 1=on, 0=off
+      - Sets the behaviour of :class:`NetCdf` value handling
 
     * - :func:`netcdf_auto_translate_times`
-      - Sets the behaviour of :class:`NetCdf` value handling: 1=on, 0=off
+      - Sets the behaviour of :class:`NetCdf` value handling
 
     * - :func:`netcdf_preserve_missing_values`
-      - Sets the behaviour of :class:`NetCdf` value handling: 1=on, 0=off
+      - Sets the behaviour of :class:`NetCdf` value handling
 
     * - :func:`setcurrent`
-      - Sets the variable number on which :class:`NetCdf` functions will operate.
+      - Sets the variable on which :class:`NetCdf` functions will operate
 
     * - :func:`value`
-      - Returns the n:th value from the current :class:`NetCdf` variable.
+      - Returns a value from the current :class:`NetCdf` variable
 
     * - :func:`values`
       - Returns the values from a data object
 
     * - :func:`variables`
-      - Returns a list of the names of the given :class:`NetCdf` file's variables.
+      - Returns the names of the variables in a :class:`NetCdf`

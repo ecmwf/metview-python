@@ -1,7 +1,7 @@
 
 GRIB (Fieldset) functions
 ===========================
-This is the list of all functions related to GRIB (:class:`Fieldset`) data.
+This is the list of all the functions related to GRIB (:class:`Fieldset`) data.
 
 .. list-table::
     :widths: 20 80
@@ -45,7 +45,7 @@ This is the list of all functions related to GRIB (:class:`Fieldset`) data.
       - Converts numbers to missing values in a :class:`Fieldset`
 
     * - :func:`cleanfile`
-      - Removes unwanted header padding from GRIB and BUFR
+      - Removes unwanted header padding from GRIB and :class:`Bufr` files
 
     * - :func:`corr_a`
       - Computes the area-weighted correlation for each field in a :class:`Fieldset`
@@ -66,7 +66,7 @@ This is the list of all functions related to GRIB (:class:`Fieldset`) data.
       - Returns information on missing values in a :class:`Fieldset`
 
     * - :func:`dataset_to_fieldset`
-      - Convert xndarray dataset to :class:`Fieldset`
+      - Converts an xndarray dataset to a :class:`Fieldset`
 
     * - :func:`dewpoint_from_relative_humidity`
       - Computes the dewpoint for a given temperature and relative humidity
@@ -129,7 +129,7 @@ This is the list of all functions related to GRIB (:class:`Fieldset`) data.
       - Converts :class:`Geopoints` data to GRIB
 
     * - :func:`geostrophic_wind`
-      - Computes geostrophic wind on pressure levels in a :class:`Fieldset`
+      - Computes the geostrophic wind on pressure levels in a :class:`Fieldset`
 
     * - :func:`gfind`
       - Finds values in field and returns the result as :class:`Geopoints`
@@ -369,7 +369,7 @@ This is the list of all functions related to GRIB (:class:`Fieldset`) data.
       - Computes the stream function from a spectral vorticity :class:`Fieldset`
 
     * - :func:`sum`
-      - Returns the sum of the values in a :class:`Fieldset` or :class:`Geopoints`
+      - Computes the sum of the values in a :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`surrounding_points_indexes`
       - Returns the indexes of the four surrounding grid points in a :class:`Fieldset`
@@ -387,7 +387,7 @@ This is the list of all functions related to GRIB (:class:`Fieldset`) data.
       - Computes the pressure thickness on model levels in a :class:`Fieldset` (deprecated)
 
     * - :func:`to_dataset`
-      - Convert :class:`Fieldset` to xndarray dataset
+      - Converts a :class:`Fieldset` to an xndarray dataset
 
     * - :func:`unipressure`
       - Computes the pressure on model levels in a :class:`Fieldset`

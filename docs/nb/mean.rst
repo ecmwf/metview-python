@@ -2,7 +2,7 @@ Notebooks using ``metview.mean``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. nbgallery::
-   :name: rst-gallery
+   :name:
    :glob:
    :reversed:
 

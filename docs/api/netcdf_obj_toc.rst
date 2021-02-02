@@ -15,7 +15,7 @@ List of methods
       - Returns a list of the :class:`NetCdf`'s dimensions.
 
     * - :func:`global_attributes`
-      - Returns a definition variable holding the :class:`NetCdf` global metadata.
+      - Returns the :class:`NetCdf` global metadata
 
     * - :func:`max`
       - Maximum
@@ -24,25 +24,25 @@ List of methods
       - Minimum
 
     * - :func:`netcdf_auto_rescale_values_to_fit_packed_type`
-      - Sets the behaviour of :class:`NetCdf` value handling: 1=on, 0=off
+      - Sets the behaviour of :class:`NetCdf` value handling
 
     * - :func:`netcdf_auto_scale_values`
-      - Sets the behaviour of :class:`NetCdf` value handling: 1=on, 0=off
+      - Sets the behaviour of :class:`NetCdf` value handling
 
     * - :func:`netcdf_auto_translate_times`
-      - Sets the behaviour of :class:`NetCdf` value handling: 1=on, 0=off
+      - Sets the behaviour of :class:`NetCdf` value handling
 
     * - :func:`netcdf_preserve_missing_values`
-      - Sets the behaviour of :class:`NetCdf` value handling: 1=on, 0=off
+      - Sets the behaviour of :class:`NetCdf` value handling
 
     * - :func:`setcurrent`
-      - Sets the variable number on which :class:`NetCdf` functions will operate.
+      - Sets the variable on which :class:`NetCdf` functions will operate
 
     * - :func:`value`
-      - Returns the n:th value from the current :class:`NetCdf` variable.
+      - Returns a value from the current :class:`NetCdf` variable
 
     * - :func:`values`
       - Returns the values from a data object
 
     * - :func:`variables`
-      - Returns a list of the names of the given :class:`NetCdf` file's variables.
+      - Returns the names of the variables in a :class:`NetCdf`

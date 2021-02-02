@@ -124,7 +124,7 @@ Plotting
       - Returns a curve with a polyline sampled in lat-lon coordinates
 
     * - :func:`netcdf_visualiser`
-      - Defines visualisation for NetCDF data
+      - Defines visualisation for :class:`NetCdf` data
 
     * - :func:`newpage`
       - Forces a new page on PostScript output

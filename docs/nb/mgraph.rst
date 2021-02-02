@@ -2,7 +2,7 @@ Notebooks using ``metview.mgraph``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. nbgallery::
-   :name: rst-gallery
+   :name:
    :glob:
    :reversed:
 

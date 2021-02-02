@@ -2,7 +2,7 @@ Notebooks using ``metview.bitmap``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. nbgallery::
-   :name: rst-gallery
+   :name:
    :glob:
    :reversed:
 

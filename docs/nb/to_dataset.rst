@@ -1,4 +1,4 @@
-Notebooks using ``metview.mxsectview``
+Notebooks using ``metview.to_dataset``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. nbgallery::
@@ -6,9 +6,7 @@ Notebooks using ``metview.mxsectview``
    :glob:
    :reversed:
 
-   /examples/cross_section_cds
-   /examples/wind_shear_vertical_cross_section
-   /examples/analysing_data
+   /examples/ens_mean_spread_xarray
 
 
 .. raw:: html

@@ -64,13 +64,13 @@ Filtering
 
 
     * - :func:`bufr_picker`
-      - Filters BUFR data with complex structure
+      - Filters :class:`Bufr` data with complex structure
 
     * - :func:`cleanfile`
-      - Removes unwanted header padding from GRIB and BUFR
+      - Removes unwanted header padding from GRIB and :class:`Bufr` files
 
     * - :func:`obsfilter`
-      - Filters BUFR data
+      - Filters :class:`Bufr` data
 
     * - :func:`odb_filter`
       - Filters ODB data
@@ -174,7 +174,7 @@ Geopoints data
 
 
     * - :func:`columns`
-      - Returns the list of column name from a :class:`Geopoints` or :class:`Odb`
+      - Returns column names from a :class:`Geopoints` or :class:`Odb`
 
     * - :func:`create_geo`
       - Creates a new set of :class:`Geopoints`
@@ -183,25 +183,25 @@ Geopoints data
       - Creates a new :class:`Geopoints` set
 
     * - :func:`db_info`
-      - Returns a string of the database from the given :class:`Geopoints`.
+      - Returns the database description from a :class:`Geopoints`
 
     * - :func:`levels`
-      - Returns a list/vector of heights from the given :class:`Geopoints`.
+      - Returns the levels from a :class:`Geopoints`
 
     * - :func:`metadata`
-      - Returns a metadata definition from the given :class:`Geopoints`.
+      - Returns metadata from a :class:`Geopoints`
 
     * - :func:`polar_vector`
       - Combines two 1-parameter :class:`Geopoints` variables into polar vector style
 
     * - :func:`remove_duplicates`
-      - Removes geopoint duplicates
+      - Removes duplicates from a :class:`Geopoints`
 
     * - :func:`remove_missing_latlons`
-      - Copies a set of :class:`Geopoints`, removing missing lat/lons
+      - Removing missing lat/lons form a :class:`Geopoints`
 
     * - :func:`remove_missing_values`
-      - Copies a set of :class:`Geopoints`, removing missing values
+      - Removes missing values from a :class:`Geopoints`
 
     * - :func:`set_dates`
       - Sets the date column in the :class:`Geopoints` variable.
@@ -225,16 +225,16 @@ Geopoints data
       - Sets the time column in a :class:`Geopoints`
 
     * - :func:`set_value2s`
-      - Sets the value2 column a :class:`Geopoints`
+      - Sets the value2 column in a :class:`Geopoints`
 
     * - :func:`set_values`
       - Sets the values in a :class:`Fieldset` or :class:`Geopoints`
 
     * - :func:`stnids`
-      - Returns thestation ids from a :class:`Geopoints`
+      - Returns thes tation ids from a :class:`Geopoints`
 
     * - :func:`subsample`
-      - Filters from the first :class:`Geopoints` variable points that exist in the second
+      - Filters the points of the first :class:`Geopoints` that exist in the second one
 
     * - :func:`times`
       - Returns the times from a :class:`Geopoints`
@@ -268,25 +268,25 @@ NetCDF data
       - Returns a list of the :class:`NetCdf`'s dimensions.
 
     * - :func:`netcdf_auto_rescale_values_to_fit_packed_type`
-      - Sets the behaviour of :class:`NetCdf` value handling: 1=on, 0=off
+      - Sets the behaviour of :class:`NetCdf` value handling
 
     * - :func:`netcdf_auto_scale_values`
-      - Sets the behaviour of :class:`NetCdf` value handling: 1=on, 0=off
+      - Sets the behaviour of :class:`NetCdf` value handling
 
     * - :func:`netcdf_auto_translate_times`
-      - Sets the behaviour of :class:`NetCdf` value handling: 1=on, 0=off
+      - Sets the behaviour of :class:`NetCdf` value handling
 
     * - :func:`netcdf_preserve_missing_values`
-      - Sets the behaviour of :class:`NetCdf` value handling: 1=on, 0=off
+      - Sets the behaviour of :class:`NetCdf` value handling
 
     * - :func:`value`
-      - Returns the n:th value from the current :class:`NetCdf` variable.
+      - Returns a value from the current :class:`NetCdf` variable
 
     * - :func:`values`
       - Returns the values from a data object
 
     * - :func:`variables`
-      - Returns a list of the names of the given :class:`NetCdf` file's variables.
+      - Returns the names of the variables in a :class:`NetCdf`
 
 
 Flextra and Flexpart

@@ -2,7 +2,7 @@ Notebooks using ``metview.sqrt``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. nbgallery::
-   :name: rst-gallery
+   :name:
    :glob:
    :reversed:
 
