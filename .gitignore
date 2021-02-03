@@ -84,6 +84,7 @@ docs/api/icon/*.rst
 docs/api/toc/*.rst
 docs/gallery/rst/*.rst
 docs/gallery/backref/*.rst
+docs/nb/*.rst
 docs/_test
 
 # gallery
