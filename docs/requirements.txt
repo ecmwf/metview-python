@@ -2,3 +2,4 @@
 nbsphinx
 sphinx_rtd_theme
 pyyaml-include
+Sphinx>=3.3.1
