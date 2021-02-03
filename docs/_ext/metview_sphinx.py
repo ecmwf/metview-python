@@ -37,6 +37,8 @@ class MvIncludeCode(Directive):
         # relative to "docs"
         f_path = self.arguments[0]
         print(f"cwd={os.getcwd()}")
+        h= os.environ.get("HOME", "")
+        print(f"HOME={h}")
         print(f"path={f_path}")
         if f_path:
             if f_path[0] == "/":
@@ -67,6 +69,21 @@ class MvIncludeCode(Directive):
         # add the resulting text as ".. raw:: html" node
         paragraph_node = nodes.raw("", t, format="html")
         return [paragraph_node]
+
+    def resolve_path(self, path):
+        pass
+        # if path != "":
+        #     if os.path.exists(path):
+        #         return path
+        #     else:
+        #         if path[0] == "/":
+        #             p = path[1:]
+        #             if os.path.exists(p):
+        #                 return
+        #             else:
+        #                 c = os.getcwd()
+
+
 
     def insert_anchor(self, matchobj):
         """
