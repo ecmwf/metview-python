@@ -5,3 +5,4 @@ make
 cd ../api
 make
 cd ..
+echo $(pwd)

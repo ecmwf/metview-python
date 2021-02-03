@@ -82,7 +82,7 @@ rst_prolog = """
 .. role:: mval
 """
 
-def config_inited_handler(app, source):
+def env_before_read_docs_handler(app, env, docnames):
     print('do something here...')
 
     try:
@@ -92,4 +92,4 @@ def config_inited_handler(app, source):
     
 
 def setup(app):
-    app.connect('config-inited', config_inited_handler)
+    app.connect('env-before-read-docs', env_before_read_docs_handler)
