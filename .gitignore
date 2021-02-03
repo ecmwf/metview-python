@@ -71,7 +71,6 @@ tests/*.idx
 .idea
 .vscode
 
-
 # docs
 docs/api/build_functions.py
 docs/api/get_icon.py
@@ -83,9 +82,9 @@ docs/api/_*.py
 docs/api/_utils
 docs/api/icon/*.rst
 docs/api/toc/*.rst
+docs/gallery/rst/*.rst
+docs/gallery/backref/*.rst
 docs/_test
-
-
 
 # gallery
 docs/gallery/*.grib

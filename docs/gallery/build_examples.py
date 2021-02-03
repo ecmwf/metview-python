@@ -8,6 +8,7 @@
 # granted to it by virtue of its status as an intergovernmental organisation
 # nor does it submit to any jurisdiction.
 
+import argparse
 import glob
 import os
 from pathlib import Path
@@ -150,7 +151,7 @@ BACKREF = BackReference()
 
 
 class GalleryItem:
-    def __init__(self, script):
+    def __init__(self, script, do_png=False):
         self.status = True
         self.script = script
         self.script_name = os.path.basename(self.script)
@@ -167,6 +168,49 @@ class GalleryItem:
 
         # print(f"  title={self.title}")
 
+        if do_png:
+            self.generate_png()
+
+        # do_png = True
+        # if os.path.isfile(self.f_png):
+        #     src_mod_time = os.path.getmtime(self.script)
+        #     target_mod_time = os.path.getmtime(self.f_png)
+        #     if src_mod_time <= target_mod_time:
+        #         do_png = False
+
+        # # generate png
+        # if do_png:
+        #     print("  making PDF ...")
+        #     try:
+        #         r = subprocess.run(["python3", self.script_name], check=True)
+        #     except Exception as e:
+        #         print_red(f"  Failed to run script: {e}")
+        #         self.status = False
+
+        #     if os.path.exists(self.f_pdf):
+        #         print("  making PNG ...")
+        #         try:
+        #             cmd = f"convert -trim -border 8x8 -bordercolor white -depth 8 {self.f_pdf} {self.f_png}"
+        #             r = subprocess.run(cmd.split(" "), check=True)
+        #         except Exception as e:
+        #             print_red(f"  Failed to convert PDF to PNG: {e}")
+        #             self.status = False
+
+        # if not os.path.exists(self.f_thumbnail) or do_png:
+        #     print("  making thumbnail PNG ...")
+        #     try:
+        #         cmd = f"convert -trim -border 8x8 -bordercolor white -depth 8 {self.f_pdf} -resize 22% {self.f_thumbnail}"         
+        #         r = subprocess.run(cmd.split(" "), check=True)
+        #     except Exception as e:
+        #         print_red(f"  Failed to resize PNG: {e}")
+        #         self.status = False
+
+        if self.status:
+            print_green("  --> DONE")
+
+        self.build_page()
+
+    def generate_png(self):
         do_png = True
         if os.path.isfile(self.f_png):
             src_mod_time = os.path.getmtime(self.script)
@@ -200,11 +244,6 @@ class GalleryItem:
             except Exception as e:
                 print_red(f"  Failed to resize PNG: {e}")
                 self.status = False
-
-        if self.status:
-            print_green("  --> DONE")
-
-        self.build_page()
 
     def parse(self):
         with open(self.script, "r") as f:
@@ -273,6 +312,12 @@ Gallery
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--png", action="store_true", help=argparse.SUPPRESS)
+    args = parser.parse_args()
+    
+    do_png = args.png
+    
     r = []
 
     # generate the individual example pages
@@ -286,7 +331,7 @@ def main():
         for name in item["examples"]:
             print(f"[{cnt}/{total} {name}]")
             script = os.path.join(GALLERY_DIR, name + ".py")
-            item = GalleryItem(script)
+            item = GalleryItem(script, do_png=do_png)
             gr_item["items"].append(item)
             cnt += 1
             if not item.status:
