@@ -6,4 +6,4 @@ ODB object
    Class description comes here!
 
 
-.. include:: /api/toc/odb_obj.rst
+.. include:: /gen_files/toc/odb_obj.rst

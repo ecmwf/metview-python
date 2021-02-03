@@ -19,8 +19,8 @@ import sys
 NB_DIR = os.path.abspath(os.path.dirname(__file__))
 ROOT_DIR = os.path.dirname(NB_DIR)
 EXAMPLES_DIR = os.path.join(ROOT_DIR, "examples")
-BACKREF_DIR = NB_DIR
-
+BACKREF_DIR = os.path.join(ROOT_DIR, "gen_files", "nb_backref")
+Path(BACKREF_DIR).mkdir(parents=True, exist_ok=True)
 
 # rst code for a clear block
 CLEAR_BLOCK = """

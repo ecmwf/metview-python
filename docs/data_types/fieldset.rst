@@ -30,7 +30,7 @@ Fieldset object
       f = f.append(g)
 
 
-.. include:: /api/toc/grib_obj.rst
+.. include:: /gen_files/toc/grib_obj.rst
    
       
 

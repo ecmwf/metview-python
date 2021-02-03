@@ -6,4 +6,4 @@ Geopoints object
    Class description comes here!
 
 
-.. include:: /api/toc/geopoints_obj.rst
+.. include:: /gen_files/toc/geopoints_obj.rst

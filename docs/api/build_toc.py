@@ -12,6 +12,7 @@
 import glob
 import logging
 import os
+from pathlib import Path
 import sys
 
 import yaml
@@ -21,9 +22,11 @@ LOG = logging.getLogger(__name__)
 
 API_DIR = os.path.abspath(os.path.dirname(__file__))
 ROOT_DIR = os.path.dirname(API_DIR)
-TOC_DIR = os.path.join(API_DIR, "toc")
-ICON_DIR = os.path.join(API_DIR, "icon")
+GEN_DIR = os.path.join(ROOT_DIR, "gen_files")
+TOC_DIR = os.path.join(GEN_DIR, "toc")
+ICON_DIR = os.path.join(GEN_DIR, "icon_functions")
 STATIC_DIR = os.path.join(ROOT_DIR, "_static")
+Path(TOC_DIR).mkdir(parents=True, exist_ok=True)
 
 
 dtypes = {

@@ -78,7 +78,7 @@ class MvIncludeCode(Directive):
                 # check if the function has an rst documentation
                 target = os.path.join("api", "functions", fn + ".rst")
                 if not os.path.exists(target):
-                    target = os.path.join("api", "icon", fn + ".rst")
+                    target = os.path.join("gen_files", "icon_functions", fn + ".rst")
                     if not os.path.exists(target):
                         return t
 
@@ -109,19 +109,19 @@ class MvMiniGallery(Directive):
         has_file = False
 
         # if the notebook minigallery exists we include it with an include directive
-        f_path = os.path.join("nb", fn + ".rst")
+        f_path = os.path.join("gen_files", "nb_backref", fn + ".rst")
         if os.path.exists(f_path):
             has_file = True
-            t = f".. include:: /nb/{fn}.rst" 
+            t = f".. include:: /gen_files/nb_backref/{fn}.rst" 
             lines = statemachine.string2lines(t, convert_whitespace=True)                                   
             self.state_machine.insert_input(lines, "/" + f_path)
             # return []
 
         # if the gallery minigallery exists we include it with an include directive
-        f_path = os.path.join("gallery", "backref", fn + ".rst")
+        f_path = os.path.join("gen_files", "gallery_backref", fn + ".rst")
         if os.path.exists(f_path):
             has_file = True
-            t = f".. include:: /gallery/backref/{fn}.rst" 
+            t = f".. include:: /gen_files/gallery_backref/{fn}.rst" 
             lines = statemachine.string2lines(t, convert_whitespace=True)                                   
             self.state_machine.insert_input(lines, "/" + f_path)
             # return []

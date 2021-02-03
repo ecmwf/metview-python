@@ -11,6 +11,7 @@
 import glob
 import logging
 import os
+from pathlib import Path
 import re
 import sys
 
@@ -21,8 +22,11 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 LOG = logging.getLogger(__name__)
 
 API_DIR = os.path.abspath(os.path.dirname(__file__))
-ICON_DIR = os.path.join(API_DIR, "icon")
+GEN_DIR = os.path.join(os.path.dirname(API_DIR), "gen_files")
 DESC_DIR = os.path.join(API_DIR, "icon_desc")
+ICON_DIR = os.path.join(GEN_DIR, "icon_functions")
+Path(ICON_DIR).mkdir(parents=True, exist_ok=True)
+
 
 # yaml loader implementing "include"
 class Loader(yaml.SafeLoader):

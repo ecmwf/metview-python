@@ -23,12 +23,13 @@ import yaml
 # define and create paths
 GALLERY_DIR = os.path.abspath(os.path.dirname(__file__))
 ROOT_DIR = os.path.dirname(GALLERY_DIR)
+GEN_DIR = os.path.join(ROOT_DIR, "gen_files")
 PNG_DIR = os.path.join(ROOT_DIR, "_static", "gallery")
-RST_DIR = os.path.join(GALLERY_DIR, "rst")
-BACKREF_DIR = os.path.join(GALLERY_DIR, "backref")
+RST_DIR = os.path.join(GEN_DIR, "gallery")
+BACKREF_DIR = os.path.join(GEN_DIR, "gallery_backref")
 Path(PNG_DIR).mkdir(exist_ok=True)
-Path(RST_DIR).mkdir(exist_ok=True)
-Path(BACKREF_DIR).mkdir(exist_ok=True)
+Path(RST_DIR).mkdir(parents=True, exist_ok=True)
+Path(BACKREF_DIR).mkdir(parents=True, exist_ok=True)
 
 
 # template for example blocks/items in the main gallery page or in backreference

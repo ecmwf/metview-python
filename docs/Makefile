@@ -8,33 +8,21 @@ SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = .
 BUILDDIR      = _build
 
+SUBDIRS = api gallery nb
+
 # Put it first so that "make" without argument is like "make help".
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-.PHONY: help Makefile icon
+.PHONY: help Makefile $(SUBDIRS)
 
-icon:
-	python3 api/build_icon.py
+$(SUBDIRS):
+	$(MAKE) -C $@ $(MAKECMDGOALS)
 
-toc:
-	python3 api/build_toc.py
-
-mv-gallery:
-	python3 gallery/build_gallery.py
-
-mv-nb:
-	python3 nb/build_nb.py 
-
-html: mv-gallery mv-nb icon toc Makefile
-	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-
-clean: Makefile
-	@$(SPHINXBUILD) -M clean "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
-%: Makefile
+%: $(SUBDIRS) Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 

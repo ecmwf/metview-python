@@ -80,11 +80,7 @@ docs/api/depot_2
 docs/api/icon_base
 docs/api/_*.py
 docs/api/_utils
-docs/api/icon/*.rst
-docs/api/toc/*.rst
-docs/gallery/rst/*.rst
-docs/gallery/backref/*.rst
-docs/nb/*.rst
+docs/gen_files
 docs/_test
 
 # gallery

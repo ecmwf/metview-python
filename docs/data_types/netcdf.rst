@@ -6,4 +6,4 @@ NetCDF object
    Class description comes here!
 
 
-.. include:: /api/toc/netcdf_obj.rst
+.. include:: /gen_files/toc/netcdf_obj.rst
