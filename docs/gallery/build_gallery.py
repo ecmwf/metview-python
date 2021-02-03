@@ -321,7 +321,7 @@ def main():
     r = []
 
     # generate the individual example pages
-    f = open("examples.yaml", "r")
+    f = open(os.path.join(GALLERY_DIR, "gallery.yaml"), "r")
     conf = yaml.load(f, Loader=yaml.FullLoader)
     total = sum([len(conf[x]["examples"]) for x in conf])
     cnt = 1

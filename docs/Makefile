@@ -20,9 +20,12 @@ icon:
 toc:
 	python3 api/build_toc.py
 
+mv-gallery:
+	python3 gallery/build_gallery.py
+
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
-%: icon toc Makefile
+%: mv-gallery icon toc Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 html-noplot:
