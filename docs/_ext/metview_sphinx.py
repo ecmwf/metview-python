@@ -36,14 +36,13 @@ class MvIncludeCode(Directive):
         # Get the path to the python example file. All the paths have to be
         # relative to "docs"
         f_path = self.arguments[0]
-        print(f"cwd={os.getcwd()}")
-        h= os.environ.get("HOME", "")
-        print(f"HOME={h}")
+        # print(f"cwd={os.getcwd()}")
+        # h= os.environ.get("HOME", "")
+        # print(f"HOME={h}")
         print(f"path={f_path}")
-        if f_path:
-            if f_path[0] == "/":
-                f_path = f_path[1:]
-        else:
+        f_path = self.resolve_path(f_path)
+        print(f"  -> path={f_path}")
+        if f_path == "":
             raise self.warning(f"{self.name} empty path specified.")
             return []
 
@@ -71,18 +70,19 @@ class MvIncludeCode(Directive):
         return [paragraph_node]
 
     def resolve_path(self, path):
-        pass
-        # if path != "":
-        #     if os.path.exists(path):
-        #         return path
-        #     else:
-        #         if path[0] == "/":
-        #             p = path[1:]
-        #             if os.path.exists(p):
-        #                 return
-        #             else:
-        #                 c = os.getcwd()
-
+        if path != "":
+            if os.path.exists(path):
+                return path
+            else:
+                if path[0] == "/":
+                    p = path[1:]
+                    if os.path.exists(p):
+                        return p
+                    else:
+                        p = os.path.join(os.environ.get("HOME", ""), p)
+                        if os.path.exists(p):
+                            return p
+        return path                
 
 
     def insert_anchor(self, matchobj):
