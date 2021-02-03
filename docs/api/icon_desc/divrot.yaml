@@ -1,0 +1,13 @@
+return: :class:`Fieldset`
+summary: Computes the rotational wind from
+  spectral (shperical harmonics) vorticity GRIB fields.
+oneliner: Computes the rotational wind from
+  spectral (spherical harmonics) vorticity GRIB fields.
+params:
+- data:
+    default: 
+    desc: Specifies the vorticity GRIB fields. Must be spectral 
+      (spherical harmonics) data. 
+    ptype: :class:`Fieldset`
+    values:
+- _include: !include include/spectral_filter.yaml

@@ -1,0 +1,59 @@
+- page_frame:
+    default: 'off'
+    desc: Toggles the plotting of a border line around the plot frame.
+    ptype: str
+    values: on/off
+- page_frame_colour:
+    default: charcoal
+    desc: Colour of the page frame.
+    ptype: str
+    values: ''
+- page_frame_line_style:
+    default: solid
+    desc: Line style of the page frame.
+    ptype: str
+    values: solid/dot/dash/chain_dot/chain_dash
+- page_frame_thickness:
+    default: '2'
+    desc: Line thickness of the page frame.
+    ptype: int
+    values: ''
+- page_id_line:
+    default: 'off'
+    desc: Toggles the plotting of plot identification line.
+    ptype: str
+    values: on/off
+- page_id_line_user_text:
+    default: ''
+    desc: Specifies user text to be added to the plot identification line. Only available
+      when ``page_id_line`` is "on".
+    ptype: str
+    values: ''
+- subpage_frame:
+    default: 'off'
+    desc: Toggles the plotting of a border line around the plot itself.
+      In most cases you will want this to be left "on". When "off" the sides of
+      the plot not equipped with axis will not be plotted.
+    ptype: str
+    values: on/off
+- subpage_frame_colour:
+    default: black
+    desc: Colour of the subpage frame.
+    ptype: str
+    values: ''
+- subpage_frame_line_style:
+    default: solid
+    desc: Line style of the subpage frame.
+    ptype: str
+    values: solid/dot/dash/chain_dot/chain_dash
+- subpage_frame_thickness:
+    default: '2'
+    desc: Line thickness of the subpage frame.
+    ptype: int
+    values: ''
+- subpage_background_colour:
+    default: white
+    desc: Specifies the colour of the background of the plot (i.e. not affected by
+      visual definitions like contour shadings or lines).
+    ptype: str
+    values: ''

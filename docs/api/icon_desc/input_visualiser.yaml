@@ -1,0 +1,145 @@
+return: :class:`Request`
+summary: Defines the visualisation of list/ndarray data. The generated object
+    can directly be used in :func:`plot`.
+oneliner: Defines the visualisation of list/ndarray data.
+params:
+- input_plot_type:
+    default: xy_points
+    desc: |-
+      Specifies the type of plot to be generated. This also implicitly specifies the type of data which will be entered. The available modes are as follows:
+      
+      * "xy_points"
+      * "geo_points"
+      * "xy_area"
+      * "xy_vectors"
+      * "geo_vectors"
+      * "xy_binning": the points will be gridded specified by ``binning``.
+      * "geo_binning": the points will be gridded specified by ``binning``.
+      * "xy_boxplot"
+    ptype: str
+    values: xy_points/geo_points/xy_area/xy_vectors/geo_vectors/xy_binning/geo_binning/xy_boxplot
+- input_x_type:
+    default: number
+    desc: Specifies how the X values should be interpreted. Only available when ``input_plot_type`` is "xy_*".
+    ptype: str
+    values: number/date
+- input_y_type:
+    default: number
+    desc: Specifies how the Y values should be interpreted. Only available when ``input_plot_type`` is "xy_*".
+      type plots.
+    ptype: str
+    values: number/date
+- input_x_values:
+    default: ''
+    desc: The x-coordinate values. Only available when ``input_plot_type`` is "xy_*" and
+      ``input_x_type`` is "number".
+    ptype: ndarray
+    values: ''
+- input_y_values:
+    default: ''
+    desc: The y-coordinate values. Only available  when ``input_plot_type`` is "xy_*" 
+      and ``input_y_type`` is "number".
+    ptype: ndarray
+    values: ''
+- input_x2_values:
+    default: ''
+    desc: The second x-coordinate values. Only available when ``input_plot_type`` is "xy_area" 
+      and ``input_x_type`` is "number". 
+    ptype: ndarray
+    values: ''
+- input_y2_values:
+    default: ''
+    desc: The second y-coordinate values. Only available when ``input_plot_type`` is "xy_area" 
+      and ``input_y_type`` is "number". 
+    ptype: ndarray
+    values: ''
+- input_x_missing_value:
+    default: -21.e6
+    desc: Specifies the value which will be considered "missing" when plotting. Only
+      available when ``input_plot_type`` is "xy_*" and ``input_x_type`` is "number".
+    ptype: number
+    values: ''
+- input_y_missing_value:
+    default: -21.e6
+    desc: Specifies the value which will be considered "missing" when plotting. Only
+      available when ``input_plot_type`` is "xy_*" and ``input_y_type`` is "number".
+    ptype: number
+    values: ''
+- input_date_x_values:
+    default: ''
+    desc: The dates used as x-coordinate values. Only available when
+      ``input_plot_type`` is "xy_*" and``input_x_type`` is "date".
+    ptype: list of datetime.datetime
+    values: ''
+- input_date_y_values:
+    default: ''
+    desc: The dates used as y-coordinate values. Only available when
+      ``input_plot_type`` is "xy_*" and ``input_y_type`` is "date".
+    ptype: list of datetime.datetime
+    values: ''
+- input_date_x2_values:
+    default: ''
+    desc: ''
+    ptype: list of datetime.datetime
+    values: ''
+- input_date_y2_values:
+    default: ''
+    desc: ''
+    ptype: list of datetime.datetime
+    values: ''
+- input_longitude_values:
+    default: ''
+    desc: The longitude values. Only available when ``input_plot_type`` is "geo_*".
+    ptype: ndarray
+    values: ''
+- input_latitude_values:
+    default: ''
+    desc: The latitude values. Only available when ``input_plot_type`` is "geo_*".
+    ptype: ndarray
+    values: ''
+- input_x_component_values:
+    default: ''
+    desc: The x vector component values. Only available when ``input_plot_type`` is "*_vectors".
+    ptype: ndarray
+    values: ''
+- input_y_component_values:
+    default: ''
+    desc: The y vector component values. Only available when ``input_plot_type`` is "*_vectors".
+    ptype: ndarray
+    values: ''
+- input_values:
+    default: ''
+    desc: Specifies the actual values at the points whose coordinates are given in the
+      other parameters. 
+    ptype: ndarray
+    values: ''
+- input_minimum_values:
+    default: ''
+    desc: The minimum values when ``input_plot_type`` is "xy_boxplot".
+    ptype: ndarray
+    values: ''
+- input_maximum_values:
+    default: ''
+    desc: The maximum values when ``input_plot_type`` is "xy_boxplot".
+    ptype: ndarray
+    values: ''
+- input_median_values:
+    default: ''
+    desc: The median values when ``input_plot_type`` is "xy_boxplot".
+    ptype: ndarray
+    values: ''
+- input_box_upper_values:
+    default: ''
+    desc: The upper quartile (75%) values when ``input_plot_type`` is "xy_boxplot".
+    ptype: ndarray
+    values: ''
+- input_box_lower_values:
+    default: ''
+    desc: The lower quartile (25%) values when ``input_plot_type`` is "xy_boxplot".
+    ptype: ndarray
+    values: ''
+- input_binning:
+    default: ''
+    desc: Specifies the binning. Available when ``table_plot_type`` id "*_binning".
+    ptype: :func:`binning`
+    values: ''

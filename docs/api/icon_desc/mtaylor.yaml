@@ -1,0 +1,119 @@
+return: :class:`Request`
+summary: Configures the background of a Taylor diagram.
+oneliner: Defines the background of a Taylor diagram.
+params:
+- taylor_label:
+    default: correlation
+    desc: Text of the main label.
+    ptype: str
+    values: ''
+- taylor_label_colour:
+    default: navy
+    desc: Colour of the label.
+    ptype: str
+    values: ''
+- taylor_label_height:
+    default: '0.35'
+    desc: Height (cm) of the label.
+    ptype: number
+    values: ''
+- taylor_primary_grid_increment:
+    default: '0.5'
+    desc: Grid increment for the primary grid (standard deviation).
+    ptype: number
+    values: ''
+- taylor_primary_grid_line_colour:
+    default: navy
+    desc: Colour of the primary grid.
+    ptype: str
+    values: ''
+- taylor_primary_grid_line_thickness:
+    default: '1'
+    desc: Thickness of the primary grid.
+    ptype: int
+    values: ''
+- taylor_primary_grid_line_style:
+    default: solid
+    desc: Line style of the primary grid.
+    ptype: str
+    values: solid/dash/dot/chain_dash/chain_dot
+- taylor_primary_grid_reference:
+    default: '0.5'
+    desc: Reference value for the primary grid.
+    ptype: number
+    values: ''
+- taylor_reference_line_colour:
+    default: navy
+    desc: Colour of the reference line.
+    ptype: str
+    values: ''
+- taylor_reference_line_thickness:
+    default: '2'
+    desc: Thickness of the reference line.
+    ptype: int
+    values: ''
+- taylor_reference_line_style:
+    default: solid
+    desc: Line style of the reference line.
+    ptype: str
+    values: solid/dash/dot/chain_dash/chain_dot
+- taylor_primary_label:
+    default: 'on'
+    desc: Enables labels of the primary grid.
+    ptype: str
+    values: on/off
+- taylor_primary_label_colour:
+    default: navy
+    desc: Colour of the labels of the primary grid.
+    ptype: str
+    values: ''
+- taylor_primary_label_height:
+    default: '0.35'
+    desc: Height (cm) of the labels of the primary grid.
+    ptype: number
+    values: ''
+- taylor_secondary_grid:
+    default: 'off'
+    desc: Enables the plotting of the secondary (standard deviation) grid.
+    ptype: str
+    values: on/off
+- taylor_secondary_grid_reference:
+    default: '0.5'
+    desc: Reference value used for the secondary grid.
+    ptype: number
+    values: ''
+- taylor_secondary_grid_increment:
+    default: '0.5'
+    desc: Increment used for the secondary grid.
+    ptype: number
+    values: ''
+- taylor_secondary_grid_line_colour:
+    default: navy
+    desc: Colour of the secondary grid.
+    ptype: str
+    values: ''
+- taylor_secondary_grid_line_thickness:
+    default: '1'
+    desc: Thickness of the secondary grid.
+    ptype: int
+    values: ''
+- taylor_secondary_grid_line_style:
+    default: solid
+    desc: Line style of the secondary grid.
+    ptype: str
+    values: solid/dash/dot/chain_dash/chain_dot
+- taylor_secondary_label:
+    default: 'on'
+    desc: Enables labels for the secondary grid.
+    ptype: str
+    values: on/off
+- taylor_secondary_label_colour:
+    default: navy
+    desc: Colour of the labels for the secondary grid.
+    ptype: str
+    values: ''
+- taylor_secondary_label_height:
+    default: '0.35'
+    desc: Height (cm) of the labels for the secondary grid.
+    ptype: number
+    values: ''

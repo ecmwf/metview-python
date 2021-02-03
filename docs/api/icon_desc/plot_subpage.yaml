@@ -1,0 +1,21 @@
+params:
+- top:
+    default: '0'
+    desc: ''
+    ptype: number
+    values: ''
+- bottom:
+    default: '100'
+    desc: ''
+    ptype: number
+    values: ''
+- left:
+    default: '0'
+    desc: ''
+    ptype: number
+    values: ''
+- right:
+    default: '100'
+    desc: ''
+    ptype: number
+    values: ''

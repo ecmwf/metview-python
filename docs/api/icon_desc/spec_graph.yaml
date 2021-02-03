@@ -1,0 +1,18 @@
+return: :class:`Request`
+summary: Defines the visualisation of the
+  spectrum as a function of Legendre polynomial order from
+  spectral (spherical harmonics) GRIB data. Only the first field in a
+  :class:`Fieldset` is used.
+oneliner: Defines visualisation for the spectrum of the first field in the
+ input spectral GRIB data.
+params:
+- data: 
+    default:
+    desc: Specifies the spectral (spherical harmonics) GRIB data.
+    ptype: :class:`Fieldset`
+    values:
+- truncation:
+    default: 216
+    desc: specifies the highest wave number in spectra plots.
+    ptype: number
+    values:

@@ -1,0 +1,348 @@
+return: :class:`Request`
+summary: This is the visual definition for specifying how a map is displayed
+    in a :func:`geoview`. It controls features such as coastlines, land and sea
+    shading and grid lines. 
+oneliner: Specifies the map style for a :func:`geoview`.
+params:
+- map_coastline:
+    default: 'on'
+    desc: Plot coastlines onto the map.
+    ptype: str
+    values: on/off
+- map_coastline_colour:
+    default: black
+    desc: Colour of coastlines.
+    ptype: str
+    values: ''
+- map_coastline_style:
+    default: solid
+    desc: Line style of coastlines.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- map_coastline_thickness:
+    default: '1'
+    desc: Line thickness of coastlines.
+    ptype: int
+    values: ''
+- map_coastline_resolution:
+    default: automatic
+    desc: Select one of the pre-defined resolutions. When set to "automatic", a resolution
+        appropriate to the scale of the map is chosen in order to balance quality with speed.
+    ptype: str
+    values: automatic/low/medium/high/full
+- map_coastline_land_shade:
+    default: 'off'
+    desc: Sets if land areas are shaded.
+    ptype: str
+    values: on/off
+- map_coastline_land_shade_colour:
+    default: green
+    desc: Colour of shading of land areas.
+    ptype: str
+    values: ''
+- map_coastline_sea_shade:
+    default: 'off'
+    desc: Sets if sea areas are shaded.
+    ptype: str
+    values: on/off
+- map_coastline_sea_shade_colour:
+    default: blue
+    desc: Colour of shading of sea areas.
+    ptype: str
+    values: ''
+- map_boundaries:
+    default: 'off'
+    desc: Plots political boundaries.
+    ptype: str
+    values: on/off
+- map_rivers:
+    default: 'off'
+    desc: Plots rivers.
+    ptype: str
+    values: on/off
+- map_rivers_style:
+    default: solid
+    desc: Line style for rivers.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- map_rivers_colour:
+    default: blue
+    desc: Colour of the rivers.
+    ptype: str
+    values: ''
+- map_rivers_thickness:
+    default: '1'
+    desc: Line thickness of the rivers.
+    ptype: int
+    values: ''
+- map_cities:
+    default: 'off'
+    desc: Plots cities (capitals only).
+    ptype: str
+    values: on/off
+- map_cities_font_name:
+    default: sansserif
+    desc: Defines the font type for cities.
+    ptype: str
+    values: arial/courier/helvetica/times/serif/sansserif/symbol
+- map_cities_font_style:
+    default: normal
+    desc: Defines the font style for cities.
+    ptype: str
+    values: normal/bold/italic/bolditalic
+- map_cities_font_size:
+    default: '2.5'
+    desc: Font size of city names.
+    ptype: number
+    values: ''
+- map_cities_unit_system:
+    default: percent
+    desc: Units for ``map_cities_font_size``.
+    ptype: str
+    values: percent/cm
+- map_cities_font_colour:
+    default: navy
+    desc: Colour used for city names.
+    ptype: str
+    values: ''
+- map_cities_text_blanking:
+    default: 'on'
+    desc: Use blanking when plotting the city names.
+    ptype: str
+    values: on/off
+- map_cities_name_position:
+    default: above
+    desc: Position where to display the city names around their locations.
+    ptype: str
+    values: above/below/left/right
+- map_cities_marker:
+    default: plus
+    desc: Defines marker for cities.
+    ptype: str
+    values: circle/box/snowflake/plus
+- map_cities_marker_height:
+    default: '0.7'
+    desc: Height of ``map_cities_marker``.
+    ptype: number
+    values: ''
+- map_cities_marker_colour:
+    default: evergreen
+    desc: Colour for ``map_cities_marker``.
+    ptype: str
+    values: ''
+- map_boundaries_style:
+    default: solid
+    desc: Line style of map boundaries.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- map_boundaries_colour:
+    default: grey
+    desc: Colour of map boundaries.
+    ptype: str
+    values: ''
+- map_boundaries_thickness:
+    default: '1'
+    desc: Line thickness of map boundaries.
+    ptype: int
+    values: ''
+- map_disputed_boundaries:
+    default: 'on'
+    desc: Plot disputed boundaries onto the map.
+    ptype: str
+    values: on/off
+- map_disputed_boundaries_style:
+    default: dash
+    desc: Line style of disputed boundaries.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- map_disputed_boundaries_colour:
+    default: automatic
+    desc: Colour of disputed boundaries.
+    ptype: str
+    values: ''
+- map_disputed_boundaries_thickness:
+    default: '1'
+    desc: Line thickness of disputed boundaries.
+    ptype: int
+    values: ''
+- map_administrative_boundaries:
+    default: 'off'
+    desc: Plots administrative boundaries into the map.
+    ptype: str
+    values: on/off
+- map_administrative_boundaries_countries_list:
+    default: ''
+    desc: List of countries whose administrative boundaries will be plotted.
+    ptype: str or list[str]
+    values: ''
+- map_administrative_boundaries_style:
+    default: dash
+    desc: Line style for administrative boundaries.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- map_administrative_boundaries_colour:
+    default: automatic
+    desc: Colour of administrative boundaries.
+    ptype: str
+    values: ''
+- map_administrative_boundaries_thickness:
+    default: '1'
+    desc: Line thickness of administrative boundaries.
+    ptype: int
+    values: ''
+- map_grid:
+    default: 'on'
+    desc: Plots grid lines onto the map.
+    ptype: str
+    values: on/off
+- map_grid_line_style:
+    default: solid
+    desc: Line style of map grid lines.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- map_grid_thickness:
+    default: '1'
+    desc: Thickness of map grid lines.
+    ptype: int
+    values: ''
+- map_grid_colour:
+    default: black
+    desc: Colour of map grid lines.
+    ptype: str
+    values: ''
+- map_grid_latitude_reference:
+    default: '0'
+    desc: Reference latitude from which all latitude grid lines are drawn.
+    ptype: number
+    values: ''
+- map_grid_latitude_increment:
+    default: '10'
+    desc: Interval (in degrees) between latitude grid lines.
+    ptype: number
+    values: ''
+- map_grid_longitude_reference:
+    default: '0'
+    desc: Reference longitude from which all longitude lines are drawn.
+    ptype: number
+    values: ''
+- map_grid_longitude_increment:
+    default: '20'
+    desc: Interval (in degrees) between longitude grid lines.
+    ptype: number
+    values: ''
+- map_grid_frame:
+    default: 'off'
+    desc: Add a frame around the map.
+    ptype: str
+    values: on/off
+- map_grid_frame_line_style:
+    default: solid
+    desc: Line style of map grid lines.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- map_grid_frame_thickness:
+    default: '1'
+    desc: Thickness of map grid lines.
+    ptype: int
+    values: ''
+- map_grid_frame_colour:
+    default: black
+    desc: Colour of map grid lines.
+    ptype: str
+    values: ''
+- map_label:
+    default: 'on'
+    desc: Plots labels for map grid lines.
+    ptype: str
+    values: on/off
+- map_label_font:
+    default: sansserif
+    desc: Font of map grid labels.
+    ptype: str
+    values: arial/courier/helvetica/times/serif/sansserif/symbol
+- map_label_font_style:
+    default: normal
+    desc: Font of map grid labels.
+    ptype: str
+    values: normal/bold/italic/bolditalic
+- map_label_colour:
+    default: black
+    desc: Colour of map grid labels.
+    ptype: str
+    values: ''
+- map_label_height:
+    default: '0.25'
+    desc: Height of map grid labels.
+    ptype: number
+    values: ''
+- map_label_blanking:
+    default: 'on'
+    desc: Blanking of the grid labels.
+    ptype: str
+    values: on/off
+- map_label_latitude_frequency:
+    default: '1'
+    desc: Every n-th latitude grid line is labelled.
+    ptype: number
+    values: ''
+- map_label_longitude_frequency:
+    default: '1'
+    desc: Every n-th longitude grid line is labelled.
+    ptype: number
+    values: ''
+- map_label_left:
+    default: 'on'
+    desc: Enable the labels on the left of the map.
+    ptype: str
+    values: on/off
+- map_label_right:
+    default: 'on'
+    desc: Enable the labels on the right of the map.
+    ptype: str
+    values: on/off
+- map_label_top:
+    default: 'on'
+    desc: Enable the labels on the top of the map.
+    ptype: str
+    values: on/off
+- map_label_bottom:
+    default: 'on'
+    desc: Enable the labels on the bottom of the map.
+    ptype: str
+    values: on/off
+- map_user_layer:
+    default: 'off'
+    desc: Display user shape file layer.
+    ptype: str
+    values: on/off
+- map_user_layer_name:
+    default: ''
+    desc: Path to the shape file to use.
+    ptype: str
+    values: ''
+- map_user_layer_colour:
+    default: blue
+    desc: Colour of the user layer.
+    ptype: str
+    values: ''
+- map_user_layer_style:
+    default: solid
+    desc: Line style of the user layer.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- map_user_layer_thickness:
+    default: '1'
+    desc: Line thickness of the user layer.
+    ptype: int
+    values: ''
+- map_layer_mode:
+    default: split
+    desc: |-
+        Specifies how the background (land-sea shading) and foreground (grid, coastlines, rivers, borders and cities) map layers are rendered into the plot with respect to the data layers. The possible values are as follows:
+
+        * "split": the coastlines definition is split into background and foreground map layers. The background map layer is rendered first, followed by the data layers with the foreground map layers appearing atop
+        * "foreground": all the map layers are rendered on top of the data layers
+        * "background": all the map layers are rendered below the data layers
+        If ``map_layer_mode`` is set to "split" and the :func:`mcoast` appears after the data objects in :func:`plot`, the coastlines are put on top of the data. This behaviour is required in order to maintain backward compatibility.
+    ptype: str
+    values: split/foreground/background

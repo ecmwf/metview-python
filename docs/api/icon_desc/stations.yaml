@@ -1,0 +1,86 @@
+return: :class:`Request`
+summary: Allows to specify a geographical location which may coincide
+  with a meteorological (WMO) station. It is also equipped with a search facility applicable
+  to the ECMWF’s station database. If the location is a meteorological station, you can
+  search the database of stations by ``name``, ``ident``, ``wmo_block``, ``position``
+  or ``area``.
+oneliner: Defines a geographical location which may coincide with a meteorological (WMO) station.
+params:
+- search_stations_database:
+    default: wmo
+    desc: Selects the type of station location to be entered. When the value is 
+      "wmo" a station can be chosen from Metview's built-in WMO station database.
+      If the value is "no" you can set an arbitrary location.
+    ptype: str
+    values: wmo/no
+- search_key:
+    default: name
+    desc: Specifies which parameter should be used in the search of the WMO stations database.
+      Only available when ``search_stations_database`` is "wmo".
+    ptype: str
+    values: name/ident/wmo_block/position/area
+- name:
+    default: heathrow
+    desc:  
+      Specifies the location name. If ``search_stations_database`` is set to "no" you are dealing
+      with an arbitrary location and you may enter any name of your choice. If
+      ``search_stations_database`` is set to "wmo" this should be the name of the required
+      station. You need the exact name of the station so you should be careful with the spelling
+      which is in accordance to WMO. This tries to match the original language spelling, hence
+      an English speaking user should not look for Copenhagen, but rather Kobenhavn. 
+    ptype: str or list[str]
+    values: ''
+- position:
+    default: '51.38/-0.78'
+    desc: Specifies the exact geographical coordinates (as [lat, lon]) of the location of interest.
+      If ``search_stations_database`` is set to "no" you specify the coordinates 
+      of an arbitrary location, while if it is set to "wmo" you specify the 
+      location of a meteorological station. It may happen that you do not know the exact
+      coordinates of the station. In this case, you can specify a geographical tolerance 
+      in ``threshold``.
+    ptype: float or list[float]
+    values: ''
+- height:
+    default: '0'
+    desc: Specifies the height of the station. If ``search_stations_database``
+      is set to "no" you can specify the ``height`` here, otherwise
+      the station's height is retrieved automatically from the database.
+    ptype: number
+    values: ''
+- threshold:
+    default: '0.1'
+    desc: Specifies a geographical tolerance in degrees for the coordinates of a
+      meteorological station specified in ``position``. This is only available when
+      ``search_stations_database`` is "wmo" and ``search_key`` is "position".
+    ptype: number
+    values: ''
+- ident:
+    default: '03772'
+    desc: Specifies the station's WMO numerical identifier which is a 5
+      digit number. If you are in doubt about the identifier, use the assist
+      button. This is a station assist button and it launches the Stations database
+      search tool. Only available if ``search_stations_database`` is "wmo" and
+     ``search_key`` is "ident".
+    ptype: number
+    values: ''
+- wmo_block:
+    default: '03'
+    desc: Specifies the station's WMO block which is a 2 digit number corresponding
+      to a geographical area. If you are in doubt about the WMO block, use
+      the assist button. This is a station assist button and it launches the Stations
+      database search tool. Only available if ``search_stations_database`` is "wmo"
+      and ``search_key`` is "wmo_block".
+    ptype: number
+    values: ''
+- area:
+    default: '52/-1/51/0'
+    desc: Specifies the coordinates of an area (as [north, west, south, east]) where
+      meteorological stations of interest are located. Only available
+      if ``search_stations_database`` is "wmo" and ``search_key`` is "area".
+    ptype: list[float]
+    values: ''
+- fail_on_error:
+    default: 'yes'
+    desc: ''
+    ptype: str
+    values: yes/no

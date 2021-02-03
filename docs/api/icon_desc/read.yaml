@@ -1,0 +1,325 @@
+return: :class:`Fieldset`
+summary: rst
+oneliner: Filters a :class:`Fieldset` (GRIB data).
+params:
+- source:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- logstats:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- data:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- cfspath:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- order:
+    default: '0'
+    desc: ''
+    ptype: str
+    values: 0/1
+- class:
+    default: any
+    desc: ''
+    ptype: str
+    values: od/rd/er/cs/e4/ei/dm/pv/el/to/co/en/me/sr/dt/laef/yt/yp/mc/pe/em/e2/era5/cera-20c/rm/ncep
+      20cr/j5/cera-sat/c3/l5/ce/cr/at/be/hr/dk/fi/fr/de/gr/hu/is/ie/it/nl/no/pt/si/es/se/ch/tr/uk/uzzz/ma/te/any
+- stream:
+    default: any
+    desc: ''
+    ptype: str
+    values: ''
+- type:
+    default: any
+    desc: ''
+    ptype: str
+    values: ''
+- model:
+    default: any
+    desc: ''
+    ptype: str
+    values: ''
+- levtype:
+    default: any
+    desc: ''
+    ptype: str
+    values: any/pv/pt/sfc/pl/ml/dp/wv/layer/cat/o2d/o3d/sol/off/all
+- levelist:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- param:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- date:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- verify:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- refdate:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- hdate:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- fcmonth:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- fcperiod:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- time:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- leadtime:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- opttime:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- reference:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- step:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- anoffset:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- range:
+    default: any
+    desc: ''
+    ptype: str
+    values: ''
+- accuracy:
+    default: n
+    desc: ''
+    ptype: str
+    values: ''
+- style:
+    default: any
+    desc: ''
+    ptype: str
+    values: dissemination/off/any
+- interpolation:
+    default: any
+    desc: ''
+    ptype: str
+    values: ''
+- area:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- frame:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- bitmap:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- resol:
+    default: auto
+    desc: ''
+    ptype: str
+    values: ''
+- rotation:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- grid:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- gaussian:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: reduced/regular/off
+- specification:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- packing:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: simple/complex/second order/archived value/off
+- ensemble:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- cluster:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- probability:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- number:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- quantile:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- frequency:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- direction:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- diagnostic:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- iteration:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- channel:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- ident:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- instrument:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- filter:
+    default: any
+    desc: ''
+    ptype: str
+    values: ''
+- repres:
+    default: any
+    desc: ''
+    ptype: str
+    values: bu/sh/ll/gg/sv/og/all/any
+- origin:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- padding:
+    default: any
+    desc: ''
+    ptype: str
+    values: ''
+- domain:
+    default: any
+    desc: ''
+    ptype: str
+    values: g/g/m/n/s/b/e/a/b/c/d/w/f/t/u/x/all/v/h/i/j/k/l/o/p/q/r/y/z/any
+- system:
+    default: any
+    desc: ''
+    ptype: str
+    values: ''
+- method:
+    default: any
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- product:
+    default: any
+    desc: ''
+    ptype: str
+    values: inst/tims/tavg/tacc/all/any
+- section:
+    default: any
+    desc: ''
+    ptype: str
+    values: h/v/z/m/all/any
+- latitude:
+    default: any
+    desc: ''
+    ptype: str
+    values: ''
+- longitude:
+    default: any
+    desc: ''
+    ptype: str
+    values: ''
+- expver:
+    default: any
+    desc: ''
+    ptype: str
+    values: ''
+- lsm:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: on/off
+- truncation:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- intgrid:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''

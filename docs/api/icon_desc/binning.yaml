@@ -1,0 +1,76 @@
+return: :class:`Request`
+summary: Defines 2D binning for input point data to construct gridded data for
+    visualisation. The number of points occurring within each grid box is counted and 
+    becomes the value for that grid box. The resulting visualisation is therefore of
+    this gridded data, and can be customised with :func:`mcont`.  
+params:
+- binning_x_method:
+    default: count
+    desc: ''
+    ptype: str
+    values: count/list/interval
+- binning_x_min_value:
+    default: '-1.0e+21'
+    desc: ''
+    ptype: number
+    values: ''
+- binning_x_max_value:
+    default: '1.0e+21'
+    desc: ''
+    ptype: number
+    values: ''
+- binning_x_count:
+    default: '10'
+    desc: ''
+    ptype: number
+    values: ''
+- binning_x_list:
+    default: ''
+    desc: ''
+    ptype: float or list[float]
+    values: ''
+- binning_x_interval:
+    default: '10'
+    desc: ''
+    ptype: number
+    values: ''
+- binning_x_reference:
+    default: '0'
+    desc: ''
+    ptype: number
+    values: ''
+- binning_y_method:
+    default: count
+    desc: ''
+    ptype: str
+    values: count/list/interval
+- binning_y_min_value:
+    default: '-1.0e+21'
+    desc: ''
+    ptype: number
+    values: ''
+- binning_y_max_value:
+    default: '1.0e+21'
+    desc: ''
+    ptype: number
+    values: ''
+- binning_y_count:
+    default: '10'
+    desc: ''
+    ptype: number
+    values: ''
+- binning_y_list:
+    default: ''
+    desc: ''
+    ptype: float or list[float]
+    values: ''
+- binning_y_interval:
+    default: '10'
+    desc: ''
+    ptype: number
+    values: ''
+- binning_y_reference:
+    default: '0'
+    desc: ''
+    ptype: number
+    values: ''

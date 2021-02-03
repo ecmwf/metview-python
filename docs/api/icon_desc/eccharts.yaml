@@ -1,0 +1,94 @@
+return: list
+summary: |-
+  Generates data to recreate the plot layers of the ecCharts web-based visualisation system in the Metview environment performing the following steps:
+  
+  1. retrieves global forecast fields for a given ecCharts layer from the MARS archive
+  2. applies the required post-processing steps on the data
+  3. defines the visualisation using one of the pre-defined ecCharts styles available for the layer. 
+  
+  :func:`eccharts` returns a list that can be directly passed onto :func:`plot` to generate a plot. This list contains the following items:
+  
+  1. the GRIB fields (:class:`Fieldset`) retrieved from MARS then post-processed
+  2. a plot title definition (:func:`mtext`)
+  3. a contouring definition (:func:`mcont`) using the specified pre-defined style associated with the layer
+  4. a legend definition (:func:`mlegend`)
+  
+  The second item in this list is optional and only included if ``title`` is set to "style_1".
+oneliner: Generates data to recreate the plot layers of the ecCharts web-based 
+  visualisation system in the Metview environment. 
+params:
+- layer:
+    default: ''
+    desc: Specifies the name of the ecCharts layer.
+    ptype: str
+    values: ''
+- style:
+    default: ''
+    desc: |-
+      Specifies a named contouring style for the selected ``layer``. Each ecCharts layer is associated with a group of predefined styles and if this parameter is left empty the default style will be assigned to ``layer``. 
+      
+      .. note:: In the user interface the ecCharts icon editor contains a style browser. When a given ``layer`` is selected the style browser only shows the available styles for that layer with the default style automatically selected.
+    ptype: str
+    values: ''
+- title:
+    default: default
+    desc: |-
+      Specifies the type of the title generated for the plot. The possible values are as follows:
+      
+      * "default": the automatic Metview title will be used and the returned list will not contain an :func:`mtext` object
+      * "style_1": the returned list will contain an :func:`mtext` object defining a title with a different style. 
+      
+      When overlaying an :func:`eccharts` object with other objects always use the "default" option, otherwise the contouring setting will be applied incorrectly to some of the fields.    
+    ptype: str
+    values: default/style_1
+    version: 5.8.0
+- expver:
+    default: '1'
+    desc: ''
+    ptype: str
+    values: ''
+- date:
+    default: '-1'
+    desc: >-
+      Specifies the run date of the forecast in YYYYMMDD format. This is the same ``date`` parameter
+      as in the MARS retrieval icon. Relative dates are allowed: e.g. -1 means yesterday, 0 means today, etc.
+    ptype: str
+    values: ''
+- time:
+    default: '0'
+    desc: Specifies the run time of the forecast. This is the same ``time`` parameter
+      as in the MARS retrieval icon.
+    ptype: number
+    values: ''
+- step:
+    default: '0'
+    desc: Specifies the forecast steps in hours. Here a list of values can be
+      given.
+    ptype: str or list[str]
+    values: ''
+- interval:
+    default: '3'
+    desc: ''
+    ptype: str
+    values: 3/6/9/12/24/48/72
+- quantile:
+    default: ''
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- grid:
+    default: '[1, 1]'
+    desc: >-
+      Specifies the resolution of the resulting global grid in [dx, dy] format,
+      where dx is the grid increment in West-East direction, while dy is the grid
+      increment in South-North direction (both in units of degrees).
+    ptype: list[float]
+    values: ''
+- fail_on_data_error:
+    default: 'yes'
+    desc: When this parameter is set to "yes" an error in the data retrieval or the
+      post-processing steps will force the icon to fail and a Python script
+      running :func:`eccharts` will fail as well. When if it is set to "no"
+      the icon will not fail and :func:`eccharts` will return None.
+    ptype: str
+    values: yes/no

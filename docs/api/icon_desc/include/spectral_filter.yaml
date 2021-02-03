@@ -1,0 +1,37 @@
+- truncation:
+    default: 216
+    desc: Specifies the triangular truncation to be applied to the spherical
+      harmonics input data prior to conversion to lat/lon.
+    ptype: number
+    values:
+- smoothing:
+    default: 'no'
+    desc: |-
+      Specifies whether to apply spatial smoothing to the spherical harmonics prior to transformation to grid points. This operation is performed after the truncation specified in ``truncation``. The smoothing filter is of the form: 
+      
+      .. math::
+        
+        exp^{(-\frac {n(n+1)}{fltc(fltc+1)})^{mfltexp}}
+
+      where:
+
+      * n: is the wavenumber
+      * fltc, mfltexp: see below
+
+      This is roughly equivalent to a :math:`\nabla^{2 \times mfltexp}` operator in grid point space.
+    ptype: str
+    values: 'yes/no'
+- fltc:
+    default: 19.4
+    desc: Specifies the value of the parameter fltc to be used in the 
+      smoothing filter. Only available if ``smoothing`` set to "yes". 
+    ptype: number
+    values:
+- mfltexp:
+    default: 2  
+    desc: Specifies the value of the parameter ``mfltexp`` to 
+      be used in the smoothing filter. Only available if ``smoothing`` is set 
+      to "yes". The default value is 2, roughly equivalent to a  :math:`\nabla^{4}`
+      operator in grid point space.
+    ptype: number
+    values:

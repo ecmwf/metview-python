@@ -1,0 +1,47 @@
+return: :class:`Request`
+summary: rst
+oneliner: Defines the view for average (zonal or meridional) cross-section plots. 
+params: 
+- bottom_level:
+    default: '1015.0'
+    desc: Specifies the lower limit of the average cross section, as a pressure value
+       (hPa) or ECMWF model level number (hybrid levels).
+    ptype: number
+    values: ''
+- top_level:
+    default: '0.01'
+    desc: Specifies the upper limit of the average cross section, as a pressure value
+      (hPa) or ECMWF model level number (hybrid levels).
+    ptype: number
+    values: ''
+- vertical_scaling:
+    default: linear
+    desc: Specifies the type of the vertical axis.
+    ptype: str
+    values: linear/log
+- area:
+    default: '90/-180/-90/180'
+    desc: Specifies the coordinates of the area (as [north, west, south, east]) over
+      which the averages cross section is calculated. 
+    ptype: list[float]
+    values: ''
+- direction:
+    default: ns
+    desc: Specifies the direction along which the averaging is
+      performed. Options are "ns" (north-south) and "ew" (east-west). For "ns" the averaging
+      is weighted by the cosine of the latitudes.
+    ptype: str
+    values: ns/ew
+- horizontal_axis:
+    default: ''
+    desc: Specifies the plotting attributes of the horizontal axis. 
+    ptype: :func:`maxis`
+    values: ''
+- vertical_axis:
+    default: ''
+    desc: Specifies the plotting attributes of the vertical axis.
+    ptype: :func:`maxis`
+    values: ''
+- _include: !include include/subpage_pos.yaml 
+- _include: !include include/page.yaml 
+

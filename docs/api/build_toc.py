@@ -1,141 +1,30 @@
+#
+# (C) Copyright 2017- ECMWF.
+#
+# This software is licensed under the terms of the Apache Licence Version 2.0
+# which can be obtained at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# In applying this licence, ECMWF does not waive the privileges and immunities
+# granted to it by virtue of its status as an intergovernmental organisation
+# nor does it submit to any jurisdiction.
+
+
+import glob
+import logging
 import os
 import sys
 
 import yaml
 
-groups_def = {
-    "stats": "Statistics",
-    "calculus": "Calculus",
-    "maths": "Basic mathematics",
-    "thermo": "Thermodynamics",
-    "aggr": "Aggregation",
-    "geo": "Geographic",
-    "avg": "Average",
-    "plot": "Plotting",
-    "filter": "Filtering",
-    "grid": "Grid",
-    "vertical": "Vertical",
-    "view": "Views",
-    "layout": "Layout",
-    "ui": "Examiners",
-    "widget": "Widgets",
-    "conversion": "Data conversion",
-    "output": "Graphical output",
-    "grib_access": "Grib data",
-    "geopoints_access": "Geopoints data",
-    "netcdf_access": "NetCDF data",
-    "grib_object": "Grib methods",
-    "geopoints_object": "Geopoints methods",
-    "netcdf_object": "NetCDF methods",
-    "odb_object": "Odb methods",
-    "grib": "Grib related functions",
-    "geopoints": "Geopoints related functions",
-    "netcdf": "NetCDF related functions",
-    "odb": "ODB related functions",
-    "bufr": "BUFR related functions",
-    "visdef": "Visual definitions",
-    "retrieve": "Data retrieval",
-    "mask": "Masking",
-    "flex": "Flextra and Flexpart",
-    "table": "Table data",
-    "scm": "Single Column Model",
-    "rttov": "RTTOV",
-    "wind": "Wind",
-    "met3d": "Met3D",
-    "vapor": "Vapor",
-}
+logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+LOG = logging.getLogger(__name__)
 
-toc_def = {
-    "comp": {
-        "title": "Computation functions",
-        "gr": [
-            "stats",
-            "geo",
-            "mask",
-            "wind",
-            "vertical",
-            "thermo",
-            "calculus",
-            "maths",
-        ],
-    },
-    "plot": {
-        "title": "Visualisation functions",
-        "gr": ["view", "visdef", "plot", "layout", "output"],
-    },
-    # "ui": {"title": "User interface", "gr": ["widget", "ui"]},
-    "data": {
-        "title": "Data access function",
-        "gr": [
-            "retrieve",
-            "conversion",
-            "filter",
-            "grib_access",
-            "geopoints_access",
-            "netcdf_access",
-            "flex",
-            "table",
-            "scm",
-            "rttov",
-        ],
-    },
-    "apps": {
-        "title": "External application functions",
-        "gr": ["flex", "met3d", "vapor", "scm", "rttov"],
-    },
-    "object": {
-        "title": "Object functions",
-        "gr": [
-            "grib_object",
-            "geopoints_object",
-            "netcdf_object",
-        ],
-    },
-    "grib": {
-        "title": "GRIB (Fieldset) functions",
-        "desc": "This is the list of all the functions related to GRIB (:class:`Fieldset`) data.",
-        "gr": ["grib"],
-    },
-    "geopoints": {
-        "title": "Geopoints functions",
-        "desc": "This is the list of all the functions related to :class:`Geopoints` data.",      
-        "gr": ["geopoints"],
-    },
-    "netcdf": {
-        "title": "NetCDF functions",
-        "desc": "This is the list of all the functions related to :class:`NetCDF` data.",
-        "gr": ["netcdf"],
-    },
-    "odb": {
-        "title": "ODB functions",
-        "desc": "This is the list of all the functions related to :class:`Odb` data.",
-        "gr": ["odb"],
-    },
-    "bufr": {
-        "title": "BUFR functions",
-        "desc": "This is the list of all the functions related to :class:`Bufr` data.",
-        "gr": ["bufr"],
-    },
-    "grib_obj": {
-        "title": "List of methods",
-        "gr": ["grib_object"],
-    },
-    "geopoints_obj": {
-        "title": "List of methods",
-        "gr": ["geopoints_object"],
-    },
-    "netcdf_obj": {
-        "title": "List of methods",
-        "gr": ["netcdf_object"],
-    },
-    "odb_obj": {
-        "title": "List of methods",
-        "gr": ["odb_object"],
-    },
-}
+API_DIR = os.path.abspath(os.path.dirname(__file__))
+ROOT_DIR = os.path.dirname(API_DIR)
+TOC_DIR = os.path.join(API_DIR, "toc")
+ICON_DIR = os.path.join(API_DIR, "icon")
+STATIC_DIR = os.path.join(ROOT_DIR, "_static")
 
-groups = {}
-toc = {}
 
 dtypes = {
     "fieldsets": ":class:`Fieldset`",
@@ -148,224 +37,218 @@ dtypes = {
     "number": "number",
 }
 
+GROUPS = {}
+PAGES = {}
 
-class TocGroup:
+class TocPage:
     def __init__(self, name, item):
         self.name = name
         self.title = item.get("title", "")
         self.desc = item.get("desc", "")
-        self.output = name + "_toc.rst"
-        self.gr = []
+        self.rst = os.path.join(TOC_DIR, name + ".rst")
+        self.groups = []
         for gn in item.get("gr", []):
-            gr = groups.get(gn, None)
+            gr = GROUPS.get(gn, None)
             if gr:
-                self.gr.append(gr)
+                self.groups.append(gr)
 
 
-class DocGroup:
+class TocGroup:
     def __init__(self, name, title):
         self.name = name
         self.title = title
-        # self.output = name + "_toc.rst"
-        self.fn = []
+        self.functions = []
 
     def sort(self):
-        self.fn.sort(key=lambda x: x.name)
-
-
-for k, v in groups_def.items():
-    groups[k] = DocGroup(k, v)
-
-for k, v in toc_def.items():
-    toc[k] = TocGroup(k, v)
-
-fn_list = []
-fn_orphan = []
+        self.functions.sort(key=lambda x: x.name)
 
 
 class DocFunction:
-    def __init__(self, name, dtype, desc, pix):
+    def __init__(self, name, item):
         self.name = name
-        self.dtype = dtype
-        self.category = {}
-        self.desc = desc
-
-        for k, v in dtypes.items():
-            if k in self.desc:
-                self.desc = self.desc.replace(k, v)
-
+        self.dtype = item.get("type", "")
+        self.desc = item.get("desc", "???")
+        self.pix = item.get("pix", "")
         self.groups = []
-        self.pix = pix
+
+        self.format_desc()
+
         if self.dtype == "icon":
             if self.pix == "":
                 self.pix = self.name.upper() + ".png"
             else:
                 self.pix += ".png"
 
+    def format_desc(self):
+        for k, v in dtypes.items():
+            if k in self.desc:
+                self.desc = self.desc.replace(k, v)
+
     def orphan(self):
         return len(self.groups) == 0
 
     def add_to_group(self, gr):
-        gr.fn.append(self)
+        gr.functions.append(self)
         self.groups.append(gr)
 
-    # def type_str(self):
-    #     t = []
-    #     for k, v in self.dtype.items():
-    #         dt typeses.get(k, "")
-    #         if dt:
-    #             t.append(dt)
-    #     return ", ".join(t)
 
+class TocBuilder:
+    def __init__(self):
+        self.functions = []
+        self.init_functions()
 
-def make_group_toc(t):
+    def init_functions(self):
+        """
+        Reads the function descriptions and create an DocFunction
+        object for each entry.
+        """
+        path = os.path.join(API_DIR, "functions.yaml")
+        with open(path, "r") as f:
+            for v in yaml.safe_load(f):
+                name = list(v.keys())[0]
+                item = v[name]
+                if item.get("exclude", False):
+                    continue
+                fn = DocFunction(name, item)
+                self.functions.append(fn)
 
-    if len(t.gr) == 0:
-        print("Empty toc!")
-        return
+                # extend items groups
+                item_groups = item.get("group", [])
+                for d_type in ["grib", "geopoints", "netcdf"]:
+                    if (not d_type in item_groups) and (
+                        d_type + "_access" in item_groups
+                        or d_type + "_object" in item_groups
+                    ):
+                        item_groups.append(d_type)
 
-    with open(t.output, "w") as f:
-        title_len = len(t.title) + 2
-        f.write(
-            f"""
-{t.title}
+                # add function to groups
+                for gr in item_groups:
+                    if gr in GROUPS:
+                        fn.add_to_group(GROUPS[gr])
+
+            for _, gr in GROUPS.items():
+                gr.sort()
+
+    def find(self, name):
+        for f in self.functions:
+            if f.name == name:
+                return f
+        return None
+
+    def build_page(self, page):
+        if len(page.groups) == 0:
+            LOG.warning("Empty toc!")
+            return
+        txt = ""
+
+        title_len = len(page.title) + 2
+        txt += f"""
+{page.title}
 {"=" * title_len}
-{t.desc}
-""")
-        for gr in t.gr:
-            if len(gr.fn) == 0:
+{page.desc}
+"""
+        for gr in page.groups:
+            if len(gr.functions) == 0:
                 print("Empty group")
                 continue
 
-            if len(t.gr) > 1:
+            if len(page.groups) > 1:
                 title_len = len(gr.title) + 2
-                f.write(
-                    f"""
+                txt += f"""
 
 {gr.title}
 {"-" * title_len}
 
-""")
-            f.write(
-                f"""
+"""
+
+            txt += f"""
 .. list-table::
     :widths: 20 80
     :header-rows: 0
 
-""")
-            for fn in gr.fn:
-                #                 f.write("""
-                #     * - :func:`{}`
-                #       - .. image:: {}
-                #            :width: 16px
-                #       - {}
-                # """.format(fn.name, "_static/MCONT.png", fn.desc))
-                f.write(
-                    """
-    * - :func:`{}`
-      - {}
-""".format(
-                        fn.name, fn.desc
-                    )
-                )
+"""
+            for fn in gr.functions:
+                txt += f"""
+    * - :func:`{fn.name}`
+      - {fn.desc}
+"""
+        with open(page.rst, "w") as f:
+            f.write(txt)
 
+    def build_icon_page(self):
+        txt = ""
 
-def make_icon_toc():
-
-    with open("icon.rst", "w") as f:
-        f.write(
-            """
-{}
+        txt += """
+Icon functions
 ===========================
 
-""".format(
-                "Icon functions"
-            )
-        )
-
-        icons = {}
-        for fn in fn_list:
-            if fn.dtype == "icon":
-                if not fn.name in icons:
-                    icons[fn.name] = []
-                icons[fn.name].append(fn)
-
-        # icons.sort()
-
-        f.write(
-            """
-
-{}
--------------------------------
+This is the list of the functions that are represented as an icon in Metviews' user interface.
 
 .. list-table::
     :header-rows: 0
 
-""".format(
-                "Icons"
-            )
-        )
+"""
+        # process each yaml from icon/desc
+        for f_name in glob.glob(os.path.join(ICON_DIR, "*.rst")):
+            name = format(os.path.basename(f_name).split(".rst")[0])
+            fn = self.find(name)
+            if not fn:
+                continue
 
-        for title, item in icons.items():
-            fn = item[0]
-            f.write(
-                """
-    * - .. image:: /_static/{}
+            if os.path.exists(os.path.join(STATIC_DIR, fn.pix)):
+                txt += f"""
+    * - .. image:: /_static/{fn.pix}
             :width: 24px
-      - :func:`{}`
-      - {}
-""".format(
-                    fn.pix, fn.name, fn.desc
-                )
-            )
+      - :func:`{fn.name}`
+      - {fn.desc}
+    """
+            else:
+                txt += f"""
+    * - .. image:: /_static/empty.png
+            :width: 24px
+      - :func:`{fn.name}`
+      - {fn.desc}
+    """
+        path = os.path.join(TOC_DIR, "icon.rst")
+        with open(path, "w") as f:
+            f.write(txt)
+
+    def print_orphan(self):
+        print("SCRIPT functions without group")
+        cnt = 0
+        for f in self.functions:
+            if f.orphan() and f.dtype != "icon":
+                print("[{}] {}".format(cnt, f.name))
+                cnt += 1
+
+        print("\nICON functions without group")
+        cnt = 0
+        for f in self.functions:
+            if f.orphan() and f.dtype == "icon":
+                print("[{}] {}".format(cnt, f.name))
+                cnt += 1
 
 
-with open("functions.yaml", "r") as f:
-    for v in yaml.safe_load(f):
-        name = list(v.keys())[0]
-        item = v[name]
-        if item.get("exclude", False):
-            continue
+def load_page_conf():
+    path = os.path.join(API_DIR, "toc.yaml")
+    with open(path, "r") as f:
+        d = yaml.safe_load(f)
+        for k, v in d["groups"].items():
+            GROUPS[k] = TocGroup(k, v)
+        for k, v in d["pages"].items():
+            PAGES[k] = TocPage(k, v)
 
-        fn = DocFunction(
-            name, item.get("type", ""), item.get("desc", "???"), item.get("pix", "")
-        )
-        fn_list.append(fn)
 
-        item_groups = item.get("group", [])
-        for d_type in ["grib", "geopoints", "netcdf"]:
-            if (not d_type in item_groups) and (
-                d_type + "_access" in item_groups or d_type + "_object" in item_groups
-            ):
-                item_groups.append(d_type)
+def main():
+    load_page_conf()
+    builder = TocBuilder()
+    for _, t in PAGES.items():
+        builder.build_page(t)
+    builder.build_icon_page()
+    # builder.print_orphan()
 
-        for gr in item_groups:
-            if gr in groups:
-                # raise Exception("Unknown group: {}".format(gr))
-                # groups[gr] = []
-                # groups[gr].fn.append(fn)
-                fn.add_to_group(groups[gr])
 
-        fn.category = item.get("category", {})
-
-    for _, gr in groups.items():
-        gr.sort()
-
-# make_icon_toc()
-
-for _, t in toc.items():
-    make_group_toc(t)
-
-print("SCRIPT functions without group")
-cnt = 0
-for f in fn_list:
-    if f.orphan() and f.dtype != "icon":
-        print("[{}] {}".format(cnt, f.name))
-        cnt += 1
-
-print("\nICON functions without group")
-cnt = 0
-for f in fn_list:
-    if f.orphan() and f.dtype == "icon":
-        print("[{}] {}".format(cnt, f.name))
-        cnt += 1
+if __name__ == "__main__":
+    main()
+else:
+    main()

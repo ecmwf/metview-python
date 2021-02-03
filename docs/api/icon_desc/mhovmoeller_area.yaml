@@ -1,0 +1,39 @@
+return: :class:`NetCDF`
+summary: rst
+oneliner: Provides input for Hovmoeller diagrams derived from a geographical area.
+params:
+- data:
+    default: 
+    desc: Specifies the GRIB data (:class:`Fieldset`) from which to derive the Hovmeller diagram. 
+      ``data`` must specify a time-series of a meteorological variable in a latitude-longitude
+      or Gaussian grid. If ``data`` contains more than one parameter and/or level
+      :func:`mhovmoeller_area` returns a set of Hovmoeller diagrams. 
+    ptype: :class:`Fieldset`
+    values:
+- area:
+    default: '30/-30/-30/30'
+    desc: Specifies the coordinates of the area (as [north, west, south, east]) over
+      which the Hovmoeller diagram is calculated.
+    ptype: list[float]
+    values: ''
+- average_direction:
+    default: east_west
+    desc: Specifies the direction along which the averaging is
+      performed. Options are "north_south" and "east_west". For "north_south" the averaging
+      is weighted by the cosine of the latitudes.
+    ptype: str
+    values: east_west/north_south
+- swap_axes:
+    default: 'no'
+    desc: By default, the definition of the vertical and horizontal axes of the Hovmoeller
+      diagrams follows pre-defined rules. However, if ``swap_axes`` is set to 
+      "yes" then the axes will be swapped around.
+    ptype: str
+    values: no/yes
+- resolution:
+    default: '1.0'
+    desc: Used to interpolate the data onto a regular grid, and applies to both the
+      horizontal and vertical axes where appropriate. This parameter is essential
+      for creating a Hovmoeller diagram from satellite data.
+    ptype: number
+    values: ''

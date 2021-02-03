@@ -1,0 +1,77 @@
+return: :class:`Request`
+summary: Defines release conditions for
+ running the `FLEXPART <https://confluence.ecmwf.int/display/METV/The+FLEXPART+interface>`_
+ Lagrangian particle dispersion model via :func:`flexpart_run`.
+oneliner: Defines release conditions for :func:`flexpart_run`.
+params:
+- name:
+    default: ''
+    desc: Specifies the ``name`` of the release (maximum 40 characters).
+    ptype: str
+    values: ''
+- starting_date:
+    default: '0'
+    desc: 'Specifies the beginning date of the release in YYYYMMDD format.  Relative
+      dates with respect to the run date of the FLEXPART simulation (see parameter
+      ``starting_date`` in :func:`flexpart_run`) are allowed: e.g. 0 means run date,
+      1 means the day after the run date, etc.'
+    ptype: str
+    values: ''
+- starting_time:
+    default: ''
+    desc: Specifies the beginning time of the release in HH[:MM[:SS]] format.
+    ptype: str
+    values: ''
+- ending_date:
+    default: '0'
+    desc: 'Specifies the ending date of the release in YYYYMMDD format.  Relative
+      dates with respect to the run date of the FLEXPART simulation (see parameter
+      ``starting_date`` in :func:`flexpart_run`) are allowed: e.g. 0 means run date,
+      1 means the day after the run date, etc.'
+    ptype: str
+    values: ''
+- ending_time:
+    default: ''
+    desc: Specifies the ending time of the release in HH[:MM[:SS]] format.
+    ptype: str
+    values: ''
+- area:
+    default: '-90/-180/90/180'
+    desc: Specifies the area for the release in degrees in S/W/N/E format.
+    ptype: list[float]
+    values: ''
+- level_units:
+    default: agl
+    desc: |-
+        Specifies the units for the release vertical extent. The possible values are:
+        
+        * "agl": metres above ground level
+        * "asl": metres above sea level
+        * "hpa": pressure in hPa
+    ptype: str
+    values: agl/asl/hpa
+- top_level:
+    default: ''
+    desc: Specifies the top level of the release.
+    ptype: number
+    values: ''
+- bottom_level:
+    default: ''
+    desc: Specifies the bottom level of the release.
+    ptype: number
+    values: ''
+- particle_count:
+    default: ''
+    desc: Specifies the number of particles released.
+    ptype: number
+    values: ''
+- masses:
+    default: ''
+    desc: Specifies the list of total masses of the released species. The number
+      of masses given here must match the number of species defined via the ``release_species`` 
+      parameter of :func:`flexpart_run`. The actual units of ``masses``
+      is defined by the ``release_units`` parameter of :func:`flexpart_run`. Please note
+      that for backward simulations any non-zero positive value can stand here because
+      the output is normalised by this value!
+    ptype: float or list[float]
+    values: ''

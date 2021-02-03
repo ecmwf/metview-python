@@ -1,0 +1,14 @@
+return: :class:`Fieldset`
+summary: Computes the equivalent potential temperature for GRIB data on pressure levels.
+oneliner: Computes the equivalent potential temperature for GRIB data on pressure levels.
+params:
+- temperature:
+    default: 
+    desc: Specifies the temperature GRIB fields on pressure levels.
+    ptype: :class:`Fieldset`
+    values: 
+- humidity:
+    default: 
+    desc: Specifies the specific humidity GRIB fields on model levels.
+    ptype: :class:`Fieldset`
+    values: 

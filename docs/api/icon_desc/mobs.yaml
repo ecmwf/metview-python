@@ -1,0 +1,234 @@
+return: :class:`Request`
+summary: This is the visual definition used for plotting conventional
+    BUFR observations (i.e. SYNOP, SHIP, BUOY, TEMP) onto a map using the standard 
+    WMO graphical representation for station data.
+oneliner: Defines the style for plotting conventional observations in BUFR 
+    using the standard WMO graphical representation for station data.
+params:
+- obs_distance_apart:
+    default: '1.0'
+    desc: Minimum distance between the centre of any two observations in cm. When
+        it is set to 0 all the observations are plotted.
+    ptype: number
+    values: ''
+- obs_level:
+    default: '500'
+    desc: Specifies the pressure level (in hPa) for upper air observations.
+    ptype: number
+    values: ''
+- obs_colour:
+    default: black
+    desc: The observation colour.
+    ptype: str
+    values: ''
+- obs_size:
+    default: '0.2'
+    desc: Size of a single observation in cm.
+    ptype: number
+    values: ''
+- obs_ring_size:
+    default: '0.2'
+    desc: Size of the station ring in cm.
+    ptype: number
+    values: ''
+- obs_present_weather:
+    default: 'on'
+    desc: Plots the present weather.
+    ptype: str
+    values: on/off
+- obs_present_weather_colour:
+    default: automatic
+    desc: Colour of the present weather.
+    ptype: str
+    values: ''
+- obs_pressure:
+    default: 'on'
+    desc: Plots the pressure.
+    ptype: str
+    values: on/off
+- obs_pressure_colour:
+    default: automatic
+    desc: Colour of the pressure.
+    ptype: str
+    values: ''
+- obs_upper_air_pressure:
+    default: 'off'
+    desc: Plots the upper air pressure level (satob).
+    ptype: str
+    values: on/off
+- obs_upper_air_pressure_colour:
+    default: automatic
+    desc: Colour of the upper air pressure level.
+    ptype: str
+    values: ''
+- obs_pressure_tendency:
+    default: 'on'
+    desc: Plots the pressure tendency.
+    ptype: str
+    values: on/off
+- obs_pressure_tendency_colour:
+    default: automatic
+    desc: Colour of the pressure tendency.
+    ptype: str
+    values: ''
+- obs_station_ring:
+    default: 'on'
+    desc: Plots the station ring.
+    ptype: str
+    values: on/off
+- obs_station_ring_colour:
+    default: automatic
+    desc: Colour of the station ring.
+    ptype: str
+    values: ''
+- obs_temperature:
+    default: 'on'
+    desc: Plots the air temperature.
+    ptype: str
+    values: on/off
+- obs_temperature_colour:
+    default: automatic
+    desc: Colour of the air temperature.
+    ptype: str
+    values: ''
+- obs_thickness:
+    default: 'on'
+    desc: Plots the thickness.
+    ptype: int
+    values: ''
+- obs_thickness_colour:
+    default: automatic
+    desc: Colour of the thickness.
+    ptype: str
+    values: ''
+- obs_height:
+    default: 'on'
+    desc: Plots the height (geopotential).
+    ptype: str
+    values: on/off
+- obs_height_colour:
+    default: automatic
+    desc: Colour of the height.
+    ptype: str
+    values: ''
+- obs_identification:
+    default: 'off'
+    desc: Plots the station identification.
+    ptype: str
+    values: on/off
+- obs_identification_colour:
+    default: automatic
+    desc: Colour of the station identification.
+    ptype: str
+    values: ''
+- obs_cloud:
+    default: 'on'
+    desc: Plots the cloud data.
+    ptype: str
+    values: on/off
+- obs_low_cloud:
+    default: 'on'
+    desc: Plots the low cloud.
+    ptype: str
+    values: on/off
+- obs_low_cloud_colour:
+    default: automatic
+    desc: Colour of the low cloud.
+    ptype: str
+    values: ''
+- obs_medium_cloud:
+    default: 'on'
+    desc: Plots the medium cloud.
+    ptype: str
+    values: on/off
+- obs_medium_cloud_colour:
+    default: automatic
+    desc: Colour of the medium cloud.
+    ptype: str
+    values: ''
+- obs_high_cloud:
+    default: 'on'
+    desc: Plots the high cloud.
+    ptype: str
+    values: on/off
+- obs_high_cloud_colour:
+    default: red
+    desc: Colour of the high cloud.
+    ptype: str
+    values: ''
+- obs_dewpoint:
+    default: 'on'
+    desc: Plots the dewpoint.
+    ptype: str
+    values: on/off
+- obs_dewpoint_colour:
+    default: red
+    desc: Colour of the dewpoint.
+    ptype: str
+    values: ''
+- obs_sea_temperature:
+    default: 'on'
+    desc: Plots the sea temperature.
+    ptype: str
+    values: on/off
+- obs_sea_temperature_colour:
+    default: black
+    desc: Colour of the sea temperature.
+    ptype: str
+    values: ''
+- obs_waves:
+    default: 'on'
+    desc: Plots the waves and swell information.
+    ptype: str
+    values: on/off
+- obs_waves_colour:
+    default: black
+    desc: Colour of the waves and swell.
+    ptype: str
+    values: ''
+- obs_past_weather:
+    default: 'on'
+    desc: Plots the past weather.
+    ptype: str
+    values: on/off
+- obs_past_weather_colour:
+    default: red
+    desc: Colour of the past weather.
+    ptype: str
+    values: ''
+- obs_time:
+    default: 'off'
+    desc: Plots the observation time.
+    ptype: str
+    values: on/off
+- obs_time_colour:
+    default: automatic
+    desc: Colour of the observation time.
+    ptype: str
+    values: ''
+- obs_visibility:
+    default: 'on'
+    desc: Plots the visibility.
+    ptype: str
+    values: on/off
+- obs_visibility_colour:
+    default: automatic
+    desc: Colour of the visibility.
+    ptype: str
+    values: ''
+- obs_wind:
+    default: 'on'
+    desc: Plots the wind.
+    ptype: str
+    values: on/off
+- obs_wind_colour:
+    default: automatic
+    desc: Colour of the wind.
+    ptype: str
+    values: ''
+- obs_wind_projected:
+    default: 'on'
+    desc: If it is "on", the wind will be reprojected according to the projection
+      used in the map.
+    ptype: str
+    values: on/off

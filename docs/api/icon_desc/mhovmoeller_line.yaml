@@ -1,0 +1,32 @@
+return: :class:`NetCDF`
+summary: rst
+oneliner: Provides input for Hovmoeller diagrams derived from a transect line.
+params:
+- data:
+    default: 
+    desc: Specifies the GRIB data (:class:`Fieldset`) from which to derive the Hovmeller diagram. 
+      ``data`` must specify a time-series of a meteorological variable in a latitude-longitude
+      or Gaussian grid. If ``data`` contains more than one parameter and/or level
+      :func:`mhovmoeller_line` returns a set of Hovmoeller diagrams. 
+    ptype: :class:`Fieldset`
+    values:
+- line:
+    default: '0/-180/0/180'
+    desc: Specifies the coordinates of a transect line along which the Hovmoeller
+         diagram is calculated in [lat1, lon1, lat2, lon2] format.
+    ptype: list[float]
+    values: ''
+- swap_axes:
+    default: 'no'
+    desc: By default, the definition of the vertical and horizontal axes of the Hovmoeller
+      diagrams follows pre-defined rules. However, if ``swap_axes`` is set to 
+      "yes" then the axes will be swapped around.
+    ptype: str
+    values: no/yes
+- resolution:
+    default: '1.0'
+    desc: Used to interpolate the data onto a regular grid, and applies to both the
+      horizontal and vertical axes where appropriate. This parameter is essential
+      for creating a Hovmoeller diagram from satellite data.
+    ptype: number
+    values: ''

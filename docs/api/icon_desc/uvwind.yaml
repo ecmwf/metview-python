@@ -1,0 +1,13 @@
+return: :class:`Fieldset`
+summary: Computes the wind from
+  spectral (shperical harmonics) divergence and vorticity GRIB fields.
+oneliner: Computes the wind from
+  spectral (spherical harmonics) divergence and vorticity GRIB fields.
+params:
+- data:
+    default: 
+    desc: Specifies the divergence and vorticity GRIB fields. Must be spectral 
+      (spherical harmonics) data. 
+    ptype: :class:`Fieldset`
+    values:
+- _include: !include include/spectral_filter.yaml 

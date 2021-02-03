@@ -1,0 +1,28 @@
+return: :class:`Request`
+summary: Starts up the Met.3D visualisation system with the specified 
+  input GRIB data and options. 
+oneliner: Starts up the Met.3D visualisation system.
+params:
+- source:
+    default: 'off'
+    desc: Specifies the path to the input GRIB data.
+    ptype: str
+    values: ''
+- data:
+    default: ''
+    desc: Specifies the input GRIB as a :class:`Fieldset`. If both ``data``
+      ``source`` are specified ``data`` takes precedence.
+    ptype: :class:`Fieldset`
+    values: ''
+- pipeline_file:
+    default: default
+    desc: Specifies the pipeline file for the Met.3D session. When it is set to "default"
+      a pre-built pipeline file will be used.
+    ptype: str
+    values: ''
+- frontend_file:
+    default: default
+    desc: Specifies the frontend file for the Met.3D session. When it is set to "default"
+      a pre-built frontend file will be used.
+    ptype: str
+    values: ''

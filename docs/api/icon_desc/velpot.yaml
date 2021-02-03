@@ -1,0 +1,13 @@
+return: :class:`Fieldset`
+summary: Computes the velocity potential from
+  spectral (shperical harmonics) divergence GRIB fields.
+oneliner: Computes the velocity potential from
+  spectral (spherical harmonics) divergence GRIB fields.
+params:
+- data:
+    default: 
+    desc: Specifies the divergence GRIB fields. Must be spectral 
+      (spherical harmonics) data. 
+    ptype: :class:`Fieldset`
+    values:
+- _include: !include include/spectral_filter.yaml 

@@ -1,0 +1,387 @@
+return: :class:`Request`
+summary: This is the visual definition responsible for specifying how
+    the axes in non-geographic views (e.g. :func:`cartesianview`), are displayed. Note 
+    that :func:`maxis` does not define the projection or the coordinate range - this is
+    done in the view. 
+oneliner: Specifies the axis properties for non-geographic views.
+params:
+- axis_orientation:
+    default: horizontal
+    desc: Orientation of the axis.
+    ptype: str
+    values: horizontal/vertical
+- axis_position:
+    default: automatic
+    desc: Position of the axis.
+    ptype: str
+    values: bottom/top/left/right/automatic
+- axis_type:
+    default: regular
+    desc: Method to position ticks on the axis.
+    ptype: str
+    values: regular/position_list/logarithmic/date/geoline
+- axis_line:
+    default: 'on'
+    desc: Plots the axis line.
+    ptype: str
+    values: on/off
+- axis_line_colour:
+    default: automatic
+    desc: Colour of the axis line.
+    ptype: str
+    values: ''
+- axis_line_style:
+    default: solid
+    desc: Line style of the axis line.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- axis_line_thickness:
+    default: '2'
+    desc: Thickness of the axis line.
+    ptype: int
+    values: ''
+- axis_grid:
+    default: 'off'
+    desc: Plots the axis grid lines.
+    ptype: str
+    values: on/off
+- axis_grid_colour:
+    default: black
+    desc: Colour of the grid lines.
+    ptype: str
+    values: ''
+- axis_grid_line_style:
+    default: solid
+    desc: Line style of the grid lines.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- axis_grid_thickness:
+    default: '1'
+    desc: Thickness of the grid lines.
+    ptype: int
+    values: ''
+- axis_grid_reference_level:
+    default: 1.0e21
+    desc: Reference value for the grid.
+    ptype: number
+    values: ''
+- axis_grid_reference_colour:
+    default: automatic
+    desc: Colour of the reference grid line.
+    ptype: str
+    values: ''
+- axis_grid_reference_line_style:
+    default: solid
+    desc: Line style of the reference grid line.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- axis_grid_reference_thickness:
+    default: '2'
+    desc: Thickness of the reference grid line.
+    ptype: int
+    values: ''
+- axis_title:
+    default: 'on'
+    desc: Plots the axis title.
+    ptype: str
+    values: on/off
+- axis_title_text:
+    default: ''
+    desc: The axis title text.
+    ptype: str
+    values: ''
+- axis_title_orientation:
+    default: parallel
+    desc: Orientation of the axis title.
+    ptype: str
+    values: horizontal/vertical/parallel
+- axis_title_colour:
+    default: automatic
+    desc: Colour of the axis title.
+    ptype: str
+    values: ''
+- axis_title_height:
+    default: '0.4'
+    desc: Height of the axis title.
+    ptype: number
+    values: ''
+- axis_title_font:
+    default: sansserif
+    desc: Font name of the axis title.
+    ptype: str
+    values: arial/courier/helvetica/times/serif/sansserif/symbol
+- axis_title_font_style:
+    default: normal
+    desc: Font style of the axis title.
+    ptype: str
+    values: normal/bold/italic/bolditalic
+- axis_tick:
+    default: 'on'
+    desc: Plots ticks.
+    ptype: str
+    values: on/off
+- axis_tick_interval:
+    default: 1.0e21
+    desc: Interval between ticks in user units.
+    ptype: number
+    values: ''
+- axis_tick_position_list:
+    default: ''
+    desc: List specifying the positions of ticks (in user coordinates!).
+    ptype: float or list[float]
+    values: ''
+- axis_tick_position:
+    default: out
+    desc: Tick position, if it is "in" the ticks will positioned inside the frame.
+    ptype: str
+    values: out/in
+- axis_tick_colour:
+    default: automatic
+    desc: Colour of the ticks.
+    ptype: str
+    values: ''
+- axis_tick_size:
+    default: '0.175'
+    desc: Size of the ticks.
+    ptype: number
+    values: ''
+- axis_tick_thickness:
+    default: '2'
+    desc: Thickness of the ticks.
+    ptype: int
+    values: ''
+- axis_tick_label:
+    default: 'on'
+    desc: Plots tick labels.
+    ptype: str
+    values: on/off
+- axis_tick_label_type:
+    default: number
+    desc: Type of the tick labels required.
+    ptype: str
+    values: number/label_list/latitude/longitude
+- axis_tick_label_frequency:
+    default: '1'
+    desc: Tick label frequency.
+    ptype: number
+    values: ''
+- axis_tick_label_first:
+    default: 'on'
+    desc: Turn off the first (left or bottom) tick label.
+    ptype: str
+    values: on/off
+- axis_tick_label_last:
+    default: 'on'
+    desc: Turn off the last (right or top) tick label.
+    ptype: str
+    values: on/off
+- axis_tick_label_position:
+    default: on_tick
+    desc: Positions labels on or between ticks.
+    ptype: str
+    values: on_tick/inter_tick
+- axis_tick_label_orientation:
+    default: horizontal
+    desc: Orientation of the tick labels.
+    ptype: str
+    values: horizontal/vertical/parallel
+- axis_tick_label_font:
+    default: sansserif
+    desc: Font name of the tick labels.
+    ptype: str
+    values: arial/courier/helvetica/times/serif/sansserif/symbol
+- axis_tick_label_font_style:
+    default: normal
+    desc: Font style of the tick labels.
+    ptype: str
+    values: normal/bold/italic/bolditalic
+- axis_tick_label_colour:
+    default: automatic
+    desc: Colour of the tick labels.
+    ptype: str
+    values: ''
+- axis_tick_label_height:
+    default: '0.3'
+    desc: Height of the tick labels.
+    ptype: number
+    values: ''
+- axis_tick_label_list:
+    default: ''
+    desc: List of user defined tick labels.
+    ptype: str or list[str]
+    values: ''
+- axis_tick_label_format:
+    default: (automatic)
+    desc: Format of tick label values.
+    ptype: str
+    values: ''
+- axis_minor_tick:
+    default: 'off'
+    desc: Plots minor ticks.
+    ptype: str
+    values: on/off
+- axis_minor_tick_count:
+    default: '2'
+    desc: Number of minor tick marks between two ticks.
+    ptype: number
+    values: ''
+- axis_minor_tick_colour:
+    default: automatic
+    desc: Colour of the minor ticks.
+    ptype: str
+    values: ''
+- axis_minor_tick_thickness:
+    default: '1'
+    desc: Thickness of the minor ticks.
+    ptype: int
+    values: ''
+- axis_minor_grid:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: on/off
+- axis_minor_grid_colour:
+    default: black
+    desc: Colour of the minor grid lines.
+    ptype: str
+    values: ''
+- axis_minor_grid_line_style:
+    default: solid
+    desc: Line style of the minor grid lines.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- axis_minor_grid_thickness:
+    default: '1'
+    desc: Thickness of the minor grid lines.
+    ptype: int
+    values: ''
+- axis_tip_title:
+    default: 'off'
+    desc: Plots title ta axis tip.
+    ptype: str
+    values: on/off
+- axis_tip_title_text:
+    default: ''
+    desc: Text to show in the axis tip title.
+    ptype: str
+    values: ''
+- axis_tip_title_colour:
+    default: automatic
+    desc: Colour of the axis tip title.
+    ptype: str
+    values: ''
+- axis_tip_title_height:
+    default: '0.4'
+    desc: Font size of the axis tip title.
+    ptype: number
+    values: ''
+- axis_tip_title_quality:
+    default: medium
+    desc: Quality of the font of the axi tip title.
+    ptype: str
+    values: high/medium/low
+- axis_date_type:
+    default: days
+    desc: Select the type of date axis.
+    ptype: str
+    values: automatic/years/months/days/hours/monthly/climate
+- axis_years_label:
+    default: 'on'
+    desc: Plots year labels.
+    ptype: str
+    values: on/off
+- axis_years_label_colour:
+    default: automatic
+    desc: Colour of year labels.
+    ptype: str
+    values: ''
+- axis_years_label_quality:
+    default: medium
+    desc: Text quality of year labels.
+    ptype: str
+    values: high/medium/low
+- axis_years_label_height:
+    default: '0.2'
+    desc: Height of year labels.
+    ptype: number
+    values: ''
+- axis_months_label:
+    default: 'on'
+    desc: Plots month labels.
+    ptype: str
+    values: on/off
+- axis_months_label_composition:
+    default: three
+    desc: Number of characters per month to plot.
+    ptype: str
+    values: one/two/three
+- axis_months_label_colour:
+    default: automatic
+    desc: Colour of month labels.
+    ptype: str
+    values: ''
+- axis_months_label_quality:
+    default: medium
+    desc: Text quality of month labels.
+    ptype: str
+    values: high/medium/low
+- axis_months_label_height:
+    default: '0.2'
+    desc: Height of month labels.
+    ptype: number
+    values: ''
+- axis_days_label:
+    default: both
+    desc: Controls the day label plotting.
+    ptype: str
+    values: day/number/both/off
+- axis_days_label_composition:
+    default: three
+    desc: Number of characters per days to plot.
+    ptype: str
+    values: one/three/full
+- axis_days_label_position:
+    default: '12'
+    desc: Used for short time series. If it is "12" the day labels will appear at 12h.
+    ptype: number
+    values: ''
+- axis_days_label_colour:
+    default: black
+    desc: Colour of the day labels.
+    ptype: str
+    values: ''
+- axis_days_sunday_label_colour:
+    default: red
+    desc: Colour of the day labels on Sundays.
+    ptype: str
+    values: ''
+- axis_days_label_quality:
+    default: medium
+    desc: Text quality of the day labels.
+    ptype: str
+    values: high/medium/low
+- axis_days_label_height:
+    default: '0.2'
+    desc: Height of the day labels.
+    ptype: number
+    values: ''
+- axis_hours_label:
+    default: 'off'
+    desc: Plots the hour labels.
+    ptype: str
+    values: on/off
+- axis_hours_label_colour:
+    default: black
+    desc: Colour of the hour labels.
+    ptype: str
+    values: ''
+- axis_hours_label_quality:
+    default: medium
+    desc: Text quality of the hour labels.
+    ptype: str
+    values: high/medium/low
+- axis_hours_label_height:
+    default: '0.2'
+    desc: Height of the hour labels.
+    ptype: number
+    values: ''

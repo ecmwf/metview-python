@@ -1,0 +1,366 @@
+return: :class:`Request`
+summary: This is the visual definition for specifying how 
+    symbols (e.g. circles and crosses) are displayed. This can be used with 
+    non-gridded data, such as :func:`Geopoints` or CSV.
+oneliner: Defines the style for symbol plotting of non-gridded data.
+params:
+- legend:
+    default: 'off'
+    desc: Enables the legend.
+    ptype: str
+    values: on/off
+- symbol_type:
+    default: number
+    desc: Defines the type of symbol plotting required.
+    ptype: str
+    values: number/text/marker/wind
+- symbol_table_mode:
+    default: 'off'
+    desc: >-
+        Specifies the table mode. Note: the simple table mode ("on") is not recommended 
+        any more, try to use the "advanced" mode instead, this  should
+        give you easier control of the plot.
+    ptype: str
+    values: off/advanced/on
+- symbol_format:
+    default: '(automatic)'
+    desc: Specifies the format for value plotting.
+    ptype: str
+    values: ''
+- symbol_outline:
+    default: 'off'
+    desc: Adds an outline to each symbol.
+    ptype: str
+    values: on/off
+- symbol_outline_colour:
+    default: black
+    desc: Colour of the outline.
+    ptype: str
+    values: ''
+- symbol_outline_thickness:
+    default: '1'
+    desc: Thickness of the outline.
+    ptype: int
+    values: ''
+- symbol_outline_style:
+    default: solid
+    desc: Line style of the outline.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- symbol_connect_line:
+    default: 'off'
+    desc: Connects all the symbols with a line.
+    ptype: str
+    values: on/off
+- symbol_connect_automatic_line_colour:
+    default: 'on'
+    desc: If it is "on", the lines connecting the symbols will have the same colour as the symbols.
+    ptype: str
+    values: on/off
+- symbol_connect_line_colour:
+    default: black
+    desc: Colour of the connecting line.
+    ptype: str
+    values: ''
+- symbol_connect_line_thickness:
+    default: '1'
+    desc: Thickness of the connecting line.
+    ptype: int
+    values: ''
+- symbol_connect_line_style:
+    default: solid
+    desc: Line style of connecting line.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- legend_user_text:
+    default: ''
+    desc: If set, this text will be shown for the symbol group in the legend.
+    ptype: str
+    values: ''
+- symbol_colour:
+    default: blue
+    desc: Colour of symbols.
+    ptype: str
+    values: ''
+- symbol_height:
+    default: '0.2'
+    desc: Height (cm) of symbols.
+    ptype: number
+    values: ''
+- symbol_marker_mode:
+    default: index
+    desc: Method to select a marker. If it is set to "image" an external image 
+        specified in ``symbol_image_path`` will be used as a marker.
+    ptype: str
+    values: index/name/image
+- symbol_marker_index:
+    default: '1'
+    desc: Marker index. An integer between 1 and 28.
+    ptype: int
+    values: ''
+- symbol_marker_name:
+    default: dot
+    desc: Marker name.
+    ptype: str
+    values: ''
+- symbol_image_path:
+    default: ''
+    desc: Path to the symbol maker image.
+    ptype: str
+    values: ''
+- symbol_image_format:
+    default: automatic
+    desc: Format of the image file. If set to "automatic", the file extension will
+      be used to determine the file type.
+    ptype: str
+    values: automatic/png/svg
+- symbol_image_width:
+    default: '-1'
+    desc: Width of the image.
+    ptype: number
+    values: ''
+- symbol_image_height:
+    default: '-1'
+    desc: Height of the image.
+    ptype: number
+    values: ''
+- symbol_text_list:
+    default: ''
+    desc: List of text to plot.
+    ptype: str or list[str]
+    values: ''
+- symbol_text_position:
+    default: right
+    desc: Relative position of the text items.
+    ptype: str
+    values: right/left/bottom/top
+- symbol_text_font:
+    default: sansserif
+    desc: Font of the text items.
+    ptype: str
+    values: arial/courier/helvetica/times/serif/sansserif/symbol
+- symbol_text_font_size:
+    default: '0.25'
+    desc: Font size of text items.
+    ptype: number
+    values: ''
+- symbol_text_font_style:
+    default: normal
+    desc: Font style of text items.
+    ptype: str
+    values: normal/bold/italic/bolditalic
+- symbol_text_font_colour:
+    default: automatic
+    desc: Font colour of text items.
+    ptype: str
+    values: background/automatic
+- symbol_text_blanking:
+    default: 'off'
+    desc: Blanking of the text.
+    ptype: str
+    values: on/off
+- symbol_legend_height:
+    default: '-1'
+    desc: If set, the height will be used to plot the symbols in the legend.
+    ptype: number
+    values: ''
+- symbol_min_table:
+    default: ''
+    desc: Table of minimum values.  The table is used in conjunction with ``symbol_max_table``.
+    ptype: float or list[float]
+    values: ''
+- symbol_max_table:
+    default: ''
+    desc: Table of maximum values. The table is used in conjunction with ``symbol_min_table``.
+    ptype: float or list[float]
+    values: ''
+- symbol_marker_table:
+    default: ''
+    desc: Table of marker indices. The table is to be used in conjunction with ``symbol_min_table``
+      and ``symbol_max_table``.
+    ptype: float or list[float]
+    values: ''
+- symbol_name_table:
+    default: ''
+    desc: Table of symbol names. The table is to be used in conjunction with ``symbol_min_table``
+      and ``symbol_max_table``.
+    ptype: str or list[str]
+    values: ''
+- symbol_colour_table:
+    default: ''
+    desc: Table of symbol colours. The table is to be used in conjunction with ``symbol_min_table``
+      and ``symbol_max_table``.
+    ptype: str or list[str]
+    values: ''
+- symbol_height_table:
+    default: ''
+    desc: Table of symbol heights (cm). The table is to be used in conjunction with ``symbol_min_table``
+      and ``symbol_max_table``.
+    ptype: float or list[float]
+    values: ''
+- symbol_advanced_table_selection_type:
+    default: count
+    desc: Technique to use to calculate the symbol table values.
+    ptype: str
+    values: count/interval/list
+- symbol_advanced_table_min_value:
+    default: -1.e21
+    desc: Minimum value to plot.
+    ptype: number
+    values: ''
+- symbol_advanced_table_max_value:
+    default: 1.e21
+    desc: Maximum value to plot.
+    ptype: number
+    values: ''
+- symbol_advanced_table_level_count:
+    default: '10'
+    desc: Number of levels to be plotted when ``symbol_advanced_table_selection_type`` is "count". 
+        The plotting library will try to find a "nice" set of levels, which means that the number of
+        levels could be slightly different than specified here.
+    ptype: number
+    values: ''
+- symbol_advanced_table_level_tolerance:
+    default: '2'
+    desc: Do not use nice levels if the number of levels differs from ``symbol_advanced_table_level_count`` by more than
+     ``symbol_advanced_table_level_tolerance``.
+    ptype: number
+    values: ''
+- symbol_advanced_table_interval:
+    default: '8.0'
+    desc: Interval in data units between two table values when
+        ``symbol_advanced_table_selection_type`` is "interval".
+    ptype: number
+    values: ''
+- symbol_advanced_table_reference_level:
+    default: '0.0'
+    desc: The level from which the symbol table interval is calculated.
+    ptype: number
+    values: ''
+- symbol_advanced_table_level_list:
+    default: ''
+    desc: List of symbol table values.
+    ptype: float or list[float]
+    values: ''
+- symbol_advanced_table_colour_method:
+    default: calculate
+    desc: Method of generating the colours for the symbol table entries.
+    ptype: str
+    values: calculate/list
+- symbol_advanced_table_max_level_colour:
+    default: blue
+    desc: Highest symbol table entry colour.
+    ptype: str
+    values: ''
+- symbol_advanced_table_min_level_colour:
+    default: red
+    desc: Lowest symbol table entry colour.
+    ptype: str
+    values: ''
+- symbol_advanced_table_colour_direction:
+    default: anti-clockwise
+    desc: Direction of colour sampling along the colour wheel for plotting when 
+        ``symbol_advanced_table_colour_method`` is "calculate".
+    ptype: str
+    values: clockwise/anti-clockwise
+- symbol_advanced_table_colour_list:
+    default: ''
+    desc: List of colours to be used in symbol plotting.
+    ptype: str or list[str]
+    values: ''
+- symbol_advanced_table_colour_list_policy:
+    default: lastone
+    desc: Specifies what to do if there are fewer colours in 
+        ``symbol_advanced_table_colour_list`` than there are symbol table intervals.
+    ptype: str
+    values: lastone/cycle
+- symbol_advanced_table_marker_list:
+    default: ''
+    desc: List of markers to be used in symbol plotting.
+    ptype: float or list[float]
+    values: ''
+- symbol_advanced_table_marker_name_list:
+    default: ''
+    desc: List of symbol names to be used in symbol plotting.
+    ptype: str or list[str]
+    values: ''
+- symbol_advanced_table_marker_list_policy:
+    default: lastone
+    desc: Specifies what to do if there are fewer markers specified 
+        than the number of symbol table intervals.
+    ptype: str
+    values: lastone/cycle
+- symbol_advanced_table_height_method:
+    default: list
+    desc: Method of generating the height (cm) for symbol table intervals.
+    ptype: str
+    values: calculate/list
+- symbol_advanced_table_height_max_value:
+    default: '0.2'
+    desc: Maximum height to use.
+    ptype: number
+    values: ''
+- symbol_advanced_table_height_min_value:
+    default: '0.1'
+    desc: Minimum height to use.
+    ptype: number
+    values: ''
+- symbol_advanced_table_height_list:
+    default: ''
+    desc: List of heights to be used.
+    ptype: float or list[float]
+    values: ''
+- symbol_advanced_table_height_list_policy:
+    default: lastone
+    desc:  Specifies what to do if there are fewer entries in 
+        ``symbol_advanced_table_height_list`` than there are symbol table intervals.
+    ptype: str
+    values: lastone/cycle
+- symbol_advanced_table_text_list:
+    default: ''
+    desc: Text to display
+    ptype: str or list[str]
+    values: ''
+- symbol_advanced_table_text_list_policy:
+    default: cycle
+    desc: Specifies what to do if there are fewer entries in 
+        ``symbol_advanced_table_text_list`` than there are symbol table intervals.
+    ptype: str
+    values: lastone/cycle
+- symbol_advanced_table_text_font_name:
+    default: sansserif
+    desc: Font name.
+    ptype: str
+    values: arial/courier/helvetica/times/serif/sansserif/symbol
+- symbol_advanced_table_text_font_size:
+    default: '0.25'
+    desc: Font size.
+    ptype: number
+    values: ''
+- symbol_advanced_table_text_font_style:
+    default: normal
+    desc: Font style.
+    ptype: str
+    values: normal/bold/italic/bolditalic
+- symbol_advanced_table_text_font_colour:
+    default: automatic
+    desc: Font colour.
+    ptype: str
+    values: background/automatic
+- symbol_advanced_table_text_display_type:
+    default: none
+    desc: |-
+        How to display text:         
+        
+        * "none": do not display it
+        * "centre": display it instead of the symbol
+        * "right": attach it to the right of the symbol
+        * "top": attach it to the top of the symbol
+        * "bottom": attach it to the "bottom" of the symbol
+    ptype: str
+    values: centre/none/right/left/top/bottom
+- symbol_advanced_table_outlayer_method:
+    default: none
+    desc: Outlayer method.
+    ptype: str
+    values: none

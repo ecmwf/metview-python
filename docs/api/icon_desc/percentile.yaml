@@ -1,0 +1,50 @@
+return: :class:`Filedset`
+summary: Computes a set of percentiles of a given input :class:`Fieldset`. A percentile is a
+  number such that the given percentage of a distribution is equal to or below it. For
+  instance, the median is the 50th percentile - 50% of the values are equal to or below it. The
+  generated fields can simp
+oneliner: Computes a set of percentiles of a given input :class:`Fieldset`.
+params:
+- source:
+    default: 'off'
+    desc: Specifies the GRIB file path and name. Alternatively, parameter ``data``
+      can be used. If both ``source`` and ``data`` are specified ``data`` takes precedence.
+    ptype: str
+    values: ''
+- data:
+    default: ''
+    desc: Specifies the GRIB data required for the application. Takes precedence
+      over ``source``.
+    ptype: :class:`Fieldset`
+    values: ''
+- percentiles:
+    default: '10.0'
+    desc: Specifies a list of percentile values from 0 to 100.
+    ptype: float or list[float]
+    values: ''
+- interpolation:
+    default: nearest_neighbour
+    desc: |- 
+      Specifies the interpolation method used to compute the ``percentiles``. Given a list of numbers V, the algorithm used to compute a percentile is the following. First, the the rank (R) of a P-th percentile is computed. This is done using the following formula: R = P/100 x (N + 1) where P is the desired percentile and N is the number of input fields. Then, the percentile itself is computed:
+      
+      * If R is an integer, the P-th percentile will be the number with rank R.
+      * If R is not an integer, the P-th percentile is computed by interpolation as follows:
+
+      <tt>* If ``interpolation`` is "nearest_neighbour", the following equation is used: P-th = V[int(R + 0.5)]
+      <tt>* If ``interpolation`` is "linear", the following steps are used: 
+
+      <tt><tt>1. Define IR as the integer portion of R
+      <tt><tt>2. Define FR as the fractional portion of R
+      <tt><tt>3. Find the scores with Rank IR and with Rank IR + 1, e.g. V[IR] and V[IR+1]
+      <tt><tt>4. Interpolate by multiplying the difference between the scores by FR and add the result to the lower score, e.g. Pth = FR * (V[IR+1] - V[IR]) + V[IR]
+    ptype: str
+    values: nearest_neighbour/linear
+- compute_if_missing_present:
+    default: 'on'
+    desc: |-
+      Specifies how to handle the presence of missing values in the input data:
+    
+      * "on": for each grid point, the percentiles are computed using only the non-missing values
+      * "off": for each grid point, if there are any missing values, the result for that point will be a missing value
+    ptype: str
+    values: on/off

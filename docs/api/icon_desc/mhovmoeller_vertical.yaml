@@ -1,0 +1,28 @@
+return: :class:`NetCDF`
+summary: rst
+oneliner: Provides input for Hovemoeller diagrams derived from
+  an input geographical area and a set of levels.
+params:
+- data:
+    default: 
+    desc: Specifies the GRIB data (:class:`Fieldset`) from which to derive the Hovmeller diagram. 
+      ``data`` must specify a time-series of a meteorological variable in a latitude-longitude
+      or Gaussian grid. The GRIB data should contain a set of levels for each parameter. Also, 
+      if the input data is specified on ECMWF model levels, you must include the parameter LNSP should
+      you want the vertical axis of the plot in pressure levels rather than 
+      ECMWF model levels when visualising the output.
+    ptype: :class:`Fieldset`
+    values:
+- area:
+    default: '30/-30/-30/30'
+    desc: Specifies the coordinates of the area (as [north, west, south, east]) over
+      which the Hovmoeller diagram is calculated.
+    ptype: list[float]
+    values: ''
+- vertical_level_type:
+   default: as_in_data
+   desc: Specifies if a conversion from ECMWF model level to pressure level needs
+     to be performed. If it is set to "pressure" and the input data is specified
+     on ECMWF model levels, the LNSP field should be added to the input data.
+   ptype: str
+   values: 'as_in_data/pressure' 

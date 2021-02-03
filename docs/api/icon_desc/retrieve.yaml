@@ -1,0 +1,423 @@
+return: :class:`Fieldset`, :class:`Bufr` or :class:`Odb`
+summary: rst
+oneliner: Performs a MARS retrieval.
+params:
+- dataset:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- class:
+    default: od
+    desc: ''
+    ptype: str
+    values: od/rd/er/cs/e4/ei/dm/pv/el/to/co/en/me/sr/dt/laef/yt/yp/mc/pe/em/e2/era5/cera-20c/rm/ncep
+      20cr/j5/cera-sat/c3/l5/ce/cr/at/be/hr/dk/fi/fr/de/gr/hu/is/ie/it/nl/no/pt/si/es/se/ch/tr/uk/uzzz/ma/te
+- type:
+    default: an
+    desc: ''
+    ptype: str
+    values: ''
+- stream:
+    default: da
+    desc: ''
+    ptype: str
+    values: ''
+- expver:
+    default: '1'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- model:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- repres:
+    default: sh
+    desc: ''
+    ptype: str
+    values: bu/sh/ll/gg/sv/og/all
+- obsgroup:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: satellite/ers1/trmm/qscat/reo3/hirs/amsua/amsub/mhs/geos/resat/meris/gpsro/satob/scatt/ssmi
+      all-sky/iasi/airs/ssmis all-sky/tmi all-sky/amsre all-sky/conv/smos/windsat
+      all-sky/ssmi/amsua all-sky/amsre/tmi/ssmis/gbrad/mwhs/mwts/mwri all-sky/iras/msu/ssu/vtpr1/vtpr2/atms/resat
+      averaging kernels/cris/wave integrated parameters/wave spectra/raingg/surface
+      multisensor/amsr-2 all-sky/saphir all-sky/amsub all-sky/mhs all-sky/doppler
+      wind lidar/iris/aatsr/atms all-sky/gmi all-sky/godae sea surface temperatures/atovs
+      multisensor/atmospheric composition/non-surface multisensor/mwts2/ssmi 1dvar
+      tcwv cloudy-sky/mwhs2 all-sky/ssmt2/smap/tovs multisensor/cloud reflectivity/cloud
+      lidar/test/off
+- reportype:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- obstype:
+    default: s
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- levtype:
+    default: pl
+    desc: ''
+    ptype: str
+    values: pv/pt/sfc/pl/ml/dp/wv/layer/cat/o2d/o3d/sol/off/all
+- levelist:
+    default: '1000'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- param:
+    default: z
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- date:
+    default: '-1'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- verify:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- refdate:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- hdate:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- fcmonth:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- fcperiod:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- time:
+    default: '12'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- leadtime:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- opttime:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- range:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- step:
+    default: '00'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- anoffset:
+    default: ''
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- reference:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- number:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- quantile:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- domain:
+    default: g
+    desc: ''
+    ptype: str
+    values: g/g/m/n/s/b/e/a/b/c/d/w/f/t/u/x/all/v/h/i/j/k/l/o/p/q/r/y/z
+- frequency:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- direction:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- diagnostic:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- iteration:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- channel:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- ident:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- origin:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- system:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- method:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- product:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: inst/tims/tavg/tacc/all/off
+- section:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: h/v/z/m/all/off
+- latitude:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- longitude:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- source:
+    default: '""'
+    desc: ''
+    ptype: str
+    values: ''
+- target:
+    default: '""'
+    desc: ''
+    ptype: str
+    values: ''
+- logstats:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- transfer:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- fieldset:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- cfspath:
+    default: '""'
+    desc: ''
+    ptype: str
+    values: ''
+- format:
+    default: p
+    desc: ''
+    ptype: str
+    values: ''
+- disp:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- resol:
+    default: auto
+    desc: ''
+    ptype: str
+    values: ''
+- accuracy:
+    default: n
+    desc: ''
+    ptype: str
+    values: ''
+- style:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: dissemination/off
+- interpolation:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- area:
+    default: g
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- block:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- instrument:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- filter:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- rotation:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- frame:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- bitmap:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- grid:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- gaussian:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: reduced/regular/off
+- specification:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- packing:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- padding:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- duplicates:
+    default: keep
+    desc: ''
+    ptype: str
+    values: keep/remove
+- launch:
+    default: '""'
+    desc: ''
+    ptype: str
+    values: ''
+- job:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- use:
+    default: normal
+    desc: ''
+    ptype: str
+    values: ''
+- password:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- costonly:
+    default: n
+    desc: ''
+    ptype: str
+    values: ''
+- optimise:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- process:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- branch:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- database:
+    default: ''
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- expect:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- _version:
+    default: '2.0'
+    desc: ''
+    ptype: str
+    values: ''
+- lsm:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: on/off
+- truncation:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- intgrid:
+    default: 'off'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- ppengine:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: emos/mir/off

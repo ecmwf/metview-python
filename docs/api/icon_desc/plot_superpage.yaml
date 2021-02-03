@@ -1,0 +1,29 @@
+return: :class:`Request`
+summary: Defines the top level layout for plotting. It can contain multiple :func:`plot_pages`. 
+oneliner: Defines the top level layout for plotting.
+params:
+- layout_size:
+    default: a4
+    desc: ''
+    ptype: str
+    values: a4/a3/custom
+- layout_orientation:
+    default: landscape
+    desc: ''
+    ptype: str
+    values: landscape/portrait
+- custom_width:
+    default: '29.7'
+    desc: ''
+    ptype: number
+    values: ''
+- custom_height:
+    default: '21.0'
+    desc: ''
+    ptype: number
+    values: ''
+- pages:
+    default: ''
+    desc: List of plot pages.
+    ptype: list of :func:`plot_page`
+    values: ''

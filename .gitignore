@@ -79,7 +79,10 @@ docs/api/functions_mv.yaml
 docs/api/depot
 docs/api/depot_2
 docs/api/icon_base
+docs/api/_*.py
 docs/api/_utils
+docs/api/icon/*.rst
+docs/api/toc/*.rst
 docs/_test
 
 

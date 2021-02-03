@@ -1,0 +1,148 @@
+return: :class:`Request`
+summary: This is the visual definition for specifying how plot
+    titles and text boxes are displayed. 
+oneliner: Defines the plot title and text boxes.
+params:
+- text_line_count:
+    default: '1'
+    desc: The number of lines of text to be plotted.
+    ptype: number
+    values: ''
+- text_line_1:
+    default: <magics_title/>
+    desc: Text for line 1.
+    ptype: str
+    values: ''
+- text_line_2:
+    default: ''
+    desc: Text for line 2.
+    ptype: str
+    values: ''
+- text_line_3:
+    default: ''
+    desc: Text for line 3.
+    ptype: str
+    values: ''
+- text_line_4:
+    default: ''
+    desc: Text for line 4.
+    ptype: str
+    values: ''
+- text_line_5:
+    default: ''
+    desc: Text for line 5.
+    ptype: str
+    values: ''
+- text_line_6:
+    default: ''
+    desc: Text for line 6.
+    ptype: str
+    values: ''
+- text_line_7:
+    default: ''
+    desc: Text for line 7.
+    ptype: str
+    values: ''
+- text_line_8:
+    default: ''
+    desc: Text for line 8.
+    ptype: str
+    values: ''
+- text_line_9:
+    default: ''
+    desc: Text for line 9.
+    ptype: str
+    values: ''
+- text_line_10:
+    default: ''
+    desc: Text for line 10.
+    ptype: str
+    values: ''
+- text_colour:
+    default: navy
+    desc: Colour of the text.
+    ptype: str
+    values: ''
+- text_font:
+    default: sansserif
+    desc: Font name.
+    ptype: str
+    values: arial/courier/helvetica/times/serif/sansserif/symbol
+- text_font_style:
+    default: normal
+    desc: Font style.
+    ptype: str
+    values: normal/bold/italic/bolditalic
+- text_font_size:
+    default: '0.3'
+    desc: Font size, specified in cm.
+    ptype: str
+    values: ''
+- text_justification:
+    default: centre
+    desc: How text is to be positioned in each line.
+    ptype: str
+    values: left/centre/right
+- text_orientation:
+    default: horizontal
+    desc: Orientation of the text.
+    ptype: str
+    values: horizontal/top_bottom/bottom_top
+- text_lines:
+    default: ''
+    desc: Specifies all the text lines in one go as a list. When it is set
+     ``text_line_count`` and ``text_line_N`` are ignored.
+    ptype: str or list[str]
+    values: ''
+- text_mode:
+    default: title
+    desc: Specifies whether text will be a title or user positioned.
+    ptype: str
+    values: title/positional
+- text_box_x_position:
+    default: '-1'
+    desc: X coordinate of lower left corner of text box. (Relative
+        to ``page_x_position`` in the parent view).
+    ptype: number
+    values: ''
+- text_box_y_position:
+    default: '-1'
+    desc: Y coordinate of lower left corner of text box. (Relative
+        to ``page_Y_position`` in the parent view).
+    ptype: number
+    values: ''
+- text_box_x_length:
+    default: '-1'
+    desc: Length of text box in X direction.
+    ptype: number
+    values: ''
+- text_box_y_length:
+    default: '-1'
+    desc: Length of text box in Y direction.
+    ptype: number
+    values: ''
+- text_box_blanking:
+    default: 'off'
+    desc: Enables blanking in the text box.
+    ptype: str
+    values: on/off
+- text_border:
+    default: 'off'
+    desc: Plots border around text box.
+    ptype: str
+    values: on/off
+- text_border_line_style:
+    default: solid
+    desc: Line style of border around text box.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- text_border_colour:
+    default: blue
+    desc: Colour of border around text box.
+    ptype: str
+    values: ''
+- text_border_thickness:
+    default: '1'
+    desc: Thickness of text box border.
+    ptype: int
+    values: ''

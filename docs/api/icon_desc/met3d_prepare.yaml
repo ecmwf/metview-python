@@ -1,0 +1,133 @@
+return: :class:`Fieldset`
+summary: Retrieves and post-processes GRIB data from ECMWF's MARS archive so that it
+  could be used in the Met.3D visualisation system.
+oneliner: Retrieves and post-processes GRIB data from ECMWF's MAR archive to be used in Met.3D.
+params:
+- mode:
+    default: fc
+    desc: Specifies the main retrieval mode. In "fc" mode the selected steps of a
+      given forecast can be used for data generation. If ``mode`` is set to
+      "an" a period with a start and end date and constant time-step can be defined.
+    ptype: str
+    values: 'fc/an'
+- product:
+    default: hires
+    desc: Specifies the type of data to be retrieved from MARS. In "hires\"
+      mode the operational deterministic forecast is retrieved. While
+      in "ens" mode the operational ENS forecast (both "pf" and "cf"
+      members) is used. If ``mode`` is "an" this option is disabled and
+      automatically set to "hires".
+    ptype: str
+    values: hires/ens
+- number:
+    default: '1/TO/50'
+    desc: Specifies the perturbed ensemble members to be retrieved as a list. Enabled
+      when ``product`` is set to "ens".
+    ptype: str or list[str]
+    values: ''
+- levtype:
+    default: pl
+    desc: >-
+      Specifies the type of vertical levels. The possible values are: "pl" (pressure
+      levels) and "ml" (ECMWF model levels).
+    ptype: str
+    values: pl/ml
+- pl_levelist:
+    default: 1000/925/850/700/500/400/300
+    desc: Specifies the list of pressure levels in hPa when ``levtype`` is "pl"
+    ptype: str or list[str]
+    values: ''
+- ml_levelist:
+    default: '-10'
+    desc: Specifies the list of model levels when ``levtype`` is "ml". If the list
+      of model levels is a sole negative number (-N) it means that all the model levels will
+      be retrieved from the surface up to level N. Please note that model level numbering
+      starts at the topmost atmospheric level (click `here <https://www.ecmwf.int/en/forecasts/documentation-and-support/137-model-levels>`_
+      for details).
+    ptype: str or list[str]
+    values: ''
+- params_2d:
+    default: '2t/10u/10v'
+    desc: |-
+      Specifies the list of surface parameters. Please note that when the following precipitation rate parameters are specified their sum is computed and added as a "tprate" field to the results:
+
+      * Convective rain rate: crr
+      * Large scale rain rate: lsrr
+      * Convective snowfall rate water equivalent: csfr
+      * Large scale snowfall rate water equivalent: lssfr
+    ptype: str or list[str]
+    values: ''
+- params_3d:
+    default: 't/q/u/v'
+    desc: Specifies the list of upper level parameters. Please note that on model levels "z"
+     (geopotential) is not archived in MARS. However, when "z" is specified in ``param_3d``
+     it will be automatically computed (the fields needed for the computations will also
+     be automatically retrieved). To be able to plot "jet cores" in 3D "z" is needed.
+    ptype: str or list[str]
+    values: ''
+- date:
+    default: '-1'
+    desc: Specifies the run date of the forecast. Available when ``mode`` is "fc".
+      The default value is -1 (i.e. yesterday).
+    ptype: str
+    values: ''
+- time:
+    default: '0'
+    desc: Specifies the run time of the forecast in hours. Available when ``mode``
+      is "fc".
+    ptype: str
+    values: ''
+- step:
+    default: '0'
+    desc: Specifies the forecast steps in hours. Available when ``mode`` is "fc".
+    ptype: int or list[int]
+    values: ''
+- analysis_start_date:
+    default: '-1'
+    desc: Specifies the start date of the analysis period. Available when ``mode``
+      is "an". The default value is -1 (i.e. yesterday).
+    ptype: str
+    values: ''
+- analysis_start_time:
+    default: '0'
+    desc: Specifies the start time of the period. Available when ``mode`` is "an".
+    ptype: str
+    values: ''
+- analysis_end_date:
+    default: '-1'
+    desc: Specifies the end date of the period. Available when ``mode`` is "an".
+      The default value is -1 (i.e. yesterday).
+    ptype: str
+    values: ''
+- analysis_end_time:
+    default: '0'
+    desc: Specifies the end time of the period. Available when ``mode`` is "an".
+    ptype: str
+    values: ''
+- analysis_step:
+    default: '6'
+    desc: Specifies the timestep of the analysis period in hours. Available when ``mode`` is "an". 
+    ptype: int
+    values: '6/12'
+- area:
+    default: '-90/-180/90/180'
+    desc: Specifies the area of the output ``grid`` in [South, West, North, East] format.
+    ptype: list[float]
+    values: ''
+- grid:
+    default: '1/1'
+    desc: Specifies the resolution of the output grid in [dx, dy] format, where
+      dx is the grid increment in East-West direction, while dy is the grid
+      increment in North-South direction (both in units of degrees).
+    ptype: list[float]
+    values: ''
+- retrieve_group_by_time:
+    default: 'on'
+    desc: |-
+      Specifies how the MARS retrievals should be executed. When it is set to "on" the following happens:
+
+      * forecasts: all steps are retrieved together
+      * analyses: times within the same day are retrieved together
+      When it is set to "off" each step/time is retrieved separately (in a loop). 
+    ptype: str
+    values: 'on/off'

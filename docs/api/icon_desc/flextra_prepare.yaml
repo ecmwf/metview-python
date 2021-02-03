@@ -1,0 +1,148 @@
+return: :class:`Request`
+summary: rst
+oneliner: Generates the gridded input data and the AVAILABLE file needed to 
+  run the `FLEXTRA <https://confluence.ecmwf.int/display/METV/The+FLEXPART+interface>`_ trajectory model. 
+params:
+- flextra_prepare_mode:
+    default: forecast
+    desc: |-
+     Specifies the data preparation mode. The possible values are: 
+
+      * "forecast": the selected steps of a given forecast can be used for data generation. 
+      * "period": a period with a start and end date and constant time-step can be defined. In this case :func:`flextra_prepare` tries to retrieve analysis fields from MARS whenever it is possible (for dates in the past) and uses forecast fields otherwise (for dates in the future).
+    ptype: str
+    values: 'forecast/period'
+- flextra_input_source:
+    default: mars
+    desc: >-
+      Specifies the source of the input GRIB data. If it is set to
+      "mars" the input GRIB data is retrieved from the MARS archive. When
+      ``flextra_prepare_mode`` is forecast ``flextra_input_source`` can also be set to "file". 
+      In this case the GRIB file specified in ``flextra_input_file`` will be used as input data.
+    ptype: str
+    values: 'mars/file'
+- flextra_input_file:
+    default: ''
+    desc: Specifies the full path to the file containing the input GRIB data. 
+      Available when ``flextra_prepare_mode`` is "forecast" and
+       ``flextra_input_source`` is "file".
+    ptype: str
+    values: ''
+- flextra_fc_mars_expver:
+    default: '1'
+    desc: The MARS experiment identifier of the forecast fields. The default value
+      is "1" (operational forecast).
+    ptype: str
+    values: ''
+- flextra_an_mars_expver:
+    default: '1'
+    desc: The MARS experiment identifier of the analysis fields. The default value
+      is "1" (operational analysis).
+    ptype: str
+    values: ''
+- flextra_date:
+    default: '-1'
+    desc: Specifies the run date of the forecast. Available when ``flextra_prepare_mode``
+      is "forecast".
+    ptype: str
+    values: ''
+- flextra_time:
+    default: '0'
+    desc: Specifies the run time of the forecast . Available when ``flextra_prepare_mode``
+      is "forecast".
+    ptype: str
+    values: ''
+- flextra_step:
+    default: ''
+    desc: Specifies the forecast steps in hours. Available when
+      ``flextra_prepare_mode`` is "forecast".
+    ptype: str or list[str]
+    values: ''
+- flextra_period_start_date:
+    default: '-1'
+    desc: Specifies the start date of the period. Available when ``flextra_prepare_mode``
+      is "period".
+    ptype: str
+    values: ''
+- flextra_period_start_time:
+    default: '0'
+    desc: Specifies the start time of the period. Available when ``flextra_prepare_mode``
+      is "period".
+    ptype: str
+    values: ''
+- flextra_period_end_date:
+    default: '-1'
+    desc: Specifies the end date of the period. Available when ``flextra_prepare_mode``
+      is "period".
+    ptype: str
+    values: ''
+- flextra_period_end_time:
+    default: '0'
+    desc: Specifies the end time of the period. Available when ``flextra_prepare_mode``
+      is Period.
+    ptype: str
+    values: ''
+- flextra_period_step:
+    default: '3'
+    desc: Specifies the time step of the period in hours. Available when ``flextra_prepare_mode`` is "period".
+    ptype: str
+    values: '3/6'
+- flextra_grid_interpolation:
+    default: 'on'
+    desc: Specifies if the input GRIB fields need to be interpolated onto a target
+      grid specified by ``flextra_area`` and ``flextra_grid``. Available when ``flextra_input_source``
+      is "file".
+    ptype: str
+    values: on/off
+- flextra_area:
+    default: '-90/-179/90/180'
+    desc: |-
+      Specifies the area of the output ``flextra_grid`` in south/west/north/east format. 
+      
+      .. note:: To make global domains work with FLEXTRA the western border must be set to one grid cell east of 180. E.g. if the east-west grid resolution is 1 degree ``flextra_area`` should be set to [-90, -179, 90, 180] etc.
+    ptype: list[float]
+    values: ''
+- flextra_grid:
+    default: '1/1'
+    desc: Specifies the resolution of the output grid in [dx/dy] format, where
+      dx is the grid increment in east-west direction, while dy is the grid
+      increment in north-south direction (both in units of degrees).
+    ptype: list[float]
+    values: ''
+- flextra_top_level:
+    default: '1'
+    desc: Only data on and below this model level will be used to generate the FLEXTRA
+      input fields. This level can be specified either as a model level or as a pressure
+      value. In the latter case :func:`flextra_prepare` will use the data retrieved for the
+      first date to determine the topmost model level. The default value of this
+      parameter is 1, which means that all the model levels will be used if
+      ``flextra_top_level_units`` is set to "ml".
+    ptype: number
+    values: ''
+- flextra_top_level_units:
+    default: ml
+    desc: Specifies the units of the value of ``flextra_top_level``.
+    ptype: str
+    values: 'ml/hpa'
+- flextra_reuse_input:
+    default: 'on'
+    desc: >-
+      If this parameter is set to "on" :func:`flextra_prepare` checks the 
+      existence of the data files to be generated and if they are already in place
+      no new data is retrieved and processed. If it is "off" all the fields are 
+      always retrieved and processed and the existing data files are overwritten.
+      The same happens to the AVAILABLE file. The existence of a FLEXTRA input GRIB
+      file is checked by using the file name and a set of GRIB API keys from the
+      first message in the file. These keys are as follows: date, time, stepRange,
+      gridType, iDirectionIncrement, jDirectionIncrement, latitudeOfFirstGridPoint,
+      latitudeOfLastGridPoint, longitudeOfFirstGridPoint, longitudeOfLastGridPoint.
+    ptype: str
+    values: 'on/off'
+- flextra_output_path:
+    default: ''
+    desc: >-
+      Specifies the output directory (can be a relative or absolute path) where
+      the GRIB files and the AVAILABLE file will be generated. If this directory does
+      not exist Metview will create it. The output GRIB files have the following naming convention: ENyymmddhh
+    ptype: str
+    values: ''

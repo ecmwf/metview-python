@@ -1,0 +1,41 @@
+return: :class:`Request`
+summary: Adds an image to the plot at the specified position, which is given
+    in plot device coordinates in cm units.
+oneliner: Adds an image to the plot at the specified position, which is given
+    in plot device coordinates in cm units.
+params:
+- import_file_name:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- import_file:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- import_format:
+    default: png
+    desc: ''
+    ptype: str
+    values: png/jpeg/gif
+- import_x_position:
+    default: '0'
+    desc: ''
+    ptype: number
+    values: ''
+- import_y_position:
+    default: '0'
+    desc: ''
+    ptype: number
+    values: ''
+- import_width:
+    default: '-1'
+    desc: ''
+    ptype: number
+    values: ''
+- import_height:
+    default: '-1'
+    desc: ''
+    ptype: number
+    values: ''

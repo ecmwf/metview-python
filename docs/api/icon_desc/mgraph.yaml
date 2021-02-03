@@ -1,0 +1,238 @@
+return: :class:`Request`
+summary: This is the visual definition responsible for specifying how graph
+     data (e.g. lines, curves and bar charts) are displayed. 
+oneliner: Specifies the style for graph plotting.
+params:
+- legend:
+    default: 'off'
+    desc: Enables the legend.
+    ptype: str
+    values: on/off
+- legend_user_text:
+    default: ''
+    desc: User-defined text for the legend.
+    ptype: str
+    values: ''
+- graph_type:
+    default: curve
+    desc: Defines the type of curve required.
+    ptype: str
+    values: curve/bar/flag/arrow/area
+- graph_shade:
+    default: 'on'
+    desc: Turns the shading on when ``graph_type`` is "bar" or "area".
+    ptype: str
+    values: on/off
+- graph_line:
+    default: 'on'
+    desc: Plots the curve line.
+    ptype: str
+    values: on/off
+- graph_line_style:
+    default: solid
+    desc: Line style of the curve.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- graph_line_colour:
+    default: blue
+    desc: Colour of the curve.
+    ptype: str
+    values: ''
+- graph_line_thickness:
+    default: '1'
+    desc: Thickness of the curve.
+    ptype: int
+    values: ''
+- graph_symbol:
+    default: 'off'
+    desc: Specifies if symbols are to be drawn along the curves at waypoints.
+    ptype: str
+    values: on/off
+- graph_symbol_marker_index:
+    default: '3'
+    desc: The marker symbol index to be used.
+    ptype: number
+    values: ''
+- graph_symbol_height:
+    default: '0.2'
+    desc: Height of the marker symbol.
+    ptype: number
+    values: ''
+- graph_symbol_colour:
+    default: red
+    desc: Colour of the marker symbol.
+    ptype: str
+    values: ''
+- graph_symbol_outline:
+    default: 'off'
+    desc: Adds outline marker symbols.
+    ptype: str
+    values: on/off
+- graph_symbol_outline_colour:
+    default: black
+    desc: Colour of the marker symbol outline.
+    ptype: str
+    values: ''
+- graph_symbol_outline_thickness:
+    default: '1'
+    desc: Thickness of the marker symbol outline.
+    ptype: int
+    values: ''
+- graph_symbol_outline_style:
+    default: solid
+    desc: Line style of the marker symbol outline.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- graph_x_suppress_below:
+    default: '-1.0e+21'
+    desc: x coordinate below which a point is considered missing.
+    ptype: number
+    values: ''
+- graph_x_suppress_above:
+    default: '1.0e+21'
+    desc: x coordinate above which a point is considered missing.
+    ptype: number
+    values: ''
+- graph_y_suppress_below:
+    default: '-1.0e+21'
+    desc: y coordinate below which a point is considered missing.
+    ptype: number
+    values: ''
+- graph_y_suppress_above:
+    default: '1.0e+21'
+    desc: y coordinate above which a point is considered missing.
+    ptype: number
+    values: ''
+- graph_missing_data_mode:
+    default: ignore
+    desc: Specifies the method to handle missing data.
+    ptype: str
+    values: ignore/join/drop
+- graph_missing_data_style:
+    default: dash
+    desc: Line style of the missing data part of curve.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- graph_missing_data_colour:
+    default: red
+    desc: Colour of the missing data part of curve.
+    ptype: str
+    values: ''
+- graph_missing_data_thickness:
+    default: '1'
+    desc: Thickness of the missing data part of curve.
+    ptype: int
+    values: ''
+- graph_flag_colour:
+    default: black
+    desc: The colour of the flags.
+    ptype: str
+    values: ''
+- graph_flag_length:
+    default: '0.75'
+    desc: Physical length (in cm) of wind flag shaft.
+    ptype: number
+    values: ''
+- graph_arrow_colour:
+    default: black
+    desc: The colour of the arrows.
+    ptype: str
+    values: ''
+- graph_arrow_unit_velocity:
+    default: '25.0'
+    desc: Wind speed in m/s represented by a unit vector (1.0 cm) when 
+        ``graph_type`` is "arrow".
+    ptype: number
+    values: ''
+- graph_bar_orientation:
+    default: vertical
+    desc: Orientation of the bars ``graph_type`` is "bar".
+    ptype: str
+    values: vertical/horizontal
+- graph_bar_justification:
+    default: centre
+    desc: The bars will be centered on the value, or left, right justifies. Useful
+      for plotting any accumulated fields.
+    ptype: str
+    values: left/centre/right
+- graph_bar_width:
+    default: '-1'
+    desc: The width of a bar in a bar chart.
+    ptype: number
+    values: ''
+- graph_bar_style:
+    default: bar
+    desc: If it is set to "linebar", a line will be drawn at the position with 2 small perpendicular
+      lines at top and bottom.
+    ptype: str
+    values: bar/linebar
+- graph_bar_line_style:
+    default: solid
+    desc: Line style of the bar outline.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- graph_bar_line_thickness:
+    default: '1'
+    desc: Thickness of the bar outline.
+    ptype: int
+    values: ''
+- graph_bar_line_colour:
+    default: black
+    desc: The colour of the bar outline.
+    ptype: str
+    values: ''
+- graph_bar_colour:
+    default: blue
+    desc: The colour of the interiors of bars.
+    ptype: str
+    values: ''
+- graph_bar_clipping:
+    default: 'on'
+    desc: Whether or not to clip the bars if they go outside the view area.
+    ptype: str
+    values: on/off
+- graph_bar_annotation:
+    default: ''
+    desc: Text annotations on the top of the bars.
+    ptype: str or list[str]
+    values: ''
+- graph_bar_annotation_font_size:
+    default: '0.25'
+    desc: Font size for bar annotation.
+    ptype: number
+    values: ''
+- graph_bar_annotation_font_colour:
+    default: red
+    desc: Font colour for bar annotation.
+    ptype: str
+    values: ''
+- graph_bar_minimum_value:
+    default: 1.0e21
+    desc: If set, defines the bottom of the bar.
+    ptype: number
+    values: ''
+- graph_shade_style:
+    default: area_fill
+    desc: Style of shading.
+    ptype: str
+    values: area_fill/hatch/dot
+- graph_shade_colour:
+    default: blue
+    desc: The colour of the shaded part of bars.
+    ptype: str
+    values: ''
+- graph_shade_dot_density:
+    default: '20'
+    desc: Density per square cm of shading dots.
+    ptype: number
+    values: ''
+- graph_shade_dot_size:
+    default: '0.02'
+    desc: Size of shading dots.
+    ptype: number
+    values: ''
+- graph_shade_hatch_index:
+    default: '0'
+    desc: Hatch index number.
+    ptype: number
+    values: ''

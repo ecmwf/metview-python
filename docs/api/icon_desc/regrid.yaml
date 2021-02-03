@@ -1,0 +1,344 @@
+
+return: :class:`Fieldset`
+summary: Takes data from a GRIB source and performs a variety of operations on
+    it, including spectral to grid conversion, regridding using a large variety of
+    powerful and flexible interpolation techniques, nabla operators and special
+    consideration of wind fields. :func:`regrid` is designed with re-use in mind. The first
+    time a particular interpolation is performed, it might take some time to compute, but
+    it will create cache files that can be re-used, meaning that the same
+    interpolation will be much faster on subsequent runs.
+oneliner: Performs a variety of operations on GRIB data, including spectral to grid
+    conversion, regridding using a large variety of powerful and flexible interpolation
+    techniques, nabla operators and special consideration of wind fields.
+params:
+- source:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- data:
+    default: ''
+    desc: ''
+    ptype: :class:`Filedset`
+    values: ''
+- grid_definition_mode:
+    default: grid
+    desc: ''
+    ptype: str
+    values: grid/lambert_azimuthal_equal_area/lambert_conformal/template/filter
+- template_source:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- template_data:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- grid:
+    default: ''
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- first_point:
+    default: '0'
+    desc: ''
+    ptype: float or list[float]
+    values: ''
+- dx_in_metres:
+    default: ''
+    desc: ''
+    ptype: number
+    values: ''
+- dy_in_metres:
+    default: ''
+    desc: ''
+    ptype: number
+    values: ''
+- nx:
+    default: ''
+    desc: ''
+    ptype: number
+    values: ''
+- ny:
+    default: ''
+    desc: ''
+    ptype: number
+    values: ''
+- lad_in_degrees:
+    default: ''
+    desc: ''
+    ptype: number
+    values: ''
+- lov_in_degrees:
+    default: ''
+    desc: ''
+    ptype: number
+    values: ''
+- latin_1_in_degrees:
+    default: '0'
+    desc: ''
+    ptype: number
+    values: ''
+- latin_2_in_degrees:
+    default: '0'
+    desc: ''
+    ptype: number
+    values: ''
+- standard_parallel_in_degrees:
+    default: ''
+    desc: ''
+    ptype: number
+    values: ''
+- central_longitude_in_degrees:
+    default: ''
+    desc: ''
+    ptype: number
+    values: ''
+- wind_processing:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: off/uv_to_uv/vod_to_uv
+- nabla:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: scalar_gradient/scalar_laplacian/uv_divergence/uv_gradient/uv_vorticity/off
+- nabla_poles_missing_values:
+    default: 'off'
+    desc: Due to the supporting differential operators calculation
+        method, values aren't well defined at the poles (singularities). This option
+        allows forcing missing value at the poles. 
+    ptype: str
+    values: on/off
+- area:
+    default: '-90/-180/90/180'
+    desc: >-
+        Supply a grid definition as described 
+        here: `area - keyword in MARS/Dissemination request <https://confluence.ecmwf.int/pages/viewpage.action?pageId=151520973>`_
+        (swapping north/south). Specifies the geographical area 
+        as [south, west, north, east] that the output fields will cover, the default
+        being for the whole globe. 
+    ptype: list[float]
+    values: ''
+- rotation:
+    default: '-90/0'
+    desc: >-
+        Position of the South Pole (as [lat, lon]) of the intended rotated grid
+        as lat/lon in degree, as described
+        here: `rotation - keyword in MARS/Dissemination request <https://confluence.ecmwf.int/pages/viewpage.action?pageId=168664701>`_.
+        This is applicable to regular lat/lon or regular/reduced Gaussian grids.
+    ptype: list[float]
+    values: ''
+- truncation:
+    default: automatic
+    desc: ''
+    ptype: str
+    values: ''
+- intgrid:
+    default: automatic
+    desc: ''
+    ptype: str
+    values: ''
+- frame:
+    default: ''
+    desc: Specifies the width of a frame within a given sub-area, as described 
+        here `frame - keyword in MARS/Dissemination request <https://confluence.ecmwf.int/pages/viewpage.action?pageId=118841732>`_. 
+        The width of the frame is specified as an (integer) number of grid
+        points inwards from a given area.
+    ptype: number
+    values: ''
+- interpolation:
+    default: automatic
+    desc: ''
+    ptype: str
+    values: linear/bilinear/grid_box_average/grid_box_maximum/k_nearest_neighbours/nearest_lsm/nearest_neighbour/structured_bicubic/structured_bilinear/structured_biquasicubic/automatic
+- nearest_method:
+    default: automatic
+    desc: |-
+        Available for any of the 'nearest' interpolation methods. Supports Interpolation K-Nearest Neighbours or Nearest LSM. Possible values are:
+
+        * "distance": input points with radius (option ``distance``) of output point
+        * "nclosest": n-closest input points (option ``nclosest``) to output point (default 4)
+        * "distance_and_nclosest": input points respecting ``distance`` :math:`\cap` ``nclosest``.
+        * "distance_or_nclosest": input points respecting ``distance`` :math:`\cup` ``nclosest``    
+        * "nclosest_or_nearest": n-closest input points (option ``nclosest``), if all are at the same distance (within option ``distance_tolerance``) return all points within that distance (robust interpolation of pole values)
+        * "nearest_neighbour_with_lowest_index": nearest input point, if at the same distance to other points (option ``nclosest``) chosen by lowest index 
+        * "sample": sample of n-closest points (option ``nclosest``) out of input points with radius (option ``distance``) of output point, not sorted by distance
+        * "sorted_sample": as above, sorted by distance
+    ptype: str
+    values: distance/distance_and_nclosest/distance_or_nclosest/nclosest/nclosest_or_nearest/nearest_neighbour_with_lowest_index/sample/sorted_sample/automatic
+- distance_weighting:
+    default: inverse_distance_weighting_squared
+    desc: ''
+    ptype: str
+    values: inverse_distance_weighting_squared/inverse_distance_weighting/nearest_neighbour/gaussian/shepard/climate_filter/no
+- nclosest:
+    default: '4'
+    desc: ''
+    ptype: number
+    values: ''
+- distance:
+    default: '1'
+    desc: ''
+    ptype: number
+    values: ''
+- climate_filter_delta:
+    default: '1000'
+    desc: ''
+    ptype: number
+    values: ''
+- distance_weighting_gaussian_stddev:
+    default: '1'
+    desc: ''
+    ptype: number
+    values: ''
+- distance_weighting_shepard_power:
+    default: '2'
+    desc: ''
+    ptype: number
+    values: ''
+- distance_tolerance:
+    default: '1'
+    desc: ''
+    ptype: number
+    values: ''
+- distance_weighting_with_lsm:
+    default: 'off'
+    desc: |-
+        Only available if ``interpolation`` is "nearest_lsm". Possible values are:
+        
+        * "nearest_lsm": chose the closest input point (no disambiguation if there is more than one closest point at the same distance)
+        * "nearest_lsm_with_lowest_index": cross-platform compatible version (of the above Nearest LSM) with disambiguation of closest input points at the same distance of output points
+        * "off": use internal defaults (currently set to "nearest_lsm_with_lowest_index")
+    ptype: str
+    values: nearest_lsm/nearest_lsm_with_lowest_index/off
+- lsm_weight_adjustment:
+    default: '0.2'
+    desc: Only available if ``lsm`` is "on", this is the factor adjusting input
+        point weights if they are not of the same type (land/sea) as related
+        output point; On application, all contributing input point weights 
+        are re-normalised (linearly) to :math:`\sum_{i}w_{i}=1`. 
+    ptype: number
+    values: ''
+- lsm_interpolation_input:
+    default: nearest_neighbour
+    desc: If input is not on the same grid (geometry) as provided
+        input LSM (respectively), interpolate with this method to
+        a temporary LSM with required geometry.
+    ptype: str
+    values: linear/bilinear/grid_box_average/grid_box_maximum/k_nearest_neighbours/nearest_lsm/nearest_neighbour/structured_bicubic/structured_bilinear/structured_biquasicubic
+- lsm_selection_input:
+    default: named
+    desc:  Specifies whether input LSM file will come from
+        ``lsm_named_input`` ("named") or ``lsm_file_input`` ("file").
+    ptype: str
+    values: file/named
+- lsm_named_input:
+    default: 1km
+    desc: |-
+        Select one of the predefined names from the following:
+
+        * "1km": binary-based LSM sourced from MODIS Land Water Mask MOD44W (see `reference <https://lpdaac.usgs.gov/products/mod44wv006/>`_)
+        * "10min": binary-based LSM at high resolution (legacy, pre-climate files version 15)
+        * "O1280": GRIB-based IFS supporting climate files version 15, on this specific grid
+        * "O640": as above, for this grid
+        * "O320": as above, for this grid
+        * "N320": as above, for this grid
+        * "N256": as above, for this grid
+        * "N128": as above, for this grid
+    ptype: str
+    values: 1km/10min/o1280/o640/o320/n320/n256/n128
+- lsm_file_input:
+    default: ''
+    desc: Provide the path to an input LSM GRIB file.
+    ptype: str
+    values: ''
+- lsm_value_threshold_input:
+    default: '0.5'
+    desc: For GRIB-based LSM (so excluding '1km' and '10min'), the threshold for condition
+        (value ≥ threshold) to distinguish land (true) from sea (false).
+    ptype: number
+    values: ''
+- lsm_interpolation_output:
+    default: nearest_neighbour
+    desc: If output is not on the same grid (geometry) as provided
+        output LSM (respectively), interpolate with this method to
+        a temporary LSM with required geometry.
+    ptype: str
+    values: linear/bilinear/grid_box_average/grid_box_maximum/k_nearest_neighbours/nearest_lsm/nearest_neighbour/structured_bicubic/structured_bilinear/structured_biquasicubic
+- lsm_selection_output:
+    default: named
+    desc: Specifies whether output LSM file will come from
+        ``lsm_named_output`` ("named") or ``lsm_file_output`` ("file").
+    ptype: str
+    values: file/named
+- lsm_named_output:
+    default: 1km
+    desc: |-
+        Select one of the predefined names from the following:
+
+        * "1km": binary-based LSM sourced from MODIS Land Water Mask MOD44W (see `reference <https://lpdaac.usgs.gov/products/mod44wv006/>`_)
+        * "10min": binary-based LSM at high resolution (legacy, pre-climate files version 15)
+        * "O1280": GRIB-based IFS supporting climate files version 15, on this specific grid
+        * "O640": as above, for this grid
+        * "O320": as above, for this grid
+        * "N320": as above, for this grid
+        * "N256": as above, for this grid
+        * "N128": as above, for this grid
+    ptype: str
+    values: 1km/10min/o1280/o640/o320/n320/n256/n128
+- lsm_file_output:
+    default: ''
+    desc: Provide the path to an output LSM GRIB file.
+    ptype: str
+    values: ''
+- lsm_value_threshold_output:
+    default: '0.5'
+    desc: For GRIB-based LSM (so excluding '1km' and '10min'), the threshold for condition
+        (value ≥ threshold) to distinguish land (true) from sea (false).
+    ptype: number
+    values: ''
+- non_linear:
+    default: missing_if_heaviest_missing
+    desc: ''
+    ptype: str
+    values: missing_if_all_missing/missing_if_any_missing/missing_if_heaviest_missing/simulated_missing_value/heaviest/no
+- simulated_missing_value:
+    default: '9999'
+    desc: ''
+    ptype: number
+    values: ''
+- simulated_missing_value_epsilon:
+    default: '0'
+    desc: ''
+    ptype: number
+    values: ''
+- accuracy:
+    default: ''
+    desc: >-
+        Specifies the output GRIB bitsPerValue, as described 
+        here: `accuracy - keyword in MARS/Dissemination request <https://confluence.ecmwf.int/pages/viewpage.action?pageId=168664760>`_. 
+        If left empty, this will take the value from the input fields. This
+        option can also be used to simply change the number of bits per value in
+        a :class:`Fieldset` if no other processing options are given. Note
+        that if ``packing`` is set to "ieee", then the only valid values
+        for this parameter are 32 and 64.
+    ptype: number
+    values: ''
+- packing:
+    default: as_input
+    desc: >-
+        Specifies the output GRIB packingType, as described 
+        here: `accuracy - keyword in MARS/Dissemination request <https://confluence.ecmwf.int/pages/viewpage.action?pageId=168664760>`_. Possible
+        values are depending on build-time configuration.
+    ptype: str
+    values: av/co/grid_jpeg/so/simple/ieee/as_input
+- edition:
+    default: as_input
+    desc: Specifies the output GRIB edition (or format). Note that
+        format conversion is not supported.
+    ptype: str
+    values: 1/2/as_input

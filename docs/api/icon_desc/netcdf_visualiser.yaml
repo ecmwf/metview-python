@@ -1,0 +1,101 @@
+return: :class:`Request`
+summary: Defines the visualisation of NetCDF data allowing to 
+    specify which variables in the file should be used, and how
+    to interpret themThe generated object can directly be used in :func:`plot`.
+oneliner: Defines the visualisation of NetCDF data.
+params:
+- netcdf_plot_type:
+    default: geo_points
+    desc: ''
+    ptype: str
+    values: geo_points/geo_vectors/geo_matrix/geo_matrix_vectors/xy_points/xy_vectors/xy_matrix/xy_matrix_vectors
+- netcdf_filename:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- netcdf_data:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- netcdf_latitude_variable:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- netcdf_longitude_variable:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- netcdf_x_variable:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- netcdf_y_variable:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- netcdf_x_position_variable:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- netcdf_y_position_variable:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- netcdf_x2_variable:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- netcdf_y2_variable:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- netcdf_value_variable:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- netcdf_x_component_variable:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- netcdf_y_component_variable:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- netcdf_dimension_setting_method:
+    default: value
+    desc: ''
+    ptype: str
+    values: index/value
+- netcdf_dimension_setting:
+    default: ''
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- netcdf_matrix_primary_index:
+    default: longitude
+    desc: ''
+    ptype: str
+    values: latitude/longitude
+- netcdf_position_type:
+    default: array
+    desc: ''
+    ptype: str
+    values: array/matrix
+- netcdf_missing_attribute:
+    default: _fillvalue
+    desc: ''
+    ptype: str
+    values: ''

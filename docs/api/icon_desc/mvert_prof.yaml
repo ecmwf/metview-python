@@ -1,0 +1,58 @@
+return: :class:`NetCDF`
+summary: rst
+oneliner: Derives (and returns) vertical profile data.
+params:
+- data:
+    default: ''
+    desc: Specifies the GRIB data from which to derive the vertical profile data. The input GRIB
+      must specify a multi-level (pressure or model levels) upper air meteorological variable, 
+      in a latitude-longitude or Gaussian grid. If the input data is specified in model levels,
+      you must include a Logarithm Of Surface Pressure (LNSP) field should you want the vertical axis
+      of the plot in pressure levels rather than model levels when visualising the output.
+      Note that the input fields should be on the same grid. If more than one time and/or
+      forecast step is contained in ``data``, it returns a set of vertical profiles in the resulting
+      data, but note that currently only the first of these will be plotted with :func:`plot`.
+    ptype: :class:`Fieldset`
+    values: ''
+- input_mode:
+    default: point
+    desc: Specifies whether to derive the vertical profile for a "point" or an
+      "area". Option "nearest_gridpoint" will take the nearest gridpoint to
+      the ``point`` specified.
+    ptype: str
+    values: point/nearest_gridpoint/area
+- point:
+    default: '0/0'
+    desc: Specifies the coordinates (as [lat, lon]) of the point for which the vertical profile
+      is calculated. Enabled when ``input_mode`` is "point" or "nearest_gridpoint".
+    ptype: list[float]
+    values: ''
+- area:
+    default: '30/-30/-30/30'
+    desc: Specifies the coordinates of the area (as [north, west, south, east]) over
+      which the averages composing the vertical profile are calculated. Enabled 
+      when ``input_mode`` is "area".
+    ptype: list[float]
+    values: ''
+- output_mode:
+    default: normal
+    desc: Specifies the output extraction mode. The "rttov" option is only valid internally
+      at ECMWF and it is used in the contex of the RTTOV Model application.
+    ptype: str
+    values: normal/rttov
+- water_type:
+    default: 'fresh_water'
+    desc: Valid values are "fresh_water" or "ocean_water". Available when ``output_mode``
+      is "rttov.
+    ptype: str
+    values: 'fresh_water/ocean_water'
+- cloud_top_pressure:
+    default: '0.0'
+    desc: Pressure of the cloud top in hPa. Available when ``output_mode`` is "rttov".
+    ptype: number
+    values: ''
+- cloud_fraction:
+    default: '0.0'
+    desc: Available when ``output_mode`` is "rttov".
+    ptype: number
+    values:

@@ -8,39 +8,39 @@ Functions
 
 **Function categories**
 
-* :doc:`comp_toc`
-* :doc:`data_toc`
-* :doc:`plot_toc`
-* :doc:`apps_toc`
+* :doc:`toc/comp`
+* :doc:`toc/data`
+* :doc:`toc/plot`
+* :doc:`toc/apps`
 
 .. toctree::
    :maxdepth: 1
    :hidden:
    :caption: Functions grouped by purpose
 
-   comp_toc
-   data_toc
-   plot_toc
-   apps_toc
+   toc/comp
+   toc/data
+   toc/plot
+   toc/apps
 
 **Functions associated with data types**
 
-* :doc:`grib_toc`
-* :doc:`bufr_toc`
-* :doc:`geopoints_toc`
-* :doc:`netcdf_toc`
-* :doc:`odb_toc`
+* :doc:`toc/grib`
+* :doc:`toc/bufr`
+* :doc:`toc/geopoints`
+* :doc:`toc/netcdf`
+* :doc:`toc/odb`
 
 .. toctree::
    :maxdepth: 1
    :hidden:
    :caption: Function grouped by data types
 
-   grib_toc
-   bufr_toc
-   geopoints_toc
-   netcdf_toc
-   odb_toc
+   toc/grib
+   toc/bufr
+   toc/geopoints
+   toc/netcdf
+   toc/odb
    
 .. .. toctree::
 ..    :maxdepth: 1
@@ -51,7 +51,7 @@ Functions
 
 **Functions associated with icons**
 
-* :doc:`icon`
+* :doc:`toc/icon`
 
 .. toctree::
    :maxdepth: 0
@@ -60,4 +60,4 @@ Functions
    :titlesonly:
    :glob:
 
-   icon
+   toc/icon

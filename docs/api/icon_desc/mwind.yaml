@@ -1,0 +1,277 @@
+return: :class:`Request`
+summary: This is the visual definition for specifying how vector
+    data is displayed. It controls features such as wind arrows and wind flags. Note
+    that Metview will automatically interpret certain pairs of GRIB parameters
+    as vector components, for example u/v and 10u/10v. Use :func:`grib_vectors` to plot an
+    arbitrary pair of scalar fields as a vector field.  
+oneliner: Defines the style for wind plotting.
+params:
+- wind_field_type:
+    default: arrows
+    desc: Method of wind plotting.
+    ptype: str
+    values: flags/arrows/streamlines
+- wind_thinning_factor:
+    default: '2.0'
+    desc: Controls the actual number of wind arrows/flags plotted. If it is 1
+        all the wind arrows/flags will be plotted. Otherwise a spatial thinning will be applied.
+        Values have to greater than or equal to 1.
+    ptype: number
+    values: ''
+- legend:
+    default: 'off'
+    desc: Enables the legend.
+    ptype: str
+    values: on/off
+- wind_legend_text:
+    default: vector
+    desc: Defines the legend entry text. 
+    ptype: str
+    values: ''
+- wind_advanced_method:
+    default: 'off'
+    desc: Enables the advanced wind plotting method ("on") when wind
+     flag/arrow colours can be defined for a set of bands. If it is "off" 
+     all the wind flags/arrows will have the same colour.
+    ptype: str
+    values: on/off
+- wind_advanced_colour_parameter:
+    default: speed
+    desc: Specifies the parameter defining the magnitude of the flags/arrows when plotting 
+        GRIB fields. Only use "parameter" when you want to colour the wind field by another (scalar) field.
+        See :func:`grib_vectors` for details.
+    ptype: str
+    values: speed/parameter
+- wind_advanced_colour_selection_type:
+    default: count
+    desc: Technique to calculate the wind bands in advanced mode.
+    ptype: str
+    values: count/interval/list
+- wind_advanced_colour_max_value:
+    default: 1.e21
+    desc: Highest value to be plotted in advanced mode.
+    ptype: number
+    values: ''
+- wind_advanced_colour_min_value:
+    default: -1.e21
+    desc: Lowest value to be plotted in advanced mode.
+    ptype: number
+    values: ''
+- wind_advanced_colour_level_count:
+    default: '10'
+    desc:  Number of levels to be plotted when ``wind_advanced_colour_selection_type`` is "count". 
+        The plotting library will try to find a "nice" set of levels, which means that the number of
+        levels could be slightly different than specified here.
+    ptype: number
+    values: ''
+- wind_advanced_colour_level_tolerance:
+    default: '2'
+    desc: Do not use nice levels if the number of levels differs from
+         ``wind_advanced_colour_level_count`` by more than ``wind_advanced_colour_level_tolerance``.
+    ptype: number
+    values: ''
+- wind_advanced_colour_reference_level:
+    default: '0.0'
+    desc: The value from which the wind bands are calculated.
+    ptype: number
+    values: ''
+- wind_advanced_colour_level_interval:
+    default: '8.0'
+    desc: Interval between two wind values when
+        ``wind_advanced_colour_selection_type`` is "interval".
+    ptype: number
+    values: ''
+- wind_advanced_colour_level_list:
+    default: ''
+    desc: List of wind band values.
+    ptype: float or list[float]
+    values: ''
+- wind_advanced_colour_table_colour_method:
+    default: calculate
+    desc: Method of generating the colours for the wind bands.
+    ptype: str
+    values: calculate/list
+- wind_advanced_colour_max_level_colour:
+    default: blue
+    desc:  Highest wind band entry colour.
+    ptype: str
+    values: ''
+- wind_advanced_colour_min_level_colour:
+    default: red
+    desc: Lowest wind band entry colour.
+    ptype: str
+    values: ''
+- wind_advanced_colour_direction:
+    default: anti_clockwise
+    desc: Direction of colour sampling along the colour wheel for plotting when 
+        ``wind_advanced_colour_table_colour_method`` is "calculate".
+    ptype: str
+    values: clockwise/anti_clockwise
+- wind_advanced_colour_list:
+    default: ''
+    desc: List of colours for the wind bands.
+    ptype: str or list[str]
+    values: ''
+- wind_advanced_colour_list_policy:
+    default: lastone
+    desc: Specifies what to do if there are fewer colours in 
+        ``wind_advanced_colour_list`` than there are wind bands.
+    ptype: str
+    values: lastone/cycle
+- wind_flag_calm_indicator:
+    default: 'on'
+    desc: Plots calm indicator circle, if wind speed is less than or equal to ``wind_flag_calm_below``.
+    ptype: str
+    values: on/off
+- wind_flag_calm_indicator_size:
+    default: '0.3'
+    desc: The radius (cm) of the calm indicator circle.
+    ptype: number
+    values: ''
+- wind_flag_calm_below:
+    default: '0.5'
+    desc: Winds less than or equal to this value will be drawn as calm.
+    ptype: number
+    values: ''
+- wind_flag_colour:
+    default: blue
+    desc: Colour of the wind flag shaft, barbs and pennants.
+    ptype: str
+    values: ''
+- wind_flag_length:
+    default: '1.0'
+    desc: Physical length (cm) of wind flag shaft.
+    ptype: number
+    values: ''
+- wind_flag_max_speed:
+    default: '1.0e+21'
+    desc: Highest value of the wind flags to be plotted.
+    ptype: number
+    values: ''
+- wind_flag_min_speed:
+    default: '-1.0e+21'
+    desc: Lowest value of the wind flags to be plotted.
+    ptype: number
+    values: ''
+- wind_flag_style:
+    default: solid
+    desc: Controls the line style of the wind flag shaft.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- wind_flag_origin_marker:
+    default: circle
+    desc: Symbol for marking the exact location of the current grid point for wind flags.
+    ptype: str
+    values: dot/circle/off
+- wind_flag_origin_marker_size:
+    default: '0.3'
+    desc: ''
+    ptype: number
+    values: ''
+- wind_flag_thickness:
+    default: '1'
+    desc: Thickness of the wind flag shaft.
+    ptype: int
+    values: ''
+- wind_arrow_calm_indicator:
+    default: 'off'
+    desc: Plots the calm indicator circle if the wind speed is less than
+        or equal to ``wind_arrow_calm_below``.
+    ptype: str
+    values: on/off
+- wind_arrow_calm_indicator_size:
+    default: '0.3'
+    desc: The radius (cm) of the calm indicator circle.
+    ptype: number
+    values: ''
+- wind_arrow_calm_below:
+    default: '0.5'
+    desc: Winds less than or equal to this value will be drawn as calm.
+    ptype: number
+    values: ''
+- wind_arrow_colour:
+    default: blue
+    desc: Colour of the wind arrow.
+    ptype: str
+    values: ''
+- wind_arrow_head_shape:
+    default: '0'
+    desc: Indicates the shape of the arrow head.
+    ptype: int
+    values: ''
+- wind_arrow_head_ratio:
+    default: '0.3'
+    desc: Indicates the shape of the arrow head.
+    ptype: number
+    values: ''
+- wind_arrow_max_speed:
+    default: '1.0e+21'
+    desc: Highest value of the wind arrows to be plotted.
+    ptype: number
+    values: ''
+- wind_arrow_min_speed:
+    default: '-1.0e+21'
+    desc: Lowest value of the wind arrows to be plotted.
+    ptype: number
+    values: ''
+- wind_arrow_fixed_velocity:
+    default: '0'
+    desc: Plots fixed velocity arrows (m/s). See ``wind_arrow_unit_velocity``.
+    ptype: number
+    values: ''
+- wind_arrow_thickness:
+    default: '1'
+    desc: Thickness of the wind arrow shaft.
+    ptype: int
+    values: ''
+- wind_arrow_style:
+    default: solid
+    desc: Controls the line style of the arrow shaft.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- wind_arrow_unit_velocity:
+    default: '25.0'
+    desc: Wind speed in m/s that will be plotted as a 1 cm long wind arrow.
+    ptype: number
+    values: ''
+- wind_arrow_legend_text:
+    default: m
+    desc: Text to be used as units in the legend text.
+    ptype: str
+    values: ''
+- wind_streamline_min_density:
+    default: '1'
+    desc: The minimum number of streamlines to be plotted in one square cm of the
+      user's subpage.
+    ptype: number
+    values: ''
+- wind_streamline_min_speed:
+    default: '1'
+    desc: Wind speed below which streamline plotting will be stopped.
+    ptype: number
+    values: ''
+- wind_streamline_thickness:
+    default: '2'
+    desc: Thickness of streamlines.
+    ptype: int
+    values: ''
+- wind_streamline_colour:
+    default: blue
+    desc: Colour of streamlines.
+    ptype: str
+    values: ''
+- wind_streamline_style:
+    default: solid
+    desc: Line style of streamlines.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- wind_streamline_head_shape:
+    default: '0'
+    desc: Indicates the shape of the arrow heads on the streamlines.
+    ptype: int
+    values: ''
+- wind_streamline_head_ratio:
+    default: '0.3'
+    desc: Indicates the shape of the arrow heads on the streamlines.
+    ptype: number
+    values: ''

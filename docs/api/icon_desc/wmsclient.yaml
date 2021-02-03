@@ -1,0 +1,49 @@
+return: :class:`Request`
+summary: rst
+oneliner: Implements a WMS (Web Map Service) client.
+params:
+- mode:
+    default: interactive
+    desc: ''
+    ptype: str
+    values: expert/interactive
+- server:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- version:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- request:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- extra_getcap_par:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- extra_getmap_par:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- http_user:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- http_password:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- time_dimensions:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''

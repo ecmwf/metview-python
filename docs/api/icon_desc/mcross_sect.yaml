@@ -1,0 +1,29 @@
+return: :class:`NetCDF`
+summary: rst
+oneliner: Derives (and returns) vertical cross section data.
+params:
+- data:
+    default: ''
+    desc: |-
+      Specifies the GRIB data (:class:`Fieldset`) from which to derive the cross-section profile. The input GRIB icon must specify a multi-level meteorological variable, in a latitude-longitude or Gaussian grid. The following vertical coordinates are supported:
+
+      * pressure levels
+      * ECMWF model levels (hybrid levels used by the IFS). In this case you must include parameter LNSP (logarithm of surface pressure) should you want the orography and the vertical axis of the plot in pressure levels rather than model levels when visualising the output.
+      * general coordinates defined by ``vertical_coordinates``
+
+       If wind arrows are to be plotted, then the input data should include three-dimensional wind data, i.e. the u/v/w wind components should all be present. If more than one time and/or forecast step is contained in ``data``, :func:`mcross_sect` returns a set of cross sections.
+    ptype: :class:`Fieldset`
+    values: ''
+- _include: !include include/cross_section.yaml 
+- bottom_level:
+    default: '1100.0'
+    desc: Specifies the lower limit of the cross section, as a pressure value (hPa)
+      or model level number (hybrid levels). Available when "level_selection_type" is "count".
+    ptype: number
+    values: ''
+- top_level:
+    default: '0.01'
+    desc: Specifies the upper limit of the cross section, as a pressure level (hPa)
+      or model level number (hybrid levels). Available when "level_selection_type" is "count".
+    ptype: number
+    values: ''

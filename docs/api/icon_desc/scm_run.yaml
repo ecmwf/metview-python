@@ -1,0 +1,54 @@
+return: :class:`Request`
+summary: rst
+oneliner: Runs the IFS Single Column Model.
+params:
+- scm_exe_path:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- scm_input_data:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- scm_input_data_path:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- scm_namelist:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- scm_namelist_path:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- scm_vtable:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- scm_vtable_path:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- scm_rclim_path:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- scm_copy_output_data:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: on/off
+- scm_output_data_path:
+    default: scm_out.nc
+    desc: ''
+    ptype: str
+    values: ''

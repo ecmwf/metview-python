@@ -1,0 +1,29 @@
+return: :class:`NetCDF`
+summary: rst
+oneliner: Provides input for expanding Hovmoeller diagrams that have been
+   derived previously.
+params:
+- netcdf_path: 
+    default:
+    desc: Specifies the NetCDF file path and name. Alternatively, ``netcdf_data`` can be used.
+    ptype: str
+    values:
+- netcdf_data:
+    default:
+    desc: Specifies the data (:class:`NetCDF`) from which to expand
+      the Hovmoeller diagram. Takes precedence over ``netcdf_path``.
+    ptype: class:`NetCDF`
+    values:
+- data_path:
+   default:
+   desc: Specifies the input GRIB file path and name. 
+    Alternatively, ``data`` can be used.
+   ptype: str
+   values:
+- data:
+    default: 
+    desc: Specifies the GRIB data (:class:`Fieldset`) from which to derive the Hovmeller diagram. 
+      ``data`` must specify a time-series of a meteorological variable in a latitude-longitude
+      or Gaussian grid.
+    ptype: :class:`Fieldset`
+    values:

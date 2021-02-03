@@ -1,0 +1,64 @@
+return: :class:`Request`
+summary: rst 
+oneliner: Generates meteograms. 
+params:
+- type:
+    default: 15_days_epsgram
+    desc: |-
+      Specifies the type of meteogram to be generated. The "epsgrams" are derived from the ENS, whereas the "metgrams" are derived from the deterministic forecast model. The available types are:
+      
+      * "10_days_epsgram"
+      * "15_days_epsgram"
+      * "15_days_epsgram_with_climate"
+      * "10_days_wave_epsgram"
+      * "10_days_plumes"
+    ptype: str
+    values: 10_days_epsgram/15_days_epsgram/15_days_epsgram_with_climate/10_days_wave_epsgram/10_days_plumes
+- station:
+    default: ''
+    desc: Specifies the location as a :func:`stations` object at which to derive the meteogram.
+    ptype: :func:`stations`
+    values: ''
+- data_selection_type:
+    default: latest
+    desc: |-
+      Determines how the meteogram data source is selected: 
+
+      * "latest": will retrieve the latest meteogram available
+      * "date": will allow the further selection of a specific ``date`` and ``time``
+      * "local": allows the specification of a path to a local SPOT ``database`` (details of the database format are not provided here).
+    ptype: str
+    values: latest/date/local
+- date:
+    default: '-1'
+    desc: Specifies the day on which the forecast is based (first day on the plot).
+      The default value is -1 (yesterday), but you can use other formats, such
+      as YYMMDD or YYYY-MM-DD. Available when ``data_selection_type`` is set to
+      "date".
+    ptype: number
+    values: ''
+- forecast_run_time:
+    default: '12'
+    desc: Specify the forecast time (hours of the day) from either 00h or 12h. Only
+      available if ``data_selection_type`` is set to "date".
+    ptype: str
+    values: 00/12
+- experiment:
+    default: '0001'
+    desc: Specifies the MARS experiment number from which the meteograms are to
+      be plotted. You will only need to modify this parameter if you want to display
+      data from a source other than the ECMWF model. Note that this parameter is a
+      string, so for example '0001' is different from '1'.
+    ptype: str
+    values: ''
+- format:
+    default: pdf
+    desc: Specifies the output format.
+    ptype: str
+    values: pdf/png/ps
+- database:
+    default: latest
+    desc: If not "latest", then this parameter is taken to be the entire path to 
+      the database directory. Available when ``data_selection_type`` is "local".
+    ptype: str
+    values: ''

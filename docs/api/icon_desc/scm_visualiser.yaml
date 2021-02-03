@@ -1,0 +1,124 @@
+return: :class:`Request`
+summary: rst
+oneliner: Visualises the results of the IFS Single Column Model.
+params:
+- scm_plot_type:
+    default: time_value_curve
+    desc: ''
+    ptype: str
+    values: time_value_curve/time_height_matrix/profile
+- scm_data_filename:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- scm_data:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- scm_data_title:
+    default: data
+    desc: ''
+    ptype: str
+    values: ''
+- scm_data_type:
+    default: output
+    desc: ''
+    ptype: str
+    values: input/output
+- scm_compare_data:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: on/off
+- scm_comparison_data_filename:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- scm_comparison_data:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- scm_comparison_data_title:
+    default: comparison data
+    desc: ''
+    ptype: str
+    values: ''
+- scm_comparison_mode:
+    default: overlay
+    desc: ''
+    ptype: str
+    values: overlay/difference
+- scm_output_1d_variables:
+    default: t_skin
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- scm_output_2d_variables:
+    default: t
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- scm_input_1d_variables:
+    default: t_skin
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- scm_input_2d_variables:
+    default: t
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- scm_times:
+    default: '0'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- scm_x_min_list:
+    default: ''
+    desc: ''
+    ptype: float or list[float]
+    values: ''
+- scm_x_max_list:
+    default: ''
+    desc: ''
+    ptype: float or list[float]
+    values: ''
+- scm_y_min_list:
+    default: ''
+    desc: ''
+    ptype: float or list[float]
+    values: ''
+- scm_y_max_list:
+    default: ''
+    desc: ''
+    ptype: float or list[float]
+    values: ''
+- scm_value_min_list:
+    default: ''
+    desc: ''
+    ptype: float or list[float]
+    values: ''
+- scm_value_max_list:
+    default: ''
+    desc: ''
+    ptype: float or list[float]
+    values: ''
+- scm_grid:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: on/off
+- scm_output_mode:
+    default: screen
+    desc: ''
+    ptype: str
+    values: screen/postscript/png/pdf
+- scm_output_file_path:
+    default: scm_out.ps
+    desc: ''
+    ptype: str
+    values: ''

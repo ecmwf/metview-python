@@ -1,0 +1,111 @@
+return: :class:`Request`
+summary: rst
+oneliner: Converts GRIB data into the format required by the VAPOR 3D visualisation system.
+params:
+- vapor_input_mode:
+    default: icon
+    desc: Specifies the data input mode. The only available mode is "icon". In this case a 
+      set of :class:`Fieldset` objects has to be specified in ``vapor_input_data``.
+    ptype: str
+    values: 'icon'
+- vapor_input_data:
+    default: ''
+    desc: Specifies the input data as a set of :class:`Fieldset` objects. It is
+       available when ``vapor_input_mode`` is "icon".
+    ptype: :class:`Fieldset` or list[:class:`Fieldset`]
+    values: ''
+- vapor_2d_params:
+    default: 2t
+    desc: Specifies the list of 2D parameters from the input data to be converted
+      into VAPOR format. The parameters are identified by their ecCodes shortNames or 
+      paramIds.
+    ptype: str or list[str]
+    values: ''
+- vapor_3d_params:
+    default: t
+    desc: Specifies the list of 3D parameters from the input data to be converted
+      into VAPOR format. The parameters are identified by their ecCodes shortNames or 
+      paramIds. 
+    ptype: str or list[str]
+    values: ''
+- vapor_vertical_grid_type:
+    default: layered
+    desc: |-
+      Specifies the type of the 3D data to be used in VAPOR. The possible values are as follows:
+      
+      * "layered": VAPOR expects a parameter specifying the elevation of each 3D level in the input data. This parameter is then called ELEVATION in VAPOR. The "layered" type is typically used when we have pressure or ECMWF model level (hybrid/eta levels) input data with height or geopotential available.
+      * "regular": the vertical grid is supposed to be equidistant (in the user coordinate space). This type can be used when we have data on equidistant height levels. The "regular" type can also be used for pressure or model level data when no height information is available. In this case the 3D scene is rendered in a pressure or model level "space". Besides, because VAPOR requires vertical coordinate values increasing along the z axis the vertical coordinate values (pressure or model level number) are multiplied by -1 for VAPOR.
+    ptype: str
+    values: 'layered/regular'
+- vapor_elevation_param:
+    default: z
+    desc: |-
+      Specifies the short name or parameter id of of the 3D parameter interpreted as the elevation of the 3D levels. Available when ``vapor_vertical_grid_type`` is "layered". This parameter has to be either the height or the geopotential ("z") of the levels. If geopotential is specified it is converted into metres by Metview for VAPOR.         
+      
+      .. note:: Neither the height nor the geopotential of model levels are archived in MARS. It means that for model level data either of these fields has to be computed for "layered" mode. These computations can be done with :func:`vapor_prepare`` by simply specifying "z" for ``vapor_elevation_param``. The computations can only be carried out if the input data contains temperature (t) and specific humidity (q) on model levels and geopotential ("z") and logarithm of surface pressure (lnsp) on the bottommost model level.
+    ptype: str
+    values: ''
+- vapor_bottom_coordinate:
+    default: '0'
+    desc: The bottom elevation level. Available when ``vapor_vertical_grid_type`` is "layered".
+    ptype: number
+    values: ''
+- vapor_top_coordinate:
+    default: '16000'
+    desc: The top elevation level. Available when ``vapor_vertical_grid_type`` is "layered".
+    ptype: number
+    values: ''
+- vapor_area_selection:
+    default: native
+    desc: Specifies the area selection mode.  If it is set
+      to "native" the whole area of the input data is converted into VAPOR format. While if it
+      is set to "interpolate" the input data is interpolated to a specific (lat-lon) grid and area.
+    ptype: str
+    values: 'native/interpolate'
+- vapor_area:
+    default: '-90/-180/90/180'
+    desc: Specifies the area of the output grid in [south, west, north, east] format. Available
+      when ``vapor_area_selection`` is "interpolate".
+    ptype: list[float]
+    values: ''
+- vapor_grid:
+    default: '1/1'
+    desc: Specifies the resolution of the output grid in [dx, dy] format, where dx is
+      the grid increment in east-west direction, while dy is the grid increment in
+      north-south direction (both in degrees units). Available
+      when ``vapor_area_selection`` is "interpolate".
+    ptype: list[float]
+    values: ''
+- vapor_step_number:
+    default: '-1'
+    desc: Specifies the number of steps from the input dataset that will be converted
+      into the VAPOR format. The default value is -1 meaning that all the available
+      steps will be converted.
+    ptype: number
+    values: ''
+- vapor_refinement_level:
+    default: '2'
+    desc: >-
+      This option specifies the number of refinement levels in a VAPOR data approximation
+      hierarchy where the resolution of each successive level is a factor of two
+      finer along each dimension. If it is set to 0 no hierarchy will be created (all
+      data will be stored at their native resolution). If it is 1 a single approximation
+      will be created, thus the hierarchy will have two levels: the first approximation
+      (indexed as 0 in VAPOR) and the native grid resolution (indexed as 1 in VAPOR).
+      And so on.
+    ptype: str
+    values: ''
+- vapor_vdf_name:
+    default: ''
+    desc: Specifies the name of the resulting VDF file (the .vdf suffix is automatically
+      appended to the filename).
+    ptype: str
+    values: ''
+- vapor_output_path:
+    default: '/tmp'
+    desc: Specifies the output directory (can be a relative path) where the VDF file
+      and VDC directory hierarchy will be generated. If this directory does not
+      exist Metview will create it. VAPOR data files can be huge (gigabytes) so the output
+      path to store the results of the GRIB to VAPOR conversion should always be carefully selected.
+    ptype: str
+    values: ''

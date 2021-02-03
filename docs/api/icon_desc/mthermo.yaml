@@ -1,0 +1,97 @@
+return: :class:`Request`
+summary: This is the visual definition for specifying how
+    data curves plotted onto a thermodynamic diagram are displayed. 
+    It controls features such as line colour, style and thickness
+    and how missing data will be plotted.
+oneliner: Defines how data curves plotted onto a thermodynamic diagram are displayed.
+params:
+- legend:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: on/off
+- legend_user_text:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- thermo_temperature_line:
+    default: 'on'
+    desc: ''
+    ptype: str
+    values: on/off
+- thermo_temperature_line_style:
+    default: solid
+    desc: ''
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- thermo_temperature_line_colour:
+    default: red
+    desc: ''
+    ptype: str
+    values: ''
+- thermo_temperature_line_thickness:
+    default: '8'
+    desc: ''
+    ptype: int
+    values: ''
+- thermo_temperature_missing_data_mode:
+    default: join
+    desc: ''
+    ptype: str
+    values: ignore/join/drop
+- thermo_temperature_missing_data_style:
+    default: solid
+    desc: ''
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- thermo_temperature_missing_data_colour:
+    default: red
+    desc: ''
+    ptype: str
+    values: ''
+- thermo_temperature_missing_data_thickness:
+    default: '8'
+    desc: ''
+    ptype: int
+    values: ''
+- thermo_dewpoint_line:
+    default: 'on'
+    desc: ''
+    ptype: str
+    values: on/off
+- thermo_dewpoint_line_style:
+    default: dash
+    desc: ''
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- thermo_dewpoint_line_colour:
+    default: red
+    desc: ''
+    ptype: str
+    values: ''
+- thermo_dewpoint_line_thickness:
+    default: '8'
+    desc: ''
+    ptype: int
+    values: ''
+- thermo_dewpoint_missing_data_mode:
+    default: join
+    desc: ''
+    ptype: str
+    values: ignore/join/drop
+- thermo_dewpoint_missing_data_style:
+    default: dash
+    desc: ''
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- thermo_dewpoint_missing_data_colour:
+    default: red
+    desc: ''
+    ptype: str
+    values: ''
+- thermo_dewpoint_missing_data_thickness:
+    default: '8'
+    desc: ''
+    ptype: int
+    values: ''

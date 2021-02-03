@@ -1,0 +1,7 @@
+return: :class:`Request`
+summary: Provides a container for user-defined text boxes (:func:`mtext` objects).  
+oneliner: Provides a container for user-defined text boxes (:func:`mtext` objects). 
+params: 
+- _include: !include include/subpage_pos.yaml 
+- _include: !include include/page.yaml 
+

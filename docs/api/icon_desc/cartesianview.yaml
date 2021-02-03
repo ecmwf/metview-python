@@ -1,0 +1,216 @@
+return: :class:`Request`
+summary: Defines a projection for a Cartesian-style coordinate system. This should 
+  be used for any plot which is not to be displayed on a map. Once the projection has been
+  defined through the axis specification, data points should be provided in this coordinate
+  system. For further details on the role and usage of views in the visualisation process, 
+  please see `Anaylis Views <https://confluence.ecmwf.int/display/METV/Analysis+Views>`_.
+oneliner: Defines the view for a Cartesian-style coordinate system.
+params:
+- map_projection:
+    default: cartesian
+    desc: Specifies the plot type.
+    ptype: str
+    values: cartesian/tephigram/skewt/emagram/taylor
+- x_automatic:
+    default: 'off'
+    desc: Determines whether the x-coordinate system should be defined automatically
+      based on the first data to be plotted in the view; if so, the axis will range,
+      left to right, from the minimum to the maximum value in the data. If not, the
+      minimum and maximum values should be specified.
+    ptype: str
+    values: on/off
+- x_axis_type:
+    default: regular
+    desc: |-
+      Determines the type of coordinates on this axis:
+      
+      * "regular": the values are numbers 
+      * "date" : the values are dates. 
+      * "logarithmic": the values are numbers, but the axis will be displayed on a logarithmic scale
+      * "geoline": the axis limits should be provided as geographical coordinates; this can be used for displaying cross sections, or other plots where an axis represents a geographical line
+    ptype: str
+    values: regular/date/logarithmic/geoline
+- x_min:
+    default: '0'
+    desc: The leftmost value of the x axis, this parameter is only used if ``x_axis_type`` is set
+     to "regular" or "logarithmic".
+    ptype: number
+    values: ''
+- x_max:
+    default: '100'
+    desc: The rightmost value of the x axis, this parameter is only used if ``x_axis_type``
+      type is set to "regular" or "logarithmic".
+    ptype: number
+    values: ''
+- x_min_latitude:
+    default: '-90'
+    desc: The leftmost latitude value of the x axis, this parameter is only used if
+      ``x_axis_type`` is set to "geoline".
+    ptype: number
+    values: ''
+- x_max_latitude:
+    default: '90'
+    desc: The rightmost latitude value of the x axis, this parameter is only used
+      if ``x_axis_type`` is set to "geoline".
+    ptype: number
+    values: ''
+- x_min_longitude:
+    default: '-180'
+    desc: The leftmost longitude value of the x axis, this parameter is only used
+      if ``x_axis_type`` is set to "geoline".
+    ptype: number
+    values: ''
+- x_max_longitude:
+    default: '180'
+    desc: The rightmost longitude value of the x axis, this parameter is only used
+      if ``x_axis_type`` is set to "geoline".
+    ptype: number
+    values: ''
+- x_date_min:
+    default: '2011-01-01'
+    desc: The leftmost date value of the x axis, this parameter is only used if
+      ``x_axis_type`` is set to "date".
+    ptype: str
+    values: ''
+- x_date_max:
+    default: '2011-01-31'
+    desc: The rightmost date value of the x axis, this parameter is only used if
+      ``x_axis_type`` is set to "date".
+    ptype: str
+    values: ''
+- x_automatic_reverse:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: on/off
+- y_automatic:
+    default: 'off'
+    desc: Determines whether the y-coordinate system should be defined automatically based on the 
+      first data to be plotted in the view; if so, the axis will range, left to right, from
+      the minimum to the maximum value in the data. If not, the minimum and maximum
+      values should be specified.
+    ptype: str
+    values: on/off
+- y_axis_type:
+    default: regular
+    desc: |-
+      Determines the type of coordinates on this axis:
+      
+      * "regular": the values are numbers 
+      * "date" : the values are dates. 
+      * "logarithmic": the values are numbers, but the axis will be displayed on a logarithmic scale
+      * "geoline": the axis limits should be provided as geographical coordinates; this can be used for displaying cross sections, or other plots where an axis represents a geographical line
+    ptype: str
+    values: regular/date/logarithmic/geoline
+- y_min:
+    default: '0'
+    desc: The bottom value of the y axis, this parameter is only used if
+      ``y_axis_type`` is set to "regular" or "logarithmic".
+    ptype: number
+    values: ''
+- y_max:
+    default: '100'
+    desc: The uppermost value of the y axis, this parameter is only used if
+      ``y_axis_type`` is set to "regular" or "logarithmic".
+    ptype: number
+    values: ''
+- y_min_latitude:
+    default: '-90'
+    desc: The bottom latitude value of the y axis, this parameter is only used if
+      ``y_axis_type`` is set to "geoline".
+    ptype: number
+    values: ''
+- y_max_latitude:
+    default: '90'
+    desc: The uppermost latitude value of the y axis, this parameter is only used
+      if ``y_axis_type`` is set to "geoline".
+    ptype: number
+    values: ''
+- y_min_longitude:
+    default: '-180'
+    desc: The bottom longitude value of the y axis, this parameter is only used if
+      ``y_axis_type`` is set to "geoline".
+    ptype: number
+    values: ''
+- y_max_longitude:
+    default: '180'
+    desc: The uppermost longitude value of the x axis, this parameter is only used
+      if ``y_axis_type`` is set to "geoline".
+    ptype: number
+    values: ''
+- y_date_min:
+    default: '2011-01-01'
+    desc: The bottom date value of the y axis, this parameter is only used if
+      ``y_axis_type`` is set to "date".
+    ptype: str
+    values: ''
+- y_date_max:
+    default: '2011-01-31'
+    desc: The uppermost date value of the y axis, this parameter is only used if
+      ``y_axis_type`` is set to "date".
+    ptype: str
+    values: ''
+- y_automatic_reverse:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: on/off
+- horizontal_axis:
+    default: ''
+    desc: Specifies the plotting attributes of the horizontal axis.
+    ptype: :func:`maxis`
+    values: ''
+- vertical_axis:
+    default: ''
+    desc: Specifies the plotting attributes of the vertical axis.
+    ptype: :func:`maxis`
+    values: ''
+- taylor_grid:
+    default: ''
+    desc: Specifies the plotting attributes of Taylor grid when ``map_projection`` is "taylor".
+    ptype: :func:`mtaylor
+    values: ''
+- subpage_clipping:
+    default: 'off'
+    desc: Clips plot to subpage borders.
+    ptype: str
+    values: on/off
+- subpage_x_position:
+    default: '7.5'
+    desc: Specifies the X offset of the plot from the left side of the plot frame
+      (any subdivision of the display area). This is expressed as a percentage of
+      the X-dimension of the plot frame.
+    ptype: number
+    values: ''
+- subpage_y_position:
+    default: '7'
+    desc: Specifies the Y offset of the plot from the bottom side of the plot frame
+      (any subdivision of the display area). This is expressed as a percentage of
+      the Y-dimension of the plot frame.
+    ptype: number
+    values: ''
+- subpage_x_length:
+    default: '85'
+    desc: Specifies the X length of the plot. This is expressed as a percentage of
+      the X-dimension of the plot frame. Hence the sum of this X length plus the X
+      offset cannot exceed 100 (it is advised that it does not exceed 95 since you
+      need some margin on the right for things like axis or map grid labels).
+    ptype: number
+    values: ''
+- subpage_y_length:
+    default: '80'
+    desc: Same as ``subpage_x_length`` but for the Y length of the plot.
+    ptype: number
+    values: ''
+- subpage_vertical_axis_width:
+    default: '1'
+    desc: ''
+    ptype: str
+    values: ''
+- subpage_horizontal_axis_height:
+    default: '1'
+    desc: ''
+    ptype: str
+    values: ''
+- _include: !include include/page.yaml 
+

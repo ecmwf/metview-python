@@ -1,0 +1,19 @@
+return: :class:`Fieldset`
+summary: Computes the equivalent potential temperature for GRIB data on ECMWF model levels.
+oneliner: Computes the equivalent  potential temperature for GRIB data on ECMWF model levels.
+params:
+- lnsp:
+    default: 
+    desc: Specifies the Logarithm of Surface Pressure (LNSP) GRIB field. Specifies the temperature GRIB fields on model levels.
+    ptype: :class:`Fieldset`
+    values: 
+- temperature:
+    default: 
+    desc: Specifies the temperature GRIB fields on model levels.
+    ptype: :class:`Fieldset`
+    values: 
+- humidity:
+    default: 
+    desc: Specifies the specific humidity GRIB fields on model levels.
+    ptype: :class:`Fieldset`
+    values: 

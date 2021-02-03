@@ -1,0 +1,136 @@
+return: :class:`Request`
+summary: rst
+oneliner: Defines the visualisation for ODB data.
+params:
+- odb_plot_type:
+    default: geo_points
+    desc: |-
+      Specifies the plot type to be generated. The possible values are as follows:
+
+      * "geo_points": points plotted onto a map
+      * "geo_vectors": vectors plotted onto a map
+      * "xy_points": points plotted into a :func:`cartesianview`
+      * "xy_vectors": vectors plotted into a :func:`cartesianview`
+      * "xy_binning": gridded values by binning plotted into a :func:`cartesianview`
+    ptype: str
+    values: 'geo_points/geo_vectors/xy_points/xy_vectors/xy_binning'
+- odb_filename:
+    default: 'off'
+    desc: Specifies the path to the input ODB.
+    ptype: str
+    values: ''
+- odb_data:
+    default: ''
+    desc: Specifies the input :class:`Odb`. If both ``odb_data`` and
+      ``odb_filename`` are specified ``odb_data`` takes precedence.
+    ptype: :class:`Odb`
+    values: ''
+- odb_x_type:
+    default: number
+    desc: Specifies the type of the x coordinate when ``odb_plot_type`` is set to
+      "xy_points", "xy_vectors" or "xy_binning".
+    ptype: str
+    values: 'number/date'
+- odb_y_type:
+    default: number
+    desc:  Specifies the type of the y coordinate when ``odb_plot_type`` is set to
+      "xy_points", "xy_vectors" or "xy_binning".
+    ptype: str
+    values: 'number/date'
+- odb_x_variable:
+    default: ''
+    desc: Specifies the ODB column interpreted as the x coordinate when ``odb_plot_type``
+      is set to "geo_vectors", "xy_vectors" or "xy_binning". The default is an empty string.
+    ptype: str
+    values: ''
+- odb_y_variable:
+    default: ''
+    desc: Specifies the ODB column interpreted as the y coordinate when ``odb_plot_type``
+      is set to "geo_vectors", "xy_vectors" or "xy_binning". The default is an empty string.
+    ptype: str
+    values: ''
+- odb_latitude_variable:
+    default: 'lat@hdr'
+    desc: Specifies the ODB column interpreted as latitude when ``odb_plot_type``
+      is set to "geo_points" or "geo_vectors".
+    ptype: str
+    values: ''
+- odb_longitude_variable:
+    default: 'lon@hdr'
+    desc: Specifies the ODB column interpreted as longitude when ``odb_plot_type``
+      is set to "geo_points" or "geo_vectors".
+    ptype: str
+    values: ''
+- odb_x_component_variable:
+    default: 'obsvalue@body'
+    desc: Specifies the ODB column interpreted as the x component of the vector when
+      ``odb_plot_type`` is set to "geo_vectors" or "xy_vectors".
+    ptype: str
+    values: ''
+- odb_y_component_variable:
+    default: 'obsvalue@body#1'
+    desc: Specifies the ODB column interpreted as the y component of the vector when
+      ``odb_plot_type`` is set to "geo_vectors" or "xy_vectors".
+    ptype: str
+    values: ''
+- odb_value_variable:
+    default: 'obsvalue@body'
+    desc: Specifies the ODB column interpreted as the value in each plot type. 
+    ptype: str
+    values: ''
+- odb_metadata_variables:
+    default: ''
+    desc: Specifies the list of columns extracted and added to the resulting ODB
+      file on top of the columns directly used for visualisation. This parameter accepts
+      wildcards (e.g. "\*.hdr"), to add all the columns from the source ODB to the result
+      use "\*". The default is an empty string (no extra columns added).
+    ptype: str or list[str]
+    values: ''
+- odb_parameters:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- odb_from:
+    default: ''
+    desc: Defines the FROM statement of the ODB/SQL query.
+    ptype: str
+    values: ''
+- odb_where:
+    default: ''
+    desc: Defines the WHERE statement of the ODB/SQL query.
+    ptype: str
+    values: ''
+- odb_orderby:
+    default: ''
+    desc: Defines the ORDERBY statement of the ODB/SQL query.
+    ptype: str
+    values: ''
+- odb_nb_rows:
+    default: '-1'
+    desc: Specifies the maximum number of rows in the result. If -1 is given here
+      the number of rows is not limited in the output.
+    ptype: number
+    values: ''
+- odb_coordinates_unit:
+    default: degrees
+    desc: Specifies the units of the geographical co-ordinates in the input ODB.
+      For older ODBs column "latlon_rad@desc" tells us the geographical
+      co-ordinate units. Its 0 value indicates "degrees" while 1 means radians.
+      Newer ODBs, especially the ones retrieved from MARS, as a generic rule, always
+      "degrees" as geographical co-ordinate units.
+    ptype: str
+    values: 'degrees/radians'
+- odb_binning:
+    default: ''
+    desc: Specifies the :func:`binning` to create gridded data out of scattered data
+      when the ``odb_plot_type`` is "xy_binning".
+    ptype: :class:`Request`
+    values: ''
+- fail_on_empty_output:
+    default: 'yes'
+    desc: Controls the behaviour when the resulting :class:`Odb` is empty. If it is set to "no"
+      :func:`odb_visualiser` will return None, while if the value is "yes" the Python script 
+      running :func:`odb_visualiser` will abort. 
+    ptype: str
+    values: yes/no

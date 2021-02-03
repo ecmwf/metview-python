@@ -1,0 +1,35 @@
+return: Metview object representing the type of the downloaded data.
+summary: Downloads a file from a given URL. By default the result is cached, but a
+  target path can also be specified in order to save the file directly 
+  to a given location. This is particularly useful for data types that Metview does
+  not have specific support for. 
+oneliner: Downloads a file from a given URL. 
+params:
+- url:
+    default: ''
+    desc: Provide a URL that will return a file. This can be, for instance, a
+      URL that points directly to a particular file, or a request to a web service
+      that generates and returns some data.
+    ptype: str
+    values: ''
+- target:
+    default: ''
+    desc: This parameter is optional. If set, the downloaded file will be copied
+      to the given location. The target path can be absolute or relative, but
+      must include the file name, and the parent directory must already exist. If
+      running from an interactive session, a relative path will be relative to the
+      folder containing the script; when running in batch mode, the path will be
+      relative to where the :command:`metview` command was run from.  
+    ptype: str
+    values: ''
+example: >-
+    import metview as mv
+         
+    # download the data and assign to a variable 
+    data = mv.download(url="http://download.ecmwf.org/test-data/metview/gallery/2m_temperature.grib") 
+    print('Values range from ', minvalue(data), ' to ', maxvalue(data)) 
+    mv.write('local_copy_of_file.grib', data)  
+      
+    # example which uses target to directly save the file 
+    mv.download(url="http://download.ecmwf.org/test-data/grib_api/data/budg.md5",
+                target="local_md5.txt")

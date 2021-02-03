@@ -1,0 +1,77 @@
+return: :class:`Table`
+summary: Reads ASCII table file with various formatting and reading
+  options allowing a wide variety of ASCII data tables to be parsed. See
+  `ASCII Tables <https://confluence.ecmwf.int/display/METV/ASCII+Tables>`_
+  for more details. 
+oneliner: Reads ASCII table data with various formatting and reading
+  options allowing a wide variety of ASCII data tables to be parsed.
+params:
+- data:
+    default:
+    desc: Object representing an ASCII table file.
+    ptype: :class:`Table`, :class:`Geopoints` or :class:`Note`
+    values:
+- table_filename:
+    default:
+    desc: Specifies the path to the input table file. This parameter, 
+      if filled, overrides ``data``.
+    ptype: str
+    values:
+- table_delimiter:
+    default: ","
+    desc: Specifies the (single) character that separates values
+       in the table.
+    ptype: str
+    values:
+- table_combine_delimiters:
+    default: 'off'
+    desc: If "on", then consecutive delimiters will be considered as one. 
+      This is often the case when whitespace is used to separate values
+      which are aligned in columns. Note that in this case, it is not
+      possible to represent missing values in the table. If "off", then
+      a delimiter not surrounded by two data values indicates there
+      is a missing value on at least one side of it. See the discussion
+      in `ASCII Tables <https://confluence.ecmwf.int/display/METV/ASCII+Tables>`_
+      for more details.
+    ptype: str
+    values: 'on/off'
+- table_header_row:
+    default: 1
+    desc: Specifies which row of the table file contains the names
+      of the columns. This row, if present, should contain the one
+      entry for each data column, separated with the same delimiter as
+      the data. The first row of the table is number 1. Set this parameter
+      to 0 in order to indicate that there is no header row.
+    ptype: number
+    values: 
+- table_data_row_offset:
+    default: 1
+    desc: Specifies how many rows after the header row the first
+       data row appears. Normally this is 1, since data tends to start
+      on the row after the column headers. If there is no header row, then
+      this number is equivalent to the first data row (e.g. if the data
+      starts on row 3, then set this parameter to 3).
+    ptype: number
+    values:
+- table_meta_data_rows:
+    default:
+    desc: Specifies the rows (if any) which contain meta-data in a form
+      which can be parsed by Metview. See ASCII Tables for more details. 
+    ptype: list
+    values: 
+- table_columns:
+    default:
+    desc: In order to conserve resources, it is possible to choose
+      to load only a specified set of data columns. The first column
+      is numbered 1.
+    ptype: list
+    values: 
+- table_column_types:
+    default:
+    desc: If Metview does not correctly determine the data types
+      of the columns, this parameter makes it possible to specify the
+      data types as a list of type names. Possible
+      type names are "number" and "string". If ``table_columns`` is set, only
+      that subset of columns should be represented by the list of types.
+    ptype: list
+    values: 

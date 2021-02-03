@@ -1,0 +1,33 @@
+return: :class:`Odb`
+summary: rst
+oneliner: Performs an ODB/SQL query on an ODB.
+params:
+- odb_filename:
+    default: 'off'
+    desc: Specifies the path to the input ODB.
+    ptype: str
+    values: ''
+- odb_data:
+    default: ''
+    desc: Specifies the input as an :class:`Odb`. If both ``odb_data`` and
+      ``odb_filename`` are specified ``odb_data`` takes precedence.
+    ptype: :class:`Odb`
+    values: ''
+- odb_query:
+    default: ''
+    desc: Specifies the ODB/SQL query to run.
+    ptype: str
+    values: ''
+- odb_nb_rows:
+    default: '-1'
+    desc: Specifies the maximum number of rows in the result. If -1 is given here
+      the number of rows is not limited in the output.
+    ptype: number
+    values: ''
+- fail_on_empty_output:
+    default: 'yes'
+    desc: Controls the behaviour when the resulting :class:`Odb` is empty. If it is set to "no"
+      :func:`odb_filter` will return None, while if the value is "yes" the Python script 
+      running :func:`odb_filter` will abort. 
+    ptype: str
+    values: yes/no

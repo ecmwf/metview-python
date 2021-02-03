@@ -1,0 +1,59 @@
+return: :class:`Geopoints`
+summary: Extracts values as :class:`Geopoints` from complex BUFR messages where coordinate
+    descriptors are required to locate particular data. Briefly, when the 
+    category code of a BUFR element is less than 10 it is a 'coordinate descriptor', 
+    which means that it retains its current value until redefined. In this way, a set
+    of values 'inherit' the same value for such a descriptor without it appearing explicitly
+    for each value. The purpose of this function is to extract data that can only be described
+    by using coordinate descriptors. For more complete BUFR data extraction, it can be used
+    with BUFR output from :func:`obsfilter`.
+oneliner: Extracts values as :class:`Geopoints` from BUFR messages using filter conditions on 
+    coordinate descriptors.
+params:
+- data:
+    default: ''
+    desc: Specifies the input data.
+    ptype: :class:`Bufr`
+    values: ''
+- output:
+    default: geopoints
+    desc: Specifies the output :class:`Geopoints` format.
+    ptype: str
+    values: geopoints/polar_vector/xy_vector/ncols
+- parameter:
+    default: '012163'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- missing_data:
+    default: ignore
+    desc: If set to "ignore", missing data is not included in the output file. If set to "include", missing data will be
+      output to the geopoints file, its value being set to that specified by ``missing_data_value``. Note that when ``output`` is one of the two geopoints
+      vector formats, the observation is considered missing if one or both of the parameters
+      are missing. 
+    ptype: str
+    values: ignore/include
+- missing_data_value:
+    default: '0'
+    desc: Available only for ``missing_data`` set to "include". Any missing observations
+      will be output as this value (default 0). It is wise, therefore, to ensure
+      that this value is outwith the range of possible values for the requested parameter(s).
+    ptype: number
+    values: ''
+- coordinate_descriptors:
+    default: '5042'
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- coordinate_values:
+    default: all
+    desc: ''
+    ptype: str or list[str]
+    values: ''
+- fail_on_error:
+    default: 'yes'
+    desc: If set to "yes", then any error encountered when trying to decode the input
+      data will result in the module failing. If set to "no", then any such
+      errors will not be fatal, and an empty data file will be returned.
+    ptype: str
+    values: yes/no

@@ -1,0 +1,278 @@
+return: :class:`Request`
+summary: rst
+oneliner: Runs the
+   `FLEXPART <https://confluence.ecmwf.int/display/METV/The+FLEXPART+interface>`_ Lagrangian 
+   particle dispersion model.
+params:
+- output_path:
+    default: ''
+    desc: Specifies the location of the output data files. Both an absolute and relative
+      path can be given here. Please note that Metview converts FLEXPART output into
+      other formats and only these converted results are copied from the work directory
+      into ``output_path``. For further details about the output formats click `here
+      <https://confluence.ecmwf.int/display/METV/FLEXPART+output>`_.
+    ptype: str
+    values: ''
+- input_data:
+    default: ''
+    desc: Specifies the location of the input data files and the AVAILABLE file
+      using a :func:`flexpart_prepare` object. Please note that ``input_data`` takes 
+      precedence over ``input_path``.
+    ptype: :func:`flexpart_prepare`
+    values: ''
+- input_path:
+    default: ''
+    desc: Specifies the path of the directory containing the input data files and 
+      the AVAILABLE file. Both an absolute and relative path can be given here. 
+      Please note that when ``input_data`` is set this path is ignored.
+    ptype: str
+    values: ''
+- user_exe_path:
+    default: ''
+    desc: Specifies a user defined FLEXPART executable. Both absolute and relative
+      path can be given here. If it is left blank (this is the default) Metview will
+      use the MV_FLEXPART_EXE environment variable to locate the executable.
+    ptype: str
+    values: ''
+- user_resources_path:
+    default: ''
+    desc: Specifies the location of the user defined parameter files (IGBP_int1.dat,
+      OH_7lev_agl.dat, surfdata.t, surfdepo.t ) needed to run FLEXPART. Both an absolute
+      and relative path can be given here. If it is left blank (this is the default)
+      Metview will use the MV_FLEXPART_RESOURCES environment variable to locate the
+      resources. For further details about the resources `click here <https://confluence.ecmwf.int/display/METV/FLEXPART+setup>`_.
+    ptype: str
+    values: ''
+- simulation_direction:
+    default: forward
+    desc: Specifies the FLEXPART simulation direction in time.
+    ptype: str
+    values: 'forward/backward'
+- starting_date:
+    default: ''
+    desc: Specifies the beginning date of the simulation in YYYYMMDD format. Relative
+      dates are allowed, e.g. -1 means yesterday, 0 means today, etc.
+    ptype: str
+    values: ''
+- starting_time:
+    default: ''
+    desc: Specifies the beginning time of the simulation in HH[:MM[:SS]] format.
+    ptype: str
+    values: ''
+- ending_date:
+    default: ''
+    desc: Specifies the ending date of the simulation in YYYYMMDD format. Relative
+      dates are allowed, e.g. -1 means yesterday, 0 means today, etc.
+    ptype: str
+    values: ''
+- ending_time:
+    default: ''
+    desc: Specifies the ending time of the simulation in HH[:MM[:SS]] format.
+    ptype: str
+    values: ''
+- output_interval:
+    default: '3'
+    desc: Specifies the frequency for the output generation. The output is averaged over 
+      the period given in ``output_averaging_interval``. The format is HHHH[:MM[:SS]].
+    ptype: str
+    values: ''
+- output_averaging_interval:
+    default: '3'
+    desc: Specifies the averaging interval for the output generation in HHHH[:MM[:SS]]
+      format. If 0 is given here instantaneous values are written into the output
+      files.
+    ptype: str
+    values: ''
+- output_sampling_rate:
+    default: '0:15'
+    desc: Specifies the sampling rate used for the averaging of the output. This period
+      must be shorter than the ``output_averaging_interval``. The format is HHHH[:MM[:SS]]
+    ptype: str
+    values: ''
+- output_field_type:
+    default: conc
+    desc: |-
+      Specifies the type of the gridded output fields. The possible values are:
+      
+      for forward simulations:
+      
+      * "none": no gridded output
+      * "conc": concentration
+      * "mixr": mass mixing ratio
+      * "both": concentration and mass mixing ratio
+      
+      for backward simulations:
+      
+      * "none": no gridded output
+      * "rtime": residence time/response function
+      
+      For more details about gridded output `click here. <https://confluence.ecmwf.int/display/METV/FLEXPART+output>`_
+    ptype: str
+    values: 'none/conc/mixr/both/rtime'
+- output_flux:
+    default: 'off'
+    desc: Specifies if the fluxes should be computed and written out as a gridded
+      output. Fluxes corresponding to northward, southward, eastward,
+      westward, upward and downward directions are calculated for each grid cell of
+      the output grid.The control surfaces are placed in the middle of each output grid
+      cell. For more details about flux output `click
+      here. <https://confluence.ecmwf.int/display/METV/FLEXPART+output>`_
+    ptype: str
+    values: on/off
+- output_trajectory:
+    default: 'off'
+    desc: Specifies if the plume trajectories should be computed.
+      For more details about trajectory output `click
+      here. <https://confluence.ecmwf.int/display/METV/FLEXPART+output>`_
+    ptype: str
+    values: on/off
+- output_area:
+    default: '-90/-180/90/180'
+    desc: Specifies the area for the gridded output in degrees in S/W/N/E format.
+    ptype: list[float]
+    values: ''
+- output_grid:
+    default: '1/1'
+    desc: Specifies the grid resolution for the gridded output in degrees as
+     [east_west_resolution, north_south_resolution].
+    ptype: list[float]
+    values: ''
+- output_levels:
+    default: '[]'
+    desc: Specifies the list of height levels of the gridded output. The levels are
+      given in metres units.
+    ptype: list[float]
+    values: ''
+- user_species_path:
+    default: ''
+    desc: Specifies the location of the user defined species files. Both an absolute
+      and relative path can be given here. If it is left blank (this is the default
+      value) Metview will use the MV_FLEXPART_SPECIES environment variable to locate
+      the species. For more details about the species `click here <https://confluence.ecmwf.int/display/METV/FLEXPART+species>`_.
+    ptype: str
+    values: ''
+- release_species:
+    default: ''
+    desc: Specifies the list of the species released for the simulation. At all the
+      release locations the same species are emitted. The species are identified by
+      the NNN number (with leading zeros) appearing in the the name of the SPECIES_NNN
+      files. These files contain the physical and chemical properties of species.
+      For more details about the species `click here <https://confluence.ecmwf.int/display/METV/FLEXPART+species>`_.
+    ptype: str or list[str]
+    values: ''
+- release_units:
+    default: mass
+    desc: |-
+      Specifies the units of the mass of the released species.
+    ptype: str
+    values: 'mass/mixr'
+- releases:
+    default: ''
+    desc: Specifies the releases as a list of :func:`flexpart_release` objects.
+    ptype: list
+    values: ''
+- receptor_units:
+    default: mass
+    desc: Specifies the concentration units at the receptor. The possible options
+      are "mass" (mass concentrations) and "mixr" (mass mixing ratio). See the 
+      table above to find out what the actual units mean.
+    ptype: str
+    values: 'mass/mixr'
+- receptors:
+    default: 'off'
+    desc: Enables the usage of receptor sites. When it is enabled
+      the list of receptor sites can be defined via ``receptor_names``, ``receptor_latitudes``
+      and ``receptor_longitudes``. For more details about
+      receptor output `click here <https://confluence.ecmwf.int/display/METV/FLEXPART+species>`_.
+    ptype: str
+    values: on/off
+- receptor_names:
+    default: ''
+    desc: Specifies the list of receptor site names.
+    ptype: str or list[str]
+    values: ''
+- receptor_latitudes:
+    default: ''
+    desc: Specifies the list of receptor site latitudes.
+    ptype: float or list[float]
+    values: ''
+- receptor_longitudes:
+    default: ''
+    desc: Specifies the list of receptor site longitudes.
+    ptype: float or list[float]
+    values: ''
+- age_classes:
+    default: ''
+    desc: Specifies the list of times for the age class calculation. If it is left
+      blank (this is the default value) no age class is defined.
+    ptype: str or list[str]
+    values: ''
+- particle_splitting:
+    default: '0'
+    desc: Specifies the interval for particle splitting in HHHH[:MM[:SS]] format.
+      Each particle is split into two after travelling the multiple of this interval.
+      If "0" (default value) is given here particle splitting is disabled.
+    ptype: str
+    values: ''
+- sync_interval:
+    default: '0:15'
+    desc: All processes are synchronized with this time interval, therefore, all other
+      time constants must be multiples of this value. ``output_interval`` and ``output_averaging_interval``
+      must be at least twice of this value. The format is HHHH[:MM[:SS]]
+    ptype: str
+    values: ''
+- ctl:
+    default: '-5.0'
+    desc: Specifies the factor by which the time step must be smaller than the Lagrangian
+      time scale (TL). ``ctl`` must be > 1 for time steps shorter than the Lagrangian
+      time scale. If ``ctl`` < 0, a purely random walk simulation is done.
+    ptype: number
+    values: ''
+- vertical_timestep_reduction:
+    default: '4'
+    desc: Specifies the reduction factor (as an integer) for the time step used for
+      vertical wind.
+    ptype: number
+    values: ''
+- subgrid_terrain:
+    default: 'off'
+    desc: Enables subgridscale terrain parametrization (increase of mixing heights due to
+     subgridscale orographic variations).
+    ptype: str
+    values: on/off
+- convection:
+    default: 'off'
+    desc: Enables convection parametrization.
+    ptype: str
+    values: on/off
+- output_for_each_release:
+    default: 'off'
+    desc: Specifies whether a separate output fields should be generated for each
+      release. When this option is set to "off" for forward simulations the output
+      fields for a given species contain the sum of all the releases. For backward
+      simulations it must be set to "on".
+    ptype: str
+    values: on/off
+- quasi_lagrangian:
+    default: 'off'
+    desc: Specifies whether particles should be numbered individually ("on") or
+      identified by the release location number ("off").
+    ptype: str
+    values: on/off
+- domain_fill:
+    default: 'no'
+    desc: |-
+      "Enables the domain fill mode. The possible values are as follows:
+
+      * "no": domain fill is disabled
+      * "full": the the particles are not released at specific locations but the 3D-volume of the first release is taken and the particles are uniformly distributed in the volume proportionally to air density. Each particle will receive the same mass, altogether accounting for the total atmospheric mass. Subsequently, particles can move freely in the atmosphere.
+      * "o3_tracer": simulates a stratospheric ozone tracer. This option is similar to fill option, but only particles in the stratosphere (defined by PV < 2 pvu) are released.
+    ptype: str
+    values: 'none/full/o3_tracer'
+- sensitivity:
+    default: 'no'
+    desc: Enables computing sensitivity to initial conditions in backward simulations.
+      The possible values are "no", "mass" (mass concentration units) or "mixr" (mass
+      mixing ratio units).
+    ptype: str
+    values: 'no/mass/mixr'

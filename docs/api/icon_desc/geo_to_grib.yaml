@@ -1,0 +1,82 @@
+return: :class:`Fieldset`
+summary: Interpolates irregularly spaced point data (:class:`Geopoints`) into
+  a GRIB field (:class:`Fieldset`), which can then be plotted, saved or combined
+  with other GRIB data. The method used to compute the values of the grid points
+  from the input data depends on the ``interpolation_method`` parameter. The resulting
+  GRIB field can be a regular lat/lon grid of defined size, or else based on a 
+  template GRIB file supplied by the user. Note that only the first parameter of
+  a double-valued :class:`Geopoints` vector will be used in the calculations. For the reverse
+  computation, see :func:`grib_to_geo`. 
+oneliner: Interpolates irregularly spaced point data (:class:`Geopoints`) into
+  a GRIB field (:class:`Fieldset`). 
+params:
+- geopoints:
+    default: ''
+    desc: Specifies the input :class:`Geopoints` data.
+    ptype: Specifies the input :class:`Geopoints`
+    values: ''
+- grid_definition_mode:
+    default: user
+    desc: If set to "user", the output grid will be a regular lat/lon matrix
+      defined by ``area`` and ``grid``; if set to "grib", a sample :class:`Fieldset` should be
+      specified in ``template_grib``.
+    ptype: str
+    values: user/grib
+- area:
+    default: '-90/-180/90/180'
+    desc: Specifies the area of the output ``grid`` in south/west/north/east format.
+      Only available if ``grib_definition_mode`` is "user".
+    ptype: list[float]
+    values: ''
+- grid:
+    default: '1.5/1.5'
+    desc: Specifies a resolution in degrees, thus together with ``area``, determining
+      the limits and density of the regular grid for interpolation of the point
+      data values. Only available if ``grib_definition_mode`` is "user".
+    ptype: list[float]
+    values: ''
+- template_grib:
+    default: ''
+    desc: ''
+    ptype: :class:`Fieldset`
+    values: ''
+- tolerance:
+    default: '3'
+    desc: Specifies a neighbourhood in degrees around each grid point. All :class:`Geopoints`
+      data within this neighbourhood are used to interpolate the value at the central
+      grid point. E.g. if ``tolerance`` is 2 then all geopoints within a
+      +/-2 degrees square around the grid point are used. If your :class:`Geopoints` data has high spatial density then you can afford to specify
+      a narrow neighbourhood, if the density is sparse you should use a wide neighbourhood.
+      Remember that the wider the neighbourhood the smoother the resulting interpolated
+      field (and the slower the computation).
+    ptype: float or list[float]
+    values: ''
+- interpolation_method:
+    default: reciprocal
+    desc: |-
+      Specifies how the values of the geopoints within the window around a resulting grid point will be combined to produce the resulting value. The available algorithms are:
+      
+      <tt>* "reciprocal": the mean of the values, weighted by the inverse of their distance from the target point. If one of the geopoints lies exactly on the target point then its value is used directly and the rest of the values discarded.
+      <tt>* "exponential_mean": computes the mean of the values weighted (multiplied) by the following:
+
+      <tt><tt> * if ``tolerance`` is not zero: :math:`\exp^{-distance/tolerance^2}`     
+      <tt><tt> * if ``tolerance`` is zero: 1 if the point is on the target point, 0 otherwise
+      <tt><tt>.. note:: This method, combined with setting ``tolerance`` to zero computes the proportion of points which lie exactly on the target point.       
+      <tt>* "exponential_sum": performs the same computation as "exponential_mean", but does not finally divide by the total weight. With a ``tolerance`` of zero, this method will compute the number of input points that lie exactly on each target point.         
+      <tt>* "nearest_grid_point_mean": for each target grid point, computes the unweighted mean value of the geopoints for whom this is the closest grid point; any grid point which is not the closest to any geopoints will be given a missing value.         
+      <tt>* "nearest_grid_point_sum": for each target grid point, computes the unweighted sum of the values of the geopoints for whom this is the closest grid point; any grid point which is not the closest to any geopoints will be given a missing value.        
+      <tt>* "nearest_grid_point_count": for each target grid point, computes the number of geopoints for whom this is the closest grid point. Note that for a regular target ``grid``, this essentially produces a 'heat map', where the value of a grid point will be the number of geopoints within its grid box. This is not necessarily true for quasi-regular grids, e.g. reduced Gaussian, reduced lat/lon or octahedral (which is just a specific type of reduced Gaussian).
+    ptype: str
+    values: reciprocal/exponential_mean/exponential_sum/nearest_gridpoint_mean/nearest_gridpoint_sum/nearest_gridpoint_count
+- parameter:
+    default: '255'
+    desc: If it is not set to 255 specifies the **paramId** ecCodes key in the output field. 
+      Otherwise the **paramId** in the sample field is kept.
+    ptype: number
+    values: ''
+- grib_table2_version:
+    default: '1'
+    desc: If ``parameter`` is not set to 255 specifies the **table2Version** ecCodes key in the output field.
+    ptype: number
+    values: ''
+return: :class:`Fieldset`

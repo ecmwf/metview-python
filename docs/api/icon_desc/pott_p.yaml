@@ -1,0 +1,9 @@
+return: :class:`Fieldset`
+summary: Computes the potential temperature for GRIB data on pressure levels.
+oneliner: Computes the potential temperature for GRIB data on pressure levels.
+params:
+- temperature:
+    default: 
+    desc: Specifies the temperature GRIB fields on pressure levels.
+    ptype: :class:`Fieldset`
+    values: 

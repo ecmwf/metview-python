@@ -1,0 +1,32 @@
+- subpage_clipping:
+    default: 'off'
+    desc: Clips plot to subpage borders.
+    ptype: str
+    values: on/off
+- subpage_x_position:
+    default: '0'
+    desc: Specifies the X offset of the plot from the left side of the plot frame
+      (any subdivision of the display area). This is expressed as a percentage of
+      the X-dimension of the plot frame.
+    ptype: number
+    values: ''
+- subpage_y_position:
+    default: '0'
+    desc: Specifies the Y offset of the plot from the bottom side of the plot frame
+      (any subdivision of the display area). This is expressed as a percentage of
+      the Y-dimension of the plot frame.
+    ptype: number
+    values: ''
+- subpage_x_length:
+    default: '100'
+    desc: Specifies the X length of the plot. This is expressed as a percentage of
+      the X-dimension of the plot frame. Hence the sum of this X length plus the X
+      offset cannot exceed 100 (it is advised that it does not exceed 95 since you
+      need some margin on the right for things like axis or map grid labels).
+    ptype: number
+    values: ''
+- subpage_y_length:
+    default: '100'
+    desc: Same as ``subpage_x_length`` but for the Y length of the plot.
+    ptype: number
+    values: ''

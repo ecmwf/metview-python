@@ -1,0 +1,23 @@
+return: :class:`Fieldset` or :class:`Bufr`
+summary: Removes padding or unwanted data transmission headers from the beginning
+    of binary data files so that Metview could properly recognise them as a GRIB or BUFR file. 
+oneliner: Removes padding or unwanted data transmission headers from the beginning
+    of binary data files so that Metview could properly recognise them as a GRIB or BUFR file.
+params:
+- path:
+    default: ''
+    desc: Specifies the path to the input data.
+    ptype: str
+    values: ''
+- data:
+    default: ''
+    desc: >-
+        Specifies the input as an object. If both ``data`` and ``path`` 
+        are specified ``data`` takes precedence.
+    ptype: :class:`Binary`
+    values: ''
+- skip_hirlam_custom_record:
+    default: 'no'
+    desc: Skips custom records for HIRLAM data.
+    ptype: str
+    values: no/yes

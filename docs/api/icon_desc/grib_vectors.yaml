@@ -1,0 +1,47 @@
+return: :class:`Request`
+summary: Combines scalar GRIB fields (:class:`Fieldset`) into vector fields for
+  the purpose of **plotting**\ . The user supplies GRIB data of vector X and Y components
+  (cartesian coordinates) or intensity/direction (polar coordinates) with
+  the option of colouring the vectorial representation (arrows) according to
+  the magnitude of a user supplied scalar quantity. The classic example is to plot a wind
+  field from u/v components coloured according to temperature. 
+oneliner: Combines scalar GRIB fields (:class:`Fieldset`) into vector fields for
+  the purpose of plotting.  
+params:
+- type:
+    default: vector_field
+    desc: Specifies the type of the vector field to make. When it is set to "vector_field" 
+      the result is defined by ``u_component`` and ``v_component``. Otherwise when the value is "polar_field"
+      the result is defined by ``intensity`` and ``direction``.
+    ptype: str
+    values: vector_field/polar_field
+- u_component:
+    default: ''
+    desc: Specifies the :class:`Fieldset` to be used as the vector field's x component.
+      Available when ``type`` is "vector_field".
+    ptype: :class:`Fieldset`
+    values: ''
+- v_component:
+    default: ''
+    desc: Specifies the :class:`Fieldset` to be used as the vector field's y component.
+      Available when ``type`` is "vector_field".
+    ptype: :class:`Fieldset`
+    values: ''
+- intensity:
+    default: ''
+    desc: Specifies the :class:`Fieldset` to be used as the vector field's intensity component.
+      Available when ``type`` is "polar_field".
+    ptype: :class:`Fieldset`
+    values: ''
+- direction:
+    default: ''
+    desc: Specifies the :class:`Fieldset` to be used as the vector field's direction component.
+      Available when ``type`` is "polar_field".
+    ptype: :class:`Fieldset`
+    values: ''
+- colouring_field:
+    default: ''
+    desc: Specifies the :class:`Fieldset` that the colouring is based on. If not supplied, the
+      computed magnitude of the vector components will be used for colouring. 
+    ptype: :class:`Fieldset`
+    values: ''

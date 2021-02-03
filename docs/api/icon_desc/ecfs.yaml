@@ -1,0 +1,26 @@
+return: Metview object representing the type of the retrieved data.
+summary: |-
+  Retrieves files from ECFS (European Centre File Store).
+
+  .. warning:: :func:`ecfs` is only available and intended to be used at ECMWF.
+oneliner: Retrieves files from ECFS.
+params:
+- ecfs_domain:
+    default: 'ec:'
+    desc: Specifies the ECFS domain. By default this is "ec:" and so far it is
+      the only valid input.
+    ptype: str
+    values: ''
+- file_name:
+    default: ''
+    desc: Specifies the name of the file to be retrieved from ECFS. The name specified
+      must not include the "ec:" prefix, but should include the ECFS path, e.g.
+      "/uid/dir1/.../filename". If the file resides in the root ECFS directory, you
+      can only specify the file name.
+    ptype: str
+    values: ''
+example:
+      "Detailed information on ECFS\
+      \ can be obtained from the UNIX prompt. Given that ECFS commands mimic corresponding\
+      \ UNIX commands, you will obtain a man page for ECFS commands by entering :\n\
+      \n           man ecfs"

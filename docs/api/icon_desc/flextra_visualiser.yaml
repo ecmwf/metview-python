@@ -1,0 +1,52 @@
+
+return: :class:`Request`
+summary: rst
+oneliner: Visualises the results of the
+   `FLEXTRA <https://confluence.ecmwf.int/display/METV/The+FLEXTRA+interface>`_ trajectory
+    model.
+params:
+- flextra_plot_type:
+    default: geo_points
+    desc: ''
+    ptype: str
+    values: ''
+- flextra_plot_content:
+    default: trajectory
+    desc: ''
+    ptype: str
+    values: ''
+- flextra_filename:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- flextra_data:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- flextra_group_index:
+    default: '1'
+    desc: ''
+    ptype: number
+    values: ''
+- flextra_x_variable:
+    default: date
+    desc: ''
+    ptype: str
+    values: ''
+- flextra_y_variable:
+    default: pressure
+    desc: ''
+    ptype: str
+    values: ''
+- flextra_label_variable:
+    default: time
+    desc: ''
+    ptype: str
+    values: time/latitude/longitude/eta/pressure/height/heght_agl/pv/theta
+- flextra_label_period:
+    default: 12h
+    desc: ''
+    ptype: str
+    values: 6h/12h/24h/48h

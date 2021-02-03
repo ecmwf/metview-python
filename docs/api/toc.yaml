@@ -1,0 +1,129 @@
+groups:
+  aggr: Aggregation
+  avg: Average
+  bufr: BUFR related functions
+  calculus: Calculus
+  conversion: Data conversion
+  filter: Filtering
+  flex: Flextra and Flexpart
+  geo: Geographic
+  geopoints: Geopoints related functions
+  geopoints_access: Geopoints data
+  geopoints_object: Geopoints methods
+  grib: Grib related functions
+  grib_access: Grib data
+  grib_object: Grib methods
+  grid: Grid
+  layout: Layout
+  mask: Masking
+  maths: Basic mathematics
+  met3d: Met3D
+  netcdf: NetCDF related functions
+  netcdf_access: NetCDF data
+  netcdf_object: NetCDF methods
+  odb: ODB related functions
+  odb_object: Odb methods
+  output: Graphical output
+  plot: Plotting
+  retrieve: Data retrieval
+  rttov: RTTOV
+  scm: Single Column Model
+  stats: Statistics
+  table: Table data
+  thermo: Thermodynamics
+  ui: Examiners
+  vapor: Vapor
+  vertical: Vertical
+  view: Views
+  visdef: Visual definitions
+  widget: Widgets
+  wind: Wind
+pages:
+  apps:
+    gr:
+    - flex
+    - met3d
+    - vapor
+    - scm
+    - rttov
+    title: External application functions
+  bufr:
+    desc: This is the list of all the functions related to :class:`Bufr` data.
+    gr:
+    - bufr
+    title: BUFR functions
+  comp:
+    gr:
+    - stats
+    - geo
+    - mask
+    - wind
+    - vertical
+    - thermo
+    - calculus
+    - maths
+    title: Computation functions
+  data:
+    gr:
+    - retrieve
+    - conversion
+    - filter
+    - grib_access
+    - geopoints_access
+    - netcdf_access
+    - flex
+    - table
+    - scm
+    - rttov
+    title: Data access function
+  geopoints:
+    desc: This is the list of all the functions related to :class:`Geopoints` data.
+    gr:
+    - geopoints
+    title: Geopoints functions
+  geopoints_obj:
+    gr:
+    - geopoints_object
+    title: List of methods
+  grib:
+    desc: This is the list of all the functions related to GRIB (:class:`Fieldset`)
+      data.
+    gr:
+    - grib
+    title: GRIB (Fieldset) functions
+  grib_obj:
+    gr:
+    - grib_object
+    title: List of methods
+  netcdf:
+    desc: This is the list of all the functions related to :class:`NetCDF` data.
+    gr:
+    - netcdf
+    title: NetCDF functions
+  netcdf_obj:
+    gr:
+    - netcdf_object
+    title: List of methods
+  object:
+    gr:
+    - grib_object
+    - geopoints_object
+    - netcdf_object
+    title: Object functions
+  odb:
+    desc: This is the list of all the functions related to :class:`Odb` data.
+    gr:
+    - odb
+    title: ODB functions
+  odb_obj:
+    gr:
+    - odb_object
+    title: List of methods
+  plot:
+    gr:
+    - view
+    - visdef
+    - plot
+    - layout
+    - output
+    title: Visualisation functions

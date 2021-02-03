@@ -1,0 +1,64 @@
+return: :class:`Request`
+summary: rst
+oneliner: Runs the RTTOV (Radiative Transfer for TOVS) model.
+params:
+- rttov_exe_path:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- rttov_input_data:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- rttov_input_data_path:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- rttov_sensor:
+    default: iasi
+    desc: ''
+    ptype: str
+    values: ''
+- rttov_channels:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- rttov_channels_path:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- rttov_coefficients:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- rttov_coefficients_path:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- rttov_satellite_zenith_angle:
+    default: '0'
+    desc: ''
+    ptype: number
+    values: ''
+- rttov_satellite_azimuth_angle:
+    default: '0'
+    desc: ''
+    ptype: number
+    values: ''
+- rttov_solar_zenith_angle:
+    default: '0'
+    desc: ''
+    ptype: number
+    values: ''
+- rttov_solar_azimuth_angle:
+    default: '0'
+    desc: ''
+    ptype: number
+    values: ''

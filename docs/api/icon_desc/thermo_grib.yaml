@@ -1,0 +1,87 @@
+return: :class:`NetCDF`
+summary: rst
+oneliner: Derives (and returns) a Thermodynamic diagram data unit from GRIB data.
+params:
+- data:
+    default:
+    desc: Specifies the GRIB data to be used in the plotting of a thermodynamic
+      diagram. The data should include gridded fields of
+      temperature and specific humidity. These parameters must have the
+      same number of levels and they will be used to compute the
+      dew point parameter. :class:`Fieldset` u and v wind components are
+      optional, but if given a wind profile will be plotted in the
+      thermodynamic view. These two components must have the same number
+      of levels, but not necessarily have the same number of levels of
+      temperature and specific humidity. If the data is given on ECMWF model levels
+      then a Logarithm of Surface Pressure (LNSP) field must be provided
+      too.
+    ptype: :class:`Fieldset`
+    values:
+- point_selection:
+    default: coordinates
+    desc: Specifies how the geographical location, for which the diagram is to be
+      plotted, will be selected.
+    ptype: str
+    values: coordinates/area_average/station
+- coordinates:
+    default: '0/0'
+    desc: Specifies the geographical location (as [lat, lon]) for which the diagram is to be plotted.
+      Available when ``point_selection`` is "coordinates".
+    ptype: list[float]
+    values: ''
+- area_average:
+    default: '30/-30/-30/30'
+    desc: Specifies a geographical area over which an area average value will
+      be used, instead of a point value, to produce the diagram.  The area is defined as
+      [north, west, south, east]. Available when ``point_selection`` is "area_average".
+    ptype: list[float]
+    values: ''
+- station:
+    default: ''
+    desc: Specifies the location as a :func:`stations`` object for which the diagram is to be plotted. 
+      Available if ``point_selection` is "station".
+    ptype: :func:`stations`
+    values: ''
+- point_extraction:
+    default: interpolate
+    desc: |-
+      Specifies the way to calculate values at the point location for GRIB thermodynamic diagrams. The possible options are:
+      
+      * "interpolate": interpolate values from the four surrounding grid points.
+      * "nearest_gridpoint": use the data from the nearest grid point.
+    ptype: str
+    values: interpolate/nearest_gridpoint
+- dew_point_formulation:
+    default: saturation_over_water
+    desc: Specifies the equation to compute the dew point.
+    ptype: str
+    values: saturation_over_water/mixed_phase_0_to\_\-23
+- temperature_param:
+    default: '130'
+    desc: Specifies the ecCodes paramId used to identify the temperature in the input data.
+    ptype: number
+    values: ''
+- specific_humidity_param:
+    default: '133'
+    desc: Specifies the ecCodes paramId used to identify the specific humidity in the 
+      input data.
+    ptype: number
+    values: ''
+- lnsp_param:
+    default: '152'
+    desc: Specifies the ecCodes paramId used to identify the Logarithm of 
+      Surface Pressure (LNSP) in the input data. 
+    ptype: number
+    values: ''
+- u_wind_param:
+    default: '131'
+    desc: Specifies the ecCodes paramId used to identify the U wind component in the 
+      input data.
+    ptype: number
+    values: ''
+- v_wind_param:
+    default: '132'
+    desc: Specifies the ecCodes paramId used to identify the V wind component in the 
+      input data.
+    ptype: number
+    values: ''

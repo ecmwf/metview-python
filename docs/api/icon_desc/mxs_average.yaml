@@ -1,0 +1,30 @@
+
+return: :class:`NetCDF`
+summary: rst
+oneliner: Derives (and returns) vertical average cross section data.
+params:
+- data:
+    default: ''
+    desc: Specifies the GRIB data from which to derive the average view data. The input GRIB
+      must specify a multi-level (pressure or model levels) upper air meteorological variable, 
+      in a latitude-longitude or Gaussian grid. If the input data is specified in model levels,
+      you must include a Logarithm Of Surface Pressure (LNSP) field should you want the vertical axis
+      of the plot in pressure levels rather than model levels when visualising the output.
+      Note that the input fields should be on the same grid. If more than one time and/or
+      forecast step is contained in ``data``, it returns a set of average cross sections in the resulting
+      data, but note that currently only the first of these will be plotted with :func:`plot`.
+    ptype: str
+    values: ''
+- area:
+    default: '90/-180/-90/180'
+    desc: Specifies the coordinates of the area (as [North, West, South, East]) over
+      which the averages are calculated. 
+    ptype: list[float]
+    values: ''
+- direction:
+    default: ns
+    desc: Specifies the direction along which the averaging of the variable is
+      performed. Options are "ns" (North-South) and "ew" (East-West). For "ns", the averaging
+      is weighted by the cosine of latitude.
+    ptype: str
+    values: ns/ew

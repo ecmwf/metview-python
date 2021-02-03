@@ -1,0 +1,291 @@
+return: :class:`Request`
+summary: This is the visual definition for specifying how a
+    thermodynamic diagram background is displayed. It controls features related
+    to isotherms, isobars, mixing ratio lines, dry and moist adiabats.
+oneliner: Defines the background of a thermodynamic diagram.
+params:
+- thermo_isotherm_grid:
+    default: 'on'
+    desc: Plots the isotherms.
+    ptype: str
+    values: on/off
+- thermo_isotherm_colour:
+    default: charcoal
+    desc: Colour of the isotherms.
+    ptype: str
+    values: ''
+- thermo_isotherm_thickness:
+    default: '1'
+    desc: Thickness of the isotherms.
+    ptype: int
+    values: ''
+- thermo_isotherm_style:
+    default: solid
+    desc: Line style of the isotherms.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- thermo_isotherm_interval:
+    default: '10'
+    desc: Interval for the isotherms.
+    ptype: number
+    values: ''
+- thermo_isotherm_reference:
+    default: '0'
+    desc: Reference value of the isotherms.
+    ptype: number
+    values: ''
+- thermo_isotherm_reference_colour:
+    default: red
+    desc: Colour of the reference isotherm.
+    ptype: str
+    values: ''
+- thermo_isotherm_reference_style:
+    default: solid
+    desc: Line style of the reference isotherm.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- thermo_isotherm_reference_thickness:
+    default: '2'
+    desc: Thickness of the reference isotherm.
+    ptype: int
+    values: ''
+- thermo_isotherm_label_colour:
+    default: charcoal
+    desc: Colour of the isotherm labels.
+    ptype: str
+    values: ''
+- thermo_isotherm_label_font_name:
+    default: sanserif
+    desc: Font name of the isotherm labels.
+    ptype: str
+    values: ''
+- thermo_isotherm_label_font_style:
+    default: normal
+    desc: Font style of the isotherm labels.
+    ptype: str
+    values: normal/bold/italic/bolditalic
+- thermo_isotherm_label_font_size:
+    default: '0.3'
+    desc: Font size of the isotherm labels.
+    ptype: number
+    values: ''
+- thermo_isotherm_label_frequency:
+    default: '1'
+    desc: Frequency for isotherm labelling.
+    ptype: number
+    values: ''
+- thermo_isobar_grid:
+    default: 'on'
+    desc: Plots the isobars.
+    ptype: str
+    values: on/off
+- thermo_isobar_colour:
+    default: evergreen
+    desc: Colour of the isobars.
+    ptype: str
+    values: ''
+- thermo_isobar_thickness:
+    default: '2'
+    desc: Thickness of the isobars.
+    ptype: int
+    values: ''
+- thermo_isobar_style:
+    default: solid
+    desc: Line style of the isobars.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- thermo_isobar_interval:
+    default: '100'
+    desc: Interval between isobars (hPa).
+    ptype: number
+    values: ''
+- thermo_isobar_reference:
+    default: '1000'
+    desc: Reference value of the isobars (hPa).
+    ptype: number
+    values: ''
+- thermo_isobar_label_colour:
+    default: evergreen
+    desc: Colour of the isobar labels.
+    ptype: str
+    values: ''
+- thermo_isobar_label_font_name:
+    default: sanserif
+    desc: Font name of the isobar labels.
+    ptype: str
+    values: ''
+- thermo_isobar_label_font_style:
+    default: normal
+    desc: Font style of the isobar labels.
+    ptype: str
+    values: normal/bold/italic/bolditalic
+- thermo_isobar_label_font_size:
+    default: '0.3'
+    desc: Font size of the isobar labels.
+    ptype: number
+    values: ''
+- thermo_isobar_label_frequency:
+    default: '1'
+    desc: Frequency of the isobar labels.
+    ptype: number
+    values: ''
+- thermo_dry_adiabatic_grid:
+    default: 'on'
+    desc: Plots the dry adiabats.
+    ptype: str
+    values: on/off
+- thermo_dry_adiabatic_colour:
+    default: charcoal
+    desc: Colour of the dry adiabats.
+    ptype: str
+    values: ''
+- thermo_dry_adiabatic_thickness:
+    default: '1'
+    desc: Thickness of the dry adiabats.
+    ptype: int
+    values: ''
+- thermo_dry_adiabatic_style:
+    default: solid
+    desc: Line style of the dry adiabats.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- thermo_dry_adiabatic_interval:
+    default: '10'
+    desc: Interval between the dry adiabats (C).
+    ptype: number
+    values: ''
+- thermo_dry_adiabatic_reference:
+    default: '0'
+    desc: Reference value of the dry adiabats (C).
+    ptype: number
+    values: ''
+- thermo_dry_adiabatic_label_colour:
+    default: charcoal
+    desc: Colour of the dry adiabat labels.
+    ptype: str
+    values: ''
+- thermo_dry_adiabatic_label_font_name:
+    default: sanserif
+    desc: Font name of the dry adiabat labels.
+    ptype: str
+    values: ''
+- thermo_dry_adiabatic_label_font_style:
+    default: normal
+    desc: Font style of the dry adiabat labels.
+    ptype: str
+    values: normal/bold/italic/bolditalic
+- thermo_dry_adiabatic_label_font_size:
+    default: '0.3'
+    desc: Font size of the dry adiabat labels.
+    ptype: number
+    values: ''
+- thermo_dry_adiabatic_label_frequency:
+    default: '1'
+    desc: Frequency of the dry adiabat labels.
+    ptype: number
+    values: ''
+- thermo_saturated_adiabatic_grid:
+    default: 'on'
+    desc: Plots the saturated adiabats.
+    ptype: str
+    values: on/off
+- thermo_saturated_adiabatic_colour:
+    default: charcoal
+    desc: Colour of the saturated adiabats.
+    ptype: str
+    values: ''
+- thermo_saturated_adiabatic_thickness:
+    default: '2'
+    desc: Thickness of the saturated adiabats.
+    ptype: int
+    values: ''
+- thermo_saturated_adiabatic_style:
+    default: solid
+    desc: Line style of the saturated adiabats.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- thermo_saturated_adiabatic_interval:
+    default: '5'
+    desc: Interval between the saturated adiabats (C).
+    ptype: number
+    values: ''
+- thermo_saturated_adiabatic_reference:
+    default: '0'
+    desc: Reference value of the saturated adiabats (C).
+    ptype: number
+    values: ''
+- thermo_saturated_adiabatic_label_colour:
+    default: charcoal
+    desc: Colour of the saturated adiabat labels.
+    ptype: str
+    values: ''
+- thermo_saturated_adiabatic_label_font_name:
+    default: sanserif
+    desc: Font name of the saturated adiabat labels.
+    ptype: str
+    values: ''
+- thermo_saturated_adiabatic_label_font_style:
+    default: normal
+    desc: Font style of the saturated adiabat labels.
+    ptype: str
+    values: normal/bold/italic/bolditalic
+- thermo_saturated_adiabatic_label_font_size:
+    default: '0.3'
+    desc: Font Size used for the saturated_adiabatics labels
+    ptype: number
+    values: ''
+- thermo_saturated_adiabatic_label_frequency:
+    default: '1'
+    desc: Frequency of the saturated adiabat labels.
+    ptype: number
+    values: ''
+- thermo_mixing_ratio_grid:
+    default: 'on'
+    desc: Plots the mixing ratio lines.
+    ptype: str
+    values: on/off
+- thermo_mixing_ratio_colour:
+    default: purple
+    desc: Colour of the mixing ratio lines.
+    ptype: str
+    values: ''
+- thermo_mixing_ratio_thickness:
+    default: '1'
+    desc: Thickness of the mixing ratio lines.
+    ptype: int
+    values: ''
+- thermo_mixing_ratio_style:
+    default: dash
+    desc: Line style of the mixing ratio lines.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- thermo_mixing_ratio_frequency:
+    default: '1'
+    desc: Frequency of the mixing ratio lines.
+    ptype: number
+    values: ''
+- thermo_mixing_ratio_label_colour:
+    default: purple
+    desc: Colour of the mixing ratio labels.
+    ptype: str
+    values: ''
+- thermo_mixing_ratio_label_font_name:
+    default: sanserif
+    desc: Font name of the mixing ratio labels.
+    ptype: str
+    values: ''
+- thermo_mixing_ratio_label_font_style:
+    default: normal
+    desc: Font style of the mixing ratio labels.
+    ptype: str
+    values: normal/bold/italic/bolditalic
+- thermo_mixing_ratio_label_font_size:
+    default: '0.3'
+    desc: Font size of the mixing ratio labels.
+    ptype: number
+    values: ''
+- thermo_mixing_ratio_label_frequency:
+    default: '1'
+    desc: Frequency of the mixing ratio labels.
+    ptype: number
+    values: ''

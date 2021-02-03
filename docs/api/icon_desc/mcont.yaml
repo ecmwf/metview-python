@@ -1,0 +1,674 @@
+return: :class:`Request`
+summary: This is the visual definition for specifying how gridded
+     data is displayed. It controls features such as isolines, shading, 
+     highs & lows, and grid value plotting.
+oneliner: Specifies the style for gridded data plotting.
+params:
+- contour_automatic_setting:
+    default: 'off'
+    desc: Specifies the automatic contour settings mode. When it is set to "ecmwf" the default ecCharts style
+        will be assigned to each GRIB field.
+    ptype: str
+    values: off/ecmwf/style_name
+- contour_style_name:
+    default: ''
+    desc: Specifies the predefined contour style name. Enabled when ``contour_automatic_setting`` is "style_name".
+    ptype: str
+    values: ''
+- legend:
+    default: 'off'
+    desc: Turns legend "on" or "off".
+    ptype: str
+    values: on/off
+- contour:
+    default: 'on'
+    desc: Turns contour lines "on" or "off".
+    ptype: str
+    values: on/off
+- contour_line_style:
+    default: solid
+    desc: Style of contour lines.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- contour_line_thickness:
+    default: '1'
+    desc: Thickness of contour lines.
+    ptype: int
+    values: ''
+- contour_line_colour_rainbow:
+    default: 'off'
+    desc: If it is set to "on", rainbow colouring method will be used for contour lines.
+    ptype: str
+    values: on/off
+- contour_line_colour:
+    default: blue
+    desc: Colour of contour lines.
+    ptype: str
+    values: ''
+- contour_line_colour_rainbow_method:
+    default: calculate
+    desc: Method of generating the colours for individual isolines when ``contour_line_colour_rainbow`` is "on".
+    ptype: str
+    values: calculate/list
+- contour_line_colour_rainbow_max_level_colour:
+    default: blue
+    desc: Colour to be used for the maximum isoline level when ``contour_line_colour_rainbow_method`` is "calculate".
+    ptype: str
+    values: ''
+- contour_line_colour_rainbow_min_level_colour:
+    default: red
+    desc: Colour to be used for the minimum isoline level when ``contour_line_colour_rainbow_method`` is "calculate".
+    ptype: str
+    values: ''
+- contour_line_colour_rainbow_direction:
+    default: anti-clockwise
+    desc: Direction of colour sampling along the colour wheel when ``contour_line_colour_rainbow_method`` is "calculate".
+    ptype: str
+    values: clockwise/anti-clockwise
+- contour_line_colour_rainbow_colour_list:
+    default: ''
+    desc: List of colours to be used for rainbow isolines when ``contour_line_colour_rainbow_method`` is "list".
+    ptype: str or list[str]
+    values: ''
+- contour_line_colour_rainbow_colour_list_policy:
+    default: lastone
+    desc: Specifies what to do if there are fewer colour items in ``contour_line_colour_rainbow_colour_list`` than 
+        the number of contour values.
+    ptype: str
+    values: lastone/cycle
+- contour_line_thickness_rainbow_list:
+    default: ''
+    desc: List of thickness values to be used for rainbow isolines when
+     ``contour_line_colour_rainbow_method`` is "list".
+    ptype: float or list[float]
+    values: ''
+- contour_line_thickness_rainbow_list_policy:
+    default: lastone
+    desc:  Specifies what to do if there are fewer thickness items in 
+        ``contour_line_thickness_rainbow_list`` than the number of contour values.
+    ptype: str
+    values: lastone/cycle
+- contour_line_style_rainbow_list:
+    default: ''
+    desc: List of line style items to be used for rainbow isolines when 
+        ``contour_line_colour_rainbow_method`` is "list".
+    ptype: str or list[str]
+    values: ''
+- contour_line_style_rainbow_list_policy:
+    default: lastone
+    desc: Specifies what to do if there are fewer line style items in 
+        ``contour_line_style_rainbow_list`` than the number of contour values.
+    ptype: str
+    values: lastone/cycle
+- contour_highlight:
+    default: 'on'
+    desc: Plot contour highlights.
+    ptype: str
+    values: on/off
+- contour_highlight_style:
+    default: solid
+    desc: Style of contour highlighting.
+    ptype: str
+    values: solid/dash/dot/chain_dot/chain_dash
+- contour_reference_level:
+    default: '0.0'
+    desc: Specifies contour level from which the contour interval is calculated.
+    ptype: number
+    values: ''
+- contour_highlight_colour:
+    default: blue
+    desc: Colour of the highlighted contour lines.
+    ptype: str
+    values: ''
+- contour_highlight_thickness:
+    default: '3'
+    desc: Thickness of the highlighted contour lines.
+    ptype: int
+    values: ''
+- contour_highlight_frequency:
+    default: '4'
+    desc: Frequency of highlighted contour lines.
+    ptype: number
+    values: ''
+- contour_level_selection_type:
+    default: count
+    desc: |-
+        Specifies how the contour values are defined:
+
+        * "count": calculate a reasonable  contour interval taking into account the min/max and the requested number of isolines. 
+        * "interval": regularly spaced intervals using the ``contour_reference_level`` as base.
+        * "level_list": uses the given ``contour_level_list``.
+    ptype: str
+    values: count/interval/level_list
+- contour_max_level:
+    default: '1.0e+21'
+    desc: Highest level for contours to be drawn.
+    ptype: number
+    values: ''
+- contour_min_level:
+    default: '-1.0e+21'
+    desc: Lowest level for contours to be drawn.
+    ptype: number
+    values: ''
+- contour_shade_max_level:
+    default: '1.0e+21'
+    desc: Highest level for contours to be shaded. 
+    ptype: number
+    values: ''
+- contour_shade_min_level:
+    default: '-1.0e+21'
+    desc: Lowest level for contours to be shaded.
+    ptype: number
+    values: ''
+- contour_level_list:
+    default: ''
+    desc: List of contour levels to be plotted.
+    ptype: float or list[float]
+    values: ''
+- contour_interval:
+    default: '8.0'
+    desc: Interval in data units between two contour lines when ``contour_level_selection_type`` is "interval".
+    ptype: number
+    values: ''
+- contour_level_count:
+    default: '10'
+    desc: Number of levels to be plotted when ``contour_level_selection_type`` is "count". 
+        The plotting library will try to find a "nice" set of levels, which means that the number of
+        levels could be slightly different than specified here.
+    ptype: number
+    values: ''
+- contour_level_tolerance:
+    default: '2'
+    desc: Do not use nice levels if the number of levels differs from ``contour_level_count`` by more than
+     ``contour_level_tolerance``.
+    ptype: number
+    values: ''
+- contour_label:
+    default: 'on'
+    desc: Plots labels on contour lines.
+    ptype: str
+    values: on/off
+- contour_label_type:
+    default: number
+    desc: Type of contour labels.
+    ptype: str
+    values: ''
+- contour_label_text:
+    default: ''
+    desc: Text for contour labels.
+    ptype: str
+    values: ''
+- contour_label_height:
+    default: '0.3'
+    desc: Height (cm) of contour labels.
+    ptype: number
+    values: ''
+- contour_label_format:
+    default: '(automatic)'
+    desc: Format of contour labels.
+    ptype: str
+    values: ''
+- contour_label_blanking:
+    default: 'on'
+    desc: Enables contour label blanking.
+    ptype: str
+    values: on/off
+- contour_label_font:
+    default: sansserif
+    desc: The font type used for contour labels.
+    ptype: str
+    values: arial/courier/helvetica/times/serif/sansserif/symbol
+- contour_label_font_style:
+    default: normal
+    desc: Style of the font used for contour labels.
+    ptype: str
+    values: normal/bold/italic/bolditalic
+- contour_label_colour:
+    default: contour_line_colour
+    desc: Colour of contour labels.
+    ptype: str
+    values: background/contour_line_colour
+- contour_label_frequency:
+    default: '2'
+    desc: Specifies the contour line frequency for contour labels. The labels will 
+        appear on every ``contour_label_frequency`` lines.
+    ptype: number
+    values: ''
+- contour_shade:
+    default: 'off'
+    desc: Enables contour shading.
+    ptype: str
+    values: on/off
+- contour_shade_technique:
+    default: polygon_shading
+    desc: Specifies the technique used for shading.
+    ptype: str
+    values: polygon_shading/grid_shading/cell_shading/marker
+- contour_shade_colour_method:
+    default: calculate
+    desc: Method of generating the colours of the bands in contour shading.
+    ptype: str
+    values: calculate/list/gradients/palette
+- contour_shade_method:
+    default: dot
+    desc: Rendering method used for contour shading.
+    ptype: str
+    values: area_fill/dot/hatch
+- contour_shade_cell_resolution:
+    default: '10'
+    desc: Number of cells per cm when ``contour_shade_technique`` is "cell_shading".
+    ptype: number
+    values: ''
+- contour_shade_cell_method:
+    default: nearest
+    desc: Method of determining the colour of a cell when ``contour_shade_technique`` is "cell_shading".
+    ptype: str
+    values: nearest/interpolate
+- contour_grid_shading_position:
+    default: middle
+    desc: >- 
+        When it is "middle" the point is in the middle of the cell, when it is  "bottom_left": the
+        point is in the bottom left corner. Available when ``contour_shade_technique`` is "grid_shading".
+    ptype: str
+    values: middle/bottom_left
+- contour_shade_colour_table:
+    default: ''
+    desc: Colour table to be used with marker shading technique. Available 
+        when ``contour_shade_technique`` is "marker".
+    ptype: str or list[str]
+    values: ''
+- contour_shade_height_table:
+    default: ''
+    desc: Height table to be used with marker shading technique. Available 
+        when ``contour_shade_technique`` is "marker".
+    ptype: float or list[float]
+    values: ''
+- contour_shade_marker_table_type:
+    default: index
+    desc: >-
+        Specifies how the markers are specified when ``contour_shade_technique`` is "marker".
+    ptype: str
+    values: index/name
+- contour_shade_marker_table:
+    default: ''
+    desc: Marker table defined by a a set of numerical symbol identifiers when 
+        ``contour_shade_marker_table_type`` is "index".
+    ptype: float or list[float]
+    values: ''
+- contour_shade_marker_name_table:
+    default: ''
+    desc: Marker table defined by a a set of symbol names when 
+        ``contour_shade_marker_table_type`` is "index". 
+    ptype: str or list[str]
+    values: ''
+- contour_shade_max_level_colour:
+    default: blue
+    desc: Highest shading band colour.
+    ptype: str
+    values: ''
+- contour_shade_min_level_colour:
+    default: red
+    desc: Lowest shading band colour.
+    ptype: str
+    values: ''
+- contour_shade_colour_direction:
+    default: anti_clockwise
+    desc: Direction of colour sampling along the colour wheel for isoline shading when 
+        ``contour_shade_colour_method`` is "calculate".
+    ptype: str
+    values: clockwise/anti_clockwise
+- contour_shade_colour_list:
+    default: ''
+    desc: List of colours to be used in contour shading when 
+        ``contour_shade_colour_method`` is "list".
+    ptype: str or list[str]
+    values: ''
+- contour_gradients_colour_list:
+    default: ''
+    desc: Colour used at the stops, the gradient will be calculated between 2 consecutive
+      ones.
+    ptype: str
+    values: ''
+- contour_gradients_waypoint_method:
+    default: both
+    desc: Waypoints at the "left", "right", middle of the interval.
+    ptype: str
+    values: both/ignore/left/right
+- contour_gradients_technique:
+    default: rgb
+    desc: Technique to apply to compute the gradients.
+    ptype: str
+    values: rgb/hcl/hsl
+- contour_gradients_technique_direction:
+    default: clockwise
+    desc: Technique to apply to compute the gradients.
+    ptype: str
+    values: clockwise/anti_clockwise/shortest/longest
+- contour_gradients_step_list:
+    default: '10'
+    desc: Number of steps to compute for each interval.
+    ptype: float or list[float]
+    values: ''
+- contour_shade_palette_name:
+    default: ''
+    desc: The name of the colour palette to use when ``contour_shade_colour_method`` is "palette".
+    ptype: str
+    values: ''
+- contour_shade_palette_policy:
+    default: lastone
+    desc: What to do if the list of colours is smaller than the list of levels.
+    ptype: str
+    values: lastone/cycle
+- contour_shade_dot_size:
+    default: '0.02'
+    desc: Size of dot in shading pattern when ``contour_shade_method`` is "dot".
+    ptype: number
+    values: ''
+- contour_shade_max_level_density:
+    default: '50.0'
+    desc: Dots per square centimetre in highest shading band 
+        when ``contour_shade_method`` is "dot".
+    ptype: number
+    values: ''
+- contour_shade_min_level_density:
+    default: '1.0'
+    desc: Dots per square centimetre in lowest shading band  
+        when ``contour_shade_method`` is "dot".
+    ptype: number
+    values: ''
+- contour_shade_hatch_index:
+    default: '0'
+    desc: The hatching pattern(s) to use. 0 Provides an automatic sequence of patterns,
+      other values set a constant pattern across all contour bands.
+    ptype: number
+    values: ''
+- contour_shade_hatch_thickness:
+    default: '1'
+    desc: Thickness of hatch lines.
+    ptype: int
+    values: ''
+- contour_shade_hatch_density:
+    default: '18.0'
+    desc: Number of hatch lines per cm.
+    ptype: number
+    values: ''
+- contour_legend_text:
+    default: ''
+    desc: Text to be used in legend.
+    ptype: str
+    values: ''
+- contour_method:
+    default: automatic
+    desc: Contouring method.
+    ptype: str
+    values: automatic/sample/linear/akima760/akima474
+- contour_akima_x_resolution:
+    default: '1.5'
+    desc: X resolution of Akima interpolation. 
+        Available when ``contour_method`` is "akima760" or "akima474".
+    ptype: number
+    values: ''
+- contour_akima_y_resolution:
+    default: '1.5'
+    desc: Y resolution of Akima interpolation. 
+        Available when ``contour_method`` is "akima760" or "akima474".
+    ptype: number
+    values: ''
+- contour_interpolation_floor:
+    default: -1.0e21
+    desc: Any value below this floor will be forced to the floor value. Avoid the
+      bubbles artificially created by the interpolation method.
+    ptype: number
+    values: ''
+- contour_interpolation_ceiling:
+    default: 1.0e21
+    desc: Any value above this ceiling will be forced to the ceiling value. Avoid
+      the bubbles artificially created by the interpolation method.
+    ptype: number
+    values: ''
+- contour_internal_reduction_factor:
+    default: '4.0'
+    desc: Internal factor for contouring.
+    ptype: number
+    values: ''
+- contour_threads:
+    default: '4'
+    desc: Number of threads used to optimise the contouring.
+    ptype: str
+    values: 1/4/9
+- contour_hilo:
+    default: 'off'
+    desc: Plots local maxima/minima (highs/lows).
+    ptype: str
+    values: on/off/hi/lo
+- contour_hilo_type:
+    default: text
+    desc: Type of high/low value plotting.
+    ptype: str
+    values: text/number/both
+- contour_hi_text:
+    default: h
+    desc: Text to represent local maxima.
+    ptype: str
+    values: ''
+- contour_lo_text:
+    default: l
+    desc: Text to represent local minima.
+    ptype: str
+    values: ''
+- contour_hilo_blanking:
+    default: 'off'
+    desc: Blanking around high/low text.
+    ptype: str
+    values: on/off
+- contour_hilo_format:
+    default: (automatic)
+    desc: Format of high/low numbers.
+    ptype: str
+    values: ''
+- contour_hilo_window_size:
+    default: '3'
+    desc: Size of the window used to calculate the high/low values.
+    ptype: number
+    values: ''
+- contour_hilo_suppress_radius:
+    default: '15.0'
+    desc: ''
+    ptype: number
+    values: ''
+- contour_hilo_max_value:
+    default: '1.0e+21'
+    desc: Local high/low values above the specified value are not drawn.
+    ptype: number
+    values: ''
+- contour_hilo_min_value:
+    default: '-1.0e+21'
+    desc: Local high/low values below the specified value are not drawn.
+    ptype: number
+    values: ''
+- contour_hi_max_value:
+    default: '1.0e+21'
+    desc: Local high values above the specified value are not drawn.
+    ptype: number
+    values: ''
+- contour_hi_min_value:
+    default: '-1.0e+21'
+    desc: Local high values below the specified value are not drawn.
+    ptype: number
+    values: ''
+- contour_lo_max_value:
+    default: '1.0e+21'
+    desc: Local low values above the specified value are not drawn.
+    ptype: number
+    values: ''
+- contour_lo_min_value:
+    default: '-1.0e+21'
+    desc: Local low values below the specified value are not drawn.
+    ptype: number
+    values: ''
+- contour_hilo_marker:
+    default: 'off'
+    desc: Plot high/low markers.
+    ptype: str
+    values: on/off
+- contour_hilo_marker_height:
+    default: '0.1'
+    desc: Height (cm) of high/low marker symbols.
+    ptype: number
+    values: ''
+- contour_hilo_marker_index:
+    default: '3'
+    desc: Index of high/low marker symbols.
+    ptype: number
+    values: ''
+- contour_hilo_marker_colour:
+    default: red
+    desc: Colour of high/low marker symbols.
+    ptype: str
+    values: ''
+- contour_hilo_position_file_name:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- contour_hilo_height:
+    default: '0.4'
+    desc: Height of high/low text or numbers.
+    ptype: number
+    values: ''
+- contour_hilo_quality:
+    default: low
+    desc: ''
+    ptype: str
+    values: high/medium/low
+- contour_hi_colour:
+    default: blue
+    desc: Colour of high values text or number.
+    ptype: str
+    values: ''
+- contour_lo_colour:
+    default: blue
+    desc: Colour of low values text or number.
+    ptype: str
+    values: ''
+- contour_grid_value_plot:
+    default: 'off'
+    desc: Plots grid point values.
+    ptype: str
+    values: on/off
+- contour_grid_value_type:
+    default: normal
+    desc: 
+    ptype: str
+    values: normal/reduced/akima
+- contour_grid_value_plot_type:
+    default: value
+    desc: 
+    ptype: str
+    values: value/marker/both
+- contour_grid_value_min:
+    default: '-1.0e+21'
+    desc: The minimum value for which grid point values are to be plotted.
+    ptype: number
+    values: ''
+- contour_grid_value_max:
+    default: '1.0e+21'
+    desc: The maximum value for which grid point values are to be plotted.
+    ptype: number
+    values: ''
+- contour_grid_value_lat_frequency:
+    default: '1'
+    desc: The frequency of latitude rows for grid point value plotting.
+    ptype: number
+    values: ''
+- contour_grid_value_lon_frequency:
+    default: '1'
+    desc: The frequency of latitude rows for grid point value plotting.
+    ptype: number
+    values: ''
+- contour_grid_value_height:
+    default: '0.25'
+    desc: Height of the grid point values.
+    ptype: number
+    values: ''
+- contour_grid_value_colour:
+    default: blue
+    desc: Colour of the grid point values.
+    ptype: str
+    values: ''
+- contour_grid_value_format:
+    default: '(automatic)'
+    desc: Format of the grid point values.
+    ptype: str
+    values: ''
+- contour_grid_value_quality:
+    default: low
+    desc: 
+    ptype: str
+    values: high/medium/low
+- contour_grid_value_marker_height:
+    default: '0.25'
+    desc: Height of the grid point markers.
+    ptype: number
+    values: ''
+- contour_grid_value_marker_colour:
+    default: red
+    desc: Colour of the grid point markers.
+    ptype: str
+    values: ''
+- contour_grid_value_marker_qual:
+    default: low
+    desc: Quality of the grid point marker.
+    ptype: str
+    values: 'high/medium/low'
+- contour_grid_value_marker_index:
+    default: '3'
+    desc: Index of marker symbol for grid point plotting. 
+    ptype: number
+    values: ''
+- grib_scaling_of_retrieved_fields:
+    default: 'on'
+    desc: Toggles the contour scaling of the retrieved fields. Fields which are retrieved 
+        from MARS or derived from other fields are in SI units. If this parameter is "on", 
+        the plotting library will perform a unit conversion (scaling) on the retrieved fields that it
+        plots, converting from these SI units to units of customary meteorological
+        usage - e.g. Pressure from Pa to hPa, Temperature from K to Celsius. Certain parameters
+        will be scaled into more user-friendly units if the data has not been manipulated.
+    ptype: str
+    values: on/off
+- grib_scaling_of_derived_fields:
+    default: 'off'
+    desc: |-
+        Toggles the contour scaling of the derived fields. Any field you derive are supposed to be in SI units, so set this parameter to "on" to convert to meteorological style units. E.g.: 
+       
+        * If you retrieve two temperature fields, they are plotted in Celsius . If you derive a mean temperature from them, it will be plotted in K if you do not scale the derived field.
+        * Precipitation fields are cumulative fields plotted in mm - if you subtract two consecutive ones to obtain the precipitation for the time step between them, you will plot a field in m if you do not scale the derived field. 
+        * Certain parameters will be scaled into more user-friendly units if the data has been manipulated.
+    ptype: str
+    values: on/off
+- grib_interpolation_method:
+    default: interpolate
+    desc: ''
+    ptype: str
+    values: interpolate/nearest/nearest_valid
+- grib_interpolation_method_missing_fill_count:
+    default: '1'
+    desc: ''
+    ptype: number
+    values: ''
+- grib_interpolation_regular_resolution:
+    default: '0.1'
+    desc: Sets the plotting resolution, in degrees, of GRIB fields encoded in space_view
+      projection. The default is 0.1.
+    ptype: number
+    values: ''
+- contour_sample_x_interval:
+    default: '2'
+    desc: ''
+    ptype: number
+    values: ''
+- contour_sample_y_interval:
+    default: '2'
+    desc: ''
+    ptype: number
+    values: ''

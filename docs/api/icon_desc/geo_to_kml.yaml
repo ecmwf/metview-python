@@ -1,0 +1,24 @@
+return: :class:`Request`
+summary: Converts :class:`Geopoints` into KML format.
+oneliner: Converts :class:`Geopoints` into KML format.
+params:
+- geopoints:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- output_mode:
+    default: poi
+    desc: ''
+    ptype: str
+    values: poi/tra/pol
+- output_format:
+    default: kml
+    desc: ''
+    ptype: str
+    values: kmz/kml
+- area:
+    default: '90'
+    desc: ''
+    ptype: float or list[float]
+    values: ''

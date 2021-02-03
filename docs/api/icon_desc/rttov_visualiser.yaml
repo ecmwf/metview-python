@@ -1,0 +1,24 @@
+return: :class:`Request`
+summary: rst
+oneliner: Visualises the results of the RTTOV (Radiative Transfer for TOVS) model.
+params:
+- rttov_plot_type:
+    default: channel_tb_graph
+    desc: ''
+    ptype: str
+    values: channel_tb_graph/jacobian_channel_curve/jacobian_matrix
+- rttov_data:
+    default: ''
+    desc: ''
+    ptype: str
+    values: ''
+- rttov_filename:
+    default: 'off'
+    desc: ''
+    ptype: str
+    values: ''
+- rttov_jacobian_channel:
+    default: '1'
+    desc: ''
+    ptype: number
+    values: ''
