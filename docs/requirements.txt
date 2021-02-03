@@ -1,5 +1,4 @@
 # These are the requirements for readthedoc
 nbsphinx
 sphinx_rtd_theme
-yamlinclude
-
+pyyaml-include
