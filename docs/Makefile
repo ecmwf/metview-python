@@ -20,6 +20,7 @@ $(SUBDIRS):
 	$(MAKE) -C $@ $(MAKECMDGOALS)
 
 metview: $(SUBDIRS)
+	@pwd
 	@ls -lR _static
 
 # Catch-all target: route all unknown targets to Sphinx using the new
