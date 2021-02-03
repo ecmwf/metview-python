@@ -36,6 +36,8 @@ class MvIncludeCode(Directive):
         # Get the path to the python example file. All the paths have to be
         # relative to "docs"
         f_path = self.arguments[0]
+        print(f"cwd={os.getcwd()}")
+        print(f"path={f_path}")
         if f_path:
             if f_path[0] == "/":
                 f_path = f_path[1:]
