@@ -13,6 +13,7 @@
 
 import datetime
 import os
+import subprocess
 import sys
 
 import sphinx_rtd_theme
@@ -80,3 +81,15 @@ html_logo = "_static/metview.png"
 rst_prolog = """
 .. role:: mval
 """
+
+def config_inited_handler(app, source):
+    print('do something here...')
+
+    try:
+        r = subprocess.run(["sh", "pre_build_rtd.sh"], check=True)
+    except Exception as e:
+        print_red(f"  Failed to run script: {e}")
+    
+
+def setup(app):
+    app.connect('config-inited', config_inited_handler)
