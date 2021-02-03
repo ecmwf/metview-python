@@ -71,7 +71,7 @@ html_theme = "sphinx_rtd_theme"
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static"]
+html_static_path = ["_static", "_static/gallery"]
 
 html_css_files = ["css/custom_style.css", "css/gallery.css"]
 
@@ -86,7 +86,8 @@ def setup(app):
     # this is a pre-build step to generate RST files with running "make metview". 
     # We need to put this code here because the Makefile is not run by
     # Read The Docs (it directly runs sphinx-build instead!).  
-    try:
-        r = subprocess.run(["make", "metview"], check=True)
-    except Exception as e:
-        print(f"  Failed to preprocess step. {e}")
+    if os.environ.get("READTHEDOCS", "") != "":
+        try:
+            r = subprocess.run(["make", "metview"], check=True)
+        except Exception as e:
+            print(f"  Failed to preprocess step. {e}")
