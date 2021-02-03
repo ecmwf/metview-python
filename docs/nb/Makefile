@@ -1,4 +1,5 @@
-.PHONY: all html clean
+.DEFAULT_GOAL := html
+.PHONY: all html metview clean
 
 SRCS := $(wildcard *.py ../examples/*.ipynb)
 
@@ -9,9 +10,9 @@ BACKREF_TARGET = ../gen_files/gallery_backref/mcont.rst
 $(BACKREF_TARGET): $(SRCS)
 	python3 build_nb.py
 
-html: $(BACKREF_TARGET)
-
-all: html
+metview: $(BACKREF_TARGET)
+html: metview
+all: metview
 
 clean:
 	@echo "cleaning ../gen_files/nb_backref"

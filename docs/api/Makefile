@@ -16,9 +16,9 @@ $(ICON_TARGET): $(ICON_SRCS)
 $(TOC_TARGET): $(TOC_SRCS)
 	python3 build_toc.py
 
-html: $(ICON_TARGET) $(TOC_TARGET)
-
-all: html
+metview: $(ICON_TARGET) $(TOC_TARGET)
+html: metview
+all: metview
 
 clean:
 	@echo "cleaning ../gen_files/icon_functions"

@@ -82,14 +82,11 @@ rst_prolog = """
 .. role:: mval
 """
 
-def env_before_read_docs_handler(app, env, docnames):
-    print('do something here...')
-
-    try:
-        r = subprocess.run(["sh", "pre_build_rtd.sh"], check=True)
-    except Exception as e:
-        print_red(f"  Failed to run script: {e}")
-    
-
 def setup(app):
-    app.connect('env-before-read-docs', env_before_read_docs_handler)
+    # this is a pre-build step to generate RST files with running "make metview". 
+    # We need to put this code here because the Makefile is not run by
+    # Read The Docs (it directly runs sphinx-build instead!).  
+    try:
+        r = subprocess.run(["make", "metview"], check=True)
+    except Exception as e:
+        print(f"  Failed to preprocess step. {e}")

@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := html
-.PHONY: all html clean
+.PHONY: all html metview clean
 
 SRCS := $(wildcard *.py gallery.yaml)
 
@@ -14,8 +14,8 @@ $(GALLERY_TARGET): $(SRCS)
 $(BACKREF_TARGET): $(SRCS)
 	python3 build_gallery.py
 
-html: $(GALLERY_TARGET) $(BACKREF_TARGET)
-
+metview: $(GALLERY_TARGET) $(BACKREF_TARGET)
+html: metview
 all: html
 
 clean:
