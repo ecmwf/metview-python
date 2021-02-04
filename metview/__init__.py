@@ -29,3 +29,6 @@ if len(sys.argv) != 2 or sys.argv[0] != "-m" or sys.argv[1] != "selfcheck":
 
     # Remove "_bindings" from the public API.
     del _bindings
+
+
+from . import gallery

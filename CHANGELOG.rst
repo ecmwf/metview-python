@@ -4,7 +4,7 @@ Changelog for Metview's Python interface
 
 1.6.0
 ------------------
-- added new function download_gallery_data() to download Gallery example data files
+- added new function metview.gallery.load_dataset() to download Gallery example data files
 - added write(filename) method for classes Fieldset, Geopoints, GeopointSet, Bufr and NetCDF
 - added ability to construct a Fieldset from a list of Fieldsets: Fieldset([f1, f2, f3])
 - added metzoom function (for the future)
