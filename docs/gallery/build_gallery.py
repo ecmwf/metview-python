@@ -54,7 +54,6 @@ ITEM_TEMPLATE = """
 
 # template for a gallery example page
 PAGE_TEMPLATE = """
-:orphan:
 
 .. only:: html
 
