@@ -41,7 +41,7 @@ Metview was developed as part of a cooperation between ECMWF and INPE (Brazilian
 
    gen_files/gallery/index
    notebook_gallery
-   debug/advection
+   debug/rst/advection
    gen_files/gallery/advection
 
 .. toctree::

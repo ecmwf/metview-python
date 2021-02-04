@@ -15,8 +15,6 @@ $(BACKREF_TARGET): $(SRCS)
 	python3 build_gallery.py
 
 metview: $(GALLERY_TARGET) $(BACKREF_TARGET)
-	@cp ../gen_files/gallery/advection.rst ../debug/
-
 html: metview
 all: html
 
