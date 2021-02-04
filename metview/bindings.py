@@ -1136,19 +1136,3 @@ def setoutput(*args, **kwargs):
     else:
         plot.plot_to_jupyter = False
         met_setoutput(*args)
-
-
-# -----------------------------------------------------------------------------
-#                        Other user-visible utiliy functions
-# -----------------------------------------------------------------------------
-
-
-def download_gallery_data(filename):
-    base_url = "http://download.ecmwf.org/test-data/metview/gallery/"
-    try:
-        d = download(url=base_url + filename, target=filename)
-        return d
-    except:
-        raise Exception(
-            "Could not download file " + filename + " from the download server"
-        )
