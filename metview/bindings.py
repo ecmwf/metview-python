@@ -1016,7 +1016,6 @@ def bind_functions(namespace, module_name=None):
     namespace["metzoom"] = metzoom
     namespace["version_info"] = version_info
     namespace["dataset_to_fieldset"] = dataset_to_fieldset
-    namespace["download_gallery_data"] = download_gallery_data
 
     namespace["Fieldset"] = Fieldset
     namespace["Request"] = Request
