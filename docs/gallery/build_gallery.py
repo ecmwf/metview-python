@@ -99,7 +99,7 @@ def print_green(t):
 
 
 def to_rst_path(f):
-    pos = f.find("docs/")
+    pos = f.rfind("docs/")
     return f[(pos + 4) :]
 
 
