@@ -20,7 +20,7 @@ filename = "ens_prof.grib"
 if mv.exist(filename):
     data = mv.read(filename)
 else:
-    data = mv.download_gallery_data(filename)
+    data = mv.gallery.load_dataset(filename)
 
 # define profile location
 location = [17.51, -7.04]

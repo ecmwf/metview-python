@@ -19,7 +19,7 @@ filename = "2m_temperature.grib"
 if mv.exist(filename):
     f = mv.read(filename)
 else:
-    f = mv.download_gallery_data(filename)
+    f = mv.gallery.load_dataset(filename)
 
 # define coastlines with sea shading but no land shading.
 # We set map_layer_mode="foreground" to make the

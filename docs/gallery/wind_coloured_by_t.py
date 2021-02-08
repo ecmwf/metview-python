@@ -19,7 +19,7 @@ filename = "fc_ml.grib"
 if mv.exist(filename):
     fs = mv.read(filename)
 else:
-    fs = mv.download_gallery_data(filename)
+    fs = mv.gallery.load_dataset(filename)
 
 # define model level to read
 level = 96  # around 500 hPa

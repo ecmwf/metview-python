@@ -25,14 +25,14 @@ filename = "t850.grb"
 if mv.exist(filename):
     my_data1 = mv.read(filename)
 else:
-    my_data1 = mv.download_gallery_data(filename)
+    my_data1 = mv.gallery.load_dataset(filename)
 
 # read the input grib geopotential
 filename = "z500.grb"
 if mv.exist(filename):
     my_data2 = mv.read(filename)
 else:
-    my_data2 = mv.download_gallery_data(filename)
+    my_data2 = mv.gallery.load_dataset(filename)
 
 # set up the geographical view
 my_view = mv.geoview(

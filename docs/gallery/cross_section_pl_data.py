@@ -24,7 +24,7 @@ filename = "t_fc24.grib"
 if mv.exist(filename):
     t_fc = mv.read(filename)
 else:
-    t_fc = mv.download_gallery_data(filename)
+    t_fc = mv.gallery.load_dataset(filename)
 
 # set up the view to plot the data into
 cross_section_view = mv.mxsectview(

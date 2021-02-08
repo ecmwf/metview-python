@@ -20,7 +20,7 @@ filename = "madis-maritime.nc"
 if mv.exist(filename):
     nc = mv.read(filename)
 else:
-    nc = mv.download_gallery_data(filename)
+    nc = mv.gallery.load_dataset(filename)
 
 # This netCDF has the following structure:
 #

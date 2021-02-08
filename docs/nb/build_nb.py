@@ -10,10 +10,14 @@
 
 import glob
 import json
+import logging
 import os
 from pathlib import Path
 import re
 import sys
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+LOG = logging.getLogger(__name__)
 
 # define and create paths
 NB_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -45,6 +49,18 @@ Most/all of the :ref:`gallery_index` examples demonstrate the use of this functi
 """
 
 OBJ_METHODS = ["to_dataset", "to_dataframe"]
+
+
+def format_red(t):
+    return "\033[91m {}\033[00m".format(t)
+
+
+def format_green(t):
+    return "\033[92m {}\033[00m".format(t)
+
+
+def log_generated(path):
+    LOG.info("  {} [{}]".format(path, format_green("generated")))
 
 
 class BackReference:
@@ -88,6 +104,7 @@ class BackReference:
                     for item in fn_items:
                         f.write(f"   /examples/{item.name}\n")
                 f.write(CLEAR_BLOCK)
+            log_generated(output)
 
 
 BACKREF = BackReference()
@@ -124,16 +141,17 @@ class NbItem:
 
 
 def main():
+    LOG.info("Generate notebook backreference pages:")
+    
     items = []
     for script in glob.glob(os.path.join(EXAMPLES_DIR, "*.ipynb")):
-        print(f"processing: {script}")
+        LOG.info(f"  processing: {script}")
         item = NbItem(script)
         items.append(item)
 
     # # generate the method backreference pages (mini galleries)
-    print("Build backreference pages ...")
     BACKREF.build()
-    BACKREF.print()
+    # BACKREF.print()
 
 
 if __name__ == "__main__":

@@ -48,7 +48,7 @@ else:
     if mv.exist(filename):
         fs_in = mv.read(filename)
     else:
-        fs_in = mv.download_gallery_data(filename)
+        fs_in = mv.gallery.load_dataset(filename)
     fs_ml = mv.read(data=fs_in, levtype="ml")
     zs = mv.read(data=fs_ml, param="z")
     blh = mv.read(data=fs_in, param="blh")

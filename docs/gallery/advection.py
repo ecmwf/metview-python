@@ -19,7 +19,7 @@ filename = "advection_850.grib"
 if mv.exist(filename):
     f = mv.read(filename)
 else:
-    f = mv.download_gallery_data(filename)
+    f = mv.gallery.load_dataset(filename)
 
 # extract fields
 q = mv.read(data=f, param="q")

@@ -19,7 +19,7 @@ filename = "sandy_pl.grib"
 if mv.exist(filename):
     g = mv.read(filename)
 else:
-    g = mv.download_gallery_data(filename)
+    g = mv.gallery.load_dataset(filename)
 
 # read wind fields and z500
 f_uv = mv.read(data=g, param=["u", "v"])

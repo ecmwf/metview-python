@@ -24,7 +24,7 @@ filename = "t_ts.grib"
 if mv.exist(filename):
     t_ts = mv.read(filename)
 else:
-    t_ts = mv.download_gallery_data(filename)
+    t_ts = mv.gallery.load_dataset(filename)
 
 # set up the view to plot the data into
 # we will compute the average value along North/South lines over the

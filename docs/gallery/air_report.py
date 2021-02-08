@@ -19,7 +19,7 @@ filename = "airep.geo"
 if mv.exist(filename):
     my_data = mv.read(filename)
 else:
-    my_data = mv.download_gallery_data(filename)
+    my_data = mv.gallery.load_dataset(filename)
 
 # set up the data symbol and colour
 my_symbol = mv.msymb(

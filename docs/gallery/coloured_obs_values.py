@@ -18,7 +18,7 @@ filename = "temp.bufr"
 if mv.exist(filename):
     temp = mv.read(filename)
 else:
-    temp = mv.download_gallery_data(filename)
+    temp = mv.gallery.load_dataset(filename)
 
 # filter just the 500 hPa temperature from the obs data (Geopoints)
 gpt = mv.obsfilter(

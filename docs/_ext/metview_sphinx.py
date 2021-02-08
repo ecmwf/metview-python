@@ -35,13 +35,10 @@ class MvIncludeCode(Directive):
     def run(self):
         # Get the path to the python example file. All the paths have to be
         # relative to "docs"
-        f_path = self.arguments[0]
-        # print(f"cwd={os.getcwd()}")
-        # h= os.environ.get("HOME", "")
-        # print(f"HOME={h}")
-        print(f"path={f_path}")
+        f_path = self.arguments[0] 
+        # print(f"path={f_path}")
         f_path = self.resolve_path(f_path)
-        print(f"  -> path={f_path}")
+        # print(f"  -> path={f_path}")
         if f_path == "":
             raise self.warning(f"{self.name} empty path specified.")
             return []

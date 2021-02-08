@@ -87,12 +87,7 @@ def setup(app):
     # We need to put this code here because the Makefile is not run by
     # Read The Docs (it directly runs sphinx-build instead!).  
     if os.environ.get("READTHEDOCS", "") != "":
-        before = {**(os.environ)}
         try:
             r = subprocess.run(["make", "metview"], check=True)
         except Exception as e:
-            print(f"  Failed to preprocess step. {e}")
-        after = {**(os.environ)}
-        for k in before.keys():
-            if before[k] != after[k]:
-                print(f"diff {k} {before[k]} != {after[k]}")
+            print(f"  Failed to run preprocess step = \"make metview\". {e}")

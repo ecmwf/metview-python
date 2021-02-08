@@ -29,7 +29,7 @@ filename = "wgust_ens.grib"
 if mv.exist(filename):
     g = mv.read(filename)
 else:
-    g = mv.download_gallery_data(filename)
+    g = mv.gallery.load_dataset(filename)
 
 # compute CDF and build curve for each timestep
 steps = [78, 84, 90]

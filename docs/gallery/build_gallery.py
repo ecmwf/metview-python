@@ -10,6 +10,7 @@
 
 import argparse
 import glob
+import logging
 import os
 from pathlib import Path
 import re
@@ -19,6 +20,9 @@ import subprocess
 # from colorama import Fore
 # from termcolor import colored
 import yaml
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+LOG = logging.getLogger(__name__)
 
 # define and create paths
 GALLERY_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -90,12 +94,20 @@ LINK_BACKREF = """
 Most/all of the :ref:`gallery_index` examples demonstrate the use of this function.
 """
 
-def print_red(t):
-    print("\033[91m {}\033[00m".format(t))
+def format_red(t):
+    return "\033[91m {}\033[00m".format(t)
 
 
-def print_green(t):
-    print("\033[92m {}\033[00m".format(t))
+def format_orange(t):
+    return "\033[91m {}\033[00m".format(t)
+
+
+def format_green(t):
+    return "\033[92m {}\033[00m".format(t)
+
+
+def log_generated(path):
+    LOG.info("  {} [{}]".format(path, format_green("generated")))
 
 
 def to_rst_path(f):
@@ -114,7 +126,7 @@ class BackReference:
             "pdf_output",
             "setoutput",
             "exist",
-            "download_gallery_data",
+            "gallery.load_dataset",
         ]
 
     def add(self, vals, item):
@@ -146,7 +158,7 @@ class BackReference:
                     for item in fn_items:
                         item.build_item(f)
                 f.write(CLEAR_BLOCK)
-
+            log_generated(output)
 
 BACKREF = BackReference()
 
@@ -163,51 +175,20 @@ class GalleryItem:
 
         self.label = "gallery_" + self.name
         self.f_pdf = self.name + ".pdf"
-        self.f_png = os.path.join(PNG_DIR, self.name + ".png")
-        self.f_png = os.path.join(PNG_DIR, self.name + ".png")
+        self.f_png = os.path.join(PNG_DIR, self.name + ".png")       
         self.f_thumbnail = os.path.join(PNG_DIR, self.name + "_thumb.png")
-
-        # print(f"  title={self.title}")
 
         if do_png:
             self.generate_png()
-
-        # do_png = True
-        # if os.path.isfile(self.f_png):
-        #     src_mod_time = os.path.getmtime(self.script)
-        #     target_mod_time = os.path.getmtime(self.f_png)
-        #     if src_mod_time <= target_mod_time:
-        #         do_png = False
-
-        # # generate png
-        # if do_png:
-        #     print("  making PDF ...")
-        #     try:
-        #         r = subprocess.run(["python3", self.script_name], check=True)
-        #     except Exception as e:
-        #         print_red(f"  Failed to run script: {e}")
-        #         self.status = False
-
-        #     if os.path.exists(self.f_pdf):
-        #         print("  making PNG ...")
-        #         try:
-        #             cmd = f"convert -trim -border 8x8 -bordercolor white -depth 8 {self.f_pdf} {self.f_png}"
-        #             r = subprocess.run(cmd.split(" "), check=True)
-        #         except Exception as e:
-        #             print_red(f"  Failed to convert PDF to PNG: {e}")
-        #             self.status = False
-
-        # if not os.path.exists(self.f_thumbnail) or do_png:
-        #     print("  making thumbnail PNG ...")
-        #     try:
-        #         cmd = f"convert -trim -border 8x8 -bordercolor white -depth 8 {self.f_pdf} -resize 22% {self.f_thumbnail}"         
-        #         r = subprocess.run(cmd.split(" "), check=True)
-        #     except Exception as e:
-        #         print_red(f"  Failed to resize PNG: {e}")
-        #         self.status = False
-
-        if self.status:
-            print_green("  --> DONE")
+            if self.status:
+                log_generated(self.f_png)
+                log_generated(self.f_thumbnail)
+        else:
+            if os.path.exists(self.f_png) and os.path.exists(self.f_thumbnail):
+                LOG.info("  PNGs are already generated")
+            else:
+                LOG.ERROR(format_red(" PNGs need to be generated"))
+                self.status = False
 
         self.build_page()
 
@@ -221,29 +202,29 @@ class GalleryItem:
 
         # generate png
         if do_png:
-            print("  making PDF ...")
+            LOG.info("  making PDF ...")
             try:
                 r = subprocess.run(["python3", self.script_name], check=True)
             except Exception as e:
-                print_red(f"  Failed to run script: {e}")
+                LOG.error(format_red(f" Failed to run script: {e}"))
                 self.status = False
 
             if os.path.exists(self.f_pdf):
-                print("  making PNG ...")
+                LOG.info("  making PNG ...")
                 try:
                     cmd = f"convert -trim -border 8x8 -bordercolor white -depth 8 {self.f_pdf} {self.f_png}"
                     r = subprocess.run(cmd.split(" "), check=True)
                 except Exception as e:
-                    print_red(f"  Failed to convert PDF to PNG: {e}")
+                    LOG.error(format_red(f" Failed to convert PDF to PNG: {e}"))
                     self.status = False
 
         if not os.path.exists(self.f_thumbnail) or do_png:
-            print("  making thumbnail PNG ...")
+            LOG.info("  making thumbnail PNG ...")
             try:
                 cmd = f"convert -trim -border 8x8 -bordercolor white -depth 8 {self.f_pdf} -resize 22% {self.f_thumbnail}"         
                 r = subprocess.run(cmd.split(" "), check=True)
             except Exception as e:
-                print_red(f"  Failed to resize PNG: {e}")
+                LOG.error(format_red(f" Failed to resize PNG: {e}"))
                 self.status = False
 
     def parse(self):
@@ -280,6 +261,7 @@ class GalleryItem:
                     to_rst_path(self.script),
                 )
             )
+        log_generated(output)
 
 
 def build_gallery(r):
@@ -310,7 +292,7 @@ Gallery
             )
             for item in gr["items"]:
                 item.build_item(f)
-
+    log_generated(output)
 
 def main():
     parser = argparse.ArgumentParser()
@@ -322,6 +304,7 @@ def main():
     r = []
 
     # generate the individual example pages
+    LOG.info("Generate gallery pages:")
     f = open(os.path.join(GALLERY_DIR, "gallery.yaml"), "r")
     conf = yaml.load(f, Loader=yaml.FullLoader)
     total = sum([len(conf[x]["examples"]) for x in conf])
@@ -330,7 +313,7 @@ def main():
     for group, item in conf.items():
         gr_item = {"title": item["title"], "desc": item.get("desc", ""), "items": []}
         for name in item["examples"]:
-            print(f"[{cnt}/{total} {name}]")
+            LOG.info(f"[{cnt}/{total}] {name}")
             script = os.path.join(GALLERY_DIR, name + ".py")
             item = GalleryItem(script, do_png=do_png)
             gr_item["items"].append(item)
@@ -340,18 +323,18 @@ def main():
         r.append(gr_item)
 
     if len(item_failed) == 0:
-        print_green(f"{total}/{total} examples were generated")
+        LOG.info(format_green(f"{total}/{total} examples were generated"))
     else:
-        print_red(f"{total-len(item_failed)}/{total} examples were generated, {len(item_failed)}/{total} examples failed:")
+        LOG.error(format_red(f"{total-len(item_failed)}/{total} examples were generated, {len(item_failed)}/{total} examples failed:"))
         for v in item_failed:
-            print_red(f"  {v.name}")
+            LOG.error(format_red(f"  {v.name}"))
 
     # generate the main gallery page
-    print("Build gallery index page ...")
+    LOG.info("Generate gallery index page:")
     build_gallery(r)
 
     # generate the method backreference pages (mini galleries)
-    print("Build backreference pages ...")
+    LOG.info("Generate gallery backreference pages:")
     BACKREF.build()
     # BACKREF.print()
 

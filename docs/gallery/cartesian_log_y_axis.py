@@ -19,7 +19,7 @@ filename = "ozone_pl.grib"
 if mv.exist(filename):
     g = mv.read(filename)
 else:
-    g = mv.download_gallery_data(filename)
+    g = mv.gallery.load_dataset(filename)
 
 # extract the values at a point, and the vertical levels
 levels = mv.grib_get_double(g, "level")

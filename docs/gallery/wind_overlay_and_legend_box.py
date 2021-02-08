@@ -19,7 +19,7 @@ filename = "sandy_pl.grib"
 if mv.exist(filename):
     f = mv.read(filename)
 else:
-    f = mv.download_gallery_data(filename)
+    f = mv.gallery.load_dataset(filename)
 
 # filter wind on tow pressure levels
 f1 = mv.read(data=f, param=["u", "v"], levelist=850)

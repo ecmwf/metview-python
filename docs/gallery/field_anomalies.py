@@ -23,7 +23,7 @@ filename = "1month_anomaly_Global_ea_2t_201805_v02.grib"
 if mv.exist(filename):
     diff = mv.read(filename)
 else:
-    diff = mv.download_gallery_data(filename)
+    diff = mv.gallery.load_dataset(filename)
 
 # compute the absolute maximum value and compute a scale for the contouring
 maxdiff = mv.maxvalue(abs(diff))

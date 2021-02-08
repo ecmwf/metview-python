@@ -29,7 +29,7 @@ else:
     if mv.exist(filename):
         data = mv.read(filename)
     else:
-        data = mv.download_gallery_data(filename)
+        data = mv.gallery.load_dataset(filename)
 
 split_below = mv.mcont(
     contour_line_style="dash",

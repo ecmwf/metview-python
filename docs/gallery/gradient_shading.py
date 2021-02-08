@@ -33,7 +33,7 @@ else:
     if mv.exist(filename):
         t = mv.read(filename)
     else:
-        t = mv.download_gallery_data(filename)
+        t = mv.gallery.load_dataset(filename)
 
 # define coastlines
 coast = mv.mcoast(map_grid="off", map_label="off")

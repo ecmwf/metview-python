@@ -28,14 +28,14 @@ filename = "fc_ml.grib"
 if mv.exist(filename):
     g = mv.read(filename)
 else:
-    g = mv.download_gallery_data(filename)
+    g = mv.gallery.load_dataset(filename)
 
 # read the LNSP file
 filename = "lnsp.grib"
 if mv.exist(filename):
     lnsp_data = mv.read(filename)
 else:
-    lnsp_data = mv.download_gallery_data(filename)
+    lnsp_data = mv.gallery.load_dataset(filename)
 
 
 # define profile location

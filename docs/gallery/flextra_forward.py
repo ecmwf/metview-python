@@ -22,7 +22,7 @@ filename = "flextra_res_normal.txt"
 if mv.exist(filename):
     f = mv.read(filename)
 else:
-    f = mv.download_gallery_data(filename)
+    f = mv.gallery.load_dataset(filename)
 
 # define visualiser
 vis = mv.flextra_visualiser(flextra_data=f)

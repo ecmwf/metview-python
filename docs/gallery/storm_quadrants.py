@@ -17,7 +17,7 @@ import metview as mv
 # read CSV file with the track positions and quadrant sizes in (km)
 filename = "dorian_track.csv"
 if not mv.exist(filename):
-    mv.download_gallery_data(filename)
+    mv.gallery.load_dataset(filename)
 
 tbl = mv.read_table(
     table_delimiter=" ",

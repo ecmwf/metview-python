@@ -19,7 +19,7 @@ filename = "amsua.odb"
 if mv.exist(filename):
     amsua_odb = mv.read(filename)
 else:
-    amsua_odb = mv.download_gallery_data(filename)
+    amsua_odb = mv.gallery.load_dataset(filename)
 
 # define channel
 channel = 5  # 5,6

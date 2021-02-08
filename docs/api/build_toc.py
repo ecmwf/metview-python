@@ -29,6 +29,18 @@ STATIC_DIR = os.path.join(ROOT_DIR, "_static")
 Path(TOC_DIR).mkdir(parents=True, exist_ok=True)
 
 
+def format_red(t):
+    return "\033[91m {}\033[00m".format(t)
+
+
+def format_green(t):
+    return "\033[92m {}\033[00m".format(t)
+
+
+def log_generated(path):
+    LOG.info("  {} [{}]".format(path, format_green("generated")))
+
+
 dtypes = {
     "fieldsets": ":class:`Fieldset`",
     "fieldset": ":class:`Fieldset`",
@@ -178,6 +190,8 @@ class TocBuilder:
         with open(page.rst, "w") as f:
             f.write(txt)
 
+        log_generated(page.rst)
+
     def build_icon_page(self):
         txt = ""
 
@@ -216,6 +230,8 @@ This is the list of the functions that are represented as an icon in Metviews' u
         with open(path, "w") as f:
             f.write(txt)
 
+        log_generated(path)
+
     def print_orphan(self):
         print("SCRIPT functions without group")
         cnt = 0
@@ -243,6 +259,7 @@ def load_page_conf():
 
 
 def main():
+    LOG.info("Generate function table pages:")
     load_page_conf()
     builder = TocBuilder()
     for _, t in PAGES.items():

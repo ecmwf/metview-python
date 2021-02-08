@@ -20,7 +20,7 @@ filename = "wprof.odb"
 if mv.exist(filename):
     db = mv.read(filename)
 else:
-    db = mv.download_gallery_data(filename)
+    db = mv.gallery.load_dataset(filename)
 
 # define station id
 statid = "95759"

@@ -19,7 +19,7 @@ filename = "t2m_td.grib"
 if mv.exist(filename):
     both_t = mv.read(filename)
 else:
-    both_t = mv.download_gallery_data(filename)
+    both_t = mv.gallery.load_dataset(filename)
 
 # filter the t2m and dewpoint t into separate fieldsets (and K->C)
 t2m = mv.read(data=both_t, param="2t") - 273.15

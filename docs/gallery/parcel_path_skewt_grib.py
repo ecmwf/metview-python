@@ -19,7 +19,7 @@ filename = "thermo_profile.grib"
 if mv.exist(filename):
     g = mv.read(filename)
 else:
-    g = mv.download_gallery_data(filename)
+    g = mv.gallery.load_dataset(filename)
 
 # extract thermo profile
 prof = mv.thermo_grib(coordinates=[5, 0], data=g)

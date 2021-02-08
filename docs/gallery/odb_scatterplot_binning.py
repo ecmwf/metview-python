@@ -35,7 +35,7 @@ else:
     if mv.exist(filename):
         db = mv.read(filename)
     else:
-        db = mv.download_gallery_data(filename)
+        db = mv.gallery.load_dataset(filename)
 
 # Define binning - with 100 bins both in the horizontal and vertical axes
 bin_100 = mv.binning(binning_x_count=100, binning_y_count=100)

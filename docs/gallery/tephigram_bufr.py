@@ -19,7 +19,7 @@ filename = "temp.bufr"
 if mv.exist(filename):
     b = mv.read(filename)
 else:
-    b = mv.download_gallery_data(filename)
+    b = mv.gallery.load_dataset(filename)
 
 # extract thermo profile for a given station
 prof = mv.thermo_bufr(data=b, station=mv.stations(search_key="ident", ident=96481))

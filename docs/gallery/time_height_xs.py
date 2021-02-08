@@ -19,7 +19,7 @@ filename = "joachim_pl.grib"
 if mv.exist(filename):
     data = mv.read(filename)
 else:
-    data = mv.download_gallery_data(filename)
+    data = mv.gallery.load_dataset(filename)
 
 # the hovmoeller view takes an area as an input.
 # We define the location by shrinking down the area to a point

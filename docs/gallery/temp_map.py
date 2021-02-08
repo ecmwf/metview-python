@@ -19,7 +19,7 @@ filename = "temp.bufr"
 if mv.exist(filename):
     bd = mv.read(filename)
 else:
-    bd = mv.download_gallery_data(filename)
+    bd = mv.gallery.load_dataset(filename)
 
 # define observation plotting - selecting level 250 hPa
 obsp = mv.mobs(

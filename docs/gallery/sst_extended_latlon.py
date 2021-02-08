@@ -19,7 +19,7 @@ filename = "sst.grib"
 if mv.exist(filename):
     sst = mv.read(filename)
 else:
-    sst = mv.download_gallery_data(filename)
+    sst = mv.gallery.load_dataset(filename)
 
 # define contouring
 cont = mv.mcont(contour_automatic_setting="ecmwf", legend="on")

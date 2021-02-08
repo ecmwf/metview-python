@@ -19,7 +19,7 @@ filename = "synop.bufr"
 if mv.exist(filename):
     bd = mv.read(filename)
 else:
-    bd = mv.download_gallery_data(filename)
+    bd = mv.gallery.load_dataset(filename)
 
 # define observation plotting
 obsp = mv.mobs(obs_distance_apart=1.5, obs_size=0.25, obs_ring_size=0.2)

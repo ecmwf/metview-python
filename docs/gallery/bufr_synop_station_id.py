@@ -19,7 +19,7 @@ filename = "synop.bufr"
 if mv.exist(filename):
     bf = mv.read(filename)
 else:
-    bf = mv.download_gallery_data(filename)
+    bf = mv.gallery.load_dataset(filename)
 
 # extract station ids. The problem with SYNOP station id is that it is the
 # combination of two bufr parameters= blockNumber abd stationNumber.

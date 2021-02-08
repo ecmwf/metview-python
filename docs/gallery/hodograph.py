@@ -20,7 +20,7 @@ filename = "temp.bufr"
 if mv.exist(filename):
     b = mv.read(filename)
 else:
-    b = mv.download_gallery_data(filename)
+    b = mv.gallery.load_dataset(filename)
 
 # define station id
 statid = "78583"

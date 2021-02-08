@@ -24,13 +24,13 @@ filename = "vorticity.grib"
 if mv.exist(filename):
     my_vorticity = mv.read(filename)
 else:
-    my_vorticity = mv.download_gallery_data(filename)
+    my_vorticity = mv.gallery.load_dataset(filename)
 
 filename = "wind.grib"
 if mv.exist(filename):
     my_uvwind = mv.read(filename)
 else:
-    my_uvwind = mv.download_gallery_data(filename)
+    my_uvwind = mv.gallery.load_dataset(filename)
 
 # set up the contour for vorticity field
 my_contour = mv.mcont(

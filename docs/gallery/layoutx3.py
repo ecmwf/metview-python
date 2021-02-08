@@ -25,14 +25,14 @@ filename = "t_fc24.grib"
 if mv.exist(filename):
     f24 = mv.read(filename)
 else:
-    f24 = mv.download_gallery_data(filename)
+    f24 = mv.gallery.load_dataset(filename)
 
 # read the 96h forecast GRIB data from file
 filename = "t_fc96.grib"
 if mv.exist(filename):
     f96 = mv.read(filename)
 else:
-    f96 = mv.download_gallery_data(filename)
+    f96 = mv.gallery.load_dataset(filename)
 
 # filter just the 850hPa level
 t_fc24 = mv.read(data=f24, levelist=850)

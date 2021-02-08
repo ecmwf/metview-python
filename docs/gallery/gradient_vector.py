@@ -19,7 +19,7 @@ filename = "t850.grb"
 if mv.exist(filename):
     t = mv.read(filename)
 else:
-    t = mv.download_gallery_data(filename)
+    t = mv.gallery.load_dataset(filename)
 
 # compute gradient
 grad = mv.gradient(t)

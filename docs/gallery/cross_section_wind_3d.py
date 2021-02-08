@@ -19,7 +19,7 @@ filename = "joachim_ml.grib"
 if mv.exist(filename):
     fs = mv.read(filename)
 else:
-    fs = mv.download_gallery_data(filename)
+    fs = mv.gallery.load_dataset(filename)
 
 # define cross section line
 line = [48.32, 1.18, 40.43, 2.44]

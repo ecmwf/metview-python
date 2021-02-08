@@ -19,7 +19,7 @@ filename = "z850_ens.grib"
 if mv.exist(filename):
     z = mv.read(filename)
 else:
-    z = mv.download_gallery_data(filename)
+    z = mv.gallery.load_dataset(filename)
 
 # define contour line for perturbed members (pf)
 cont_pf = mv.mcont(

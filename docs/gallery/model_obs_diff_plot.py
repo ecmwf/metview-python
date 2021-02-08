@@ -29,13 +29,13 @@ else:
     if mv.exist(filename):
         t2m_fc48 = mv.read(filename)
     else:
-        t2m_fc48 = mv.download_gallery_data(filename)
+        t2m_fc48 = mv.gallery.load_dataset(filename)
 
     filename = "t2m_obs.bufr"
     if mv.exist(filename):
         synop = mv.read(filename)
     else:
-        synop = mv.download_gallery_data(filename)
+        synop = mv.gallery.load_dataset(filename)
 
 
 # filter just the 2m temperature from the obs data (Geopoints)

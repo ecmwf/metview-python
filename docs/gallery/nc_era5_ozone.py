@@ -19,7 +19,7 @@ filename = "era5_ozone_1999.nc"
 if mv.exist(filename):
     nc = mv.read(filename)
 else:
-    nc = mv.download_gallery_data(filename)
+    nc = mv.gallery.load_dataset(filename)
 
 # this NetCDF data has the following structure:
 #

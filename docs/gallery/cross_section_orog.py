@@ -19,7 +19,7 @@ filename = "fc_ml.grib"
 if mv.exist(filename):
     fs = mv.read(filename)
 else:
-    fs = mv.download_gallery_data(filename)
+    fs = mv.gallery.load_dataset(filename)
 
 # read temperature and scale it to C
 t = mv.read(data=fs, param="t")

@@ -33,7 +33,7 @@ else:
     if mv.exist(filename):
         t_and_r = mv.read(filename)
     else:
-        t_and_r = mv.download_gallery_data(filename)
+        t_and_r = mv.gallery.load_dataset(filename)
 
 # filter t and r into separate fieldsets
 t = mv.read(data=t_and_r, param="t")

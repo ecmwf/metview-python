@@ -54,7 +54,7 @@ else:
     if mv.exist(filename):
         f_o3 = mv.read(filename)
     else:
-        f_o3 = mv.download_gallery_data(filename)
+        f_o3 = mv.gallery.load_dataset(filename)
 
 # ---------------------------
 # Cross section

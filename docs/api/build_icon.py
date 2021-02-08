@@ -28,6 +28,18 @@ ICON_DIR = os.path.join(GEN_DIR, "icon_functions")
 Path(ICON_DIR).mkdir(parents=True, exist_ok=True)
 
 
+def format_red(t):
+    return "\033[91m {}\033[00m".format(t)
+
+
+def format_green(t):
+    return "\033[92m {}\033[00m".format(t)
+
+
+def log_generated(path):
+    LOG.info("  {} [{}]".format(path, format_green("generated")))
+
+
 # yaml loader implementing "include"
 class Loader(yaml.SafeLoader):
     def __init__(self, stream):
@@ -319,10 +331,12 @@ class IconDocBuilder:
             path_out = os.path.join(ICON_DIR, f"{name}.rst")
             with open(path_out, "w") as f_out:
                 f_out.write(txt)
-                LOG.info(f"{path_out} [generated]")
+            log_generated(path_out)
 
 
 def main():
+    LOG.info("Generate icon documentation pages:")
+
     # create builder
     builder = IconDocBuilder()
 

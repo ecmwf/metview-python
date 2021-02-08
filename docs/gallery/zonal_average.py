@@ -19,7 +19,7 @@ filename = "avg_tuv.grib"
 if mv.exist(filename):
     g = mv.read(filename)
 else:
-    g = mv.download_gallery_data(filename)
+    g = mv.gallery.load_dataset(filename)
 
 # filter u (zonal wind component) and t
 u = mv.read(data=g, param="u")

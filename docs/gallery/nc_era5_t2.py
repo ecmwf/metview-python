@@ -19,7 +19,7 @@ filename = "era5_2000_aug.nc"
 if mv.exist(filename):
     nc = mv.read(filename)
 else:
-    nc = mv.download_gallery_data(filename)
+    nc = mv.gallery.load_dataset(filename)
 
 
 # our NetCDF data is CF-compliant and has the following

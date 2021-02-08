@@ -19,7 +19,7 @@ filename = "wgust_ens.grib"
 if mv.exist(filename):
     g = mv.read(filename)
 else:
-    g = mv.download_gallery_data(filename)
+    g = mv.gallery.load_dataset(filename)
 
 # filter out a timestep
 wg = mv.read(data=g, step=78)

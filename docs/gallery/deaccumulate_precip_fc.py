@@ -35,7 +35,7 @@ else:
     if mv.exist(filename):
         prec = mv.read(filename)
     else:
-        prec = mv.download_gallery_data(filename)
+        prec = mv.gallery.load_dataset(filename)
 
 # de-accumulate precipitation by subtracting consecutive steps.
 # The result is accumulated precipitation for 12 h intervals

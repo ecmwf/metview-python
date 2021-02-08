@@ -19,7 +19,7 @@ filename = "sim_ir9.grib"
 if mv.exist(filename):
     g = mv.read(filename)
 else:
-    g = mv.download_gallery_data(filename)
+    g = mv.gallery.load_dataset(filename)
 
 # define automatic contour shading
 shading = mv.mcont(contour_automatic_setting="ecmwf", legend="on")

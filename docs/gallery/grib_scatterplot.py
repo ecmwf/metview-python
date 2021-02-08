@@ -40,7 +40,7 @@ else:
     if mv.exist(filename):
         f = mv.read(filename)
     else:
-        f = mv.download_gallery_data(filename)
+        f = mv.gallery.load_dataset(filename)
 
     an = f[0]
     an_incr = f[1]

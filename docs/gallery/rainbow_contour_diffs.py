@@ -33,13 +33,13 @@ else:
     if mv.exist(filename):
         analysis_data = mv.read(filename)
     else:
-        analysis_data = mv.download_gallery_data(filename)
+        analysis_data = mv.gallery.load_dataset(filename)
 
     filename = "fc_data_for_diff.grib"
     if mv.exist(filename):
         forecast_data = mv.read(filename)
     else:
-        forecast_data = mv.download_gallery_data(filename)
+        forecast_data = mv.gallery.load_dataset(filename)
 
 
 difference = forecast_data - analysis_data

@@ -19,7 +19,7 @@ filename = "2m_temperature.grib"
 if mv.exist(filename):
     data = mv.read(filename)
 else:
-    data = mv.download_gallery_data(filename)
+    data = mv.gallery.load_dataset(filename)
 
 # use the automatic ecCharts style for contouring
 contours = mv.mcont(contour_automatic_setting="ecchart")

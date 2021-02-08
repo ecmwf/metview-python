@@ -19,7 +19,7 @@ filename = "joachim_surf.grib"
 if mv.exist(filename):
     g = mv.read(filename)
 else:
-    g = mv.download_gallery_data(filename)
+    g = mv.gallery.load_dataset(filename)
 
 # define isoline shading for windgust
 wgust_shade = mv.mcont(

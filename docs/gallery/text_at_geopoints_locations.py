@@ -19,7 +19,7 @@ filename = "city_loc.gpt"
 if mv.exist(filename):
     gpt = mv.read(filename)
 else:
-    gpt = mv.download_gallery_data(filename)
+    gpt = mv.gallery.load_dataset(filename)
 
 # define text labels
 txt_lst = ["London", "New York", "Rio de Janeiro", "Tokyo"]

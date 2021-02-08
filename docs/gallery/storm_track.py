@@ -17,7 +17,7 @@ import metview as mv
 # read CSV file with the track positions and dates
 filename = "sandy_track.txt"
 if not mv.exist(filename):
-    mv.download_gallery_data(filename)
+    mv.gallery.load_dataset(filename)
 
 tbl = mv.read_table(
     table_delimiter=" ",
@@ -72,7 +72,7 @@ filename = "sandy_mslp.grib"
 if mv.exist(filename):
     g_mslp = mv.read(filename)
 else:
-    g_mslp = mv.download_gallery_data(filename)
+    g_mslp = mv.gallery.load_dataset(filename)
 
 # define mslp contouring
 cont_mslp = mv.mcont(
