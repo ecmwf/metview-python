@@ -21,7 +21,7 @@ import cffi
 import numpy as np
 
 
-__version__ = "1.6.0"
+__version__ = "1.6.1"
 
 
 def string_from_ffi(s):
@@ -1016,7 +1016,6 @@ def bind_functions(namespace, module_name=None):
     namespace["metzoom"] = metzoom
     namespace["version_info"] = version_info
     namespace["dataset_to_fieldset"] = dataset_to_fieldset
-    namespace["download_gallery_data"] = download_gallery_data
 
     namespace["Fieldset"] = Fieldset
     namespace["Request"] = Request
@@ -1059,7 +1058,7 @@ write = make("write")
 # Python bindings to the resulting dict
 def version_info():
     binary_info = dict(met_version_info())
-    binary_info['metview_python_version'] = __version__
+    binary_info["metview_python_version"] = __version__
     return binary_info
 
 
@@ -1080,10 +1079,10 @@ class Plot:
 
             base, ext = os.path.splitext(tmp)
 
-            self.jupyter_args.update(output_name=base, output_name_first_page_number="off")
-            met_setoutput(
-                png_output(self.jupyter_args)
+            self.jupyter_args.update(
+                output_name=base, output_name_first_page_number="off"
             )
+            met_setoutput(png_output(self.jupyter_args))
             met_plot(*args)
 
             image = Image(tmp)
@@ -1136,16 +1135,3 @@ def setoutput(*args, **kwargs):
     else:
         plot.plot_to_jupyter = False
         met_setoutput(*args)
-
-
-# -----------------------------------------------------------------------------
-#                        Other user-visible utiliy functions
-# -----------------------------------------------------------------------------
-
-def download_gallery_data(filename):
-    base_url = "http://download.ecmwf.org/test-data/metview/gallery/"
-    try:
-        d = download(url=base_url + filename, target=filename)
-        return d
-    except:
-        raise Exception("Could not download file " + filename + " from the download server")

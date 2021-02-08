@@ -53,7 +53,7 @@ def test_version_info():
 def test_version_info_python():
     out = mv.version_info()
     assert "metview_python_version" in out
-    assert isinstance(out['metview_python_version'], str)
+    assert isinstance(out["metview_python_version"], str)
 
 
 def test_describe():
@@ -2038,7 +2038,7 @@ def test_download():
 def test_download_gallery_data():
     fname = "z_for_spectra.grib"
     assert not os.path.isfile(fname)
-    g = mv.download_gallery_data(fname)
+    g = mv.gallery.load_dataset(fname)
     assert mv.type(g) == "fieldset"
     assert os.path.isfile(fname)
     os.remove(fname)
@@ -2047,4 +2047,4 @@ def test_download_gallery_data():
 def test_download_gallery_data_bad_fname():
     fname = "zzz_for_spectra.grib"
     with pytest.raises(Exception):
-        g = mv.download_gallery_data(fname)
+        g = mv.gallery.load_dataset(fname)
