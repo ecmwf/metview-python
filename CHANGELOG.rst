@@ -2,6 +2,9 @@
 Changelog for Metview's Python interface
 ========================================
 
+1.7.0
+------------------
+- added animate() function for animated plots in Jupyter notebooks
 
 1.6.1
 ------------------
