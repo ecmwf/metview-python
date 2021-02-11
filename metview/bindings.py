@@ -1080,7 +1080,7 @@ class Plot:
 
             base, ext = os.path.splitext(tmp)
 
-            output_args = {"output_name":base, "output_name_first_page_number":"off"}
+            output_args = {"output_name": base, "output_name_first_page_number": "off"}
             output_args.update(self.jupyter_args)
             met_setoutput(png_output(output_args))
             met_plot(*args)
@@ -1103,6 +1103,7 @@ class Plot:
             # None is better for Python
             return None
 
+
 plot = Plot()
 
 # animate - only usable within Jupyter notebooks
@@ -1113,15 +1114,19 @@ def animate(*args, **kwargs):
     # plot all frames to a temporary directory
     tempdirpath = tempfile.mkdtemp()
     plot_path = os.path.join(tempdirpath, "plot")
-    met_setoutput(png_output(output_name=plot_path, output_file_minimal_width=3, **plot.jupyter_args))
+    met_setoutput(
+        png_output(
+            output_name=plot_path, output_file_minimal_width=3, **plot.jupyter_args
+        )
+    )
     met_plot(*args)
-    (_, _, filenames) =  next(os.walk(tempdirpath))
+    (_, _, filenames) = next(os.walk(tempdirpath))
     files = [os.path.join(tempdirpath, f) for f in filenames]
 
     im = widgets.Image(
-        format='png'
-        #width=300,
-        #height=400,
+        format="png"
+        # width=300,
+        # height=400,
     )
 
     sl = widgets.IntSlider(
@@ -1129,22 +1134,22 @@ def animate(*args, **kwargs):
         min=1,
         max=len(files),
         step=1,
-        description='Frame:',
+        description="Frame:",
         disabled=False,
         continuous_update=True,
-        readout=True
+        readout=True,
     )
 
     def plot_frame(frame_index):
-        im_file = open(files[frame_index-1], "rb")
+        im_file = open(files[frame_index - 1], "rb")
         imf = im_file.read()
         im.value = imf
 
     def on_frame_change(change):
-        plot_frame(change['new'])
+        plot_frame(change["new"])
 
     plot_frame(1)
-    sl.observe(on_frame_change, names='value')
+    sl.observe(on_frame_change, names="value")
 
     display(im, sl)
 
