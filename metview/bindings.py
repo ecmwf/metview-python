@@ -1111,6 +1111,29 @@ plot = Plot()
 def animate(*args, **kwargs):
     import ipywidgets as widgets
 
+    # create all the widgets first so that the 'waiting' label is at the bottom
+    image_widget = widgets.Image(
+        format="png"
+        # width=300,
+        # height=400,
+    )
+
+    frame_widget = widgets.IntSlider(
+        value=1,
+        min=1,
+        max=1,
+        step=1,
+        description="Frame:",
+        disabled=False,
+        continuous_update=True,
+        readout=True,
+    )
+
+    image_widget.layout.visibility = "hidden"
+    frame_widget.layout.visibility = "hidden"
+    waitl_widget = widgets.Label(value="Generating plots....")
+    display(image_widget, frame_widget, waitl_widget)
+
     # plot all frames to a temporary directory
     tempdirpath = tempfile.mkdtemp()
     plot_path = os.path.join(tempdirpath, "plot")
@@ -1122,36 +1145,24 @@ def animate(*args, **kwargs):
     met_plot(*args)
     (_, _, filenames) = next(os.walk(tempdirpath))
     files = [os.path.join(tempdirpath, f) for f in filenames]
-
-    im = widgets.Image(
-        format="png"
-        # width=300,
-        # height=400,
-    )
-
-    sl = widgets.IntSlider(
-        value=1,
-        min=1,
-        max=len(files),
-        step=1,
-        description="Frame:",
-        disabled=False,
-        continuous_update=True,
-        readout=True,
-    )
+    frame_widget.max = len(files)
 
     def plot_frame(frame_index):
         im_file = open(files[frame_index - 1], "rb")
         imf = im_file.read()
-        im.value = imf
+        image_widget.value = imf
 
     def on_frame_change(change):
         plot_frame(change["new"])
 
     plot_frame(1)
-    sl.observe(on_frame_change, names="value")
+    frame_widget.observe(on_frame_change, names="value")
 
-    display(im, sl)
+    # everything is ready now, so hide the 'waiting' label
+    # and reveal the plot and the frame slider
+    waitl_widget.layout.visibility = "hidden"
+    image_widget.layout.visibility = "visible"
+    frame_widget.layout.visibility = "visible"
 
 
 # On a test system, importing IPython took approx 0.5 seconds, so to avoid that hit
