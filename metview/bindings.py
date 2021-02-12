@@ -1150,6 +1150,7 @@ def animate(*args, **kwargs):
     def plot_frame(frame_index):
         im_file = open(files[frame_index - 1], "rb")
         imf = im_file.read()
+        im_file.close()
         image_widget.value = imf
 
     def on_frame_change(change):
