@@ -1138,6 +1138,7 @@ def animate(*args, **kwargs):
     image_widget.layout.visibility = "hidden"
     frame_widget.layout.visibility = "hidden"
     waitl_widget = widgets.Label(value="Generating plots....")
+    frame_widget.layout.width = "800px"
     display(image_widget, frame_widget, waitl_widget)
 
     # plot all frames to a temporary directory
