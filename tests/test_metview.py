@@ -1522,6 +1522,12 @@ def test_plot_2_pages():
     os.remove(output_name_from_magics)
 
 
+def test_animate_exception():
+    # this should fail because we are not in a Jupyter environment
+    with pytest.raises(EnvironmentError):
+        mv.animate()
+
+
 def test_macro_error():
     with pytest.raises(Exception):
         TEST_FIELDSET[125]

@@ -1109,6 +1109,12 @@ plot = Plot()
 # animate - only usable within Jupyter notebooks
 # generates a widget allowing the user to select between plot frames
 def animate(*args, **kwargs):
+
+    if not plot.plot_to_jupyter:
+        raise EnvironmentError(
+            "animate() can only be used after calling set_output('jupyter')"
+        )
+
     import ipywidgets as widgets
 
     # create all the widgets first so that the 'waiting' label is at the bottom
