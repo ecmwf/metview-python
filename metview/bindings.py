@@ -586,7 +586,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
 
     def append(self, other):
         temp = merge(self, other)
-        if self.val_pointer != None:  #  we will overwrite ourselves, so delete
+        if self.val_pointer is not None:  #  we will overwrite ourselves, so delete
             lib.p_destroy_value(self.val_pointer)
         self.steal_val_pointer(temp)
 
