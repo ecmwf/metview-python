@@ -1150,7 +1150,12 @@ def animate(*args, **kwargs):
         )
     )
     met_plot(*args)
-    (_, _, filenames) = next(os.walk(tempdirpath))
+    (_, _, filenames) = next(os.walk(tempdirpath), (None, None, None))
+
+    if filenames is None:
+        waitl_widget.value = "No plots generated"
+        return
+
     files = [os.path.join(tempdirpath, f) for f in filenames]
     frame_widget.max = len(files)
 
