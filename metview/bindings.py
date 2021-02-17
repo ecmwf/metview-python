@@ -1158,6 +1158,7 @@ def animate(*args, **kwargs):
 
     files = [os.path.join(tempdirpath, f) for f in filenames]
     frame_widget.max = len(files)
+    frame_widget.description = "Frame (" + str(len(files)) + ") :"
 
     def plot_frame(frame_index):
         im_file = open(files[frame_index - 1], "rb")
