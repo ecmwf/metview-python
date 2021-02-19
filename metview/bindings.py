@@ -1141,8 +1141,8 @@ def animate(*args, **kwargs):
     frame_widget.layout.width = "800px"
     display(image_widget, frame_widget, waitl_widget)
 
-    # plot all frames to a temporary directory
-    tempdirpath = tempfile.mkdtemp()
+    # plot all frames to a temporary directory owned by Metview to enure cleanup
+    tempdirpath = tempfile.mkdtemp(dir=os.environ.get("METVIEW_TMPDIR", None))
     plot_path = os.path.join(tempdirpath, "plot")
     met_setoutput(
         png_output(
