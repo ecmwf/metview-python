@@ -93,7 +93,7 @@ d_an = mv.mxs_average(data=an, direction="ew")
 d_diff = mv.mxs_average(data=fc - an, direction="ew")
 
 # compute the min an max of the zonal mean of the difference. The
-# zonal mean data is a NetCDF object. The variable holdin thes data in
+# zonal mean data is a NetCDF object. The variable holding the data in
 # this case is called "r" (this is the ecCodes shortName in the input GRIBs)
 mv.setcurrent(d_diff, "r")
 min_v = np.amin(mv.values(d_diff))

@@ -36,7 +36,7 @@ else:
     else:
         g = mv.gallery.load_dataset(filename)
 
-# conpute departure from zonal mean
+# compute departure from zonal mean
 dep = g - mv.mean_ew(g)
 
 # define contour style for z500
