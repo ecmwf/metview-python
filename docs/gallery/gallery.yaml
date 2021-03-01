@@ -16,8 +16,10 @@ grib:
   - gradient_shading
   - shading_only_over_land
   - advection
+  - departure_from_zonal_mean
   - deaccumulate_precip_fc
   - ens_prob
+  - ens_percentile
   - ens_stamp
   - ens_spag
   - streamline
@@ -40,6 +42,7 @@ grib:
   - bufr_synop_station_id
   - temp_map
   - coloured_obs_values
+  - coloured_obs_values_in_circles
   - odb_radiance
   - odb_temp_wind
   - air_report
@@ -67,6 +70,7 @@ sections:
   - time_height_xs
   - hovmoeller_area
   - zonal_average
+  - zonal_average_difference
   - meridional_average
 thermo:
   title: Thermodinamic diagrams

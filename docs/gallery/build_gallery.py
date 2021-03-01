@@ -94,6 +94,7 @@ LINK_BACKREF = """
 Most/all of the :ref:`gallery_index` examples demonstrate the use of this function.
 """
 
+
 def format_red(t):
     return "\033[91m {}\033[00m".format(t)
 
@@ -149,16 +150,17 @@ class BackReference:
             output = os.path.join(BACKREF_DIR, f"{fn_name}.rst")
             with open(output, "w") as f:
                 title = f"Gallery examples using ``metview.{fn_name}``"
-                f.write(f"""{title}\n{"^" * (len(title)+1)}""")  
+                f.write(f"""{title}\n{"^" * (len(title)+1)}""")
                 # for some functions just a link to the gallery is inserted
                 if fn_name in self.use_link:
-                    f.write(LINK_BACKREF) 
+                    f.write(LINK_BACKREF)
                 # otherwise we add a minigallery
                 else:
                     for item in fn_items:
                         item.build_item(f)
                 f.write(CLEAR_BLOCK)
             log_generated(output)
+
 
 BACKREF = BackReference()
 
@@ -175,7 +177,7 @@ class GalleryItem:
 
         self.label = "gallery_" + self.name
         self.f_pdf = self.name + ".pdf"
-        self.f_png = os.path.join(PNG_DIR, self.name + ".png")       
+        self.f_png = os.path.join(PNG_DIR, self.name + ".png")
         self.f_thumbnail = os.path.join(PNG_DIR, self.name + "_thumb.png")
 
         if do_png:
@@ -221,7 +223,7 @@ class GalleryItem:
         if not os.path.exists(self.f_thumbnail) or do_png:
             LOG.info("  making thumbnail PNG ...")
             try:
-                cmd = f"convert -trim -border 8x8 -bordercolor white -depth 8 {self.f_pdf} -resize 22% {self.f_thumbnail}"         
+                cmd = f"convert -trim -border 8x8 -bordercolor white -depth 8 {self.f_pdf} -resize 22% {self.f_thumbnail}"
                 r = subprocess.run(cmd.split(" "), check=True)
             except Exception as e:
                 LOG.error(format_red(f" Failed to resize PNG: {e}"))
@@ -242,9 +244,7 @@ class GalleryItem:
 
     def build_item(self, f):
         f.write(
-            ITEM_TEMPLATE.format(
-                to_rst_path(self.f_thumbnail), self.title, self.label
-            )
+            ITEM_TEMPLATE.format(to_rst_path(self.f_thumbnail), self.title, self.label)
         )
 
     def build_page(self):
@@ -294,13 +294,14 @@ Gallery
                 item.build_item(f)
     log_generated(output)
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--png", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args()
-    
+
     do_png = args.png
-    
+
     r = []
 
     # generate the individual example pages
@@ -325,7 +326,11 @@ def main():
     if len(item_failed) == 0:
         LOG.info(format_green(f"{total}/{total} examples were generated"))
     else:
-        LOG.error(format_red(f"{total-len(item_failed)}/{total} examples were generated, {len(item_failed)}/{total} examples failed:"))
+        LOG.error(
+            format_red(
+                f"{total-len(item_failed)}/{total} examples were generated, {len(item_failed)}/{total} examples failed:"
+            )
+        )
         for v in item_failed:
             LOG.error(format_red(f"  {v.name}"))
 
