@@ -26,8 +26,8 @@ if use_mars:
         "levelist": [1000, 925, 850, 700, 500, 400, 300, 200, 150, 100],
         "grid": [1, 1],
     }
-    an = mv.retrieve(type="an", date=20210126, **ret_core)
-    fc = mv.retrieve(type="fc", date=20210122, step=120, **ret_core)
+    an = mv.retrieve(type="an", date=20210226, **ret_core)
+    fc = mv.retrieve(type="fc", date=20210221, step=120, **ret_core)
 
 # read data from file
 else:

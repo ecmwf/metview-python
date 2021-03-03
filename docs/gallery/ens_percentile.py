@@ -22,7 +22,7 @@ if use_mars:
     ret_core = {
         "stream": "enfo",
         "param": "10fg6",
-        "date": 20140814,
+        "date": 20140807,
         "time": 0,
         "step": [78, 84, 90],
         "levtype": "sfc",
