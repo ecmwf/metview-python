@@ -9,18 +9,18 @@
 #
 
 import copy
+import datetime
 import logging
 import os
 
 import pandas as pd
 
 import metview as mv
-from indexer import FieldsetIndexer, ExperimentIndexer
+from metview.indexer import FieldsetIndexer, ExperimentIndexer
 
 logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
 LOG = logging.getLogger(__name__)
-
 
 
 class IndexDb:
@@ -35,7 +35,7 @@ class IndexDb:
         "typeOfLevel",
         "number",
     ]
-    
+
     def __init__(
         self,
         name,
@@ -71,7 +71,7 @@ class IndexDb:
 
     def scan(self):
         raise NotImplementedError
-       
+
     def select(self, **kwargs):
         LOG.debug(f"kwargs={kwargs}")
         dims = {k: list() for k in IndexDb.DIMS}
@@ -127,7 +127,7 @@ class IndexDb:
         res = mv.Fieldset()
         dfs = {}
 
-        LOG.debug(f"data_files={self.data_files}")
+        # LOG.debug(f"data_files={self.data_files}")
 
         cnt = 0
         if len(dims["shortName"]) != 0:
@@ -363,7 +363,6 @@ class FieldsetDb(IndexDb):
         super().__init__("file", **kwargs)
         self.name = "file"
         self.fs = fs
-        LOG.warn(f"fs={self.fs}")
         self.extra_keys = extra_keys
         # self.scan()
 
@@ -375,11 +374,11 @@ class FieldsetDb(IndexDb):
         if "index" in df.columns:
             idx = []
             for row in df.itertuples():
-                LOG.debug(f"row={row}")
+                # LOG.debug(f"row={row}")
                 fs.append(self.fs[row.index])
                 idx.append(len(fs) - 1)
                 m = mv.grib_get(self.fs[row.index], ["shortName", "date", "time"])
-                LOG.debug(f"meta={m}")
+                # LOG.debug(f"meta={m}")
                 # LOG.debug("row={}".format(row))
             # generate a new dataframe
             df = df.copy()
@@ -396,7 +395,7 @@ class Dataset:
     def __init__(self, path="", root_dir=""):
         self.field_conf = {}
         self.track_conf = None
-       
+
         if path != "":
             path = "exp.yaml"
 
@@ -448,4 +447,3 @@ class Dataset:
             return self.tracks.select(name)
         else:
             raise Exception(f"No track data is available!")
-

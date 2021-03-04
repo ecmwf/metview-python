@@ -181,20 +181,6 @@ class GribIndexer:
 
         return comp_params, v_params
 
-    # @staticmethod 
-    # def re_glob(self, dir_path, f_pattern):
-    #     # LOG.debug(f"f_pattern={f_pattern}")
-    #     if f_pattern.startswith('re"'):
-    #         f_pattern = f_pattern[3:-1]
-    #         # LOG.debug(f"f_pattern={f_pattern}")
-    #         return [
-    #             os.path.join(dir_path, f)
-    #             for f in filter(re.compile(f_pattern).match, os.listdir(path=dir_path))
-    #         ]
-    #     else:
-    #         f_pattern = os.path.join(dir_path, f_pattern)
-    #         return glob.glob(f_pattern)
-
 
 class FieldsetIndexer(GribIndexer):
     def __init__(self):
@@ -241,7 +227,6 @@ class FieldsetIndexer(GribIndexer):
 
     def _scan(self, fs, mars_params={}):
         LOG.info(f" scan fields ...")
-        LOG.warning(f"fs={fs}")
         params = {}
         md_vals = mv.grib_get(fs, self.keys_for_ecc)
         for i, v in enumerate(md_vals):

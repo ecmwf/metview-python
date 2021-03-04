@@ -613,7 +613,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
 
         if path is not None and path != "":
             for f in get_file_list(path):
-                LOG.debug(f"f={f}")
+                # LOG.debug(f"f={f}")
                 if len(self) == 0:
                     temp = read(f)
                     self.steal_val_pointer(temp)
