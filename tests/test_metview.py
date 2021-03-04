@@ -1672,7 +1672,7 @@ def test_set_vector_float32_from_numpy_array():
 
 
 def test_set_vector_10_bool_from_numpy_array():
-    r = np.array([1, 0, 0, 1, 1, 0, 1], dtype=np.bool)
+    r = np.array([1, 0, 0, 1, 1, 0, 1], dtype=bool)
     assert mv.type(r) == "vector"
     assert mv.dtype(r) == "float32"
     assert mv.count(r) == 7
@@ -1680,7 +1680,7 @@ def test_set_vector_10_bool_from_numpy_array():
 
 
 def test_set_vector_TF_bool_from_numpy_array():
-    r = np.array([True, False, False, True, True, False, True], dtype=np.bool)
+    r = np.array([True, False, False, True, True, False, True], dtype=bool)
     assert mv.type(r) == "vector"
     assert mv.dtype(r) == "float32"
     assert mv.count(r) == 7
@@ -1688,7 +1688,7 @@ def test_set_vector_TF_bool_from_numpy_array():
 
 
 def test_set_vector_from_int_numpy_array():
-    r = np.array([5, 8, 7, 1, 2900], dtype=np.int)
+    r = np.array([5, 8, 7, 1, 2900], dtype=int)
     assert mv.type(r) == "vector"
     assert mv.dtype(r) == "float64"
     assert mv.count(r) == 5
