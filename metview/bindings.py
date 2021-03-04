@@ -27,7 +27,7 @@ from metview.dataset import FieldsetDb
 __version__ = "1.7.0"
 
 
-logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
+# logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
 LOG = logging.getLogger(__name__)
 
@@ -1069,6 +1069,8 @@ def bind_functions(namespace, module_name=None):
     namespace["metzoom"] = metzoom
     namespace["version_info"] = version_info
     namespace["dataset_to_fieldset"] = dataset_to_fieldset
+    namespace["step_to_date"] = step_to_date
+    namespace["get_file_list"] = get_file_list
 
     namespace["Fieldset"] = Fieldset
     namespace["Request"] = Request

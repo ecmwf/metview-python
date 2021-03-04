@@ -21,7 +21,6 @@ import numpy as np
 import pandas as pd
 import yaml
 
-
 # logging.basicConfig(level=logging.DEBUG)
 LOG = logging.getLogger(__name__)
 
@@ -42,7 +41,7 @@ class GribIndexer:
         "step": ("s", str, True),
         "level": ("l", np.int32, True),
         "typeOfLevel": ("s", str, True),
-        "number": ("l", np.int32, True),
+        "number": ("s", str, True),
         "expver": ("s", str, False),
         "type": ("s", str, False),
     }
@@ -196,6 +195,7 @@ class FieldsetIndexer(GribIndexer):
         cols.extend(["index"])
         field_stat = {}
         for name, p in params.items():
+            LOG.debug(self.pd_types)
             df = pd.DataFrame(p, columns=cols).astype(self.pd_types)
             df.sort_values(by=list(df.columns), inplace=True)
             db.params[name] = df

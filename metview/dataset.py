@@ -14,11 +14,12 @@ import logging
 import os
 
 import pandas as pd
+import yaml
 
 import metview as mv
 from metview.indexer import FieldsetIndexer, ExperimentIndexer
 
-logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
+# logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
 LOG = logging.getLogger(__name__)
 
@@ -75,8 +76,7 @@ class IndexDb:
     def select(self, **kwargs):
         LOG.debug(f"kwargs={kwargs}")
         dims = {k: list() for k in IndexDb.DIMS}
-        # dims = {}
-        dims.update({**kwargs})
+        dims.update(copy.deepcopy(kwargs))
         for k, v in dims.items():
             # LOG.debug(f"dims[{k}]={v}")
             dims[k] = self._check_dim_values(v, name=k)
@@ -159,33 +159,6 @@ class IndexDb:
         # LOG.debug(f"res={res}")
         c = FieldsetDb(res, params=dfs)
         return c, res
-
-    # def _extract_fields(self, df, fs):
-    #     res = mv.Fieldset()
-    #     fs = {}
-    #     if "fileIndex" in df.columns:
-    #         for row in df.itertuples():
-    #             LOG.debug(f"row={row}")
-    #             if not row.fileIndex in fs:
-    #                 fs[row.fileIndex] = mv.read(self.data_files[row.fileIndex])
-    #             res.append(fs[row.fileIndex][row.index])
-    #             # LOG.debug("row={}".format(row))
-
-    #     return res
-
-    # def get_one_v1(self, df, fs):
-    #     self.fs = {}
-    #     if "fileIndex" in df.columns:
-    #         idx = []
-    #         for row in df.itertuples():
-    #             LOG.debug(f"row={row}")
-    #             if not row.fileIndex in self.fs:
-    #                 fs[row.fileIndex] = mv.read(self.data_files[row.fileIndex])
-    #             fs.append(fs[row.fileIndex][row.index])
-    #             idx.appned(len(fs)-1)
-    #             # LOG.debug("row={}".format(row))
-    #             return df['fileIndex'] = idx
-    #     return None
 
     def _check_dim_values(self, v, name=None):
         v = self._to_list(v)
@@ -282,7 +255,7 @@ class ExperimentDb(IndexDb):
     def select_view(self, **kwargs):
         c = self._clone()
 
-        dims = {k: list() for k in IndexedDb.DIMS}
+        dims = {k: list() for k in IndexDb.DIMS}
         # dims = {}
         dims.update(copy.deepcopy(kwargs))
         LOG.debug(f"dims={dims}")
