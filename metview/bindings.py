@@ -7,21 +7,29 @@
 # granted to it by virtue of its status as an intergovernmental organisation
 # nor does it submit to any jurisdiction.
 
-
+import builtins
 import datetime
+from enum import Enum
+import glob
 import keyword
+import logging
 import os
 import pkgutil
+import re
 import signal
 import tempfile
-import builtins
-from enum import Enum
 
 import cffi
 import numpy as np
 
+from metview.dataset import FieldsetDb
 
 __version__ = "1.7.0"
+
+
+logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
+# logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
+LOG = logging.getLogger(__name__)
 
 
 def string_from_ffi(s):
@@ -393,6 +401,31 @@ def push_vector(npa):
         )
 
 
+def step_to_date(run, step):
+    if not isinstance(step, list):
+        step = [step]
+    r = []
+    for s in step:
+        r.append(run + datetime.timedelta(hours=int(s)))
+    return r
+
+
+def get_file_list(path, file_name_pattern=None):
+    m = None
+    if isinstance(file_name_pattern, re.Pattern):
+        m = file_name_pattern.match
+    elif isinstance(file_name_pattern, str):
+        if file_name_pattern.startswith('re"'):
+            m = re.compile(file_name_pattern[3:-1]).match
+
+    if m is not None:
+        return [os.path.join(path, f) for f in filter(m, os.listdir(path=path))]
+    else:
+        if isinstance(file_name_pattern, str) and file_name_pattern != "":
+            path = os.path.join(path, file_name_pattern)
+        return glob.glob(path)
+
+
 class File(Value):
     def __init__(self, val_pointer):
         Value.__init__(self, val_pointer)
@@ -563,7 +596,7 @@ class ContainerValue(Value):
 
 
 class Fieldset(FileBackedValueWithOperators, ContainerValue):
-    def __init__(self, val_pointer=None, path=None, fields=None):
+    def __init__(self, val_pointer=None, path=None, fields=None, extra_keys=[]):
         FileBackedValueWithOperators.__init__(self, val_pointer)
         ContainerValue.__init__(
             self,
@@ -572,13 +605,20 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             element_types=Fieldset,
             support_slicing=True,
         )
+        self._db = None
+        self._extra_keys = extra_keys
 
         if (path is not None) and (fields is not None):
             raise ValueError("Fieldset cannot take both path and fields")
 
-        if path is not None:
-            temp = read(path)
-            self.steal_val_pointer(temp)
+        if path is not None and path != "":
+            for f in get_file_list(path):
+                LOG.debug(f"f={f}")
+                if len(self) == 0:
+                    temp = read(f)
+                    self.steal_val_pointer(temp)
+                else:
+                    self.append(read(f))
 
         if fields is not None:
             for f in fields:
@@ -601,6 +641,18 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             raise
         dataset = xarray_store.open_dataset(self.url())
         return dataset
+
+    def _scan(self):
+        if self._db is None:
+            self._db = FieldsetDb(fs=self, extra_keys=self._extra_keys)
+            self._db.scan()
+
+    def select(self, **kwargs):
+        self._scan()
+        # LOG.debug(f"kwargs={kwargs}")
+        if self._db is not None:
+            return self._db.select(**kwargs)
+        return None
 
     def __getstate__(self):
         # used for pickling
