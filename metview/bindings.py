@@ -1226,7 +1226,7 @@ def animate(*args, **kwargs):
         waitl_widget.value = "No plots generated"
         return
 
-    files = [os.path.join(tempdirpath, f) for f in filenames]
+    files = [os.path.join(tempdirpath, f) for f in sorted(filenames)]
     frame_widget.max = len(files)
     frame_widget.description = "Frame (" + str(len(files)) + ") :"
 
