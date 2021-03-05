@@ -192,7 +192,7 @@ class FieldsetIndexer(GribIndexer):
         # scalar fields
         LOG.info(f" generate scalar fields index ...")
         cols = [*self.keys]
-        cols.extend(["index"])
+        cols.extend(["msgIndex"])
         field_stat = {}
         for name, p in params.items():
             LOG.debug(self.pd_types)
@@ -215,7 +215,7 @@ class FieldsetIndexer(GribIndexer):
                 cols = [*self.keys]  # self.DEFAULT_KEYS.copy()
                 assert name in comp_params
                 for i in range(comp_num):
-                    cols.extend([f"index{i+1}"])
+                    cols.extend([f"msgIndex{i+1}"])
                 # LOG.debug(p)
                 df = pd.DataFrame(p, columns=cols).astype(self.pd_types)
                 # df.sort_values(by=list(df.columns), inplace=True)
@@ -326,7 +326,7 @@ class ExperimentIndexer(GribIndexer):
         # generate and write index for scalar fields
         LOG.info(f"generate scalar fields index ...")
         cols = [*self.keys]
-        cols.extend(["index", "fileIndex"])
+        cols.extend(["msgIndex", "fileIndex"])
         field_stat = {}
         for name, p in params.items():
             # df = pd.DataFrame(p, columns=cols).astype({"expver": str})
@@ -357,7 +357,7 @@ class ExperimentIndexer(GribIndexer):
                 cols = [*self.keys]
                 assert name in comp_params
                 for i in range(comp_num):
-                    cols.extend([f"index{i+1}", f"fileIndex{i+1}"])
+                    cols.extend([f"msgIndex{i+1}", f"fileIndex{i+1}"])
                 # LOG.debug(p)
                 df = pd.DataFrame(p, columns=cols).astype(self.pd_types)
                 df.sort_values(by=list(df.columns), inplace=True)

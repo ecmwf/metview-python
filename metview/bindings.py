@@ -23,6 +23,7 @@ import cffi
 import numpy as np
 
 from metview.dataset import FieldsetDb
+from metview.style import StyleDb
 
 __version__ = "1.7.0"
 
@@ -607,6 +608,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         )
         self._db = None
         self._extra_keys = extra_keys
+        self._param = None
 
         if (path is not None) and (fields is not None):
             raise ValueError("Fieldset cannot take both path and fields")
@@ -652,6 +654,20 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         # LOG.debug(f"kwargs={kwargs}")
         if self._db is not None:
             return self._db.select(**kwargs)
+        return None
+
+    def visdef(self, plot_type="map"):
+        if self._db is not None:
+            if self._param is None:
+                self._param = self._db.get_param_info()
+            if self._param is not None:
+                vd = (
+                    StyleDb.get_db()
+                    .get_param_style(self._param, scalar=True, plot_type=plot_type)
+                    .to_request()
+                )
+                LOG.debug(f"vd={vd}")
+                return vd
         return None
 
     def __getstate__(self):

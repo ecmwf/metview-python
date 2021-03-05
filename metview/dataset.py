@@ -12,6 +12,7 @@ import copy
 import datetime
 import logging
 import os
+import re
 
 import pandas as pd
 import yaml
@@ -22,6 +23,115 @@ from metview.indexer import FieldsetIndexer, ExperimentIndexer
 # logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
 LOG = logging.getLogger(__name__)
+
+
+class ParamInfo:
+    """
+    Determines the parameter properties from a user specified name
+    """
+
+    SUFFIXES = {"hPa": "isobaricInhPa", "hpa": "isobaricInhPa", "K": "theta", "ml": "hybrid"}
+    LEVEL_TYPES = {"pl": "isobaricInhPa", "ml": "hybrid"}
+    LEVEL_RE = re.compile(r"(\d+)")
+    NUM_RE = re.compile(r"[0-9]+")
+    SURF_NAMES = {"t2": "2t", "q2": "2q", "u10": "10u", "v10": "10v"}
+    UPPER_NAMES = ["wind3d"]
+
+    def __init__(self, name, level, level_type):
+        self.name = name
+        self.level = level
+        self.level_type = level_type
+
+    @staticmethod
+    def build(self, full_name, param_types):
+        self.full_name = full_name
+        self.name = full_name
+        self.level = None
+        self.level_type = ""
+
+        if self.full_name in self.SURF_NAMES:
+            self.full_name = self.SURF_NAMES[self.full_name]
+            self.name = self.full_name
+
+        # LOG.debug(f"param_types={param_types}")
+        lev_t = param_types.get(self.name, [])
+        LOG.debug(f"lev_t={lev_t}")
+
+        # the param full name is found in the conf
+        if lev_t:
+            if "isobaricInhPa" in lev_t:
+                self.level_type = "isobaricInhPa"
+            else:
+                self.level_type = lev_t[0]
+            # determine level value
+            if not self.name in self.UPPER_NAMES:
+                m = self.LEVEL_RE.search(self.name)
+                if m and m.groups() and len(m.groups()) == 1:
+                    self.level = int(m.group(1))
+        elif self.name in self.UPPER_NAMES:
+            raise Exception(
+                f"Param={self.name} (deduced from name={full_name}) is not found in experiment!"
+            )
+        # the param full name has to parsed. The possible formats are:
+        # t2, t, t500, t500hPa, q20m, z320K
+        # If no level suffix is specified it is interpreted as
+        # pressure level, unless it is a surface parameter.
+        else:
+            t = self.full_name
+            # guess the level type from the suffix
+            for k, v in self.SUFFIXES.items():
+                if self.full_name.endswith(k):
+                    self.level_type = v
+                    t = self.full_name[: -(len(k))]
+                    break
+
+            # determine level value
+            m = self.LEVEL_RE.search(t)
+            if m and m.groups() and len(m.groups()) == 1:
+                self.level = int(m.group(1))
+                if self.level_type == "" and self.level > 10:
+                    self.level_type = "isobaricInhPa"
+                self.name = self.NUM_RE.sub("", t)
+
+            # check param name in the conf
+            lev_t = param_types.get(self.name, [])
+            if lev_t:
+                if not self.level_type:
+                    self.level_type = lev_t[0]
+                elif self.level_type not in lev_t:
+                    raise Exception(
+                        f"Level type cannot be deduced from param name={full_name}!"
+                    )
+            else:
+                raise Exception(
+                    f"Param={self.name} (deduced from name={full_name}) is not found in experiment!"
+                )
+
+        if self.level_type == "":
+            self.level_type = "surface"
+
+    @property
+    def data_id(self):
+        return f"{self.name}_{self.level_type}"
+
+    def match(self, name, level_type, level):
+        if self.name == name:
+            if level_type:
+                if level_type in self.LEVEL_TYPES:
+                    level_type = self.LEVEL_TYPES[level_type]
+                if level_type != self.level_type:
+                    return False
+                if level is not None:
+                    if self.level is not None:
+                        if level != self.level:
+                            return False
+                    else:
+                        return False
+            return True
+        return False
+
+    def __str__(self):
+        return f"{self.__class__.__name__}[full_name={self.full_name}, name={self.name}, level={self.level}, level_type={self.level_type}]"
 
 
 class IndexDb:
@@ -115,6 +225,7 @@ class IndexDb:
             q = self._build_query(dims)
             # LOG.debug("query={}".format(q))
             df = param.query(q)
+            df.reset_index(drop=True, inplace=True)
             # LOG.debug(f"df={df}")
         return df
 
@@ -159,6 +270,13 @@ class IndexDb:
         # LOG.debug(f"res={res}")
         c = FieldsetDb(res, params=dfs)
         return c, res
+
+    def get_param_info(self):
+        p = list(self.params.keys())
+        if len(p) > 0:
+            p = self.params[p[0]]
+            return ParamInfo(p["shortName"][0], p["level"][0], p["typeOfLevel"][0])
+        return None
 
     def _check_dim_values(self, v, name=None):
         v = self._to_list(v)
@@ -319,13 +437,13 @@ class ExperimentDb(IndexDb):
                 # LOG.debug(f"row={row}")
                 if not row.fileIndex in self.fs:
                     self.fs[row.fileIndex] = mv.read(self.data_files[row.fileIndex])
-                fs.append(self.fs[row.fileIndex][row.index])
+                fs.append(self.fs[row.fileIndex][row.msgIndex])
                 idx.append(len(fs) - 1)
                 # LOG.debug("row={}".format(row))
             # generate a new dataframe
             df = df.copy()
             # df.rename(columns={"fileIndex": "index"})
-            df["index"] = idx
+            df["msgIndex"] = idx
             df.drop(["fileIndex"], axis=1, inplace=True)
             return df
         return None
@@ -344,20 +462,20 @@ class FieldsetDb(IndexDb):
         indexer.scan(self)
 
     def _extract_fields(self, df, fs):
-        if "index" in df.columns:
+        if "msgIndex" in df.columns:
             idx = []
             for row in df.itertuples():
                 # LOG.debug(f"row={row}")
-                fs.append(self.fs[row.index])
+                fs.append(self.fs[row.msgIndex])
                 idx.append(len(fs) - 1)
-                m = mv.grib_get(self.fs[row.index], ["shortName", "date", "time"])
+                # m = mv.grib_get(self.fs[row.msgIndex], ["shortName", "date", "time"])
                 # LOG.debug(f"meta={m}")
                 # LOG.debug("row={}".format(row))
             # generate a new dataframe
             df = df.copy()
-            df["index"] = idx
+            df["msgIndex"] = idx
             return df
-        return res
+        return None
 
 
 class Dataset:
