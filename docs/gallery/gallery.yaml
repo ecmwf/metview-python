@@ -12,9 +12,11 @@ grib:
   - gradient_vector
   - coloured_wind
   - wind_overlay_and_legend_box
+  - wind_from_spectral_div_and_vor
   - storm_joachim
   - gradient_shading
   - shading_only_over_land
+  - model_orography
   - advection
   - departure_from_zonal_mean
   - deaccumulate_precip_fc
@@ -25,6 +27,7 @@ grib:
   - streamline
   - simulated_sat_img
   - sst_extended_latlon
+  - sst_era5_elnino_map
   - legend3
   - legend2
   - contour3
@@ -69,7 +72,10 @@ sections:
   - cross_section_wind_3d
   - time_height_xs
   - hovmoeller_area
+  - ozone_era5_lat_hovmoeller
+  - qbo_era5_vertical_hovmoeller
   - zonal_average
+  - v_era5_temporal_zonal_average
   - zonal_average_difference
   - meridional_average
 thermo:
