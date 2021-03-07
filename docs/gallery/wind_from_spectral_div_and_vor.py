@@ -41,18 +41,22 @@ else:
 # still spectral (T255)
 uv_sh = mv.uvwind(data=g, truncation=255)
 
-# transform spectra u/v into gridpoint space (reduced Gaussian grid N128)
+# transform spectral u/v into gridpoint space (reduced Gaussian grid N128)
 uv = mv.read(data=uv_sh, grid=218)
 
 # define wind plotting style
-wind_style = mv.mwind(wind_arrow_colour="violet")
+wind_style = mv.mwind(
+    wind_thinning_factor=3,
+    wind_arrow_colour="navy",
+	wind_arrow_unit_velocity=25
+)
 
 # define coastlines
 coast = mv.mcoast(
     map_coastline_land_shade="on",
-    map_coastline_land_shade_colour="RGB(0.7569,0.7569,0.7569)",
+    map_coastline_land_shade_colour="RGB(0.9603,0.7863,0.5064)",
     map_coastline_sea_shade="on",
-    map_coastline_sea_shade_colour="RGB(0.8373,0.8373,0.8411)",
+    map_coastline_sea_shade_colour="RGB(0.9,0.9,0.9)",
 )
 
 # define view

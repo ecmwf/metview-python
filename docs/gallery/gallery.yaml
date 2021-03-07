@@ -13,6 +13,7 @@ grib:
   - coloured_wind
   - wind_overlay_and_legend_box
   - wind_from_spectral_div_and_vor
+  - divergent_and_rotational_wind
   - storm_joachim
   - gradient_shading
   - shading_only_over_land
