@@ -593,13 +593,13 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
     def to_dataset(self):
         # soft dependency on cfgrib
         try:
-            from cfgrib import xarray_store
+            import xarray as xr
         except ImportError:
             print(
-                "Package cfgrib/xarray_store not found. Try running 'pip install cfgrib'."
+                "Package xarray not found. Try running 'pip install xarray'."
             )
             raise
-        dataset = xarray_store.open_dataset(self.url())
+        dataset = xr.open_dataset(self.url(), engine='cfgrib')
         return dataset
 
     def __getstate__(self):
