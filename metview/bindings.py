@@ -595,11 +595,9 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         try:
             import xarray as xr
         except ImportError:
-            print(
-                "Package xarray not found. Try running 'pip install xarray'."
-            )
+            print("Package xarray not found. Try running 'pip install xarray'.")
             raise
-        dataset = xr.open_dataset(self.url(), engine='cfgrib')
+        dataset = xr.open_dataset(self.url(), engine="cfgrib")
         return dataset
 
     def __getstate__(self):
