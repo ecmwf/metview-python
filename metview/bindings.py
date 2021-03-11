@@ -420,7 +420,9 @@ def get_file_list(path, file_name_pattern=None):
             m = re.compile(file_name_pattern[3:-1]).match
 
     if m is not None:
-        return [os.path.join(path, f) for f in builtins.filter(m, os.listdir(path=path))]
+        return [
+            os.path.join(path, f) for f in builtins.filter(m, os.listdir(path=path))
+        ]
     else:
         if isinstance(file_name_pattern, str) and file_name_pattern != "":
             path = os.path.join(path, file_name_pattern)
