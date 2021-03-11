@@ -637,13 +637,11 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
     def to_dataset(self):
         # soft dependency on cfgrib
         try:
-            from cfgrib import xarray_store
+            import xarray as xr
         except ImportError:
-            print(
-                "Package cfgrib/xarray_store not found. Try running 'pip install cfgrib'."
-            )
+            print("Package xarray not found. Try running 'pip install xarray'.")
             raise
-        dataset = xarray_store.open_dataset(self.url())
+        dataset = xr.open_dataset(self.url(), engine="cfgrib")
         return dataset
 
     def _scan(self):
@@ -1081,7 +1079,6 @@ def bind_functions(namespace, module_name=None):
     # override some functions that need special treatment
     # FIXME: this needs to be more structured
     namespace["plot"] = plot
-    namespace["animate"] = animate
     namespace["setoutput"] = setoutput
     namespace["metzoom"] = metzoom
     namespace["version_info"] = version_info
@@ -1145,6 +1142,11 @@ class Plot:
         self.jupyter_args = {}
 
     def __call__(self, *args, **kwargs):
+        # if animate=True is supplied, then create a Jupyter animation
+        if kwargs.get('animate', False):
+            return animate(args, kwargs)
+
+        # otherwise create a single static plot
         if self.plot_to_jupyter:
             f, tmp = tempfile.mkstemp(".png")
             os.close(f)
