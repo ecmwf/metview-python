@@ -420,7 +420,7 @@ def get_file_list(path, file_name_pattern=None):
             m = re.compile(file_name_pattern[3:-1]).match
 
     if m is not None:
-        return [os.path.join(path, f) for f in filter(m, os.listdir(path=path))]
+        return [os.path.join(path, f) for f in builtins.filter(m, os.listdir(path=path))]
     else:
         if isinstance(file_name_pattern, str) and file_name_pattern != "":
             path = os.path.join(path, file_name_pattern)
@@ -656,19 +656,18 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             return self._db.select(**kwargs)
         return None
 
-    def visdef(self, plot_type="map"):
+    def param_info(self):
         if self._db is not None:
-            if self._param is None:
-                self._param = self._db.get_param_info()
-            if self._param is not None:
-                vd = (
-                    StyleDb.get_db()
-                    .get_param_style(self._param, scalar=True, plot_type=plot_type)
-                    .to_request()
-                )
-                LOG.debug(f"vd={vd}")
-                return vd
-        return None
+            return self._db.get_param_info()
+        else:
+            return None
+
+    @property
+    def label(self):
+        if self._db:
+            return self._db.label
+        else:
+            return str()
 
     def __getstate__(self):
         # used for pickling

@@ -21,7 +21,7 @@ import numpy as np
 import pandas as pd
 import yaml
 
-# logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG)
 LOG = logging.getLogger(__name__)
 
 
@@ -40,10 +40,12 @@ class GribIndexer:
         "time": ("l", np.int32, True),
         "step": ("s", str, True),
         "level": ("l", np.int32, True),
-        "typeOfLevel": ("s", str, True),
+        "typeOfLevel": ("s", str, False),
         "number": ("s", str, True),
-        "expver": ("s", str, False),
-        "type": ("s", str, False),
+        "experimentVersionNumber": ("s", str, False),
+        "mars.class": ("s", str, False),
+        "mars.stream": ("s", str, False),
+        "mars.type": ("s", str, False),
     }
 
     def __init__(self, extra_keys=[]):
@@ -63,7 +65,7 @@ class GribIndexer:
 
         self.shortname_index = self.keys.index("shortName")
         self.levtype_index = self.keys.index("typeOfLevel")
-        self.type_index = self.keys.index("type")
+        self.type_index = self.keys.index("mars.type")
         self.number_index = self.keys.index("number")
         self.mars_param_index = self.keys.index("mars.param")
 
@@ -76,7 +78,10 @@ class GribIndexer:
             "typeOfLevel",
             "level",
             "number",
-            "expver",
+            "experimentVersionNumber",
+            "mars.class",
+            "mars.stream",
+            "mars.type",
         ]:
             self.wind_check_index.append(self.keys.index(v))
 
@@ -180,6 +185,20 @@ class GribIndexer:
 
         return comp_params, v_params
 
+    def _build_dataframe(self, name, data, columns):
+        df = pd.DataFrame(data, columns=columns).astype(self.pd_types)
+        df.drop(["shortName", "typeOfLevel"], axis=1, inplace=True)
+        df.sort_values(by=list(df.columns), inplace=True)
+        # self._check_duplicates(name, df)
+        return df
+
+    def _write_dataframe(self, df, name, out_dir):
+        f_name = os.path.join(out_dir, f"{name[0]}_{name[1]}.csv")
+        # df.to_csv(path_or_buf=f_name, header=True, index=False)
+        # df = df.transpose()
+        df.to_csv(path_or_buf=f_name, header=True, index=False, compression="gzip")
+        # df.to_csv(path_or_buf=f_name, header=False, index=True, compression="gzip")
+        # df.to_csv(path_or_buf=f_name, header=True, index=False, compression="bz2")
 
 class FieldsetIndexer(GribIndexer):
     def __init__(self):
@@ -196,8 +215,7 @@ class FieldsetIndexer(GribIndexer):
         field_stat = {}
         for name, p in params.items():
             LOG.debug(self.pd_types)
-            df = pd.DataFrame(p, columns=cols).astype(self.pd_types)
-            df.sort_values(by=list(df.columns), inplace=True)
+            df = self._build_dataframe(name, p, cols)             
             db.params[name] = df
             field_stat[name] = len(df)
             self._check_duplicates(name, df)
@@ -217,8 +235,7 @@ class FieldsetIndexer(GribIndexer):
                 for i in range(comp_num):
                     cols.extend([f"msgIndex{i+1}"])
                 # LOG.debug(p)
-                df = pd.DataFrame(p, columns=cols).astype(self.pd_types)
-                # df.sort_values(by=list(df.columns), inplace=True)
+                df = self._build_dataframe(name, p, cols)       
                 db.wind[name] = df
                 field_stat[name] = len(df)
                 self._check_duplicates(name, df)
@@ -329,15 +346,10 @@ class ExperimentIndexer(GribIndexer):
         cols.extend(["msgIndex", "fileIndex"])
         field_stat = {}
         for name, p in params.items():
-            # df = pd.DataFrame(p, columns=cols).astype({"expver": str})
-            df = pd.DataFrame(p, columns=cols).astype(self.pd_types)
-            df.sort_values(by=list(df.columns), inplace=True)
-            # write indexing info to disk
-            f_name = os.path.join(out_dir, f"{name[0]}_{name[1]}.csv")
-            df.to_csv(path_or_buf=f_name, header=True, index=False)
+            df = self._build_dataframe(name, p, cols)
+            self._write_dataframe(df, name, out_dir)
             db.params[name] = df
             field_stat[name] = len(df)
-            self._check_duplicates(name, df)
         LOG.info(f" scalar fields count: {field_stat}")
 
         # generate and write index for vector fields
@@ -359,13 +371,10 @@ class ExperimentIndexer(GribIndexer):
                 for i in range(comp_num):
                     cols.extend([f"msgIndex{i+1}", f"fileIndex{i+1}"])
                 # LOG.debug(p)
-                df = pd.DataFrame(p, columns=cols).astype(self.pd_types)
-                df.sort_values(by=list(df.columns), inplace=True)
-                f_name = os.path.join(out_dir, f"{name[0]}_{name[1]}.csv")
-                df.to_csv(path_or_buf=f_name, header=True, index=False)
+                df = self._build_dataframe(name, p, cols)
+                self._write_dataframe(df, name, out_dir)
                 db.wind[name] = df
                 field_stat[name] = len(df)
-                self._check_duplicates(name, df)
 
         LOG.info(f" vector fields count: {field_stat}")
 

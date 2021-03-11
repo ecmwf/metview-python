@@ -36,8 +36,8 @@ class Title:
             if not isinstance(data, list):
                 data = [data]
 
-            exp_conf = data[0].experiment
-            label = exp_conf.label
+            # exp_conf = data[0].experiment
+            label = data[0].label
             # fixed_shortname = sum([1 for x in data if not x.has_ecc_shortname()]) > 0
 
             lines = []
@@ -50,15 +50,17 @@ class Title:
                 # else:
                 #     cond = {"shortName": d.param.name}
 
-                if d.param.level_type == "surface":
+                param = d.param_info()
+
+                if param.level_type == "surface":
                     # lines.append(self.build_surface_fc(d.experiment.label, d.param.name, condition=cond))
                     lines[f"text_line_{i+1}"] = self.build_surface_fc(
-                        d.experiment.label, d.param.name, condition=cond
+                        d.label, param.name, condition=cond
                     )
                 else:
                     # lines.append(self.build_upper_fc(d.experiment.label, d.param.name, condition=cond))
                     lines[f"text_line_{i+1}"] = self.build_upper_fc(
-                        d.experiment.label, d.param.name, condition=cond
+                        d.label, param.name, condition=cond
                     )
 
                 # return mv.mtext(text_lines=lines, text_font_size=font_size)

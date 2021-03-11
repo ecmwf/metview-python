@@ -18,8 +18,9 @@ import yaml
 
 import metview as mv
 from metview.layout import Layout
-from metview.style import MapConf
+from metview.style import StyleDb, MapConf
 from metview.title import Title
+from metview.track import Track
 
 # logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
@@ -33,20 +34,23 @@ LOG = logging.getLogger(__name__)
 def plot_maps(
     *args, layout=None, view=None, title_font_size=0.4, frame=-1, animate=True
 ):
-    # mv.setoutput("jupyter")
-    # dw = Layout().build_grid(page_num=3, view=view)
-    # mv.plot(dw)
-    # return
-
     # define the view
     if view is None:
         view = MapConf().view(area="base")
 
-    # print(f"view={view}")
-
-    # in the positional arguments each item defines a plot_page (aka scene)
+    # in the positional arguments we have two options:
+    # 1. we only have non-list items. They belong to a single plot page.
+    # 2. we only have list items. Each list item defines a separate plot page.
     plot_def = list(args)
-    
+    lst_cnt = sum([1 for x in plot_def if isinstance(x, list)])
+    if not lst_cnt in [0, len(plot_def)]:
+        raise Exception(
+            f"Invalid plot arguments! Cannot mix list and non-list positional arguments."
+        )
+
+    if lst_cnt == 0:
+        plot_def = [plot_def]
+
     # build the layout
     num_plot = len(plot_def)
     dw = Layout().build_grid(page_num=num_plot, layout=layout, view=view)
@@ -59,42 +63,39 @@ def plot_maps(
     # build each scene
     for i, sc_def in enumerate(plot_def):
         desc.append(dw[i])
-        if not isinstance(sc_def, list):
-            sc_def = [sc_def]
-
+        # define layers
+        layers = []
         data_items = []
-        # loop for the parameters
         for item in sc_def:
-            if isinstance(item, tuple):
-                data, vd = item
-            else:
-                data = item
-                # if isinstance(data, Track):
-                if False:
-                    tr = data.build()
-                    # print("TRACK=", tr)
-                    desc.extend(tr)
-                    continue
-                else:
-                    vd = data.visdef()
+            if isinstance(item, mv.Fieldset):
+                layers.append([item])
+                data_items.append(item)
+            elif isinstance(item, Track):
+                tr = item.build()
+                layers.append(item)
+            elif layers:
+                layers[-1].append(item)
 
-            data_items.append(data)
-
-            # LOG.debug(f"par={data.param} fields={data.fields}")
-            if frame != -1:
-                fs = data[frame]
+        # add data and visdefs to plot definition
+        for layer in layers:
+            data = layer[0]
+            if len(layer) > 1:
+                vd = layer[1:]
             else:
-                fs = data
-            LOG.debug(f"data={data} len={len(fs)}")
-            LOG.debug("  shortName={}".format(mv.grib_get(fs, ["shortName"])))
-            desc.append(fs)
+                vd = StyleDb.visdef(data)
+
+            if isinstance(data, mv.Fieldset):
+                if frame != -1:
+                    data = data[frame]
+
+            desc.append(data)
             if vd is not None:
-                desc.append(vd)
+                desc.extend(vd)
 
-        # if data_items:
-        #     t = title.build(data_items)
-        #     LOG.debug(f"t={t}")
-        #     desc.append(t)
+        if data_items:
+            t = title.build(data_items)
+            # LOG.debug(f"t={t}")
+            desc.append(t)
 
     LOG.debug(f"desc={desc}")
 

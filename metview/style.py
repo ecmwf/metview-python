@@ -9,10 +9,13 @@
 # nor does it submit to any jurisdiction.
 #
 
+import logging
 import os
+
 import yaml
 import metview as mv
 
+LOG = logging.getLogger(__name__)
 
 _DB = {
     "param": (None, "visdef.yaml"),
@@ -219,6 +222,20 @@ class StyleDb:
             _DB[name] = (StyleDb(_DB[name][1]), "")
         return _DB[name][0]
     
+    @staticmethod
+    def visdef(fs, plot_type="map"):
+        param = fs.param_info()
+        if param is not None:
+            vd = (
+                StyleDb.get_db()
+                    .get_param_style(param, scalar=True, plot_type=plot_type)
+                    .to_request()
+                )
+            LOG.debug(f"vd={vd}")
+            return vd
+        return None
+
+
     def __str__(self):
         return self.__class__.__name__
 

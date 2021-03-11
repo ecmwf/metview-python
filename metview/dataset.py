@@ -20,6 +20,7 @@ import yaml
 import metview as mv
 from metview.indexer import FieldsetIndexer, ExperimentIndexer
 
+
 # logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
 LOG = logging.getLogger(__name__)
@@ -224,9 +225,12 @@ class IndexDb:
         if param is not None:
             q = self._build_query(dims)
             # LOG.debug("query={}".format(q))
-            df = param.query(q)
-            df.reset_index(drop=True, inplace=True)
-            # LOG.debug(f"df={df}")
+            if q != "":
+                df = param.query(q)
+                df.reset_index(drop=True, inplace=True)
+                # LOG.debug(f"df={df}")
+            else:
+                return param
         return df
 
     def get_fields(self, dims, param=None, as_fieldset=False):
@@ -322,7 +326,7 @@ class ExperimentDb(IndexDb):
             label=conf.get("label", ""),
             path=conf.get("dir", "").replace("__ROOTDIR__", root_dir),
             file_name_pattern=conf.get("fname", ""),
-            conf_dir=os.path.join("_conf_index", name),
+            conf_dir=os.path.join(root_dir, "_index", name),
             merge_conf=conf.get("merge", []),
             mars_params=conf.get("mars_params", []),
             dataset=dataset,
@@ -483,14 +487,27 @@ class Dataset:
     Represents a Dataset
     """
 
-    def __init__(self, path="", root_dir=""):
+    def __init__(self, name="", path=""):
         self.field_conf = {}
         self.track_conf = None
 
-        if path != "":
-            path = "exp.yaml"
+        if name != "" and path != "":
+            raise Exception(f"{self.__class__.__name__} cannot take both name and path!")
 
-        with open(path, "rt") as f:
+        if name != "":
+            # root_dir = os.getnev("TMPDIR", "")
+            root_dir = "/Users/sandor/metview/OpenIFS/2021"
+            root_dir = os.path.join(root_dir, name)
+            conf_file = os.path.join(root_dir, "config.yaml")
+        elif path != "":
+            if os.path.isdir(path):
+                conf_file = os.path.join("path", "config.yaml")
+                root_dir = path
+            else:
+                raise
+            # path = "exp.yaml"
+
+        with open(conf_file, "rt") as f:
             d = yaml.safe_load(f)
             for item in d["experiments"]:
                 ((name, conf),) = item.items()
