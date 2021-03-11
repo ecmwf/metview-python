@@ -7,6 +7,8 @@
 # granted to it by virtue of its status as an intergovernmental organisation
 # nor does it submit to any jurisdiction.
 
+import zipfile
+
 import metview as mv
 
 
@@ -14,6 +16,9 @@ def load_dataset(filename):
     base_url = "http://download.ecmwf.org/test-data/metview/gallery/"
     try:
         d = mv.download(url=base_url + filename, target=filename)
+        if filename.endswith(".zip"):
+            with zipfile.ZipFile(filename, "r") as f:
+                f.extractall()
         return d
     except:
         raise Exception(
