@@ -1,3 +1,34 @@
+projection:
+  title: Map projections
+  desc: These examples feature various map projections.
+  examples:
+    - predefined_area
+    - cylindrical
+    - cylindrical_subarea
+    - polar_north
+    - polar_south
+    - mercator
+    - lambert_subarea
+    - geos
+    - tilted_perspective
+    - goode
+    - mollweide
+    - robinson
+    - bonne
+    - bonne_subarea
+    - collignon
+coastlines:
+  title: Coastlines
+  desc: These examples feature coastlines settings.
+  examples:
+    - map_grid
+    - boundaries
+    - admin_boundaries
+    - rivers
+    - capitals
+    - coastlines2
+    - shape_file_layer
+    - coastlines_resolution
 grib:
   title: Map plots
   desc: These examples feature various map based plots.
@@ -33,7 +64,6 @@ grib:
   - legend2
   - contour3
   - contour10
-  - coastlines2
   - rainbow_contour_diffs
   - split_contour
   - nc_era5_t2

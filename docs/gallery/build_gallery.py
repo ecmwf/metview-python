@@ -189,7 +189,7 @@ class GalleryItem:
             if os.path.exists(self.f_png) and os.path.exists(self.f_thumbnail):
                 LOG.info("  PNGs are already generated")
             else:
-                LOG.ERROR(format_red(" PNGs need to be generated"))
+                LOG.error(format_red(" PNGs need to be generated"))
                 self.status = False
 
         self.build_page()

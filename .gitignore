@@ -97,5 +97,13 @@ docs/gallery/*.csv
 docs/gallery/*.png
 docs/gallery/*.tar
 docs/gallery/*.tar.gz
+docs/gallery/*.zip
 docs/gallery/*.gz
 docs/gallery/_*.py
+docs/gallery/*.shp
+docs/gallery/*.shx
+docs/gallery/*.xml
+docs/gallery/*.dbf
+docs/gallery/*.prj
+docs/gallery/*.sbn
+docs/gallery/*.sbx
