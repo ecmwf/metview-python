@@ -286,7 +286,7 @@ class IconDocBuilder:
             conf = yaml.load(f_in, Loader=yaml.FullLoader)
             conf = self.parse_conf(conf)
 
-            # gets summuary if it stored in a separate file
+            # gets summary if it is stored in a separate file
             summary = conf.get("summary", "")
             if summary == "rst":
                 with open(path_summary, "r") as fs:
@@ -319,7 +319,7 @@ class IconDocBuilder:
                 ((p_name, p_conf),) = item.items()
                 p = DocParam(p_name, p_conf)
                 txt += f"""
-    :param {p.name}: { p.name}
+    :param {p.name}: { p.desc}
     :type {p.name}: {p.type_str()}
 """
             txt += f"""
