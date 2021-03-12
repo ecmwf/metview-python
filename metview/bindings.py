@@ -1072,7 +1072,7 @@ class Plot:
 
     def __call__(self, *args, **kwargs):
         # if animate=True is supplied, then create a Jupyter animation
-        if kwargs.get('animate', False):
+        if kwargs.get("animate", False):
             return animate(args, kwargs)
 
         # otherwise create a single static plot
