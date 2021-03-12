@@ -1525,7 +1525,7 @@ def test_plot_2_pages():
 def test_animate_exception():
     # this should fail because we are not in a Jupyter environment
     with pytest.raises(EnvironmentError):
-        mv.animate()
+        mv.plot(animate=True)
 
 
 def test_macro_error():
