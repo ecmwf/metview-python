@@ -29,23 +29,15 @@ coastlines:
     - coastlines2
     - shape_file_layer
     - coastlines_resolution
-grib:
-  title: Map plots
-  desc: These examples feature various map based plots.
+map-scalar:
+  title: Gridded scalar data on map
+  desc: These examples feature map plots with gridded scalar data.
   examples:
   - contour9
   - contour5
   - plot_t2m
   - field_anomalies
   - layoutx3
-  - wind4
-  - wind_coloured_by_t
-  - gradient_vector
-  - coloured_wind
-  - wind_overlay_and_legend_box
-  - wind_from_spectral_div_and_vor
-  - divergent_and_rotational_wind
-  - storm_joachim
   - gradient_shading
   - shading_only_over_land
   - model_orography
@@ -56,7 +48,6 @@ grib:
   - ens_percentile
   - ens_stamp
   - ens_spag
-  - streamline
   - simulated_sat_img
   - sst_extended_latlon
   - sst_era5_elnino_map
@@ -68,8 +59,27 @@ grib:
   - split_contour
   - nc_era5_t2
   - nc_era5_ozone
+map-vector:
+  title: Vector data on map
+  desc: These examples feature map plots with vector data.
+  examples:
+  - wind4
+  - wind_coloured_by_t
+  - gradient_vector
+  - coloured_wind
+  - wind_overlay_and_legend_box
+  - wind_from_spectral_div_and_vor
+  - divergent_and_rotational_wind
+  - storm_joachim
+  - streamline
   - nc_era5_wind
   - nc_seacurrent_fixed_vector
+  - odb_temp_wind
+  - geowind
+map-point:
+  title: Point data on map
+  desc: These examples feature map plots with point data.
+  examples:
   - nc_maritime_obs
   - model_obs_diff_plot
   - synop_map
@@ -78,16 +88,18 @@ grib:
   - coloured_obs_values
   - coloured_obs_values_in_circles
   - odb_radiance
-  - odb_temp_wind
   - air_report
   - text_at_geopoints_locations
-  - geoline_on_map
-  - geopolyline_on_map
-  - geocircle_on_map
+map-curves:
+  title: Tracks and curves on map
+  desc: These examples feature map plots with tracks, curves and shapes.
+  examples:
   - storm_track
   - storm_quadrants
   - flextra_forward
-  - geowind
+  - geoline_on_map
+  - geopolyline_on_map
+  - geocircle_on_map
 sections:
   title: Vertical and temporal sections
   desc: These examples feature vertical cross sections, average
