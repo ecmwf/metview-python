@@ -5,6 +5,7 @@ projection:
     - predefined_area
     - cylindrical
     - cylindrical_subarea
+    - cylindrical_across_dateline
     - polar_north
     - polar_south
     - mercator
