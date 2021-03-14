@@ -45,6 +45,7 @@ Indexing
       f[-1] # last field
       f[0:6] # the first 5 fields
       f[::2] # every second field
+      my_fields = fs[np.array([1, 2, 0, 5])] # numpy array of indices
 
 Iteration
 ############
@@ -89,6 +90,14 @@ Per-point methods
       .. code-block:: python
 
          diff = forecast_fs - analysis_fs # contains 99 fields of differences
+
+   Similarly, operations work between Fieldsets and numbers, for example:
+
+      .. code-block:: python
+
+         temperature_in_K = mv.read("temp.grib")
+         temperature_in_C = temperature_in_K - 273.15
+
 
    The following list of operators are valid when acting between two Fieldsets and also when acting between
    a Fieldset and a number. Of these, the logical operators return a Fieldset containing values of
