@@ -3,11 +3,11 @@ Fieldset object
 
 .. py:class:: Fieldset
 
-   Represents GRIB data. It is a list-like object with each list entry representing a GRIB message. 
+   Metview's Fieldset object represents GRIB data. It is a container-like object with each entry
+   representing a GRIB message.
 
 Construction
 ############
-  
 
    Fieldsets can be directly constructed either as empty, with a path to a GRIB file or using :func:`read`:
 
@@ -35,7 +35,8 @@ Indexing
 ############
 
    Indexing and slicing works in the standard Python way. There is no such thing as a single
-   field object in Metview, only a Fieldset with a single field.
+   field object in Metview, only a Fieldset with a single field, so all of the following return
+   a Fieldset:
    
    .. code-block:: python
 
@@ -90,12 +91,12 @@ Per-point methods
          diff = forecast_fs - analysis_fs # contains 99 fields of differences
 
    The following list of operators are valid when acting between two Fieldsets and also when acting between
-   a Fieldset and a number:
-   `+`, `-`, `*`, `/`, `**`, `&`, `|`, `~`, `>`, `>=`, `<`, `<=`, `==`, `!=`.
-
-   Of these, the logical operators, such as `>` and `==` return a Fieldset containing values of
+   a Fieldset and a number. Of these, the logical operators return a Fieldset containing values of
    1 where they pass the test, or 0 where they fail.
 
+.. csv-table:: Table Title
+   :file: operators.csv
+   :header-rows: 1
 
 Data extraction
 ################
