@@ -1,0 +1,15 @@
+Operator,\Decription
+\+,addition
+\-,subtraction
+\*,multiplication
+\/,division
+\**,power
+\&,logical and (result is 1s and 0s)
+\|,logical or (result is 1s and 0s)
+\~,logical not (result is 1s and 0s)
+\>,greater than (result is 1s and 0s)
+\>=,greater than or equal to (result is 1s and 0s)
+\<,less than (result is 1s and 0s)
+\<=,less than or equal to (result is 1s and 0s)
+\==,equal (result is 1s and 0s)
+\!=,not equal (result is 1s and 0s)
