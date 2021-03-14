@@ -96,6 +96,21 @@ Per-point methods
    Of these, the logical operators, such as `>` and `==` return a Fieldset containing values of
    1 where they pass the test, or 0 where they fail.
 
+
+Data extraction
+################
+
+A Fieldset can return an xarray by calling its :py:meth:`to_dataset` method.
+
+A Fieldset can return a numpy array of values by calling its :py:meth:`values` method.
+
+A Fieldset can return a :py:class:`Geopoints` object by calling the :py:meth:`grib_to_geo` function.
+
+
+
+
+
+
 .. include:: /gen_files/toc/grib_obj.rst
    
       
