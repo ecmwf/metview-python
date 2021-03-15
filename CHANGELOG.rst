@@ -6,6 +6,7 @@ Changelog for Metview's Python interface
 ------------------
 - added animate() function for animated plots in Jupyter notebooks
 - allowed cfgrib backend keyword arguments to be passed to Fieldset.to_dataset()
+- Fieldset out-of-range indexing now raises an IndexError
 
 
 1.6.1
