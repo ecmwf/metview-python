@@ -74,6 +74,7 @@ Format XY_VECTOR (XY Vector format)
    uv wind components). The start of an example file would look like the following:
 
    .. code-block:: python
+
       #GEO
       #FORMAT XY_VECTOR
       # lat    lon   height   date       time      u       v
