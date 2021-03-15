@@ -1840,6 +1840,14 @@ def test_read_filter_to_dataset():
     assert "t" not in x_keys  # only 'u' should be there
 
 
+def test_kwargs_to_dataset():
+    t_series = mv.read(file_in_testdir("t_time_series.grib"))
+    t0 = t_series[0]
+    ds = t0.to_dataset(squeeze=False, read_keys=["experimentVersionNumber"])
+    assert "step" in ds.dims
+    assert "GRIB_experimentVersionNumber" in ds.t.attrs
+
+
 def test_table():
     # test csv with metadata
     db = mv.read_table(
