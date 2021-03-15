@@ -45,6 +45,8 @@ map-scalar:
   - advection
   - departure_from_zonal_mean
   - deaccumulate_precip_fc
+  - potential_temperature
+  - equivalent_potential_temperature
   - ens_prob
   - ens_percentile
   - ens_stamp
