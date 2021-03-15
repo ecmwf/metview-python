@@ -7,6 +7,14 @@
     - grib_object
     - geopoints_object
     type: script
+- absolute_vorticity:
+    category:
+      fieldset: Computes the absolute vorticity from a relative vorticity fieldset
+    desc: Computes the absolute vorticity from a relative vorticity fieldset
+    group:
+    - wind
+    - grib_object
+    type: script
 - accumulate:
     category:
       fieldset: Adds up the values in a given field
