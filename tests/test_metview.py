@@ -454,6 +454,12 @@ def test_fieldset_single_index():
     assert mv.grib_get_long(grib4, "level") == 500
 
 
+def test_fieldset_positive_index_too_high():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    with pytest.raises(IndexError):
+        grib_m1 = grib[177]
+
+
 def test_fieldset_negative_index_1():
     grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
     grib_m1 = grib[-1]  # last element

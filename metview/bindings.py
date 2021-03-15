@@ -538,11 +538,14 @@ class ContainerValue(Value):
             elif isinstance(index, np.ndarray):  # can have an array as an index
                 return subset(self, index + self.macro_index_base)
             else:
+                c = int(count(self))
                 if index < 0:  # negative index valid for range [-len..-1]
-                    c = int(count(self))
                     if index >= -c:
                         index = c + index
                     else:
+                        raise IndexError("Index " + str(index) + " invalid ", self)
+                else:
+                    if index > c - 1:
                         raise IndexError("Index " + str(index) + " invalid ", self)
                 return subset(
                     self, index + self.macro_index_base
