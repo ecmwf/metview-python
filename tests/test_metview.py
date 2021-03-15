@@ -454,6 +454,12 @@ def test_fieldset_single_index():
     assert mv.grib_get_long(grib4, "level") == 500
 
 
+def test_fieldset_positive_index_too_high():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    with pytest.raises(IndexError):
+        grib_m1 = grib[177]
+
+
 def test_fieldset_negative_index_1():
     grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
     grib_m1 = grib[-1]  # last element
@@ -1525,7 +1531,7 @@ def test_plot_2_pages():
 def test_animate_exception():
     # this should fail because we are not in a Jupyter environment
     with pytest.raises(EnvironmentError):
-        mv.animate()
+        mv.plot(animate=True)
 
 
 def test_macro_error():
@@ -1838,6 +1844,14 @@ def test_read_filter_to_dataset():
     assert "u" in x_keys  # only 'u' should be there
     assert "v" not in x_keys  # only 'u' should be there
     assert "t" not in x_keys  # only 'u' should be there
+
+
+def test_kwargs_to_dataset():
+    t_series = mv.read(file_in_testdir("t_time_series.grib"))
+    t0 = t_series[0]
+    ds = t0.to_dataset(squeeze=False, read_keys=["experimentVersionNumber"])
+    assert "step" in ds.dims
+    assert "GRIB_experimentVersionNumber" in ds.t.attrs
 
 
 def test_table():

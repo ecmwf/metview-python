@@ -574,11 +574,14 @@ class ContainerValue(Value):
             elif isinstance(index, np.ndarray):  # can have an array as an index
                 return subset(self, index + self.macro_index_base)
             else:
+                c = int(count(self))
                 if index < 0:  # negative index valid for range [-len..-1]
-                    c = int(count(self))
                     if index >= -c:
                         index = c + index
                     else:
+                        raise IndexError("Index " + str(index) + " invalid ", self)
+                else:
+                    if index > c - 1:
                         raise IndexError("Index " + str(index) + " invalid ", self)
                 return subset(
                     self, index + self.macro_index_base
@@ -634,14 +637,14 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             lib.p_destroy_value(self.val_pointer)
         self.steal_val_pointer(temp)
 
-    def to_dataset(self):
+    def to_dataset(self, **kwarg):
         # soft dependency on cfgrib
         try:
             import xarray as xr
         except ImportError:
             print("Package xarray not found. Try running 'pip install xarray'.")
             raise
-        dataset = xr.open_dataset(self.url(), engine="cfgrib")
+        dataset = xr.open_dataset(self.url(), engine="cfgrib", backend_kwargs=kwarg)
         return dataset
 
     def _scan(self):
@@ -1154,7 +1157,7 @@ class Plot:
 
     def __call__(self, *args, **kwargs):
         # if animate=True is supplied, then create a Jupyter animation
-        if kwargs.get('animate', False):
+        if kwargs.get("animate", False):
             return animate(args, kwargs)
 
         # otherwise create a single static plot
