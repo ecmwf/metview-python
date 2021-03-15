@@ -31,6 +31,7 @@ LOG = logging.getLogger(__name__)
 # Plot maps with generic contents
 # ======================================================
 
+
 def plot_maps(
     *args, layout=None, view=None, title_font_size=0.4, frame=-1, animate=True
 ):
@@ -99,7 +100,5 @@ def plot_maps(
 
     LOG.debug(f"desc={desc}")
 
-    if animate and mv.plot.plot_to_jupyter:
-        mv.animate(desc)
-    else:
-        return mv.plot(desc)
+    animate = animate and mv.plot.plot_to_jupyter
+    return mv.plot(desc, animate=animate)

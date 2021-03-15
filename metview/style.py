@@ -46,29 +46,28 @@ class Visdef:
     def __init__(self, verb, params):
         self.verb = verb
         self.params = params
-        
-        self.BUILDER = {
-        "mcont": mv.mcont,
-        "mwind": mv.mwind,
-        "mcoast": mv.mcoast,
-        "msymb": mv.msymb,
-        "mgraph": mv.mgraph
-    }
 
+        self.BUILDER = {
+            "mcont": mv.mcont,
+            "mwind": mv.mwind,
+            "mcoast": mv.mcoast,
+            "msymb": mv.msymb,
+            "mgraph": mv.mgraph,
+        }
 
     def clone(self):
         return Visdef(self.verb, dict(**self.params))
 
     def change(self, verb, param, value):
         if verb == self.verb:
-            self.params[param] =  value
+            self.params[param] = value
 
     def change_symbol_text_list(self, value):
         assert self.verb == "msymb"
         if self.verb == "msymb":
-            if self.params.get("symbol_type","").lower() == "text":
+            if self.params.get("symbol_type", "").lower() == "text":
                 self.params["symbol_text_list"] = value
-        
+
     def to_request(self):
         fn = self.BUILDER.get(self.verb, None)
         if fn is not None:
@@ -78,7 +77,7 @@ class Visdef:
 
     def __str__(self):
         return f"Visdef[verb={self.verb}, params={self.params}]"
-    
+
     def __repr__(self):
         return f"Visdef(verb={self.verb}, params={self.params})"
 
@@ -195,7 +194,7 @@ class StyleDb:
     def _load_params(self, conf, path=""):
         for name, d in conf.items():
             # print(f"name={name} d={d}")
-            if not "style" in d:                
+            if not "style" in d:
                 raise Exception(
                     f"{self} No style defined for param={name}! File={path}"
                 )
@@ -221,20 +220,19 @@ class StyleDb:
         if _DB[name][0] is None:
             _DB[name] = (StyleDb(_DB[name][1]), "")
         return _DB[name][0]
-    
+
     @staticmethod
     def visdef(fs, plot_type="map"):
-        param = fs.param_info()
+        param = fs.param_info
         if param is not None:
             vd = (
                 StyleDb.get_db()
-                    .get_param_style(param, scalar=True, plot_type=plot_type)
-                    .to_request()
-                )
+                .get_param_style(param, scalar=True, plot_type=plot_type)
+                .to_request()
+            )
             LOG.debug(f"vd={vd}")
             return vd
         return None
-
 
     def __str__(self):
         return self.__class__.__name__

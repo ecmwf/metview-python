@@ -18,7 +18,7 @@ import pandas as pd
 import yaml
 
 import metview as mv
-from metview.indexer import FieldsetIndexer, ExperimentIndexer
+from metview.indexer import GribIndexer, FieldsetIndexer, ExperimentIndexer
 
 
 # logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
@@ -31,12 +31,18 @@ class ParamInfo:
     Determines the parameter properties from a user specified name
     """
 
-    SUFFIXES = {"hPa": "isobaricInhPa", "hpa": "isobaricInhPa", "K": "theta", "ml": "hybrid"}
+    SUFFIXES = {
+        "hPa": "isobaricInhPa",
+        "hpa": "isobaricInhPa",
+        "K": "theta",
+        "ml": "hybrid",
+    }
     LEVEL_TYPES = {"pl": "isobaricInhPa", "ml": "hybrid"}
     LEVEL_RE = re.compile(r"(\d+)")
     NUM_RE = re.compile(r"[0-9]+")
-    SURF_NAMES = {"t2": "2t", "q2": "2q", "u10": "10u", "v10": "10v"}
-    UPPER_NAMES = ["wind3d"]
+    SURF_RE = re.compile(r"^\d+\w+")
+    SURF_NAME_MAPPER = {"t2": "2t", "q2": "2q", "u10": "10u", "v10": "10v"}
+    KNOWN_SURF_NAMES = ["2t", "2q", "10u", "10v", "msl", "wind10"]
 
     def __init__(self, name, level, level_type):
         self.name = name
@@ -44,72 +50,75 @@ class ParamInfo:
         self.level_type = level_type
 
     @staticmethod
-    def build(self, full_name, param_types):
-        self.full_name = full_name
-        self.name = full_name
-        self.level = None
-        self.level_type = ""
+    def build(full_name, param_level_types=None):
+        full_name = full_name
+        # adjust surface names
+        if full_name in ParamInfo.SURF_NAME_MAPPER:
+            full_name = ParamInfo.SURF_NAME_MAPPER[full_name]
 
-        if self.full_name in self.SURF_NAMES:
-            self.full_name = self.SURF_NAMES[self.full_name]
-            self.name = self.full_name
+        name = full_name
+        level = None
+        level_type = ""
 
-        # LOG.debug(f"param_types={param_types}")
-        lev_t = param_types.get(self.name, [])
-        LOG.debug(f"lev_t={lev_t}")
+        # LOG.debug(f"param_level_types={param_level_types}")
+        if param_level_types:
+            lev_t = param_level_types.get(name, [])
+            LOG.debug(f"lev_t={lev_t}")
 
-        # the param full name is found in the conf
-        if lev_t:
-            if "isobaricInhPa" in lev_t:
-                self.level_type = "isobaricInhPa"
-            else:
-                self.level_type = lev_t[0]
-            # determine level value
-            if not self.name in self.UPPER_NAMES:
-                m = self.LEVEL_RE.search(self.name)
-                if m and m.groups() and len(m.groups()) == 1:
-                    self.level = int(m.group(1))
-        elif self.name in self.UPPER_NAMES:
-            raise Exception(
-                f"Param={self.name} (deduced from name={full_name}) is not found in experiment!"
-            )
+            # the param full name is found in the conf
+            if lev_t:
+                if "isobaricInhPa" in lev_t:
+                    level_type = "isobaricInhPa"
+                else:
+                    level_type = lev_t[0]
+
         # the param full name has to parsed. The possible formats are:
         # t2, t, t500, t500hPa, q20m, z320K
         # If no level suffix is specified it is interpreted as
-        # pressure level, unless it is a surface parameter.
-        else:
-            t = self.full_name
-            # guess the level type from the suffix
-            for k, v in self.SUFFIXES.items():
-                if self.full_name.endswith(k):
-                    self.level_type = v
-                    t = self.full_name[: -(len(k))]
-                    break
+        # surface level!
+        if level_type == "":
+            t = full_name
+            if (
+                t in ParamInfo.KNOWN_SURF_NAMES
+                or ParamInfo.SURF_RE.match(t) is not None
+            ):
+                level_type = "surface"
+            else:
+                # guess the level type from the suffix
+                for k, v in ParamInfo.SUFFIXES.items():
+                    if full_name.endswith(k):
+                        level_type = v
+                        t = full_name[: -(len(k))]
+                        break
 
-            # determine level value
-            m = self.LEVEL_RE.search(t)
-            if m and m.groups() and len(m.groups()) == 1:
-                self.level = int(m.group(1))
-                if self.level_type == "" and self.level > 10:
-                    self.level_type = "isobaricInhPa"
-                self.name = self.NUM_RE.sub("", t)
+                # determine level value
+                m = ParamInfo.LEVEL_RE.search(t)
+                if m and m.groups() and len(m.groups()) == 1:
+                    level = int(m.group(1))
+                    if level_type == "" and level > 10:
+                        level_type = "isobaricInhPa"
+                    name = ParamInfo.NUM_RE.sub("", t)
 
             # check param name in the conf
-            lev_t = param_types.get(self.name, [])
-            if lev_t:
-                if not self.level_type:
-                    self.level_type = lev_t[0]
-                elif self.level_type not in lev_t:
+            if param_level_types:
+                lev_t = param_level_types.get(name, [])
+                if lev_t:
+                    if not level_type:
+                        level_type = lev_t[0]
+                    elif level_type not in lev_t:
+                        raise Exception(
+                            f"Level type cannot be deduced from param name={full_name}!"
+                        )
+                else:
                     raise Exception(
-                        f"Level type cannot be deduced from param name={full_name}!"
+                        f"Param={name} (deduced from name={full_name}) is not found in dataset!"
                     )
-            else:
-                raise Exception(
-                    f"Param={self.name} (deduced from name={full_name}) is not found in experiment!"
-                )
 
-        if self.level_type == "":
-            self.level_type = "surface"
+        if level_type == "":
+            level_type = "surface"
+            level = None
+
+        return ParamInfo(name, level, level_type)
 
     @property
     def data_id(self):
@@ -131,23 +140,21 @@ class ParamInfo:
             return True
         return False
 
+    def make_dims(self):
+        dims = {}
+        if self.name:
+            dims["shortName"] = [self.name]
+        if self.level:
+            dims["level"] = [self.level]
+        if self.level_type:
+            dims["typeOfLevel"] = [self.level_type]
+        return dims
+
     def __str__(self):
         return f"{self.__class__.__name__}[full_name={self.full_name}, name={self.name}, level={self.level}, level_type={self.level_type}]"
 
 
 class IndexDb:
-    DIMS = [
-        "shortName",
-        "mars.param",
-        "basedate",
-        "date",
-        "time",
-        "step",
-        "level",
-        "typeOfLevel",
-        "number",
-    ]
-
     def __init__(
         self,
         name,
@@ -155,7 +162,7 @@ class IndexDb:
         path="",
         file_name_pattern="",
         conf_dir="",
-        params={},
+        blocks={},
         data_files=[],
         merge_conf=[],
         mars_params={},
@@ -175,34 +182,72 @@ class IndexDb:
 
         self.conf_dir = conf_dir
         self.mars_params = mars_params
-        self.params = params
+        self.blocks = blocks
         self.wind = {}
         self._param_types = {}
         self.data_files = data_files
         self.merge_conf = merge_conf
 
+    def load(self):
+        pass
+
     def scan(self):
         raise NotImplementedError
 
+    def select_with_name(self, name):
+        p = self.get_param_info(name)
+        if p is not None:
+            fs = self.select(**p.make_dims())
+            # LOG.debug(f"fs={fs}")
+            if fs is not None:
+                fs._param_info = p
+                return fs
+        return None
+
     def select(self, **kwargs):
+        """
+        Creates a fieldset with the specified filter conditions. The resulting fieldset
+        will contain an index db.
+        """
         LOG.debug(f"kwargs={kwargs}")
-        dims = {k: list() for k in IndexDb.DIMS}
-        dims.update(copy.deepcopy(kwargs))
-        for k, v in dims.items():
-            # LOG.debug(f"dims[{k}]={v}")
-            dims[k] = self._check_dim_values(v, name=k)
-
-        if dims["basedate"] and (dims["date"] or dims["time"]):
-            raise Exception("Cannot specify basedate together with date and time!")
-
-        fs = mv.Fieldset()
-        # fs.dims = {**self.dims}
-        db, r = self.get_fields(dims, as_fieldset=True)
-        for f in r:
-            fs.append(f)
+        # LOG.debug(f"blocks={self.blocks}")
+        self.load()
+        dims = self._make_dims(kwargs)
+        # fs = mv.Fieldset()
+        db, fs = self._get_fields(dims)
+        # for f in r:
+        #     fs.append(f)
         fs._db = db
-        # LOG.debug(f"params={fs.index_db.params}")
+        # LOG.debug(f"fs={fs}")
+        # LOG.debug(f"blocks={fs._db.blocks}")
         return fs
+
+    def _get_fields(self, dims):
+        res = mv.Fieldset()
+        dfs = {}
+        LOG.debug(f"dims={dims}")
+
+        cnt = 0
+        if any(name in dims for name in GribIndexer.BLOCK_KEYS):
+            dims = copy.deepcopy(dims)
+            dims_sub = [dims.pop(name, []) for name in GribIndexer.BLOCK_KEYS]
+            for key in self.blocks.keys():
+                assert len(key) == len(dims_sub)
+                # LOG.debug(f"key={key}")
+                if all(
+                    len(dims_sub[i]) == 0 or key[i] in dims_sub[i]
+                    for i in range(len(key))
+                ):
+                    LOG.debug(f"found={key}")
+                    self._get_fields_for_block(key, dims, dfs, res)
+        else:
+            for key in self.blocks.keys():
+                self._get_fields_for_block(key, dims, dfs, res)
+        # LOG.debug(f"len_res={len(res)}")
+        # LOG.debug(f"dfs={dfs}")
+        # LOG.debug(f"res={res}")
+        c = FieldsetDb(res, blocks=dfs)
+        return c, res
 
     def _build_query(self, dims):
         q = ""
@@ -218,69 +263,59 @@ class IndexDb:
                     q += f"{column} in {v}"
         return q
 
-    def filter(self, param=None, dims={}):
-        # self.load_data_file_list()
-        # p = self._load(param)
-        df = None
-        if param is not None:
+    def _filter(self, df=None, dims={}):
+        df_res = None
+        if df is not None:
             q = self._build_query(dims)
             # LOG.debug("query={}".format(q))
             if q != "":
-                df = param.query(q)
-                df.reset_index(drop=True, inplace=True)
+                df_res = df.query(q)
+                df_res.reset_index(drop=True, inplace=True)
                 # LOG.debug(f"df={df}")
             else:
-                return param
-        return df
+                return df
+        return df_res
 
-    def get_fields(self, dims, param=None, as_fieldset=False):
-        # self.load_data_file_list()
-        # self.load(name)
-        # p = self.params.get(name + "_surface", None)
-        # LOG.debug(f"df={df}")
-        # fs = {}
-        res = mv.Fieldset()
-        dfs = {}
+    def _get_fields_for_block(self, key, dims, dfs, res):
+        # LOG.debug(f"block={self.blocks[key]}")
+        if self.blocks[key] is None:
+            self._load_block(key)
+        df = self._filter(df=self.blocks[key], dims=dims)
+        LOG.debug(f"df={df}")
+        if df is not None and not df.empty:
+            df_fs = self._extract_fields(df, res)
+            # LOG.debug(f"len_res={len(res)}")
+            if df_fs is not None:
+                # LOG.debug(f"df_fs={df_fs}")
+                dfs[key] = df_fs
 
-        # LOG.debug(f"data_files={self.data_files}")
-
-        cnt = 0
-        if len(dims["shortName"]) != 0:
-            dims_tmp = {**dims}
-            params = dims_tmp.pop("shortName")
-            # levtypes = dims_tmp.pop("levelType")
-            for par_name, par in self.params.items():
-                if par_name[0] in params:
-                    # LOG.debug(par_name)
-                    df = self.filter(param=par, dims=dims_tmp)
-                    # LOG.debug(f"df={df}")
-                    if not df.empty:
-                        df_fs = self._extract_fields(df, res)
-                        if df_fs is not None:
-                            # LOG.debug(f"df_fs={df_fs}")
-                            dfs[par_name] = df_fs
-        else:
-            for par_name, par in self.params.items():
-                # LOG.debug(f"par_name={par_name}")
-                # LOG.debug(f"dtypes={par.dtypes}")
-                df = self.filter(param=par, dims=dims)
-                # LOG.debug(f"df={df}")
-                if not df.empty:
-                    df_fs = self._extract_fields(df, res)
-                    if df_fs is not None:
-                        # LOG.debug(f"df_fs={df_fs}")
-                        dfs[par_name] = df_fs
-
-        # LOG.debug(f"res={res}")
-        c = FieldsetDb(res, params=dfs)
-        return c, res
-
-    def get_param_info(self):
-        p = list(self.params.keys())
-        if len(p) > 0:
-            p = self.params[p[0]]
-            return ParamInfo(p["shortName"][0], p["level"][0], p["typeOfLevel"][0])
+    def _load_block(self, key):
         return None
+
+    def get_param_info(self, name):
+        return ParamInfo.build(name, param_level_types=self.param_types)
+
+        # keys = list(self.blocks.keys())
+        # if len(keys) > 0 and self.blocks[keys[0]] is not None and not self.blocks[keys[0]].empty:
+        #     # LOG.debug(f"p={p}")
+        #     p = self.blocks[keys[0]]
+        #     short_name = keys[0][0]
+        #     level_type = keys[0][1]
+        #     LOG.debug("p={}".format(p["level"]))
+        #     return ParamInfo(short_name, p["level"].iloc[0], level_type)
+        # return None
+
+    def _make_dims(self, options):
+        dims = {}
+        for k, v in options.items():
+            vv = copy.deepcopy(v)
+            vv = self._check_dim_values(vv, name=k)
+            if vv:
+                dims[k] = vv
+
+        if dims.get("basedate", []) and (dims.get("date", []) or dims.get("time", [])):
+            raise Exception("Cannot specify basedate together with date and time!")
+        return dims
 
     def _check_dim_values(self, v, name=None):
         v = self._to_list(v)
@@ -307,8 +342,18 @@ class IndexDb:
             v = [v]
         return v
 
+    @property
+    def param_types(self):
+        if len(self._param_types) == 0:
+            for k in self.blocks.keys():
+                if not k[0] in self._param_types:
+                    self._param_types[k[0]] = [k[1]]
+                else:
+                    self._param_types[k[0]].append(k[1])
+        return self._param_types
+
     def to_df(self):
-        return pd.concat([p for _, p in self.params.items()])
+        return pd.concat([p for _, p in self.blocks.items()])
 
     def __str__(self):
         return "{}[name={}]".format(self.__class__.__name__, self.name)
@@ -348,11 +393,9 @@ class ExperimentDb(IndexDb):
 
     def load(self):
         self.load_data_file_list()
-        for f in mv.get_file_list(os.path.join(self.conf_dir, "*_*.csv")):
-            name = os.path.basename(f)
-            name = name[:-4].split("_")
-            assert len(name) == 2
-            self.params[(name[0], name[1])] = None
+        if len(self.blocks) == 0:
+            for key in ExperimentIndexer.get_storage_key_list(self.conf_dir):
+                self.blocks[key] = None
 
     def load_data_file_list(self):
         if len(self.data_files) == 0:
@@ -363,75 +406,60 @@ class ExperimentDb(IndexDb):
             except:
                 pass
 
-    def _load(self, param):
-        if not param in self.params or self.params[param] is None:
-            f_name = os.path.join(self.conf_dir, f"{param[0]}_{param[1]}.csv")
-            LOG.debug("fname={}".format(f_name))
-            # self.params[param.data_id] = pd.read_csv(
-            #     f_name, index_col=None, dtype={"date": str, "time": str, "expver": str}
-            # )
-            self.params[param] = pd.read_csv(f_name, index_col=None)
-        return self.params[param]
+    def _load_block(self, key):
+        if not key in self.blocks or self.blocks[key] is None:
+            self.blocks[key] = ExperimentIndexer.read_dataframe(key, self.conf_dir)
+        return self.blocks[key]
+
+    def __getitem__(self, key):
+        if isinstance(key, str):
+            return self.select_with_name(key)
+        return None
 
     # return a view
     def select_view(self, **kwargs):
         c = self._clone()
-
-        dims = {k: list() for k in IndexDb.DIMS}
-        # dims = {}
-        dims.update(copy.deepcopy(kwargs))
-        LOG.debug(f"dims={dims}")
-        for k, v in dims.items():
-            # LOG.debug(f"dims[{k}]={v}")
-            dims[k] = self._check_dim_values(v, name=k)
-
-        if dims["basedate"] and (dims["date"] or dims["time"]):
-            raise Exception("Cannot specify basedate together with date and time!")
-
-        params = self._get_subset(dims)
-        c.params = params
+        dims = self._make_dims(kwargs)
+        blocks = self._filter_blocks(dims)
+        c.blocks = blocks
         c.data_files = self.data_files
-
-        LOG.debug(f"kwargs={kwargs}")
         return c
 
-    def _get_subset(self, dims):
+    def _filter_blocks(self, dims):
         self.load()
-        # self.load(name)
-        # p = self.params.get(name + "_surface", None)
-        # LOG.debug(f"df={df}")
-
         dfs = {}
-
-        LOG.debug(f"data_files={self.data_files}")
+        # LOG.debug(f"data_files={self.data_files}")
 
         cnt = 0
-        if len(dims["shortName"]) != 0:
-            dims_tmp = {**dims}
-            params = dims_tmp.pop("shortName")
-            # levtypes = dims_tmp.pop("levelType")
-            for par_name in self.params.keys():
-                if par_name[0] in params:
-                    LOG.debug(par_name)
-                    d = self._load(par_name)
-                    df = self.filter(param=d, dims=dims_tmp)
-                    LOG.debug(f"df={df}")
+        if any(name in dims for name in GribIndexer.BLOCK_KEYS):
+            dims = copy.deepcopy(dims)
+            dims_sub = [dims.pop(name, []) for name in GribIndexer.BLOCK_KEYS]
+            for key in self.blocks.keys():
+                assert len(key) == len(dims_sub)
+                if all(
+                    len(dims_sub[i]) == 0 or key[i] in dims_sub[i]
+                    for i in range(len(key))
+                ):
+                    df = self._load_block(key)
+                    df = self._filter(df=df, dims=dims)
+                    # LOG.debug(f"df={df}")
                     if df is not None and not df.empty:
-                        dfs[par_name] = df
+                        cnt += len(df)
+                        LOG.debug(f" matching rows={len(df)}")
+                        dfs[key] = df
         else:
-            for par_name in self.params.keys():
-                LOG.debug(f"par={par_name}")
-                # LOG.debug(f"dtypes={par.dtypes}")
-                d = self._load(par_name)
-                df = self.filter(param=d, dims=dims)
+            for key in self.blocks.keys():
+                LOG.debug(f"key={key}")
+                df = self._load_block(key)
+                # LOG.debug(f"df={df}")
+                df = self._filter(df=df, dims=dims)
                 # LOG.debug(f"df={df}")
                 if df is not None and not df.empty:
                     cnt += len(df)
                     LOG.debug(f" matching rows={len(df)}")
-                    dfs[par_name] = df
+                    dfs[key] = df
 
         LOG.debug(f"total matching rows={cnt}")
-
         return dfs
 
     def _extract_fields(self, df, fs):
@@ -443,12 +471,30 @@ class ExperimentDb(IndexDb):
                     self.fs[row.fileIndex] = mv.read(self.data_files[row.fileIndex])
                 fs.append(self.fs[row.fileIndex][row.msgIndex])
                 idx.append(len(fs) - 1)
-                # LOG.debug("row={}".format(row))
             # generate a new dataframe
             df = df.copy()
-            # df.rename(columns={"fileIndex": "index"})
             df["msgIndex"] = idx
             df.drop(["fileIndex"], axis=1, inplace=True)
+            # LOG.debug(f"len={len(fs)}")
+            return df
+        elif "fileIndex2" in df.columns:
+            idx1 = []
+            idx2 = []
+            for row in df.itertuples():
+                # LOG.debug(f"row={row}")
+                if not row.fileIndex1 in self.fs:
+                    self.fs[row.fileIndex1] = mv.read(self.data_files[row.fileIndex1])
+                fs.append(self.fs[row.fileIndex1][row.msgIndex1])
+                idx1.append(len(fs) - 1)
+                if not row.fileIndex2 in self.fs:
+                    self.fs[row.fileIndex2] = mv.read(self.data_files[row.fileIndex2])
+                fs.append(self.fs[row.fileIndex2][row.msgIndex2])
+                idx2.append(len(fs) - 1)
+            # generate a new dataframe
+            df = df.copy()
+            df["msgIndex1"] = idx1
+            df["msgIndex2"] = idx2
+            df.drop(["fileIndex1", "fileIndex2"], axis=1, inplace=True)
             return df
         return None
 
@@ -459,25 +505,36 @@ class FieldsetDb(IndexDb):
         self.name = "file"
         self.fs = fs
         self.extra_keys = extra_keys
-        # self.scan()
 
     def scan(self):
         indexer = FieldsetIndexer()
         indexer.scan(self)
 
     def _extract_fields(self, df, fs):
+        # scalar
         if "msgIndex" in df.columns:
             idx = []
             for row in df.itertuples():
                 # LOG.debug(f"row={row}")
                 fs.append(self.fs[row.msgIndex])
                 idx.append(len(fs) - 1)
-                # m = mv.grib_get(self.fs[row.msgIndex], ["shortName", "date", "time"])
-                # LOG.debug(f"meta={m}")
-                # LOG.debug("row={}".format(row))
             # generate a new dataframe
             df = df.copy()
             df["msgIndex"] = idx
+            return df
+        # vector
+        elif "msgIndex2" in df.columns:
+            idx1 = []
+            idx2 = []
+            for row in df.itertuples():
+                fs.append(self.fs[row.msgIndex1])
+                idx1.append(len(fs) - 1)
+                fs.append(self.fs[row.msgIndex2])
+                idx2.append(len(fs) - 1)
+            # generate a new dataframe
+            df = df.copy()
+            df["msgIndex1"] = idx1
+            df["msgIndex2"] = idx2
             return df
         return None
 
@@ -492,7 +549,9 @@ class Dataset:
         self.track_conf = None
 
         if name != "" and path != "":
-            raise Exception(f"{self.__class__.__name__} cannot take both name and path!")
+            raise Exception(
+                f"{self.__class__.__name__} cannot take both name and path!"
+            )
 
         if name != "":
             # root_dir = os.getnev("TMPDIR", "")

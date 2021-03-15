@@ -610,7 +610,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         )
         self._db = None
         self._extra_keys = extra_keys
-        self._param = None
+        self._param_info = None
 
         if (path is not None) and (fields is not None):
             raise ValueError("Fieldset cannot take both path and fields")
@@ -656,11 +656,13 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             return self._db.select(**kwargs)
         return None
 
+    @property
     def param_info(self):
-        if self._db is not None:
-            return self._db.get_param_info()
-        else:
-            return None
+        return self._param_info
+        # if self._db is not None:
+        #     return self._db.get_param_info(name=None)
+        # else:
+        #     return None
 
     @property
     def label(self):
@@ -668,6 +670,15 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             return self._db.label
         else:
             return str()
+
+    def __getitem__(self, key):
+        if isinstance(key, str):
+            self._scan()
+            if self._db is not None:
+                return self._db.select_with_name(key)
+            return None
+        else:
+            return super().__getitem__(key)
 
     def __getstate__(self):
         # used for pickling

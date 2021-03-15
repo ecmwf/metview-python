@@ -50,18 +50,18 @@ class Title:
                 # else:
                 #     cond = {"shortName": d.param.name}
 
-                param = d.param_info()
-
-                if param.level_type == "surface":
-                    # lines.append(self.build_surface_fc(d.experiment.label, d.param.name, condition=cond))
-                    lines[f"text_line_{i+1}"] = self.build_surface_fc(
-                        d.label, param.name, condition=cond
-                    )
-                else:
-                    # lines.append(self.build_upper_fc(d.experiment.label, d.param.name, condition=cond))
-                    lines[f"text_line_{i+1}"] = self.build_upper_fc(
-                        d.label, param.name, condition=cond
-                    )
+                param = d.param_info
+                if param is not None:
+                    if param.level_type == "surface":
+                        # lines.append(self.build_surface_fc(d.experiment.label, d.param.name, condition=cond))
+                        lines[f"text_line_{i+1}"] = self.build_surface_fc(
+                            d.label, param.name, condition=cond
+                        )
+                    else:
+                        # lines.append(self.build_upper_fc(d.experiment.label, d.param.name, condition=cond))
+                        lines[f"text_line_{i+1}"] = self.build_upper_fc(
+                            d.label, param.name, condition=cond
+                        )
 
                 # return mv.mtext(text_lines=lines, text_font_size=font_size)
                 return mv.mtext(**lines, text_font_size=font_size)

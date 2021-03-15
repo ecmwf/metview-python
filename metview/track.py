@@ -14,23 +14,24 @@ from datetime import datetime
 import metview as mv
 import pandas as pd
 
-import style
+import metview.style
+
 
 class Track:
     def __init__(self, path):
         self.path = path
-    
+
     def style(self):
         return style.get_db().get_style("track").clone()
 
     def build(self, visdefs=[]):
         df = pd.read_csv(filepath_or_buffer=self.path, skiprows=10)
-       
-        v_date = df.iloc[:,0]
-        v_time = df.iloc[:,1]
-        val = ["{}/{:02d}".format(str(d)[-2:], t) for d,t in zip(v_date, v_time)]
-        lon = df.iloc[:,4].values
-        lat = df.iloc[:,3].values 
+
+        v_date = df.iloc[:, 0]
+        v_time = df.iloc[:, 1]
+        val = ["{}/{:02d}".format(str(d)[-2:], t) for d, t in zip(v_date, v_time)]
+        lon = df.iloc[:, 4].values
+        lat = df.iloc[:, 3].values
 
         if visdefs:
             r = visdefs
@@ -44,7 +45,7 @@ class Track:
         vis = mv.input_visualiser(
             input_plot_type="geo_points",
             input_longitude_values=lon,
-            input_latitude_values=lat
-            )
+            input_latitude_values=lat,
+        )
 
         return [vis, *r]
