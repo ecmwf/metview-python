@@ -225,6 +225,35 @@ Storing and retrieving meta-data
       (date:20130804,level:0.2,param:temperature,time:1200)
       0.2
 
+
+Exporting as a pandas dataframe
+###############################
+
+   The Geopoints data type has an additional function, :py:meth:`to_dataframe`, which can be used
+   to produce a Pandas Dataframe object as shown. Note that the date and time columns are combined
+   into a single datetime column.
+
+   .. code-block:: python
+
+      import metview as mv
+      import pandas as pd
+ 
+      gpt = mv.read("gpts.gpt") # returns a Geopoints
+      df = gpt.to_dataframe()   # returns a Pandas Dataframe
+      print(df.head())
+
+   Output:
+
+   .. code-block:: python
+
+                     date  latitude   level  longitude    value
+      0 2018-01-14 12:00:00      30.0  1000.0      -24.0  288.736
+      1 2018-01-14 12:00:00      30.0  1000.0      -18.0  288.736
+      2 2018-01-14 12:00:00      30.0  1000.0      -12.0  286.736
+      3 2018-01-14 12:00:00      30.0  1000.0       -6.0      NaN
+      4 2018-01-14 12:00:00      30.0  1000.0        0.0      NaN
+
+
 Per-point methods
 ###################
 
