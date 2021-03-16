@@ -13,4 +13,19 @@ BUFR object
 
    To work directly with the values of BUFR data in Metview, you must filter it using one of Metview's filters.
 
-   See the complete list of BUFR functions here.
+Construction
+############
+
+   A BUFR file can be read from disk using :func:`read`:
+
+   .. code-block:: python
+
+      import metview as mv
+
+      bu = mv.read("obs.bufr")
+
+
+Methods and functions
+#####################
+
+   .. include:: /gen_files/toc/bufr.rst
