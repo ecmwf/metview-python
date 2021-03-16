@@ -15,7 +15,8 @@ What is ODB?
 
    Data from ODB can be extracted using the ODB/SQL query language, which is generally a small subset of SQL with some useful extensions.
 
-   The home of the ODB software is ODB API Home.
+   Metview uses ECMWF's ODC library for handling ODB-2 data. The documentation for how to construct
+   queries with it can be found in the documentation of its predecessor, `ODB API <https://confluence.ecmwf.int/display/ODBAPI>`_.
 
 The ODB icon
 ^^^^^^^^^^^^^^^^^

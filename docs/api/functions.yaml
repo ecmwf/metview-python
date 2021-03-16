@@ -2517,9 +2517,10 @@
     exclude: true
     type: script
 - to_dataframe:
-    desc: Converts a geopoints to a Pandas dataframe
+    desc: Converts a geopoints or odb to a Pandas dataframe
     group:
     - geopoints_object
+    - odb_object
     type: script
 - to_dataset:
     desc: Converts a fieldset to an xarray dataset
