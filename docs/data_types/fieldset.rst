@@ -47,6 +47,15 @@ Indexing
       f[::2] # every second field
       my_fields = fs[np.array([1, 2, 0, 5])] # numpy array of indices
 
+   It is also possible to assign fields into given locations in a Fieldset, for example:
+
+   .. code-block:: python
+
+    grib = mv.read("t_for_xs.grib")
+    grib[0] = grib[0] * 10
+    grib[4] = mv.sqrt(grib[3])
+
+
 Iteration
 ############
 
