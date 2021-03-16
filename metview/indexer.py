@@ -22,6 +22,7 @@ import pandas as pd
 import yaml
 
 # logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.INFO)
 LOG = logging.getLogger(__name__)
 
 
@@ -29,7 +30,7 @@ class GribIndexer:
     VECTOR_PARAMS = {
         "wind10": ["10u", "10v"],
         "wind": ["u", "v"],
-        # "wind3d": ["u", "v", "w"],
+        "wind3d": ["u", "v", "w"],
     }
 
     # 0: ecCodes type, 1: pandas type, 2: use in duplicate check

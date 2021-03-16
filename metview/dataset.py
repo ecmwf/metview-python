@@ -43,11 +43,13 @@ class ParamInfo:
     SURF_RE = re.compile(r"^\d+\w+")
     SURF_NAME_MAPPER = {"t2": "2t", "q2": "2q", "u10": "10u", "v10": "10v"}
     KNOWN_SURF_NAMES = ["2t", "2q", "10u", "10v", "msl", "wind10"]
+    VECTOR_NAMES = ["wind10", "wind", "wind3d"]
 
-    def __init__(self, name, level, level_type):
+    def __init__(self, name, level, level_type, scalar=True):
         self.name = name
         self.level = level
         self.level_type = level_type
+        self.scalar = scalar
 
     @staticmethod
     def build(full_name, param_level_types=None):
@@ -118,7 +120,10 @@ class ParamInfo:
             level_type = "surface"
             level = None
 
-        return ParamInfo(name, level, level_type)
+        scalar = not name in ParamInfo.VECTOR_NAMES
+
+        LOG.debug(f"scalar={scalar}")
+        return ParamInfo(name, level, level_type, scalar=scalar)
 
     @property
     def data_id(self):
@@ -151,7 +156,7 @@ class ParamInfo:
         return dims
 
     def __str__(self):
-        return f"{self.__class__.__name__}[full_name={self.full_name}, name={self.name}, level={self.level}, level_type={self.level_type}]"
+        return f"{self.__class__.__name__}[name={self.name}, level={self.level}, level_type={self.level_type}, scalar={self.scalar}]"
 
 
 class IndexDb:
@@ -267,11 +272,11 @@ class IndexDb:
         df_res = None
         if df is not None:
             q = self._build_query(dims)
-            # LOG.debug("query={}".format(q))
+            LOG.debug("query={}".format(q))
             if q != "":
                 df_res = df.query(q)
                 df_res.reset_index(drop=True, inplace=True)
-                # LOG.debug(f"df={df}")
+                LOG.debug(f"df_res={df_res}")
             else:
                 return df
         return df_res
@@ -374,6 +379,7 @@ class ExperimentDb(IndexDb):
             conf_dir=os.path.join(root_dir, "_index", name),
             merge_conf=conf.get("merge", []),
             mars_params=conf.get("mars_params", []),
+            blocks={},
             dataset=dataset,
         )
         return db
@@ -407,7 +413,11 @@ class ExperimentDb(IndexDb):
                 pass
 
     def _load_block(self, key):
+        LOG.debug(f"_load_block {key in self.blocks}")
+        if key in self.blocks:
+            LOG.debug(f"{self.blocks[key] is None}")
         if not key in self.blocks or self.blocks[key] is None:
+            LOG.debug("read")
             self.blocks[key] = ExperimentIndexer.read_dataframe(key, self.conf_dir)
         return self.blocks[key]
 
@@ -428,8 +438,8 @@ class ExperimentDb(IndexDb):
     def _filter_blocks(self, dims):
         self.load()
         dfs = {}
-        # LOG.debug(f"data_files={self.data_files}")
-
+        LOG.debug(f"data_files={self.data_files}")
+        LOG.debug(f"dims={dims}")
         cnt = 0
         if any(name in dims for name in GribIndexer.BLOCK_KEYS):
             dims = copy.deepcopy(dims)
@@ -441,8 +451,8 @@ class ExperimentDb(IndexDb):
                     for i in range(len(key))
                 ):
                     df = self._load_block(key)
-                    df = self._filter(df=df, dims=dims)
-                    # LOG.debug(f"df={df}")
+                    # df = self._filter(df=df, dims=dims)
+                    LOG.debug(f"df={df}")
                     if df is not None and not df.empty:
                         cnt += len(df)
                         LOG.debug(f" matching rows={len(df)}")
@@ -451,7 +461,7 @@ class ExperimentDb(IndexDb):
             for key in self.blocks.keys():
                 LOG.debug(f"key={key}")
                 df = self._load_block(key)
-                # LOG.debug(f"df={df}")
+                LOG.debug(f"df={df}")
                 df = self._filter(df=df, dims=dims)
                 # LOG.debug(f"df={df}")
                 if df is not None and not df.empty:
@@ -476,6 +486,31 @@ class ExperimentDb(IndexDb):
             df["msgIndex"] = idx
             df.drop(["fileIndex"], axis=1, inplace=True)
             # LOG.debug(f"len={len(fs)}")
+            return df
+        elif "fileIndex3" in df.columns:
+            idx1 = []
+            idx2 = []
+            idx3 = []
+            for row in df.itertuples():
+                # LOG.debug(f"row={row}")
+                if not row.fileIndex1 in self.fs:
+                    self.fs[row.fileIndex1] = mv.read(self.data_files[row.fileIndex1])
+                fs.append(self.fs[row.fileIndex1][row.msgIndex1])
+                idx1.append(len(fs) - 1)
+                if not row.fileIndex2 in self.fs:
+                    self.fs[row.fileIndex2] = mv.read(self.data_files[row.fileIndex2])
+                fs.append(self.fs[row.fileIndex2][row.msgIndex2])
+                idx2.append(len(fs) - 1)
+                if not row.fileIndex3 in self.fs:
+                    self.fs[row.fileIndex3] = mv.read(self.data_files[row.fileIndex3])
+                fs.append(self.fs[row.fileIndex3][row.msgIndex3])
+                idx3.append(len(fs) - 1)
+            # generate a new dataframe
+            df = df.copy()
+            df["msgIndex1"] = idx1
+            df["msgIndex2"] = idx2
+            df["msgIndex3"] = idx3
+            df.drop(["fileIndex1", "fileIndex2", "fileIndex3"], axis=1, inplace=True)
             return df
         elif "fileIndex2" in df.columns:
             idx1 = []
@@ -537,6 +572,42 @@ class FieldsetDb(IndexDb):
             df["msgIndex2"] = idx2
             return df
         return None
+
+    def _clone(self):
+        db = FieldsetDb(
+            self.name,
+            label=self.label,
+        )
+        db.blocks = {}
+        for k, v in self.blocks.items():
+            db.blocks[k] = v.copy()
+        return db
+
+    def speed(self):
+        r = mv.Fieldset()
+        for i in range(len(self.fs) // 2):
+            r.append(mv.sqrt(self.fs[i] ** 2 + self.fs[i + 1] ** 2))
+            p = self.fs.param_info
+            if p is not None:
+                param_id = ""
+                if p.name == "wind10":
+                    param_id = 207
+                elif p.name == "wind":
+                    param_id = 10
+                if param_id:
+                    r = mv.grib_set(r, ["paramId", param_id])
+        return r
+
+    def deacc(self):
+        if len(self.fs) > 1:
+            r = self.fs[0] * 0
+            for i in range(1, len(self.fs)):
+                f = self.fs[i] - self.fs[i - 1]
+                r.append(f)
+            r._db = self._clone()
+            return mv.grib_set_long(r, ["generatingProcessIdentifier", 148])
+        else:
+            return fs
 
 
 class Dataset:
@@ -604,6 +675,7 @@ class Dataset:
         item = self.field_conf.get(exp_id, None)
         if item is None:
             raise Exception(f"No experiment found with id={exp_id}")
+        LOG.debug(f"select_view item={item}")
         return item.select_view(**kwargs)
 
     def find(self, name):

@@ -15,12 +15,13 @@ import os
 import yaml
 import metview as mv
 
+# logging.basicConfig(level=logging.DEBUG)
 LOG = logging.getLogger(__name__)
 
 _DB = {
     "param": (None, "visdef.yaml"),
     "diff": (None, "visdef_diff.yaml"),
-    "map": (None, "_conf/map_style.yaml"),
+    "map": (None, "map_style.yaml"),
 }
 
 PATH = os.path.dirname(__file__)
@@ -147,7 +148,7 @@ class StyleDb:
     def __init__(self, path):
         self.params = {}
         self.styles = {}
-        self._load(path)
+        self._load(os.path.join(PATH, path))
 
     def get_style(self, style):
         if style in self.styles:
@@ -221,15 +222,12 @@ class StyleDb:
             _DB[name] = (StyleDb(_DB[name][1]), "")
         return _DB[name][0]
 
-    @staticmethod
-    def visdef(fs, plot_type="map"):
+    def visdef(self, fs, plot_type="map"):
         param = fs.param_info
         if param is not None:
-            vd = (
-                StyleDb.get_db()
-                .get_param_style(param, scalar=True, plot_type=plot_type)
-                .to_request()
-            )
+            vd = self.get_param_style(
+                param, scalar=param.scalar, plot_type=plot_type
+            ).to_request()
             LOG.debug(f"vd={vd}")
             return vd
         return None

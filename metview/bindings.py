@@ -662,10 +662,6 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
     @property
     def param_info(self):
         return self._param_info
-        # if self._db is not None:
-        #     return self._db.get_param_info(name=None)
-        # else:
-        #     return None
 
     @property
     def label(self):
@@ -673,6 +669,22 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             return self._db.label
         else:
             return str()
+
+    def speed(self):
+        if self._db is not None:
+            fs = self._db.speed()
+            fs._param_info = self.param_info
+            return fs
+        else:
+            return None
+
+    def deacc(self):
+        if self._db is not None:
+            fs = self._db.deacc()
+            fs._param_info = self.param_info
+            return fs
+        else:
+            return None
 
     def __getitem__(self, key):
         if isinstance(key, str):
