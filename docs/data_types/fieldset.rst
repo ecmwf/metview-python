@@ -127,8 +127,8 @@ A Fieldset can return a :py:class:`Geopoints` object by calling the :py:meth:`gr
 
 
 
-
-
+Methods and functions
+#####################
 
 .. include:: /gen_files/toc/grib_obj.rst
    
