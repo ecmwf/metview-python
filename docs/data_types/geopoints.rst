@@ -339,5 +339,7 @@ Plotting
    using :func:`msymb`.
 
 
+Methods and functions
+#####################
 
 .. include:: /gen_files/toc/geopoints_obj.rst
