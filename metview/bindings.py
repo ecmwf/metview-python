@@ -1016,6 +1016,7 @@ def bind_functions(namespace, module_name=None):
     namespace["setoutput"] = setoutput
     namespace["metzoom"] = metzoom
     namespace["version_info"] = version_info
+    namespace["merge"] = merge
     namespace["dataset_to_fieldset"] = dataset_to_fieldset
 
     namespace["Fieldset"] = Fieldset
@@ -1034,7 +1035,7 @@ greater_equal_than = make(">=")
 greater_than = make(">")
 lower_equal_than = make("<=")
 lower_than = make("<")
-merge = make("&")
+met_merge = make("&")
 met_not_eq = make("<>")
 met_plot = make("plot")
 mod = make("mod")
@@ -1061,6 +1062,14 @@ def version_info():
     binary_info = dict(met_version_info())
     binary_info["metview_python_version"] = __version__
     return binary_info
+
+
+# wrapper so that we can merge a single value (just returns itself)
+def merge(*args):
+    if len(args) == 1:
+        return args[0]
+    else:
+        return met_merge(*args)
 
 
 # -----------------------------------------------------------------------------

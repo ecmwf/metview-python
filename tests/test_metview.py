@@ -822,6 +822,34 @@ def test_fieldset_create_from_list_of_fieldsets_5():
         gl = mv.Fieldset(path=os.path.join(PATH, "test.grib"), fields=list_of_fields)
 
 
+def test_fieldset_merge_1():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    g3 = mv.merge(grib[1], grib[0])
+    assert g3.count() == 2
+    assert g3.grib_get_long("level") == [850, 1000]
+
+
+def test_fieldset_merge_2():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    g3 = mv.merge(grib[1], grib[0], grib[4])
+    assert g3.count() == 3
+    assert g3.grib_get_long("level") == [850, 1000, 400]
+
+
+def test_fieldset_merge_3():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    g3 = mv.merge(grib[2])
+    assert g3.count() == 1
+    assert g3.grib_get_long("level") == 700
+
+
+def test_fieldset_merge_4():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    g3 = mv.merge(grib[:3])
+    assert g3.count() == 3
+    assert g3.grib_get_long("level") == [1000, 850, 700]
+
+
 def test_fieldset_pickling():
     pickled_fname = file_in_testdir("pickled_fieldset.p")
     g = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
