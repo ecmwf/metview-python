@@ -110,7 +110,7 @@ def plot_maps(
                 if frame != -1:
                     data = data[frame]
             if len(vd) == 0:
-                vd = StyleDb.visdef(data)
+                vd = StyleDb.get_db().visdef(data)
 
             desc.append(data)
             if vd is not None and all(x is not None for x in vd):

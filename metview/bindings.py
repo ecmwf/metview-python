@@ -29,7 +29,6 @@ __version__ = "1.7.0"
 
 
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
-# logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
 LOG = logging.getLogger(__name__)
 
 
@@ -402,13 +401,15 @@ def push_vector(npa):
         )
 
 
-def step_to_date(run, step):
-    if not isinstance(step, list):
-        step = [step]
-    r = []
-    for s in step:
-        r.append(run + datetime.timedelta(hours=int(s)))
-    return r
+def valid_date(*args, base=None, step=[]):
+    LOG.debug(f"args={args} base={base}")
+    if len(args) != 0:
+        return call("valid_date", *args)
+    else:
+        assert base is not None
+        if not isinstance(step, list):
+            step = [step]
+        return [base + datetime.timedelta(hours=int(x)) for x in step]
 
 
 def get_file_list(path, file_name_pattern=None):
@@ -1109,7 +1110,7 @@ def bind_functions(namespace, module_name=None):
     namespace["metzoom"] = metzoom
     namespace["version_info"] = version_info
     namespace["dataset_to_fieldset"] = dataset_to_fieldset
-    namespace["step_to_date"] = step_to_date
+    namespace["valid_date"] = valid_date
     namespace["get_file_list"] = get_file_list
 
     namespace["Fieldset"] = Fieldset

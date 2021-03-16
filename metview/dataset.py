@@ -19,7 +19,7 @@ import yaml
 
 import metview as mv
 from metview.indexer import GribIndexer, FieldsetIndexer, ExperimentIndexer
-
+from metview.style import StyleDb, MapConf
 
 # logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
@@ -615,7 +615,7 @@ class Dataset:
     Represents a Dataset
     """
 
-    def __init__(self, name="", path=""):
+    def __init__(self, name="", path="", load_style=True):
         self.field_conf = {}
         self.track_conf = None
 
@@ -628,23 +628,27 @@ class Dataset:
             # root_dir = os.getnev("TMPDIR", "")
             root_dir = "/Users/sandor/metview/OpenIFS/2021"
             root_dir = os.path.join(root_dir, name)
-            conf_file = os.path.join(root_dir, "config.yaml")
         elif path != "":
             if os.path.isdir(path):
-                conf_file = os.path.join("path", "config.yaml")
-                root_dir = path
+                root_dir=path
             else:
                 raise
-            # path = "exp.yaml"
+          
+        data_dir = os.path.join(root_dir, "data")
+        conf_dir = os.path.join(root_dir, "conf")
+        data_conf_file = os.path.join(root_dir, "data_conf.yaml")
 
-        with open(conf_file, "rt") as f:
+        if load_style:
+            StyleDb.set_config(conf_dir)
+
+        with open(data_conf_file, "rt") as f:
             d = yaml.safe_load(f)
             for item in d["experiments"]:
                 ((name, conf),) = item.items()
                 if conf.get("type") == "Xtrack":
                     self.track_conf = TrackConf(name, conf, dataset=self)
                 else:
-                    c = ExperimentDb.make_from_conf(name, conf, root_dir, self)
+                    c = ExperimentDb.make_from_conf(name, conf, data_dir, self)
                     self.field_conf[c.name] = c
 
         for _, c in self.field_conf.items():
