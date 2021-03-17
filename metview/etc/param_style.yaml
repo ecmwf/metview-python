@@ -92,7 +92,7 @@ styles:
         contour_level_selection_type: interval
         contour_line_colour: black
         contour_line_thickness: 2
-        contour_reference_level: 1010,
+        contour_reference_level: 1010
   q_xs:
     - mcont:
         contour_automatic_setting: style_name

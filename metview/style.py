@@ -9,6 +9,7 @@
 # nor does it submit to any jurisdiction.
 #
 
+import copy
 import logging
 import os
 
@@ -58,7 +59,7 @@ class Visdef:
         }
 
     def clone(self):
-        return Visdef(self.verb, dict(**self.params))
+        return Visdef(self.verb, copy.deepcopy(self.params))
 
     def change(self, verb, param, value):
         if verb == self.verb:
@@ -94,6 +95,14 @@ class Style:
 
     def to_request(self):
         return [vd.to_request() for vd in self.visdefs]
+
+    def update(self, *args):
+        s = self.clone()
+        for i, v in enumerate(args):
+            if i < len(s.visdefs):
+                if isinstance(v, dict):
+                    s.visdefs[i].params.update(v)
+        return s
 
     def __str__(self):
         t = f"{self.__class__.__name__}[name={self.name}] "
@@ -162,11 +171,13 @@ class StyleDbItem:
         p = self.params.get(param.name, None)
         if p:
             return p.find_style(param, plot_type)
-        else:
+        elif self.system:
             if scalar:
                 return self.styles.get("default_mcont", None)
             else:
                 return self.styles.get("default_mwind", None)
+        else:
+            return None
 
     def _load(self, path):
         if not os.path.exists(path):
@@ -218,6 +229,15 @@ class StyleDbItem:
                     )
                 style = self.styles[gr.pop("style")]
                 self.params[name].groups.append(ParamStyleGroup(name, style, gr))
+
+    def style(self, fs, plot_type="map"):
+        param = fs.param_info
+        if param is not None:
+            vd = self.get_param_style(param, scalar=param.scalar, plot_type=plot_type)
+            LOG.debug(f"vd={vd}")
+            if vd is not None:
+                return vd
+        return None
 
     def visdef(self, fs, plot_type="map"):
         param = fs.param_info
@@ -279,6 +299,12 @@ class StyleDb:
             if vd is not None:
                 return vd
         return None
+
+    def style(self, fs, scalar=True, plot_type="map"):
+        for _, item in self.items.items():
+            vd = item.style(fs, plot_type=plot_type)
+            if vd is not None:
+                return vd
 
     def visdef(self, fs, plot_type="map"):
         for _, item in self.items.items():

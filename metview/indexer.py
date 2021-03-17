@@ -335,7 +335,7 @@ class ExperimentIndexer(GribIndexer):
                 if c_name != "":
                     ds.append(
                         {
-                            "data": db.dataset.find(c_name),
+                            "data": db.dataset.find(c_name, comp="field"),
                             "name": c_name,
                             "ens": {"type": "cf", "number": 0},
                         }
@@ -343,7 +343,7 @@ class ExperimentIndexer(GribIndexer):
                 for i, c_name in enumerate(db.merge_conf.get("pf", [])):
                     ds.append(
                         {
-                            "data": db.dataset.find(c_name),
+                            "data": db.dataset.find(c_name, comp="field"),
                             "name": c_name,
                             "ens": {"type": "pf", "number": i + 1},
                         }

@@ -20,6 +20,7 @@ import yaml
 import metview as mv
 from metview.indexer import GribIndexer, FieldsetIndexer, ExperimentIndexer
 from metview.style import StyleDb, MapConf
+from metview.track import Track
 
 # logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
@@ -633,6 +634,33 @@ class FieldsetDb(IndexDb):
         else:
             return fs
 
+class TrackConf:
+    def __init__(self, name, conf, data_dir, dataset):
+        self.name = name
+        self.dataset = dataset
+        self.label = self.name
+        self.path = conf.get("dir", "").replace(IndexDb.ROOTDIR_PLACEHOLDER, data_dir)
+        self.file_name_pattern = conf.get("fname", "")
+        # self.conf_dir = os.path.join("_conf", self.name)
+        self.data_files = []
+
+    def load_data_file_list(self):
+        if len(self.data_files) == 0:
+            self.data_files = mv.get_file_list(self.path, file_name_pattern=self.file_name_pattern)
+
+    def select(self, name):
+        tr = self._make(name)
+        if tr is None:
+            raise Exception(f"No track is available with name={name}!")
+        return tr
+
+    def _make(self, name):
+        self.load_data_file_list()
+        for f in self.data_files:
+            if name == os.path.basename(f).split(".")[0]:
+                return Track(f)
+        return None
+
 
 class Dataset:
     """
@@ -641,7 +669,7 @@ class Dataset:
 
     def __init__(self, name="", path="", load_style=True):
         self.field_conf = {}
-        self.track_conf = None
+        self.track_conf = {}
 
         if name != "" and path != "":
             raise Exception(
@@ -669,8 +697,8 @@ class Dataset:
             d = yaml.safe_load(f)
             for item in d["experiments"]:
                 ((name, conf),) = item.items()
-                if conf.get("type") == "Xtrack":
-                    self.track_conf = TrackConf(name, conf, dataset=self)
+                if conf.get("type") == "track":
+                    self.track_conf[name] = TrackConf(name, conf, data_dir, self)
                 else:
                     c = ExperimentDb.make_from_conf(name, conf, data_dir, self)
                     self.field_conf[c.name] = c
@@ -706,14 +734,25 @@ class Dataset:
         LOG.debug(f"select_view item={item}")
         return item.select_view(**kwargs)
 
-    def find(self, name):
-        return self.field_conf.get(name, None)
-
-    def select_track(self, name):
-        if self.tracks is not None:
-            return self.tracks.select(name)
+    def find(self, name, comp="field"):
+        if comp == "all":
+            f = self.field_conf.get(name, None)
+            if f is not None:
+                return f
+            else:
+                return self.track_conf.get(name, None)
+        elif comp == "field":
+            return self.field_conf.get(name, None)
+        elif comp == "track":
+            return self.track_conf.get(name, None)
         else:
-            raise Exception(f"No track data is available!")
+            return None
+
+    # def select_track(self, name):
+    #     if self.tracks is not None:
+    #         return self.tracks.select(name)
+    #     else:
+    #         raise Exception(f"No track data is available!")
 
     def describe(self):
         print("Database components:")
@@ -724,3 +763,8 @@ class Dataset:
         df = pd.DataFrame.from_dict(t)
         df.reset_index(drop=True, inplace=True)
         print(df)
+
+    def __getitem__(self, key):
+        if isinstance(key, str):
+            return self.find(key, comp="all")
+        return None

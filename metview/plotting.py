@@ -18,7 +18,7 @@ import yaml
 
 import metview as mv
 from metview.layout import Layout
-from metview.style import StyleDb, MapConf
+from metview.style import Style, StyleDb, MapConf
 from metview.title import Title
 from metview.track import Track
 
@@ -51,7 +51,7 @@ def extract_plot_def(*args, layout=False):
         data = None
         layer = []
         for item in plot_def[i]:
-            if isinstance(item, mv.Fieldset):
+            if isinstance(item, (mv.Fieldset, Track)):
                 data = item
                 layer.append({"data": data, "vd": []})
             elif data is not None:
@@ -78,16 +78,6 @@ def plot_maps(
     # 2. we only have list items. Each list item defines a separate plot page.
     plot_def = extract_plot_def(*args, layout=True)
 
-    # plot_def = list(args)
-    # lst_cnt = sum([1 for x in plot_def if isinstance(x, list)])
-    # if not lst_cnt in [0, len(plot_def)]:
-    #     raise Exception(
-    #         f"Invalid plot arguments! Cannot mix list and non-list positional arguments."
-    #     )
-
-    # if lst_cnt == 0:
-    #     plot_def = [plot_def]
-
     # build the layout
     num_plot = len(plot_def)
     dw = Layout().build_grid(page_num=num_plot, layout=layout, view=view)
@@ -109,40 +99,20 @@ def plot_maps(
                 data_items.append(data)
                 if frame != -1:
                     data = data[frame]
-            if len(vd) == 0:
-                vd = StyleDb.get_db().visdef(data)
+
+            if isinstance(data, Track):
+                data = data.build(style=vd)
 
             desc.append(data)
-            if vd is not None and all(x is not None for x in vd):
-                desc.extend(vd)
 
-        # layers = []
-        # data_items = []
-        # for item in sc_def:
-        #     if isinstance(item, mv.Fieldset):
-        #         layers.append([item])
-        #         data_items.append(item)
-        #     elif isinstance(item, Track):
-        #         tr = item.build()
-        #         layers.append(item)
-        #     elif layers:
-        #         layers[-1].append(item)
-
-        # # add data and visdefs to plot definition
-        # for layer in layers:
-        #     data = layer[0]
-        #     if len(layer) > 1:
-        #         vd = layer[1:]
-        #     else:
-        #         vd = StyleDb.visdef(data)
-
-        #     if isinstance(data, mv.Fieldset):
-        #         if frame != -1:
-        #             data = data[frame]
-
-        #     desc.append(data)
-        #     if vd is not None:
-        #         desc.extend(vd)
+            if not isinstance(data, Track):
+                if len(vd) == 0:
+                    vd = StyleDb.get_db().visdef(data)
+                for i, v in enumerate(vd):
+                    if isinstance(v, Style):
+                        vd[i] = v.to_request()
+                if vd is not None and all(x is not None for x in vd):
+                    desc.extend(vd)
 
         if data_items:
             t = title.build(data_items)
@@ -169,7 +139,7 @@ def plot_diff_maps(
     # build the layout
     dw = Layout().build_diff(view=view)
 
-    # the positional arguments has the follwing order:
+    # the positional arguments has the following order:
     # data1, visdef1.1 visdef1.2 ... data2, visdef2.1, visdef2.2 ...
     # the visdef objects are optional!
     assert len(args) >= 2

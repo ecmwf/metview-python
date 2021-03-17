@@ -14,7 +14,7 @@ from datetime import datetime
 import metview as mv
 import pandas as pd
 
-import metview.style
+from metview.style import Style, StyleDb
 
 
 class Track:
@@ -22,9 +22,9 @@ class Track:
         self.path = path
 
     def style(self):
-        return style.get_db().get_style("track").clone()
+        return StyleDb.get_db().get_style("track").clone()
 
-    def build(self, visdefs=[]):
+    def build(self, style=[]):
         df = pd.read_csv(filepath_or_buffer=self.path, skiprows=10)
 
         v_date = df.iloc[:, 0]
@@ -33,14 +33,18 @@ class Track:
         lon = df.iloc[:, 4].values
         lat = df.iloc[:, 3].values
 
-        if visdefs:
-            r = visdefs
+        if len(style) == 0:
+            s = StyleDb.get_db().get_style("track").clone()
+        if len(style) == 1 and isinstance(style[0], Style):
+            s = style[0].clone()
         else:
-            s = style.get_db().get_style("track").clone()
-            for vd in s.visdefs:
-                if vd.verb == "msymb":
-                    vd.change_symbol_text_list(val)
-            r = s.to_request()
+            assert all(not isinstance(x, Style) for x in style)
+            s = StyleDb.get_db().get_style("track").clone()
+
+        for vd in s.visdefs:
+            if vd.verb == "msymb":
+                vd.change_symbol_text_list(val)
+        r = s.to_request()
 
         vis = mv.input_visualiser(
             input_plot_type="geo_points",
