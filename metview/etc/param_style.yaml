@@ -1,5 +1,7 @@
 # the mapping between parameters and styles
 params:
+  msl:
+    style: msl
   q:
     style: default_mcont
     groups: 
@@ -79,6 +81,18 @@ styles:
     - mwind:
         wind_thinning_factor: 4
         legend: "on"
+  msl:
+    - mcont:
+        contour_highlight_colour: black
+        contour_highlight_thickness: 4
+        contour_interval: 5
+        contour_label: "on"
+        contour_label_frequency: 2
+        contour_label_height: 0.4
+        contour_level_selection_type: interval
+        contour_line_colour: black
+        contour_line_thickness: 2
+        contour_reference_level: 1010,
   q_xs:
     - mcont:
         contour_automatic_setting: style_name

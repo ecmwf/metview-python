@@ -1,6 +1,3 @@
 - base:
    map_area_definition: "corners"
    area: [15,-70,80,40]
-- atl:
-   map_area_definition: "corners"
-   area: [30,-60,70,0]

@@ -662,6 +662,8 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
 
     @property
     def param_info(self):
+        if self._param_info is None and self._db is not None:
+            self._param_info = self._db.get_param_info(name="")
         return self._param_info
 
     @property
@@ -674,7 +676,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
     def speed(self):
         if self._db is not None:
             fs = self._db.speed()
-            fs._param_info = self.param_info
+            # fs._param_info = self.param_info
             return fs
         else:
             return None

@@ -25,7 +25,8 @@ _DB = {
 }
 
 ETC_PATH = os.path.join(os.path.dirname(__file__), "etc")
-
+CUSTOM_CONF_PATH = ""
+LOCAL_CONF_PATH = ""
 
 # def get_db(name="param"):
 #     global _DB
@@ -154,8 +155,8 @@ class StyleDbItem:
     def get_style(self, style):
         if style in self.styles:
             return self.styles[style]
-        else:    
-            return self.styles.get("default", None)    
+        else:
+            return self.styles.get("default", None)
 
     def get_param_style(self, param, scalar=True, plot_type="map"):
         p = self.params.get(param.name, None)
@@ -221,9 +222,7 @@ class StyleDbItem:
     def visdef(self, fs, plot_type="map"):
         param = fs.param_info
         if param is not None:
-            vd = self.get_param_style(
-                param, scalar=param.scalar, plot_type=plot_type
-            )
+            vd = self.get_param_style(param, scalar=param.scalar, plot_type=plot_type)
             LOG.debug(f"vd={vd}")
             if vd is not None:
                 return vd.to_request()
@@ -245,27 +244,26 @@ class StyleDbItem:
 
 
 class StyleDb:
-    CUSTOM_CONF_PATH = ""
-    LOCAL_CONF_PATH = ""
-
     def __init__(self, conf_file_name):
         self.items = {"local": None, "custom": None, "system": None}
-        self.items["system"] = StyleDbItem(os.path.join(ETC_PATH, conf_file_name), system=True)
-        if self.CUSTOM_CONF_PATH:
+        self.items["system"] = StyleDbItem(
+            os.path.join(ETC_PATH, conf_file_name), system=True
+        )
+        if CUSTOM_CONF_PATH:
             self.items["custom"] = StyleDbItem(
-                os.path.join(self.CUSTOM_CONF_PATH, conf_file_name), system=False
+                os.path.join(CUSTOM_CONF_PATH, conf_file_name), system=False
             )
-        if self.LOCAL_CONF_PATH:
+        if LOCAL_CONF_PATH:
             self.items["local"] = StyleDbItem(
-                os.path.join(self.LOCAL_CONF_PATH, conf_file_name), system=False
+                os.path.join(LOCAL_CONF_PATH, conf_file_name), system=False
             )
 
         for n in ["local", "custom"]:
             if self.items[n] is None or self.items[n].is_empty():
                 self.items.pop(n)
 
-        LOG.debug(f"custom_conf_path={self.CUSTOM_CONF_PATH}")
-        LOG.debug(f"StyleDb items={self.items}")
+        # LOG.debug(f"custom_conf_path={CUSTOM_CONF_PATH}")
+        # LOG.debug(f"StyleDb items={self.items}")
 
     @staticmethod
     def get_db(name="param"):
@@ -298,7 +296,8 @@ class StyleDb:
 
     @staticmethod
     def set_config(conf_dir):
-        StyleDb.CUSTOM_CONF_PATH = conf_dir
+        global CUSTOM_CONF_PATH
+        CUSTOM_CONF_PATH = conf_dir
 
     # def __init__(self, path):
     #     self.params = {}
@@ -406,25 +405,60 @@ class StyleDb:
 class MapConf:
     items = []
     areas = []
+    BUILTIN_AREAS = [
+        "ANTARCTIC",
+        "ARCTIC",
+        "AUSTRALASIA",
+        "CENTRAL_AMERICA",
+        "CENTRAL_EUROPE",
+        "EAST_TROPIC",
+        "EASTERN_ASIA",
+        "EQUATORIAL_PACIFIC",
+        "EURASIA",
+        "EUROPE",
+        "GLOBAL",
+        "MIDDLE_EAST_AND_INDIA",
+        "NORTH_AMERICA",
+        "NORTH_ATLANTIC",
+        "NORTH_EAST_EUROPE",
+        "NORTH_POLE",
+        "NORTH_WEST_EUROPE",
+        "NORTHERN_AFRICA",
+        "PACIFIC",
+        "SOUTH_AMERICA",
+        "SOUTH_ATLANTIC_AND_INDIAN_OCEAN",
+        "SOUTH_EAST_ASIA_AND_INDONESIA",
+        "SOUTH_EAST_EUROPE",
+        "SOUTH_POLE",
+        "SOUTH_WEST_EUROPE",
+        "SOUTHERN_AFRICA",
+        "SOUTHERN_ASIA",
+        "WEST_TROPIC",
+        "WESTERN_ASIA",
+    ]
 
     def __init__(self):
         self.areas = {}
         self.style_db = StyleDb.get_db(name="map")
-        self._load()
+        self._load(os.path.join(ETC_PATH, "maps.yaml"))
+        if CUSTOM_CONF_PATH:
+            self._load(os.path.join(CUSTOM_CONF_PATH, "maps.yaml"))
+        if LOCAL_CONF_PATH:
+            self._load(os.path.join(LOCAL_CONF_PATH, "maps.yaml"))
 
-    def _load(self):
-        # file_path = os.path.join(self.conf_dir, "datafiles.yaml")
-        file_path = os.path.join(ETC_PATH, "maps.yaml")
+    def _load(self, file_path):
         with open(file_path, "rt") as f:
             for item in yaml.safe_load(f):
                 ((name, conf),) = item.items()
                 self.areas[name] = conf
 
     def find(self, area="base", style="grey_light_base"):
-        a = self.areas.get(area, None)
+        a = self.areas.get(area, {})
         s = None
-        if a is not None:
-            s = self.style_db.get_style(style)
+        if len(a) == 0 and area.upper() in self.BUILTIN_AREAS:
+            a = {"area_mode": "name", "area_name": area}
+        # if a is not None:
+        s = self.style_db.get_style(style)
         return a, s
 
     def view(self, area="base"):
