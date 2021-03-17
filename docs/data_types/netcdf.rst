@@ -73,6 +73,89 @@ How operators and functions work on NetCDF
       nc2 = nc1 + 10.8  # current variable of nc1 is used
       nc2 = nc1.sqrt()  # current variable of nc1 is used
 
+   NOTE : Like fieldsets, a netCDF resulting from an operation on two other netCDFs, will take the
+   metadata (e.g. date, time, parameter, levels, ...) from the first netCDF.
 
+Scaled values
+=============
+   By default, Metview will apply any scale_factor and add_offset attributes for the current variable.
+   This behaviour can be toggled using the function :py:meth:`netcdf_auto_scale_values`.
+
+Missing values
+==============
+   By default, Metview will check the _FillValue attribute of the current variable and will not include
+   any such values in its calculations. This behaviour can be toggled using the function
+   :py:meth:`netcdf_preserve_missing_values`.
+
+Working with multi-variable NetCDF files
+++++++++++++++++++++++++++++++++++++++++
+
+   Functions and operators working on netCDF files apply only to the current variable.
+   When the netCDF file contains several variables, you need to address each variable separately
+   and explicitly, and apply the function /operator to each in turn. For this purpose, Metview
+   provides functions to query the contents of a netCDF file and to set one of its variables
+   to be the current variable.
+
+   Users can list the variables held in a netcdf variable by means of the function :py:meth:`variables`:
+
+   .. code-block:: python
+
+     var_list = nc.variables()
+
+   This returns a list of strings, each holding a variable name. Counting the number of elements
+   in the output list gives the number of variables.
+
+   To set one of the existing variables to be the current variable, use function :py:meth:`setcurrent`,
+   which takes the index (starting at 1) of the desired variable:
+
+   .. code-block:: python
+
+     nc.setcurrent(n)
+
+
+Extracting NetCDF values
+########################
+
+   If you need to have access to the data values of a netcdf current variable, you can use function :py:meth:`values`:
+
+   .. code-block:: python
+
+     val_list = nc.values()
+
+   which returns a numpy array with all the values for the current variable.
+ 
+
+   An alternative method for accessing individual values is to the use the function :py:meth:`value`:
+
+   .. code-block:: python
+
+    val = nc.value(n)
+
+   which returns the nth value from the current netcdf variable.
+
+Time variables
+++++++++++++++
+
+   Variables which are detected to be of 'time' type (e.g. attribute standard_name='time', plus other checks)
+   are, by default, retrieved by the :py:meth:`value` and :py:meth:`values` functions as a date or a list of dates.
+   This behaviour can be toggled calling the function :py:meth:`netcdf_auto_translate_times` with an argument
+   of 1 or 0 to activate/deactivate the translation to dates. If deactivated, the :py:meth:`value` and :py:meth:`values`
+   functions will instead return a number or a vector of raw numbers as they are encoded in the variable.
+
+
+Automatic rescaling of values
++++++++++++++++++++++++++++++
+
+   If Metview performs a computation on a variable which results in its values overflowing the data type
+   used to pack the values in the netCDF variable (e.g. adding 3000 to the values of a Byte variable),
+   and the variable has `scale_factor` and `add_offset` attributes, Metview will compute new `scale_factor`
+   and `add_offset` attributes so that the values can be packed within the data type, making best use of
+   its data range. In this case, the `_FillValue` may be modified too.
+
+   This rescaling will not be performed if these attributes are not defined for the current variable,
+   or if Metview has been instructed to ignore them (via the :py:meth:`netcdf_auto_scale_values` function).
+   The automatic rescaling behaviour can be toggled on or off via the
+   :py:meth:`netcdf_auto_rescale_values_to_fit_packed_type` function. If disabled, and the computed
+   values overflow the data type, the macro will fail.
 
 .. include:: /gen_files/toc/netcdf_obj.rst
