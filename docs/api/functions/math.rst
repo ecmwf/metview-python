@@ -6,7 +6,7 @@ Mathematical functions
    Returns the absolute value of ``data``.
 
    :param data: input data
-   :type data: :class:`Fieldset`, :class:`Geopoints`, nd-array or number 
+   :type data: :class:`Fieldset`, :class:`Geopoints`, :class:`NetCDF`, nd-array or number 
    :rtype: same type as ``data``
 
    Missing values are retained, unaltered by the calculation.
@@ -16,7 +16,7 @@ Mathematical functions
    Returns the arc cosine of ``data`` in radians.
    
    :param data: input data
-   :type data: :class:`Fieldset`, :class:`Geopoints`, nd-array or number
+   :type data: :class:`Fieldset`, :class:`Geopoints`, :class:`NetCDF`, nd-array or number
    :rtype: same type as ``data``
 
    Missing values are retained, unaltered by the calculation.
@@ -26,7 +26,7 @@ Mathematical functions
    Returns the arc sine of ``data`` in radians.
    
    :param data: input data
-   :type data: :class:`Fieldset`, :class:`Geopoints`, nd-array or number
+   :type data: :class:`Fieldset`, :class:`Geopoints`, :class:`NetCDF`, nd-array or number
    :rtype: same type as ``data``
 
    Missing values are retained, unaltered by the calculation.
@@ -36,7 +36,7 @@ Mathematical functions
    Returns the arc tangent of ``data`` in radians.
    
    :param data: input data
-   :type data: :class:`Fieldset`, :class:`Geopoints`, nd-array or number
+   :type data: :class:`Fieldset`, :class:`Geopoints`, :class:`NetCDF`, nd-array or number
    :rtype: same type as ``data``
 
    Missing values are retained, unaltered by the calculation.
@@ -58,7 +58,7 @@ Mathematical functions
    Returns the cosine of ``data``.
    
    :param data: input data
-   :type data: :class:`Fieldset`, :class:`Geopoints`, nd-array or number
+   :type data: :class:`Fieldset`, :class:`Geopoints`, :class:`NetCDF`, nd-array or number
    :rtype: same type as ``data``
 
    Input values must be in radians. Missing values are retained, unaltered by the calculation.
@@ -68,7 +68,7 @@ Mathematical functions
    Returns the exponential of ``data``.
 
    :param data: input data
-   :type data: :class:`Fieldset`, :class:`Geopoints`, nd-array or number 
+   :type data: :class:`Fieldset`, :class:`Geopoints`, :class:`NetCDF`, nd-array or number 
    :rtype: same type as ``data``
 
    Missing values are retained, unaltered by the calculation.
@@ -79,9 +79,9 @@ Mathematical functions
    Returns the integer part of the dividing ``data_1`` by ``data_2``.
 
    :param data_1: divident data
-   :type data_1:  :class:`Fieldset`, :class:`Geopoints`, nd-array or number
+   :type data_1:  :class:`Fieldset`, :class:`Geopoints`, :class:`NetCDF`, nd-array or number
    :param data_2: divisor data
-   :type data_2: :class:`Fieldset`, :class:`Geopoints`, nd-array or number
+   :type data_2: :class:`Fieldset`, :class:`Geopoints`, :class:`NetCDF`, nd-array or number
    :rtype: same type as ``data_1``
 
    A missing value in either ``data_1`` or ``data_2`` will result in a missing value in the corresponding place in the output.
@@ -91,7 +91,7 @@ Mathematical functions
    Returns the integer part of ``data``. 
     
    :param data: input data
-   :type data: :class:`Fieldset`, :class:`Geopoints`, nd-array or number 
+   :type data: :class:`Fieldset`, :class:`Geopoints`, :class:`NetCDF`, nd-array or number 
    :rtype: same type as ``data``
 
    Missing values are retained, unaltered by the calculation.
@@ -149,7 +149,7 @@ Mathematical functions
    Returns the natural logarithm of ``data``.
 
    :param data: input data
-   :type data: :class:`Fieldset`, :class:`Geopoints`, nd-array or number 
+   :type data: :class:`Fieldset`, :class:`Geopoints`, :class:`NetCDF`, nd-array or number 
    :rtype: same type as ``data``
 
    Missing values are retained, unaltered by the calculation.
@@ -159,7 +159,7 @@ Mathematical functions
    Returns the log base 10 of ``data``.
 
    :param data: input data
-   :type data: :class:`Fieldset`, :class:`Geopoints`, nd-array or number 
+   :type data: :class:`Fieldset`, :class:`Geopoints`, :class:`NetCDF`, nd-array or number 
    :rtype: same type as ``data``
 
    Missing values are retained, unaltered by the calculation.
@@ -170,9 +170,9 @@ Mathematical functions
    Returns the integer remainder of dividing ``data_1`` by ``data_2``.
    
    :param data_1: divident data
-   :type data_1: :class:`Fieldset`, :class:`Geopoints`, nd-array or number 
+   :type data_1: :class:`Fieldset`, :class:`Geopoints`, :class:`NetCDF`, nd-array or number 
    :param data_2: divisor data
-   :type data_2: :class:`Fieldset`, :class:`Geopoints`, nd-array or number
+   :type data_2: :class:`Fieldset`, :class:`Geopoints`, :class:`NetCDF`, nd-array or number
    :rtype: same type as ``data_1``
    
    Where the values of ``data_2`` are larger than those of ``data_1``, the output value is set to the integer part of ``data_1``. A missing value in either ``data_1`` or ``data_2`` will result in a missing value in the corresponding place in the output. Note that only the integer parts of the inputs are considered in the calculation, meaning that a divisor of 0.5 would cause a division by zero.
@@ -201,7 +201,7 @@ Mathematical functions
    Returns the sign of ``data``:  -1 for negative , 1 for positive and 0 for 0 values.
     
    :param data: input data
-   :type data: :class:`Fieldset`, :class:`Geopoints`, nd-array or number 
+   :type data: :class:`Fieldset`, :class:`Geopoints`, :class:`NetCDF`, nd-array or number 
    :rtype: same type as ``data``
 
    Missing values are retained, unaltered by the calculation. 
@@ -211,7 +211,7 @@ Mathematical functions
    Returns the sine of ``data``.
    
    :param data: input data
-   :type data: :class:`Fieldset`, :class:`Geopoints`, nd-array or number
+   :type data: :class:`Fieldset`, :class:`Geopoints`, :class:`NetCDF`, nd-array or number
    :rtype: same type as ``data``
 
    Input values must be in radians. Missing values are retained, unaltered by the calculation.
@@ -221,7 +221,7 @@ Mathematical functions
    Returns the square root of ``data``.
 
    :param data: input data
-   :type data: :class:`Fieldset`, :class:`Geopoints`, nd-array or number 
+   :type data: :class:`Fieldset`, :class:`Geopoints`, :class:`NetCDF`, nd-array or number 
    :rtype: same type as ``data``
 
    Missing values are retained, unaltered by the calculation.
@@ -231,7 +231,7 @@ Mathematical functions
    Returns the tangent of ``data``.
    
    :param data: input data
-   :type data: :class:`Fieldset`, :class:`Geopoints`, nd-array or number
+   :type data: :class:`Fieldset`, :class:`Geopoints`, :class:`NetCDF`, nd-array or number
    :rtype: same type as ``data``
 
    Input values must be in radians. Missing values are retained, unaltered by the calculation.
