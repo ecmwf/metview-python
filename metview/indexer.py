@@ -363,6 +363,8 @@ class ExperimentIndexer(GribIndexer):
                         input_files=input_files,
                         mars_params=db.mars_params,
                         ens=c["ens"],
+                        rootdir_value=c["data"].rootdir_value,
+                        rootdir_placeholder=db.ROOTDIR_PLACEHOLDER,
                     )
         # index a single experiment
         else:
@@ -373,6 +375,8 @@ class ExperimentIndexer(GribIndexer):
                 input_files=[],
                 mars_params=db.mars_params,
                 ens={},
+                rootdir_value=db.rootdir_value,
+                rootdir_placeholder=db.ROOTDIR_PLACEHOLDER,
             )
 
         # write config file for input file list
@@ -381,7 +385,6 @@ class ExperimentIndexer(GribIndexer):
         r = yaml.dump(input_files, default_flow_style=False)
         with open(f_name, "w") as f:
             f.write(r)
-
         db.input_files = input_files
 
         # generate and write index for scalar fields
@@ -431,18 +434,21 @@ class ExperimentIndexer(GribIndexer):
         input_files=[],
         mars_params={},
         ens={},
+        rootdir_value="",
+        rootdir_placeholder=None,
     ):
         LOG.info("scan fields ...")
         LOG.info(f" input_dir={input_dir} file_name_pattern={file_name_pattern}")
 
         # for f_path in glob.glob(f_pattern):
         cnt = 0
+        input_files_tmp = []
         for f_path in mv.get_file_list(input_dir, file_name_pattern=file_name_pattern):
             # LOG.debug(f"  f_path={f_path}")
             fs = mv.read(f_path)
             if isinstance(fs, mv.Fieldset) and len(fs) > 0:
-                input_files.append(f_path)
-                file_index = len(input_files) - 1
+                input_files_tmp.append(f_path)
+                file_index = len(input_files) + len(input_files_tmp) - 1
                 # get metadata keys
                 md_vals = mv.grib_get(fs, self.keys_for_ecc)
                 for i, v in enumerate(md_vals):
@@ -465,5 +471,13 @@ class ExperimentIndexer(GribIndexer):
                     blocks[key].append(v)
                     # params[name].append(v)
                 cnt += 1
+
+        if rootdir_value:
+            input_files_tmp = [
+                x.replace(rootdir_value, rootdir_placeholder) for x in input_files_tmp
+            ]
+
+        input_files.extend(input_files_tmp)
+
         LOG.info(f" {cnt} GRIB files processed")
         return blocks, input_files

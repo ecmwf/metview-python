@@ -160,11 +160,15 @@ class ParamInfo:
 
 
 class IndexDb:
+    ROOTDIR_PLACEHOLDER = "__ROOTDIR__"
+
     def __init__(
         self,
         name,
         label="",
+        desc="",
         path="",
+        rootdir_value="",
         file_name_pattern="",
         conf_dir="",
         blocks={},
@@ -178,8 +182,10 @@ class IndexDb:
         self.label = label
         if self.label == "":
             self.label = self.name
+        self.desc = desc
 
         self.path = path
+        self.rootdir_value = rootdir_value
         self.file_name_pattern = file_name_pattern
         if self.file_name_pattern == "":
             self.path = os.path.dirname(path)
@@ -200,7 +206,7 @@ class IndexDb:
         raise NotImplementedError
 
     def select_with_name(self, name):
-        p = self.get_param_info(name)
+        p = self.get_param_info(name=name)
         if p is not None:
             fs = self.select(**p.make_dims())
             # LOG.debug(f"fs={fs}")
@@ -297,18 +303,23 @@ class IndexDb:
     def _load_block(self, key):
         return None
 
-    def get_param_info(self, name):
-        return ParamInfo.build(name, param_level_types=self.param_types)
-
-        # keys = list(self.blocks.keys())
-        # if len(keys) > 0 and self.blocks[keys[0]] is not None and not self.blocks[keys[0]].empty:
-        #     # LOG.debug(f"p={p}")
-        #     p = self.blocks[keys[0]]
-        #     short_name = keys[0][0]
-        #     level_type = keys[0][1]
-        #     LOG.debug("p={}".format(p["level"]))
-        #     return ParamInfo(short_name, p["level"].iloc[0], level_type)
-        # return None
+    def get_param_info(self, name=""):
+        if name:
+            return ParamInfo.build(name, param_level_types=self.param_types)
+        else:
+            keys = list(self.blocks.keys())
+            if (
+                len(keys) > 0
+                and self.blocks[keys[0]] is not None
+                and not self.blocks[keys[0]].empty
+            ):
+                # LOG.debug(f"p={p}")
+                p = self.blocks[keys[0]]
+                short_name = keys[0][0]
+                level_type = keys[0][1]
+                LOG.debug("p={}".format(p["level"]))
+                return ParamInfo(short_name, p["level"].iloc[0], level_type)
+        return None
 
     def _make_dims(self, options):
         dims = {}
@@ -374,7 +385,11 @@ class ExperimentDb(IndexDb):
         db = ExperimentDb(
             name,
             label=conf.get("label", ""),
-            path=conf.get("dir", "").replace("__ROOTDIR__", root_dir),
+            desc=conf.get("desc", ""),
+            path=conf.get("dir", "").replace(IndexDb.ROOTDIR_PLACEHOLDER, root_dir),
+            rootdir_value=root_dir
+            if IndexDb.ROOTDIR_PLACEHOLDER in conf.get("dir", "")
+            else "",
             file_name_pattern=conf.get("fname", ""),
             conf_dir=os.path.join(root_dir, "_index", name),
             merge_conf=conf.get("merge", []),
@@ -409,6 +424,11 @@ class ExperimentDb(IndexDb):
                 file_path = os.path.join(self.conf_dir, "datafiles.yaml")
                 with open(file_path, "rt") as f:
                     self.data_files = yaml.safe_load(f)
+                if self.rootdir_value:
+                    self.data_files = [
+                        x.replace(IndexDb.ROOTDIR_PLACEHOLDER, self.rootdir_value)
+                        for x in self.data_files
+                    ]
             except:
                 pass
 
@@ -586,16 +606,20 @@ class FieldsetDb(IndexDb):
     def speed(self):
         r = mv.Fieldset()
         for i in range(len(self.fs) // 2):
-            r.append(mv.sqrt(self.fs[i] ** 2 + self.fs[i + 1] ** 2))
-            p = self.fs.param_info
-            if p is not None:
-                param_id = ""
-                if p.name == "wind10":
-                    param_id = 207
-                elif p.name == "wind":
-                    param_id = 10
-                if param_id:
-                    r = mv.grib_set(r, ["paramId", param_id])
+            r.append(mv.sqrt(self.fs[2 * i] ** 2 + self.fs[2 * i + 1] ** 2))
+        p = self.fs.param_info
+        LOG.debug(f"speed p={p}")
+        if p is not None:
+            param_id = ""
+            if p.name == "wind10":
+                param_id = 207
+            elif p.name == "wind":
+                param_id = 10
+            if param_id:
+                LOG.debug("set")
+                r = mv.grib_set_long(r, ["paramId", param_id])
+                r._scan()
+                LOG.debug(f"db={r._db.blocks}")
         return r
 
     def deacc(self):
@@ -630,10 +654,10 @@ class Dataset:
             root_dir = os.path.join(root_dir, name)
         elif path != "":
             if os.path.isdir(path):
-                root_dir=path
+                root_dir = path
             else:
                 raise
-          
+
         data_dir = os.path.join(root_dir, "data")
         conf_dir = os.path.join(root_dir, "conf")
         data_conf_file = os.path.join(root_dir, "data_conf.yaml")
@@ -690,3 +714,13 @@ class Dataset:
             return self.tracks.select(name)
         else:
             raise Exception(f"No track data is available!")
+
+    def describe(self):
+        print("Database components:")
+        t = {"name": [], "desc": []}
+        for _, f in self.field_conf.items():
+            t["name"].append(f.name)
+            t["desc"].append(f.desc)
+        df = pd.DataFrame.from_dict(t)
+        df.reset_index(drop=True, inplace=True)
+        print(df)
