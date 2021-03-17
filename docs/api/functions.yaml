@@ -6,6 +6,7 @@
     - maths
     - grib_object
     - geopoints_object
+    - netcdf_object
     type: script
 - absolute_vorticity:
     category:
@@ -31,6 +32,7 @@
     - maths
     - grib_object
     - geopoints_object
+    - netcdf_object
     type: script
 - addmonths:
     category:
@@ -78,6 +80,7 @@
     - maths
     - grib_object
     - geopoints_object
+    - netcdf_object
     type: script
 - atan:
     category:
@@ -87,6 +90,7 @@
     - maths
     - grib_object
     - geopoints_object
+    - netcdf_object
     type: script
 - atan2:
     category:
@@ -95,6 +99,7 @@
     group:
     - maths
     - grib_object
+    - netcdf_object
     type: script
 - attributes:
     category:
@@ -234,6 +239,7 @@
     - maths
     - grib_object
     - geopoints_object
+    - netcdf_object
     type: script
 - coslat:
     category:
@@ -401,6 +407,7 @@
     - maths
     - grib_object
     - geopoints_object
+    - netcdf_object
     type: script
 - divergence:
     category:
@@ -532,6 +539,7 @@
     - maths
     - grib_object
     - geopoints_object
+    - netcdf_object
     type: script
 - fail:
     category:
@@ -1407,6 +1415,7 @@
     - maths
     - grib_object
     - geopoints_object
+    - netcdf_object
     type: script
 - month:
     category:
@@ -2199,6 +2208,7 @@
     - maths
     - geopoints_object
     - grib_object
+    - netcdf_object
     type: script
 - shell:
     category:
@@ -2214,6 +2224,7 @@
     - maths
     - geopoints_object
     - grib_object
+    - netcdf_object
     type: script
 - sinlat:
     category:
@@ -2280,6 +2291,7 @@
     - maths
     - grib_object
     - geopoints_object
+    - netcdf_object
     type: script
 - stations:
     category: {}
@@ -2419,6 +2431,7 @@
     - maths
     - grib_object
     - geopoints_object
+    - netcdf_object
     type: script
 - tanlat:
     category:
@@ -2795,6 +2808,7 @@
     - geopoints
     - bufr
     - odb
+    - netcdf_object
     type: script
 - xs_average:
     category: {}
