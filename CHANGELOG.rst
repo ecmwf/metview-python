@@ -4,7 +4,7 @@ Changelog for Metview's Python interface
 
 1.7.0
 ------------------
-- added animate() function for animated plots in Jupyter notebooks
+- added animate=True argument to plot() command for animated plots in Jupyter notebooks
 - allowed cfgrib backend keyword arguments to be passed to Fieldset.to_dataset()
 - Fieldset out-of-range indexing now raises an IndexError
 - Fieldset merge() function now allows a single Fieldset as argument
