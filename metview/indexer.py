@@ -221,7 +221,7 @@ class GribIndexer:
         assert len(key) == len(GribIndexer.BLOCK_KEYS)
         name = "_".join(key)
         f_name = os.path.join(dir_name, f"{name}.csv.gz")
-        LOG.debug("f_name={}".format(f_name))
+        # LOG.debug("f_name={}".format(f_name))
         return pd.read_csv(f_name, index_col=None)
 
     @staticmethod

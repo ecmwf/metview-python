@@ -230,6 +230,7 @@ class IndexDb:
         # for f in r:
         #     fs.append(f)
         fs._db = db
+        fs._param_info = self.get_param_info()
         # LOG.debug(f"fs={fs}")
         # LOG.debug(f"blocks={fs._db.blocks}")
         return fs
@@ -279,11 +280,11 @@ class IndexDb:
         df_res = None
         if df is not None:
             q = self._build_query(dims)
-            LOG.debug("query={}".format(q))
+            # LOG.debug("query={}".format(q))
             if q != "":
                 df_res = df.query(q)
                 df_res.reset_index(drop=True, inplace=True)
-                LOG.debug(f"df_res={df_res}")
+                # LOG.debug(f"df_res={df_res}")
             else:
                 return df
         return df_res
@@ -389,7 +390,7 @@ class ExperimentDb(IndexDb):
             desc=conf.get("desc", ""),
             path=conf.get("dir", "").replace(IndexDb.ROOTDIR_PLACEHOLDER, root_dir),
             rootdir_value=root_dir
-            if IndexDb.ROOTDIR_PLACEHOLDER in conf.get("dir", "")
+            if IndexDb.ROOTDIR_PLACEHOLDER in conf.get("dir", "") or "merge" in conf
             else "",
             file_name_pattern=conf.get("fname", ""),
             conf_dir=os.path.join(root_dir, "_index", name),
@@ -434,11 +435,11 @@ class ExperimentDb(IndexDb):
                 pass
 
     def _load_block(self, key):
-        LOG.debug(f"_load_block {key in self.blocks}")
-        if key in self.blocks:
-            LOG.debug(f"{self.blocks[key] is None}")
+        # LOG.debug(f"_load_block {key in self.blocks}")
+        # if key in self.blocks:
+        #     LOG.debug(f"{self.blocks[key] is None}")
         if not key in self.blocks or self.blocks[key] is None:
-            LOG.debug("read")
+            # LOG.debug("read")
             self.blocks[key] = ExperimentIndexer.read_dataframe(key, self.conf_dir)
         return self.blocks[key]
 
@@ -459,7 +460,7 @@ class ExperimentDb(IndexDb):
     def _filter_blocks(self, dims):
         self.load()
         dfs = {}
-        LOG.debug(f"data_files={self.data_files}")
+        # LOG.debug(f"data_files={self.data_files}")
         LOG.debug(f"dims={dims}")
         cnt = 0
         if any(name in dims for name in GribIndexer.BLOCK_KEYS):
@@ -473,21 +474,21 @@ class ExperimentDb(IndexDb):
                 ):
                     df = self._load_block(key)
                     # df = self._filter(df=df, dims=dims)
-                    LOG.debug(f"df={df}")
+                    # LOG.debug(f"df={df}")
                     if df is not None and not df.empty:
                         cnt += len(df)
                         LOG.debug(f" matching rows={len(df)}")
                         dfs[key] = df
         else:
             for key in self.blocks.keys():
-                LOG.debug(f"key={key}")
+                # LOG.debug(f"key={key}")
                 df = self._load_block(key)
-                LOG.debug(f"df={df}")
+                # LOG.debug(f"df={df}")
                 df = self._filter(df=df, dims=dims)
                 # LOG.debug(f"df={df}")
                 if df is not None and not df.empty:
                     cnt += len(df)
-                    LOG.debug(f" matching rows={len(df)}")
+                    # LOG.debug(f" matching rows={len(df)}")
                     dfs[key] = df
 
         LOG.debug(f"total matching rows={cnt}")
@@ -603,6 +604,15 @@ class FieldsetDb(IndexDb):
         for k, v in self.blocks.items():
             db.blocks[k] = v.copy()
         return db
+
+    def unique(self, key):
+        r = set()
+        for _, v in self.blocks.items():
+            r.update(v[key].unique().tolist())
+        return sorted(list(r))    
+
+    def style(self, plot_type="map"):
+        return StyleDb.get_db().style(self.fs, plot_type=plot_type)
 
     def speed(self):
         r = mv.Fieldset()

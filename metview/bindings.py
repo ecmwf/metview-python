@@ -673,6 +673,18 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         else:
             return str()
 
+    def unique(self, key):
+        if self._db:
+            return self._db.unique(key)
+        else:
+            return []
+
+    def style(self, plot_type="map"):
+        if self._db:
+            return self._db.style(plot_type=plot_type)
+        else:
+            return None
+
     def speed(self):
         if self._db is not None:
             fs = self._db.speed()

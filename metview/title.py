@@ -96,3 +96,31 @@ class Title:
         lev = LEVEL_PART.replace("{}", c)
         t = FC_TIME_PART.replace("{}", c)
         return f"""{label} Par: {par} {lev} {t}"""
+
+    def build_stamp(self, data, member=""):
+        if data:
+            if not isinstance(data, list):
+                data = [data]
+
+            # exp_conf = data[0].experiment
+            label = data[0].label
+
+            member_txt = ""
+            if member:
+                if member == "0":
+                    member_txt = "CF"
+                else:
+                    member_txt = f"PF {member}"
+
+            return mv.mtext(
+                {
+                    "text_line_1": f"""{label} {member_txt} Step: +<grib_info key='step'/>h Valid: <grib_info key='valid-date' format='%Y-%m-%d %H'/>""",
+                    "text_font_size": self.font_size,
+                }
+            )
+
+        return mv.mtext(
+            {
+                "text_font_size": self.font_size,
+            }
+        )

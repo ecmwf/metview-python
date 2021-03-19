@@ -18,30 +18,53 @@ LOG = logging.getLogger(__name__)
 
 class Layout:
 
-    GRID_DEF = {1: [1, 1], 2: [2, 1], 3: [3, 1], 4: [2, 2]}
+    GRID_DEF = {1: [1, 1], 2: [2, 1], 3: [3, 1], 4: [2, 2], 8: [3,3], 9: [3,3], 10: [4,3]}
 
-    def build_grid(self, page_num=0, rows=None, columns=None, layout=None, view=None):
+    def _grid_row_col(self, page_num=0, rows=None, columns=None, layout=None):
         if rows is None and columns is None:
             if layout is not None and layout != "":
                 v = layout.split("x")
                 if len(v) == 2:
                     try:
-                        rows = int(v[0])
-                        columns = int(v[1])
-                        LOG.debug(f"rows={rows} columns={columns}")
+                        r = int(v[0])
+                        c = int(v[1])
+                        # LOG.debug(f"r{r} c={c}")
                     except:
                         raise Exception(f"Invalid layout specification ({layout}")
-                    if page_num > 0 and rows * columns < page_num:
+                    if page_num > 0 and r * c < page_num:
                         raise Exception(
                             f"Layout specification={layout} does not match number of scenes={page_num}"
                         )
             else:
                 if page_num in self.GRID_DEF:
-                    rows, columns = self.GRID_DEF[page_num]
+                    r, c = self.GRID_DEF[page_num]
                 else:
-                    raise
+                    raise Exception("")
+        return r,c
 
-        return self._build_grid(rows=rows, columns=columns, view=view)
+    def build_grid(self, page_num=0, rows=None, columns=None, layout=None, view=None):
+        r, c = self._grid_row_col(page_num=page_num, rows=rows, columns=columns, layout=layout)
+        # if rows is None and columns is None:
+        #     if layout is not None and layout != "":
+        #         v = layout.split("x")
+        #         if len(v) == 2:
+        #             try:
+        #                 rows = int(v[0])
+        #                 columns = int(v[1])
+        #                 LOG.debug(f"rows={rows} columns={columns}")
+        #             except:
+        #                 raise Exception(f"Invalid layout specification ({layout}")
+        #             if page_num > 0 and rows * columns < page_num:
+        #                 raise Exception(
+        #                     f"Layout specification={layout} does not match number of scenes={page_num}"
+        #                 )
+        #     else:
+        #         if page_num in self.GRID_DEF:
+        #             rows, columns = self.GRID_DEF[page_num]
+        #         else:
+        #             raise Exception("")
+
+        return self._build_grid(rows=r, columns=c, view=view)
 
     def _build_grid(self, rows=1, columns=1, view=None):
         assert rows >= 1 and columns >= 1
@@ -103,3 +126,36 @@ class Layout:
 
         return mv.plot_superpage(pages=[page_1,page])
 
+    def build_stamp(self, page_num=0, layout="", view=None):
+
+        if True:
+            coast_empty = mv.mcoast(map_coastline="off",map_grid="off", map_label="off")
+
+            empty_view = mv.geoview(
+                page_frame="off",
+                subpage_frame="off",
+                coastlines=coast_empty,
+                subpage_x_position=40, 
+                subpage_x_length=10, 
+                subpage_y_length=10
+            )
+ 
+            title_page = mv.plot_page(
+                top=0,
+                bottom=5,
+                left=30,
+                right=70,
+                view=empty_view)
+            
+
+        r, c = self._grid_row_col(page_num=page_num, layout=layout)
+        
+        pages=mv.mvl_regular_layout(
+                    view, c, r, 1, 1, [5, 100, 15, 100]
+                )
+        pages.append(title_page)
+        return mv.plot_superpage(pages=pages)
+
+
+        # g = self.build_grid(page_num=page_num, layout=layout, view=view)
+        # return g

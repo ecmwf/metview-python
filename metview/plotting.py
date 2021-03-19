@@ -28,11 +28,12 @@ from metview.track import Track
 LOG = logging.getLogger(__name__)
 
 
-def extract_plot_def(*args, layout=False):
+def _make_layers(*args, form_layout=False):
     # in the positional arguments we have two options:
     # 1. we only have non-list items. They belong to a single plot page.
     # 2. we only have list items. Each list item defines a separate plot page.
-    if layout:
+    plot_def = []
+    if form_layout:
         plot_def = list(args)
         lst_cnt = sum([1 for x in plot_def if isinstance(x, list)])
         if not lst_cnt in [0, len(plot_def)]:
@@ -47,19 +48,35 @@ def extract_plot_def(*args, layout=False):
 
     # plot def at this point a list of lists. Each list item describes a
     # map page item!
-    for i in range(len(plot_def)):
+    layers = []
+    for d in plot_def:
         data = None
         layer = []
-        for item in plot_def[i]:
+        for item in d:
             if isinstance(item, (mv.Fieldset, Track)):
                 data = item
                 layer.append({"data": data, "vd": []})
             elif data is not None:
                 assert len(layer) > 0
                 layer[-1]["vd"].append(item)
-        plot_def[i] = layer
+        layers.append(layer)
 
-    return plot_def
+    if form_layout:
+        return layers
+    else:
+        return layers[0] if layers else []
+
+
+def _make_visdef(data, vd, style_db="param", plot_type="map"):
+    if len(vd) == 0:
+        vd = [StyleDb.get_db(name=style_db).visdef(data, plot_type=plot_type)]
+    else:
+        for i, v in enumerate(vd):
+            if isinstance(v, Style):
+                vd[i] = v.to_request()
+
+    vd = [x for x in vd if x is not None]
+    return vd
 
 
 def plot_maps(
@@ -76,7 +93,7 @@ def plot_maps(
     # in the positional arguments we have two options:
     # 1. we only have non-list items. They belong to a single plot page.
     # 2. we only have list items. Each list item defines a separate plot page.
-    plot_def = extract_plot_def(*args, layout=True)
+    plot_def = _make_layers(*args, form_layout=True)
 
     # build the layout
     num_plot = len(plot_def)
@@ -129,7 +146,7 @@ def plot_diff_maps(
     *args, layout=None, view=None, title_font_size=0.4, frame=-1, animate=True
 ):
     """
-    Plot difference on maps
+    Plot difference maps
     """
 
     # define the view
@@ -139,42 +156,24 @@ def plot_diff_maps(
     # build the layout
     dw = Layout().build_diff(view=view)
 
+    data = {}
+    vd = {}
+
     # the positional arguments has the following order:
     # data1, visdef1.1 visdef1.2 ... data2, visdef2.1, visdef2.2 ...
     # the visdef objects are optional!
     assert len(args) >= 2
     assert isinstance(args[0], mv.Fieldset)
-    plot_def = extract_plot_def(*args, layout=False)
-    assert len(plot_def) == 1
-    plot_def = plot_def[0]
-    assert len(plot_def) == 2
-    data1 = plot_def[0]["data"]
-    data2 = plot_def[1]["data"]
-    vd1 = plot_def[0]["vd"]
-    vd2 = plot_def[1]["vd"]
+    layers = _make_layers(*args, form_layout=False)
+    assert len(layers) == 2
+    # LOG.debug(f"layers={layers}")
+    data["0"] = layers[0]["data"]
+    data["1"] = layers[1]["data"]
+    vd["0"] = _make_visdef(data["0"], layers[0]["vd"])
+    vd["1"] = _make_visdef(data["1"], layers[1]["vd"])
 
-    LOG.debug(f"len_1={len(data1)}")
-    LOG.debug(f"len_2={len(data2)}")
-
-    # data1 = args[0]
-    # data2 = None
-    # vd1 = []
-    # vd2 = []
-    # for i in range(1, len(args)):
-    #     if isinstance(args[i], mv.Fieldset):
-    #         data2 = args[i]
-    #         vd1 = args[1:i]
-    #         if len(args) > i+1:
-    #             vd2 = args[i+1:]
-    #         break
-
-    # assert data2 is not None
-    # assert all([False for x in vd1 if isinstance(x, mv.Fieldset)])
-    # assert all([False for x in vd2 if isinstance(x, mv.Fieldset)])
-    if len(vd1) == 0:
-        vd1 = StyleDb.get_db().visdef(data1)
-    if len(vd2) == 0:
-        vd2 = StyleDb.get_db().visdef(data2)
+    # LOG.debug("len_0={}".format(len(data["0"])))
+    # LOG.debug("len_1={}".format(len(data["0"])))
 
     # the plot description
     desc = []
@@ -182,45 +181,24 @@ def plot_diff_maps(
     title = Title(font_size=title_font_size)
 
     # compute diff
-    data = data1 - data2
-    data._param_info = data1.param_info
+    data["d"] = data["0"] - data["1"]
+    data["d"]._param_info = data["1"].param_info
+    vd["d"] = _make_visdef(data["d"], [], style_db="diff")
 
-    # generate diff plot
-    desc.append(dw[0])
-    if frame != -1:
-        data = data[frame]
-    # LOG.debug(data)
-    # LOG.debug(mv.grib_get(data, ["shortName"]))
-    vd = StyleDb.get_db(name="diff").visdef(data)
-    desc.append(data)
-    desc.append(vd)
-    t = title.build(data)
-    desc.append(t)
+    # LOG.debug("len_d={}".format(len(data["d"])))
 
-    # generate plot for data1
-    desc.append(dw[1])
-    if frame != -1:
-        data1 = data1.fields[frame]
-    # LOG.debug(fs)
-    desc.append(data1)
-    desc.append(vd1)
-    t = title.build(data1)
-    desc.append(t)
-
-    # generate plot for data2
-    desc.append(dw[2])
-    if frame != -1:
-        data2 = data2.fields[frame]
-    # LOG.debug(fs)
-    desc.append(data2)
-    desc.append(vd2)
-    t = title.build(data2)
-    desc.append(t)
+    for i, k in enumerate(["d", "0", "1"]):
+        desc.append(dw[i])
+        d = data[k] if frame == -1 else data[k][frame]
+        desc.append(d)
+        if vd[k]:
+            desc.append(vd[k])
+        t = title.build(d)
+        desc.append(t)
 
     LOG.debug(f"desc={desc}")
 
     animate = animate and mv.plot.plot_to_jupyter
-    animate = False
     return mv.plot(desc, animate=animate)
 
 
@@ -245,18 +223,11 @@ def plot_xs(
 
     assert len(args) >= 1
     assert isinstance(args[0], mv.Fieldset)
-    plot_def = extract_plot_def(*args, layout=False)
-    assert len(plot_def) == 1
-    assert len(plot_def[0]) > 0
-
-    # if not isinstance(plot_def, list):
-    #     plot_def = [plot_def]
+    layers = _make_layers(*args, form_layout=False)
+    assert len(layers) > 0
 
     # build the layout
-    # num_plot = len(plot_def)
     dw = Layout().build_xs(line=line, map_view=view)
-
-    # ts = nil
 
     # the plot description
     desc = []
@@ -265,24 +236,9 @@ def plot_xs(
 
     # build cross section plot
     desc.append(dw[0])
-    for pd_item in plot_def[0]:
-        data = pd_item["data"]
-        vd = pd_item["vd"]
-        # desc.append(dw[i])
-        # LOG.debug("i={} {}".format(i, sc_def))
-        # LOG.debug(f"desc={desc}")
-        # if not isinstance(sc_def, list):
-        #     sc_def = [sc_def]
-
-        if len(vd) == 0:
-            vd = StyleDb.get_db().visdef(data, plot_type="xs")
-
-        # for item in sc_def:
-        # if isinstance(item, tuple):
-        #     data, vd = item
-        # else:
-        #     data = item
-        #     vd = data.visdef(plot_type="xs")
+    for layer in layers:
+        data = layer["data"]
+        vd = _make_visdef(data, layer["vd"], plot_type="xs")
         param = data.param_info
         LOG.debug(f"param={param}")
 
@@ -300,12 +256,6 @@ def plot_xs(
             )
             desc.append(xs_d)
         else:
-            # if frame != -1:
-            #     fs = data.fields[frame]
-            # else:
-            #     fs = data.fields[0]
-            # fs = data.fieldset
-
             if param is not None:
                 if param.name == "t":
                     data = data - 273.16
@@ -317,40 +267,36 @@ def plot_xs(
                     data = data * 1e5
             desc.append(data)
 
-        if vd is not None and all(x is not None for x in vd):
+        if vd:
             desc.extend(vd)
 
-            # t = title.build_fc(dv.conf.conf)
-            # desc.append(t)
+        # t = title.build_fc(dv.conf.conf)
+        # desc.append(t)
 
-    LOG.debug(f"desc={desc}")
+    # LOG.debug(f"desc={desc}")
 
     # build side map plot
     desc.append(dw[1])
 
     t = None
     if map_data is not None and len(map_data) > 0:
-        plot_def = extract_plot_def(map_data, layout=False)
-        assert len(plot_def) <= 1
-        if len(plot_def) == 1:
-            data_items = []
-            for pd_item in plot_def[0]:
-                data = pd_item["data"]
-                vd = pd_item["vd"]
-                if len(vd) == 0:
-                    vd = StyleDb.get_db().visdef(data)
+        layers = _make_layers(map_data, form_layout=False)
+        data_items = []
+        for layer in layers:
+            data = layer["data"]
+            vd = _make_visdef(data, layer["vd"])
 
-                if isinstance(data, mv.Fieldset):
-                    data_items.append(data)
-                    if frame != -1:
-                        data = data[frame]
+            if isinstance(data, mv.Fieldset):
+                data_items.append(data)
+                if frame != -1:
+                    data = data[frame]
 
-                desc.append(data)
-                if vd is not None and all(x is not None for x in vd):
-                    desc.extend(vd)
+            desc.append(data)
+            if vd:
+                desc.extend(vd)
 
-            if data_items:
-                t = title.build(data_items)
+        if data_items:
+            t = title.build(data_items)
 
     # define xsection line graph
     graph = mv.mgraph(
@@ -369,5 +315,107 @@ def plot_xs(
         desc.append(t)
 
     LOG.debug(f"desc={desc}")
+    animate = animate and mv.plot.plot_to_jupyter
+    return mv.plot(desc, animate=animate)
+
+
+# plot_stamp_maps(fs, vd, an=[], fc=[], )
+
+
+def plot_stamp_maps(
+    *args,
+    an=[],
+    fc=[],
+    layout=None,
+    view=None,
+    title_font_size=0.4,
+    frame=-1,
+    animate=True,
+):
+    """
+    Plot ENS stamp maps
+    """
+    # define the view
+    if view is None:
+        view = MapConf().view(area="base")
+
+    desc = []
+    data = {}
+    vd = {}
+
+    if len(args) > 0:
+        assert isinstance(args[0], mv.Fieldset)
+        layers = _make_layers(*args, form_layout=False)
+        assert len(layers) == 1
+
+        # prepare ens
+        data["ens"] = layers[0]["data"]
+        assert data["ens"] is not None
+        vd["ens"] = _make_visdef(data["ens"], layers[0]["vd"])
+
+    # prepare an an fc
+    d = {"an": an, "fc": fc}
+    for k, v in d.items():
+        if v:
+            layers = _make_layers(v, form_layout=False)
+            if layers:
+                data[k] = layers[0]["data"]
+                vd[k] = layers[0]["vd"]
+                if len(vd[k]) == 0 and "ens" in vd:
+                    vd[k] = vd["ens"]
+                else:
+                    vd[k] = _make_visdef(data[k], vd[k])
+
+    # determine ens number
+    members = []
+    if "ens" in data:
+        members = data["ens"].unique("number")
+        LOG.debug(f"members={members}")
+        if len(members) == 0:
+            raise Exceception("No ENS data found in input!")
+
+    # determine number of maps
+    num = len(members) + sum([1 for x in ["an", "fc"] if x in data])
+
+    # build the layout
+    dw = Layout().build_stamp(num, layout=layout, view=view)
+
+    if len(dw) < num + 1:
+        raise Exception(f"Layout has less maps (={len(dw)}) than expected (={num})")
+
+    title = Title(font_size=title_font_size)
+
+    for i, m in enumerate(members):
+        desc.append(dw[i])
+        d = data["ens"].select(number=m)
+        desc.append(d)
+
+        if vd["ens"]:
+            desc.extend(vd["ens"])
+
+        t = title.build_stamp(d, member=str(i))
+        desc.append(t)
+
+    n = len(members)
+    for t in ["an", "fc"]:
+        if t in data:
+            desc.append(dw[n])
+            desc.append(data[t])
+            if vd[t]:
+                desc.append(vd[t])
+            t = title.build_stamp(data[t], member="")
+            desc.append(t)
+            n += 1
+
+    for i in range(n, len(dw)):
+        desc.append(dw[i])
+
+    if len(members) > 0 and "ens" in data:
+        cont = mv.mcont(contour="off", contour_label="off")
+        dummy = d = data["ens"].select(number=members[0])
+        t = title.build(dummy)
+        desc.extend([dw[-1], t, dummy, cont])
+
+
     animate = animate and mv.plot.plot_to_jupyter
     return mv.plot(desc, animate=animate)
