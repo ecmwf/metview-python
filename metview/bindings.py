@@ -22,7 +22,7 @@ import tempfile
 import cffi
 import numpy as np
 
-from metview.dataset import FieldsetDb
+from metview.dataset import ParamInfo, FieldsetDb
 from metview.style import StyleDb
 
 __version__ = "1.7.0"
@@ -662,8 +662,11 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
 
     @property
     def param_info(self):
-        if self._param_info is None and self._db is not None:
-            self._param_info = self._db.get_param_info(name="")
+        if self._param_info is None:
+            if self._db is not None:
+                self._param_info = self._db.get_param_info(name="")
+            else:
+                self._param_info = ParamInfo.build_from_fieldset(self)
         return self._param_info
 
     @property

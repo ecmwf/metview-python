@@ -71,7 +71,7 @@ class ParamInfo:
         # LOG.debug(f"param_level_types={param_level_types}")
         if param_level_types:
             lev_t = param_level_types.get(name, [])
-            LOG.debug(f"lev_t={lev_t}")
+            # LOG.debug(f"lev_t={lev_t}")
 
             # the param full name is found in the conf
             if lev_t:
@@ -115,11 +115,11 @@ class ParamInfo:
                         level_type = lev_t[0]
                     elif level_type not in lev_t:
                         raise Exception(
-                            f"Level type cannot be deduced from param name={full_name}!"
+                            f"Level type cannot be guessed from param name={full_name}!"
                         )
                 else:
                     raise Exception(
-                        f"Param={name} (deduced from name={full_name}) is not found in dataset!"
+                        f"Param={name} (guessed from name={full_name}) is not found in dataset!"
                     )
 
         if level_type == "":
@@ -130,6 +130,34 @@ class ParamInfo:
 
         LOG.debug(f"scalar={scalar}")
         return ParamInfo(name, level, level_type, scalar=scalar)
+
+    @staticmethod
+    def build_from_fieldset(fs):
+        assert isinstance(fs, mv.Fieldset)
+        f = fs[0:3] if len(fs) >= 3 else fs
+        m = mv.grib_get(f, ["shortName", "level", "typeOfLevel"], "key") 
+        name = level = lev_type = ""
+        if len(m[0] == 3):
+            if m[0] == ["u", "v", "w"] and len(set(m[1])) == 1 and len(set(m[2])) == 1:
+                name = "wind3d"
+                level = m[1][0]
+                lev_type = m[2][0]
+        if not name and len(m[0]) >= 2:
+            if m[0][0:2] == ["u", "v"] and len(set(m[1][0:2])) == 1 and len(set(m[2][0:2])) == 1:
+                name = "wind"
+                level = m[1][0]
+                lev_type = m[2][0]
+                if lev_type == "sfc":
+                    name = "wind10"
+        if not name:
+            name = m[0][0]
+            level = m[1][0]
+            lev_type = m[2][0]
+                
+        if name:
+            return ParamInfo(name, level, lev_type)
+        else:
+            return None
 
     @property
     def data_id(self):
@@ -212,6 +240,10 @@ class IndexDb:
         raise NotImplementedError
 
     def select_with_name(self, name):
+        """ 
+        Perform a select operation where selection options are derived
+        from the specified name.
+        """
         p = self.get_param_info(name=name)
         if p is not None:
             fs = self.select(**p.make_dims())
@@ -223,7 +255,7 @@ class IndexDb:
 
     def select(self, **kwargs):
         """
-        Creates a fieldset with the specified filter conditions. The resulting fieldset
+        Create a fieldset with the specified filter conditions. The resulting fieldset
         will contain an index db.
         """
         LOG.debug(f"kwargs={kwargs}")
@@ -264,7 +296,7 @@ class IndexDb:
         # LOG.debug(f"len_res={len(res)}")
         # LOG.debug(f"dfs={dfs}")
         # LOG.debug(f"res={res}")
-        c = FieldsetDb(res, blocks=dfs)
+        c = FieldsetDb(res, name=self.name, blocks=dfs)
         return c, res
 
     def _build_query(self, dims):
@@ -281,7 +313,7 @@ class IndexDb:
                     q += f"{column} in {v}"
         return q
 
-    def _filter(self, df=None, dims={}):
+    def _filter_df(self, df=None, dims={}):
         df_res = None
         if df is not None:
             q = self._build_query(dims)
@@ -298,7 +330,7 @@ class IndexDb:
         # LOG.debug(f"block={self.blocks[key]}")
         if self.blocks[key] is None:
             self._load_block(key)
-        df = self._filter(df=self.blocks[key], dims=dims)
+        df = self._filter_df(df=self.blocks[key], dims=dims)
         LOG.debug(f"df={df}")
         if df is not None and not df.empty:
             df_fs = self._extract_fields(df, res)
@@ -368,6 +400,7 @@ class IndexDb:
     @property
     def param_types(self):
         if len(self._param_types) == 0:
+            self.load()
             for k in self.blocks.keys():
                 if not k[0] in self._param_types:
                     self._param_types[k[0]] = [k[1]]
@@ -480,7 +513,7 @@ class ExperimentDb(IndexDb):
                     for i in range(len(key))
                 ):
                     df = self._load_block(key)
-                    # df = self._filter(df=df, dims=dims)
+                    # df = self._filter_df(df=df, dims=dims)
                     # LOG.debug(f"df={df}")
                     if df is not None and not df.empty:
                         cnt += len(df)
@@ -491,7 +524,7 @@ class ExperimentDb(IndexDb):
                 # LOG.debug(f"key={key}")
                 df = self._load_block(key)
                 # LOG.debug(f"df={df}")
-                df = self._filter(df=df, dims=dims)
+                df = self._filter_df(df=df, dims=dims)
                 # LOG.debug(f"df={df}")
                 if df is not None and not df.empty:
                     cnt += len(df)
@@ -562,11 +595,14 @@ class ExperimentDb(IndexDb):
             return df
         return None
 
+    def describe(self):
+        for k, v in self.param_types.items():
+            print(f"{k}: {v}")
+
 
 class FieldsetDb(IndexDb):
-    def __init__(self, fs, extra_keys=[], **kwargs):
-        super().__init__("file", **kwargs)
-        self.name = "file"
+    def __init__(self, fs, name="", extra_keys=[], **kwargs):
+        super().__init__(name, **kwargs)
         self.fs = fs
         self.extra_keys = extra_keys
 
