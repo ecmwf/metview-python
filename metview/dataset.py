@@ -12,7 +12,9 @@ import copy
 import datetime
 import logging
 import os
+from pathlib import Path
 import re
+import tarfile
 
 import pandas as pd
 import yaml
@@ -21,6 +23,9 @@ import metview as mv
 from metview.indexer import GribIndexer, FieldsetIndexer, ExperimentIndexer
 from metview.style import StyleDb, MapConf
 from metview.track import Track
+
+
+ETC_PATH = os.path.join(os.path.dirname(__file__), "etc")
 
 # logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
@@ -171,7 +176,7 @@ class IndexDb:
         path="",
         rootdir_value="",
         file_name_pattern="",
-        conf_dir="",
+        db_dir="",
         blocks={},
         data_files=[],
         merge_conf=[],
@@ -192,7 +197,7 @@ class IndexDb:
             self.path = os.path.dirname(path)
             self.file_name_pattern = os.path.basename(path)
 
-        self.conf_dir = conf_dir
+        self.db_dir = db_dir
         self.mars_params = mars_params
         self.blocks = blocks
         self.wind = {}
@@ -383,7 +388,7 @@ class ExperimentDb(IndexDb):
         self.fs = {}
 
     @staticmethod
-    def make_from_conf(name, conf, root_dir, dataset):
+    def make_from_conf(name, conf, root_dir, db_root_dir, dataset):
         db = ExperimentDb(
             name,
             label=conf.get("label", ""),
@@ -393,7 +398,7 @@ class ExperimentDb(IndexDb):
             if IndexDb.ROOTDIR_PLACEHOLDER in conf.get("dir", "") or "merge" in conf
             else "",
             file_name_pattern=conf.get("fname", ""),
-            conf_dir=os.path.join(root_dir, "_index", name),
+            db_dir=os.path.join(db_root_dir, name),
             merge_conf=conf.get("merge", []),
             mars_params=conf.get("mars_params", []),
             blocks={},
@@ -405,7 +410,7 @@ class ExperimentDb(IndexDb):
         return ExperimentDb(
             self.name,
             label=self.label,
-            conf_dir=self.conf_dir,
+            db_dir=self.db_dir,
             mars_params=self.mars_params,
             dataset=self.dataset,
         )
@@ -417,13 +422,13 @@ class ExperimentDb(IndexDb):
     def load(self):
         self.load_data_file_list()
         if len(self.blocks) == 0:
-            for key in ExperimentIndexer.get_storage_key_list(self.conf_dir):
+            for key in ExperimentIndexer.get_storage_key_list(self.db_dir):
                 self.blocks[key] = None
 
     def load_data_file_list(self):
         if len(self.data_files) == 0:
             try:
-                file_path = os.path.join(self.conf_dir, "datafiles.yaml")
+                file_path = os.path.join(self.db_dir, "datafiles.yaml")
                 with open(file_path, "rt") as f:
                     self.data_files = yaml.safe_load(f)
                 if self.rootdir_value:
@@ -431,6 +436,8 @@ class ExperimentDb(IndexDb):
                         x.replace(IndexDb.ROOTDIR_PLACEHOLDER, self.rootdir_value)
                         for x in self.data_files
                     ]
+                for f in self.data_files:
+                    assert os.path.isfile(f)
             except:
                 pass
 
@@ -440,7 +447,7 @@ class ExperimentDb(IndexDb):
         #     LOG.debug(f"{self.blocks[key] is None}")
         if not key in self.blocks or self.blocks[key] is None:
             # LOG.debug("read")
-            self.blocks[key] = ExperimentIndexer.read_dataframe(key, self.conf_dir)
+            self.blocks[key] = ExperimentIndexer.read_dataframe(key, self.db_dir)
         return self.blocks[key]
 
     def __getitem__(self, key):
@@ -609,7 +616,7 @@ class FieldsetDb(IndexDb):
         r = set()
         for _, v in self.blocks.items():
             r.update(v[key].unique().tolist())
-        return sorted(list(r))    
+        return sorted(list(r))
 
     def style(self, plot_type="map"):
         return StyleDb.get_db().style(self.fs, plot_type=plot_type)
@@ -644,6 +651,7 @@ class FieldsetDb(IndexDb):
         else:
             return fs
 
+
 class TrackConf:
     def __init__(self, name, conf, data_dir, dataset):
         self.name = name
@@ -656,7 +664,9 @@ class TrackConf:
 
     def load_data_file_list(self):
         if len(self.data_files) == 0:
-            self.data_files = mv.get_file_list(self.path, file_name_pattern=self.file_name_pattern)
+            self.data_files = mv.get_file_list(
+                self.path, file_name_pattern=self.file_name_pattern
+            )
 
     def select(self, name):
         tr = self._make(name)
@@ -672,37 +682,85 @@ class TrackConf:
         return None
 
 
+def unpack(file_path, remove=False):
+    if any(file_path.endswith(x) for x in [".tar", ".tar.gz", ".tar.bz2"]):
+        cwd_ori = os.getcwd()
+        target_dir = os.path.dirname(file_path)
+        os.chdir(target_dir)
+        tar = tarfile.open(file_path)
+        tar.extractall()
+        tar.close()
+        if remove:
+            os.rm(file_path)
+        os.chdir(cwd_ori)
+
+
+def download(url, target, progress=True):
+    LOG.debug(f"download url={url} target={target}")
+    if progress:
+        from tqdm import tqdm
+        import requests
+
+        resp = requests.get(url, stream=True)
+        total = int(resp.headers.get("content-length", 0))
+        with open(target, "wb") as file, tqdm(
+            desc=target,
+            total=total,
+            unit="iB",
+            unit_scale=True,
+            unit_divisor=1024,
+        ) as bar:
+            for data in resp.iter_content(chunk_size=1024):
+                size = file.write(data)
+                bar.update(size)
+    else:
+        d = mv.download(url=url, target=target)
+
+
 class Dataset:
     """
     Represents a Dataset
     """
 
+    CONF = {}
+    SYSTEM_DIR = os.path.join(os.getenv("TMPDIR", ""), "mpy_datasets")
+
     def __init__(self, name="", path="", load_style=True):
+        self.name = name
+        self.path = path
         self.field_conf = {}
         self.track_conf = {}
 
-        if name != "" and path != "":
+        LOG.debug(f"name={self.name}")
+        if self.name != "" and self.path != "":
             raise Exception(
                 f"{self.__class__.__name__} cannot take both name and path!"
             )
 
-        if name != "":
-            # root_dir = os.getnev("TMPDIR", "")
-            root_dir = "/Users/sandor/metview/OpenIFS/2021"
-            root_dir = os.path.join(root_dir, name)
-        elif path != "":
-            if os.path.isdir(path):
-                root_dir = path
-            else:
-                raise
-
-        data_dir = os.path.join(root_dir, "data")
-        conf_dir = os.path.join(root_dir, "conf")
-        data_conf_file = os.path.join(root_dir, "data_conf.yaml")
+        if self.name != "":
+            self.path = os.path.join(self.SYSTEM_DIR, self.name)
+            LOG.debug(f"path={self.path}")
+            c = self.find_conf(self.name)
+            LOG.debug(f"c={c}")
+            if not c:
+                raise Exception(f"Could not find configuration for dataset={self.name}")
+            self.get_contents(c)
+        elif self.path != "":
+            assert os.path.isdir(self.path)
 
         if load_style:
+            conf_dir = os.path.join(self.path, "conf")
             StyleDb.set_config(conf_dir)
 
+        self.load()
+
+        for _, c in self.field_conf.items():
+            LOG.debug(f"{c}")
+
+    def load(self):
+        data_dir = os.path.join(self.path, "data")
+        index_dir = os.path.join(self.path, "_index_db")
+        data_conf_file = os.path.join(self.path, "data_conf.yaml")
         with open(data_conf_file, "rt") as f:
             d = yaml.safe_load(f)
             for item in d["experiments"]:
@@ -710,11 +768,38 @@ class Dataset:
                 if conf.get("type") == "track":
                     self.track_conf[name] = TrackConf(name, conf, data_dir, self)
                 else:
-                    c = ExperimentDb.make_from_conf(name, conf, data_dir, self)
+                    c = ExperimentDb.make_from_conf(
+                        name, conf, data_dir, index_dir, self
+                    )
                     self.field_conf[c.name] = c
 
-        for _, c in self.field_conf.items():
-            LOG.debug(f"{c}")
+    @staticmethod
+    def _init():
+        conf_file = os.path.join(ETC_PATH, "dataset.yaml")
+        with open(conf_file, "rt") as f:
+            Dataset.CONF = yaml.safe_load(f)
+
+    @staticmethod
+    def find_conf(name):
+        if not Dataset.CONF:
+            Dataset._init()
+
+        default = {k: Dataset.CONF[k] for k in ["url", "compression"]}
+        # LOG.debug(f"conf={Dataset.CONF}")
+        LOG.debug(f"default={default}")
+        for ds in Dataset.CONF.get("datasets", []):
+            LOG.debug(f"ds={ds}")
+            if isinstance(ds, str):
+                if ds == name:
+                    default["url"] = os.path.join(default["url"], name)
+                    # LOG.debug(f"default={default}")
+                    return default
+            elif isinstance(ds, dict):
+                ((ds_name, c),) = ds.items()
+                if ds_name == name:
+                    default.update(c)
+                    return default
+        return {}
 
     def scan(self, name=None):
         # indexer = ExperimentIndexer()
@@ -773,6 +858,29 @@ class Dataset:
         df = pd.DataFrame.from_dict(t)
         df.reset_index(drop=True, inplace=True)
         print(df)
+
+    def get_contents(self, conf):
+        if not os.path.isdir(self.path):
+            Path(self.path).mkdir(0o755, parents=True, exist_ok=True)
+
+        files = {
+            "conf.tar": ["data_conf.yaml", "conf", "_index_db"],
+            "data.tar.{}".format(conf["compression"]): ["data"],
+        }
+
+        for src, targets in files.items():
+            if any([not os.path.exists(os.path.join(self.path, x)) for x in targets]):
+                remote_file = os.path.join(conf["url"], src)
+                target_file = os.path.join(self.path, src)
+                LOG.debug(f"remote_file={remote_file}")
+                LOG.debug(f"target_file={target_file}")
+                try:
+                    download(remote_file, target_file)
+                    unpack(target_file, remove=False)
+                except:
+                    # if os.exists(target_file):
+                    #     os.remove(target_file)
+                    raise Exception(f"Failed to download file={remote_file}")
 
     def __getitem__(self, key):
         if isinstance(key, str):
