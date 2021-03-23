@@ -14,7 +14,8 @@ import logging
 import os
 from pathlib import Path
 import re
-import tarfile
+import sys
+import tempfile
 
 import pandas as pd
 import yaml
@@ -23,6 +24,7 @@ import metview as mv
 from metview.indexer import GribIndexer, FieldsetIndexer, ExperimentIndexer
 from metview.style import StyleDb, MapConf
 from metview.track import Track
+from metview import utils
 
 
 ETC_PATH = os.path.join(os.path.dirname(__file__), "etc")
@@ -135,7 +137,7 @@ class ParamInfo:
     def build_from_fieldset(fs):
         assert isinstance(fs, mv.Fieldset)
         f = fs[0:3] if len(fs) >= 3 else fs
-        m = mv.grib_get(f, ["shortName", "level", "typeOfLevel"], "key") 
+        m = mv.grib_get(f, ["shortName", "level", "typeOfLevel"], "key")
         name = level = lev_type = ""
         if len(m[0] == 3):
             if m[0] == ["u", "v", "w"] and len(set(m[1])) == 1 and len(set(m[2])) == 1:
@@ -143,7 +145,11 @@ class ParamInfo:
                 level = m[1][0]
                 lev_type = m[2][0]
         if not name and len(m[0]) >= 2:
-            if m[0][0:2] == ["u", "v"] and len(set(m[1][0:2])) == 1 and len(set(m[2][0:2])) == 1:
+            if (
+                m[0][0:2] == ["u", "v"]
+                and len(set(m[1][0:2])) == 1
+                and len(set(m[2][0:2])) == 1
+            ):
                 name = "wind"
                 level = m[1][0]
                 lev_type = m[2][0]
@@ -153,7 +159,7 @@ class ParamInfo:
             name = m[0][0]
             level = m[1][0]
             lev_type = m[2][0]
-                
+
         if name:
             return ParamInfo(name, level, lev_type)
         else:
@@ -194,7 +200,7 @@ class ParamInfo:
 
 
 class IndexDb:
-    ROOTDIR_PLACEHOLDER = "__ROOTDIR__"
+    ROOTDIR_PLACEHOLDER_TOKEN = "__ROOTDIR__"
 
     def __init__(
         self,
@@ -202,7 +208,7 @@ class IndexDb:
         label="",
         desc="",
         path="",
-        rootdir_value="",
+        rootdir_placeholder_value="",
         file_name_pattern="",
         db_dir="",
         blocks={},
@@ -219,7 +225,7 @@ class IndexDb:
         self.desc = desc
 
         self.path = path
-        self.rootdir_value = rootdir_value
+        self.rootdir_placeholder_value = rootdir_placeholder_value
         self.file_name_pattern = file_name_pattern
         if self.file_name_pattern == "":
             self.path = os.path.dirname(path)
@@ -240,13 +246,13 @@ class IndexDb:
         raise NotImplementedError
 
     def select_with_name(self, name):
-        """ 
+        """
         Perform a select operation where selection options are derived
         from the specified name.
         """
         p = self.get_param_info(name=name)
         if p is not None:
-            fs = self.select(**p.make_dims())
+            fs = self._select_fs(**p.make_dims())
             # LOG.debug(f"fs={fs}")
             if fs is not None:
                 fs._param_info = p
@@ -254,6 +260,9 @@ class IndexDb:
         return None
 
     def select(self, **kwargs):
+        return self._select_fs(**kwargs)
+
+    def _select_fs(self, **kwargs):
         """
         Create a fieldset with the specified filter conditions. The resulting fieldset
         will contain an index db.
@@ -318,9 +327,12 @@ class IndexDb:
         if df is not None:
             q = self._build_query(dims)
             # LOG.debug("query={}".format(q))
+            # print("query={}".format(q))
+            # print("types={}".format(df.dtypes))
             if q != "":
                 df_res = df.query(q)
                 df_res.reset_index(drop=True, inplace=True)
+                # print(f"df_res={df_res}")
                 # LOG.debug(f"df_res={df_res}")
             else:
                 return df
@@ -331,7 +343,7 @@ class IndexDb:
         if self.blocks[key] is None:
             self._load_block(key)
         df = self._filter_df(df=self.blocks[key], dims=dims)
-        LOG.debug(f"df={df}")
+        # LOG.debug(f"df={df}")
         if df is not None and not df.empty:
             df_fs = self._extract_fields(df, res)
             # LOG.debug(f"len_res={len(res)}")
@@ -386,6 +398,12 @@ class IndexDb:
             for i, t in enumerate(v):
                 self._check_type(t, name, datetime.time)
                 v[i] = int(t.strftime("%H%M"))
+        else:
+            pd_type = GribIndexer.pd_types.get(name, None)
+            if pd_type is not None:
+                for i, t in enumerate(v):
+                    v[i] = pd_type(t)
+
         return v
 
     def _check_type(self, v, name, dtypes):
@@ -413,191 +431,6 @@ class IndexDb:
 
     def __str__(self):
         return "{}[name={}]".format(self.__class__.__name__, self.name)
-
-
-class ExperimentDb(IndexDb):
-    def __init__(self, name, **kwargs):
-        super().__init__(name, **kwargs)
-        self.fs = {}
-
-    @staticmethod
-    def make_from_conf(name, conf, root_dir, db_root_dir, dataset):
-        db = ExperimentDb(
-            name,
-            label=conf.get("label", ""),
-            desc=conf.get("desc", ""),
-            path=conf.get("dir", "").replace(IndexDb.ROOTDIR_PLACEHOLDER, root_dir),
-            rootdir_value=root_dir
-            if IndexDb.ROOTDIR_PLACEHOLDER in conf.get("dir", "") or "merge" in conf
-            else "",
-            file_name_pattern=conf.get("fname", ""),
-            db_dir=os.path.join(db_root_dir, name),
-            merge_conf=conf.get("merge", []),
-            mars_params=conf.get("mars_params", []),
-            blocks={},
-            dataset=dataset,
-        )
-        return db
-
-    def _clone(self):
-        return ExperimentDb(
-            self.name,
-            label=self.label,
-            db_dir=self.db_dir,
-            mars_params=self.mars_params,
-            dataset=self.dataset,
-        )
-
-    def scan(self):
-        indexer = ExperimentIndexer()
-        indexer.scan(self)
-
-    def load(self):
-        self.load_data_file_list()
-        if len(self.blocks) == 0:
-            for key in ExperimentIndexer.get_storage_key_list(self.db_dir):
-                self.blocks[key] = None
-
-    def load_data_file_list(self):
-        if len(self.data_files) == 0:
-            try:
-                file_path = os.path.join(self.db_dir, "datafiles.yaml")
-                with open(file_path, "rt") as f:
-                    self.data_files = yaml.safe_load(f)
-                if self.rootdir_value:
-                    self.data_files = [
-                        x.replace(IndexDb.ROOTDIR_PLACEHOLDER, self.rootdir_value)
-                        for x in self.data_files
-                    ]
-                for f in self.data_files:
-                    assert os.path.isfile(f)
-            except:
-                pass
-
-    def _load_block(self, key):
-        # LOG.debug(f"_load_block {key in self.blocks}")
-        # if key in self.blocks:
-        #     LOG.debug(f"{self.blocks[key] is None}")
-        if not key in self.blocks or self.blocks[key] is None:
-            # LOG.debug("read")
-            self.blocks[key] = ExperimentIndexer.read_dataframe(key, self.db_dir)
-        return self.blocks[key]
-
-    def __getitem__(self, key):
-        if isinstance(key, str):
-            return self.select_with_name(key)
-        return None
-
-    # return a view
-    def select_view(self, **kwargs):
-        c = self._clone()
-        dims = self._make_dims(kwargs)
-        blocks = self._filter_blocks(dims)
-        c.blocks = blocks
-        c.data_files = self.data_files
-        return c
-
-    def _filter_blocks(self, dims):
-        self.load()
-        dfs = {}
-        # LOG.debug(f"data_files={self.data_files}")
-        LOG.debug(f"dims={dims}")
-        cnt = 0
-        if any(name in dims for name in GribIndexer.BLOCK_KEYS):
-            dims = copy.deepcopy(dims)
-            dims_sub = [dims.pop(name, []) for name in GribIndexer.BLOCK_KEYS]
-            for key in self.blocks.keys():
-                assert len(key) == len(dims_sub)
-                if all(
-                    len(dims_sub[i]) == 0 or key[i] in dims_sub[i]
-                    for i in range(len(key))
-                ):
-                    df = self._load_block(key)
-                    # df = self._filter_df(df=df, dims=dims)
-                    # LOG.debug(f"df={df}")
-                    if df is not None and not df.empty:
-                        cnt += len(df)
-                        LOG.debug(f" matching rows={len(df)}")
-                        dfs[key] = df
-        else:
-            for key in self.blocks.keys():
-                # LOG.debug(f"key={key}")
-                df = self._load_block(key)
-                # LOG.debug(f"df={df}")
-                df = self._filter_df(df=df, dims=dims)
-                # LOG.debug(f"df={df}")
-                if df is not None and not df.empty:
-                    cnt += len(df)
-                    # LOG.debug(f" matching rows={len(df)}")
-                    dfs[key] = df
-
-        LOG.debug(f"total matching rows={cnt}")
-        return dfs
-
-    def _extract_fields(self, df, fs):
-        if "fileIndex" in df.columns:
-            idx = []
-            for row in df.itertuples():
-                # LOG.debug(f"row={row}")
-                if not row.fileIndex in self.fs:
-                    self.fs[row.fileIndex] = mv.read(self.data_files[row.fileIndex])
-                fs.append(self.fs[row.fileIndex][row.msgIndex])
-                idx.append(len(fs) - 1)
-            # generate a new dataframe
-            df = df.copy()
-            df["msgIndex"] = idx
-            df.drop(["fileIndex"], axis=1, inplace=True)
-            # LOG.debug(f"len={len(fs)}")
-            return df
-        elif "fileIndex3" in df.columns:
-            idx1 = []
-            idx2 = []
-            idx3 = []
-            for row in df.itertuples():
-                # LOG.debug(f"row={row}")
-                if not row.fileIndex1 in self.fs:
-                    self.fs[row.fileIndex1] = mv.read(self.data_files[row.fileIndex1])
-                fs.append(self.fs[row.fileIndex1][row.msgIndex1])
-                idx1.append(len(fs) - 1)
-                if not row.fileIndex2 in self.fs:
-                    self.fs[row.fileIndex2] = mv.read(self.data_files[row.fileIndex2])
-                fs.append(self.fs[row.fileIndex2][row.msgIndex2])
-                idx2.append(len(fs) - 1)
-                if not row.fileIndex3 in self.fs:
-                    self.fs[row.fileIndex3] = mv.read(self.data_files[row.fileIndex3])
-                fs.append(self.fs[row.fileIndex3][row.msgIndex3])
-                idx3.append(len(fs) - 1)
-            # generate a new dataframe
-            df = df.copy()
-            df["msgIndex1"] = idx1
-            df["msgIndex2"] = idx2
-            df["msgIndex3"] = idx3
-            df.drop(["fileIndex1", "fileIndex2", "fileIndex3"], axis=1, inplace=True)
-            return df
-        elif "fileIndex2" in df.columns:
-            idx1 = []
-            idx2 = []
-            for row in df.itertuples():
-                # LOG.debug(f"row={row}")
-                if not row.fileIndex1 in self.fs:
-                    self.fs[row.fileIndex1] = mv.read(self.data_files[row.fileIndex1])
-                fs.append(self.fs[row.fileIndex1][row.msgIndex1])
-                idx1.append(len(fs) - 1)
-                if not row.fileIndex2 in self.fs:
-                    self.fs[row.fileIndex2] = mv.read(self.data_files[row.fileIndex2])
-                fs.append(self.fs[row.fileIndex2][row.msgIndex2])
-                idx2.append(len(fs) - 1)
-            # generate a new dataframe
-            df = df.copy()
-            df["msgIndex1"] = idx1
-            df["msgIndex2"] = idx2
-            df.drop(["fileIndex1", "fileIndex2"], axis=1, inplace=True)
-            return df
-        return None
-
-    def describe(self):
-        for k, v in self.param_types.items():
-            print(f"{k}: {v}")
 
 
 class FieldsetDb(IndexDb):
@@ -688,12 +521,221 @@ class FieldsetDb(IndexDb):
             return fs
 
 
+class ExperimentDb(IndexDb):
+    def __init__(self, name, **kwargs):
+        super().__init__(name, **kwargs)
+        self.fs = {}
+        LOG.debug(f"rootdir_placeholder_value={self.rootdir_placeholder_value}")
+
+    @staticmethod
+    def make_from_conf(name, conf, root_dir, db_root_dir, dataset):
+        LOG.debug(f"conf={conf}")
+        db = ExperimentDb(
+            name,
+            label=conf.get("label", ""),
+            desc=conf.get("desc", ""),
+            path=conf.get("dir", "").replace(
+                IndexDb.ROOTDIR_PLACEHOLDER_TOKEN, root_dir
+            ),
+            rootdir_placeholder_value=root_dir
+            if IndexDb.ROOTDIR_PLACEHOLDER_TOKEN in conf.get("dir", "")
+            or "merge" in conf
+            else "",
+            file_name_pattern=conf.get("fname", ""),
+            db_dir=os.path.join(db_root_dir, name),
+            merge_conf=conf.get("merge", []),
+            mars_params=conf.get("mars_params", []),
+            blocks={},
+            dataset=dataset,
+        )
+        return db
+
+    def _clone(self):
+        return ExperimentDb(
+            self.name,
+            label=self.label,
+            db_dir=self.db_dir,
+            mars_params=self.mars_params,
+            dataset=self.dataset,
+        )
+
+    def scan(self):
+        print(f"Generate index for database component={self.name} ...")
+        self.data_files = []
+        self.blocks = {}
+        indexer = ExperimentIndexer()
+        indexer.scan(self)
+        self.blocks = {}
+        for key in ExperimentIndexer.get_storage_key_list(self.db_dir):
+            self.blocks[key] = None
+
+    def load(self):
+        self.load_data_file_list()
+        if len(self.data_files) == 0:
+            self.scan()
+        if len(self.blocks) == 0:
+            for key in ExperimentIndexer.get_storage_key_list(self.db_dir):
+                self.blocks[key] = None
+
+    def load_data_file_list(self):
+        if len(self.data_files) == 0:
+            try:
+                file_path = os.path.join(self.db_dir, "datafiles.yaml")
+                with open(file_path, "rt") as f:
+                    self.data_files = yaml.safe_load(f)
+                if self.rootdir_placeholder_value:
+                    self.data_files = [
+                        x.replace(
+                            IndexDb.ROOTDIR_PLACEHOLDER_TOKEN,
+                            self.rootdir_placeholder_value,
+                        )
+                        for x in self.data_files
+                    ]
+                # LOG.debug(f"data_files={self.data_files}")
+                for f in self.data_files:
+                    assert os.path.isfile(f)
+            except:
+                pass
+
+    def _load_block(self, key):
+        # LOG.debug(f"_load_block {key in self.blocks}")
+        # if key in self.blocks:
+        #     LOG.debug(f"{self.blocks[key] is None}")
+        if not key in self.blocks or self.blocks[key] is None:
+            # LOG.debug("read")
+            self.blocks[key] = ExperimentIndexer.read_dataframe(key, self.db_dir)
+            # print(f"R types={self.blocks[key].dtypes}")
+        return self.blocks[key]
+
+    def __getitem__(self, key):
+        if isinstance(key, str):
+            self.load()
+            return self.select_with_name(key)
+        return None
+
+    # return a view
+    def select(self, **kwargs):
+        c = self._clone()
+        dims = self._make_dims(kwargs)
+        blocks = self._filter_blocks(dims)
+        c.blocks = blocks
+        c.data_files = self.data_files
+        c.rootdir_placeholder_value = self.rootdir_placeholder_value
+        return c
+
+    def _filter_blocks(self, dims):
+        self.load()
+        dfs = {}
+        # LOG.debug(f"data_files={self.data_files}")
+        LOG.debug(f"dims={dims}")
+        cnt = 0
+        if any(name in dims for name in GribIndexer.BLOCK_KEYS):
+            dims = copy.deepcopy(dims)
+            dims_sub = [dims.pop(name, []) for name in GribIndexer.BLOCK_KEYS]
+            for key in self.blocks.keys():
+                assert len(key) == len(dims_sub)
+                if all(
+                    len(dims_sub[i]) == 0 or key[i] in dims_sub[i]
+                    for i in range(len(key))
+                ):
+                    df = self._load_block(key)
+                    # df = self._filter_df(df=df, dims=dims)
+                    # LOG.debug(f"df={df}")
+                    if df is not None and not df.empty:
+                        cnt += len(df)
+                        LOG.debug(f" matching rows={len(df)}")
+                        dfs[key] = df
+        else:
+            for key in self.blocks.keys():
+
+                # LOG.debug(f"key={key}")
+                df = self._load_block(key)
+                # LOG.debug(f"df={df}")
+                df = self._filter_df(df=df, dims=dims)
+                # LOG.debug(f"df={df}"
+                if df is not None and not df.empty:
+                    cnt += len(df)
+                    # LOG.debug(f" matching rows={len(df)}")
+                    dfs[key] = df
+
+        LOG.debug(f"total matching rows={cnt}")
+        return dfs
+
+    def _extract_fields(self, df, fs):
+        if "fileIndex" in df.columns:
+            idx = []
+            for row in df.itertuples():
+                # LOG.debug(f"row={row}")
+                if not row.fileIndex in self.fs:
+                    # print(self.data_files[row.fileIndex])
+                    self.fs[row.fileIndex] = mv.read(self.data_files[row.fileIndex])
+                fs.append(self.fs[row.fileIndex][row.msgIndex])
+                idx.append(len(fs) - 1)
+            # generate a new dataframe
+            df = df.copy()
+            df["msgIndex"] = idx
+            df.drop(["fileIndex"], axis=1, inplace=True)
+            # LOG.debug(f"len={len(fs)}")
+            return df
+        elif "fileIndex3" in df.columns:
+            idx1 = []
+            idx2 = []
+            idx3 = []
+            for row in df.itertuples():
+                # LOG.debug(f"row={row}")
+                if not row.fileIndex1 in self.fs:
+                    self.fs[row.fileIndex1] = mv.read(self.data_files[row.fileIndex1])
+                fs.append(self.fs[row.fileIndex1][row.msgIndex1])
+                idx1.append(len(fs) - 1)
+                if not row.fileIndex2 in self.fs:
+                    self.fs[row.fileIndex2] = mv.read(self.data_files[row.fileIndex2])
+                fs.append(self.fs[row.fileIndex2][row.msgIndex2])
+                idx2.append(len(fs) - 1)
+                if not row.fileIndex3 in self.fs:
+                    self.fs[row.fileIndex3] = mv.read(self.data_files[row.fileIndex3])
+                fs.append(self.fs[row.fileIndex3][row.msgIndex3])
+                idx3.append(len(fs) - 1)
+            # generate a new dataframe
+            df = df.copy()
+            df["msgIndex1"] = idx1
+            df["msgIndex2"] = idx2
+            df["msgIndex3"] = idx3
+            df.drop(["fileIndex1", "fileIndex2", "fileIndex3"], axis=1, inplace=True)
+            return df
+        elif "fileIndex2" in df.columns:
+            idx1 = []
+            idx2 = []
+            for row in df.itertuples():
+                # LOG.debug(f"row={row}")
+                if not row.fileIndex1 in self.fs:
+                    self.fs[row.fileIndex1] = mv.read(self.data_files[row.fileIndex1])
+                fs.append(self.fs[row.fileIndex1][row.msgIndex1])
+                idx1.append(len(fs) - 1)
+                if not row.fileIndex2 in self.fs:
+                    self.fs[row.fileIndex2] = mv.read(self.data_files[row.fileIndex2])
+                fs.append(self.fs[row.fileIndex2][row.msgIndex2])
+                idx2.append(len(fs) - 1)
+            # generate a new dataframe
+            df = df.copy()
+            df["msgIndex1"] = idx1
+            df["msgIndex2"] = idx2
+            df.drop(["fileIndex1", "fileIndex2"], axis=1, inplace=True)
+            return df
+        return None
+
+    def describe(self):
+        for k, v in self.param_types.items():
+            print(f"{k}: {v}")
+
+
 class TrackConf:
     def __init__(self, name, conf, data_dir, dataset):
         self.name = name
         self.dataset = dataset
         self.label = self.name
-        self.path = conf.get("dir", "").replace(IndexDb.ROOTDIR_PLACEHOLDER, data_dir)
+        self.path = conf.get("dir", "").replace(
+            IndexDb.ROOTDIR_PLACEHOLDER_TOKEN, data_dir
+        )
         self.file_name_pattern = conf.get("fname", "")
         # self.conf_dir = os.path.join("_conf", self.name)
         self.data_files = []
@@ -718,71 +760,41 @@ class TrackConf:
         return None
 
 
-def unpack(file_path, remove=False):
-    if any(file_path.endswith(x) for x in [".tar", ".tar.gz", ".tar.bz2"]):
-        cwd_ori = os.getcwd()
-        target_dir = os.path.dirname(file_path)
-        os.chdir(target_dir)
-        tar = tarfile.open(file_path)
-        tar.extractall()
-        tar.close()
-        if remove:
-            os.rm(file_path)
-        os.chdir(cwd_ori)
-
-
-def download(url, target, progress=True):
-    LOG.debug(f"download url={url} target={target}")
-    if progress:
-        from tqdm import tqdm
-        import requests
-
-        resp = requests.get(url, stream=True)
-        total = int(resp.headers.get("content-length", 0))
-        with open(target, "wb") as file, tqdm(
-            desc=target,
-            total=total,
-            unit="iB",
-            unit_scale=True,
-            unit_divisor=1024,
-        ) as bar:
-            for data in resp.iter_content(chunk_size=1024):
-                size = file.write(data)
-                bar.update(size)
-    else:
-        d = mv.download(url=url, target=target)
-
-
 class Dataset:
     """
     Represents a Dataset
     """
 
     CONF = {}
-    SYSTEM_DIR = os.path.join(os.getenv("TMPDIR", ""), "mpy_datasets")
 
-    def __init__(self, name="", path="", load_style=True):
+    def __init__(self, name, path="", load_style=True):
         self.name = name
         self.path = path
         self.field_conf = {}
         self.track_conf = {}
 
+        assert self.name
         LOG.debug(f"name={self.name}")
-        if self.name != "" and self.path != "":
-            raise Exception(
-                f"{self.__class__.__name__} cannot take both name and path!"
-            )
 
-        if self.name != "":
-            self.path = os.path.join(self.SYSTEM_DIR, self.name)
-            LOG.debug(f"path={self.path}")
-            c = self.find_conf(self.name)
-            LOG.debug(f"c={c}")
-            if not c:
-                raise Exception(f"Could not find configuration for dataset={self.name}")
+        # get config for a built-in dataset
+        c = self.find_conf(self.name)
+
+        if self.path:
+            # If the path does not exists, it must be a built-in dataset. Data will be
+            # downloaded into path.
+            if not os.path.isdir(self.path):
+                c = self.find_conf(self.name)
+                if c:
+                    self.get_contents(c)
+                else:
+                    raise Exception(
+                        f"Could not find configuration for dataset={self.name}"
+                    )
+        elif c:
+            self.path = os.path.join(utils.CACHE.ROOT_DIR, self.name)
             self.get_contents(c)
-        elif self.path != "":
-            assert os.path.isdir(self.path)
+        else:
+            raise Exception(f"Could not find configuration for dataset={self.name}")
 
         if load_style:
             conf_dir = os.path.join(self.path, "conf")
@@ -792,6 +804,10 @@ class Dataset:
 
         for _, c in self.field_conf.items():
             LOG.debug(f"{c}")
+
+    @staticmethod
+    def load_dataset(*args, **kwargs):
+        return Dataset(*args, **kwargs)
 
     def load(self):
         data_dir = os.path.join(self.path, "data")
@@ -849,22 +865,6 @@ class Dataset:
                 c.scan()
                 # indexer.scan(c, to_disk=True)
 
-    def select(self, exp_id="", **kwargs):
-        item = self.field_conf.get(exp_id, None)
-        if item is None:
-            raise Exception(f"No experiment found with id={exp_id}")
-        # LOG.debug("date={} time={} step={}".format(date, time, step))
-        # date = int(date.strftime("%Y%m%d"))
-        # time = int(time.strftime("%H"))
-        return item.select(**kwargs)
-
-    def select_view(self, exp_id="", **kwargs):
-        item = self.field_conf.get(exp_id, None)
-        if item is None:
-            raise Exception(f"No experiment found with id={exp_id}")
-        LOG.debug(f"select_view item={item}")
-        return item.select_view(**kwargs)
-
     def find(self, name, comp="field"):
         if comp == "all":
             f = self.field_conf.get(name, None)
@@ -878,12 +878,6 @@ class Dataset:
             return self.track_conf.get(name, None)
         else:
             return None
-
-    # def select_track(self, name):
-    #     if self.tracks is not None:
-    #         return self.tracks.select(name)
-    #     else:
-    #         raise Exception(f"No track data is available!")
 
     def describe(self):
         print("Database components:")
@@ -900,19 +894,21 @@ class Dataset:
             Path(self.path).mkdir(0o755, parents=True, exist_ok=True)
 
         files = {
-            "conf.tar": ["data_conf.yaml", "conf", "_index_db"],
+            "conf.tar": ["data_conf.yaml", "conf"],
             "data.tar.{}".format(conf["compression"]): ["data"],
         }
 
         for src, targets in files.items():
-            if any([not os.path.exists(os.path.join(self.path, x)) for x in targets]):
+            if not utils.CACHE.all_exists(targets, self.path):
                 remote_file = os.path.join(conf["url"], src)
                 target_file = os.path.join(self.path, src)
-                LOG.debug(f"remote_file={remote_file}")
-                LOG.debug(f"target_file={target_file}")
+                # LOG.debug(f"target_file={target_file}")
                 try:
-                    download(remote_file, target_file)
-                    unpack(target_file, remove=False)
+                    print("Download data ...")
+                    utils.download(remote_file, target_file)
+                    print("Unpack data ...")
+                    utils.unpack(target_file, remove=True)
+                    utils.CACHE.make_reference(targets, self.path)
                 except:
                     # if os.exists(target_file):
                     #     os.remove(target_file)

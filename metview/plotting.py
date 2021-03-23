@@ -322,7 +322,7 @@ def plot_xs(
 # plot_stamp_maps(fs, vd, an=[], fc=[], )
 
 
-def plot_stamp_maps(
+def plot_stamp(
     *args,
     an=[],
     fc=[],
@@ -415,7 +415,6 @@ def plot_stamp_maps(
         dummy = d = data["ens"].select(number=members[0])
         t = title.build(dummy)
         desc.extend([dw[-1], t, dummy, cont])
-
 
     animate = animate and mv.plot.plot_to_jupyter
     return mv.plot(desc, animate=animate)

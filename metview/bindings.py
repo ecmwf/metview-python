@@ -22,8 +22,9 @@ import tempfile
 import cffi
 import numpy as np
 
-from metview.dataset import ParamInfo, FieldsetDb
+from metview.dataset import ParamInfo, FieldsetDb, Dataset
 from metview.style import StyleDb
+from metview import plotting
 
 __version__ = "1.7.0"
 
@@ -648,6 +649,12 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         dataset = xr.open_dataset(self.url(), engine="cfgrib", backend_kwargs=kwarg)
         return dataset
 
+    def index(self, path="", extra_keys=[]):
+        pass
+
+    def load_index(self, path):
+        pass
+
     def _scan(self):
         if self._db is None:
             self._db = FieldsetDb(fs=self, extra_keys=self._extra_keys)
@@ -1129,7 +1136,12 @@ def bind_functions(namespace, module_name=None):
     namespace["dataset_to_fieldset"] = dataset_to_fieldset
     namespace["valid_date"] = valid_date
     namespace["get_file_list"] = get_file_list
-
+    namespace["load_dataset"] = Dataset.load_dataset
+    namespace["plot_maps"] = plotting.plot_maps
+    namespace["plot_diff_maps"] = plotting.plot_diff_maps
+    namespace["plot_xs"] = plotting.plot_xs
+    namespace["plot_stamp"] = plotting.plot_stamp
+    
     namespace["Fieldset"] = Fieldset
     namespace["Request"] = Request
 

@@ -37,8 +37,8 @@ class GribIndexer:
     DEFAULT_KEYS = {
         "shortName": ("s", str, False),
         "mars.param": ("s", str, False),
-        "date": ("l", np.int32, True),
-        "time": ("l", np.int32, True),
+        "date": ("l", np.int64, True),
+        "time": ("l", np.int64, True),
         "step": ("s", str, True),
         "level": ("l", np.int32, True),
         "typeOfLevel": ("s", str, False),
@@ -50,6 +50,8 @@ class GribIndexer:
     }
 
     BLOCK_KEYS = ["shortName", "typeOfLevel"]
+
+    pd_types = {k: v[1] for k, v in DEFAULT_KEYS.items()}
 
     def __init__(self, extra_keys=[]):
         self.ref_column_count = None
@@ -222,7 +224,7 @@ class GribIndexer:
         name = "_".join(key)
         f_name = os.path.join(dir_name, f"{name}.csv.gz")
         # LOG.debug("f_name={}".format(f_name))
-        return pd.read_csv(f_name, index_col=None)
+        return pd.read_csv(f_name, index_col=None, dtype=GribIndexer.pd_types)
 
     @staticmethod
     def get_storage_key_list(dir_name):
@@ -311,7 +313,7 @@ class ExperimentIndexer(GribIndexer):
         self.ref_column_count = 2
 
     def scan(self, db):
-        out_dir = db.conf_dir
+        out_dir = db.db_dir
         Path(out_dir).mkdir(exist_ok=True, parents=True)
         LOG.info(f"scan {db} out_dir={out_dir} ...")
 
@@ -363,8 +365,8 @@ class ExperimentIndexer(GribIndexer):
                         input_files=input_files,
                         mars_params=db.mars_params,
                         ens=c["ens"],
-                        rootdir_value=c["data"].rootdir_value,
-                        rootdir_placeholder=db.ROOTDIR_PLACEHOLDER,
+                        rootdir_placeholder_value=c["data"].rootdir_placeholder_value,
+                        rootdir_placeholder_token=db.ROOTDIR_PLACEHOLDER_TOKEN,
                     )
         # index a single experiment
         else:
@@ -375,8 +377,8 @@ class ExperimentIndexer(GribIndexer):
                 input_files=[],
                 mars_params=db.mars_params,
                 ens={},
-                rootdir_value=db.rootdir_value,
-                rootdir_placeholder=db.ROOTDIR_PLACEHOLDER,
+                rootdir_placeholder_value=db.rootdir_placeholder_value,
+                rootdir_placeholder_token=db.ROOTDIR_PLACEHOLDER_TOKEN,
             )
 
         # write config file for input file list
@@ -434,8 +436,8 @@ class ExperimentIndexer(GribIndexer):
         input_files=[],
         mars_params={},
         ens={},
-        rootdir_value="",
-        rootdir_placeholder=None,
+        rootdir_placeholder_value="",
+        rootdir_placeholder_token=None,
     ):
         LOG.info("scan fields ...")
         LOG.info(f" input_dir={input_dir} file_name_pattern={file_name_pattern}")
@@ -472,9 +474,10 @@ class ExperimentIndexer(GribIndexer):
                     # params[name].append(v)
                 cnt += 1
 
-        if rootdir_value:
+        if rootdir_placeholder_value:
             input_files_tmp = [
-                x.replace(rootdir_value, rootdir_placeholder) for x in input_files_tmp
+                x.replace(rootdir_placeholder_value, rootdir_placeholder_token)
+                for x in input_files_tmp
             ]
 
         input_files.extend(input_files_tmp)
