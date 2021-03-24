@@ -32,7 +32,7 @@ if use_mars:
     )
 # read data from GRIB file
 else:
-    filename = "karl_850.grib"
+    filename = "karl_tz_850.grib"
     if mv.exist(filename):
         g = mv.read(filename)
     else:
