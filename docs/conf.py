@@ -82,6 +82,18 @@ rst_prolog = """
 .. role:: mval
 """
 
+nbsphinx_prolog = """
+{% set docname = env.doc2path(env.docname, base=None) %}
+
+Try this notebook in |Binder|.
+
+.. |Binder| image:: https://mybinder.org/badge.svg
+   :target: https://mybinder.org/v2/gh/ecmwf/metview-python/feature/MPY-272-docs-new?filepath=docs/{{ docname }}
+   :alt: Binder
+   :class: badge
+
+"""
+
 def setup(app):
     # this is a pre-build step to generate RST files with running "make metview". 
     # We need to put this code here because the Makefile is not run by
