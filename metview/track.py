@@ -25,7 +25,7 @@ class Track:
         return StyleDb.get_db().get_style("track").clone()
 
     def build(self, style=[]):
-        df = pd.read_csv(filepath_or_buffer=self.path, skiprows=10)
+        df = pd.read_csv(filepath_or_buffer=self.path, skiprows=10, header=None)
 
         v_date = df.iloc[:, 0]
         v_time = df.iloc[:, 1]

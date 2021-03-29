@@ -25,6 +25,8 @@ import yaml
 # logging.basicConfig(level=logging.INFO)
 LOG = logging.getLogger(__name__)
 
+NEWER = True
+
 
 class GribIndexer:
     VECTOR_PARAMS = {
@@ -53,16 +55,18 @@ class GribIndexer:
 
     pd_types = {k: v[1] for k, v in DEFAULT_KEYS.items()}
 
-    def __init__(self, extra_keys=[]):
+    def __init__(self, db):
+        self.db = db
+        assert self.db is not None
         self.ref_column_count = None
         self.keys = []
-        self.keys_for_ecc = []
+        self.keys_ecc = []
         for k, v in GribIndexer.DEFAULT_KEYS.items():
             name = k
             self.keys.append(name)
             if v[0]:
                 name = f"{k}:{v[0]}"
-            self.keys_for_ecc.append(name)
+            self.keys_ecc.append(name)
 
         self.keys_duplicate_check = [
             k for k, v in GribIndexer.DEFAULT_KEYS.items() if v[2] == True
@@ -88,24 +92,33 @@ class GribIndexer:
             "mars.stream",
             "mars.type",
         ]:
-            self.wind_check_index.append(self.keys.index(v))
+            self.wind_check_index.append(self.keys.index(v) + 1)
 
-        self.block_key_index = [self.keys.index(v) for v in GribIndexer.BLOCK_KEYS]
+        # self.block_key_index = [self.keys.index(v) for v in GribIndexer.BLOCK_KEYS]
 
         self.pd_types = {k: v[1] for k, v in GribIndexer.DEFAULT_KEYS.items()}
 
-        for k in extra_keys:
+        # for k in extra_keys:
+        #     name = k
+        #     name_ecc = k
+        #     if ":" in k:
+        #         name = k.split(":")[0]
+        #     if name not in self.keys:
+        #         self.keys.append(name)
+        #     if name_ecc not in self.keys_ecc:
+        #         self.keys_ecc.append(name_ecc)
+
+    def update_keys(self, keys):
+        ret = False
+        for k in keys:
             name = k
-            name_ecc = k
-            if ":" in k:
-                name = k.split(":")[0]
+            name_ecc = name.replace("_", ":")
             if name not in self.keys:
                 self.keys.append(name)
-            if name_ecc not in self.keys_for_ecc:
-                self.keys_for_ecc.append(name_ecc)
-
-    def scan(self, db):
-        raise NotImplementedError
+                self.keys_ecc.append(name_ecc)
+                self.pd_types[name] = str
+                ret = True
+        return ret
 
     def _check_duplicates(self, name, df):
         dup = df.duplicated(subset=self.keys_duplicate_check)
@@ -124,104 +137,101 @@ class GribIndexer:
         if cnt > 1:
             LOG.error(f"  + {cnt-1} more duplicate(s)!")
 
-    def _build_vector_index(self, params, v_name, v_comp):
+    def _build_vector_index(self, df, v_name, v_comp):
         # LOG.debug(f"v_name={v_name} v_comp={v_comp}")
         comp_num = len(v_comp)
 
-        # collect components belonging together
-        v_params = {}
-        comp_params = {}
+        # filter components belonging together
+        comp_df = []
         for i, comp_name in enumerate(v_comp):
-            for k, v in params.items():
-                if k[0] == comp_name:
-                    # LOG.debug(f"k={k}")
-                    name = (v_name, k[1])
-                    # LOG.debug(f"name={name}")
-                    # name = k.replace(comp_name, v_name)
-                    if name in comp_params and len(comp_params[name]) == i:
-                        comp_params[name].append(v)
-                    elif i == 0:
-                        comp_params[name] = [v]
+            query = f"shortName == '{comp_name}'"
+            r = df.query(query)
+            # if we do not use copy, the assignment below as:
+            # comp_df[0].loc[...
+            # generates the SettingWithCopyWarning warning!!!
+            if i == 0:
+                r = df.query(query).copy()
+            else:
+                r = df.query(query)
+            if r.empty:
+                return []
+            else:
+                comp_df.append(r)
 
-        if len(comp_params) == 0:
-            LOG.debug(" No component params found!")
-            return {}, {}
+        assert comp_num == len(comp_df)
 
-        # LOG.debug(f"comp_params={comp_params}")
-
-        # pair up components within a vector field
+        # pair up components within a 2D vector field. This
+        # version proved to be the fastest!
         # LOG.debug(" pair up collected components:")
-        for name in list(comp_params.keys()):
-            v = comp_params[name]
-            # LOG.debug(f" name={name}")
-            if len(v) != comp_num:
-                del comp_params[name]
-                LOG.debug(f" -> skip (collected={len(v)} != expected={comp_num})")
-            # 2D fields
-            elif len(v) == 2:
-                for v0 in v[0]:
-                    for v1 in v[1]:
-                        if [v0[x] for x in self.wind_check_index] == [
-                            v1[x] for x in self.wind_check_index
-                        ]:
-                            d = v0.copy()
-                            d.extend(v1[-self.ref_column_count :])
-                            # LOG.debug("   d={}".format(d))
-                            if name not in v_params:
-                                v_params[name] = []
-                            v_params[name].append(d)
+
+        # print(f"v_name={v_name} {len(comp_df[1].index)}")
+        # print("view=", comp_df[0]._is_view)
+        r = []
+        used1 = np.full(len(comp_df[1].index), False, dtype="?")
+        comp_df[0].loc[:, "shortName"] = v_name
+        # 2D
+        if comp_num == 2:
+            for row0 in comp_df[0].itertuples(name=None):
+                i = 0
+                for row1 in comp_df[1].itertuples(name=None):
+                    if not used1[i]:
+                        b = True
+                        for x in self.wind_check_index:
+                            if row0[x] != row1[x]:
+                                b = False
+                                break
+                        if b:
+                            d = list(row0[1:])
+                            d.extend(row1[-self.ref_column_count :])
+                            r.append(d)
+                            used1[i] = True
                             break
-            # 3D fields
-            elif len(v) == 3:
-                for v0 in v[0]:
-                    # LOG.debug(" v0={}".format(v0[1:8]))
-                    for v1 in v[1]:
-                        # LOG.debug("   -> v1={}".format(v1[1:8]))
-                        if [v0[x] for x in self.wind_check_index] == [
-                            v1[x] for x in self.wind_check_index
-                        ]:
-                            for v2 in v[2]:
-                                # LOG.debug("   -> v3={}".format(v3[1:8]))
-                                if [v0[x] for x in self.wind_check_index] == [
-                                    v2[x] for x in self.wind_check_index
-                                ]:
-                                    d = v0.copy()
-                                    d.extend(v1[-self.ref_column_count :])
-                                    d.extend(v2[-self.ref_column_count :])
-                                    # LOG.debug("   d={}".format(d))
-                                    if name not in v_params:
-                                        v_params[name] = []
-                                    v_params[name].append(d)
-                                    break
+                    i += 1
+        # 3D
+        elif comp_num == 3:
+            used2 = np.full(len(comp_df[2].index), False, dtype="?")
+            for row0 in comp_df[0].itertuples(name=None):
+                i = 0
+                for row1 in comp_df[1].itertuples(name=None):
+                    if not used1[i]:
+                        b = True
+                        for x in self.wind_check_index:
+                            if row0[x] != row1[x]:
+                                b = False
+                                break
+                        if b:
+                            j = 0
+                            for row2 in comp_df[2].itertuples(name=None):
+                                if not used2[j]:
+                                    b = True
+                                    for x in self.wind_check_index:
+                                        if row0[x] != row2[x]:
+                                            b = False
+                                            break
+                                    if b:
+                                        d = list(row0[1:])
+                                        d.extend(row1[-self.ref_column_count :])
+                                        d.extend(row2[-self.ref_column_count :])
+                                        r.append(d)
+                                        used1[i] = True
+                                        used2[j] = True
+                                        j = -1
+                                        break
+                                j += 1
+                            if j == -1:
+                                break
+                    i += 1
+        return r
 
-        # LOG.debug(f"v_prams={v_params}")
-        return comp_params, v_params
-
-    def make_key(self, v):
-        return tuple(v[x] for x in self.block_key_index)
-        # return (v[self.shortname_index], v[self.levtype_index])
-
-    def _build_dataframe(self, key, data, columns):
-        df = pd.DataFrame(data, columns=columns).astype(self.pd_types)
-        df.drop(self.BLOCK_KEYS, axis=1, inplace=True)
-        df.sort_values(by=list(df.columns), inplace=True)
-        # self._check_duplicates(key, df)
-        return df
-
-    def _write_dataframe(self, df, key, out_dir):
-        assert len(key) == len(self.BLOCK_KEYS)
-        name = "_".join(key)
+    def _write_dataframe(self, df, name, out_dir):
         f_name = os.path.join(out_dir, f"{name}.csv.gz")
-        # df.to_csv(path_or_buf=f_name, header=True, index=False)
-        # df = df.transpose()
         df.to_csv(path_or_buf=f_name, header=True, index=False, compression="gzip")
-        # df.to_csv(path_or_buf=f_name, header=False, index=True, compression="gzip")
-        # df.to_csv(path_or_buf=f_name, header=True, index=False, compression="bz2")
 
     @staticmethod
     def read_dataframe(key, dir_name):
-        assert len(key) == len(GribIndexer.BLOCK_KEYS)
-        name = "_".join(key)
+        # assert len(key) == len(GribIndexer.BLOCK_KEYS)
+        # name = "_".join(key)
+        name = key
         f_name = os.path.join(dir_name, f"{name}.csv.gz")
         # LOG.debug("f_name={}".format(f_name))
         return pd.read_csv(f_name, index_col=None, dtype=GribIndexer.pd_types)
@@ -234,98 +244,86 @@ class GribIndexer:
         for f in mv.get_file_list(os.path.join(dir_name, f"*{suffix}")):
             name = os.path.basename(f)
             # LOG.debug(f"name={name}")
-            name = name[: -len(suffix)].split("_")
-            if len(name) == len(GribIndexer.BLOCK_KEYS):
-                r.append(tuple(name))
+            r.append(name[: -len(suffix)])
         return r
+
+    @staticmethod
+    def is_key_wind(key):
+        return key in GribIndexer.VECTOR_PARAMS
 
 
 class FieldsetIndexer(GribIndexer):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args):
+        super().__init__(*args)
         self.ref_column_count = 1
 
-    def scan(self, db):
-        blocks = self._scan(db.fs, mars_params=db.mars_params)
-
-        # scalar fields
-        LOG.info(f" generate scalar fields index ...")
-        cols = [*self.keys]
-        cols.extend(["msgIndex"])
-        field_stat = {}
-        for key, md in blocks.items():
-            LOG.debug(self.pd_types)
-            df = self._build_dataframe(key, md, cols)
-            db.blocks[key] = df
-            field_stat[key] = len(df)
-            self._check_duplicates(key, df)
-
-        LOG.info(f" scalar fields count: {field_stat}")
-
-        # vector fields
-        LOG.info(f" generates vector fields index ...")
-        field_stat = {}
-        for v_name, v_comp in GribIndexer.VECTOR_PARAMS.items():
-            comp_blocks, v_blocks = self._build_vector_index(blocks, v_name, v_comp)
-            LOG.debug(f"comp_blocks={comp_blocks}")
-            LOG.debug(f"v_blocks={v_blocks}")
-            comp_num = len(v_comp)
-            for key, md in v_blocks.items():
-                # LOG.debug(f" key={key}")
-                cols = [*self.keys]
-                assert key in comp_blocks
-                for i in range(comp_num):
-                    cols.extend([f"msgIndex{i+1}"])
-                # LOG.debug(md)
-                df = self._build_dataframe(key, md, cols)
-                db.wind[key] = df
-                field_stat[key] = len(df)
-                self._check_duplicates(key, df)
-
-        LOG.info(f" vector fields count: {field_stat}")
+    def scan(self, vector=False):
+        data = self._scan(self.db.fs, mars_params=self.db.mars_params)
+        if data:
+            df = pd.DataFrame(data).astype(self.pd_types)
+            df = df.sort_values(by=list(df.columns))
+            self.db.blocks["scalar"] = df
+            if vector:
+                self._scan_vector()
 
     def _scan(self, fs, mars_params={}):
         LOG.info(f" scan fields ...")
-        blocks = {}
-        md_vals = mv.grib_get(fs, self.keys_for_ecc)
-        for i, v in enumerate(md_vals):
-            # short_name = v[self.shortname_index]
-            if v[self.mars_param_index] in mars_params:
-                short_name = mars_params[v[self.mars_param_index]]
-                md_vals[i][self.shortname_index] = short_name
-            # name = "{}_{}".format(short_name, v[self.levtype_index])
-            key = self.make_key(md_vals[i])
-            if not key in blocks:
-                blocks[key] = []
-            # name = (short_name, v[self.levtype_index])
-            # if not name in params:
-            # params[name] = []
-            v.append(i)
-            blocks[key].append(v)
-            # params[name].append(v)
-        LOG.info(f" {len(fs)} GRIB messages processed")
-        return blocks
+        data = {}
+        print(f"fs_len={len(fs)}")
+        if isinstance(fs, mv.Fieldset) and len(fs) > 0:
+            md_vals = mv.grib_get(fs, self.keys_ecc, "key")
+            if mars_params:
+                for i in range(len(fs)):
+                    v = md_vals[self.mars_param_index][i]
+                    if v in mars_params:
+                        short_name = mars_params[v]
+                        md_vals[self.shortname_index][i] = short_name
+
+            assert len(self.keys) == len(self.keys_ecc)
+            data = {k: md_vals[i] for i, k in enumerate(self.keys)}
+            data["msgIndex1"] = list(range(len(fs)))
+            LOG.info(f" {len(fs)} GRIB messages processed")
+        return data
+
+    def _scan_vector(self):
+        df = self.db.blocks["scalar"]
+        if df is not None and not df.empty:
+            for v_name, v_comp in GribIndexer.VECTOR_PARAMS.items():
+                r = self._build_vector_index(df, v_name, v_comp)
+                comp_num = len(v_comp)
+                if r:
+                    cols = [*self.keys]
+                    for i in range(comp_num):
+                        cols.extend([f"msgIndex{i+1}"])
+                    w_df = pd.DataFrame(r, columns=cols).astype(self.pd_types)
+                    w_df = w_df.sort_values(by=list(w_df.columns))
+                    self.db.blocks[v_name] = w_df
+                    # self._write_dataframe(w_df, v_name, out_dir)
+                else:
+                    LOG.debug(" No paired fields found!")
+                    continue
 
 
 class ExperimentIndexer(GribIndexer):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args):
+        super().__init__(*args)
         self.ref_column_count = 2
 
-    def scan(self, db):
-        out_dir = db.db_dir
+    def scan(self):
+        out_dir = self.db.db_dir
         Path(out_dir).mkdir(exist_ok=True, parents=True)
-        LOG.info(f"scan {db} out_dir={out_dir} ...")
+        LOG.info(f"scan {self.db} out_dir={out_dir} ...")
 
-        blocks = {}
+        data = {k: [] for k in [*self.keys, "msgIndex1", "fileIndex1"]}
         input_files = []
 
+        print(f"out_dir={out_dir}")
         # merge existing experiment objects
-        if db.merge_conf:
+        if self.db.merge_conf:
             ds = []
             # simple merge
-            if isinstance(db.merge_conf, list):
-                for c_name in db.merge_conf:
+            if isinstance(self.db.merge_conf, list):
+                for c_name in self.db.merge_conf:
                     ds.append(
                         {"data": db.dataset.find(c_name), "name": c_name, "ens": {}}
                     )
@@ -337,12 +335,12 @@ class ExperimentIndexer(GribIndexer):
                 if c_name != "":
                     ds.append(
                         {
-                            "data": db.dataset.find(c_name, comp="field"),
+                            "data": self.db.dataset.find(c_name, comp="field"),
                             "name": c_name,
                             "ens": {"type": "cf", "number": 0},
                         }
                     )
-                for i, c_name in enumerate(db.merge_conf.get("pf", [])):
+                for i, c_name in enumerate(self.db.merge_conf.get("pf", [])):
                     ds.append(
                         {
                             "data": db.dataset.find(c_name, comp="field"),
@@ -355,92 +353,82 @@ class ExperimentIndexer(GribIndexer):
                 if c["data"] is None:
                     c_name = d["name"]
                     raise Exception(
-                        f"Cannot merge experiments as {db}! Experiment {c_name} is not found!"
+                        f"Cannot merge experiments as {self.db}! Experiment {c_name} is not found!"
                     )
                 else:
-                    params, input_files = self._scan_one(
+                    input_files = self._scan_one(
                         input_dir=c["data"].path,
                         file_name_pattern=c["data"].file_name_pattern,
-                        blocks=blocks,
                         input_files=input_files,
-                        mars_params=db.mars_params,
+                        mars_params=self.db.mars_params,
                         ens=c["ens"],
+                        data=data,
                         rootdir_placeholder_value=c["data"].rootdir_placeholder_value,
-                        rootdir_placeholder_token=db.ROOTDIR_PLACEHOLDER_TOKEN,
+                        rootdir_placeholder_token=self.db.ROOTDIR_PLACEHOLDER_TOKEN,
                     )
         # index a single experiment
         else:
-            blocks, input_files = self._scan_one(
-                input_dir=db.path,
-                file_name_pattern=db.file_name_pattern,
-                blocks={},
+            input_files = self._scan_one(
+                input_dir=self.db.path,
+                file_name_pattern=self.db.file_name_pattern,
                 input_files=[],
-                mars_params=db.mars_params,
+                mars_params=self.db.mars_params,
                 ens={},
-                rootdir_placeholder_value=db.rootdir_placeholder_value,
-                rootdir_placeholder_token=db.ROOTDIR_PLACEHOLDER_TOKEN,
+                data=data,
+                rootdir_placeholder_value=self.db.rootdir_placeholder_value,
+                rootdir_placeholder_token=self.db.ROOTDIR_PLACEHOLDER_TOKEN,
             )
 
-        # write config file for input file list
-        LOG.info(f"generate datafiles.yaml ...")
-        f_name = os.path.join(out_dir, "datafiles.yaml")
-        r = yaml.dump(input_files, default_flow_style=False)
-        with open(f_name, "w") as f:
-            f.write(r)
-        db.input_files = input_files
+        print(f"input_files={input_files}")
+        if len(input_files) > 0 and len(data["shortName"]) > 0:
+            # write config file for input file list
+            LOG.info(f"generate datafiles.yaml ...")
+            f_name = os.path.join(out_dir, "datafiles.yaml")
+            r = yaml.dump(input_files, default_flow_style=False)
+            with open(f_name, "w") as f:
+                f.write(r)
+            self.db.input_files = input_files
 
-        # generate and write index for scalar fields
-        LOG.info(f"generate scalar fields index ...")
-        cols = [*self.keys]
-        cols.extend(["msgIndex", "fileIndex"])
-        field_stat = {}
-        for key, md in blocks.items():
-            # LOG.debug(f"key={key}")
-            df = self._build_dataframe(key, md, cols)
-            self._write_dataframe(df, key, out_dir)
-            db.blocks[key] = df
-            field_stat[key] = len(df)
-        LOG.info(f" scalar fields count: {field_stat}")
+            # scalar
+            LOG.info(f"generate scalar fields index ...")
+            df = pd.DataFrame(data).astype(self.pd_types)
+            df = df.sort_values(by=list(df.columns))
+            self.db.blocks["scalar"] = df
+            self._write_dataframe(df, "scalar", out_dir)
 
-        # generate and write index for vector fields
-        LOG.info(f"generate vector fields index ...")
-        field_stat = {}
-        for v_name, v_comp in GribIndexer.VECTOR_PARAMS.items():
-            comp_blocks, v_blocks = self._build_vector_index(blocks, v_name, v_comp)
-            comp_num = len(v_comp)
-
-            if len(comp_blocks) == 0:
-                LOG.debug(" No paired fields found!")
-                continue
-
-            # write config for vector fields
-            for key, md in v_blocks.items():
-                # LOG.debug(f" name={name}")
-                cols = [*self.keys]
-                assert key in comp_blocks
-                for i in range(comp_num):
-                    cols.extend([f"msgIndex{i+1}", f"fileIndex{i+1}"])
-                # LOG.debug(p)
-                df = self._build_dataframe(key, md, cols)
-                self._write_dataframe(df, key, out_dir)
-                db.wind[key] = df
-                field_stat[key] = len(df)
-
-        LOG.info(f" vector fields count: {field_stat}")
+            # vector (2D)
+            LOG.info(f"generate vector fields index ...")
+            for v_name, v_comp in GribIndexer.VECTOR_PARAMS.items():
+                r = self._build_vector_index(df, v_name, v_comp)
+                comp_num = len(v_comp)
+                if r:
+                    cols = [*self.keys]
+                    for i in range(comp_num):
+                        cols.extend([f"msgIndex{i+1}", f"fileIndex{i+1}"])
+                    w_df = pd.DataFrame(r, columns=cols).astype(self.pd_types)
+                    w_df = w_df.sort_values(by=list(w_df.columns))
+                    print(f"wind_len={len(w_df.index)}")
+                    self.db.wind[v_name] = w_df
+                    self._write_dataframe(w_df, v_name, out_dir)
+                else:
+                    LOG.debug(" No paired fields found!")
+                    continue
 
     def _scan_one(
         self,
         input_dir="",
         file_name_pattern="",
-        blocks={},
         input_files=[],
         mars_params={},
         ens={},
+        data={},
         rootdir_placeholder_value="",
         rootdir_placeholder_token=None,
     ):
         LOG.info("scan fields ...")
         LOG.info(f" input_dir={input_dir} file_name_pattern={file_name_pattern}")
+        print(f" input_dir={input_dir} file_name_pattern={file_name_pattern}")
+
 
         # for f_path in glob.glob(f_pattern):
         cnt = 0
@@ -449,30 +437,29 @@ class ExperimentIndexer(GribIndexer):
             # LOG.debug(f"  f_path={f_path}")
             fs = mv.read(f_path)
             if isinstance(fs, mv.Fieldset) and len(fs) > 0:
+                cnt += 1
                 input_files_tmp.append(f_path)
                 file_index = len(input_files) + len(input_files_tmp) - 1
-                # get metadata keys
-                md_vals = mv.grib_get(fs, self.keys_for_ecc)
-                for i, v in enumerate(md_vals):
-                    # short_name = v[self.shortname_index]
-                    if v[self.mars_param_index] in mars_params:
-                        short_name = mars_params[v[self.mars_param_index]]
-                        md_vals[i][self.shortname_index] = short_name
-                    if ens:
-                        md_vals[i][self.type_index] = ens["type"]
-                        md_vals[i][self.number_index] = ens["number"]
-                    key = self.make_key(md_vals[i])
+                md_vals = mv.grib_get(fs, self.keys_ecc, "key")
 
-                    # name = "{}_{}".format(short_name, v[self.levtype_index])
-                    # name = (short_name, v[self.levtype_index])
-                    if not key in blocks:
-                        blocks[key] = []
-                    # if not name in params:
-                    #     params[name] = []
-                    v.extend([i, file_index])
-                    blocks[key].append(v)
-                    # params[name].append(v)
-                cnt += 1
+                if mars_params:
+                    for i in range(len(fs)):
+                        v = md_vals[self.mars_param_index][i]
+                        if v in mars_params:
+                            short_name = mars_params[v]
+                            md_vals[self.shortname_index][i] = short_name
+                if ens:
+                    for i in range(len(fs)):
+                        md_vals[self.type_index][i] = ens["type"]
+                        md_vals[self.number_index][i] = ens["number"]
+
+                assert len(self.keys) == len(self.keys_ecc)
+                for i, c in enumerate(self.keys):
+                    data[c].extend(md_vals[i])
+                data["msgIndex1"].extend(list(range(len(fs))))
+                data["fileIndex1"].extend([file_index] * len(fs))
+
+                # print({k: len(v) for k, v in data.items()})
 
         if rootdir_placeholder_value:
             input_files_tmp = [
@@ -483,4 +470,4 @@ class ExperimentIndexer(GribIndexer):
         input_files.extend(input_files_tmp)
 
         LOG.info(f" {cnt} GRIB files processed")
-        return blocks, input_files
+        return input_files

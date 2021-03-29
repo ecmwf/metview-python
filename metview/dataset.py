@@ -139,7 +139,7 @@ class ParamInfo:
         f = fs[0:3] if len(fs) >= 3 else fs
         m = mv.grib_get(f, ["shortName", "level", "typeOfLevel"], "key")
         name = level = lev_type = ""
-        if len(m[0] == 3):
+        if len(m[0]) == 3:
             if m[0] == ["u", "v", "w"] and len(set(m[1])) == 1 and len(set(m[2])) == 1:
                 name = "wind3d"
                 level = m[1][0]
@@ -205,45 +205,41 @@ class IndexDb:
     def __init__(
         self,
         name,
-        label="",
-        desc="",
-        path="",
-        rootdir_placeholder_value="",
-        file_name_pattern="",
-        db_dir="",
-        blocks={},
-        data_files=[],
-        merge_conf=[],
-        mars_params={},
+        label=None,
+        desc=None,
+        path=None,
+        rootdir_placeholder_value=None,
+        file_name_pattern=None,
+        db_dir=None,
+        blocks=None,
+        data_files=None,
+        merge_conf=None,
+        mars_params=None,
         dataset=None,
     ):
         self.name = name
         self.dataset = dataset
         self.label = label
-        if self.label == "":
+        if self.label is None or self.label == "":
             self.label = self.name
-        self.desc = desc
+        self.desc = "" if desc is None else desc
+        self.path = "" if path is None else path
 
-        self.path = path
-        self.rootdir_placeholder_value = rootdir_placeholder_value
-        self.file_name_pattern = file_name_pattern
+        self.rootdir_placeholder_value = (
+            "" if rootdir_placeholder_value is None else rootdir_placeholder_value
+        )
+        self.file_name_pattern = "" if file_name_pattern is None else file_name_pattern
         if self.file_name_pattern == "":
-            self.path = os.path.dirname(path)
-            self.file_name_pattern = os.path.basename(path)
+            self.path = os.path.dirname(self.path)
+            self.file_name_pattern = os.path.basename(self.path)
 
-        self.db_dir = db_dir
-        self.mars_params = mars_params
-        self.blocks = blocks
-        self.wind = {}
+        self.db_dir = "" if db_dir is None else db_dir
+        self.mars_params = {} if mars_params is None else mars_params
+        self.blocks = {} if blocks is None else blocks
+        self.vector_loaded = False
         self._param_types = {}
-        self.data_files = data_files
-        self.merge_conf = merge_conf
-
-    def load(self):
-        pass
-
-    def scan(self):
-        raise NotImplementedError
+        self.data_files = [] if data_files is None else data_files
+        self.merge_conf = [] if merge_conf is None else merge_conf
 
     def select_with_name(self, name):
         """
@@ -251,6 +247,7 @@ class IndexDb:
         from the specified name.
         """
         p = self.get_param_info(name=name)
+        print(f"p={p}")
         if p is not None:
             fs = self._select_fs(**p.make_dims())
             # LOG.debug(f"fs={fs}")
@@ -269,14 +266,14 @@ class IndexDb:
         """
         LOG.debug(f"kwargs={kwargs}")
         # LOG.debug(f"blocks={self.blocks}")
-        self.load()
         dims = self._make_dims(kwargs)
+        self.load(keys=list(dims.keys()), vector=("wind" in dims.get("shortName", "")))
         # fs = mv.Fieldset()
         db, fs = self._get_fields(dims)
         # for f in r:
         #     fs.append(f)
         fs._db = db
-        fs._param_info = self.get_param_info()
+        # fs._param_info = self.get_param_info()
         # LOG.debug(f"fs={fs}")
         # LOG.debug(f"blocks={fs._db.blocks}")
         return fs
@@ -287,21 +284,8 @@ class IndexDb:
         LOG.debug(f"dims={dims}")
 
         cnt = 0
-        if any(name in dims for name in GribIndexer.BLOCK_KEYS):
-            dims = copy.deepcopy(dims)
-            dims_sub = [dims.pop(name, []) for name in GribIndexer.BLOCK_KEYS]
-            for key in self.blocks.keys():
-                assert len(key) == len(dims_sub)
-                # LOG.debug(f"key={key}")
-                if all(
-                    len(dims_sub[i]) == 0 or key[i] in dims_sub[i]
-                    for i in range(len(key))
-                ):
-                    LOG.debug(f"found={key}")
-                    self._get_fields_for_block(key, dims, dfs, res)
-        else:
-            for key in self.blocks.keys():
-                self._get_fields_for_block(key, dims, dfs, res)
+        for key in self.blocks.keys():
+            self._get_fields_for_block(key, dims, dfs, res)
         # LOG.debug(f"len_res={len(res)}")
         # LOG.debug(f"dfs={dfs}")
         # LOG.debug(f"res={res}")
@@ -351,40 +335,35 @@ class IndexDb:
                 # LOG.debug(f"df_fs={df_fs}")
                 dfs[key] = df_fs
 
-    def _load_block(self, key):
-        return None
+    # def _load_block(self, key):
+    #     return None
 
     def get_param_info(self, name=""):
         if name:
+            if "wind" in name and not self.vector_loaded:
+                self.load(vector=True)
             return ParamInfo.build(name, param_level_types=self.param_types)
-        else:
-            keys = list(self.blocks.keys())
-            if (
-                len(keys) > 0
-                and self.blocks[keys[0]] is not None
-                and not self.blocks[keys[0]].empty
-            ):
-                # LOG.debug(f"p={p}")
-                p = self.blocks[keys[0]]
-                short_name = keys[0][0]
-                level_type = keys[0][1]
-                LOG.debug("p={}".format(p["level"]))
-                return ParamInfo(short_name, p["level"].iloc[0], level_type)
+        elif self.blocks:
+            df = self.blocks[list(self.blocks.keys())[0]]
+            if df is not None and not df.empty:
+                row = df.iloc[0]
+                return ParamInfo(row.shortName, row.level, row.typeOfLevel)
         return None
 
     def _make_dims(self, options):
         dims = {}
         for k, v in options.items():
+            name = str(k)
             vv = copy.deepcopy(v)
-            vv = self._check_dim_values(vv, name=k)
+            name, vv = self._check_dims(name, vv)
             if vv:
-                dims[k] = vv
+                dims[name] = vv
 
         if dims.get("basedate", []) and (dims.get("date", []) or dims.get("time", [])):
             raise Exception("Cannot specify basedate together with date and time!")
         return dims
 
-    def _check_dim_values(self, v, name=None):
+    def _check_dims(self, name, v):
         v = self._to_list(v)
         if name == "basedate":
             for i, t in enumerate(v):
@@ -403,8 +382,10 @@ class IndexDb:
             if pd_type is not None:
                 for i, t in enumerate(v):
                     v[i] = pd_type(t)
+        if name is not None:
+            name = name.replace(":", "_")
 
-        return v
+        return name, v
 
     def _check_type(self, v, name, dtypes):
         if not isinstance(v, dtypes):
@@ -419,11 +400,14 @@ class IndexDb:
     def param_types(self):
         if len(self._param_types) == 0:
             self.load()
-            for k in self.blocks.keys():
-                if not k[0] in self._param_types:
-                    self._param_types[k[0]] = [k[1]]
-                else:
-                    self._param_types[k[0]].append(k[1])
+            for k, df in self.blocks.items():
+                df_u = df[["shortName", "typeOfLevel"]].drop_duplicates()
+                for row in df_u.itertuples(name=None):
+                    if not row[1] in self._param_types:
+                        self._param_types[row[1]] = [row[2]]
+                    else:
+                        self._param_types[row[1]].append(row[2])
+            print(self._param_types)
         return self._param_types
 
     def to_df(self):
@@ -434,51 +418,74 @@ class IndexDb:
 
 
 class FieldsetDb(IndexDb):
-    def __init__(self, fs, name="", extra_keys=[], **kwargs):
+    def __init__(self, fs, name="", **kwargs):
         super().__init__(name, **kwargs)
         self.fs = fs
-        self.extra_keys = extra_keys
+        self._indexer = None
 
-    def scan(self):
-        indexer = FieldsetIndexer()
-        indexer.scan(self)
+    @property
+    def indexer(self):
+        if self._indexer is None:
+            self._indexer = FieldsetIndexer(self)
+        return self._indexer
+
+    def scan(self, vector=False):
+        self.indexer.scan(vector=vector)
+        self.vector_loaded = vector
+
+    def load(self, keys=[], vector=False):
+        # print(f"blocks={self.blocks}")
+        if self.indexer.update_keys(keys):
+            self.blocks = {}
+            self._param_types = {}
+            self.scan(vector=self.vector_loaded)
+        elif not self.blocks:
+            self._param_types = {}
+            self.scan(vector=vector)
+            self.vector_loaded = vector
+        elif vector and not self.vector_loaded:
+            self._param_types = {}
+            self.indexer._scan_vector()
+            self.vector_loaded = True
 
     def _extract_fields(self, df, fs):
-        # scalar
-        if "msgIndex" in df.columns:
-            idx = []
-            for row in df.itertuples():
-                # LOG.debug(f"row={row}")
-                fs.append(self.fs[row.msgIndex])
-                idx.append(len(fs) - 1)
-            # generate a new dataframe
-            df = df.copy()
-            df["msgIndex"] = idx
-            return df
-        # vector
+        if df.empty:
+            return None
+
+        # print(f"cols={df.columns}")
+        if "msgIndex3" in df.columns:
+            comp_num = 3
         elif "msgIndex2" in df.columns:
-            idx1 = []
-            idx2 = []
-            for row in df.itertuples():
-                fs.append(self.fs[row.msgIndex1])
-                idx1.append(len(fs) - 1)
-                fs.append(self.fs[row.msgIndex2])
-                idx2.append(len(fs) - 1)
-            # generate a new dataframe
-            df = df.copy()
-            df["msgIndex1"] = idx1
-            df["msgIndex2"] = idx2
-            return df
-        return None
+            comp_num = 2
+        elif "msgIndex1" in df.columns:
+            comp_num = 1
+        else:
+            return None
+
+        # print(f"comp_num={comp_num}")
+
+        idx = [[] for k in range(comp_num)]
+        comp_lst = list(range(comp_num))
+        for row in df.itertuples():
+            for comp in comp_lst:
+                fs.append(self.fs[row[-1 - (comp_num-comp-1)]])
+                idx[comp].append(len(fs) - 1)
+        # generate a new dataframe
+        df = df.copy()
+        for k, v in enumerate(idx):
+            df[f"msgIndex{k+1}"] = v
+        return df
 
     def _clone(self):
         db = FieldsetDb(
             self.name,
             label=self.label,
         )
-        db.blocks = {}
-        for k, v in self.blocks.items():
-            db.blocks[k] = v.copy()
+
+        if self._indexder is not None:
+            db.indexer.indexer.update_keys(self._indexer.keys_ecc)
+        db.blocks = {k: v.copy() for k, v in self.blocks.items()}
+        db.vector_loaded = self.vector_loaded
         return db
 
     def unique(self, key):
@@ -505,8 +512,8 @@ class FieldsetDb(IndexDb):
             if param_id:
                 LOG.debug("set")
                 r = mv.grib_set_long(r, ["paramId", param_id])
-                r._scan()
-                LOG.debug(f"db={r._db.blocks}")
+                # r._scan()
+                # LOG.debug(f"db={r._db.blocks}")
         return r
 
     def deacc(self):
@@ -525,6 +532,7 @@ class ExperimentDb(IndexDb):
     def __init__(self, name, **kwargs):
         super().__init__(name, **kwargs)
         self.fs = {}
+        self.vector_loaded = True
         LOG.debug(f"rootdir_placeholder_value={self.rootdir_placeholder_value}")
 
     @staticmethod
@@ -557,25 +565,29 @@ class ExperimentDb(IndexDb):
             db_dir=self.db_dir,
             mars_params=self.mars_params,
             dataset=self.dataset,
+            data_files=self.data_files,
+            rootdir_placeholder_value=self.rootdir_placeholder_value,
         )
 
-    def scan(self):
-        print(f"Generate index for database component={self.name} ...")
+    def scan(self, vector=True):
+        print(f"Generate index for dataset component={self.name} ...")
         self.data_files = []
-        self.blocks = {}
-        indexer = ExperimentIndexer()
-        indexer.scan(self)
-        self.blocks = {}
-        for key in ExperimentIndexer.get_storage_key_list(self.db_dir):
-            self.blocks[key] = None
+        # self.blocks = {}
+        self.scalar = None
+        self.wind = {}
+        indexer = ExperimentIndexer(self)
+        indexer.scan()
+        # self.blocks = {}
+        # for key in ExperimentIndexer.get_storage_key_list(self.db_dir):
+        #     self.blocks[key] = None
 
-    def load(self):
+    def load(self, keys=[], vector=True):
         self.load_data_file_list()
         if len(self.data_files) == 0:
-            self.scan()
+            self.scan(vector=True)
         if len(self.blocks) == 0:
             for key in ExperimentIndexer.get_storage_key_list(self.db_dir):
-                self.blocks[key] = None
+                self.blocks[key] = ExperimentIndexer.read_dataframe(key, self.db_dir)
 
     def load_data_file_list(self):
         if len(self.data_files) == 0:
@@ -597,15 +609,15 @@ class ExperimentDb(IndexDb):
             except:
                 pass
 
-    def _load_block(self, key):
-        # LOG.debug(f"_load_block {key in self.blocks}")
-        # if key in self.blocks:
-        #     LOG.debug(f"{self.blocks[key] is None}")
-        if not key in self.blocks or self.blocks[key] is None:
-            # LOG.debug("read")
-            self.blocks[key] = ExperimentIndexer.read_dataframe(key, self.db_dir)
-            # print(f"R types={self.blocks[key].dtypes}")
-        return self.blocks[key]
+    # def _load_block(self, key):
+    #     # LOG.debug(f"_load_block {key in self.blocks}")
+    #     # if key in self.blocks:
+    #     #     LOG.debug(f"{self.blocks[key] is None}")
+    #     if not key in self.blocks or self.blocks[key] is None:
+    #         # LOG.debug("read")
+    #         self.blocks[key] = ExperimentIndexer.read_dataframe(key, self.db_dir)
+    #         # print(f"R types={self.blocks[key].dtypes}")
+    #     return self.blocks[key]
 
     def __getitem__(self, key):
         if isinstance(key, str):
@@ -619,8 +631,8 @@ class ExperimentDb(IndexDb):
         dims = self._make_dims(kwargs)
         blocks = self._filter_blocks(dims)
         c.blocks = blocks
-        c.data_files = self.data_files
-        c.rootdir_placeholder_value = self.rootdir_placeholder_value
+        # c.data_files = self.data_files
+        # c.rootdir_placeholder_value = self.rootdir_placeholder_value
         return c
 
     def _filter_blocks(self, dims):
@@ -629,99 +641,49 @@ class ExperimentDb(IndexDb):
         # LOG.debug(f"data_files={self.data_files}")
         LOG.debug(f"dims={dims}")
         cnt = 0
-        if any(name in dims for name in GribIndexer.BLOCK_KEYS):
-            dims = copy.deepcopy(dims)
-            dims_sub = [dims.pop(name, []) for name in GribIndexer.BLOCK_KEYS]
-            for key in self.blocks.keys():
-                assert len(key) == len(dims_sub)
-                if all(
-                    len(dims_sub[i]) == 0 or key[i] in dims_sub[i]
-                    for i in range(len(key))
-                ):
-                    df = self._load_block(key)
-                    # df = self._filter_df(df=df, dims=dims)
-                    # LOG.debug(f"df={df}")
-                    if df is not None and not df.empty:
-                        cnt += len(df)
-                        LOG.debug(f" matching rows={len(df)}")
-                        dfs[key] = df
-        else:
-            for key in self.blocks.keys():
-
-                # LOG.debug(f"key={key}")
-                df = self._load_block(key)
-                # LOG.debug(f"df={df}")
-                df = self._filter_df(df=df, dims=dims)
-                # LOG.debug(f"df={df}"
-                if df is not None and not df.empty:
-                    cnt += len(df)
-                    # LOG.debug(f" matching rows={len(df)}")
-                    dfs[key] = df
+        for key, df in self.blocks.items():
+            # LOG.debug(f"key={key}")
+            # df = self._load_block(key)
+            # LOG.debug(f"df={df}")
+            f_df = self._filter_df(df=df, dims=dims)
+            # LOG.debug(f"df={df}"
+            if f_df is not None and not f_df.empty:
+                cnt += len(f_df)
+                # LOG.debug(f" matching rows={len(df)}")
+                dfs[key] = f_df
 
         LOG.debug(f"total matching rows={cnt}")
         return dfs
 
     def _extract_fields(self, df, fs):
-        if "fileIndex" in df.columns:
-            idx = []
-            for row in df.itertuples():
-                # LOG.debug(f"row={row}")
-                if not row.fileIndex in self.fs:
-                    # print(self.data_files[row.fileIndex])
-                    self.fs[row.fileIndex] = mv.read(self.data_files[row.fileIndex])
-                fs.append(self.fs[row.fileIndex][row.msgIndex])
-                idx.append(len(fs) - 1)
-            # generate a new dataframe
-            df = df.copy()
-            df["msgIndex"] = idx
-            df.drop(["fileIndex"], axis=1, inplace=True)
-            # LOG.debug(f"len={len(fs)}")
-            return df
-        elif "fileIndex3" in df.columns:
-            idx1 = []
-            idx2 = []
-            idx3 = []
-            for row in df.itertuples():
-                # LOG.debug(f"row={row}")
-                if not row.fileIndex1 in self.fs:
-                    self.fs[row.fileIndex1] = mv.read(self.data_files[row.fileIndex1])
-                fs.append(self.fs[row.fileIndex1][row.msgIndex1])
-                idx1.append(len(fs) - 1)
-                if not row.fileIndex2 in self.fs:
-                    self.fs[row.fileIndex2] = mv.read(self.data_files[row.fileIndex2])
-                fs.append(self.fs[row.fileIndex2][row.msgIndex2])
-                idx2.append(len(fs) - 1)
-                if not row.fileIndex3 in self.fs:
-                    self.fs[row.fileIndex3] = mv.read(self.data_files[row.fileIndex3])
-                fs.append(self.fs[row.fileIndex3][row.msgIndex3])
-                idx3.append(len(fs) - 1)
-            # generate a new dataframe
-            df = df.copy()
-            df["msgIndex1"] = idx1
-            df["msgIndex2"] = idx2
-            df["msgIndex3"] = idx3
-            df.drop(["fileIndex1", "fileIndex2", "fileIndex3"], axis=1, inplace=True)
-            return df
+        if df.empty:
+            return None
+
+        if "fileIndex3" in df.columns:
+            comp_num = 3
         elif "fileIndex2" in df.columns:
-            idx1 = []
-            idx2 = []
-            for row in df.itertuples():
-                # LOG.debug(f"row={row}")
-                if not row.fileIndex1 in self.fs:
-                    self.fs[row.fileIndex1] = mv.read(self.data_files[row.fileIndex1])
-                fs.append(self.fs[row.fileIndex1][row.msgIndex1])
-                idx1.append(len(fs) - 1)
-                if not row.fileIndex2 in self.fs:
-                    self.fs[row.fileIndex2] = mv.read(self.data_files[row.fileIndex2])
-                fs.append(self.fs[row.fileIndex2][row.msgIndex2])
-                idx2.append(len(fs) - 1)
-            # generate a new dataframe
-            df = df.copy()
-            df["msgIndex1"] = idx1
-            df["msgIndex2"] = idx2
-            df.drop(["fileIndex1", "fileIndex2"], axis=1, inplace=True)
-            return df
-        return None
+            comp_num = 2
+        elif "fileIndex1" in df.columns:
+            comp_num = 1
+        else:
+            return None
+
+        idx = [[] for k in range(comp_num)]
+        comp_lst = list(range(comp_num))
+        for row in df.itertuples():
+            for comp in comp_lst:
+                idx_file = row[-1 - (comp_num-comp-1) * 2]
+                idx_msg = row[-2 - (comp_num-comp-1) * 2]
+                if not idx_file in self.fs:
+                    self.fs[idx_file] = mv.read(self.data_files[idx_file])
+                fs.append(self.fs[idx_file][idx_msg])
+                idx[comp].append(len(fs) - 1)
+        # generate a new dataframe
+        df = df.copy()
+        for k, v in enumerate(idx):
+            df[f"msgIndex{k+1}"] = v
+        df.drop([f"fileIndex{x+1}" for x in range(comp_num)], axis=1, inplace=True)
+        return df
 
     def describe(self):
         for k, v in self.param_types.items():
@@ -880,7 +842,7 @@ class Dataset:
             return None
 
     def describe(self):
-        print("Database components:")
+        print("Dataset components:")
         t = {"name": [], "desc": []}
         for _, f in self.field_conf.items():
             t["name"].append(f.name)

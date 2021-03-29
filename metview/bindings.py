@@ -604,7 +604,7 @@ class ContainerValue(Value):
 
 
 class Fieldset(FileBackedValueWithOperators, ContainerValue):
-    def __init__(self, val_pointer=None, path=None, fields=None, extra_keys=[]):
+    def __init__(self, val_pointer=None, path=None, fields=None):
         FileBackedValueWithOperators.__init__(self, val_pointer)
         ContainerValue.__init__(
             self,
@@ -614,7 +614,6 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             support_slicing=True,
         )
         self._db = None
-        self._extra_keys = extra_keys
         self._param_info = None
 
         if (path is not None) and (fields is not None):
@@ -649,7 +648,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         dataset = xr.open_dataset(self.url(), engine="cfgrib", backend_kwargs=kwarg)
         return dataset
 
-    def index(self, path="", extra_keys=[]):
+    def index(self, path=""):
         pass
 
     def load_index(self, path):
@@ -657,15 +656,18 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
 
     def _scan(self):
         if self._db is None:
-            self._db = FieldsetDb(fs=self, extra_keys=self._extra_keys)
+            self._db = FieldsetDb(fs=self)
             self._db.scan()
 
-    def select(self, **kwargs):
-        self._scan()
+    def select(self, *args, **kwargs):
+        if self._db is None:
+            self._db = FieldsetDb(fs=self)
         # LOG.debug(f"kwargs={kwargs}")
-        if self._db is not None:
+        assert self._db is not None
+        if len(args) == 1 and isinstance(args[0], dict):
+            return self._db.select(**args[0])
+        else:
             return self._db.select(**kwargs)
-        return None
 
     @property
     def param_info(self):

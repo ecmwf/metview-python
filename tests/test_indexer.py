@@ -8,6 +8,7 @@
 # nor does it submit to any jurisdiction.
 #
 
+import copy
 import datetime
 import os
 
@@ -18,31 +19,23 @@ import pytest
 import metview as mv
 from metview import bindings
 from metview.dataset import ParamInfo
+from metview.indexer import GribIndexer
 
 PATH = os.path.dirname(__file__)
 
-DB_COLUMNS = {
-    "mars.param": ("s", str, False),
-    "date": ("l", np.int32, True),
-    "time": ("l", np.int32, True),
-    "step": ("s", str, True),
-    "level": ("l", np.int32, True),
-    "number": ("s", str, True),
-    "experimentVersionNumber": ("s", str, False),
-    "mars.class": ("s", str, False),
-    "mars.stream": ("s", str, False),
-    "mars.type": ("s", str, False),
-    "msgIndex": ("l", np.int64),
-}
+DB_COLUMNS = copy.deepcopy(GribIndexer.DEFAULT_KEYS)
+DB_COLUMNS["msgIndex1"] = ("l", np.int64, False)
+DB_COLUMNS_WIND2 = copy.deepcopy(DB_COLUMNS)
+DB_COLUMNS_WIND2["msgIndex2"] = ("l", np.int64, False)
 
 
 def file_in_testdir(filename):
     return os.path.join(PATH, filename)
 
 
-def build_index_db_dataframe(column_data):
-    c = {v: column_data[i] for i, v in enumerate(list(DB_COLUMNS.keys()))}
-    pd_types = {k: v[1] for k, v in DB_COLUMNS.items()}
+def build_index_db_dataframe(column_data, key_def=None):
+    c = {v: column_data[i] for i, v in enumerate(list(key_def.keys()))}
+    pd_types = {k: v[1] for k, v in key_def.items()}
     return pd.DataFrame(c).astype(pd_types)
 
 
@@ -63,15 +56,16 @@ def test_fieldset_select_single_file():
 
     # check index db contents
     assert g._db is not None
+    assert "scalar" in g._db.blocks
     assert len(g._db.blocks) == 1
-    key = ("u", "isobaricInhPa")
-    assert key in g._db.blocks
     md = [
+        ["u"],
         ["131.128"],
         [20180801],
         [1200],
-        [0],
+        ["0"],
         [700],
+        ["isobaricInhPa"],
         ["0"],
         ["0001"],
         ["od"],
@@ -79,8 +73,11 @@ def test_fieldset_select_single_file():
         ["an"],
         [0],
     ]
-    df_ref = build_index_db_dataframe(md)
-    df = g._db.blocks[key]
+    df_ref = build_index_db_dataframe(md, key_def=DB_COLUMNS)
+    # print(df_ref.dtypes)
+    # print(g._db.blocks)
+    df = g._db.blocks["scalar"]
+    # print(df.dtypes)
     if not df.equals(df_ref):
         print(df.compare(df_ref))
         assert False
@@ -88,6 +85,9 @@ def test_fieldset_select_single_file():
     # -------------------------
     # multiple resulting fields
     # -------------------------
+    f = mv.read(file_in_testdir("tuv_pl.grib"))
+    assert f._db is None
+    
     g = f.select(shortName=["t", "u"], level=[700, 500])
     assert len(g) == 4
     assert mv.grib_get(g, ["shortName", "level:l"]) == [
@@ -98,53 +98,97 @@ def test_fieldset_select_single_file():
     ]
 
     assert g._db is not None
-    assert len(g._db.blocks) == 2
-    key_1 = ("t", "isobaricInhPa")
-    key_2 = ("u", "isobaricInhPa")
-    assert key_1 in g._db.blocks
-    assert key_2 in g._db.blocks
-    md_1 = [
-        ["130.128", "130.128"],
-        [20180801, 20180801],
-        [1200, 1200],
-        [0, 0],
-        [500, 700],
-        ["0", "0"],
-        ["0001", "0001"],
-        ["od", "od"],
-        ["oper", "oper"],
-        ["an", "an"],
-        [0, 1],
+    assert len(g._db.blocks) == 1
+    assert "scalar" in g._db.blocks
+    md = [
+        ["t", "t", "u", "u"],
+        ["130.128", "130.128", "131.128", "131.128"],
+        [20180801]*4,
+        [1200]*4,
+        [0]*4,
+        [500, 700, 500, 700],
+        ["isobaricInhPa"]*4,
+        ["0"]*4,
+        ["0001"]*4,
+        ["od"]*4,
+        ["oper"]*4,
+        ["an"]*4,
+        [0, 1, 2, 3],
     ]
-    md_2 = [
-        ["131.128", "131.128"],
-        [20180801, 20180801],
-        [1200, 1200],
-        [0, 0],
-        [500, 700],
-        ["0", "0"],
-        ["0001", "0001"],
-        ["od", "od"],
-        ["oper", "oper"],
-        ["an", "an"],
-        [2, 3],
-    ]
-    df_1_ref = build_index_db_dataframe(md_1)
-    df_1 = g._db.blocks[key_1]
-    if not df_1.equals(df_1_ref):
-        print(df_1.compare(df_1_ref))
+   
+    df_ref = build_index_db_dataframe(md, key_def=DB_COLUMNS)
+    df = g._db.blocks["scalar"]
+    if not df.equals(df_ref):
+        print(df.compare(df_ref))
         assert False
 
-    df_2_ref = build_index_db_dataframe(md_2)
-    df_2 = g._db.blocks[key_2]
-    if not df_2.equals(df_2_ref):
-        print(df_2.compare(df_2_ref))
-        assert False
-
+    # -------------------------
     # empty result
+    # -------------------------
+    f = mv.read(file_in_testdir("tuv_pl.grib"))
     g = f.select(shortName="w")
     assert isinstance(g, mv.Fieldset)
     assert len(g) == 0
+
+    # -------------------------
+    # invalid key
+    # -------------------------
+    f = mv.read(file_in_testdir("tuv_pl.grib"))
+    g = f.select(INVALIDKEY="w")
+    assert isinstance(g, mv.Fieldset)
+    assert len(g) == 0
+
+    # -------------------------
+    # custom keys
+    # -------------------------
+    f = mv.read(file_in_testdir("tuv_pl.grib"))
+    assert f._db is None
+    
+    g = f.select(shortName=["t"], level=[500, 700], gridType="regular_ll")
+    assert len(g) == 2
+    assert mv.grib_get(g, ["shortName", "level:l", "gridType"]) == [
+        ["t", 500, "regular_ll"],
+        ["t", 700, "regular_ll"],
+    ]
+
+    # -------------------------
+    # wind
+    # -------------------------
+    f = mv.read(file_in_testdir("tuv_pl.grib"))
+    assert f._db is None
+    
+    g = f.select(shortName="wind", level=700)
+    assert len(g) == 2
+    assert mv.grib_get(g, ["shortName", "level:l"]) == [
+        ["u", 700],
+        ["v", 700],
+    ]
+
+    assert g._db is not None
+    assert len(g._db.blocks) == 1
+    assert "wind" in g._db.blocks
+    md = [
+        ["wind"],
+        ["131.128"],
+        [20180801],
+        [1200],
+        [0],
+        [700],
+        ["isobaricInhPa"],
+        ["0"],
+        ["0001"],
+        ["od"],
+        ["oper"],
+        ["an"],
+        [0],
+        [1],
+    ]
+   
+    df_ref = build_index_db_dataframe(md, key_def=DB_COLUMNS_WIND2)
+    df = g._db.blocks["wind"]
+    if not df.equals(df_ref):
+        print(df.compare(df_ref))
+        assert False
 
 
 def test_fieldset_select_multi_file():
@@ -154,6 +198,7 @@ def test_fieldset_select_multi_file():
 
     # single resulting field
     g = f.select(shortName="t", level=61)
+    # print(f._db.blocks)
     assert len(g) == 1
     assert mv.grib_get(g, ["shortName", "level:l", "typeOfLevel"]) == [
         ["t", 61, "hybrid"]
@@ -165,14 +210,15 @@ def test_fieldset_select_multi_file():
 
     assert g._db is not None
     assert len(g._db.blocks) == 1
-    key = ("t", "hybrid")
-    assert key in g._db.blocks
+    assert "scalar" in g._db.blocks
     md = [
+        ["t"],
         ["130"],
         [20180111],
         [1200],
         [12],
         [61],
+        ["hybrid"],
         [None],
         ["0001"],
         ["od"],
@@ -180,8 +226,8 @@ def test_fieldset_select_multi_file():
         ["fc"],
         [0],
     ]
-    df_ref = build_index_db_dataframe(md)
-    df = g._db.blocks[key]
+    df_ref = build_index_db_dataframe(md, key_def=DB_COLUMNS)
+    df = g._db.blocks["scalar"]
 
     if not df.equals(df_ref):
         print(df.compare(df_ref))
@@ -308,6 +354,18 @@ def test_param_info():
 
     p = ParamInfo.build("wind", param_level_types=param_level_types)
     assert p.name == "wind"
+    assert p.level_type == "isobaricInhPa"
+    assert p.level is None
+
+    try:
+        p = ParamInfo.build("wind3d", param_level_types=param_level_types)
+        assert False
+    except:
+        pass
+
+    param_level_types["wind3d"] = ["isobaricInhPa"]
+    p = ParamInfo.build("wind3d", param_level_types=param_level_types)
+    assert p.name == "wind3d"
     assert p.level_type == "isobaricInhPa"
     assert p.level is None
 
