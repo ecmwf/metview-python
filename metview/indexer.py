@@ -30,7 +30,7 @@ NEWER = True
 
 class GribIndexer:
     VECTOR_PARAMS = {
-        "wind10": ["10u", "10v"],
+        "wind10m": ["10u", "10v"],
         "wind": ["u", "v"],
         "wind3d": ["u", "v", "w"],
     }
@@ -269,7 +269,7 @@ class FieldsetIndexer(GribIndexer):
     def _scan(self, fs, mars_params={}):
         LOG.info(f" scan fields ...")
         data = {}
-        print(f"fs_len={len(fs)}")
+        # print(f"fs_len={len(fs)}")
         if isinstance(fs, mv.Fieldset) and len(fs) > 0:
             md_vals = mv.grib_get(fs, self.keys_ecc, "key")
             if mars_params:
@@ -317,7 +317,7 @@ class ExperimentIndexer(GribIndexer):
         data = {k: [] for k in [*self.keys, "msgIndex1", "fileIndex1"]}
         input_files = []
 
-        print(f"out_dir={out_dir}")
+        # print(f"out_dir={out_dir}")
         # merge existing experiment objects
         if self.db.merge_conf:
             ds = []
@@ -329,9 +329,9 @@ class ExperimentIndexer(GribIndexer):
                     )
             # explicit ENS merge
             else:
-                assert "pf" in db.merge_conf
+                assert "pf" in self.db.merge_conf
                 # control forecast
-                c_name = db.merge_conf.get("cf", "")
+                c_name = self.db.merge_conf.get("cf", "")
                 if c_name != "":
                     ds.append(
                         {
@@ -343,7 +343,7 @@ class ExperimentIndexer(GribIndexer):
                 for i, c_name in enumerate(self.db.merge_conf.get("pf", [])):
                     ds.append(
                         {
-                            "data": db.dataset.find(c_name, comp="field"),
+                            "data": self.db.dataset.find(c_name, comp="field"),
                             "name": c_name,
                             "ens": {"type": "pf", "number": i + 1},
                         }
@@ -379,7 +379,7 @@ class ExperimentIndexer(GribIndexer):
                 rootdir_placeholder_token=self.db.ROOTDIR_PLACEHOLDER_TOKEN,
             )
 
-        print(f"input_files={input_files}")
+        # print(f"input_files={input_files}")
         if len(input_files) > 0 and len(data["shortName"]) > 0:
             # write config file for input file list
             LOG.info(f"generate datafiles.yaml ...")
@@ -407,7 +407,7 @@ class ExperimentIndexer(GribIndexer):
                         cols.extend([f"msgIndex{i+1}", f"fileIndex{i+1}"])
                     w_df = pd.DataFrame(r, columns=cols).astype(self.pd_types)
                     w_df = w_df.sort_values(by=list(w_df.columns))
-                    print(f"wind_len={len(w_df.index)}")
+                    # print(f"wind_len={len(w_df.index)}")
                     self.db.wind[v_name] = w_df
                     self._write_dataframe(w_df, v_name, out_dir)
                 else:
@@ -427,7 +427,7 @@ class ExperimentIndexer(GribIndexer):
     ):
         LOG.info("scan fields ...")
         LOG.info(f" input_dir={input_dir} file_name_pattern={file_name_pattern}")
-        print(f" input_dir={input_dir} file_name_pattern={file_name_pattern}")
+        # print(f" input_dir={input_dir} file_name_pattern={file_name_pattern}")
 
 
         # for f_path in glob.glob(f_pattern):

@@ -241,10 +241,10 @@ def test_param_info():
     assert p.level_type == "surface"
     assert p.level is None
 
-    p = ParamInfo.build("t2")
-    assert p.name == "2t"
-    assert p.level_type == "surface"
-    assert p.level is None
+    # p = ParamInfo.build("t2")
+    # assert p.name == "2t"
+    # assert p.level_type == "surface"
+    # assert p.level is None
 
     p = ParamInfo.build("msl")
     assert p.name == "msl"
@@ -263,7 +263,7 @@ def test_param_info():
 
     p = ParamInfo.build("t")
     assert p.name == "t"
-    assert p.level_type == "surface"
+    assert p.level_type == ""
     assert p.level is None
 
     p = ParamInfo.build("t320K")
@@ -276,8 +276,8 @@ def test_param_info():
     assert p.level_type == "hybrid"
     assert p.level == 72
 
-    p = ParamInfo.build("wind10")
-    assert p.name == "wind10"
+    p = ParamInfo.build("wind10m")
+    assert p.name == "wind10m"
     assert p.level_type == "surface"
     assert p.level is None
 
@@ -286,11 +286,31 @@ def test_param_info():
     assert p.level_type == "isobaricInhPa"
     assert p.level == 100
 
+    p = ParamInfo.build("wind700")
+    assert p.name == "wind"
+    assert p.level_type == "isobaricInhPa"
+    assert p.level == 700
+
+    p = ParamInfo.build("wind")
+    assert p.name == "wind"
+    assert p.level_type == ""
+    assert p.level == None
+
+    p = ParamInfo.build("wind3d")
+    assert p.name == "wind3d"
+    assert p.level_type == ""
+    assert p.level == None
+
+    p = ParamInfo.build("wind3d500")
+    assert p.name == "wind3d"
+    assert p.level_type == "isobaricInhPa"
+    assert p.level == 500
+
     # exta info
     param_level_types = {
         "2t": ["surface"],
         "msl": ["surface"],
-        "wind10": ["surface"],
+        "wind10m": ["surface"],
         "t": ["isobaricInhPa", "theta"],
         "wind": ["isobaricInhPa"],
     }
@@ -306,10 +326,10 @@ def test_param_info():
     except:
         pass
 
-    p = ParamInfo.build("t2", param_level_types=param_level_types)
-    assert p.name == "2t"
-    assert p.level_type == "surface"
-    assert p.level is None
+    # p = ParamInfo.build("t2", param_level_types=param_level_types)
+    # assert p.name == "2t"
+    # assert p.level_type == "surface"
+    # assert p.level is None
 
     p = ParamInfo.build("msl", param_level_types=param_level_types)
     assert p.name == "msl"
@@ -328,7 +348,7 @@ def test_param_info():
 
     p = ParamInfo.build("t", param_level_types=param_level_types)
     assert p.name == "t"
-    assert p.level_type == "isobaricInhPa"
+    assert p.level_type == ""
     assert p.level is None
 
     p = ParamInfo.build("t320K", param_level_types=param_level_types)
@@ -342,8 +362,8 @@ def test_param_info():
     except:
         pass
 
-    p = ParamInfo.build("wind10", param_level_types=param_level_types)
-    assert p.name == "wind10"
+    p = ParamInfo.build("wind10m", param_level_types=param_level_types)
+    assert p.name == "wind10m"
     assert p.level_type == "surface"
     assert p.level is None
 
@@ -351,6 +371,11 @@ def test_param_info():
     assert p.name == "wind"
     assert p.level_type == "isobaricInhPa"
     assert p.level == 100
+
+    p = ParamInfo.build("wind700", param_level_types=param_level_types)
+    assert p.name == "wind"
+    assert p.level_type == "isobaricInhPa"
+    assert p.level == 700
 
     p = ParamInfo.build("wind", param_level_types=param_level_types)
     assert p.name == "wind"
@@ -368,6 +393,11 @@ def test_param_info():
     assert p.name == "wind3d"
     assert p.level_type == "isobaricInhPa"
     assert p.level is None
+
+    p = ParamInfo.build("wind3d500", param_level_types=param_level_types)
+    assert p.name == "wind3d"
+    assert p.level_type == "isobaricInhPa"
+    assert p.level == 500
 
 
 def test_fieldset_select_operator_single_file():

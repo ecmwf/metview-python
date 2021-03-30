@@ -49,9 +49,9 @@ class ParamInfo:
     LEVEL_RE = re.compile(r"(\d+)")
     NUM_RE = re.compile(r"[0-9]+")
     SURF_RE = re.compile(r"^\d+\w+")
-    SURF_NAME_MAPPER = {"t2": "2t", "q2": "2q", "u10": "10u", "v10": "10v"}
-    KNOWN_SURF_NAMES = ["2t", "2q", "10u", "10v", "msl", "wind10"]
-    VECTOR_NAMES = ["wind10", "wind", "wind3d"]
+    # SURF_NAME_MAPPER = {"t2": "2t", "q2": "2q", "u10": "10u", "v10": "10v"}
+    KNOWN_SURF_NAMES = ["2t", "2q", "10u", "10v", "msl", "wind10m"]
+    VECTOR_NAMES = ["wind10m", "wind3d", "wind"] # the longest ones first
 
     def __init__(self, name, level, level_type, scalar=True):
         self.name = name
@@ -63,71 +63,69 @@ class ParamInfo:
     def build(full_name, param_level_types=None):
         full_name = full_name
         # adjust surface names
-        if full_name in ParamInfo.SURF_NAME_MAPPER:
-            full_name = ParamInfo.SURF_NAME_MAPPER[full_name]
+        # if full_name in ParamInfo.SURF_NAME_MAPPER:
+        #     full_name = ParamInfo.SURF_NAME_MAPPER[full_name]
 
         name = full_name
         level = None
         level_type = ""
 
-        # LOG.debug(f"param_level_types={param_level_types}")
+        # the name is a known param name
         if param_level_types:
-            lev_t = param_level_types.get(name, [])
-            # LOG.debug(f"lev_t={lev_t}")
-
-            # the param full name is found in the conf
-            if lev_t:
-                if "isobaricInhPa" in lev_t:
-                    level_type = "isobaricInhPa"
-                else:
+            if name in param_level_types:
+                lev_t = param_level_types.get(name, [])
+                if len(lev_t) == 1:
                     level_type = lev_t[0]
+                scalar = not name in ParamInfo.VECTOR_NAMES
+                return ParamInfo(name, level, level_type, scalar=scalar)
 
-        # the param full name has to parsed. The possible formats are:
-        # t2, t, t500, t500hPa, q20m, z320K
-        # If no level suffix is specified it is interpreted as
-        # surface level!
-        if level_type == "":
-            t = full_name
-            if (
-                t in ParamInfo.KNOWN_SURF_NAMES
-                or ParamInfo.SURF_RE.match(t) is not None
-            ):
-                level_type = "surface"
-            else:
-                # guess the level type from the suffix
-                for k, v in ParamInfo.SUFFIXES.items():
-                    if full_name.endswith(k):
-                        level_type = v
-                        t = full_name[: -(len(k))]
-                        break
+        t = full_name
+        # surface fields
+        if t in ParamInfo.KNOWN_SURF_NAMES or ParamInfo.SURF_RE.match(t) is not None:
+            level_type = "surface"
 
-                # determine level value
-                m = ParamInfo.LEVEL_RE.search(t)
-                if m and m.groups() and len(m.groups()) == 1:
-                    level = int(m.group(1))
-                    if level_type == "" and level > 10:
-                        level_type = "isobaricInhPa"
+        else:
+            # guess the level type from the suffix
+            for k, v in ParamInfo.SUFFIXES.items():
+                if full_name.endswith(k):
+                    level_type = v
+                    t = full_name[: -(len(k))]
+                    break
+
+            # recognise vector params
+            for v in ParamInfo.VECTOR_NAMES:
+                if t.startswith(v):
+                    name = v
+                    t = t[len(v) :]
+                    break
+
+            # determine level value
+            m = ParamInfo.LEVEL_RE.search(t)
+            if m and m.groups() and len(m.groups()) == 1:
+                level = int(m.group(1))
+                if level_type == "" and level > 10:
+                    level_type = "isobaricInhPa"
+                if name == full_name:
                     name = ParamInfo.NUM_RE.sub("", t)
 
-            # check param name in the conf
-            if param_level_types:
-                lev_t = param_level_types.get(name, [])
-                if lev_t:
-                    if not level_type:
-                        level_type = lev_t[0]
-                    elif level_type not in lev_t:
-                        raise Exception(
-                            f"Level type cannot be guessed from param name={full_name}!"
-                        )
-                else:
+        # check param name in the conf
+        if param_level_types:
+            if not name in param_level_types:
+                raise Exception(
+                    f"Param={name} (guessed from name={full_name}) is not found in dataset!"
+                )
+
+            lev_t = param_level_types.get(name, [])
+            if lev_t:
+                if not level_type and len(lev_t) == 1:
+                    level_type = lev_t[0]
+                elif level_type and level_type not in lev_t:
                     raise Exception(
-                        f"Param={name} (guessed from name={full_name}) is not found in dataset!"
+                        f"Level type cannot be guessed from param name={full_name}!"
                     )
 
         if level_type == "":
-            level_type = "surface"
             level = None
-
         scalar = not name in ParamInfo.VECTOR_NAMES
 
         LOG.debug(f"scalar={scalar}")
@@ -247,7 +245,7 @@ class IndexDb:
         from the specified name.
         """
         p = self.get_param_info(name=name)
-        print(f"p={p}")
+        # print(f"p={p}")
         if p is not None:
             fs = self._select_fs(**p.make_dims())
             # LOG.debug(f"fs={fs}")
@@ -407,7 +405,7 @@ class IndexDb:
                         self._param_types[row[1]] = [row[2]]
                     else:
                         self._param_types[row[1]].append(row[2])
-            print(self._param_types)
+            # print(self._param_types)
         return self._param_types
 
     def to_df(self):
@@ -468,7 +466,7 @@ class FieldsetDb(IndexDb):
         comp_lst = list(range(comp_num))
         for row in df.itertuples():
             for comp in comp_lst:
-                fs.append(self.fs[row[-1 - (comp_num-comp-1)]])
+                fs.append(self.fs[row[-1 - (comp_num - comp - 1)]])
                 idx[comp].append(len(fs) - 1)
         # generate a new dataframe
         df = df.copy()
@@ -482,7 +480,7 @@ class FieldsetDb(IndexDb):
             label=self.label,
         )
 
-        if self._indexder is not None:
+        if self._indexer is not None:
             db.indexer.indexer.update_keys(self._indexer.keys_ecc)
         db.blocks = {k: v.copy() for k, v in self.blocks.items()}
         db.vector_loaded = self.vector_loaded
@@ -577,9 +575,6 @@ class ExperimentDb(IndexDb):
         self.wind = {}
         indexer = ExperimentIndexer(self)
         indexer.scan()
-        # self.blocks = {}
-        # for key in ExperimentIndexer.get_storage_key_list(self.db_dir):
-        #     self.blocks[key] = None
 
     def load(self, keys=[], vector=True):
         self.load_data_file_list()
@@ -608,16 +603,6 @@ class ExperimentDb(IndexDb):
                     assert os.path.isfile(f)
             except:
                 pass
-
-    # def _load_block(self, key):
-    #     # LOG.debug(f"_load_block {key in self.blocks}")
-    #     # if key in self.blocks:
-    #     #     LOG.debug(f"{self.blocks[key] is None}")
-    #     if not key in self.blocks or self.blocks[key] is None:
-    #         # LOG.debug("read")
-    #         self.blocks[key] = ExperimentIndexer.read_dataframe(key, self.db_dir)
-    #         # print(f"R types={self.blocks[key].dtypes}")
-    #     return self.blocks[key]
 
     def __getitem__(self, key):
         if isinstance(key, str):
@@ -672,8 +657,8 @@ class ExperimentDb(IndexDb):
         comp_lst = list(range(comp_num))
         for row in df.itertuples():
             for comp in comp_lst:
-                idx_file = row[-1 - (comp_num-comp-1) * 2]
-                idx_msg = row[-2 - (comp_num-comp-1) * 2]
+                idx_file = row[-1 - (comp_num - comp - 1) * 2]
+                idx_msg = row[-2 - (comp_num - comp - 1) * 2]
                 if not idx_file in self.fs:
                     self.fs[idx_file] = mv.read(self.data_files[idx_file])
                 fs.append(self.fs[idx_file][idx_msg])
