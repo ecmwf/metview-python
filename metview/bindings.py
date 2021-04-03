@@ -1149,11 +1149,35 @@ def animate(*args, **kwargs):
         readout=True,
     )
 
-    image_widget.layout.visibility = "hidden"
-    frame_widget.layout.visibility = "hidden"
+    play_widget = widgets.Play(
+        value=1,
+        min=1,
+        max=1,
+        step=1,
+        interval=500,
+        description="Play animation",
+        disabled=False,
+    )
+
+    speed_widget = widgets.IntSlider(
+        value=3,
+        min=1,
+        max=20,
+        step=1,
+        description="Speed",
+        disabled=False,
+        continuous_update=True,
+        readout=True,
+    )
+
+    widgets.jslink((play_widget, "value"), (frame_widget, "value"))
+    play_and_speed_widget = widgets.HBox([play_widget, speed_widget])
+    controls = widgets.VBox([image_widget, frame_widget, play_and_speed_widget])
+
+    controls.layout.visibility = "hidden"
     waitl_widget = widgets.Label(value="Generating plots....")
     frame_widget.layout.width = "800px"
-    display(image_widget, frame_widget, waitl_widget)
+    display(controls, waitl_widget)
 
     # plot all frames to a temporary directory owned by Metview to enure cleanup
     tempdirpath = tempfile.mkdtemp(dir=os.environ.get("METVIEW_TMPDIR", None))
@@ -1173,6 +1197,7 @@ def animate(*args, **kwargs):
     files = [os.path.join(tempdirpath, f) for f in sorted(filenames)]
     frame_widget.max = len(files)
     frame_widget.description = "Frame (" + str(len(files)) + ") :"
+    play_widget.max = len(files)
 
     def plot_frame(frame_index):
         im_file = open(files[frame_index - 1], "rb")
@@ -1186,11 +1211,15 @@ def animate(*args, **kwargs):
     plot_frame(1)
     frame_widget.observe(on_frame_change, names="value")
 
+    def on_speed_change(change):
+        play_widget.interval = 1500 / change["new"]
+
+    speed_widget.observe(on_speed_change, names="value")
+
     # everything is ready now, so hide the 'waiting' label
     # and reveal the plot and the frame slider
     waitl_widget.layout.visibility = "hidden"
-    image_widget.layout.visibility = "visible"
-    frame_widget.layout.visibility = "visible"
+    controls.layout.visibility = "visible"
 
 
 # On a test system, importing IPython took approx 0.5 seconds, so to avoid that hit

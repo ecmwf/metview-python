@@ -2,6 +2,11 @@
 Changelog for Metview's Python interface
 ========================================
 
+1.7.1
+------------------
+- added automatic play and speed controls to animated plots in Jupyter notebooks
+
+
 1.7.0
 ------------------
 - added animate=True argument to plot() command for animated plots in Jupyter notebooks
