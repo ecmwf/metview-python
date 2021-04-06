@@ -18,6 +18,7 @@ import sys
 import tempfile
 
 import pandas as pd
+import requests
 import yaml
 
 import metview as mv
@@ -714,7 +715,7 @@ class Dataset:
 
     URL = "http://download.ecmwf.org/test-data/metview/dataset"
     LOCAL_ROOT = os.getenv(
-        "MPY_DATASET_ROOT", os.path.join(os.getenv("HOME", ""), "dataset")
+        "MPY_DATASET_ROOT", os.path.join(os.getenv("HOME", ""), "mpy_dataset")
     )
     COMPRESSION = "bz2"
 
@@ -765,7 +766,7 @@ class Dataset:
         return Dataset(*args, **kwargs)
 
     def check_remote(self):
-        return not requests.get(f"{self.URL}/{self.name}") is None
+        return requests.get(f"{self.URL}/{self.name}").ok
 
     def load(self):
         data_dir = os.path.join(self.path, "data")
@@ -828,8 +829,16 @@ class Dataset:
             f"data.tar.{self.COMPRESSION}": ["data"],
         }
 
+        checked = False
         for src, targets in files.items():
             if forced or not utils.CACHE.all_exists(targets, self.path):
+                if not checked and not self.check_remote():
+                    raise Exception(
+                        f"Could not find dataset={self.name} on data server"
+                    )
+                else:
+                    checked = True
+
                 remote_file = os.path.join(self.URL, self.name, src)
                 target_file = os.path.join(self.path, src)
                 # LOG.debug(f"target_file={target_file}")
