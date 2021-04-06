@@ -770,7 +770,7 @@ class Dataset:
 
     def load(self):
         data_dir = os.path.join(self.path, "data")
-        index_dir = os.path.join(self.path, "_index_db")
+        index_dir = os.path.join(self.path, "index_db")
         data_conf_file = os.path.join(self.path, "data_conf.yaml")
         with open(data_conf_file, "rt") as f:
             d = yaml.safe_load(f)

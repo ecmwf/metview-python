@@ -68,6 +68,8 @@ params:
     style: q_flux
   box:
     style: box
+  frame:
+    style: frame
   track:
     style: track
 # the available styles
@@ -254,6 +256,16 @@ styles:
         wind_arrow_unit_velocity: 30.0
         wind_thinning_factor: 1
   box:
+    - mcont:
+        contour: "off"
+        contour_level_selection_type: "level_list"
+        contour_level_list: [0.5,1.1]
+        contour_label: "off"
+        contour_shade: "on"
+        contour_shade_technique: grid_shading
+        contour_shade_colour_method: "list"
+        contour_shade_colour_list: "RGBA(1,0,0,128)"
+  frame:
     - mcont:
         contour: "off"
         contour_level_selection_type: "level_list"
