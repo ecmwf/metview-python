@@ -51,7 +51,7 @@ class ParamInfo:
     SURF_RE = re.compile(r"^\d+\w+")
     # SURF_NAME_MAPPER = {"t2": "2t", "q2": "2q", "u10": "10u", "v10": "10v"}
     KNOWN_SURF_NAMES = ["2t", "2q", "10u", "10v", "msl", "wind10m"]
-    VECTOR_NAMES = ["wind10m", "wind3d", "wind"] # the longest ones first
+    VECTOR_NAMES = ["wind10m", "wind3d", "wind"]  # the longest ones first
 
     def __init__(self, name, level, level_type, scalar=True):
         self.name = name
@@ -712,7 +712,11 @@ class Dataset:
     Represents a Dataset
     """
 
-    CONF = {}
+    URL = "http://download.ecmwf.org/test-data/metview/dataset"
+    LOCAL_ROOT = os.getenv(
+        "MPY_DATASET_ROOT", os.path.join(os.getenv("HOME", ""), "dataset")
+    )
+    COMPRESSION = "bz2"
 
     def __init__(self, name, path="", load_style=True):
         self.name = name
@@ -723,25 +727,29 @@ class Dataset:
         assert self.name
         LOG.debug(f"name={self.name}")
 
-        # get config for a built-in dataset
-        c = self.find_conf(self.name)
-
         if self.path:
             # If the path does not exists, it must be a built-in dataset. Data will be
             # downloaded into path.
             if not os.path.isdir(self.path):
-                c = self.find_conf(self.name)
-                if c:
-                    self.get_contents(c)
+                if self.check_remote():
+                    self.fetch(forced=True)
                 else:
                     raise Exception(
-                        f"Could not find configuration for dataset={self.name}"
+                        f"Could not find dataset={self.name} on data server"
                     )
-        elif c:
-            self.path = os.path.join(utils.CACHE.ROOT_DIR, self.name)
-            self.get_contents(c)
+            else:
+                raise Exception(
+                    f"Could not find dataset={self.name} uder path={self.path}"
+                )
         else:
-            raise Exception(f"Could not find configuration for dataset={self.name}")
+            local_path = os.path.join(self.LOCAL_ROOT, self.name)
+            # dataset exists locally
+            if os.path.exists(local_path):
+                self.path = local_path
+            # dataset must be in the CACHE. Will be downloaded if necessary.
+            else:
+                self.path = os.path.join(utils.CACHE.ROOT_DIR, self.name)
+                self.fetch(forced=False)
 
         if load_style:
             conf_dir = os.path.join(self.path, "conf")
@@ -755,6 +763,9 @@ class Dataset:
     @staticmethod
     def load_dataset(*args, **kwargs):
         return Dataset(*args, **kwargs)
+
+    def check_remote(self):
+        return not requests.get(f"{self.URL}/{self.name}") is None
 
     def load(self):
         data_dir = os.path.join(self.path, "data")
@@ -771,34 +782,6 @@ class Dataset:
                         name, conf, data_dir, index_dir, self
                     )
                     self.field_conf[c.name] = c
-
-    @staticmethod
-    def _init():
-        conf_file = os.path.join(ETC_PATH, "dataset.yaml")
-        with open(conf_file, "rt") as f:
-            Dataset.CONF = yaml.safe_load(f)
-
-    @staticmethod
-    def find_conf(name):
-        if not Dataset.CONF:
-            Dataset._init()
-
-        default = {k: Dataset.CONF[k] for k in ["url", "compression"]}
-        # LOG.debug(f"conf={Dataset.CONF}")
-        LOG.debug(f"default={default}")
-        for ds in Dataset.CONF.get("datasets", []):
-            LOG.debug(f"ds={ds}")
-            if isinstance(ds, str):
-                if ds == name:
-                    default["url"] = os.path.join(default["url"], name)
-                    # LOG.debug(f"default={default}")
-                    return default
-            elif isinstance(ds, dict):
-                ((ds_name, c),) = ds.items()
-                if ds_name == name:
-                    default.update(c)
-                    return default
-        return {}
 
     def scan(self, name=None):
         # indexer = ExperimentIndexer()
@@ -836,18 +819,18 @@ class Dataset:
         df.reset_index(drop=True, inplace=True)
         print(df)
 
-    def get_contents(self, conf):
+    def fetch(self, forced=False):
         if not os.path.isdir(self.path):
             Path(self.path).mkdir(0o755, parents=True, exist_ok=True)
 
         files = {
             "conf.tar": ["data_conf.yaml", "conf"],
-            "data.tar.{}".format(conf["compression"]): ["data"],
+            f"data.tar.{self.COMPRESSION}": ["data"],
         }
 
         for src, targets in files.items():
-            if not utils.CACHE.all_exists(targets, self.path):
-                remote_file = os.path.join(conf["url"], src)
+            if forced or not utils.CACHE.all_exists(targets, self.path):
+                remote_file = os.path.join(self.URL, self.name, src)
                 target_file = os.path.join(self.path, src)
                 # LOG.debug(f"target_file={target_file}")
                 try:
