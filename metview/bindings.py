@@ -1172,12 +1172,13 @@ def animate(*args, **kwargs):
 
     widgets.jslink((play_widget, "value"), (frame_widget, "value"))
     play_and_speed_widget = widgets.HBox([play_widget, speed_widget])
-    controls = widgets.VBox([image_widget, frame_widget, play_and_speed_widget])
+    controls = widgets.VBox([frame_widget, play_and_speed_widget])
 
     controls.layout.visibility = "hidden"
+    image_widget.layout.visibility = "hidden"
     waitl_widget = widgets.Label(value="Generating plots....")
     frame_widget.layout.width = "800px"
-    display(controls, waitl_widget)
+    display(image_widget, controls, waitl_widget)
 
     # plot all frames to a temporary directory owned by Metview to enure cleanup
     tempdirpath = tempfile.mkdtemp(dir=os.environ.get("METVIEW_TMPDIR", None))
@@ -1220,6 +1221,7 @@ def animate(*args, **kwargs):
     # and reveal the plot and the frame slider
     waitl_widget.layout.visibility = "hidden"
     controls.layout.visibility = "visible"
+    image_widget.layout.visibility = "visible"
 
 
 # On a test system, importing IPython took approx 0.5 seconds, so to avoid that hit
