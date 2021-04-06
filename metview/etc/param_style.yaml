@@ -29,7 +29,7 @@ params:
     style: vo
   w:
     style: w
-  wind10:
+  wind10m:
     style: arrow_blue_red_10
   wind:
     style: arrow_blue_red

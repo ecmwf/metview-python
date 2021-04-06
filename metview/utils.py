@@ -10,7 +10,9 @@
 #
 
 import getpass
+import glob
 import logging
+from pathlib import Path
 import shutil
 import os
 import tempfile
@@ -58,17 +60,13 @@ class Cache:
             if not os.path.exists(p):
                 return False
             elif os.path.isdir(p):
-                cnt_file = os.path.join(path, f".cnt_{name}")
-                # print(f"cnt_file={cnt_file}")
-                if os.path.exists(cnt_file):
-                    with open(cnt_file, "r") as f:
+                cont_file = os.path.join(path, f".content_{name}")
+                if os.path.exists(cont_file):
+                    with open(cont_file, "r") as f:
                         try:
-                            cnt_ref = int(f.read())
-                            # print(f"cnt_ref={cnt_ref}")
-                            if cnt_ref > sum(
-                                [len(files) for r, d, files in os.walk(p)]
-                            ):
-                                return False
+                            for item in f.read().split("\n"):
+                                if item and not os.path.exists(os.path.join(path, item)):
+                                    return False
                         except:
                             return False
                 else:
@@ -79,9 +77,11 @@ class Cache:
         for name in items:
             p = os.path.join(path, name)
             if os.path.isdir(p):
-                cnt_file = os.path.join(path, f".cnt_{name}")
-                with open(cnt_file, "w") as f:
-                    f.write(str(sum([len(files) for r, d, files in os.walk(p)])))
+                cont_file = os.path.join(path, f".content_{name}")
+                with open(cont_file, "w") as f:
+                    for item in Path(p).rglob("*"):
+                        if item.is_file():
+                            f.write(item.relative_to(path).as_posix() + "\n")
 
 
 CACHE = Cache()
