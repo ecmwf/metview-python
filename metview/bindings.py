@@ -26,7 +26,7 @@ from metview.dataset import ParamInfo, FieldsetDb, Dataset
 from metview.style import StyleDb
 from metview import plotting
 
-__version__ = "1.7.0"
+__version__ = "1.8.0"
 
 
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
@@ -1135,6 +1135,7 @@ def bind_functions(namespace, module_name=None):
     namespace["setoutput"] = setoutput
     namespace["metzoom"] = metzoom
     namespace["version_info"] = version_info
+    namespace["merge"] = merge
     namespace["dataset_to_fieldset"] = dataset_to_fieldset
     namespace["valid_date"] = valid_date
     namespace["get_file_list"] = get_file_list
@@ -1160,7 +1161,7 @@ greater_equal_than = make(">=")
 greater_than = make(">")
 lower_equal_than = make("<=")
 lower_than = make("<")
-merge = make("&")
+met_merge = make("&")
 met_not_eq = make("<>")
 met_plot = make("plot")
 mod = make("mod")
@@ -1187,6 +1188,14 @@ def version_info():
     binary_info = dict(met_version_info())
     binary_info["metview_python_version"] = __version__
     return binary_info
+
+
+# wrapper so that we can merge a single value (just returns itself)
+def merge(*args):
+    if len(args) == 1:
+        return args[0]
+    else:
+        return met_merge(*args)
 
 
 # -----------------------------------------------------------------------------
@@ -1266,11 +1275,35 @@ def animate(*args, **kwargs):
         readout=True,
     )
 
-    image_widget.layout.visibility = "hidden"
-    frame_widget.layout.visibility = "hidden"
+    play_widget = widgets.Play(
+        value=1,
+        min=1,
+        max=1,
+        step=1,
+        interval=500,
+        description="Play animation",
+        disabled=False,
+    )
+
+    speed_widget = widgets.IntSlider(
+        value=3,
+        min=1,
+        max=20,
+        step=1,
+        description="Speed",
+        disabled=False,
+        continuous_update=True,
+        readout=True,
+    )
+
+    widgets.jslink((play_widget, "value"), (frame_widget, "value"))
+    play_and_speed_widget = widgets.HBox([play_widget, speed_widget])
+    controls = widgets.VBox([image_widget, frame_widget, play_and_speed_widget])
+
+    controls.layout.visibility = "hidden"
     waitl_widget = widgets.Label(value="Generating plots....")
     frame_widget.layout.width = "800px"
-    display(image_widget, frame_widget, waitl_widget)
+    display(controls, waitl_widget)
 
     # plot all frames to a temporary directory owned by Metview to enure cleanup
     tempdirpath = tempfile.mkdtemp(dir=os.environ.get("METVIEW_TMPDIR", None))
@@ -1290,6 +1323,7 @@ def animate(*args, **kwargs):
     files = [os.path.join(tempdirpath, f) for f in sorted(filenames)]
     frame_widget.max = len(files)
     frame_widget.description = "Frame (" + str(len(files)) + ") :"
+    play_widget.max = len(files)
 
     def plot_frame(frame_index):
         im_file = open(files[frame_index - 1], "rb")
@@ -1303,11 +1337,15 @@ def animate(*args, **kwargs):
     plot_frame(1)
     frame_widget.observe(on_frame_change, names="value")
 
+    def on_speed_change(change):
+        play_widget.interval = 1500 / change["new"]
+
+    speed_widget.observe(on_speed_change, names="value")
+
     # everything is ready now, so hide the 'waiting' label
     # and reveal the plot and the frame slider
     waitl_widget.layout.visibility = "hidden"
-    image_widget.layout.visibility = "visible"
-    frame_widget.layout.visibility = "visible"
+    controls.layout.visibility = "visible"
 
 
 # On a test system, importing IPython took approx 0.5 seconds, so to avoid that hit
