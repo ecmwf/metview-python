@@ -736,12 +736,8 @@ class Dataset:
                     self.fetch(forced=True)
                 else:
                     raise Exception(
-                        f"Could not find dataset={self.name} on data server"
+                        f"Could not find dataset={self.name} either under path={self.path} or on data server"
                     )
-            else:
-                raise Exception(
-                    f"Could not find dataset={self.name} uder path={self.path}"
-                )
         else:
             local_path = os.path.join(self.LOCAL_ROOT, self.name)
             # dataset exists locally

@@ -72,7 +72,7 @@ def test_dataset():
 
     # indexing
     ds.scan()
-    index_dir = os.path.join(DS_DIR, "_index_db")
+    index_dir = os.path.join(DS_DIR, "index_db")
     assert os.path.exists(index_dir)
     for comp in ["an", "oper"]:
         for f in [
