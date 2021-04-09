@@ -36,6 +36,8 @@ LOCAL_CONF_PATH = ""
 #         _DB[name] = (StyleDb(_DB[name][1]), "")
 #     return _DB[name][0]
 
+VISDEF_VERBS = ["mcont", "mwind", "mcoast", "msymb", "mgraph"]
+
 
 class Visdef:
     # BUILDER = {
@@ -84,6 +86,16 @@ class Visdef:
     def __repr__(self):
         return f"Visdef(verb={self.verb}, params={self.params})"
 
+# class CoastVisdef(Visdef):
+#     def __init__(self, params):
+#         super().__init__("mcoast", params)
+
+#     def adjust(self, plot_type):
+#         if plot_type == "stamp":
+#             self.params["map_grid"] = "off"
+#             self.params["map_grid"] = "off"
+
+
 
 class Style:
     def __init__(self, name, visdefs):
@@ -96,11 +108,12 @@ class Style:
     def to_request(self):
         return [vd.to_request() for vd in self.visdefs]
 
-    def update(self, *args):
-        s = self.clone()
+    def update(self, *args, inplace=None):
+        s = self if inplace == True else self.clone()
         for i, v in enumerate(args):
             if i < len(s.visdefs):
                 if isinstance(v, dict):
+                    v = {v_key.lower(): v_val for v_key, v_val in v.items()}
                     s.visdefs[i].params.update(v)
         return s
 
@@ -194,10 +207,15 @@ class StyleDbItem:
     def _load_styles(self, conf, path=""):
         for name, d in conf.items():
             vd = []
+            if not isinstance(d, list):
+                d = [d]
             # print(f"name={name} d={d}")
-            for v in d:
-                ((verb, params),) = v.items()
-                vd.append(Visdef(verb, params))
+            if len(d) == 1 and isinstance(d[0], dict) and (len(d[0]) > 1 or not list(d[0].keys())[0] in VISDEF_VERBS):
+               vd.append(Visdef("mcoast", d[0])) 
+            else:
+                for v in d:
+                    ((verb, params),) = v.items()
+                    vd.append(Visdef(verb, params))
             self.styles[name] = Style(name, vd)
         if self.system:
             self._make_defaults()
@@ -428,6 +446,26 @@ class StyleDb:
     #     #     print(v)
 
 
+class GeoView:
+    def __init__(self, params, style):
+        self.params = copy.deepcopy(params)
+        for k in list(self.params.keys()):
+            if k.lower() == "coastlines":
+                self.params.pop("coastlines", None)
+        self.style = style
+        if self.style is None:
+            assert self.style.verb == "mcoast"
+
+    def to_request(self):
+        v = copy.deepcopy(self.params)
+        if self.style is not None and self.style:
+            v["coastlines"] = self.style.to_request()
+        return mv.geoview(**v)
+
+    def __str__(self):
+        t = f"{self.__class__.__name__}[params={self.params}, style={self.style}]"
+        return t
+
 class MapConf:
     items = []
     areas = []
@@ -478,21 +516,28 @@ class MapConf:
                 ((name, conf),) = item.items()
                 self.areas[name] = conf
 
-    def find(self, area="base", style="grey_light_base"):
-        a = self.areas.get(area, {})
+    def find(self, area=None, style=None):
+        area_v = "base" if area is None else area
+        style_v = "grey_light_base" if style is None else style
+        a = self.areas.get(area_v, {})
         s = None
-        if len(a) == 0 and area.upper() in self.BUILTIN_AREAS:
+        if len(a) == 0 and area_v.upper() in self.BUILTIN_AREAS:
             a = {"area_mode": "name", "area_name": area}
         # if a is not None:
-        s = self.style_db.get_style(style)
+        s = self.style_db.get_style(style_v)
         return a, s
 
-    def view(self, area="base"):
-        a, s = self.find(area=area)
+    def view(self, area=None, style=None, plot_type=None):
+        a, s = self.find(area=area, style=style)
         # a["map_overlay_control"] = "by_date"
-        if s is not None and s:
-            a["coastlines"] = s.to_request()
-        return mv.geoview(**a)
+        
+        if plot_type == "stamp":
+            s = s.update({"map_grid": "off", "map_label": "off"})
+        return GeoView(a, s)
+        # if s is not None and s:
+        #     a["coastlines"] = s.to_request()
+        # # return mv.geoview(**a)
+        # return a
 
 
 if __name__ == "__main__":

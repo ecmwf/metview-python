@@ -18,7 +18,7 @@ import yaml
 
 import metview as mv
 from metview.layout import Layout
-from metview.style import Style, StyleDb, MapConf
+from metview.style import Style, StyleDb, MapConf, GeoView
 from metview.title import Title
 from metview.track import Track
 
@@ -78,6 +78,12 @@ def _make_visdef(data, vd, style_db="param", plot_type="map"):
     vd = [x for x in vd if x is not None]
     return vd
 
+def _make_view(view):
+    if view is None:
+        view = MapConf().view(area="base").to_request()
+    elif isinstance(view, GeoView):
+        view = view.to_request()
+    return view
 
 def plot_maps(
     *args, layout=None, view=None, title_font_size=0.4, frame=-1, animate=True
@@ -87,8 +93,7 @@ def plot_maps(
     """
 
     # define the view
-    if view is None:
-        view = MapConf().view(area="base")
+    view = _make_view(view)
 
     # in the positional arguments we have two options:
     # 1. we only have non-list items. They belong to a single plot page.
@@ -150,9 +155,8 @@ def plot_diff_maps(
     """
 
     # define the view
-    if view is None:
-        view = MapConf().view(area="base")
-
+    view = _make_view(view)
+    
     # build the layout
     dw = Layout().build_diff(view=view)
 
@@ -218,9 +222,8 @@ def plot_xs(
 
     assert len(line) == 4
 
-    if view is None:
-        view = MapConf().view(area="base")
-
+    view = _make_view(view)
+    
     assert len(args) >= 1
     assert isinstance(args[0], mv.Fieldset)
     layers = _make_layers(*args, form_layout=False)
@@ -331,17 +334,21 @@ def plot_stamp(
     title_font_size=0.4,
     frame=-1,
     animate=True,
+    diff_base=None
 ):
     """
     Plot ENS stamp maps
     """
+    
     # define the view
-    if view is None:
-        view = MapConf().view(area="base")
+    view = _make_view(view)
 
     desc = []
     data = {}
     vd = {}
+
+    if diff_base is not None:
+        assert isinstance(diff_base, mv.Fieldset)
 
     if len(args) > 0:
         assert isinstance(args[0], mv.Fieldset)
@@ -351,9 +358,12 @@ def plot_stamp(
         # prepare ens
         data["ens"] = layers[0]["data"]
         assert data["ens"] is not None
-        vd["ens"] = _make_visdef(data["ens"], layers[0]["vd"])
+        if diff_base is not None:
+            vd["ens"] = _make_visdef(data["ens"], [], style_db="diff")    
+        else:
+            vd["ens"] = _make_visdef(data["ens"], layers[0]["vd"])
 
-    # prepare an an fc
+    # prepare an and fc
     d = {"an": an, "fc": fc}
     for k, v in d.items():
         if v:
@@ -361,10 +371,13 @@ def plot_stamp(
             if layers:
                 data[k] = layers[0]["data"]
                 vd[k] = layers[0]["vd"]
-                if len(vd[k]) == 0 and "ens" in vd:
-                    vd[k] = vd["ens"]
+                if diff_base is not None:
+                    vd[k] = vd["ens"]     
                 else:
-                    vd[k] = _make_visdef(data[k], vd[k])
+                    if len(vd[k]) == 0 and "ens" in vd:
+                        vd[k] = vd["ens"]
+                    else:
+                        vd[k] = _make_visdef(data[k], vd[k])
 
     # determine ens number
     members = []
@@ -385,9 +398,12 @@ def plot_stamp(
 
     title = Title(font_size=title_font_size)
 
+    # ens members
     for i, m in enumerate(members):
         desc.append(dw[i])
         d = data["ens"].select(number=m)
+        if diff_base is not None:
+            d = d - diff_base
         desc.append(d)
 
         if vd["ens"]:
@@ -396,11 +412,15 @@ def plot_stamp(
         t = title.build_stamp(d, member=str(i))
         desc.append(t)
 
+    # add an and fc
     n = len(members)
     for t in ["an", "fc"]:
         if t in data:
             desc.append(dw[n])
-            desc.append(data[t])
+            d = data[t]
+            if diff_base is not None:
+                d = d - diff_base
+            desc.append(d)
             if vd[t]:
                 desc.append(vd[t])
             t = title.build_stamp(data[t], member="")

@@ -713,7 +713,7 @@ class Dataset:
     Represents a Dataset
     """
 
-    URL = "http://download.ecmwf.org/test-data/metview/dataset"
+    URL = "https://get.ecmwf.int/repository/test-data/metview/dataset"
     LOCAL_ROOT = os.getenv(
         "MPY_DATASET_ROOT", os.path.join(os.getenv("HOME", ""), "mpy_dataset")
     )
@@ -762,7 +762,10 @@ class Dataset:
         return Dataset(*args, **kwargs)
 
     def check_remote(self):
-        return requests.get(f"{self.URL}/{self.name}").ok
+        try:
+            return requests.head(f"{self.URL}/{self.name}/conf.tar", allow_redirects=True).status_code == 200
+        except:
+            return False
 
     def load(self):
         data_dir = os.path.join(self.path, "data")
