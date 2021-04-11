@@ -168,7 +168,7 @@ class ParamInfo:
     def data_id(self):
         return f"{self.name}_{self.level_type}"
 
-    def match(self, name, level_type, level):
+    def match_ori(self, name, level_type, level):
         if self.name == name:
             if level_type:
                 if level_type in self.LEVEL_TYPES:
@@ -183,6 +183,25 @@ class ParamInfo:
                         return False
             return True
         return False
+
+    def match(self, name, level_type, level):
+        # print(f"{self}, name={name}, level_type={level_type}, level={level}")
+        r = 0
+        if self.name == name:
+            r += 1
+            if level_type is not None and level_type:
+                if level_type in self.LEVEL_TYPES:
+                    level_type = self.LEVEL_TYPES[level_type]
+                if level_type == self.level_type:
+                    r +=1
+                    if level is not None and self.level is not None:
+                        if isinstance(level, list):
+                            if self.level in level:
+                                r += 1   
+                        elif level == self.level:
+                            r += 1
+        return r
+    
 
     def make_dims(self):
         dims = {}

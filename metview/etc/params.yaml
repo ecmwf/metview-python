@@ -1,0 +1,356 @@
+# --------------------
+# SCALAR PARAMETERS
+# --------------------
+# 2m dewpoint temperature
+-
+  diff_styles:
+      - diff_t
+  match:
+      - 
+        info_name: 2d
+      -
+        shortName: 2d
+        paramId: 168
+# 2m temperature
+-
+  diff_styles:
+      - diff_t
+  match:
+      - 
+        info_name: 2t
+      -
+        shortName: 2t
+        paramId: 167
+# 10m wind gust 3h
+-
+  diff_styles: 
+    - diff_10fg3
+  match:
+      - 
+        name: 10fg3
+      -
+        shortName: 10fg3
+        paramId: 228028
+# 10m wind speed
+-
+  diff_styles: 
+    - diff_speed
+  match:
+      - 
+        name: 10si
+      -
+        shortName: 10si
+        paramId: 207
+# absolute vorticity
+-
+  styles: 
+      - vo
+  diff_styles:
+      - diff_vo
+  match:
+      - 
+        info_name: absv
+      -
+        shortName: absv
+        paramId: 3041
+# equivalent potential temperature
+-
+  styles: 
+      - pt
+  diff_styles:
+      - diff_pt
+  match:
+      - 
+        info_name: eqpt
+      -
+        shortName: eqpt
+        paramId: 4       
+# geopotential
+-
+  diff_styles: 
+    - diff_z
+  match:
+      - 
+        name: z
+      -
+        shortName: z
+        paramId: 129  
+# mean_sea_level_pressure:
+- 
+  styles:
+      - msl
+  diff_styles:
+      - diff_msl
+  match:
+      - 
+        info_name: msl
+      -
+        shortName: msl
+        paramId: 131
+# potential temperature
+-
+  styles: 
+      - pt
+  diff_styles:
+      - diff_pt
+  match:
+      - 
+        info_name: pt
+      -
+        shortName: pt
+        paramId: 3
+# potential vorticity
+-
+  styles: 
+      - pv
+  diff_styles:
+      - diff_vo
+  match:
+      - 
+        info_name: pv
+# relative humidity
+-
+  diff_styles: 
+    - diff_r
+  xs_styles:
+    - xs_r
+  match:
+      - 
+        name: r
+      -
+        shortName: r
+        paramId: 157 
+# relative vorticity
+- 
+  styles: 
+      - vo
+  diff_styles:
+      - diff_vo
+  match:
+      - 
+        info_name: vo
+      -
+        shortName: vo
+        paramId: 138
+# specific humidity
+-
+  xs_styles:
+    - xs_q
+  match:
+      - 
+        name: q
+      -
+        shortName: q
+        paramId: 133 
+# sea surface temperature
+-
+  diff_styles:
+      - diff_t
+  match:
+      - 
+        info_name: sst
+      -
+        shortName: sst
+        paramId: 34
+# temperature
+-
+  diff_styles: 
+    - diff_t
+  xs_styles:
+    - xs_t
+  match:
+      - 
+        name: t
+      -
+        shortName: t
+        paramId: 130  
+# total precipitation
+-
+  diff_styles: 
+    - diff_tp
+  match:
+      - 
+        name: tp
+      -
+        shortName: tp
+        paramId: 228
+# vertical (pressure) velocity
+-
+  styles: 
+      - w
+  match:
+      - 
+        info_name: w
+      -
+        shortName: w
+        paramId: 135
+# wind speed
+-
+  diff_styles:
+      - diff_speed
+  match:
+      - 
+        info_name: ws
+      -
+        shortName: ws
+        paramId: 10
+# --------------------
+# VECTOR PARAMETERS
+# --------------------
+# wind 10 m
+-
+  type: vector
+  styles: 
+      - arrow_blue_red_10
+  match:
+      - 
+        info_name: wind10m
+# wind  (generic)
+-
+  type: vector
+  styles: 
+      - arrow_blue_red
+  match:
+      - 
+        info_name: wind
+# wind 850 hPa        
+- 
+  type: vector
+  styles: 
+      -  arrow_blue_red_850
+  match:
+      - 
+        info_name: wind
+        level_type: pl 
+        levels: 850
+# wind 700 hPa        
+- 
+  type: vector
+  styles: 
+      -  arrow_blue_red_700
+  match:
+      - 
+        info_name: wind
+        level_type: pl 
+        levels: 700
+# wind 750 hPa        
+- 
+  type: vector
+  styles: 
+      -  arrow_blue_red_500
+  match:
+      - 
+        info_name: wind
+        level_type: pl 
+        levels: 500
+# wind 200 hPa        
+-
+  type: vector
+  styles: 
+      -  arrow_blue_red_200
+  match:
+      - 
+        info_name: wind
+        level_type: pl 
+        levels: 200
+# wind3d  (generic)
+-
+  type: vector
+  styles: 
+      - xs_arrow_black
+  match:
+      - 
+        info_name: wind3d
+# -------------------------------------------
+# PARAMETERS REPRESENTING GEOMETRIC SHAPES
+# -------------------------------------------
+-
+  styles: 
+      - box
+  match:
+      - 
+        info_name: box
+-
+  styles: 
+      - frame
+  match:
+      - 
+        info_name: frame
+
+# -------------------------------------------
+# TRACKS
+# -------------------------------------------
+-
+  styles: 
+      - track
+  match:
+      - 
+        info_name: track
+
+# ---------------------------------
+# PARAMETERS WITHOUT A SHORTNAME
+# ---------------------------------
+-
+  styles: 
+      - t_flux
+  match:
+      - 
+        info_name: qcl
+      - 
+        mars.param: "110.128"
+-
+  styles: 
+      - t_flux
+  match:
+      - 
+        info_name: qcon
+      - 
+        mars.param: "106.128"
+-
+  styles: 
+      - t_flux
+  match:
+      - 
+        info_name: qdyn
+      - 
+        mars.param: "94.128"
+-
+  styles: 
+      - t_flux
+  match:
+      - 
+        info_name: qvdiff
+      - 
+        mars.param: "99.128"
+-
+  styles: 
+      - t_flux
+  match:
+      - 
+        info_name: tcl
+      - 
+        mars.param: "109.128"
+-
+  styles: 
+      - t_flux
+  match:
+      - 
+        info_name: tcon
+      - 
+        mars.param: "105.128"
+-
+  styles: 
+      - t_flux
+  match:
+      - 
+        info_name: trad
+      - 
+        mars.param: "95.128"
+-
+  styles: 
+      - t_flux
+  match:
+      - 
+        info_name: tvdiff
+      - 
+        mars.param: "98.128"

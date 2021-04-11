@@ -20,9 +20,8 @@ import metview as mv
 LOG = logging.getLogger(__name__)
 
 _DB = {
-    "param": (None, "param_style.yaml"),
-    "diff": (None, "diff_style.yaml"),
-    "map": (None, "map_style.yaml"),
+    "param": (None, "params.yaml", "param_style.yaml"),
+    "map": (None, "", "map_style.yaml"),
 }
 
 ETC_PATH = os.path.join(os.path.dirname(__file__), "etc")
@@ -36,7 +35,7 @@ LOCAL_CONF_PATH = ""
 #         _DB[name] = (StyleDb(_DB[name][1]), "")
 #     return _DB[name][0]
 
-VISDEF_VERBS = ["mcont", "mwind", "mcoast", "msymb", "mgraph"]
+PARAM_VISDEF_VERBS = ["mcont", "mwind", "mcoast", "msymb", "mgraph"]
 
 
 class Visdef:
@@ -86,16 +85,6 @@ class Visdef:
     def __repr__(self):
         return f"Visdef(verb={self.verb}, params={self.params})"
 
-# class CoastVisdef(Visdef):
-#     def __init__(self, params):
-#         super().__init__("mcoast", params)
-
-#     def adjust(self, plot_type):
-#         if plot_type == "stamp":
-#             self.params["map_grid"] = "off"
-#             self.params["map_grid"] = "off"
-
-
 
 class Style:
     def __init__(self, name, visdefs):
@@ -124,39 +113,51 @@ class Style:
         return t
 
 
-class ParamStyleGroup:
-    def __init__(self, param_name, style, cond):
-        self.param_name = param_name
-        self.style = style
+class ParamMatchCondition:
+    def __init__(self, cond):
         self.cond = cond
+        if "levels" in self.cond:
+            if not isinstance(self.cond["levels"], list):
+                self.cond["levels"] = [self.cond["levels"]]
 
-    def match(self, param, plot_type):
-        if "plot" in self.cond:
-            return plot_type == self.cond["plot"]
-        else:
-            return param.match(
-                self.param_name,
-                self.cond.get("level_type", None),
-                self.cond.get("level", None),
-            )
-
-    def __str__(self):
-        return "{}[style={},cond={}]".format(
-            self.__class__.__name__, self.style.name, self.cond
+    def match(self, param):
+        return param.match(
+            self.cond.get("info_name", ""),
+            self.cond.get("level_type", None),
+            self.cond.get("levels", []),
         )
 
 
 class ParamStyle:
-    def __init__(self, param_name, style):
-        self.param_name = param_name
-        self.style = style
-        self.groups = []
+    def __init__(self, conf, db):
+        self.cond = []
+        for d in conf["match"]:
+            self.cond.append(ParamMatchCondition(d))
+            if "info_name" in d:
+                self.info_name = d["info_name"]
+        self.param_type = conf.get("param_type", "scalar")
 
-    def find_style(self, param, plot_type):
-        for gr in self.groups:
-            if gr.match(param, plot_type):
-                return gr.style
-        return self.style
+        if self.param_type == "vector":
+            default_style = db.VECTOR_DEFAULT_STYLE_NAME
+        else:
+            default_style = db.SCALAR_DEFAULT_STYLE_NAME
+
+        self.style = conf.get("styles", [default_style])
+        self.xs_style = conf.get("xs_styles", self.style)
+        self.diff_style = conf.get("diff_styles", [db.DIFF_DEFAULT_STYLE_NAME])
+
+    def match(self, param):
+        return max([d.match(param) for d in self.cond])
+
+    def find_style(self, plot_type):
+        if plot_type == "" or plot_type == "map":
+            return self.style[0]
+        elif plot_type == "diff":
+            return self.diff_style[0]
+        elif plot_type == "xs":
+            return self.xs_style[0]
+        else:
+            return None
 
     def __str__(self):
         return "{}[param={},style={}] groups={}".format(
@@ -167,12 +168,42 @@ class ParamStyle:
         )
 
 
-class StyleDbItem:
-    def __init__(self, path, system=False):
-        self.params = {}
+class StyleDb:
+    SCALAR_DEFAULT_STYLE_NAME = "default_mcont"
+    VECTOR_DEFAULT_STYLE_NAME = "default_mwind"
+    DIFF_DEFAULT_STYLE_NAME = "default_diff"
+
+    def __init__(self, param_file_name, style_file_name):
+        self.params = []
         self.styles = {}
-        self.system = system
-        self._load(path)
+
+        if LOCAL_CONF_PATH:
+            self._load(
+                os.path.join(LOCAL_CONF_PATH, param_file_name) if param_file_name else "",
+                os.path.join(LOCAL_CONF_PATH, style_file_name),
+            )
+
+        if CUSTOM_CONF_PATH:
+            self._load(
+                os.path.join(CUSTOM_CONF_PATH, param_file_name) if param_file_name else "",
+                os.path.join(CUSTOM_CONF_PATH, style_file_name),
+            )
+
+        # load system defs
+        self._load(
+            os.path.join(ETC_PATH, param_file_name) if param_file_name else "",
+            os.path.join(ETC_PATH, style_file_name),
+        )
+
+        # LOG.debug(f"custom_conf_path={CUSTOM_CONF_PATH}")
+
+    @staticmethod
+    def get_db(name="param"):
+        global _DB
+        assert name in _DB
+        if _DB[name][0] is None:
+            _DB[name] = (StyleDb(_DB[name][1], _DB[name][2]), "")
+        return _DB[name][0]
 
     def get_style(self, style):
         if style in self.styles:
@@ -181,269 +212,121 @@ class StyleDbItem:
             return self.styles.get("default", None)
 
     def get_param_style(self, param, scalar=True, plot_type="map"):
-        p = self.params.get(param.name, None)
-        if p:
-            return p.find_style(param, plot_type)
-        elif self.system:
-            if scalar:
-                return self.styles.get("default_mcont", None)
-            else:
-                return self.styles.get("default_mwind", None)
+        r = 0
+        p_best = None
+        for p in self.params:
+            m = p.match(param)
+            # print(f"m={m}")
+            if m > r:
+                r = m
+                p_best = p
+
+        print(f"param={param}")
+        if p_best is not None:
+            s = p_best.find_style(plot_type)
+            print(f" -> style={s}")
+            return self.styles.get(s, None)
         else:
-            return None
-
-    def _load(self, path):
-        if not os.path.exists(path):
-            return
-        with open(path, "rt") as f:
-            c = yaml.safe_load(f)
-            if not "styles" in c:
-                self._load_styles(c, path=path)
+            if scalar:
+                return self.styles.get(self.SCALAR_DEFAULT_STYLE_NAME, None)
             else:
-                self._load_styles(c["styles"], path=path)
-                if "params" in c:
-                    self._load_params(c["params"], path=path)
+                return self.styles.get(self.VECTOR_DEFAULT_STYLE_NAME, None)
 
-    def _load_styles(self, conf, path=""):
-        for name, d in conf.items():
-            vd = []
-            if not isinstance(d, list):
-                d = [d]
-            # print(f"name={name} d={d}")
-            if len(d) == 1 and isinstance(d[0], dict) and (len(d[0]) > 1 or not list(d[0].keys())[0] in VISDEF_VERBS):
-               vd.append(Visdef("mcoast", d[0])) 
-            else:
-                for v in d:
-                    ((verb, params),) = v.items()
-                    vd.append(Visdef(verb, params))
-            self.styles[name] = Style(name, vd)
-        if self.system:
-            self._make_defaults()
-
-    def _make_defaults(self):
-        for verb in ["mcont", "mwind"]:
-            name = "default_" + verb
-            if name not in self.styles:
-                self.styles[name] = Style(name, Visdef(verb, {}))
-
-    def _load_params(self, conf, path=""):
-        for name, d in conf.items():
-            # print(f"name={name} d={d}")
-            if not "style" in d:
-                raise Exception(
-                    f"{self} No style defined for param={name}! File={path}"
-                )
-            style = d["style"]
-            if not style in self.styles:
-                raise Exception(
-                    f"{self} Invalid style={style} specified for param={name}! File={path}"
-                )
-            style = self.styles[style]
-            self.params[name] = ParamStyle(name, style)
-            for gr in d.get("groups", []):
-                if not "style" in gr:
-                    raise Exception(
-                        f"{self} No style defined for param={name} in group={gr}! File={path}"
-                    )
-                style = self.styles[gr.pop("style")]
-                self.params[name].groups.append(ParamStyleGroup(name, style, gr))
+        return None
 
     def style(self, fs, plot_type="map"):
         param = fs.param_info
         if param is not None:
             vd = self.get_param_style(param, scalar=param.scalar, plot_type=plot_type)
-            LOG.debug(f"vd={vd}")
-            if vd is not None:
-                return vd
+            # LOG.debug(f"vd={vd}")
+            return vd
         return None
 
     def visdef(self, fs, plot_type="map"):
-        param = fs.param_info
-        if param is not None:
-            vd = self.get_param_style(param, scalar=param.scalar, plot_type=plot_type)
-            LOG.debug(f"vd={vd}")
-            if vd is not None:
-                return vd.to_request()
-        return None
-
-    def is_empty(self):
-        return len(self.params) == 0 or len(self.styles) == 0
-
-    def __str__(self):
-        return self.__class__.__name__
-
-    def print(self):
-        print(f"{self} params=")
-        for k, v in self.params.items():
-            print(v)
-        # print(f"{self} styles=")
-        # for k, v in self.styles.items():
-        #     print(v)
-
-
-class StyleDb:
-    def __init__(self, conf_file_name):
-        self.items = {"local": None, "custom": None, "system": None}
-        self.items["system"] = StyleDbItem(
-            os.path.join(ETC_PATH, conf_file_name), system=True
-        )
-        if CUSTOM_CONF_PATH:
-            self.items["custom"] = StyleDbItem(
-                os.path.join(CUSTOM_CONF_PATH, conf_file_name), system=False
-            )
-        if LOCAL_CONF_PATH:
-            self.items["local"] = StyleDbItem(
-                os.path.join(LOCAL_CONF_PATH, conf_file_name), system=False
-            )
-
-        for n in ["local", "custom"]:
-            if self.items[n] is None or self.items[n].is_empty():
-                self.items.pop(n)
-
-        # LOG.debug(f"custom_conf_path={CUSTOM_CONF_PATH}")
-        # LOG.debug(f"StyleDb items={self.items}")
-
-    @staticmethod
-    def get_db(name="param"):
-        global _DB
-        assert name in _DB
-        if _DB[name][0] is None:
-            _DB[name] = (StyleDb(_DB[name][1]), "")
-        return _DB[name][0]
-
-    def get_style(self, style):
-        for _, item in self.items.items():
-            vd = item.get_style(style)
-            if vd is not None:
-                return vd
-        return None
-
-    def style(self, fs, scalar=True, plot_type="map"):
-        for _, item in self.items.items():
-            vd = item.style(fs, plot_type=plot_type)
-            if vd is not None:
-                return vd
-
-    def visdef(self, fs, plot_type="map"):
-        for _, item in self.items.items():
-            vd = item.visdef(fs, plot_type=plot_type)
-            if vd is not None:
-                return vd
-        # param = fs.param_info
-        # if param is not None:
-        #     vd = self.get_param_style(
-        #         param, scalar=param.scalar, plot_type=plot_type
-        #     ).to_request()
-        #     LOG.debug(f"vd={vd}")
-        #     return vd
-        return None
+        vd = self.style(fs, plot_type=plot_type)
+        return vd.to_request() if vd is not None else None
 
     @staticmethod
     def set_config(conf_dir):
         global CUSTOM_CONF_PATH
         CUSTOM_CONF_PATH = conf_dir
 
-    # def __init__(self, path):
-    #     self.params = {}
-    #     self.styles = {}
-    #     self._load(os.path.join(PATH, path))
+    def _make_defaults(self):
+        d = {
+            self.SCALAR_DEFAULT_STYLE_NAME: "mcont",
+            self.VECTOR_DEFAULT_STYLE_NAME: "mwind",
+            self.DIFF_DEFAULT_STYLE_NAME: "mcont",
+        }
+        for name, verb in d.items():
+            if name not in self.styles:
+                self.styles[name] = Style(name, Visdef(verb, {}))
+        assert self.SCALAR_DEFAULT_STYLE_NAME in self.styles
+        assert self.VECTOR_DEFAULT_STYLE_NAME in self.styles
+        assert self.DIFF_DEFAULT_STYLE_NAME in self.styles
 
-    # def get_style(self, style):
-    #     if style in self.styles:
-    #         return self.styles[style]
-    #     else:
-    #         return self.styles["default"]
+    def _load(self, param_path, style_path):
+        if os.path.exists(style_path):
+            with open(style_path, "rt") as f:
+                c = yaml.safe_load(f)
+                self._load_styles(c)
+            if os.path.exists(param_path):
+                with open(param_path, "rt") as f:
+                    c = yaml.safe_load(f)
+                    self._load_params(c, param_path)
 
-    # def get_param_style(self, param, scalar=True, plot_type="map"):
-    #     p = self.params.get(param.name, None)
-    #     if p:
-    #         return p.find_style(param, plot_type)
-    #     else:
-    #         if scalar:
-    #             return self.styles["default_mcont"]
-    #         else:
-    #             return self.styles["default_mwind"]
+    def _load_styles(self, conf):
+        for name, d in conf.items():
+            vd = []
+            # print(f"name={name} d={d}")
+            if not isinstance(d, list):
+                d = [d]
 
-    # def _load(self, path):
-    #     with open(path, "rt") as f:
-    #         c = yaml.safe_load(f)
-    #         if not "styles" in c:
-    #             self._load_styles(c, path=path)
-    #         else:
-    #             self._load_styles(c["styles"], path=path)
-    #             if "params" in c:
-    #                 self._load_params(c["params"], path=path)
+            # print(f"name={name} d={d}")
+            # for mcoast the verb can be missing
+            if (
+                len(d) == 1
+                and isinstance(d[0], dict)
+                and (len(d[0]) > 1 or not list(d[0].keys())[0] in PARAM_VISDEF_VERBS)
+            ):
+                vd.append(Visdef("mcoast", d[0]))
+            else:
+                for v in d:
+                    ((verb, params),) = v.items()
+                    vd.append(Visdef(verb, params))
+            self.styles[name] = Style(name, vd)
 
-    # def _load_styles(self, conf, path=""):
-    #     for name, d in conf.items():
-    #         vd = []
-    #         # print(f"name={name} d={d}")
-    #         for v in d:
-    #             ((verb, params),) = v.items()
-    #             vd.append(Visdef(verb, params))
-    #         self.styles[name] = Style(name, vd)
-    #     self._make_defaults()
+        # if self.system:
+        self._make_defaults()
 
-    # def _make_defaults(self):
-    #     for verb in ["mcont", "mwind"]:
-    #         name = "default_" + verb
-    #         if name not in self.styles:
-    #             self.styles[name] = Style(name, Visdef(verb, {}))
+    def _load_params(self, conf, path):
+        for d in conf:
+            assert isinstance(d, dict)
+            # print(f"d={d}")
+            p = ParamStyle(d, self)
+            for v in [p.style, p.xs_style, p.diff_style]:
+                # print(f"v={v}")
+                for s in v:
+                    if not s in self.styles:
+                        raise Exception(
+                            f"{self} Invalid style={s} specified in {d}! File={path}"
+                        )
 
-    # def _load_params(self, conf, path=""):
-    #     for name, d in conf.items():
-    #         # print(f"name={name} d={d}")
-    #         if not "style" in d:
-    #             raise Exception(
-    #                 f"{self} No style defined for param={name}! File={path}"
-    #             )
-    #         style = d["style"]
-    #         if not style in self.styles:
-    #             raise Exception(
-    #                 f"{self} Invalid style={style} specified for param={name}! File={path}"
-    #             )
-    #         style = self.styles[style]
-    #         self.params[name] = ParamStyle(name, style)
-    #         for gr in d.get("groups", []):
-    #             if not "style" in gr:
-    #                 raise Exception(
-    #                     f"{self} No style defined for param={name} in group={gr}! File={path}"
-    #                 )
-    #             style = self.styles[gr.pop("style")]
-    #             self.params[name].groups.append(ParamStyleGroup(name, style, gr))
+            self.params.append(p)
 
-    # @staticmethod
-    # def get_db(name="param"):
-    #     global _DB
-    #     assert name in _DB
-    #     if _DB[name][0] is None:
-    #         _DB[name] = (StyleDb(_DB[name][1]), "")
-    #     return _DB[name][0]
+    def is_empty(self):
+        return len(self.styles) == 0
 
-    # def visdef(self, fs, plot_type="map"):
-    #     param = fs.param_info
-    #     if param is not None:
-    #         vd = self.get_param_style(
-    #             param, scalar=param.scalar, plot_type=plot_type
-    #         ).to_request()
-    #         LOG.debug(f"vd={vd}")
-    #         return vd
-    #     return None
+    def __str__(self):
+        return self.__class__.__name__
 
-    # @staticmethod
-    # def set_config(conf_dir):
-    #     StyleDB.CONFIG_PATH = conf_dir
-
-    # def __str__(self):
-    #     return self.__class__.__name__
-
-    # def print(self):
-    #     print(f"{self} params=")
-    #     for k, v in self.params.items():
-    #         print(v)
-    #     # print(f"{self} styles=")
-    #     # for k, v in self.styles.items():
-    #     #     print(v)
+    def print(self):
+        pass
+        # print(f"{self} params=")
+        # for k, v in self.params.items():
+        #     print(v)
+        # print(f"{self} styles=")
+        # for k, v in self.styles.items():
+        #     print(v)
 
 
 class GeoView:
@@ -465,6 +348,7 @@ class GeoView:
     def __str__(self):
         t = f"{self.__class__.__name__}[params={self.params}, style={self.style}]"
         return t
+
 
 class MapConf:
     items = []
@@ -504,17 +388,23 @@ class MapConf:
     def __init__(self):
         self.areas = {}
         self.style_db = StyleDb.get_db(name="map")
-        self._load(os.path.join(ETC_PATH, "maps.yaml"))
-        if CUSTOM_CONF_PATH:
-            self._load(os.path.join(CUSTOM_CONF_PATH, "maps.yaml"))
-        if LOCAL_CONF_PATH:
-            self._load(os.path.join(LOCAL_CONF_PATH, "maps.yaml"))
 
-    def _load(self, file_path):
-        with open(file_path, "rt") as f:
-            for item in yaml.safe_load(f):
-                ((name, conf),) = item.items()
-                self.areas[name] = conf
+        # load areas
+        self._load_areas(os.path.join(ETC_PATH, "areas.yaml"))
+        if CUSTOM_CONF_PATH:
+            self._load_areas(os.path.join(CUSTOM_CONF_PATH, "areas.yaml"))
+        if LOCAL_CONF_PATH:
+            self._load_areas(os.path.join(LOCAL_CONF_PATH, "areas.yaml"))
+
+    def _load_areas(self, file_path):
+        if os.path.exists(file_path):
+            with open(file_path, "rt") as f:
+                # the file can be empty!
+                d = yaml.safe_load(f)
+                if isinstance(d, list):
+                    for item in d:
+                        ((name, conf),) = item.items()
+                        self.areas[name] = conf
 
     def find(self, area=None, style=None):
         area_v = "base" if area is None else area
@@ -530,7 +420,7 @@ class MapConf:
     def view(self, area=None, style=None, plot_type=None):
         a, s = self.find(area=area, style=style)
         # a["map_overlay_control"] = "by_date"
-        
+
         if plot_type == "stamp":
             s = s.update({"map_grid": "off", "map_label": "off"})
         return GeoView(a, s)

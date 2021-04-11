@@ -187,7 +187,7 @@ def plot_diff_maps(
     # compute diff
     data["d"] = data["0"] - data["1"]
     data["d"]._param_info = data["1"].param_info
-    vd["d"] = _make_visdef(data["d"], [], style_db="diff")
+    vd["d"] = _make_visdef(data["d"], [], plot_type="diff")
 
     # LOG.debug("len_d={}".format(len(data["d"])))
 
