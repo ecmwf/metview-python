@@ -16,7 +16,7 @@ black_coast_only:
     map_coastline: 'on'
     map_coastline_land_shade: 'off'
     map_coastline_sea_shade: 'off'
-    map_coastline_colour: BLACK
+    # map_coastline_colour: BLACK
 black_grey:
     map_coastline_land_shade: 'on'
     map_coastline_land_shade_colour: black

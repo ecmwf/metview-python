@@ -90,6 +90,8 @@ class Style:
     def __init__(self, name, visdefs):
         self.name = name
         self.visdefs = visdefs
+        if not isinstance(visdefs, list):
+            self.visdefs = [self.visdefs]
 
     def clone(self):
         return Style(self.name, [vd.clone() for vd in self.visdefs])
@@ -117,14 +119,14 @@ class ParamMatchCondition:
     def __init__(self, cond):
         self.cond = cond
         if "levels" in self.cond:
-            if not isinstance(self.cond["levels"], list):
-                self.cond["levels"] = [self.cond["levels"]]
+            if not isinstance(self.cond["levelist"], list):
+                self.cond["levelist"] = [self.cond["levelist"]]
 
     def match(self, param):
         return param.match(
             self.cond.get("info_name", ""),
-            self.cond.get("level_type", None),
-            self.cond.get("levels", []),
+            self.cond.get("levtype", None),
+            self.cond.get("levelist", []),
         )
 
 
@@ -295,10 +297,11 @@ class StyleDb:
                     vd.append(Visdef(verb, params))
             self.styles[name] = Style(name, vd)
 
-        # if self.system:
-        self._make_defaults()
-
+       
     def _load_params(self, conf, path):
+        # TODO: review defaults for maps
+        self._make_defaults()
+        
         for d in conf:
             assert isinstance(d, dict)
             # print(f"d={d}")

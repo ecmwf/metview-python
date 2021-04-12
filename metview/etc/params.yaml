@@ -221,8 +221,8 @@
   match:
       - 
         info_name: wind
-        level_type: pl 
-        levels: 850
+        levtype: pl 
+        levelist: 850
 # wind 700 hPa        
 - 
   type: vector
@@ -231,8 +231,8 @@
   match:
       - 
         info_name: wind
-        level_type: pl 
-        levels: 700
+        levtype: pl 
+        levelist: 700
 # wind 750 hPa        
 - 
   type: vector
@@ -241,8 +241,8 @@
   match:
       - 
         info_name: wind
-        level_type: pl 
-        levels: 500
+        levtype: pl 
+        levelist: 500
 # wind 200 hPa        
 -
   type: vector
@@ -251,8 +251,8 @@
   match:
       - 
         info_name: wind
-        level_type: pl 
-        levels: 200
+        levtype: pl 
+        levelist: 200
 # wind3d  (generic)
 -
   type: vector
