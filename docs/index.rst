@@ -46,8 +46,8 @@ Metview was developed as part of a cooperation between ECMWF and INPE (Brazilian
    :maxdepth: 1
    :caption: Documentation
 
-   api/ref_guide 
    data_types/index
+   api/ref_guide 
 
 .. toctree::
    :maxdepth: 1
