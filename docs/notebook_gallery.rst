@@ -2,7 +2,7 @@ Notebooks
 ****************************
 
 .. nbgallery::
-    :caption: This is a thumbnail gallery:
+    :caption: These notebooks show more detailed examples.
     :name: rst-gallery
     :glob:
     :reversed:
