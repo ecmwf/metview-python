@@ -3,4 +3,4 @@ Table object
 
 .. py:class:: Table
 
-   Class description comes here!
+   Class description to be written!
