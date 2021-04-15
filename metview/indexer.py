@@ -223,6 +223,19 @@ class GribIndexer:
                     i += 1
         return r
 
+    def _make_dataframe(self, data, columns=None):
+        if columns is not None:
+            df = pd.DataFrame(data, columns=columns).astype(self.pd_types)
+        else:
+            df = pd.DataFrame(data).astype(self.pd_types)
+        df = df.sort_values(
+            by=list(df.columns),
+            key=lambda col: col.str.pad(side="left", fillchar="0", width=4)
+            if col.name == "step"
+            else col,
+        )
+        return df
+
     def _write_dataframe(self, df, name, out_dir):
         f_name = os.path.join(out_dir, f"{name}.csv.gz")
         df.to_csv(path_or_buf=f_name, header=True, index=False, compression="gzip")
@@ -260,8 +273,7 @@ class FieldsetIndexer(GribIndexer):
     def scan(self, vector=False):
         data = self._scan(self.db.fs, mars_params=self.db.mars_params)
         if data:
-            df = pd.DataFrame(data).astype(self.pd_types)
-            df = df.sort_values(by=list(df.columns))
+            df = self._make_dataframe(data)
             self.db.blocks["scalar"] = df
             if vector:
                 self._scan_vector()
@@ -295,8 +307,7 @@ class FieldsetIndexer(GribIndexer):
                     cols = [*self.keys]
                     for i in range(comp_num):
                         cols.extend([f"msgIndex{i+1}"])
-                    w_df = pd.DataFrame(r, columns=cols).astype(self.pd_types)
-                    w_df = w_df.sort_values(by=list(w_df.columns))
+                    w_df = self._make_dataframe(r, columns=cols)
                     self.db.blocks[v_name] = w_df
                     # self._write_dataframe(w_df, v_name, out_dir)
                 else:
@@ -391,8 +402,7 @@ class ExperimentIndexer(GribIndexer):
 
             # scalar
             LOG.info(f"generate scalar fields index ...")
-            df = pd.DataFrame(data).astype(self.pd_types)
-            df = df.sort_values(by=list(df.columns))
+            df = self._make_dataframe(data)
             self.db.blocks["scalar"] = df
             self._write_dataframe(df, "scalar", out_dir)
 
@@ -405,8 +415,7 @@ class ExperimentIndexer(GribIndexer):
                     cols = [*self.keys]
                     for i in range(comp_num):
                         cols.extend([f"msgIndex{i+1}", f"fileIndex{i+1}"])
-                    w_df = pd.DataFrame(r, columns=cols).astype(self.pd_types)
-                    w_df = w_df.sort_values(by=list(w_df.columns))
+                    w_df = self._make_dataframe(r, columns=cols)
                     # print(f"wind_len={len(w_df.index)}")
                     self.db.wind[v_name] = w_df
                     self._write_dataframe(w_df, v_name, out_dir)
@@ -428,7 +437,6 @@ class ExperimentIndexer(GribIndexer):
         LOG.info("scan fields ...")
         LOG.info(f" input_dir={input_dir} file_name_pattern={file_name_pattern}")
         # print(f" input_dir={input_dir} file_name_pattern={file_name_pattern}")
-
 
         # for f_path in glob.glob(f_pattern):
         cnt = 0

@@ -193,15 +193,14 @@ class ParamInfo:
                 if level_type in self.LEVEL_TYPES:
                     level_type = self.LEVEL_TYPES[level_type]
                 if level_type == self.level_type:
-                    r +=1
+                    r += 1
                     if level is not None and self.level is not None:
                         if isinstance(level, list):
                             if self.level in level:
-                                r += 1   
+                                r += 1
                         elif level == self.level:
                             r += 1
         return r
-    
 
     def make_dims(self):
         dims = {}
@@ -782,7 +781,12 @@ class Dataset:
 
     def check_remote(self):
         try:
-            return requests.head(f"{self.URL}/{self.name}/conf.tar", allow_redirects=True).status_code == 200
+            return (
+                requests.head(
+                    f"{self.URL}/{self.name}/conf.tar", allow_redirects=True
+                ).status_code
+                == 200
+            )
         except:
             return False
 
@@ -844,6 +848,7 @@ class Dataset:
 
         files = {
             "conf.tar": ["data_conf.yaml", "conf"],
+            f"index_db.tar.{self.COMPRESSION}": ["index_db"],
             f"data.tar.{self.COMPRESSION}": ["data"],
         }
 
