@@ -52,7 +52,7 @@ params:
     desc: >-
       Specifies the run date of the forecast in YYYYMMDD format. This is the same ``date`` parameter
       as in the MARS retrieval icon. Relative dates are allowed: e.g. -1 means yesterday, 0 means today, etc.
-    ptype: str
+    ptype: number
     values: ''
 - time:
     default: '0'
@@ -64,17 +64,17 @@ params:
     default: '0'
     desc: Specifies the forecast steps in hours. Here a list of values can be
       given.
-    ptype: str or list[str]
+    ptype: number or list[number]
     values: ''
 - interval:
     default: '3'
     desc: ''
-    ptype: str
-    values: 3/6/9/12/24/48/72
+    ptype: number
+    values: '3/6/9/12/24/48/72'
 - quantile:
     default: ''
     desc: ''
-    ptype: str or list[str]
+    ptype: number or list[number]
     values: ''
 - grid:
     default: '[1, 1]'
