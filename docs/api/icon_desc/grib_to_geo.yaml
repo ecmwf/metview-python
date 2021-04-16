@@ -23,6 +23,7 @@ params:
     values: traditional/xyv
 - missing_data:
     default: include
-    desc: ''
+    desc: Specifies whether to include points with missing values from the GRIB field in the resulting
+      :class:`Geopoints`.
     ptype: str
     values: ignore/include
