@@ -615,6 +615,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         )
         self._db = None
         self._param_info = None
+        self._label = ""
 
         if (path is not None) and (fields is not None):
             raise ValueError("Fieldset cannot take both path and fields")
@@ -683,7 +684,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         if self._db:
             return self._db.label
         else:
-            return str()
+            return self._label
 
     def unique(self, key):
         if self._db:

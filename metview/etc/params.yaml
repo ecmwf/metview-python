@@ -27,7 +27,7 @@
     - diff_10fg3
   match:
       - 
-        name: 10fg3
+        info_name: 10fg3
       -
         shortName: 10fg3
         paramId: 228028
@@ -37,7 +37,7 @@
     - diff_speed
   match:
       - 
-        name: 10si
+        info_name: 10si
       -
         shortName: 10si
         paramId: 207
@@ -71,7 +71,7 @@
     - diff_z
   match:
       - 
-        name: z
+        info_name: z
       -
         shortName: z
         paramId: 129  
@@ -116,7 +116,7 @@
     - xs_r
   match:
       - 
-        name: r
+        info_name: r
       -
         shortName: r
         paramId: 157 
@@ -138,7 +138,7 @@
     - xs_q
   match:
       - 
-        name: q
+        info_name: q
       -
         shortName: q
         paramId: 133 
@@ -160,7 +160,7 @@
     - xs_t
   match:
       - 
-        name: t
+        info_name: t
       -
         shortName: t
         paramId: 130  
@@ -170,7 +170,7 @@
     - diff_tp
   match:
       - 
-        name: tp
+        info_name: tp
       -
         shortName: tp
         paramId: 228

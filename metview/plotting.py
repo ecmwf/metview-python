@@ -86,11 +86,14 @@ def _make_view(view):
     return view
 
 def plot_maps(
-    *args, layout=None, view=None, title_font_size=0.4, frame=-1, animate=True
+    *args, layout=None, view=None, title_font_size=None, legend_font_size=None, frame=-1, animate=True
 ):
     """
     Plot maps with generic contents
     """
+
+    title_font_size = 0.4 if title_font_size is None else title_font_size
+    legend_font_size = 0.35 if legend_font_size is None else legend_font_size
 
     # define the view
     view = _make_view(view)
@@ -137,6 +140,8 @@ def plot_maps(
                     desc.extend(vd)
 
         if data_items:
+            legend = mv.mlegend(legend_text_font_size=legend_font_size)
+            desc.append(legend)
             t = title.build(data_items)
             # LOG.debug(f"t={t}")
             desc.append(t)
@@ -148,11 +153,14 @@ def plot_maps(
 
 
 def plot_diff_maps(
-    *args, layout=None, view=None, title_font_size=0.4, frame=-1, animate=True
+    *args, layout=None, view=None, title_font_size=None, legend_font_size=None, frame=-1, animate=True
 ):
     """
     Plot difference maps
     """
+
+    title_font_size = 0.4 if title_font_size is None else title_font_size
+    legend_font_size = 0.35 if legend_font_size is None else legend_font_size
 
     # define the view
     view = _make_view(view)
@@ -198,6 +206,8 @@ def plot_diff_maps(
         if vd[k]:
             desc.append(vd[k])
         t = title.build(d)
+        legend = mv.mlegend(legend_text_font_size=legend_font_size)
+        desc.append(legend)
         desc.append(t)
 
     LOG.debug(f"desc={desc}")
@@ -212,13 +222,17 @@ def plot_xs(
     line=[],
     layout="",
     view=None,
-    title_font_size=0.4,
+    title_font_size=None,
+    legend_font_size=None,
     frame=-1,
     animate=True,
 ):
     """
     Plot cross section with map
     """
+
+    title_font_size = 0.4 if title_font_size is None else title_font_size
+    legend_font_size = 0.35 if legend_font_size is None else legend_font_size
 
     assert len(line) == 4
 

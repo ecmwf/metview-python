@@ -223,10 +223,10 @@ class StyleDb:
                 r = m
                 p_best = p
 
-        print(f"param={param}")
+        # print(f"param={param}")
         if p_best is not None:
             s = p_best.find_style(plot_type)
-            print(f" -> style={s}")
+            # print(f" -> style={s}")
             return self.styles.get(s, None)
         else:
             if scalar:

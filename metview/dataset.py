@@ -522,7 +522,7 @@ class FieldsetDb(IndexDb):
         LOG.debug(f"speed p={p}")
         if p is not None:
             param_id = ""
-            if p.name == "wind10":
+            if p.name == "wind10m":
                 param_id = 207
             elif p.name == "wind":
                 param_id = 10
@@ -531,6 +531,7 @@ class FieldsetDb(IndexDb):
                 r = mv.grib_set_long(r, ["paramId", param_id])
                 # r._scan()
                 # LOG.debug(f"db={r._db.blocks}")
+        r._label = self.label
         return r
 
     def deacc(self):
