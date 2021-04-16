@@ -511,8 +511,8 @@ class FieldsetDb(IndexDb):
             r.update(v[key].unique().tolist())
         return sorted(list(r))
 
-    def style(self, plot_type="map"):
-        return StyleDb.get_db().style(self.fs, plot_type=plot_type)
+    # def style(self, plot_type="map"):
+    #     return StyleDb.get_db().style(self.fs, plot_type=plot_type)
 
     def speed(self):
         r = mv.Fieldset()

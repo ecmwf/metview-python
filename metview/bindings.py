@@ -692,10 +692,11 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             return []
 
     def style(self, plot_type="map"):
-        if self._db:
-            return self._db.style(plot_type=plot_type)
-        else:
-            return None
+        return StyleDb.get_db().style(self, plot_type=plot_type)
+        # if self._db:
+        #     return self._db.style(plot_type=plot_type)
+        # else:
+        #     return None
 
     def speed(self):
         if self._db is not None:
