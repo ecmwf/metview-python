@@ -45,7 +45,7 @@ params:
 - step:
     default: '0'
     desc: Specifies the forecast steps in hours. Available when ``prepare_mode`` is "forecast".
-    ptype: str or list[str]
+    ptype: number or str or list[number] or list[str]
     values: ''
 - period_start_date:
     default: '-1'
