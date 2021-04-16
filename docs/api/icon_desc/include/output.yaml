@@ -1,0 +1,56 @@
+- output_title:
+    default: magics++ plot
+    desc: Defines a title for the output which gets displayed if the 
+          format supports it.
+    ptype: str
+    values: ''
+- output_name:
+    default: ''
+    desc: Defines the root of output filename.
+    ptype: str
+    values: ''
+- output_name_first_page_number:
+    default: 'on'
+    desc: Determines whether, for the first page of multipage output, the number is
+      included in the filename.
+    ptype: str
+    values: on/off
+- output_name_first_page_number_value:
+    default: '1'
+    desc: Sets the number of the first page. All other pages are numbered 
+      from this value onwards.
+    ptype: number
+    values: ''
+- output_file_minimal_width:
+    default: '1'
+    desc: Width of numbering of multi-file outputs (eg. use 1 for 'plot.1.png', 3 for 'plot.001.png' etc).
+    ptype: number
+    values: ''
+- output_file_separator:
+    default: '.'
+    desc: Defines the separator between root name and the page number.
+    ptype: str
+    values: ''
+- output_debug:
+    default: 'off'
+    desc: Defines if extra debug information are written in the output
+         file (PS, EPS, SVG) or console (PNG).
+    ptype: str
+    values: on/off
+- output_filelist:
+    default: 'off'
+    desc: Defines if a list of all the generated files should be written into a file.
+    ptype: str
+    values: on/off
+- output_filelist_name:
+    default: magics_outputs.lst
+    desc: Defines the name of the file containing the list of generated files. Enabled when 
+        ``output_filelist`` is "on".
+    ptype: str
+    values: ''  
+- output_filelist_reset:
+    default: 'off'
+    desc: Defines if the file containing the list of generated files is
+         started from scratch or appends to previous file.
+    ptype: str
+    values: 'on/off'

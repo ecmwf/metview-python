@@ -2,48 +2,14 @@ return: :class:`Request`
 summary: Defines a Postscript plot output driver based on the Cairo library.
 oneliner: Defines a Postscript plot output driver based on the Cairo library.
 params:
-- output_title:
-    default: magics++ plot
-    desc: ''
+- _include: !include include/output.yaml 
+- output_cairo_transparent_background:
+    default: 'off'
+    desc: Defines the background to be transparent.
     ptype: str
-    values: ''
-- output_name_first_page_number:
+    values: on/off
+- output_cairo_antialias:
     default: 'on'
-    desc: ''
-    ptype: str
-    values: on/off
-- output_file_minimal_width:
-    default: '1'
-    desc: ''
-    ptype: number
-    values: ''
-- output_debug:
-    default: 'off'
-    desc: ''
-    ptype: str
-    values: on/off
-- output_filelist:
-    default: 'off'
-    desc: ''
-    ptype: str
-    values: on/off
-- output_filelist_name:
-    default: magics_outputs.lst
-    desc: ''
-    ptype: str
-    values: ''
-- output_ps_colour_model:
-    default: rgb
-    desc: ''
-    ptype: str
-    values: rgb/cmyk/monochrome/gray/cmyk_monochrome/cmyk_gray
-- output_ps_scale:
-    default: '1.0'
-    desc: ''
-    ptype: number
-    values: ''
-- output_ps_split:
-    default: 'off'
-    desc: ''
+    desc: Defines if lines are antialiased.
     ptype: str
     values: on/off

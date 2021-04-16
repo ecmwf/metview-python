@@ -2,48 +2,20 @@ return: :class:`Request`
 summary: Defines an Encapsulated Postscript (EPS) plot output driver.
 oneliner: Defines an Encapsulated Postscript (EPS) plot output driver.
 params:
-- output_title:
-    default: magics++ plot
-    desc: ''
-    ptype: str
-    values: ''
-- output_name_first_page_number:
-    default: 'on'
-    desc: ''
-    ptype: str
-    values: on/off
-- output_file_minimal_width:
-    default: '1'
-    desc: ''
-    ptype: number
-    values: ''
-- output_debug:
-    default: 'off'
-    desc: ''
-    ptype: str
-    values: on/off
-- output_filelist:
-    default: 'off'
-    desc: ''
-    ptype: str
-    values: on/off
-- output_filelist_name:
-    default: magics_outputs.lst
-    desc: ''
-    ptype: str
-    values: ''
+- _include: !include include/output.yaml 
 - output_ps_colour_model:
     default: rgb
-    desc: ''
+    desc: Defines the PostScript colour model.
     ptype: str
     values: rgb/cmyk/monochrome/gray/cmyk_monochrome/cmyk_gray
 - output_ps_scale:
     default: '1.0'
-    desc: ''
+    desc: Defines the PostScript scale between 0.1 and 1.0 (1.0 being the full page size).
     ptype: number
     values: ''
 - output_ps_split:
     default: 'off'
-    desc: ''
+    desc: Enables the output to be split into different (single page) PostScript
+         files.
     ptype: str
     values: on/off
