@@ -3,7 +3,7 @@ summary: Defines a projection for a Cartesian-style coordinate system. This shou
   be used for any plot which is not to be displayed on a map. Once the projection has been
   defined through the axis specification, data points should be provided in this coordinate
   system. For further details on the role and usage of views in the visualisation process, 
-  please see `Anaylis Views <https://confluence.ecmwf.int/display/METV/Analysis+Views>`_.
+  please see `Analysis Views <https://confluence.ecmwf.int/display/METV/Analysis+Views>`_.
 oneliner: Defines the view for a Cartesian-style coordinate system.
 params:
 - map_projection:
