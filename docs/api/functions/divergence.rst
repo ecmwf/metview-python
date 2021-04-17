@@ -6,9 +6,9 @@ divergence
    Computes the horizontal divergence of 2-dimensional vector fields. 
    
    :param fx: zonal (west-east) vector component fieldset
-   :type fs: :class:`Fieldset`
-   :param fx: meridional (south-north) vector component fieldset
-   :type fs: :class:`Fieldset`
+   :type fx: :class:`Fieldset`
+   :param fy: meridional (south-north) vector component fieldset
+   :type fy: :class:`Fieldset`
    :rtype: :class:`Fieldset`  
    
    The computations for a vector field f=(fx , fy) are based on the following formula:
