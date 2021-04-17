@@ -10,8 +10,8 @@ distance
    
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
-   :param float lat: latitude of the reference point 
-   :param float lon: longitude of the reference point
+   :param number lat: latitude of the reference point 
+   :param number lon: longitude of the reference point
    :param coords: coordinates of the reference point as [lat, lon]
    :type coords: list
    :rtype: :class:`Fieldset`
@@ -28,8 +28,8 @@ distance
    
    :param fs: input geopoints
    :type fs: :class:`Geopoints`
-   :param float lat: latitude of the reference point 
-   :param float lon: longitude of the reference point
+   :param number lat: latitude of the reference point 
+   :param number lon: longitude of the reference point
    :param coords: coordinates of the reference point as [lat, lon]
    :type coords: list
    :rtype: :class:`Geopoints`
