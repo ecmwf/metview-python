@@ -9,12 +9,12 @@ create_geo
 
     :param fs: input geopoints
     :type fs: :class:`Geopoints`
-    :param int number_of_points: number of points
+    :param number number_of_points: number of points
     :param str format: geopoints format (see below)
-    :param int number_of_value_columns: the number of value columns for the "ncols" formatted
+    :param number number_of_value_columns: the number of value columns for the "ncols" formatted
     :param list value_columns: the name of the value columns for the "ncols" format
     :param kwargs: see below
-    :rtype: float
+    :rtype: :class:`Geopoints`
 
     It is intended that this function be used in conjunction with the "set_* geopoints" functions in order to populate the geopoints with data. 
     
