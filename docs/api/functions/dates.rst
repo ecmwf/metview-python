@@ -10,7 +10,7 @@ dates
     :type fs: :class:`Geopoints`
     :rtype: list of datetime.datetime
 
-    The return values also contain the time components.
+    The return values combine the date and time components.
 
 
 .. mv-minigallery:: dates
