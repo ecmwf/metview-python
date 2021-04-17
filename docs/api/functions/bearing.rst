@@ -10,9 +10,9 @@ bearing
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
    :param lat: latitude of the reference point
-   :type lat: float
+   :type lat: number
    :param lon: longitude of the reference point
-   :type lon: float
+   :type lon: number
    :param coords: coordinates of the reference point as [lat, lon]
    :type coords: list
    :rtype: :class:`Fieldset`
