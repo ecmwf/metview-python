@@ -1,8 +1,8 @@
 return: :class:`Fieldset` or :class:`Bufr`
 summary: Removes padding or unwanted data transmission headers from the beginning
-    of binary data files so that Metview could properly recognise them as a GRIB or BUFR file. 
+    of binary data files so that Metview can properly recognise them as a GRIB or BUFR file. 
 oneliner: Removes padding or unwanted data transmission headers from the beginning
-    of binary data files so that Metview could properly recognise them as a GRIB or BUFR file.
+    of binary data files so that Metview can properly recognise them as a GRIB or BUFR file.
 params:
 - path:
     default: ''
