@@ -6,9 +6,9 @@ corr_a
    Computes the correlation between ``fs1`` and ``fs2`` over a weighted ``area``. 
    
    :param fs1: first input fieldset
-   :type fs: :class:`Fieldset`
+   :type fs1: :class:`Fieldset`
    :param fs2: second input fieldset
-   :type fs: :class:`Fieldset`
+   :type fs2: :class:`Fieldset`
    :param list area: area as [N,W,S,E] to perform the computations
    :rtype: float or list 
    
