@@ -3,7 +3,7 @@ columns
 
 .. py:function:: columns(gpt)
 
-    Returns the name of the columns in ``gpt``.
+    Returns the names of the columns in ``gpt``.
     
     :param fs: input geopoints
     :type fs: :class:`Geopoints`
