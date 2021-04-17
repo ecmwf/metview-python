@@ -6,9 +6,9 @@ dewpoint_from_specific_humidity
     Computes the dewpoint temperature from the given specific humidity (``q``) and pressure (``p``). 
 
     :param q: specific humidity (kg/kg)
-    :type q: float, ndarray or :class:`Fieldset`
+    :type q: number, ndarray or :class:`Fieldset`
     :param p: pressure (Pa)
-    :type p: float, ndarray or :class:`Fieldset`
+    :type p: number, ndarray or :class:`Fieldset`
     :rtype: same type as ``q`` or None
 
     The result is the dewpoint temperature in K units. On error None is returned. The following rules are applied when ``q`` is a :class:`Fieldset`:
