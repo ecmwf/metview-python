@@ -5,11 +5,12 @@ dataset_to_fieldset
 
    Converts an xarray Dataset to a :class:`Fieldset`.
 
-   :param xsd: the xarray Dataset
+   :param xds: the xarray Dataset
    :type xds: xarray.Dataset
    :rtype: :class:`Fieldset`
 
-    The conversion is based on the Open Source `cfgrib <https://github.com/ecmwf/cfgrib>`_ package which is planned to be ultimately integrated into xarray. Note that this uses an experimental feature of cfgrib and will only work for a small subset of xarray datasets.
+    The conversion is based on the Open Source `cfgrib <https://github.com/ecmwf/cfgrib>`_ package which
+    is an xarray backend engine. Note that this uses an experimental feature of cfgrib and will only work for a small subset of xarray datasets.
 
    :Example:
 
