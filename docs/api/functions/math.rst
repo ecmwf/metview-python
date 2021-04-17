@@ -78,7 +78,7 @@ Mathematical functions
 
    Returns the integer part of the dividing ``data_1`` by ``data_2``.
 
-   :param data_1: divident data
+   :param data_1: dividend data
    :type data_1:  :class:`Fieldset`, :class:`Geopoints`, :class:`NetCDF`, nd-array or number
    :param data_2: divisor data
    :type data_2: :class:`Fieldset`, :class:`Geopoints`, :class:`NetCDF`, nd-array or number
