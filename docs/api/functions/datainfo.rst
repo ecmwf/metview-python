@@ -9,7 +9,7 @@ datainfo
    :type fs: :class:`Fieldset`
    :rtype: list of dict
    
-   A given dict contains the following members: 
+   The returned dict contains the following members: 
    
    * index: the index of the field in the fieldset (indexing starts at 0)
    * number_present: the number of non-missing values
