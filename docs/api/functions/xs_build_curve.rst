@@ -11,7 +11,7 @@ xs_build_curve
    :type fs: :class:`Fieldset`
    :param colour: the colour of the curve
    :type colour: str
-   :param style: the line style of the curve
+   :param style: the line style of the curve. The possible values are "solid", "dash", "dot", "chain_dot", "chain_dash".
    :type style: str
    :param thickness: the thickness of the curve
    :type thickness: int
