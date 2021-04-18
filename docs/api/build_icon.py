@@ -121,8 +121,8 @@ class DocParam:
     def type_str(self):
         r = self.p_type
         if (
-            self.p_type == "str"
-            and self.values
+            self.p_type in ["str", "number"]
+            and self.values and isinstance(self.values, str)
             and (len(self.values.split("/")) < 6 or len(self.values) < 60)
         ):
             r = self._format_list(self.values)
@@ -136,6 +136,12 @@ class DocParam:
             return (
                 "{" + ", ".join([self._add_double_quote(v) for v in v.split("/")]) + "}"
             )
+        elif "number" in self.p_type:
+            return (
+                    "{" + ", ".join([v for v in v.split("/")]) + "}"
+                )
+        else:
+            return str()
 
     def _add_double_quote(self, v):
         if v:
