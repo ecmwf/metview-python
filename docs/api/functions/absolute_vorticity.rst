@@ -9,7 +9,7 @@ absolute_vorticity
    :type rvo: :class:`Fieldset`
    :rtype: :class:`Fieldset`  
    
-   The computation of relative vorticity is based on the following formula:
+   The computation of absolute vorticity is based on the following formula:
 
     .. math::
       

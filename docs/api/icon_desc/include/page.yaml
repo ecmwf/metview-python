@@ -5,18 +5,18 @@
     values: on/off
 - page_frame_colour:
     default: charcoal
-    desc: Colour of the page frame.
+    desc: Colour of the page frame. Available when ``page_frame`` is "on".
     ptype: str
     values: ''
 - page_frame_line_style:
     default: solid
-    desc: Line style of the page frame.
+    desc: Line style of the page frame. Available when ``page_frame`` is "on".
     ptype: str
     values: solid/dot/dash/chain_dot/chain_dash
 - page_frame_thickness:
     default: '2'
-    desc: Line thickness of the page frame.
-    ptype: int
+    desc: Line thickness of the page frame. Available when ``page_frame`` is "on".
+    ptype: number
     values: ''
 - page_id_line:
     default: 'off'
@@ -38,17 +38,17 @@
     values: on/off
 - subpage_frame_colour:
     default: black
-    desc: Colour of the subpage frame.
+    desc: Colour of the subpage frame. Available when ``subpage_frame`` is "on".
     ptype: str
     values: ''
 - subpage_frame_line_style:
     default: solid
-    desc: Line style of the subpage frame.
+    desc: Line style of the subpage frame. Available when ``subpage_frame`` is "on".
     ptype: str
     values: solid/dot/dash/chain_dot/chain_dash
 - subpage_frame_thickness:
     default: '2'
-    desc: Line thickness of the subpage frame.
+    desc: Line thickness of the subpage frame. Available when ``subpage_frame`` is "on".
     ptype: int
     values: ''
 - subpage_background_colour:
