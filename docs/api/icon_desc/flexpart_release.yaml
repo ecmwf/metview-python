@@ -38,7 +38,7 @@ params:
 - area:
     default: '-90/-180/90/180'
     desc: Specifies the area for the release in degrees in S/W/N/E format.
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - level_units:
     default: agl
@@ -73,5 +73,5 @@ params:
       is defined by the ``release_units`` parameter of :func:`flexpart_run`. Please note
       that for backward simulations any non-zero positive value can stand here because
       the output is normalised by this value!
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''

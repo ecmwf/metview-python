@@ -112,14 +112,14 @@ params:
 - area:
     default: '-90/-180/90/180'
     desc: Specifies the area of the output ``grid`` in [South, West, North, East] format.
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - grid:
     default: '1/1'
     desc: Specifies the resolution of the output grid in [dx, dy] format, where
       dx is the grid increment in East-West direction, while dy is the grid
       increment in North-South direction (both in units of degrees).
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - retrieve_group_by_time:
     default: 'on'

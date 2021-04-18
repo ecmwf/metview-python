@@ -131,7 +131,7 @@ params:
 - legend_values_list:
     default: ''
     desc: List of values to show in the legend.
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - legend_column_count:
     default: '1'

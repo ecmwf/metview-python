@@ -27,14 +27,14 @@ params:
     default: '0/0'
     desc: Specifies the geographical location (as [lat, lon]) for which the diagram is to be plotted.
       Available when ``point_selection`` is "coordinates".
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - area_average:
     default: '30/-30/-30/30'
     desc: Specifies a geographical area over which an area average value will
       be used, instead of a point value, to produce the diagram.  The area is defined as
       [north, west, south, east]. Available when ``point_selection`` is "area_average".
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - station:
     default: ''

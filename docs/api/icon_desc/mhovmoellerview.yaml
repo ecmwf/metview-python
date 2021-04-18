@@ -16,14 +16,14 @@ params:
     default: '0/-180/0/180'
     desc: Specifies the coordinates of a transect line along which the Hovmoeller
          diagram is calculated in [lat1, lon1, lat2, lon2] format. Enabled when ``type`` is "line_hovm".
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - area:
     default: '30/-30/-30/30'
     desc: Specifies the coordinates of the area (as [north, west, south, east]) over
       which the Hovmoeller diagram is calculated. Enabled when ``type`` is "area_hovm" or 
       "vertical_hovm".
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - average_direction:
     default: east_west

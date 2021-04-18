@@ -80,32 +80,32 @@ params:
 - scm_x_min_list:
     default: ''
     desc: ''
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - scm_x_max_list:
     default: ''
     desc: ''
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - scm_y_min_list:
     default: ''
     desc: ''
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - scm_y_max_list:
     default: ''
     desc: ''
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - scm_value_min_list:
     default: ''
     desc: ''
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - scm_value_max_list:
     default: ''
     desc: ''
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - scm_grid:
     default: 'off'

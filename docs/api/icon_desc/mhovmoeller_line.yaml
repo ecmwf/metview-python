@@ -14,7 +14,7 @@ params:
     default: '0/-180/0/180'
     desc: Specifies the coordinates of a transect line along which the Hovmoeller
          diagram is calculated in [lat1, lon1, lat2, lon2] format.
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - swap_axes:
     default: 'no'

@@ -167,18 +167,18 @@ params:
 - symbol_min_table:
     default: ''
     desc: Table of minimum values.  The table is used in conjunction with ``symbol_max_table``.
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - symbol_max_table:
     default: ''
     desc: Table of maximum values. The table is used in conjunction with ``symbol_min_table``.
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - symbol_marker_table:
     default: ''
     desc: Table of marker indices. The table is to be used in conjunction with ``symbol_min_table``
       and ``symbol_max_table``.
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - symbol_name_table:
     default: ''
@@ -196,7 +196,7 @@ params:
     default: ''
     desc: Table of symbol heights (cm). The table is to be used in conjunction with ``symbol_min_table``
       and ``symbol_max_table``.
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - symbol_advanced_table_selection_type:
     default: count
@@ -240,7 +240,7 @@ params:
 - symbol_advanced_table_level_list:
     default: ''
     desc: List of symbol table values.
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - symbol_advanced_table_colour_method:
     default: calculate
@@ -277,7 +277,7 @@ params:
 - symbol_advanced_table_marker_list:
     default: ''
     desc: List of markers to be used in symbol plotting.
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - symbol_advanced_table_marker_name_list:
     default: ''
@@ -308,7 +308,7 @@ params:
 - symbol_advanced_table_height_list:
     default: ''
     desc: List of heights to be used.
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - symbol_advanced_table_height_list_policy:
     default: lastone

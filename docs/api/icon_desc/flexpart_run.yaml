@@ -129,19 +129,19 @@ params:
 - output_area:
     default: '-90/-180/90/180'
     desc: Specifies the area for the gridded output in degrees in S/W/N/E format.
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - output_grid:
     default: '1/1'
     desc: Specifies the grid resolution for the gridded output in degrees as
      [east_west_resolution, north_south_resolution].
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - output_levels:
     default: '[]'
     desc: Specifies the list of height levels of the gridded output. The levels are
       given in metres units.
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - user_species_path:
     default: ''
@@ -194,12 +194,12 @@ params:
 - receptor_latitudes:
     default: ''
     desc: Specifies the list of receptor site latitudes.
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - receptor_longitudes:
     default: ''
     desc: Specifies the list of receptor site longitudes.
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - age_classes:
     default: ''

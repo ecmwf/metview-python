@@ -20,5 +20,5 @@ params:
 - area:
     default: '90'
     desc: ''
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''

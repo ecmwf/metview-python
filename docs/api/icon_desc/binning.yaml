@@ -27,7 +27,7 @@ params:
 - binning_x_list:
     default: ''
     desc: ''
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - binning_x_interval:
     default: '10'
@@ -62,7 +62,7 @@ params:
 - binning_y_list:
     default: ''
     desc: ''
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - binning_y_interval:
     default: '10'

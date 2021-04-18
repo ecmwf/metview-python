@@ -44,7 +44,7 @@ params:
 - first_point:
     default: '0'
     desc: ''
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - dx_in_metres:
     default: ''
@@ -121,7 +121,7 @@ params:
         (swapping north/south). Specifies the geographical area 
         as [south, west, north, east] that the output fields will cover, the default
         being for the whole globe. 
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - rotation:
     default: '-90/0'
@@ -130,7 +130,7 @@ params:
         as lat/lon in degree, as described
         here: `rotation - keyword in MARS/Dissemination request <https://confluence.ecmwf.int/pages/viewpage.action?pageId=168664701>`_.
         This is applicable to regular lat/lon or regular/reduced Gaussian grids.
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - truncation:
     default: automatic

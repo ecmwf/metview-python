@@ -128,7 +128,7 @@ params:
 - axis_tick_position_list:
     default: ''
     desc: List specifying the positions of ticks (in user coordinates!).
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - axis_tick_position:
     default: out

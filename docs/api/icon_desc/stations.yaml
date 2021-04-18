@@ -38,7 +38,7 @@ params:
       location of a meteorological station. It may happen that you do not know the exact
       coordinates of the station. In this case, you can specify a geographical tolerance 
       in ``threshold``.
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - height:
     default: '0'
@@ -77,7 +77,7 @@ params:
     desc: Specifies the coordinates of an area (as [north, west, south, east]) where
       meteorological stations of interest are located. Only available
       if ``search_stations_database`` is "wmo" and ``search_key`` is "area".
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - fail_on_error:
     default: 'yes'

@@ -17,7 +17,7 @@ params:
     default: '30/-30/-30/30'
     desc: Specifies the coordinates of the area (as [north, west, south, east]) over
       which the Hovmoeller diagram is calculated.
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - vertical_level_type:
    default: as_in_data

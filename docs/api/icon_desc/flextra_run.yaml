@@ -135,19 +135,19 @@ params:
     default: ''
     desc: Specifies the latitudes of the trajectory start points when ``flextra_run_mode``
       is set to "normal".
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - flextra_normal_longitudes:
     default: ''
     desc: Specifies the longitudes of the trajectory start points when ``flextra_run_mode``
       is set to "normal".
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - flextra_normal_levels:
     default: ''
     desc: Specifies the levels of the trajectory start points when ``flextra_run_mode``
       is set to "normal".
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - flextra_normal_level_units:
     default: '1'
@@ -178,7 +178,7 @@ params:
 - flextra_cet_area:
     default: '-90/-180/90/180'
     desc: Specify the geographical area of the start grid by a [South, West, North, East] list.
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - flextra_cet_dx:
     default: '1'
@@ -234,19 +234,19 @@ params:
     default: ''
     desc: Specifies the latitudes of the trajectory start points when ``flextra_run_mode``
       is set to "flight".
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - flextra_flight_longitudes:
     default: ''
     desc: Specifies the longitudes of the trajectory start points when ``flextra_run_mode``
       is set to "flight".
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - flextra_flight_levels:
     default: ''
     desc: Specifies the levels of the trajectory start points when ``flextra_run_mode``
       is set to "flight".
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - flextra_flight_level_units:
     default: hpa

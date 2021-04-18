@@ -142,14 +142,14 @@ params:
     default: '60/-12/50/3'
     desc: Specifies the coordinates of the area of interest in the form of [North, West, South, East]. 
       Enabled when ``location_filter`` is "area".
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - line:
     default: '40'
     desc: Specifies the coordinates of a transect line in [lat1, lon1, lat2, lon2] format. 
       This will filter all the observations close enough to the line - how close is defined
       by ``delta_in_km``. Enabled when ``location_filter`` is "line".
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - delta_in_km:
     default: '50'
@@ -175,7 +175,7 @@ params:
     desc: Specifies the value condition for ``custom_filter``. You may specify
       a list of values here. If ``custom_filter`` is "range" or "exclude" you
       need to specify a list with two elements here.
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - fail_on_error:
     default: 'yes'

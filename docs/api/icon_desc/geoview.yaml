@@ -32,7 +32,7 @@ params:
 - area:
     default: '-90/-180/90/180'
     desc: ''
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - map_hemisphere:
     default: north

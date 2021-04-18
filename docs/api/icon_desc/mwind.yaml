@@ -84,7 +84,7 @@ params:
 - wind_advanced_colour_level_list:
     default: ''
     desc: List of wind band values.
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - wind_advanced_colour_table_colour_method:
     default: calculate

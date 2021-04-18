@@ -26,14 +26,14 @@ params:
     default: '-90/-180/90/180'
     desc: Specifies the area of the output ``grid`` in south/west/north/east format.
       Only available if ``grib_definition_mode`` is "user".
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - grid:
     default: '1.5/1.5'
     desc: Specifies a resolution in degrees, thus together with ``area``, determining
       the limits and density of the regular grid for interpolation of the point
       data values. Only available if ``grib_definition_mode`` is "user".
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - template_grib:
     default: ''
@@ -49,7 +49,7 @@ params:
       a narrow neighbourhood, if the density is sparse you should use a wide neighbourhood.
       Remember that the wider the neighbourhood the smoother the resulting interpolated
       field (and the slower the computation).
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - interpolation_method:
     default: reciprocal

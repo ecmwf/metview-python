@@ -82,7 +82,7 @@ params:
       Specifies the resolution of the resulting global grid in [dx, dy] format,
       where dx is the grid increment in West-East direction, while dy is the grid
       increment in South-North direction (both in units of degrees).
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - fail_on_data_error:
     default: 'yes'

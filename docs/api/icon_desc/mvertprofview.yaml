@@ -14,14 +14,14 @@ params:
     default: '0/0'
     desc: Specifies the coordinates (as [lat, lon]) of the point for which the vertical profile
       is calculated. Enabled when ``input_mode`` is "point" or "nearest_gridpoint".
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - area:
     default: '30/-30/-30/30'
     desc: Specifies the coordinates of the area (as [north, west, south, east]) over
       which the averages composing the vertical profile are calculated. Enabled 
       when ``input_mode`` is "area".
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - bottom_level:
     default: '1015.0'

@@ -20,7 +20,7 @@ params:
 - percentiles:
     default: '10.0'
     desc: Specifies a list of percentile values from 0 to 100.
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - interpolation:
     default: nearest_neighbour

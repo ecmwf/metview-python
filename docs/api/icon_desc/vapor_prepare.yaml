@@ -66,7 +66,7 @@ params:
     default: '-90/-180/90/180'
     desc: Specifies the area of the output grid in [south, west, north, east] format. Available
       when ``vapor_area_selection`` is "interpolate".
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - vapor_grid:
     default: '1/1'
@@ -74,7 +74,7 @@ params:
       the grid increment in east-west direction, while dy is the grid increment in
       north-south direction (both in degrees units). Available
       when ``vapor_area_selection`` is "interpolate".
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - vapor_step_number:
     default: '-1'

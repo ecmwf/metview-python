@@ -19,7 +19,7 @@ params:
     default: '90/-180/-90/180'
     desc: Specifies the coordinates of the area (as [North, West, South, East]) over
       which the averages are calculated. 
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - direction:
     default: ns

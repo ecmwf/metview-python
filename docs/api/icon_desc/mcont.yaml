@@ -80,7 +80,7 @@ params:
     default: ''
     desc: List of thickness values to be used for rainbow isolines when
      ``contour_line_colour_rainbow_method`` is "list".
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - contour_line_thickness_rainbow_list_policy:
     default: lastone
@@ -163,7 +163,7 @@ params:
 - contour_level_list:
     default: ''
     desc: List of contour levels to be plotted.
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - contour_interval:
     default: '8.0'
@@ -281,7 +281,7 @@ params:
     default: ''
     desc: Height table to be used with marker shading technique. Available 
         when ``contour_shade_technique`` is "marker".
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - contour_shade_marker_table_type:
     default: index
@@ -293,7 +293,7 @@ params:
     default: ''
     desc: Marker table defined by a a set of numerical symbol identifiers when 
         ``contour_shade_marker_table_type`` is "index".
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - contour_shade_marker_name_table:
     default: ''
@@ -347,7 +347,7 @@ params:
 - contour_gradients_step_list:
     default: '10'
     desc: Number of steps to compute for each interval.
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - contour_shade_palette_name:
     default: ''

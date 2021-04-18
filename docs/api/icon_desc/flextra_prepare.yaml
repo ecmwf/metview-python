@@ -100,14 +100,14 @@ params:
       Specifies the area of the output ``flextra_grid`` in south/west/north/east format. 
       
       .. note:: To make global domains work with FLEXTRA the western border must be set to one grid cell east of 180. E.g. if the east-west grid resolution is 1 degree ``flextra_area`` should be set to [-90, -179, 90, 180] etc.
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - flextra_grid:
     default: '1/1'
     desc: Specifies the resolution of the output grid in [dx/dy] format, where
       dx is the grid increment in east-west direction, while dy is the grid
       increment in north-south direction (both in units of degrees).
-    ptype: list[float]
+    ptype: list[number]
     values: ''
 - flextra_top_level:
     default: '1'

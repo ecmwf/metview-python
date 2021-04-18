@@ -17,12 +17,12 @@ params:
 - area:
     default: '-90'
     desc: ''
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - resolution:
     default: '1'
     desc: ''
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - projection:
     default: latlong
