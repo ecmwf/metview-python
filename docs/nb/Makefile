@@ -4,7 +4,7 @@
 SRCS := $(wildcard *.py ../examples/*.ipynb)
 
 # we do not have the list of all rst targets, so we just pick one 
-# from "bn_backre". These must always be exist!
+# from "nb_backref". This must always be exist!
 BACKREF_TARGET = ../gen_files/nb_backref/mcont.rst
 
 $(BACKREF_TARGET): $(SRCS)

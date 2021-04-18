@@ -1,6 +1,6 @@
 
 .DEFAULT_GOAL := html
-.PHONY: all html clean
+.PHONY: all html metview clean
 
 ICON_SRCS := $(wildcard build_icon.py functions.yaml icon_desc/*.yaml icon_desc/*.rst icon_desc/include/*.yaml)
 TOC_SRCS = build_toc.py functions.yaml toc.yaml 
