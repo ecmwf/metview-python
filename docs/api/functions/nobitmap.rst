@@ -7,7 +7,7 @@ nobitmap
    
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
-   :param float value: value to replace missing values with
+   :param number value: value to replace missing values with
    :rtype: :class:`Fieldset`
 
    .. note::

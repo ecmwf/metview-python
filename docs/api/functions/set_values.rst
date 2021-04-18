@@ -33,7 +33,7 @@ set_values
     :param index_or_name: index or name of the values column to be replaced in ``gpt``
     :type index_or_name: int or str
     :param values: values to be written into ``gpt``
-    :type values: float or list or ndarray
+    :type values: number or list or ndarray
     :rtype: :class:`Geopoints`
 
      If ``index_or_name`` is specified and is a number it refers to the index of the column within the value columns (and not within all the columns in ``gpt``). E.g. 0 means the first value column. 

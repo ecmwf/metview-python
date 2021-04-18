@@ -10,9 +10,9 @@ nearest_gridpoint_info
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
    :param lat: target latitude
-   :type lat: float
+   :type lat: number
    :param lon: target longitude
-   :type lon: float
+   :type lon: number
    :param location: single target location defined as a list of [lat, lon]
    :type location: list
    :param str mode: specifies the way missing values are handled. The only allowed value is "valid".

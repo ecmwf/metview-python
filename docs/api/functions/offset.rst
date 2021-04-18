@@ -9,8 +9,8 @@ offset
 
     :param gpt: input geopoints
     :type gpt: :class:`Geopoints`
-    :param float lat_offset: latitude offset
-    :param float lon_offset: longitude offset
+    :param number lat_offset: latitude offset
+    :param number lon_offset: longitude offset
     :type list offset:  latitude and longitude offsets as [lat_offset, lon_offset]
     :rtype: :class:`Geopoints`
 

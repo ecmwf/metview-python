@@ -10,7 +10,7 @@ corr_a
    :param fs2: second input fieldset
    :type fs2: :class:`Fieldset`
    :param list area: area as [N,W,S,E] to perform the computations
-   :rtype: float or list 
+   :rtype: number or list 
    
    If ``area`` is not specified the whole field will be used in the calculation. The result is a number for a single field or a list for a multi-field :class:`Fieldset`.
 

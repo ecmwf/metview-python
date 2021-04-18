@@ -6,10 +6,10 @@ potential_temperature
     Computes the potential temperature for a given temperature (``t``) and pressure (``p``).
 
     :param t: temperature (K)
-    :type t: float
+    :type t: number
     :param p: pressure (Pa)
-    :type p: float
-    :rtype: float or None
+    :type p: number
+    :rtype: number or None
     
     The result is the potential temperature in K units. On error None is returned.
 

@@ -7,8 +7,8 @@ gfind
    
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
-   :param float value: the value to match
-   :param float eps: when specified data values are selected when :math:`abs(data - value) < eps`
+   :param number value: the value to match
+   :param number eps: when specified data values are selected when :math:`abs(data - value) < eps`
    :rtype: :class:`Geopoints`  
   
    Missing values in ``fs`` are not returned.

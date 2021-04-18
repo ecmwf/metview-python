@@ -6,13 +6,13 @@ mvl_geoline
    Plots a straight line linearly sampled in lat-lon onto any map projections.
    
    :param lat1: start latitude of the line
-   :type lat1: float
+   :type lat1: number
    :param lon1: start longitude of the line
-   :type lon1: float
+   :type lon1: number
    :param lat2: end latitude of the line
-   :type lat2: float
+   :type lat2: number
    :param lon2: end longitude of the line
-   :type lon2: float
+   :type lon2: number
    :param incr: increment in degrees for the line segments to make up the line
    :type incr: int
    :rtype: :func:`input_visualiser`

@@ -59,7 +59,7 @@ grib_get
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
    :param string key: the ecCodes key
-   :rtype: float, str or list
+   :rtype: number, str or list
 
    This group of functions is based on the similarly named ecCodes C API functions. The available ecCodes keys can be inspected in various ways:
 

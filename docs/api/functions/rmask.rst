@@ -11,9 +11,9 @@ rmask
    :type fs: :class:`Fieldset`
    :param circle: circle as a list of [lat, lon, radius]
    :type circle_or_lat: list
-   :param float lat: latitude coordinate of the centre of the circle
-   :param float lon: longitude coordinate of the centre of the circle
-   :param float radius: radius of the circle in m
+   :param number lat: latitude coordinate of the centre of the circle
+   :param number lon: longitude coordinate of the centre of the circle
+   :param number radius: radius of the circle in m
    :rtype: :class:`Fieldset`
 
    .. note::

@@ -12,7 +12,7 @@ max
    :type fs: :class:`Fieldset`
    :param other_fs: another input fieldset
    :type other_fs: :class:`Fieldset`
-   :param float value: input numerical value
+   :param number value: input numerical value
    :param gpt: input geopoints data
    :type gpt: :class:`Geopoints`
    :rtype: :class:`Fieldset` or :class:`Geopoints`
@@ -34,7 +34,7 @@ max
     :param nc_other: another input nectdf
     :type nc_other: :class:`NetCDF`
     :param value: value
-    :type value: float
+    :type value: number
     :rtype:  :class:`NetCDF`
 
 

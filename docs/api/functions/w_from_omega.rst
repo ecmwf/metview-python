@@ -6,11 +6,11 @@ w_from_omega
     Computes the hydrostatic vertical velocity from  pressure velocity (``omega``) for a given temperature (``t``) and pressure (``p``).
 
     :param omega: hydrostatic pressure velocity (Pa/s)
-    :type omega: float, ndarray or :class:`Fieldset`
+    :type omega: number, ndarray or :class:`Fieldset`
     :param t: temperature (K)
-    :type t: float, ndarray or :class:`Fieldset`
+    :type t: number, ndarray or :class:`Fieldset`
     :param p: pressure (Pa)
-    :type p: float, ndarray or :class:`Fieldset`
+    :type p: number, ndarray or :class:`Fieldset`
     :rtype: same type as ``omega`` or None
 
     The result is the vertical velocity in m/s units. On error None is returned. The following rules are applied when ``omega`` is a :class:`Fieldset`:

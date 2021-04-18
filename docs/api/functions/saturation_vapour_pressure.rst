@@ -6,7 +6,7 @@ saturation_vapour_pressure
     Computes the saturation vapour pressure for a given temperature (``t``) and ``phase``.
     
     :param t: temperature (K)
-    :type t: float or ndarray
+    :type t: number or ndarray
     :param phase: is either "water", "ice" or "mixed". When it is not specified the "water" phase is used.
     :type phase: str
     :rtype: same type as ``t`` or None

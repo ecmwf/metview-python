@@ -9,6 +9,6 @@ value
     :type nc: :class:`NetCDF`
     :param index: value index (zero-based)
     :type index: int
-    :rtype: float, str or datetime.datetime
+    :rtype: number, str or datetime.datetime
 
 .. mv-minigallery:: value

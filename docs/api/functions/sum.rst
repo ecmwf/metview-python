@@ -24,7 +24,7 @@ sum
     
     :param gpt: input geopoints
     :type gpt: :class:`Geopoints`
-    :rtype: float
+    :rtype: number
     
     Missing values are bypassed in this calculation. If there are no valid values None is returned.
 

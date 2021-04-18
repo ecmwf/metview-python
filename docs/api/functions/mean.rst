@@ -24,7 +24,7 @@ mean
     
     :param gpt: input geopoints
     :type gpt: :class:`Geopoints`
-    :rtype: float or None
+    :rtype: number or None
     
     Missing values are bypassed in this calculation. If there are no valid values, then None is returned.
 

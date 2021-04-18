@@ -6,9 +6,9 @@ xy_from_polar
     Converts vector data from meteorological polar representation to xy representation.
 
     :param magnitude: temperature (K)
-    :type magnitude: float, ndarray or :class:`Fieldset`
+    :type magnitude: number, ndarray or :class:`Fieldset`
     :param dir: relative humidity ([0-1])
-    :type dir: float, ndarray or :class:`Fieldset`
+    :type dir: number, ndarray or :class:`Fieldset`
     :rtype: same type as ``magnitude`` or None
 
     In polar representation the data is specified by two components:

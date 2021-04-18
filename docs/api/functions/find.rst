@@ -9,7 +9,7 @@ find
    
    :param fs: input fieldset 
    :type fs: :class:`Fieldset`
-   :param float value: the value defining the search condition
+   :param number value: the value defining the search condition
    :param list range: the range defining the search condition
    :param area_or_mask: area or mask field restricting the search
    :type area_or_mask: list or :class:`Fieldset`

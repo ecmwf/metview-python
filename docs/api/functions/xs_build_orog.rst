@@ -10,7 +10,7 @@ xs_build_orog
    :param orog_fs: the orography data
    :type orog_fs: :class:`Fieldset`
    :param bottom_level: the bottom level of the orography area in the same units  as the vertical axis of the cross section
-   :type bottom_level: float
+   :type bottom_level: number
    :param colour: the colour of the orography area
    :type colour: str
    :rtype: list of :func:`input_visualiser` and :func:`mgraph`

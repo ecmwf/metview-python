@@ -6,11 +6,11 @@ mvl_geocircle
    Plots a circle defined on the Earths surface with a given radius in km onto a map in any projections.
    
    :param lat: latitude of the centre of the circle
-   :type lat: float
+   :type lat: number
    :param lon: longitude of the centre of the circle
-   :type lon: float
+   :type lon: number
    :param radius: radius of the circle in km
-   :type radius: float
+   :type radius: number
    :param resolution: number of line segments to make up the circle
    :type resolution: int
    :rtype: :func:`input_visualiser`

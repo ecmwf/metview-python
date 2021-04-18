@@ -6,11 +6,11 @@ lifted_condensation_level
     Computes the Lifted Condensation Level (LCL) of a parcel ascending from a given temperature, dewpoint and pressure.
    
     :param t: initial temperature (K)
-    :type t: float
+    :type t: number
     :param td: initial dew point temperature (K)
-    :type td: float
+    :type td: number
     :param p: initial pressure (Pa)
-    :type p: float
+    :type p: number
     :rtype: dict or None
 
     The LCL is the level where the parcel becomes saturated and it is computed with an iterative method along the dry adiabat of the ascending parcel.

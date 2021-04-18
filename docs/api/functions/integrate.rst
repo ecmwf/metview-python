@@ -9,7 +9,7 @@ integrate
    :type fs: :class:`Fieldset`
    :param area_or_mask: list defining an area as [North, West, South, East] or fieldset defining a mask
    :type area_or_mask: list or :class:`Fieldset`
-   :rtype: float or ndarray or None
+   :rtype: number or ndarray or None
    
    If ``fs`` contains only one field a number is returned. If there is more than one field a numpy array is returned. Missing values in the input fieldset are bypassed in this calculation. For each field for which there are no valid values None is returned.
 
