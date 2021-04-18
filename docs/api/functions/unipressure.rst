@@ -12,7 +12,7 @@ unipressure
    :param fs_levels: levels fieldset
    :type fs_levels: :class:`Fieldset`
    :param lnsp_code: ecCodes paramId for lnsp
-   :type lnsp_code: int
+   :type lnsp_code: number
    :param levels: list of target model levels to compute the pressure on
    :type levels: list
    :rtype: :class:`Fieldset`

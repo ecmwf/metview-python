@@ -8,7 +8,7 @@ average_ew
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
    :param list area: area as [N,W,S,E] to perform the averaging 
-   :param int increment: increment in degrees defining the size of the latitude belts
+   :param number increment: increment in degrees defining the size of the latitude belts
    :rtype: 1d-ndarray or 2d-ndarray
 
    If ``fs`` only contains one field a 1d-ndarray is returned otherwise the result is a 2d-ndarray. 

@@ -10,7 +10,7 @@ mvl_geopolyline
    :param lon: longituded of the polygon points
    :type lon: list or ndarray
    :param incr: increment in degrees for line segments to build up the lines between adjacent polygon points
-   :type incr: int
+   :type incr: number
    :rtype: :func:`input_visualiser`
    
    Internally, the each line between adjacent polygon points is split into a number of segments. The returned result is an :func:`input_visualiser` object which can be passed to :func:`plot` along with an optional :func:`mgraph` object.

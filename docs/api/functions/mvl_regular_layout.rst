@@ -8,13 +8,13 @@ mvl_regular_layout
    :param view: the view each plot grid cell contains
    :type view: :class:`Request`
    :param page_columns: number of columns in the grid
-   :type page_columns: int
+   :type page_columns: number
    :param page_rows: number of rows in the grid
-   :type page_rows: int
+   :type page_rows: number
    :param subpage_columns: number of columns within a :func:`plot_page`
-   :type subpage_columns: int
+   :type subpage_columns: number
    :param subpage_rows: number of rows within a :func:`plot_page`
-   :type subpage_rows: int
+   :type subpage_rows: number
    :param plot_area: the plot area the layout occupies in the parent :func:`plot_superpage`
    :type plot_area: list
    :rtype: list

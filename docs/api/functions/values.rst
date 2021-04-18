@@ -38,7 +38,7 @@ values
     :param gpt: input geopoints
     :type gpt: :class:`Geopoints`
     :param index_or_name: index or name of the values column to be returned from ``gpt``
-    :type index_or_name: int or str
+    :type index_or_name: number or str
     :rtype: list or ndarray
 
     If ``index_or_name`` is specified and is a number it refers to the index of the column within the value columns (and not within all the columns in ``gpt``). E.g. 0 means the first value column. 

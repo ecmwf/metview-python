@@ -12,7 +12,7 @@ mvl_geocircle
    :param radius: radius of the circle in km
    :type radius: number
    :param resolution: number of line segments to make up the circle
-   :type resolution: int
+   :type resolution: number
    :rtype: :func:`input_visualiser`
    
    Internally, the circle is split into ``resolution`` number of segments and the returned result is an :func:`input_visualiser` object which can be passed to :func:`plot` along with an optional :func:`mgraph` object.

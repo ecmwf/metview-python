@@ -8,7 +8,7 @@ average_ns
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
    :param list area: area as [N,W,S,E] to perform the averaging 
-   :param int increment: increment in degrees defining the size of the longitude strips
+   :param number increment: increment in degrees defining the size of the longitude strips
    :rtype: 1d-ndarray or 2d-ndarray
    
    The averaging is performed for each field individually within the longitude strips defined by ``area`` and ``increment``. Each grid point value is weighted by the cosine of its latitude. Missing values are ignored. If a longitude strip contains no grid point values Nan is returned for that strip. 

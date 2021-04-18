@@ -99,13 +99,13 @@ Mathematical functions
 
 .. py:function:: intbits(data, bit, [number_of_bits])
 
-    Takes the integer part of the values of ``data`` and extracts a specified ``bit`` (or bits).
+    Takes the numbereger part of the values of ``data`` and extracts a specified ``bit`` (or bits).
 
     :param data: input data
     :type data: :class:`Geopoints` or int
-    :param int bit: the bit to extract (1 is the least significant bit!)
-    :param int number_of_bits: the number of bits to extract (starting at ``bit``)
-    :rtype: :class:`Geopoints` or int
+    :param number bit: the bit to extract (1 is the least significant bit!)
+    :param number number_of_bits: the number of bits to extract (starting at ``bit``)
+    :rtype: :class:`Geopoints` or number
 
     If only ``bit`` is specified it will always be returned as 1 or 0, regardless of its position in the integer.
     

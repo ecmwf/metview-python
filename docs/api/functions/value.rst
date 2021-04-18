@@ -8,7 +8,7 @@ value
     :param nc: input NetCDF
     :type nc: :class:`NetCDF`
     :param index: value index (zero-based)
-    :type index: int
+    :type index: number
     :rtype: number, str or datetime.datetime
 
 .. mv-minigallery:: value

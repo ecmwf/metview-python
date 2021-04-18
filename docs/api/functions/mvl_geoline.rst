@@ -14,7 +14,7 @@ mvl_geoline
    :param lon2: end longitude of the line
    :type lon2: number
    :param incr: increment in degrees for the line segments to make up the line
-   :type incr: int
+   :type incr: number
    :rtype: :func:`input_visualiser`
    
    Internally, the line is split into a number of segments and the returned result is an :func:`input_visualiser` object which can be passed to :func:`plot` along with an optional :func:`mgraph` object.

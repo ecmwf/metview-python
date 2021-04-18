@@ -14,7 +14,7 @@ xs_build_curve
    :param style: the line style of the curve. The possible values are "solid", "dash", "dot", "chain_dot", "chain_dash".
    :type style: str
    :param thickness: the thickness of the curve
-   :type thickness: int
+   :type thickness: number
    :rtype: list of :func:`input_visualiser` and :func:`mgraph`
    
    The curve values are extracted from the first field in ``fs`` and they must be in the same units as the vertical axis of the cross section. The cross section definition itself is taken from ``xs_d``. :func:`xs_build_curve` returns a list containing an :func:`input_visualiser` and an :func:`mgraph`, which can be directly used in :func:`plot`.

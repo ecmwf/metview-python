@@ -13,7 +13,7 @@ univertint
    :param lnsp: lnsp fieldset
    :type lnsp: :class:`Fieldset`
    :param lnsp_code: ecCodes paramId for lnsp
-   :type lnsp_code: int
+   :type lnsp_code: number
    :param levels: level range as a list of [top, bottom]
    :type levels: list
    :rtype: :class:`Fieldset` containing one field only

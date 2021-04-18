@@ -3,7 +3,7 @@ gfind
 
 .. py:function:: gfind(fs, value, [eps])
 
-   Returns a :class:`Geopoints` holding the grid points whose value is equal to ``value`` int the first field of ``fs``. 
+   Returns a :class:`Geopoints` holding the grid points whose value is equal to ``value`` in the first field of ``fs``. 
    
    :param fs: input fieldset
    :type fs: :class:`Fieldset`

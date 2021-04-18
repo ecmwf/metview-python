@@ -8,7 +8,7 @@ setcurrent
     :param nc: input NetCDF
     :type nc: :class:`NetCDF`
     :param index_or_name: index or name of the NetCDF variable
-    :type index_or_name: int or str
+    :type index_or_name: number or str
     :rtype: None
 
     A :class:`NetCDF` produced by the Metview applications are uni-variable, so in their case :func:`setcurrent` need not be used. For a multi-variable :class:`NetCDF` :func:`setcurrent` can be usefully combined with :func:`variables` as the example below illustrates it.

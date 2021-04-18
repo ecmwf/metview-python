@@ -31,7 +31,7 @@ set_values
     :param gpt: input geopoints
     :type gpt: :class:`Geopoints`
     :param index_or_name: index or name of the values column to be replaced in ``gpt``
-    :type index_or_name: int or str
+    :type index_or_name: number or str
     :param values: values to be written into ``gpt``
     :type values: number or list or ndarray
     :rtype: :class:`Geopoints`

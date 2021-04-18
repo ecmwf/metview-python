@@ -12,7 +12,7 @@ unithickness
    :param fs_levels: levels fieldset
    :type fs_levels: :class:`Fieldset`
    :param lnsp_code: ecCodes paramId for lnsp
-   :type lnsp_code: int
+   :type lnsp_code: number
    :param levels: list of target model levels whose thickness wll be computed
    :type levels: list
    :rtype: :class:`Fieldset`

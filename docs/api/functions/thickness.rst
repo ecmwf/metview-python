@@ -10,7 +10,7 @@ thickness
    :param lnsp: fieldset containing an lnsp field (its ecCodes paramId must be 152!)
    :type lnsp: :class:`Fieldset`
    :param levels: the target model level or levels 
-   :type levels: int or list of ints
+   :type levels: number or list of numbers
    :param fs_levels: fielsdet defining the target model levels
    :type fs_levels:  :class:`Fieldset`
    :rtype: :class:`Fieldset`

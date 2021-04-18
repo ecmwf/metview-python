@@ -7,7 +7,7 @@ duplicate
 
    :param fs: input fieldset with **one field** only
    :type fs: :class:`Fieldset`
-   :param int number_of_copies: the number of copies required
+   :param number number_of_copies: the number of copies required
    :rtype: :class:`Fieldset` 
 
 .. mv-minigallery:: duplicate
