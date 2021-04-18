@@ -41,7 +41,7 @@ params:
 - graph_line_thickness:
     default: '1'
     desc: Thickness of the curve.
-    ptype: int
+    ptype: number
     values: ''
 - graph_symbol:
     default: 'off'
@@ -76,7 +76,7 @@ params:
 - graph_symbol_outline_thickness:
     default: '1'
     desc: Thickness of the marker symbol outline.
-    ptype: int
+    ptype: number
     values: ''
 - graph_symbol_outline_style:
     default: solid
@@ -121,7 +121,7 @@ params:
 - graph_missing_data_thickness:
     default: '1'
     desc: Thickness of the missing data part of curve.
-    ptype: int
+    ptype: number
     values: ''
 - graph_flag_colour:
     default: black
@@ -174,7 +174,7 @@ params:
 - graph_bar_line_thickness:
     default: '1'
     desc: Thickness of the bar outline.
-    ptype: int
+    ptype: number
     values: ''
 - graph_bar_line_colour:
     default: black
@@ -183,7 +183,7 @@ params:
     values: ''
 - graph_bar_colour:
     default: blue
-    desc: The colour of the interiors of bars.
+    desc: The colour of the numbereriors of bars.
     ptype: str
     values: ''
 - graph_bar_clipping:

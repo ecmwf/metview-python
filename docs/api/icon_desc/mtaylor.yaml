@@ -30,7 +30,7 @@ params:
 - taylor_primary_grid_line_thickness:
     default: '1'
     desc: Thickness of the primary grid.
-    ptype: int
+    ptype: number
     values: ''
 - taylor_primary_grid_line_style:
     default: solid
@@ -50,7 +50,7 @@ params:
 - taylor_reference_line_thickness:
     default: '2'
     desc: Thickness of the reference line.
-    ptype: int
+    ptype: number
     values: ''
 - taylor_reference_line_style:
     default: solid
@@ -95,7 +95,7 @@ params:
 - taylor_secondary_grid_line_thickness:
     default: '1'
     desc: Thickness of the secondary grid.
-    ptype: int
+    ptype: number
     values: ''
 - taylor_secondary_grid_line_style:
     default: solid

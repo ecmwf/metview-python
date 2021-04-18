@@ -22,7 +22,7 @@ params:
 - map_coastline_thickness:
     default: '1'
     desc: Line thickness of coastlines.
-    ptype: int
+    ptype: number
     values: ''
 - map_coastline_resolution:
     default: automatic
@@ -73,7 +73,7 @@ params:
 - map_rivers_thickness:
     default: '1'
     desc: Line thickness of the rivers.
-    ptype: int
+    ptype: number
     values: ''
 - map_cities:
     default: 'off'
@@ -143,7 +143,7 @@ params:
 - map_boundaries_thickness:
     default: '1'
     desc: Line thickness of map boundaries.
-    ptype: int
+    ptype: number
     values: ''
 - map_disputed_boundaries:
     default: 'on'
@@ -163,11 +163,11 @@ params:
 - map_disputed_boundaries_thickness:
     default: '1'
     desc: Line thickness of disputed boundaries.
-    ptype: int
+    ptype: number
     values: ''
 - map_administrative_boundaries:
     default: 'off'
-    desc: Plots administrative boundaries into the map.
+    desc: Plots administrative boundaries numbero the map.
     ptype: str
     values: on/off
 - map_administrative_boundaries_countries_list:
@@ -188,7 +188,7 @@ params:
 - map_administrative_boundaries_thickness:
     default: '1'
     desc: Line thickness of administrative boundaries.
-    ptype: int
+    ptype: number
     values: ''
 - map_grid:
     default: 'on'
@@ -203,7 +203,7 @@ params:
 - map_grid_thickness:
     default: '1'
     desc: Thickness of map grid lines.
-    ptype: int
+    ptype: number
     values: ''
 - map_grid_colour:
     default: black
@@ -217,7 +217,7 @@ params:
     values: ''
 - map_grid_latitude_increment:
     default: '10'
-    desc: Interval (in degrees) between latitude grid lines.
+    desc: numbererval (in degrees) between latitude grid lines.
     ptype: number
     values: ''
 - map_grid_longitude_reference:
@@ -227,7 +227,7 @@ params:
     values: ''
 - map_grid_longitude_increment:
     default: '20'
-    desc: Interval (in degrees) between longitude grid lines.
+    desc: numbererval (in degrees) between longitude grid lines.
     ptype: number
     values: ''
 - map_grid_frame:
@@ -243,7 +243,7 @@ params:
 - map_grid_frame_thickness:
     default: '1'
     desc: Thickness of map grid lines.
-    ptype: int
+    ptype: number
     values: ''
 - map_grid_frame_colour:
     default: black
@@ -333,12 +333,12 @@ params:
 - map_user_layer_thickness:
     default: '1'
     desc: Line thickness of the user layer.
-    ptype: int
+    ptype: number
     values: ''
 - map_layer_mode:
     default: split
     desc: |-
-        Specifies how the background (land-sea shading) and foreground (grid, coastlines, rivers, borders and cities) map layers are rendered into the plot with respect to the data layers. The possible values are as follows:
+        Specifies how the background (land-sea shading) and foreground (grid, coastlines, rivers, borders and cities) map layers are rendered numbero the plot with respect to the data layers. The possible values are as follows:
 
         * "split": the coastlines definition is split into background and foreground map layers. The background map layer is rendered first, followed by the data layers with the foreground map layers appearing atop
         * "foreground": all the map layers are rendered on top of the data layers

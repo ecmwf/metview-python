@@ -33,7 +33,7 @@ params:
 - contour_line_thickness:
     default: '1'
     desc: Thickness of contour lines.
-    ptype: int
+    ptype: number
     values: ''
 - contour_line_colour_rainbow:
     default: 'off'
@@ -123,7 +123,7 @@ params:
 - contour_highlight_thickness:
     default: '3'
     desc: Thickness of the highlighted contour lines.
-    ptype: int
+    ptype: number
     values: ''
 - contour_highlight_frequency:
     default: '4'
@@ -385,7 +385,7 @@ params:
 - contour_shade_hatch_thickness:
     default: '1'
     desc: Thickness of hatch lines.
-    ptype: int
+    ptype: number
     values: ''
 - contour_shade_hatch_density:
     default: '18.0'

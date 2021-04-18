@@ -144,5 +144,5 @@ params:
 - text_border_thickness:
     default: '1'
     desc: Thickness of text box border.
-    ptype: int
+    ptype: number
     values: ''

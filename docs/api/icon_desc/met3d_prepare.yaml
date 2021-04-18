@@ -80,7 +80,7 @@ params:
 - step:
     default: '0'
     desc: Specifies the forecast steps in hours. Available when ``mode`` is "fc".
-    ptype: int or list[int]
+    ptype: number or list[number]
     values: ''
 - analysis_start_date:
     default: '-1'
@@ -107,7 +107,7 @@ params:
 - analysis_step:
     default: '6'
     desc: Specifies the timestep of the analysis period in hours. Available when ``mode`` is "an". 
-    ptype: int
+    ptype: number
     values: '6/12'
 - area:
     default: '-90/-180/90/180'

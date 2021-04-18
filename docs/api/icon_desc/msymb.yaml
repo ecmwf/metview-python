@@ -40,7 +40,7 @@ params:
 - symbol_outline_thickness:
     default: '1'
     desc: Thickness of the outline.
-    ptype: int
+    ptype: number
     values: ''
 - symbol_outline_style:
     default: solid
@@ -65,7 +65,7 @@ params:
 - symbol_connect_line_thickness:
     default: '1'
     desc: Thickness of the connecting line.
-    ptype: int
+    ptype: number
     values: ''
 - symbol_connect_line_style:
     default: solid
@@ -96,7 +96,7 @@ params:
 - symbol_marker_index:
     default: '1'
     desc: Marker index. An integer between 1 and 28.
-    ptype: int
+    ptype: number
     values: ''
 - symbol_marker_name:
     default: dot

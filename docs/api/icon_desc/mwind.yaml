@@ -171,7 +171,7 @@ params:
 - wind_flag_thickness:
     default: '1'
     desc: Thickness of the wind flag shaft.
-    ptype: int
+    ptype: number
     values: ''
 - wind_arrow_calm_indicator:
     default: 'off'
@@ -197,7 +197,7 @@ params:
 - wind_arrow_head_shape:
     default: '0'
     desc: Indicates the shape of the arrow head.
-    ptype: int
+    ptype: number
     values: ''
 - wind_arrow_head_ratio:
     default: '0.3'
@@ -222,7 +222,7 @@ params:
 - wind_arrow_thickness:
     default: '1'
     desc: Thickness of the wind arrow shaft.
-    ptype: int
+    ptype: number
     values: ''
 - wind_arrow_style:
     default: solid
@@ -253,7 +253,7 @@ params:
 - wind_streamline_thickness:
     default: '2'
     desc: Thickness of streamlines.
-    ptype: int
+    ptype: number
     values: ''
 - wind_streamline_colour:
     default: blue
@@ -268,7 +268,7 @@ params:
 - wind_streamline_head_shape:
     default: '0'
     desc: Indicates the shape of the arrow heads on the streamlines.
-    ptype: int
+    ptype: number
     values: ''
 - wind_streamline_head_ratio:
     default: '0.3'

@@ -198,7 +198,7 @@ params:
 - legend_border_thickness:
     default: '1'
     desc: Thickness of the legend box border.
-    ptype: int
+    ptype: number
     values: ''
 - legend_entry_text_width:
     default: '60'
@@ -268,5 +268,5 @@ params:
 - legend_histogram_grid_thickness:
     default: '1'
     desc: Thickness of the histogram grid.
-    ptype: int
+    ptype: number
     values: ''

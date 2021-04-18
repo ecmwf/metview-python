@@ -17,7 +17,7 @@ params:
 - thermo_isotherm_thickness:
     default: '1'
     desc: Thickness of the isotherms.
-    ptype: int
+    ptype: number
     values: ''
 - thermo_isotherm_style:
     default: solid
@@ -47,7 +47,7 @@ params:
 - thermo_isotherm_reference_thickness:
     default: '2'
     desc: Thickness of the reference isotherm.
-    ptype: int
+    ptype: number
     values: ''
 - thermo_isotherm_label_colour:
     default: charcoal
@@ -87,7 +87,7 @@ params:
 - thermo_isobar_thickness:
     default: '2'
     desc: Thickness of the isobars.
-    ptype: int
+    ptype: number
     values: ''
 - thermo_isobar_style:
     default: solid
@@ -142,7 +142,7 @@ params:
 - thermo_dry_adiabatic_thickness:
     default: '1'
     desc: Thickness of the dry adiabats.
-    ptype: int
+    ptype: number
     values: ''
 - thermo_dry_adiabatic_style:
     default: solid
@@ -197,7 +197,7 @@ params:
 - thermo_saturated_adiabatic_thickness:
     default: '2'
     desc: Thickness of the saturated adiabats.
-    ptype: int
+    ptype: number
     values: ''
 - thermo_saturated_adiabatic_style:
     default: solid
@@ -252,7 +252,7 @@ params:
 - thermo_mixing_ratio_thickness:
     default: '1'
     desc: Thickness of the mixing ratio lines.
-    ptype: int
+    ptype: number
     values: ''
 - thermo_mixing_ratio_style:
     default: dash

@@ -38,7 +38,7 @@ params:
 - axis_line_thickness:
     default: '2'
     desc: Thickness of the axis line.
-    ptype: int
+    ptype: number
     values: ''
 - axis_grid:
     default: 'off'
@@ -58,7 +58,7 @@ params:
 - axis_grid_thickness:
     default: '1'
     desc: Thickness of the grid lines.
-    ptype: int
+    ptype: number
     values: ''
 - axis_grid_reference_level:
     default: 1.0e21
@@ -78,7 +78,7 @@ params:
 - axis_grid_reference_thickness:
     default: '2'
     desc: Thickness of the reference grid line.
-    ptype: int
+    ptype: number
     values: ''
 - axis_title:
     default: 'on'
@@ -148,7 +148,7 @@ params:
 - axis_tick_thickness:
     default: '2'
     desc: Thickness of the ticks.
-    ptype: int
+    ptype: number
     values: ''
 - axis_tick_label:
     default: 'on'
@@ -233,7 +233,7 @@ params:
 - axis_minor_tick_thickness:
     default: '1'
     desc: Thickness of the minor ticks.
-    ptype: int
+    ptype: number
     values: ''
 - axis_minor_grid:
     default: 'off'
@@ -253,7 +253,7 @@ params:
 - axis_minor_grid_thickness:
     default: '1'
     desc: Thickness of the minor grid lines.
-    ptype: int
+    ptype: number
     values: ''
 - axis_tip_title:
     default: 'off'

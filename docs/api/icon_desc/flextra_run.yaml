@@ -124,7 +124,7 @@ params:
       * 3: mixing layer
       * 4: isobaric
       * 5: isentropic
-    ptype: int or list[int]
+    ptype: number or list[number]
     values: '1/2/3/4/5'
 - flextra_normal_names:
     default: ''
@@ -157,7 +157,7 @@ params:
       * 1: metres above sea level 
       * 2: metres above ground level
       * 3: hPa  
-    ptype: int or list[int]
+    ptype: number or list[number]
     values: '1/2/3'
 - flextra_cet_type:
     default: '3d'
@@ -168,7 +168,7 @@ params:
       * 2 or "model_level"
       * 3 or "isobaric"
       * 4 or "isentropic"
-    ptype: list[int] or list[str]
+    ptype: list[number] or list[str]
     values: '3d/model_levels/isobaric/isentropic'
 - flextra_cet_name:
     default: ''

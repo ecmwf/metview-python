@@ -134,7 +134,7 @@ params:
       This row, if present, should contain the one entry for each data column, separated
       with the same delimiter as the data. The first row of the table is number 1. 
       Set this parameter to 0 in order to indicate that there is no header row.
-    ptype: int
+    ptype: number
     values: ''
 - table_data_row_offset:
     default: '1'
@@ -142,11 +142,11 @@ params:
       Normally this is 1, since data tends to start on the row after the column headers.
       If there is no header row, then this number is equivalent to the first data row
       (e.g. if the data starts on row 3, then set this parameter to 3).'
-    ptype: int
+    ptype: number
     values: ''
 - table_meta_data_rows:
     default: ''
     desc: Specifies the rows (if any) which contain meta-data in a form which can be 
       parsed by Metview. See `ASCII Tables <https://confluence.ecmwf.int/display/METV/ASCII+Tables>`_ for more details. 
-    ptype: int or list[int]
+    ptype: number or list[number]
     values: ''

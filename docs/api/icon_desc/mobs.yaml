@@ -94,7 +94,7 @@ params:
 - obs_thickness:
     default: 'on'
     desc: Plots the thickness.
-    ptype: int
+    ptype: number
     values: ''
 - obs_thickness_colour:
     default: automatic
