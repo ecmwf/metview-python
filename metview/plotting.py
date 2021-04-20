@@ -201,9 +201,9 @@ def plot_diff_maps(
                 ov_args = list(overlay)
             else:
                 ov_args = [overlay] if not isinstance(overlay, list) else overlay
-            print(ov_args)
+            # print(ov_args)
             ov_layers = _make_layers(*ov_args, form_layout=False) 
-            print(ov_layers)
+            # print(ov_layers)
             assert len(ov_layers) == 1
             d = ov_layers[0]["data"]
             if isinstance(d, Track):
