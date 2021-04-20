@@ -4,34 +4,86 @@
 #
 #    pip-compile --output-file requirements/requirements-tests.txt setup.py requirements/requirements-tests.in
 #
-apipkg==1.4               # via execnet
-atomicwrites==1.1.5       # via pytest
-attrs==20.3.0             # via cfgrib, pytest
+apipkg==1.4
+    # via execnet
+atomicwrites==1.1.5
+    # via pytest
+attrs==20.3.0
+    # via
+    #   cfgrib
+    #   pytest
 cffi==1.11.5
+    # via cfgrib
 cfgrib==0.9.4.2
-cftime==1.0.3.4           # via netcdf4
-coverage==4.5.1           # via pytest-cov
-execnet==1.5.0            # via pytest-cache
-future==0.17.1            # via cfgrib
-mccabe==0.6.1             # via pytest-mccabe
-more-itertools==4.2.0     # via pytest
+    # via -r requirements-tests.in
+cftime==1.0.3.4
+    # via netcdf4
+coverage==4.5.1
+    # via pytest-cov
+execnet==1.5.0
+    # via pytest-cache
+funcsigs==1.0.2
+    # via pytest
+future==0.17.1
+    # via cfgrib
+mccabe==0.6.1
+    # via pytest-mccabe
+more-itertools==4.2.0
+    # via pytest
 netcdf4==1.4.2
+    # via -r requirements-tests.in
 numpy==1.14.3
+    # via
+    #   cfgrib
+    #   cftime
+    #   netcdf4
+    #   pandas
+    #   xarray
 pandas==0.23.0
-pep8==1.7.1               # via pytest-pep8
-pluggy==0.6.0             # via pytest
-py==1.5.3                 # via pytest
-pycparser==2.18           # via cffi
-pyflakes==2.0.0           # via pytest-flakes
-pytest-cache==1.0         # via pytest-flakes, pytest-mccabe, pytest-pep8
+    # via xarray
+pep8==1.7.1
+    # via pytest-pep8
+pluggy==0.6.0
+    # via pytest
+py==1.10.0
+    # via pytest
+pycparser==2.18
+    # via cffi
+pyflakes==2.0.0
+    # via pytest-flakes
+pytest-cache==1.0
+    # via
+    #   pytest-flakes
+    #   pytest-mccabe
+    #   pytest-pep8
 pytest-cov==2.5.1
+    # via -r requirements-tests.in
 pytest-flakes==3.0.2
+    # via -r requirements-tests.in
 pytest-mccabe==0.1
+    # via -r requirements-tests.in
 pytest-pep8==1.0.6
+    # via -r requirements-tests.in
 pytest-runner==4.2
+    # via -r requirements-tests.in
 pytest==3.6.0
-python-dateutil==2.7.3    # via pandas
-pytz==2018.4              # via pandas
-six==1.11.0               # via more-itertools, pytest, python-dateutil
-typing==3.6.6             # via cfgrib
+    # via
+    #   -r requirements-tests.in
+    #   pytest-cache
+    #   pytest-cov
+    #   pytest-flakes
+    #   pytest-mccabe
+    #   pytest-pep8
+python-dateutil==2.7.3
+    # via pandas
+pytz==2018.4
+    # via pandas
+six==1.11.0
+    # via
+    #   more-itertools
+    #   pytest
+    #   python-dateutil
+typing==3.6.6
+    # via cfgrib
 xarray==0.11.0
+    # via -r requirements-tests.in
