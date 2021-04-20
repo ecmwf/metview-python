@@ -68,15 +68,18 @@ def _make_layers(*args, form_layout=False):
 
 
 def _make_visdef(data, vd, style_db="param", plot_type="map"):
-    if len(vd) == 0:
-        vd = [StyleDb.get_db(name=style_db).visdef(data, plot_type=plot_type)]
-    else:
-        for i, v in enumerate(vd):
-            if isinstance(v, Style):
-                vd[i] = v.to_request()
+    if isinstance(data, mv.Fieldset):
+        if len(vd) == 0:
+            vd = StyleDb.get_db(name=style_db).visdef(data, plot_type=plot_type)
+        else:
+            for i, v in enumerate(vd):
+                if isinstance(v, Style):
+                    vd[i] = v.to_request()
 
-    vd = [x for x in vd if x is not None]
-    return vd
+        vd = [x for x in vd if x is not None]
+        return vd
+    else:
+        return []
 
 def _make_view(view):
     if view is None:
@@ -127,17 +130,20 @@ def plot_maps(
 
             if isinstance(data, Track):
                 data = data.build(style=vd)
-
+                
             desc.append(data)
+            vd = _make_visdef(data, vd, style_db="param", plot_type="map")
+            if vd:
+                desc.extend(vd) 
 
-            if not isinstance(data, Track):
-                if len(vd) == 0:
-                    vd = StyleDb.get_db().visdef(data)
-                for i, v in enumerate(vd):
-                    if isinstance(v, Style):
-                        vd[i] = v.to_request()
-                if vd is not None and all(x is not None for x in vd):
-                    desc.extend(vd)
+            # if not isinstance(data, Track):
+            #     if len(vd) == 0:
+            #         vd = StyleDb.get_db().visdef(data)
+            #     for i, v in enumerate(vd):
+            #         if isinstance(v, Style):
+            #             vd[i] = v.to_request()
+            #     if vd is not None and all(x is not None for x in vd):
+            #         desc.extend(vd)
 
         if data_items:
             legend = mv.mlegend(legend_text_font_size=legend_font_size)
@@ -153,15 +159,16 @@ def plot_maps(
 
 
 def plot_diff_maps(
-    *args, layout=None, view=None, title_font_size=None, legend_font_size=None, frame=-1, animate=True
+    *args, layout=None, view=None, overlay=None, title_font_size=None, legend_font_size=None, frame=-1, animate=True
 ):
     """
     Plot difference maps
     """
 
+    # handle default arguments
     title_font_size = 0.4 if title_font_size is None else title_font_size
     legend_font_size = 0.35 if legend_font_size is None else legend_font_size
-
+   
     # define the view
     view = _make_view(view)
     
@@ -184,6 +191,29 @@ def plot_diff_maps(
     vd["0"] = _make_visdef(data["0"], layers[0]["vd"])
     vd["1"] = _make_visdef(data["1"], layers[1]["vd"])
 
+    # overlay data
+    ov_data = {}
+    ov_vd = {}
+    if overlay is not None:
+        # single value, list or tuple: a data item that will be plotted into each map
+        if not isinstance(overlay, dict):
+            if isinstance(overlay, tuple):
+                ov_args = list(overlay)
+            else:
+                ov_args = [overlay] if not isinstance(overlay, list) else overlay
+            print(ov_args)
+            ov_layers = _make_layers(*ov_args, form_layout=False) 
+            print(ov_layers)
+            assert len(ov_layers) == 1
+            d = ov_layers[0]["data"]
+            if isinstance(d, Track):
+                d = d.build(style=ov_layers[0]["vd"])                
+            for k in ["d", "0", "1"]:
+                ov_data[k] = d
+                ov_vd[k] = _make_visdef(d, ov_layers[0]["vd"])
+        else:
+            pass
+
     # LOG.debug("len_0={}".format(len(data["0"])))
     # LOG.debug("len_1={}".format(len(data["0"])))
 
@@ -205,6 +235,17 @@ def plot_diff_maps(
         desc.append(d)
         if vd[k]:
             desc.append(vd[k])
+
+        # add overlay
+        if k in ov_data:
+            if isinstance(ov_data[k], mv.Fieldset):
+                dd = ov_data[k] if frame == -1 else ov_data[k][frame]
+            else:
+                dd = ov_data[k]
+            desc.append(dd)    
+            if k in ov_vd and ov_vd[k]:
+               desc.append(ov_vd[k]) 
+
         t = title.build(d)
         legend = mv.mlegend(legend_text_font_size=legend_font_size)
         desc.append(legend)
