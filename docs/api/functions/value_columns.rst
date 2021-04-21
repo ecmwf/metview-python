@@ -5,8 +5,8 @@ value_columns
 
     Returns the names of the value columns of ``gpt``.
     
-    :param fs: input geopoints
-    :type fs: :class:`Geopoints`
+    :param gpt: input geopoints
+    :type gpt: :class:`Geopoints`
     :rtype: list of str
 
 
