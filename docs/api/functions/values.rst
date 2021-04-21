@@ -23,7 +23,7 @@ values
          # values in the first field
          first_vals = vals[0]
 
-         # first value in in first field
+         # first value in the first field
          first_gridpoint = first_vals[0]
 
          # or equivalently
@@ -75,7 +75,7 @@ values
     :type index: list
     :rtype: ndarray or list of str or list of datetime.datetime
 
-    To define a hypercube for the value extraction ``index`` has to be specified as a list with the same number of elements as the number of dimensions of the current NetCDF variable. The elements (except one) should be numbers, specifying the indexes (0-based) into the respective dimensions from where the value(s) are to be taken. If all elements are numbers, then they simply specify the coordinates for a single value (returned as a single-value array). Optionally, one of the elements can be set to the string 'all'; in this case, all the values from that dimension are returned. 
+    To define a hypercube for the value extraction ``index`` has to be specified as a list with the same number of elements as the number of dimensions of the current NetCDF variable. The elements (except one) should be numbers, specifying the indexes (0-based) into the respective dimensions from where the value(s) are to be taken. If all the elements are numbers, then they simply specify the coordinates for a single value (returned as a single-value array). Optionally, one of the elements can be set to the string 'all'; in this case, all the values from that dimension are returned. 
     
     :Example:
     
