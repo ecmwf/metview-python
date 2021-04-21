@@ -22,6 +22,6 @@ saturation_vapour_pressure
     * "water": a\ :sub:`1` =611.21 Pa, a\ :sub:`3` =17.502 and a\ :sub:`4` =32.19 K
     * "ice": a\ :sub:`1` =611.21 Pa, a\ :sub:`3` =22.587 and a\ :sub:`4` =-0.7 K
 
-    For the "mixed" phase the linear combination of the "water" and "ice" phases are used as described in the IFS documentation (see here on p116 for details for model cycle CY45R1).
+    For the "mixed" phase the linear combination of the "water" and "ice" phases is used as described in the IFS documentation (see `here <https://www.ecmwf.int/en/elibrary/18714-part-iv-physical-processes>`_ on p116 for details for model cycle CY45R1).
 
 .. mv-minigallery:: saturation_vapour_pressure
