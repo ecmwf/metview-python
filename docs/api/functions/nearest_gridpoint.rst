@@ -25,8 +25,8 @@ nearest_gridpoint
 
    The nearest gridpoint extraction depends on the arguments:
 
-   * ``location`` defines a single location. The return value is a number when ``fs`` only contains one field, and an ndarray otherwise.
-   * ``lats`` and ``lons`` can define either a single location (as number) or multiple locations (as ndarray). If a single location is specified the retrun value is the same as for ``location``. For multiple locations a list of 1D-ndarrays is returned.
+   * ``location`` defines a single location. The return value is a number when ``fs`` only contains one field, and list otherwise.
+   * ``lats`` and ``lons`` can define either a single location (as number) or multiple locations (as ndarray). If a single location is specified the return value is the same as for ``location``. For multiple locations an ndarray is returned.
    * when ``gpt`` is specified only the first field of ``fs`` is used. The result is a :class:`Geopoints` containing the the nearest gridpoint values for all the locations in ``gpt``.  Where it is not possible to generate a sensible value due to lack of valid data in ``fs``, the internal geopoints missing value is used (this value can be checked for with the built-in variable geo_missing_value or removed with the function :func:`remove_missing_values`).
 
    Parameter ``mode`` controls the return value when the nearest gridpoint value is a missing value or the location is out of the grid area:
