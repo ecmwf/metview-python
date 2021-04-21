@@ -13,7 +13,7 @@ sort
    :type orders: str or list
    :rtype: :class:`Fieldset` 
 
-   The list of MARS keys the can be used for the sorting are as follows (theye are specified in order of precedence): 
+   The list of MARS keys that can be used for the sorting are as follows (theye are specified in order of precedence): 
 
       * date
       * time
