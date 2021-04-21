@@ -2,13 +2,12 @@ set_value2s
 ===============
 
 ..  py:function:: set_value2s(gpt, values)
-    :noindex:
 
-    Creates a new :class:`Geopoints` with the value2 column in ``gpt`` replaced by ``values``.
+    Creates a new :class:`Geopoints` with the **value2** column in ``gpt`` replaced by ``values``.
 
     :param gpt: input geopoints
     :type gpt: :class:`Geopoints`
-    :param values: values to be written into the **value2** column of ``gpt``
+    :param values: values to be written into the value2 column of ``gpt``
     :type values: number or list or ndarray
     :rtype: :class:`Geopoints`
 
