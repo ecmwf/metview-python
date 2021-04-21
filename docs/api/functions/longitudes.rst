@@ -15,8 +15,8 @@ longitudes
 
     Returns the longitudes column of ``gpt`` as an ndarray.
     
-    :param fs: input geopoints
-    :type fs: :class:`Geopoints`
+    :param gpt: input geopoints
+    :type gpt: :class:`Geopoints`
     :rtype: ndarray
 
 .. mv-minigallery:: longitudes

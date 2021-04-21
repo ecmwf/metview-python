@@ -18,11 +18,11 @@ latitudes
 .. py:function:: Geopoints.latitudes()
    :noindex:
 
-    Returns the latitudes column of ``gpt`` as an ndarray.
+   Returns the latitudes column of ``gpt`` as an ndarray.
     
-    :param fs: input geopoints
-    :type fs: :class:`Geopoints`
-    :rtype: ndarray
+   :param gpt: input geopoints
+   :type gpt: :class:`Geopoints`
+   :rtype: ndarray
 
 
 .. mv-minigallery:: latitudes
