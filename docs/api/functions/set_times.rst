@@ -8,7 +8,7 @@ set_times
     :param gpt: input geopoints
     :type gpt: :class:`Geopoints`
     :param times: dates to be written into ``gpt``
-    :type times: number or list or ndarray of these
+    :type times: number or list/ndarray of numbers
     :rtype: :class:`Geopoints`
 
     A time value has to specified as a number in the format of **hhmm** (without leading zeros).
