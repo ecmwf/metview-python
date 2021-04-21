@@ -9,12 +9,12 @@ set_values
    :type fs: :class:`Fieldset`
    :param values: values to be written into ``fs``
    :type values: ndarray or list of ndarray
-   :param str mode: resize mode. If specified must be set to "resize"!
+   :param str mode: resize mode. If specified must be set to "resize".
    :rtype: :class:`Fieldset`
 
    If ``values`` is an ndarray the same values are set in each field of ``fs``.
 
-   If ``values`` is a list of ndarray the list size must be same as there are fields in ``fs``. 
+   If ``values`` is a list of ndarray the list size must be same as the number of fields in ``fs``. 
    
    The default behaviour is to produce an **error** if the number points in a field and the given ndarray are not the same. If, however, ``mode`` is specified and set to "resize" the resulting fieldset will be resized to have the same number of values as the ndarray. This can be a useful option when creating a new :class:`Fieldset` from a template. 
    
@@ -36,9 +36,9 @@ set_values
     :type values: number or list or ndarray
     :rtype: :class:`Geopoints`
 
-     If ``index_or_name`` is specified and is a number it refers to the index of the column within the value columns (and not within all the columns in ``gpt``). E.g. 0 means the first value column. 
+    If ``index_or_name`` is specified and is a number it refers to the index of the column within the value columns (and not within all the columns in ``gpt``). E.g. 0 means the first value column. 
      
-     ``index_or_name`` has to be used for :class:`Geopoints` of 'ncols' type. In all the other types the values column is uniquely identified.
+    ``index_or_name`` has to be used for :class:`Geopoints` of 'ncols' type. In all the other types the values column is uniquely identified.
 
     If ``values`` is a number all the values are replaced with it. If ``values`` is a list or ndarray and is shorter than the geopoints count then only the first values that have a corresponding value in ``values`` are changed.
 
@@ -60,7 +60,7 @@ set_values
                         np.array([0.3, 0.2, 0.1]))
 
     .. note::
-        :func:`set_values` generates a new geopoints variable, leaving the original one intact. If you wish to modify the original variable, then a more efficient way is to directly access the columns using the following syntax, following the examples above:
+        :func:`set_values` generates a new geopoints object, leaving the original one intact. If you wish to modify the original object, then a more efficient way is to directly access the columns using the following syntax, following the examples above:
 
         .. code-block:: python
             
