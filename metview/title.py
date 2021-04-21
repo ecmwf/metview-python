@@ -38,7 +38,9 @@ class Title:
 
             # exp_conf = data[0].experiment
             label = data[0].label
-            # fixed_shortname = sum([1 for x in data if not x.has_ecc_shortname()]) > 0
+            # print(f"data type={type(data[0])}")
+            # print(f"  label={label}")
+            # # fixed_shortname = sum([1 for x in data if not x.has_ecc_shortname()]) > 0
 
             lines = []
             lines = {"text_line_count": len(data)}

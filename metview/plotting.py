@@ -81,6 +81,7 @@ def _make_visdef(data, vd, style_db="param", plot_type="map"):
     else:
         return []
 
+
 def _make_view(view):
     if view is None:
         view = MapConf().view(area="base").to_request()
@@ -88,8 +89,15 @@ def _make_view(view):
         view = view.to_request()
     return view
 
+
 def plot_maps(
-    *args, layout=None, view=None, title_font_size=None, legend_font_size=None, frame=-1, animate=True
+    *args,
+    layout=None,
+    view=None,
+    title_font_size=None,
+    legend_font_size=None,
+    frame=-1,
+    animate=True,
 ):
     """
     Plot maps with generic contents
@@ -130,11 +138,11 @@ def plot_maps(
 
             if isinstance(data, Track):
                 data = data.build(style=vd)
-                
+
             desc.append(data)
             vd = _make_visdef(data, vd, style_db="param", plot_type="map")
             if vd:
-                desc.extend(vd) 
+                desc.extend(vd)
 
             # if not isinstance(data, Track):
             #     if len(vd) == 0:
@@ -159,7 +167,14 @@ def plot_maps(
 
 
 def plot_diff_maps(
-    *args, layout=None, view=None, overlay=None, title_font_size=None, legend_font_size=None, frame=-1, animate=True
+    *args,
+    layout=None,
+    view=None,
+    overlay=None,
+    title_font_size=None,
+    legend_font_size=None,
+    frame=-1,
+    animate=True,
 ):
     """
     Plot difference maps
@@ -168,10 +183,10 @@ def plot_diff_maps(
     # handle default arguments
     title_font_size = 0.4 if title_font_size is None else title_font_size
     legend_font_size = 0.35 if legend_font_size is None else legend_font_size
-   
+
     # define the view
     view = _make_view(view)
-    
+
     # build the layout
     dw = Layout().build_diff(view=view)
 
@@ -202,12 +217,12 @@ def plot_diff_maps(
             else:
                 ov_args = [overlay] if not isinstance(overlay, list) else overlay
             # print(ov_args)
-            ov_layers = _make_layers(*ov_args, form_layout=False) 
+            ov_layers = _make_layers(*ov_args, form_layout=False)
             # print(ov_layers)
             assert len(ov_layers) == 1
             d = ov_layers[0]["data"]
             if isinstance(d, Track):
-                d = d.build(style=ov_layers[0]["vd"])                
+                d = d.build(style=ov_layers[0]["vd"])
             for k in ["d", "0", "1"]:
                 ov_data[k] = d
                 ov_vd[k] = _make_visdef(d, ov_layers[0]["vd"])
@@ -225,6 +240,7 @@ def plot_diff_maps(
     # compute diff
     data["d"] = data["0"] - data["1"]
     data["d"]._param_info = data["1"].param_info
+    data["d"]._label = "{}-{}".format(data["0"].label, data["1"].label)
     vd["d"] = _make_visdef(data["d"], [], plot_type="diff")
 
     # LOG.debug("len_d={}".format(len(data["d"])))
@@ -242,9 +258,9 @@ def plot_diff_maps(
                 dd = ov_data[k] if frame == -1 else ov_data[k][frame]
             else:
                 dd = ov_data[k]
-            desc.append(dd)    
+            desc.append(dd)
             if k in ov_vd and ov_vd[k]:
-               desc.append(ov_vd[k]) 
+                desc.append(ov_vd[k])
 
         t = title.build(d)
         legend = mv.mlegend(legend_text_font_size=legend_font_size)
@@ -278,7 +294,7 @@ def plot_xs(
     assert len(line) == 4
 
     view = _make_view(view)
-    
+
     assert len(args) >= 1
     assert isinstance(args[0], mv.Fieldset)
     layers = _make_layers(*args, form_layout=False)
@@ -389,12 +405,12 @@ def plot_stamp(
     title_font_size=0.4,
     frame=-1,
     animate=True,
-    diff_base=None
+    diff_base=None,
 ):
     """
     Plot ENS stamp maps
     """
-    
+
     # define the view
     view = _make_view(view)
 
@@ -414,7 +430,7 @@ def plot_stamp(
         data["ens"] = layers[0]["data"]
         assert data["ens"] is not None
         if diff_base is not None:
-            vd["ens"] = _make_visdef(data["ens"], [], style_db="diff")    
+            vd["ens"] = _make_visdef(data["ens"], [], style_db="diff")
         else:
             vd["ens"] = _make_visdef(data["ens"], layers[0]["vd"])
 
@@ -427,7 +443,7 @@ def plot_stamp(
                 data[k] = layers[0]["data"]
                 vd[k] = layers[0]["vd"]
                 if diff_base is not None:
-                    vd[k] = vd["ens"]     
+                    vd[k] = vd["ens"]
                 else:
                     if len(vd[k]) == 0 and "ens" in vd:
                         vd[k] = vd["ens"]

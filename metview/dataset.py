@@ -540,8 +540,9 @@ class FieldsetDb(IndexDb):
             for i in range(1, len(self.fs)):
                 f = self.fs[i] - self.fs[i - 1]
                 r.append(f)
+            r = mv.grib_set_long(r, ["generatingProcessIdentifier", 148])
             r._db = self._clone()
-            return mv.grib_set_long(r, ["generatingProcessIdentifier", 148])
+            return r
         else:
             return fs
 

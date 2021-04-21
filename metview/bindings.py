@@ -681,10 +681,12 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
 
     @property
     def label(self):
-        if self._db:
+        if self._label is not None and self._label:
+            return self._label
+        elif self._db is not None:
             return self._db.label
         else:
-            return self._label
+            return str()
 
     def unique(self, key):
         if self._db:
