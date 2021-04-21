@@ -7,9 +7,9 @@ values
    
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
-   :rtype: 1D-ndarray or list of 1D-ndarrays
+   :rtype: ndarray
    
-   If ``fs`` contains more than one field a list of ndarrays is returned. Each of these arrays contains as many elements as there are grid points in each field. Missing values are included in the results as nan.
+   If ``fs`` contains more than one field a 2D-ndarrays is returned. Missing values are included in the results as nan.
 
    :Example:
 
