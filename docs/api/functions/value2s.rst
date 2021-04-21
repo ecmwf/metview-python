@@ -5,12 +5,12 @@ value2s
 
     Returns the values in the **value2** column of ``gpt``.
     
-    :param fs: input geopoints
-    :type fs: :class:`Geopoints`
+    :param gpt: input geopoints
+    :type gpt: :class:`Geopoints`
     :rtype: ndarray
 
     .. warning::
-        :func:`set_value2s` only works for :class:`Geopoints` with 'xy_vector' or 'polar_vector' type.
+        :func:`value2s` only works for :class:`Geopoints` with 'xy_vector' or 'polar_vector' type.
 
 
 
