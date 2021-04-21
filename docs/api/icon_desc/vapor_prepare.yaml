@@ -12,7 +12,7 @@ params:
     default: ''
     desc: Specifies the input data as a set of :class:`Fieldset` objects. It is
        available when ``vapor_input_mode`` is "icon".
-    ptype: :class:`Fieldset` or list[:class:`Fieldset`]
+    ptype: :class:`Fieldset`
     values: ''
 - vapor_2d_params:
     default: 2t
@@ -40,9 +40,9 @@ params:
 - vapor_elevation_param:
     default: z
     desc: |-
-      Specifies the short name or parameter id of of the 3D parameter interpreted as the elevation of the 3D levels. Available when ``vapor_vertical_grid_type`` is "layered". This parameter has to be either the height or the geopotential ("z") of the levels. If geopotential is specified it is converted into metres by Metview for VAPOR.         
+      Specifies the short name or parameter id of the 3D parameter interpreted as the elevation of the 3D levels. Available when ``vapor_vertical_grid_type`` is "layered". This parameter has to be either the height or the geopotential ("z") of the levels. If geopotential is specified it is converted into metres by Metview for VAPOR.         
       
-      .. note:: Neither the height nor the geopotential of model levels are archived in MARS. It means that for model level data either of these fields has to be computed for "layered" mode. These computations can be done with :func:`vapor_prepare`` by simply specifying "z" for ``vapor_elevation_param``. The computations can only be carried out if the input data contains temperature (t) and specific humidity (q) on model levels and geopotential ("z") and logarithm of surface pressure (lnsp) on the bottommost model level.
+      .. note:: Neither the height nor the geopotential of model levels are archived in MARS. It means that for model level data either of these fields has to be computed for "layered" mode. These computations can be done with :func:`vapor_prepare` by simply specifying "z" for ``vapor_elevation_param``. The computations can only be carried out if the input data contains temperature (t) and specific humidity (q) on model levels and geopotential ("z") and logarithm of surface pressure (lnsp) on the lowest model level.
     ptype: str
     values: ''
 - vapor_bottom_coordinate:
@@ -102,7 +102,7 @@ params:
     ptype: str
     values: ''
 - vapor_output_path:
-    default: '/tmp'
+    default: path::/tmp
     desc: Specifies the output directory (can be a relative path) where the VDF file
       and VDC directory hierarchy will be generated. If this directory does not
       exist Metview will create it. VAPOR data files can be huge (gigabytes) so the output
