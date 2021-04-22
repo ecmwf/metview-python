@@ -1756,6 +1756,14 @@
     - layout
     pix: DISPLAYWINDOW
     type: icon
+- plot_subpage:
+    category: {}
+    desc: Creates a subpage in a plot layout
+    group:
+    - layout
+    pix: DISPLAYWINDOW
+    type: icon
+    exclude: true
 - plot_superpage:
     category:
       plot: Returns a super_page for plotting
