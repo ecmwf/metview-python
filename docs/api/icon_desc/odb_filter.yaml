@@ -15,7 +15,7 @@ params:
     values: ''
 - odb_query:
     default: ''
-    desc: Specifies the ODB/SQL query to run.
+    desc: Specifies the ODB/SQL query.
     ptype: str
     values: ''
 - odb_nb_rows:
