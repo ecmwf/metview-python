@@ -15,7 +15,7 @@ surrounding_points_indexes
    :param location: single target location defined as a list of [lat, lon]
    :type location: list
    :param str mode: specifies the way missing values are handled. The only allowed value is "all".
-   :rtype: ndarray or list of ndarray
+   :rtype: ndarray
   
    ``fs`` must be a gridded field. 
 
@@ -24,7 +24,7 @@ surrounding_points_indexes
    * ``location`` defines a single location.
    * ``lats`` and ``lons`` can define either a single location (as number) or multiple locations (as ndarray).
 
-   The return value is an ndarray when ``fs`` only contains one field, and a list of ndarray otherwise. By default the 4 surrounding gridpoint indexes are returned. The only exception is when a field is defined on a **reduced Gaussian grid** and the input location is at the North or South pole, beyond the most extreme row of points. In this case there will be a 'circle' of surrounding points, and all of these indexes are returned.
+   By default the 4 surrounding gridpoint indexes are returned. The only exception is when a field is defined on a **reduced Gaussian grid** and the input location is at the North or South pole, beyond the most extreme row of points. In this case there will be a 'circle' of surrounding points, and all of these indexes are returned.
    
    If any of the surrounding points are **missing**, :func:`surrounding_points_indexes` will return nan. To prevent this, and to return all the points regardless, option ``mode`` has to be set to "all".
    

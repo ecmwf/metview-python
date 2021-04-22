@@ -10,7 +10,7 @@ univertint
 
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
-   :param lnsp: lnsp fieldset
+   :param lnsp: lnsp fieldset defined on model level 1
    :type lnsp: :class:`Fieldset`
    :param lnsp_code: ecCodes paramId for lnsp
    :type lnsp_code: number

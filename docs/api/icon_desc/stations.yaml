@@ -26,8 +26,8 @@ params:
       with an arbitrary location and you may enter any name of your choice. If
       ``search_stations_database`` is set to "wmo" this should be the name of the required
       station. You need the exact name of the station so you should be careful with the spelling
-      which is in accordance to WMO. This tries to match the original language spelling, hence
-      an English speaking user should not look for Copenhagen, but rather Kobenhavn. 
+      which is in accordance with WMO. This tries to match the original language spelling, e.g. you need to
+      use "Kobenhavn" instead of "Copenhagen". 
     ptype: str or list[str]
     values: ''
 - position:
@@ -38,7 +38,7 @@ params:
       location of a meteorological station. It may happen that you do not know the exact
       coordinates of the station. In this case, you can specify a geographical tolerance 
       in ``threshold``.
-    ptype: number or list[number]
+    ptype: list
     values: ''
 - height:
     default: '0'
@@ -55,20 +55,16 @@ params:
     ptype: number
     values: ''
 - ident:
-    default: '03772'
+    default: '3772'
     desc: Specifies the station's WMO numerical identifier which is a 5
-      digit number. If you are in doubt about the identifier, use the assist
-      button. This is a station assist button and it launches the Stations database
-      search tool. Only available if ``search_stations_database`` is "wmo" and
+      digit number. Only available if ``search_stations_database`` is "wmo" and
      ``search_key`` is "ident".
     ptype: number
     values: ''
 - wmo_block:
-    default: '03'
+    default: '3'
     desc: Specifies the station's WMO block which is a 2 digit number corresponding
-      to a geographical area. If you are in doubt about the WMO block, use
-      the assist button. This is a station assist button and it launches the Stations
-      database search tool. Only available if ``search_stations_database`` is "wmo"
+      to a geographical area. Only available if ``search_stations_database`` is "wmo"
       and ``search_key`` is "wmo_block".
     ptype: number
     values: ''
@@ -77,7 +73,7 @@ params:
     desc: Specifies the coordinates of an area (as [north, west, south, east]) where
       meteorological stations of interest are located. Only available
       if ``search_stations_database`` is "wmo" and ``search_key`` is "area".
-    ptype: list[number]
+    ptype: list
     values: ''
 - fail_on_error:
     default: 'yes'

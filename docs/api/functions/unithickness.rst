@@ -5,19 +5,19 @@ unithickness
 .. py:function:: unithickness(lnsp, fs_levels, [lnsp_code])
    :noindex:
 
-   Computes the pressure thickness (in Pa) of a list of ECMWF model levels from ``lnsp`` (logarithm of surface pressure). 
+   Computes the pressure thickness in Pa of a list of ECMWF model levels from ``lnsp`` (logarithm of surface pressure). 
 
-   :param lnsp: lnsp fieldset
+   :param lnsp: lnsp fieldset defined on model level 1
    :type lnsp: :class:`Fieldset`
-   :param fs_levels: levels fieldset
+   :param fs_levels: fieldset defining the target model levels
    :type fs_levels: :class:`Fieldset`
    :param lnsp_code: ecCodes paramId for lnsp
    :type lnsp_code: number
-   :param levels: list of target model levels whose thickness wll be computed
+   :param levels: list of target model levels whose thickness will be computed
    :type levels: list
    :rtype: :class:`Fieldset`
 
-   ``lnsp`` must contain an lnsp field, which is identified by its ecCodes paramId. By default the value of 152 is used but it can be overriden by the optional ``lnsp_code``.
+   ``lnsp`` must contain an lnsp field, which is identified by its ecCodes paramId. By default the value of 152 is used but it can be overridden by the optional ``lnsp_code``.
    
    The list of target model levels depends on the actual arguments:
 

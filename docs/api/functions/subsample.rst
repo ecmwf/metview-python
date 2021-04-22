@@ -3,7 +3,7 @@ subsample
 
 .. py:function:: subsample(gpt_value, gpt_location)
 
-    Returns a :class:`Geopoints` containing the same locations (latitude, longitude and height) as in ``gpt_location``, but whose values are from ``gpt_val`` (or a missing value if the point is not found in ``gpt_value``).
+    Returns a :class:`Geopoints` containing the same locations (latitude, longitude and height) as in ``gpt_location``, but whose values are from ``gpt_value`` (or a missing value if the point is not found in ``gpt_value``).
 
     :param gpt_value: geopoints defining the values
     :type gpt_value: :class:`Geopoints`

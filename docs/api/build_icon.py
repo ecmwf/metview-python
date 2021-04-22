@@ -172,7 +172,9 @@ class DocParam:
 
     def _formatted_default(self):
         if self.default and isinstance(self.default, str):
-            if "/" in self.default:
+            if self.default.startswith("\"path::"):
+                return self.default.replace("path::", "")
+            elif "/" in self.default:
                 return (
                     "[" + ", ".join([v.strip() for v in self.default.split("/")]) + "]"
                 )
