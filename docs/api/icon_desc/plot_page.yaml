@@ -22,16 +22,6 @@ params:
     desc: ''
     ptype: number
     values: ''
-- rows:
-    default: '1'
-    desc: ''
-    ptype: str
-    values: 1/2/3/4/5
-- columns:
-    default: '1'
-    desc: ''
-    ptype: str
-    values: 1/2/3/4/5
 - page_x_gap:
     default: '0'
     desc: ''
@@ -48,8 +38,4 @@ params:
         Specifies the view the plot page contains. 
     ptype: plot view object
     values: ''
-- sub_pages:
-    default: ''
-    desc: ''
-    ptype: str
-    values: ''
+

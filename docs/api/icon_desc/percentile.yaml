@@ -1,4 +1,4 @@
-return: :class:`Filedset`
+return: :class:`Fieldset`
 summary: Computes a set of percentiles of a given input :class:`Fieldset`. A percentile is a
   number such that the given percentage of a distribution is equal to or below it. For
   instance, the median is the 50th percentile - 50% of the values are equal to or below it. The
