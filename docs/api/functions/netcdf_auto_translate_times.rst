@@ -3,7 +3,7 @@ netcdf_auto_translate_times
 
 ..  py:function::  netcdf_auto_translate_times(status)
 
-    Sets whether Metview automatically translates time variables numbero dates when retrieving with the :func:`value` or :func:`values` functions. 
+    Sets whether Metview automatically translates time variables into dates when retrieving with the :func:`value` or :func:`values` functions. 
     
     :param status: enables/disables translation (0 or 1)
     :type status: number
