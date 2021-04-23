@@ -55,14 +55,14 @@ params:
     desc: Specifies which variable/column to use for the x co-ordinates of the points.
       Can be a name or an index - see ``table_variable_identifier_type``. Only available
       when ``table_plot_type`` is 'xy_*' and ``table_x_type`` is "number".
-    ptype: str
+    ptype: number or str
     values: ''
 - table_y_variable:
     default: ''
     desc: Specifies which variable/column to use for the y co-ordinates of the points.
       Can be a name or an index - see ``table_variable_identifier_type``. Only available
       when ``table_plot_type`` is 'xy_*' and ``table_y_type`` is "number".
-    ptype: str
+    ptype: number or str
     values: ''
 - table_x_missing_value:
     default: -21.e6
@@ -79,38 +79,38 @@ params:
     desc: Specifies which variable/column to use for the longitude co-ordinates of
       the points. Can be a name or an index - see ``table_variable_identifier_type``.
       Only available when ``table_plot_type`` is 'geo_*'.
-    ptype: str
+    ptype: number or str
     values: ''
 - table_latitude_variable:
     default: ''
     desc: Specifies which variable/column to use for the latitude co-ordinates of
       the points. Can be a name or an index - see ``table_variable_identifier_type``.
       Only available when ``table_plot_type`` is 'geo_*'.
-    ptype: str
+    ptype: number or str
     values: ''
 - table_x_component_variable:
     default: ''
     desc: When ``table_plot_type`` is '*_vectors', this parameter specifies which variable/column
-      gives the magnitudes of the vectors in the X or longitude direction (e.g. U-component
+      defines the vector component in X or longitude direction (e.g. U-component
       of wind). Can be a name or an index - see ``table_variable_identifier_type``.
-    ptype: str
+    ptype: number or str
     values: ''
 - table_y_component_variable:
     default: ''
     desc: When ``table_plot_type`` is '*_vectors', this parameter specifies which variable/column
-      gives the magnitudes of the vectors in the Y or latitude direction (e.g. V-component
+      defines the vector component in Y or latitude direction (e.g. V-component
       of wind). Can be a name or an index - see ``table_variable_identifier_type``.
-    ptype: str
+    ptype: number or str
     values: ''
 - table_value_variable:
     default: ''
     desc: Specifies which variable/column supplies the values for the points. Can
       be a name or an index - see ``table_variable_identifier_type``.
-    ptype: str
+    ptype: number or str
     values: ''
 - table_binning:
     default: ''
-    desc: Specifies the binning. Available when ``table_plot_type`` id "*_binning".
+    desc: Specifies the binning. Available when ``table_plot_type`` is "*_binning".
     ptype: :func:`binning`
     values: ''
 - table_delimiter:
@@ -148,5 +148,5 @@ params:
     default: ''
     desc: Specifies the rows (if any) which contain meta-data in a form which can be 
       parsed by Metview. See `ASCII Tables <https://confluence.ecmwf.int/display/METV/ASCII+Tables>`_ for more details. 
-    ptype: number or list[number]
+    ptype: number or list
     values: ''
