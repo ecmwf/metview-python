@@ -4,9 +4,8 @@ oneliner: Generates a Thermodynamic diagram data unit from BUFR data.
 params:
 - data:
     default:
-    desc: Specifies the BUFR data to be used in the plotting of a 
-      thermodynamic diagram. The data should be upper air sounding
-      data. Please note that PILOT observations cannot be used here since they only 
+    desc: Specifies the input BUFR data, which should contain upper air soundings.
+      Please note that PILOT observations cannot be used here since they only 
       contain wind data. 
     values:
 - station:

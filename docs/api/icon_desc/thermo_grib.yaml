@@ -1,14 +1,13 @@
 return: :class:`NetCDF`
 summary: rst
-oneliner: Derives (and returns) a Thermodynamic diagram data unit from GRIB data.
+oneliner: Generates a thermodynamic diagram data unit from GRIB data.
 params:
 - data:
     default:
-    desc: Specifies the GRIB data to be used in the plotting of a thermodynamic
-      diagram. The data should include gridded fields of
+    desc: Specifies the input GRIB data. It should include gridded fields of
       temperature and specific humidity. These parameters must have the
       same number of levels and they will be used to compute the
-      dew point parameter. :class:`Fieldset` u and v wind components are
+      dew point. u and v wind component fields are
       optional, but if given a wind profile will be plotted in the
       thermodynamic view. These two components must have the same number
       of levels, but not necessarily have the same number of levels of
@@ -27,19 +26,19 @@ params:
     default: '0/0'
     desc: Specifies the geographical location (as [lat, lon]) for which the diagram is to be plotted.
       Available when ``point_selection`` is "coordinates".
-    ptype: list[number]
+    ptype: list
     values: ''
 - area_average:
     default: '30/-30/-30/30'
     desc: Specifies a geographical area over which an area average value will
       be used, instead of a point value, to produce the diagram.  The area is defined as
       [north, west, south, east]. Available when ``point_selection`` is "area_average".
-    ptype: list[number]
+    ptype: list
     values: ''
 - station:
     default: ''
-    desc: Specifies the location as a :func:`stations`` object for which the diagram is to be plotted. 
-      Available if ``point_selection` is "station".
+    desc: Specifies the location as a :func:`stations` object for which the diagram is to be plotted. 
+      Available if ``point_selection`` is "station".
     ptype: :func:`stations`
     values: ''
 - point_extraction:
@@ -47,8 +46,8 @@ params:
     desc: |-
       Specifies the way to calculate values at the point location for GRIB thermodynamic diagrams. The possible options are:
       
-      * "interpolate": interpolate values from the four surrounding grid points.
-      * "nearest_gridpoint": use the data from the nearest grid point.
+      * "interpolate": interpolate values from the four surrounding grid points
+      * "nearest_gridpoint": use the data from the nearest grid point
     ptype: str
     values: interpolate/nearest_gridpoint
 - dew_point_formulation:
