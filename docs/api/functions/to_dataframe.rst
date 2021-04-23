@@ -15,7 +15,6 @@ to_dataframe
     .. code-block:: python
 
         import metview as mv
-        import pandas as pd
         
         gpt = mv.read("gpts.gpt") # returns a Geopoints
         df = gpt.to_dataframe()   # returns a Pandas Dataframe
