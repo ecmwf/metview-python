@@ -18,3 +18,8 @@ params:
     desc: Defines if lines are antialiased.
     ptype: str
     values: on/off
+# - output_cairo_palette:
+#     default: 'off'
+#     desc: Defines if PNG uses palettes to reduce file size.
+#     ptype: str
+#     values: on/off
