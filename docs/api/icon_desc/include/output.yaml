@@ -26,6 +26,11 @@
     desc: Width of numbering of multi-file outputs (eg. use 1 for 'plot.1.png', 3 for 'plot.001.png' etc).
     ptype: number
     values: ''
+# - output_file_separator:
+#     default: '.'
+#     desc: Defines the separator between root name and the page number.
+#     ptype: str
+#     values: ''
 - output_debug:
     default: 'off'
     desc: Defines if extra debug information are written in the output
@@ -43,4 +48,10 @@
         ``output_filelist`` is "on".
     ptype: str
     values: ''
+# - output_filelist_reset:
+#     default: 'off'
+#     desc: Defines if the file containing the list of generated files is
+#          started from scratch or appends to previous file.
+#     ptype: str
+#     values: 'on/off'
 
