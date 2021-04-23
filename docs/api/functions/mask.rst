@@ -3,7 +3,7 @@ mask
 
 .. py:function:: mask(fs, area)
 
-   For each field in ``fs`` creates a field containing 0 or 1 values according to whether a grid point is outside or inside the ``area``.
+   For each field in ``fs`` creates a field containing 0 or 1 values according to whether a grid point is inside (1) or outside (0) the ``area``.
 
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
@@ -17,12 +17,12 @@ mask
       .. image:: /_static/mask_1.png
          :width: 300px
 
-      First decompose it into basic rectangles:
+      first decompose it into basic rectangles:
 
       .. image:: /_static/mask_2.png
          :width: 300px
 
-      Then create a mask for each of them and use **and** and **or** to compose the desired mask like this:
+      then create a mask for each of them and use **and** and **or** to compose the desired mask like this:
 
       .. code-block:: python
          
