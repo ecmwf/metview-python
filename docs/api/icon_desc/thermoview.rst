@@ -1,9 +1,9 @@
 
 
-Specifies the view for thermodynamic diagram plots from a suitable :class:`Fieldset` (GRIB), :class:`Bufr` and :func:`input_visualiser` data source. It can also take the output from :func:`thermo_data` as an input. In this case, a consistency check is performed between the parameters that are common to both functions.
+Specifies the view for a thermodynamic diagram. 
 
-In addition to the parameters required for the thermodynamic computation, :func:`thermoview` specifies the axis details as well as the plot positioning in the plot frame of the display window/paper sheet and the overlay of different data units in the same plot. 
+A suitable :class:`Fieldset` (GRIB), :class:`Bufr` or :func:`input_visualiser` data can be directly plotted into a :func:`thermoview`, the necessary profiles will be automatically extracted from the input data. On top of that :func:`thermo_bufr` and :func:`thermo_grib` objects can be also visualised in a :func:`thermoview`.
 
-When using :func:`thermoview` the generated profile data cannot be accessed. If you need to access this data use :func:`thermo_data` instead.
+When using :func:`thermoview` the generated profile data cannot be accessed. If you need to access this data use :func:`thermo_bufr` or :func:`thermo_grib` instead.
 
 For further details on the role and usage of views in the visualisation process, please see `Anaylis Views <https://confluence.ecmwf.int/display/METV/Analysis+Views>`_.

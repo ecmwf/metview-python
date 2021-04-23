@@ -1,6 +1,6 @@
 return: :class:`Request`
 summary: rst
-oneliner: Specifies the view for thermodynamic diagram plots. 
+oneliner: Specifies the view for a thermodynamic diagram. 
 params:
 - type:
     default: tephigram
@@ -33,8 +33,7 @@ params:
     values: ''
 - thermo_grid:
     default: ''
-    desc: Configures the background attributes of the thermodynamic diagram, please
-      see :func:`mthermogrid` for details.
+    desc: Configures the background attributes of the thermodynamic diagram.
     ptype: :func:`mthermogrid`
     values: ''
 - point_selection:
@@ -47,19 +46,19 @@ params:
     default: '0/0'
     desc: Specifies the geographical location (as [lat, lon]) for which the diagram is to be plotted.
       Available when ``point_selection`` is "coordinates".
-    ptype: list[number]
+    ptype: list
     values: ''
 - area_average:
     default: '30/-30/-30/30'
     desc: Specifies a geographical area over which an area average value will
       be used, instead of a point value, to produce the diagram.  The area is defined as
       [north, west, south, east]. Available when ``point_selection`` is "area_average".
-    ptype: list[number]
+    ptype: list
     values: ''
 - station:
     default: ''
-    desc: Specifies the location as a :func:`stations`` object for which the diagram is to be plotted. 
-      Available if ``point_selection` is "station".
+    desc: Specifies the location as a :func:`stations` object for which the diagram is to be plotted. 
+      Available if ``point_selection`` is "station".
     ptype: :func:`stations``
     values: ''
 - point_extraction:
