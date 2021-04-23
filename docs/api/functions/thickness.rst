@@ -5,9 +5,9 @@ thickness
 .. py:function:: thickness(lnsp, fs_levels)
    :noindex:
 
-   Computes the pressure thickness (in Pa) of a list of ECMWF model levels from ``lnsp`` (logarithm of surface pressure). 
+   Computes the pressure thickness (in Pa) of a list of ECMWF model levels from ``lnsp`` (Logarithm of Surface Pressure). 
    
-   :param lnsp: fieldset containing an lnsp field (its ecCodes paramId must be 152!)
+   :param lnsp: fieldset containing an lnsp field (its ecCodes paramId must be 152)
    :type lnsp: :class:`Fieldset`
    :param levels: the target model level or levels 
    :type levels: number or list of numbers
