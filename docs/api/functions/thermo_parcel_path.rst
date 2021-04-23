@@ -13,8 +13,8 @@ thermo_parcel_path
     :type td: ndarray
     :param p: pressure profile (hPa)
     :type p: ndarray
-    :param profile: the result of a vertical profile extraction from GRIB or BUFR with the thermo_grib() or thermo_bufr() functions (see Thermo Data ), respectively.
-    :type profile: thermo_data
+    :param profile: profile data extracted from a :class:`Fieldset` or :class:`Bufr` for a thermodynamic diagram
+    :type profile: :func:`thermo_bufr` or :func:`thermo_grib`
     :param options: options
     :type options: dict
     :rtype: dict
@@ -31,15 +31,15 @@ thermo_parcel_path
     * **bottom_p**: the bottom pressure of the start layer (see below for details)
     * **stop_at_el**: if it is defined and set to 1 the parcel computations will stop at the Equilibrium Level.
 
-    There are four different modes available for the parcel start conditions:
+    The start condition ``mode`` can have these values:
 
-    * **Surface**: the parcel ascends from the surface, i.e. the lowest point of the profile. The format is as follows:
+    * **surface**: the parcel ascends from the surface, i.e. the lowest point of the profile. The format is as follows:
 
         .. code-block:: python
             
             {mode: "surface"}
 
-    * **Custom**: the parcel ascends from a given temperature, dewpoint and pressure. The format is as follows:
+    * **custom**: the parcel ascends from a given temperature, dewpoint and pressure. The format is as follows:
     
         .. code-block:: python
             
@@ -48,7 +48,7 @@ thermo_parcel_path
              start_td: start_dewpoint,
              start_p: start_pressure}
 
-    * **Mean layer**: the parcel ascends from the mean temperature, dew point and pressure of a given pressure layer. The format is as follows:
+    * **mean layer**: the parcel ascends from the mean temperature, dew point and pressure of a given pressure layer. The format is as follows:
     
         .. code-block:: python
             
@@ -58,7 +58,7 @@ thermo_parcel_path
 
         When bottom_p is omitted the layer starts at the surface.
     
-    * **Most unstable**: the parcel ascends from the most unstable condition. To determine this, a parcel is started from all the points along the profile in the specified pressure layer. The start level of the parcel that results in the highest CAPE value will define the most unstable start condition. The format is as follows:
+    * **most unstable**: the parcel ascends from the most unstable condition. To determine this, a parcel is started from all the points along the profile in the specified pressure layer. The start level of the parcel that results in the highest CAPE value will define the most unstable start condition. The format is as follows:
         
         .. code-block:: python
 
@@ -70,9 +70,9 @@ thermo_parcel_path
 
     :func:`thermo_parcel_path` returns a dict to describe all the parameters related to the ascend of the parcel. The members of this definition are as follows (temperature values are in °C and pressure values are in hPa) :
 
-    * path: path of the parcel. It is itself a definition with two members: t and p, each containing a list of values.
+    * path: path of the parcel. It is itself a dict with two members: t and p, both containing a list of values.
 
-    * area: positive and negative buoyancy areas between the parcel path and the profile. It is a list of definitions describing the areas.
+    * area: positive and negative buoyancy areas between the parcel path and the profile. It is a list of dictionaries describing the areas.
 
     * cape: value of the CAPE (Convective Available Potential Energy)  (J/kg)
 
