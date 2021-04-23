@@ -1,17 +1,16 @@
 return: :class:`NetCDF`
 summary: rst
-oneliner: Derives (and returns) a Thermodynamic diagram data unit from BUFR data.
+oneliner: Generates a Thermodynamic diagram data unit from BUFR data.
 params:
 - data:
     default:
     desc: Specifies the BUFR data to be used in the plotting of a 
       thermodynamic diagram. The data should be upper air sounding
-      data. Please note that PILOT observations (winds only) do not
-      have enough data for plotting a thermodynamic diagram. 
-    ptype: :class:`Bufr`
+      data. Please note that PILOT observations cannot be used here since they only 
+      contain wind data. 
     values:
 - station:
     default: ''
-    desc: Specifies the location as a :func:`stations` object for which the diagram is to be plotted. 
+    desc: Specifies the location as a :func:`stations` object for which the data is to be extracted. 
     ptype: :func:`stations`
     values: ''
