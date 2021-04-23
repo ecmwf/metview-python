@@ -11,7 +11,7 @@ params:
       * "geo_vectors": vectors plotted onto a map
       * "xy_points": points plotted into a :func:`cartesianview`
       * "xy_vectors": vectors plotted into a :func:`cartesianview`
-      * "xy_binning": gridded values by binning plotted into a :func:`cartesianview`
+      * "xy_binning": gridded values formed by 2D-binning plotted into a :func:`cartesianview`
     ptype: str
     values: 'geo_points/geo_vectors/xy_points/xy_vectors/xy_binning'
 - odb_filename:
@@ -108,7 +108,7 @@ params:
     values: ''
 - odb_nb_rows:
     default: '-1'
-    desc: Specifies the maximum number of rows in the result. If -1 is given here
+    desc: Specifies the maximum number of rows in the result. If it is set to -1 
       the number of rows is not limited in the output.
     ptype: number
     values: ''
@@ -118,7 +118,7 @@ params:
       For older ODBs column "latlon_rad@desc" tells us the geographical
       co-ordinate units. Its 0 value indicates "degrees" while 1 means radians.
       Newer ODBs, especially the ones retrieved from MARS, as a generic rule, always
-      "degrees" as geographical co-ordinate units.
+      use "degrees" as geographical co-ordinate units.
     ptype: str
     values: 'degrees/radians'
 - odb_binning:
