@@ -10,9 +10,9 @@ params:
 - output:
     default: bufr
     desc: |-  
-      Specifies the output format you want. The possible options are as follows:
+      Specifies the output format. The possible options are as follows:
         
-      * "bufr": the output is a new :class:`Bufr`. Messages containing subsets are split each subset forming an individual message in the output. Not all the filtering options are available in this mode. 
+      * "bufr": the output is a new :class:`Bufr`. Messages containing subsets are split with each subset forming an individual message in the output. Not all the filtering options are available in this mode. 
       * "geopoints": the output is a standard 6-column :class:`Geopoints`.
       * "polar_vector": the output is a :class:`Geopoints` with polar vector data.
       * "xy_vector": the output is a :class:`Geopoints` with xy vector data.
@@ -32,7 +32,7 @@ params:
     desc: If set to "ignore", missing data is not included in the ``output`` file.
       If set to "include", missing data will be written to the output file, its value being
       set to that specified by ``missing_data_value``. Note that when ``output`` is 
-      is one of the two geopoints vector formats, the test for missing data` is only performed
+      one of the two geopoints vector formats, the test for missing data is only performed
       on the first ``parameter``. Available when ``output`` is not "bufr".
     ptype: str
     values: ignore/include
@@ -60,7 +60,7 @@ params:
     ptype: str
     values: surface/single/thickness/occurrence/descriptor_value/descriptor_range
 - level_descriptor:
-    default: '007004'
+    default: '07004'
     desc: Specifies the parameter defining the level when ``level`` is "descriptor_value" or "descriptor_range".
     ptype: str
     values: ''
@@ -86,17 +86,17 @@ params:
     ptype: number
     values: ''
 - observation_types:
-    default: any
+    default: '-1'
     desc: Specifies the numerical code or text string for the desired observation
       type. 
-    ptype: str or list[str]
+    ptype: number or str or list of these
     values: ''
 - observation_subtypes:
-    default: any
+    default: '-1'
     desc: Specifies the numerical code or text string for the desired observation
       subtype. Note that institutions are free to define their own subtypes
       hence these are not an international standard.
-    ptype: str or list[str]
+    ptype: num or str or list of these
     values: ''
 - date_and_time_from:
     default: metadata
@@ -105,16 +105,16 @@ params:
     ptype: str
     values: metadata/data
 - date:
-    default: 
+    default: ''
     desc: >-
       Specifies the observation(s) date in YYYYMMDD format. Relative dates are allowed: e.g. -1 (yesterday). 
       Specifying a value for ``date`` requires setting a value for ``time``.
-    ptype: str
+    ptype: number
     values: ''
 - time:
-    default: 
+    default: ''
     desc: Specifies the time of the observation(s). The required format is HHMM.
-    ptype: str
+    ptype: number
     values: ''
 - resolution_in_mins:
     default: '0'
@@ -123,15 +123,15 @@ params:
     values: ''
 - wmo_blocks:
     default: any
-    desc: Specifies a WMO block number. These identify a geographical region, e.g.
-      02 for Sweden and Finland, 16 for Italy and Greece.
-    ptype: str or list[str]
+    desc: Specifies a WMO block number, which identify a geographical region. E.g.
+      '02' for Sweden and Finland, 16 for Italy and Greece.
+    ptype: number or str or list of these
     values: ''
 - wmo_stations:
     default: any
     desc: Specifies a list of WMO stations, using the five digit station identifier
       (the first two of which are the WMO block number).
-    ptype: str or list[str]
+    ptype: number or str or list of these
     values: ''
 - location_filter:
     default: none
@@ -142,14 +142,14 @@ params:
     default: '60/-12/50/3'
     desc: Specifies the coordinates of the area of interest in the form of [North, West, South, East]. 
       Enabled when ``location_filter`` is "area".
-    ptype: list[number]
+    ptype: list
     values: ''
 - line:
-    default: '40'
+    default: '40/-5/60/25'
     desc: Specifies the coordinates of a transect line in [lat1, lon1, lat2, lon2] format. 
       This will filter all the observations close enough to the line - how close is defined
       by ``delta_in_km``. Enabled when ``location_filter`` is "line".
-    ptype: number or list[number]
+    ptype: list
     values: ''
 - delta_in_km:
     default: '50'
