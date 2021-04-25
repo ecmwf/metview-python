@@ -132,7 +132,7 @@ params:
     values: ''
 - axis_tick_position:
     default: out
-    desc: Tick position, if it is "in" the ticks will positioned inside the frame.
+    desc: Tick position, if it is "in" the ticks will be positioned inside the frame.
     ptype: str
     values: out/in
 - axis_tick_colour:
@@ -167,12 +167,12 @@ params:
     values: ''
 - axis_tick_label_first:
     default: 'on'
-    desc: Turn off the first (left or bottom) tick label.
+    desc: Turn on/off the first (left or bottom) tick label.
     ptype: str
     values: on/off
 - axis_tick_label_last:
     default: 'on'
-    desc: Turn off the last (right or top) tick label.
+    desc: Turn on/off the last (right or top) tick label.
     ptype: str
     values: on/off
 - axis_tick_label_position:
@@ -257,7 +257,7 @@ params:
     values: ''
 - axis_tip_title:
     default: 'off'
-    desc: Plots title ta axis tip.
+    desc: Plots title at axis tip.
     ptype: str
     values: on/off
 - axis_tip_title_text:
@@ -277,7 +277,7 @@ params:
     values: ''
 - axis_tip_title_quality:
     default: medium
-    desc: Quality of the font of the axi tip title.
+    desc: Quality of the font of the axis tip title.
     ptype: str
     values: high/medium/low
 - axis_date_type:
