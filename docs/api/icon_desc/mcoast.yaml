@@ -50,11 +50,6 @@ params:
     desc: Colour of shading of sea areas.
     ptype: str
     values: ''
-- map_boundaries:
-    default: 'off'
-    desc: Plots political boundaries.
-    ptype: str
-    values: on/off
 - map_rivers:
     default: 'off'
     desc: Plots rivers.
@@ -130,6 +125,11 @@ params:
     desc: Colour for ``map_cities_marker``.
     ptype: str
     values: ''
+- map_boundaries:
+    default: 'off'
+    desc: Plots political boundaries.
+    ptype: str
+    values: on/off
 - map_boundaries_style:
     default: solid
     desc: Line style of map boundaries.
@@ -147,7 +147,7 @@ params:
     values: ''
 - map_disputed_boundaries:
     default: 'on'
-    desc: Plot disputed boundaries onto the map.
+    desc: Plot disputed boundaries onto the map. It can only be enabled when ``map_boundaries`` is on.
     ptype: str
     values: on/off
 - map_disputed_boundaries_style:
@@ -167,7 +167,7 @@ params:
     values: ''
 - map_administrative_boundaries:
     default: 'off'
-    desc: Plots administrative boundaries numbero the map.
+    desc: Plots administrative boundaries into the map.  It can only be enabled when ``map_boundaries`` is on.
     ptype: str
     values: on/off
 - map_administrative_boundaries_countries_list:
@@ -217,7 +217,7 @@ params:
     values: ''
 - map_grid_latitude_increment:
     default: '10'
-    desc: numbererval (in degrees) between latitude grid lines.
+    desc: Interval (in degrees) between latitude grid lines.
     ptype: number
     values: ''
 - map_grid_longitude_reference:
@@ -227,7 +227,7 @@ params:
     values: ''
 - map_grid_longitude_increment:
     default: '20'
-    desc: numbererval (in degrees) between longitude grid lines.
+    desc: Interval (in degrees) between longitude grid lines.
     ptype: number
     values: ''
 - map_grid_frame:
@@ -237,17 +237,17 @@ params:
     values: on/off
 - map_grid_frame_line_style:
     default: solid
-    desc: Line style of map grid lines.
+    desc: Line style of map frame.
     ptype: str
     values: solid/dash/dot/chain_dot/chain_dash
 - map_grid_frame_thickness:
     default: '1'
-    desc: Thickness of map grid lines.
+    desc: Thickness of map frame.
     ptype: number
     values: ''
 - map_grid_frame_colour:
     default: black
-    desc: Colour of map grid lines.
+    desc: Colour of map frame.
     ptype: str
     values: ''
 - map_label:
@@ -262,7 +262,7 @@ params:
     values: arial/courier/helvetica/times/serif/sansserif/symbol
 - map_label_font_style:
     default: normal
-    desc: Font of map grid labels.
+    desc: Font style of map grid labels.
     ptype: str
     values: normal/bold/italic/bolditalic
 - map_label_colour:
@@ -338,7 +338,7 @@ params:
 - map_layer_mode:
     default: split
     desc: |-
-        Specifies how the background (land-sea shading) and foreground (grid, coastlines, rivers, borders and cities) map layers are rendered numbero the plot with respect to the data layers. The possible values are as follows:
+        Specifies how the background (land-sea shading) and foreground (grid, coastlines, rivers, borders and cities) map layers are rendered into the plot with respect to the data layers. The possible values are as follows:
 
         * "split": the coastlines definition is split into background and foreground map layers. The background map layer is rendered first, followed by the data layers with the foreground map layers appearing atop
         * "foreground": all the map layers are rendered on top of the data layers
