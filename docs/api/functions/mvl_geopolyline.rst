@@ -13,7 +13,7 @@ mvl_geopolyline
    :type incr: number
    :rtype: :func:`input_visualiser`
    
-   Internally, the each line between adjacent polygon points is split into a number of segments. The returned result is an :func:`input_visualiser` object which can be passed to :func:`plot` along with an optional :func:`mgraph` object.
+   Internally, the lines between adjacent polygon points are split into a number of segments. The returned result is an :func:`input_visualiser` object which can be passed to :func:`plot` along with an optional :func:`mgraph` object.
    
 
 .. mv-minigallery:: mvl_geopolyline
