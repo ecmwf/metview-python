@@ -9,7 +9,7 @@ ml_to_hl
    :type fs: :class:`Fieldset`
    :param z: geopotential fieldset on model levels (it must contain the same levels as ``fs`` but their order can be different) 
    :type z: :class:`Fieldset`
-   :param zs: surface geopotential field (if the ``ref_level`` is set to "sea" it should be set to None).
+   :param zs: surface geopotential field (if ``ref_level`` is set to "sea" it should be set to None).
    :type zs: :class:`Fieldset` or None
    :param h: list of target height levels (they can came in any given order)
    :type h: list or :class:`Fieldset`
