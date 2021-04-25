@@ -22,8 +22,8 @@ params:
 - area:
     default: '90/-180/-90/180'
     desc: Specifies the coordinates of the area (as [north, west, south, east]) over
-      which the averages cross section is calculated. 
-    ptype: list[number]
+      which the average cross section is calculated. 
+    ptype: list
     values: ''
 - direction:
     default: ns
