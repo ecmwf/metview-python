@@ -5,7 +5,7 @@ mvl_regular_layout
 
    Creates a list of :func:`plot_page` objets arranged in a regular grid (defined by ``page_columns`` and ``page_rows``) using the specified ``view``.
    
-   :param view: the view each plot grid cell contains
+   :param view: the view that each plot grid cell will contain
    :type view: :class:`Request`
    :param page_columns: number of columns in the grid
    :type page_columns: number
