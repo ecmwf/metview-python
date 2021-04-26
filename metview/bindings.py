@@ -21,7 +21,7 @@ import cffi
 import numpy as np
 
 
-__version__ = "1.8.0"
+__version__ = "1.7.1"
 
 
 def string_from_ffi(s):
