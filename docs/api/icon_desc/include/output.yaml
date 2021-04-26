@@ -15,12 +15,12 @@
       included in the filename.
     ptype: str
     values: on/off
-- output_name_first_page_number_value:
-    default: '1'
-    desc: Sets the number of the first page. All other pages are numbered 
-      from this value onwards.
-    ptype: number
-    values: ''
+# - output_name_first_page_number_value:
+#     default: '1'
+#     desc: Sets the number of the first page. All other pages are numbered 
+#       from this value onwards.
+#     ptype: number
+#     values: ''
 - output_file_minimal_width:
     default: '1'
     desc: Width of numbering of multi-file outputs (eg. use 1 for 'plot.1.png', 3 for 'plot.001.png' etc).

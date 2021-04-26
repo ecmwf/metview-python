@@ -5,13 +5,13 @@ oneliner: Defines an Encapsulated Postscript (EPS) plot output
     driver based on the Cairo library.
 params:
 - _include: !include include/output.yaml
-- output_cairo_transparent_background:
-    default: 'off'
-    desc: Defines the background to be transparent.
-    ptype: str
-    values: on/off
-- output_cairo_antialias:
-    default: 'on'
-    desc: Defines if lines are antialiased.
-    ptype: str
-    values: on/off
+# - output_cairo_transparent_background:
+#     default: 'off'
+#     desc: Defines the background to be transparent.
+#     ptype: str
+#     values: on/off
+# - output_cairo_antialias:
+#     default: 'on'
+#     desc: Defines if lines are antialiased.
+#     ptype: str
+#     values: on/off
