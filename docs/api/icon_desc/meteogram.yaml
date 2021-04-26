@@ -5,13 +5,7 @@ params:
 - type:
     default: 15_days_epsgram
     desc: |-
-      Specifies the type of meteogram to be generated. The "epsgrams" are derived from the ENS, whereas the "metgrams" are derived from the deterministic forecast model. The available types are:
-      
-      * "10_days_epsgram"
-      * "15_days_epsgram"
-      * "15_days_epsgram_with_climate"
-      * "10_days_wave_epsgram"
-      * "10_days_plumes"
+      Specifies the type of meteogram to be generated. The "epsgrams" are derived from the ENS, whereas the "metgrams" are derived from the deterministic forecast model.
     ptype: str
     values: 10_days_epsgram/15_days_epsgram/15_days_epsgram_with_climate/10_days_wave_epsgram/10_days_plumes
 - station:
