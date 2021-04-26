@@ -85,10 +85,10 @@ params:
     desc: |-
         Specifies the characteristics of the time-series axis as an :func:`maxis` object to be used in the plotting of the data. The following :func:`maxis` parameters are defined by the application; therefore, users should not change their values directly: ``axis_type`` (set to "date"), ``axis_date_min_value`` and ``axis_date_max_value`` (set according to ``date_min`` and ``date_max``, respectively), and ``axis_orientation``. The ``axis_orientation`` parameter is defined according to the following rules:
                  
-        * if the selected input pane is "line_hovm", the value is set to "horizontal".
-        * if the selected input pane is "area_hovm" and `average_direction`` is "east_west", the value is set to "horizontal".
-        * if the selected input pane is "area_hovm" and ``average_direction`` is "north_south", the value is set to "vertical".
-        * if the selected input pane is "vertical_hovm", the value is set to "horizontal".
+        * if ``type`` is "line_hovm", the value is set to "horizontal".
+        * if ``type`` is "area_hovm" and `average_direction`` is "east_west", the value is set to "horizontal".
+        * if ``type`` is "area_hovm" and ``average_direction`` is "north_south", the value is set to "vertical".
+        * if ``type`` is "vertical_hovm", the value is set to "horizontal".
         However, it is possible to change ``axis_orientation`` value from its calculated default by setting ``swap_axes`` to "yes". This option is not available for "vertical_hovm".
     ptype: :func:`maxis`
     values: ''
@@ -97,15 +97,15 @@ params:
     desc: |-
         Specifies the characteristics of the geographical axis as an :func:`maxis` object to be used in the plotting of the data. The following :func:`maxis` parameters are defined by the application; therefore, users should not change their values directly: ``axis_min_value`` and ``axis_max_value`` (set according to ``line`` or ``area`` ), ``axis_type``, ``axis_tick_label_type`` and ``axis_orientation``. The ``axis_type`` and ``axis_tick_label_type`` parameters are defined according to the following rules:
         
-        * if the selected input pane is "line_hovm", ``axis_type`` is set to "geoline".
-        * if the selected input pane is "area_hovm" and ``average_direction`` is "east_west", ``axis_type`` is set to "regular" and "axis_tick_label_type`` to "latitude".
-        * if the selected input pane is "area_hovm" and ``average_direction`` is "north_south", ``axis_type`` is set to "regular" and ``axis_tick_label_type`` to "longitude".
+        * if ``type`` is "line_hovm", ``axis_type`` is set to "geoline".
+        * if ``type`` is "area_hovm" and ``average_direction`` is "east_west", ``axis_type`` is set to "regular" and "axis_tick_label_type`` to "latitude".
+        * if ``type`` is "area_hovm" and ``average_direction`` is "north_south", ``axis_type`` is set to "regular" and ``axis_tick_label_type`` to "longitude".
         Moreover, ``axis_orientation`` parameter is defined according to the following rules:
         
-        * if the selected input pane is "line_hovm", the value is set to "vertical".
-        * if the selected input pane is "area_hovm" and ``average_direction`` is "east_west", the value is set to "vertical".
-        * if the selected input pane is "area_hovm" and ``average_direction`` is "north_south" the value is set to "horizontal"
-        However, it is possible to change the ``axis_orientation`` from its calculated default by setting ``swap_axes`` to "Yes".
+        * if ``type`` is "line_hovm", the value is set to "vertical".
+        * if ``type`` is "area_hovm" and ``average_direction`` is "east_west", the value is set to "vertical".
+        * if ``type`` is "area_hovm" and ``average_direction`` is "north_south" the value is set to "horizontal"
+        However, it is possible to change the ``axis_orientation`` from its calculated default by setting ``swap_axes`` to "yes".
     ptype: :func:`maxis`
     values: ''
 - vertical_axis:
