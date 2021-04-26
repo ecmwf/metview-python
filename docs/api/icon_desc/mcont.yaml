@@ -110,11 +110,6 @@ params:
     desc: Style of contour highlighting.
     ptype: str
     values: solid/dash/dot/chain_dot/chain_dash
-- contour_reference_level:
-    default: '0.0'
-    desc: Specifies contour level from which the contour interval is calculated.
-    ptype: number
-    values: ''
 - contour_highlight_colour:
     default: blue
     desc: Colour of the highlighted contour lines.
@@ -130,12 +125,17 @@ params:
     desc: Frequency of highlighted contour lines.
     ptype: number
     values: ''
+- contour_reference_level:
+    default: '0.0'
+    desc: Specifies contour level from which the contour interval is calculated.
+    ptype: number
+    values: ''
 - contour_level_selection_type:
     default: count
     desc: |-
         Specifies how the contour values are defined:
 
-        * "count": calculate a reasonable  contour interval taking into account the min/max and the requested number of isolines. 
+        * "count": calculate a reasonable  contour interval taking into account the min/max and the requested number of isolines. This is done separately for each individual fields! 
         * "interval": regularly spaced intervals using the ``contour_reference_level`` as base.
         * "level_list": uses the given ``contour_level_list``.
     ptype: str
@@ -298,7 +298,7 @@ params:
 - contour_shade_marker_name_table:
     default: ''
     desc: Marker table defined by a a set of symbol names when 
-        ``contour_shade_marker_table_type`` is "index". 
+        ``contour_shade_marker_table_type`` is "name". 
     ptype: str or list[str]
     values: ''
 - contour_shade_max_level_colour:
@@ -327,7 +327,7 @@ params:
     default: ''
     desc: Colour used at the stops, the gradient will be calculated between 2 consecutive
       ones.
-    ptype: str
+    ptype: str or list[str]
     values: ''
 - contour_gradients_waypoint_method:
     default: both
@@ -346,7 +346,7 @@ params:
     values: clockwise/anti_clockwise/shortest/longest
 - contour_gradients_step_list:
     default: '10'
-    desc: Number of steps to compute for each interval.
+    desc: Number of steps to compute for each gradient interval.
     ptype: number or list[number]
     values: ''
 - contour_shade_palette_name:
@@ -526,11 +526,11 @@ params:
     desc: Colour of high/low marker symbols.
     ptype: str
     values: ''
-- contour_hilo_position_file_name:
-    default: ''
-    desc: ''
-    ptype: str
-    values: ''
+# - contour_hilo_position_file_name:
+#     default: ''
+#     desc: ''
+#     ptype: str
+#     values: ''
 - contour_hilo_height:
     default: '0.4'
     desc: Height of high/low text or numbers.
@@ -558,12 +558,12 @@ params:
     values: on/off
 - contour_grid_value_type:
     default: normal
-    desc: 
+    desc: ''
     ptype: str
     values: normal/reduced/akima
 - contour_grid_value_plot_type:
     default: value
-    desc: 
+    desc: ''
     ptype: str
     values: value/marker/both
 - contour_grid_value_min:
@@ -583,7 +583,7 @@ params:
     values: ''
 - contour_grid_value_lon_frequency:
     default: '1'
-    desc: The frequency of latitude rows for grid point value plotting.
+    desc: The frequency of longitude rows for grid point value plotting.
     ptype: number
     values: ''
 - contour_grid_value_height:
@@ -603,7 +603,7 @@ params:
     values: ''
 - contour_grid_value_quality:
     default: low
-    desc: 
+    desc: ''
     ptype: str
     values: high/medium/low
 - contour_grid_value_marker_height:
@@ -628,27 +628,28 @@ params:
     values: ''
 - grib_scaling_of_retrieved_fields:
     default: 'on'
-    desc: Toggles the contour scaling of the retrieved fields. Fields which are retrieved 
-        from MARS or derived from other fields are in SI units. If this parameter is "on", 
-        the plotting library will perform a unit conversion (scaling) on the retrieved fields that it
-        plots, converting from these SI units to units of customary meteorological
-        usage - e.g. Pressure from Pa to hPa, Temperature from K to Celsius. Certain parameters
-        will be scaled into more user-friendly units if the data has not been manipulated.
+    desc: Toggles the contour scaling from SI units to more convenient units for retrieved fields. 
+        In Metview a GRIB field is regarded as "retrieved" if the value of the *generatingProcessIdentifier*
+        ecCodes key is not 254 in the GRIB header (otherwise the field is regarded as "derived"). 
+        GRIB data retrieved from MARS are always identified as "retrieved". The contour scaling
+        involves conversion e.g. from K to Celsius, Pa to hPa for the most common parameters. The
+        parameters involved in contour scaling and the type of scaling are defined by Metview's
+        plotting library (Magics).
     ptype: str
     values: on/off
 - grib_scaling_of_derived_fields:
     default: 'off'
     desc: |-
-        Toggles the contour scaling of the derived fields. Any field you derive are supposed to be in SI units, so set this parameter to "on" to convert to meteorological style units. E.g.: 
+        Toggles the contour scaling from SI units to more convenient units for derived GRIB fields. In Metview a GRIB field is regarded as "derived" if the *generatingProcessIdentifier* ecCodes key is set to 254 in the GRIB header (otherwise the field is regarded as "retrieved"). Most of the Metview computations will set this key accordingly marking the resulting fields as "derived". Please be careful with this option since you do not want to perform the contour scaling after some computations. Here are a few examples:
        
-        * If you retrieve two temperature fields, they are plotted in Celsius . If you derive a mean temperature from them, it will be plotted in K if you do not scale the derived field.
-        * Precipitation fields are cumulative fields plotted in mm - if you subtract two consecutive ones to obtain the precipitation for the time step between them, you will plot a field in m if you do not scale the derived field. 
-        * Certain parameters will be scaled into more user-friendly units if the data has been manipulated.
+        * when computing the mean temperature, if we want to plot it in Celsius units (instead of K) we need to set ``grib_scaling_of_derived_fields`` to "on"
+        * when computing the difference between temperature fields we do not want any contour scaling since the difference in K is the same as the difference in Celsius. So ``grib_scaling_of_derived_fields`` should be "off".
+        * when computing the difference between accumulated precipitation fields, if we want to plot the results in mm units (instead of m) we need to set ``grib_scaling_of_derived_fields`` to "on" 
     ptype: str
     values: on/off
 - grib_interpolation_method:
     default: interpolate
-    desc: ''
+    desc: Internal interpolation method used for the contouring algorithm.
     ptype: str
     values: interpolate/nearest/nearest_valid
 - grib_interpolation_method_missing_fill_count:
