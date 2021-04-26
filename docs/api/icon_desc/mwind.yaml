@@ -15,7 +15,7 @@ params:
     default: '2.0'
     desc: Controls the actual number of wind arrows/flags plotted. If it is 1
         all the wind arrows/flags will be plotted. Otherwise a spatial thinning will be applied.
-        Values have to greater than or equal to 1.
+        Values have to be greater than or equal to 1.
     ptype: number
     values: ''
 - legend:
@@ -130,7 +130,7 @@ params:
     values: ''
 - wind_flag_calm_below:
     default: '0.5'
-    desc: Winds less than or equal to this value will be drawn as calm.
+    desc: Winds less than or equal to this value (m/s) will be drawn as calm.
     ptype: number
     values: ''
 - wind_flag_colour:
@@ -186,7 +186,7 @@ params:
     values: ''
 - wind_arrow_calm_below:
     default: '0.5'
-    desc: Winds less than or equal to this value will be drawn as calm.
+    desc: Winds less than or equal to this value (m/s) will be drawn as calm.
     ptype: number
     values: ''
 - wind_arrow_colour:
