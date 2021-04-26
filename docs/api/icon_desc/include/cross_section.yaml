@@ -7,7 +7,7 @@
       * Next, if you wish a straight line, ensure that the two longitude values are the same.
 
       E.g. a straight-line cross-section going through the South pole from 60S/25E to 60S/155W can be specified as -60/25/-120/25. Here the fact that one of the latitude values is below -90 indicates to Metview that the cross-section will go through the South Pole. Since the two longitude values are identical a straight line will be defined. If the longitudes were different two curves would be used (one to the pole and another one away from it).
-    ptype: list
+    ptype: list[number]
     values: ''
 - wind_parallel:
     default: 'on'
@@ -113,7 +113,7 @@
     default: '0.01'
     desc: Specifies the list of output pressure levels. Only available if ``level_selection_type``
       is set to "level_list".
-    ptype: float or list[float]
+    ptype: number or list[number]
     values: ''
 - level_count:
     default: '100'
