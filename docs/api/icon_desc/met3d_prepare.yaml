@@ -86,7 +86,7 @@ params:
     default: '-1'
     desc: Specifies the start date of the analysis period. Available when ``mode``
       is "an". The default value is -1 (i.e. yesterday).
-    ptype: str
+    ptype: number
     values: ''
 - analysis_start_time:
     default: '0'
