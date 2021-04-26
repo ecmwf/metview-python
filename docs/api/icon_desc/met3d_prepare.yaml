@@ -23,7 +23,7 @@ params:
     default: '1/TO/50'
     desc: Specifies the perturbed ensemble members to be retrieved as a list. Enabled
       when ``product`` is set to "ens".
-    ptype: str or list[str]
+    ptype: number or list[number] or list[str]
     values: ''
 - levtype:
     default: pl
@@ -34,8 +34,8 @@ params:
     values: pl/ml
 - pl_levelist:
     default: 1000/925/850/700/500/400/300
-    desc: Specifies the list of pressure levels in hPa when ``levtype`` is "pl"
-    ptype: str or list[str]
+    desc: Specifies the list of pressure levels in hPa when ``levtype`` is "pl".
+    ptype: number or list[number] or list[str]
     values: ''
 - ml_levelist:
     default: '-10'
@@ -44,7 +44,7 @@ params:
       be retrieved from the surface up to level N. Please note that model level numbering
       starts at the topmost atmospheric level (click `here <https://www.ecmwf.int/en/forecasts/documentation-and-support/137-model-levels>`_
       for details).
-    ptype: str or list[str]
+    ptype: number or list[number] or list[str]
     values: ''
 - params_2d:
     default: '2t/10u/10v'
@@ -69,13 +69,13 @@ params:
     default: '-1'
     desc: Specifies the run date of the forecast. Available when ``mode`` is "fc".
       The default value is -1 (i.e. yesterday).
-    ptype: str
+    ptype: number
     values: ''
 - time:
     default: '0'
     desc: Specifies the run time of the forecast in hours. Available when ``mode``
       is "fc".
-    ptype: str
+    ptype: number
     values: ''
 - step:
     default: '0'
@@ -91,18 +91,18 @@ params:
 - analysis_start_time:
     default: '0'
     desc: Specifies the start time of the period. Available when ``mode`` is "an".
-    ptype: str
+    ptype: number
     values: ''
 - analysis_end_date:
     default: '-1'
     desc: Specifies the end date of the period. Available when ``mode`` is "an".
       The default value is -1 (i.e. yesterday).
-    ptype: str
+    ptype: number
     values: ''
 - analysis_end_time:
     default: '0'
     desc: Specifies the end time of the period. Available when ``mode`` is "an".
-    ptype: str
+    ptype: number
     values: ''
 - analysis_step:
     default: '6'
