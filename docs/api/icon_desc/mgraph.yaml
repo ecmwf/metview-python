@@ -151,7 +151,7 @@ params:
     values: vertical/horizontal
 - graph_bar_justification:
     default: centre
-    desc: The bars will be centered on the value, or left, right justifies. Useful
+    desc: The bars will be centred on the value, or left, right justified. Useful
       for plotting any accumulated fields.
     ptype: str
     values: left/centre/right
@@ -183,7 +183,7 @@ params:
     values: ''
 - graph_bar_colour:
     default: blue
-    desc: The colour of the numbereriors of bars.
+    desc: The colour of the interiors of bars.
     ptype: str
     values: ''
 - graph_bar_clipping:
