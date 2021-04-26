@@ -12,7 +12,7 @@ params:
     default:
     desc: Specifies the data (:class:`NetCDF`) from which to expand
       the Hovmoeller diagram. Takes precedence over ``netcdf_path``.
-    ptype: class:`NetCDF`
+    ptype: :class:`NetCDF`
     values:
 - data_path:
    default:
