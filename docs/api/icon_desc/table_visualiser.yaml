@@ -28,8 +28,8 @@ params:
     values: ''
 - table_data:
     default: ''
-    desc: Specifies the input data by :func:`tablereader`.
-    ptype: :func:`tablereader`
+    desc: Specifies the input data by :func:`read_table`.
+    ptype: :func:`read_table`
     values: ''
 - table_x_type:
     default: number
