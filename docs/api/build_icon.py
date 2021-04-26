@@ -112,8 +112,8 @@ class DocParam:
         self.desc = conf.get("desc", "")
         self.p_type = conf.get("ptype", "str")
 
-        if "str" in self.p_type:
-            self.default = self._add_double_quote(self.default)
+        # if "str" in self.p_type:
+        #     self.default = self._add_double_quote(self.default)
 
         # reformat the description
         self._format_desc()
@@ -172,17 +172,32 @@ class DocParam:
 
     def _formatted_default(self):
         if self.default and isinstance(self.default, str):
-            if self.default.startswith("\"path::"):
-                return self.default.replace("path::", "")
+            if self.default.startswith("path::"):
+                t = self.default.replace("path::", "")
+                return self._add_double_quote(t)
             elif "/" in self.default:
-                return (
-                    "[" + ", ".join([v.strip() for v in self.default.split("/")]) + "]"
-                )
+                if "str" in self.p_type:
+                    return ("[" + ", ".join([self._add_double_quote(v) for v in self.default.split("/")]) + "]")
+                else:
+                    return (
+                        "[" + ", ".join([v.strip() for v in self.default.split("/")]) + "]"
+                    )
+                # return (
+                #     "[" + ", ".join([v.strip() for v in self.default.split("/")]) + "]"
+                # )
             # print(f"  {self.default} -> {v}")
             else:
-                return self.default.replace("@", "\@")
+                t = self.default.replace("@", "\@")
+                if "str" in self.p_type:
+                    t = self._add_double_quote(t)
+                return t
+
         else:
-            return str(self.default)
+            if "str" in self.p_type:
+                t = self._add_double_quote(t)
+            else:
+                t = str(self.default)
+            return t
 
 
 class DocFunction:
