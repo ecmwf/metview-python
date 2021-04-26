@@ -1351,6 +1351,7 @@
     desc: Plots an image at the spcified position in a view
     group:
     - plot
+    title: Import Plotting
     type: icon
 - min:
     category:

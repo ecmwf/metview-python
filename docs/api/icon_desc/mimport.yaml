@@ -6,36 +6,39 @@ oneliner: Adds an image to the plot at the specified position, which is given
 params:
 - import_file_name:
     default: ''
-    desc: ''
+    desc: Specifies the path to the image file to be imported.
     ptype: str
     values: ''
 - import_file:
     default: ''
-    desc: ''
-    ptype: str
+    desc: Specifies the image file as a Metview file object (result of :func:`read`). 
+        If both an object and a path are specified the object takes precedence.
+    ptype: :class:`Request`
     values: ''
 - import_format:
     default: png
-    desc: ''
+    desc: Specifies the image format.
     ptype: str
     values: png/jpeg/gif
 - import_x_position:
     default: '0'
-    desc: ''
+    desc: Specifies the x coordinate of the bottom left corner of the image in the plot. The units are in cm. 
     ptype: number
     values: ''
 - import_y_position:
     default: '0'
-    desc: ''
+    desc: Specifies the y coordinate of the bottom left corner of the image in the plot. The units are in cm. 
     ptype: number
     values: ''
 - import_width:
     default: '-1'
-    desc: ''
+    desc: Specifies the width of the image in the plot. The units are in cm. 
+            The default value is -1, which means the width is automatically computed.
     ptype: number
     values: ''
 - import_height:
     default: '-1'
-    desc: ''
+    desc: Specifies the height of the image in the plot. The units are in cm. 
+            The default value is -1, which mean the height is automatically computed.
     ptype: number
     values: ''
