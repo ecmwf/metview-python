@@ -1,13 +1,13 @@
 - line:
     default: '0/-180/0/180'
     desc: |-
-      Specifies the coordinates of a transect line along which the cross-section is calculated in [lat1, lon1, lat2, lon2] format. The cross section is calculated from a set of geographical points taken along the input transect line. The point selection takes into consideration the resolution of the data and assures that a minimum of 64 points will be used. Note that it is possible to define a line through either pole by describing the line’s coordinates as follows:
+      Specifies the coordinates of a transect line along which the cross-section is calculated in [lat1, lon1, lat2, lon2] format. The cross section is calculated from a set of geographical points taken along the input transect line. The point selection takes into consideration the resolution of the data and assures that a minimum of 64 points will be used. Note that it is possible to define a line through either poles by describing the line’s coordinates as follows:
 
       * First, when specifying the latitudes of the two points, imagine that the latitude values go above 90 when you cross the North Pole and below -90 when you cross the South Pole.
-      *  Next, if you wish a straight line, ensure that the two longitude values are the same as each other.
+      * Next, if you wish a straight line, ensure that the two longitude values are the same.
 
-      An example demonstrates this. Say you wanted to defined a straight-line cross-section from 60S/25E to 60S/155W. This would be specified as -60/25/-120/25. The fact that one of the latitude values is below -90 indicates to Metview that a cross-section going through the South Pole is desired. Once this has been established, the fact that the two longitude values are identical tells Metview to use a straight line through the pole. If this is the intent, then only one unique longitude value is required, as the other one can be deduced. Giving Metview two different longitude values will cause a cross-section consisting of two curves to be produced.
-    ptype: list[float]
+      E.g. a straight-line cross-section going through the South pole from 60S/25E to 60S/155W can be specified as -60/25/-120/25. Here the fact that one of the latitude values is below -90 indicates to Metview that the cross-section will go through the South Pole. Since the two longitude values are identical a straight line will be defined. If the longitudes were different two curves would be used (one to the pole and another one away from it).
+    ptype: list
     values: ''
 - wind_parallel:
     default: 'on'
@@ -90,7 +90,7 @@
       
       * "automatic": the values are scaled by a factor based on the geographical area, the top/bottom pressure levels and the size of the plot window. This option was kept to provide compatibility with earlier Metview versions.
       * "user": the values are scaled by the factor defined via parameter ``w_wind_scaling_factor``.
-      * "compute": in this mode, supposing that ``w_wind_param`` defines the the pressure velocity, the vertical wind component in m/s is computed by :func:`w_from_omega`. To make it work, the input data have to be specified either on pressure levels or on model levels together with LNSP. The temperature's paramId is defined by ``t_param``. When temperature is not available, the computations will use a constant temperature  value of 273.16 K. Having computed the vertical wind component, a scaling with the factor defined by ``w_wind_scaling_factor`` is still applied to the resulting values.
+      * "compute": in this mode, supposing that ``w_wind_param`` defines the the pressure velocity, the vertical wind component in m/s is computed by :func:`w_from_omega`. To make it work, the input data have to be specified either on pressure levels or on model levels together with LNSP. The temperature paramId is defined by ``t_param``. When temperature is not available, the computations will use a constant temperature  value of 273.16 K. Having computed the vertical wind component, a scaling with the factor defined by ``w_wind_scaling_factor`` is still applied to the resulting values.
     ptype: str
     values: automatic/user/compute
 - w_wind_scaling_factor:
@@ -104,8 +104,8 @@
     desc: |-
       Specifies the method to define the output pressure levels when converting model level data to pressure levels. The possible values are:
 
-      * "from_data": compute the absolute bottom pressure level from the data for each model level, compute the average pressure along the cross section line and then use this mean pressure as the vertical pressure co-ordinate for that level compute extra levels at the bottom by adding an offset (10 hPa) until it reaches the bottom pressure level, computed previously. This will avoid blank areas in the plot near the orography line.
-      * "count": calculate the output pressure levels by taking into account the bottom and top pressure levels (Bottom Level and Top Level) and the given number of levels (Level Count). The computed levels will be evenly spaced on either a linear or a logarithmic scale depending on the value of ``vertical_scaling``.
+      * "from_data": first computes the absolute bottom pressure level from the data, next for each model level computes the average pressure along the cross section line and uses it as the vertical pressure co-ordinate for that level, finally computes extra levels at the bottom by adding an offset (10 hPa) until it reaches the bottom pressure level. This will avoid blank areas in the plot near the orography line.
+      * "count": calculates the output pressure levels by taking into account the bottom and top pressure levels (``bottom_level`` and ``top_level``) and the given number of levels (``level_count``). The computed levels will be evenly spaced on either a linear or a logarithmic scale depending on the value of ``vertical_scaling``.
       * "level_list": use the given list of pressure levels in ``level_list``
     ptype: str
     values: from_data/count/level_list

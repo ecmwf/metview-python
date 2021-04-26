@@ -1,4 +1,4 @@
-Derives (and returns) a vertical cross section data unit of upper air fields along a specified transect line. For each upper air field, point values are interpolated along the transect line, with a spacing consistent with the resolution of the input GRIB data.
+Generates a vertical cross section data unit of upper air fields along a specified transect line. For each upper air field, point values are interpolated along the transect line, with a spacing consistent with the resolution of the input GRIB data.
 
 The cross section data can be plotted (using a default visualisation based on the range of data values) or saved as a NetCDF data file (:class:`NetCDF`) using :func:`write`.
 
