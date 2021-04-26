@@ -176,7 +176,7 @@ class DocParam:
                 t = self.default.replace("path::", "")
                 return self._add_double_quote(t)
             elif "/" in self.default:
-                if "str" in self.p_type:
+                if "str" in self.p_type and (not "number" in self.p_type or "to" in self.default.lower()):
                     return ("[" + ", ".join([self._add_double_quote(v) for v in self.default.split("/")]) + "]")
                 else:
                     return (
