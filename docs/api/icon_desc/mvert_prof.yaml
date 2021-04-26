@@ -1,6 +1,6 @@
 return: :class:`NetCDF`
 summary: rst
-oneliner: Derives (and returns) vertical profile data.
+oneliner: Generates vertical profile data.
 params:
 - data:
     default: ''
