@@ -10,7 +10,7 @@ rmask
    :param fs: input fieldset
    :type fs: :class:`Fieldset`
    :param circle: circle as a list of [lat, lon, radius]
-   :type circle_or_lat: list
+   :type circle: list[number]
    :param number lat: latitude coordinate of the centre of the circle
    :param number lon: longitude coordinate of the centre of the circle
    :param number radius: radius of the circle in m
