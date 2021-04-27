@@ -14,7 +14,7 @@ params:
 - table_filename:
     default:
     desc: Specifies the path to the input table file. This parameter, 
-      if filled, overrides ``data``.
+      if set, overrides ``data``.
     ptype: str
     values:
 - table_delimiter:
@@ -57,14 +57,14 @@ params:
     default:
     desc: Specifies the rows (if any) which contain meta-data in a form
       which can be parsed by Metview. See ASCII Tables for more details. 
-    ptype: list
+    ptype: list[number]
     values: 
 - table_columns:
     default:
     desc: In order to conserve resources, it is possible to choose
       to load only a specified set of data columns. The first column
       is numbered 1.
-    ptype: list
+    ptype: list[number]
     values: 
 - table_column_types:
     default:
@@ -73,5 +73,5 @@ params:
       data types as a list of type names. Possible
       type names are "number" and "string". If ``table_columns`` is set, only
       that subset of columns should be represented by the list of types.
-    ptype: list
+    ptype: list[str]
     values: 
