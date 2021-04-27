@@ -12,17 +12,17 @@ params:
 - data:
     default: ''
     desc: ''
-    ptype: str
+    ptype: :class:`Fieldset`
     values: ''
 - area:
-    default: '-90'
+    default: '-90/-180/90/180'
     desc: ''
-    ptype: number or list[number]
+    ptype: list[number]
     values: ''
 - resolution:
-    default: '1'
+    default: '1/1'
     desc: ''
-    ptype: number or list[number]
+    ptype: list[number]
     values: ''
 - projection:
     default: latlong
