@@ -1,5 +1,6 @@
-Filters a :class:`Fieldset` (GRIB data). You can then obtain just the field(s) you want from a large request/file containing a wide variety of other field(s). The filter also has post-processing options such as ``grid`` and ``area``, for regridding and sub-area extraction respectively; these use the same interpolation routines as the standard ECMWF MARS client.
+Filters a :class:`Fieldset` (GRIB data) by selecting a set of messages according to the filter conditions. It also has post-processing options such as ``grid`` and ``area``, for regridding and sub-area extraction respectively; these use the same interpolation routines as the standard ECMWF MARS client.
 
-You may ask yourself, why filter a MARS Retrieval instead of retrieving from the database exactly the data you want, thus avoiding the extra filtering step? The usefulness depends on what you want to do :
-
-It may be more efficient to retrieve (and save) a large chunk of data with a single MARS Retrieval and then filter fractions of the large dataset with :func:`read`. Remember that the large chunk of data, once retrieved is cached (or you may have saved it) and further access to it via :func:`read` is much faster than making many separate individual MARS Retrievals.
+.. note::
+    
+    :func:`read` is almost identical to :func:`retrieve` but it works with local GRIB data. 
+    

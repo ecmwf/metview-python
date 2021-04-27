@@ -3,8 +3,8 @@ summary: rst
 oneliner: Filters a :class:`Fieldset` (GRIB data).
 params:
 - source:
-    default: 'off'
-    desc: ''
+    default: ''
+    desc: Specifies the GRIB file path. Cannot be set when ``data`` is used.
     ptype: str
     values: ''
 - logstats:
@@ -14,8 +14,8 @@ params:
     values: ''
 - data:
     default: ''
-    desc: ''
-    ptype: str
+    desc: Specifies the GRIB data as a :class:`Fieldset`. Cannot be set when ``source`` is used.
+    ptype: :class:`Fieldset`
     values: ''
 - cfspath:
     default: 'off'
@@ -23,10 +23,15 @@ params:
     ptype: str
     values: ''
 - order:
-    default: '0'
-    desc: ''
+    default: 'as_is'
+    desc: Specifies whether you want to sort the files you have filtered ("sorted") or to 
+        obtain them in the order they are on the original file ("as_is"). 
+        The sorting is the same as that carried out by MARS on retrieving 
+        data (date, time, forecast step, level, parameter), hence this has
+        no effect if you are filtering a :class:`Fieldset` which is the result 
+        of a single MARS retrieval.
     ptype: str
-    values: 0/1
+    values: as_is/sorted
 - class:
     default: any
     desc: ''

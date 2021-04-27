@@ -1880,9 +1880,9 @@
     desc: Filters and interpolates fieldset data
     group:
     - filter
-    - geo
     - grib
     type: icon
+    title: Grib Filter
 - read:
     category: {}
     desc: ''
