@@ -1862,6 +1862,21 @@ def test_xyv_gpts_to_dataframe():
     assert np.isclose(df.loc[4]["value"], -10.8656)
 
 
+def test_ncols_gpts_to_dataframe():
+    gpt = mv.read(file_in_testdir("geo_ncols_8.gpt"))
+    df = gpt.to_dataframe()
+    assert isinstance(df, pd.DataFrame)
+    assert df.shape == (4, 9)
+    assert df.loc[2]["stnid"] == None
+    assert df.loc[2]["latitude"] == 51.93
+    assert df.loc[0]["longitude"] == 35.85
+    assert np.isclose(df.loc[1]["t2"], 274.9)
+    assert np.isclose(df.loc[1]["o3"], 24)
+    assert np.isclose(df.loc[1]["td"], 290.4)
+    assert np.isclose(df.loc[1]["rh"], 68)
+    assert np.isclose(df.loc[1]["octa"], 1)
+
+
 def test_grib_to_dataset():
     grib = mv.read(file_in_testdir("t_for_xs.grib"))
     x = grib.to_dataset()
