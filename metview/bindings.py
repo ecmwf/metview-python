@@ -45,7 +45,7 @@ class MetviewInvoker:
         self.debug = os.environ.get("METVIEW_PYTHON_DEBUG", "0") == "1"
 
         # check whether we're in a running Metview session
-        if "METVIEW_TITLE_PROD" in os.environ:    # pragma: no cover
+        if "METVIEW_TITLE_PROD" in os.environ:  # pragma: no cover
             self.persistent_session = True
             self.info_section = {"METVIEW_LIB": os.environ["METVIEW_LIB"]}
             return
@@ -54,7 +54,7 @@ class MetviewInvoker:
         import time
         import subprocess
 
-        if self.debug:    # pragma: no cover
+        if self.debug:  # pragma: no cover
             print("MetviewInvoker: Invoking Metview")
         self.persistent_session = False
         self.metview_replied = False
@@ -77,14 +77,14 @@ class MetviewInvoker:
             env_file.name,
             str(pid),
         ]
-        if self.debug:    # pragma: no cover
+        if self.debug:  # pragma: no cover
             metview_flags.insert(2, "-slog")
             print("Starting Metview using these command args:")
             print(metview_flags)
 
         try:
             subprocess.Popen(metview_flags)
-        except Exception as exp:    # pragma: no cover
+        except Exception as exp:  # pragma: no cover
             print(
                 "Could not run the Metview executable ('" + metview_startup_cmd + "'); "
                 "check that the binaries for Metview (version 5 at least) are installed "
@@ -99,7 +99,7 @@ class MetviewInvoker:
         ):
             time.sleep(0.001)
 
-        if not (self.metview_replied):    # pragma: no cover
+        if not (self.metview_replied):  # pragma: no cover
             raise Exception(
                 'Command "metview" did not respond within '
                 + str(self.metview_startup_timeout)
@@ -121,7 +121,7 @@ class MetviewInvoker:
     def destroy(self):
         """Kills the Metview session. Raises an exception if it could not do it."""
 
-        if self.persistent_session:    # pragma: no cover
+        if self.persistent_session:  # pragma: no cover
             return
 
         if self.metview_replied:
@@ -188,7 +188,7 @@ try:
         # MacOS systems
         lib = ffi.dlopen(os.path.join(mv_lib, "libMvMacro"))
 
-except Exception as exp:    # pragma: no cover
+except Exception as exp:  # pragma: no cover
     print(
         "Error loading Metview/libMvMacro. LD_LIBRARY_PATH="
         + os.environ.get("LD_LIBRARY_PATH", "")
@@ -597,7 +597,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         # soft dependency on cfgrib
         try:
             import xarray as xr
-        except ImportError:    # pragma: no cover
+        except ImportError:  # pragma: no cover
             print("Package xarray not found. Try running 'pip install xarray'.")
             raise
         dataset = xr.open_dataset(self.url(), engine="cfgrib", backend_kwargs=kwarg)
@@ -639,7 +639,7 @@ class Geopoints(FileBackedValueWithOperators, ContainerValue):
     def to_dataframe(self):
         try:
             import pandas as pd
-        except ImportError:    # pragma: no cover
+        except ImportError:  # pragma: no cover
             print("Package pandas not found. Try running 'pip install pandas'.")
             raise
 
@@ -665,7 +665,7 @@ class NetCDF(FileBackedValueWithOperators):
         # soft dependency on xarray
         try:
             import xarray as xr
-        except ImportError:    # pragma: no cover
+        except ImportError:  # pragma: no cover
             print("Package xarray not found. Try running 'pip install xarray'.")
             raise
         dataset = xr.open_dataset(self.url())
@@ -679,7 +679,7 @@ class Odb(FileBackedValue):
     def to_dataframe(self):
         try:
             import pandas as pd
-        except ImportError:    # pragma: no cover
+        except ImportError:  # pragma: no cover
             print("Package pandas not found. Try running 'pip install pandas'.")
             raise
 
@@ -700,7 +700,7 @@ class Table(FileBackedValue):
     def to_dataframe(self):
         try:
             import pandas as pd
-        except ImportError:    # pragma: no cover
+        except ImportError:  # pragma: no cover
             print("Package pandas not found. Try running 'pip install pandas'.")
             raise
 
@@ -867,7 +867,7 @@ def vector_from_metview(val):
     elif s == 8:
         nptype = np.float64
         b = lib.p_vector_double_array(vec)
-    else:    # pragma: no cover
+    else:  # pragma: no cover
         raise Exception("Metview vector data type cannot be handled: ", s)
 
     bsize = n * s
@@ -1088,7 +1088,7 @@ class Plot:
             return animate(args, kwargs)
 
         # otherwise create a single static plot
-        if self.plot_to_jupyter:    # pragma: no cover
+        if self.plot_to_jupyter:  # pragma: no cover
             f, tmp = tempfile.mkstemp(".png")
             os.close(f)
 
@@ -1122,7 +1122,7 @@ plot = Plot()
 
 # animate - only usable within Jupyter notebooks
 # generates a widget allowing the user to select between plot frames
-def animate(*args, **kwargs):    # pragma: no cover
+def animate(*args, **kwargs):  # pragma: no cover
 
     if not plot.plot_to_jupyter:
         raise EnvironmentError(
@@ -1229,7 +1229,7 @@ def animate(*args, **kwargs):    # pragma: no cover
 # functionality. Since this occurs within a function, we need a little trickery to
 # get the IPython functions into the global namespace so that the plot object can use them
 def setoutput(*args, **kwargs):
-    if "jupyter" in args:    # pragma: no cover
+    if "jupyter" in args:  # pragma: no cover
         try:
             global Image
             global get_ipython
