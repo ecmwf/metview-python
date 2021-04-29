@@ -20,10 +20,11 @@ import metview as mv
 LOG = logging.getLogger(__name__)
 
 _DB = {
-    "param": (None, "params.yaml", "param_style.yaml"),
-    "map": (None, "", "map_style.yaml"),
+    "param": (None, "params.yaml", "param_styles.yaml"),
+    "map": (None, "", "map_styles.yaml"),
 }
 
+_MAP_CONF = None
 ETC_PATH = os.path.join(os.path.dirname(__file__), "etc")
 CUSTOM_CONF_PATH = ""
 LOCAL_CONF_PATH = ""
@@ -144,9 +145,10 @@ class ParamStyle:
         else:
             default_style = db.SCALAR_DEFAULT_STYLE_NAME
 
-        self.style = conf.get("styles", [default_style])
-        self.xs_style = conf.get("xs_styles", self.style)
-        self.diff_style = conf.get("diff_styles", [db.DIFF_DEFAULT_STYLE_NAME])
+        s = conf.get("styles", {})
+        self.style = s.get("basic", [default_style])
+        self.xs_style = s.get("xs", self.style)
+        self.diff_style = s.get("diff", [db.DIFF_DEFAULT_STYLE_NAME])
 
     def match(self, param):
         return max([d.match(param) for d in self.cond])
@@ -339,9 +341,7 @@ class GeoView:
             if k.lower() == "coastlines":
                 self.params.pop("coastlines", None)
         self.style = style
-        if self.style is None:
-            assert self.style.verb == "mcoast"
-
+    
     def to_request(self):
         v = copy.deepcopy(self.params)
         if self.style is not None and self.style:
@@ -420,8 +420,10 @@ class MapConf:
         s = self.style_db.get_style(style_v)
         return a, s
 
-    def view(self, area=None, style=None, plot_type=None):
+    def make_geo_view(self, area=None, style=None, plot_type=None):
         a, s = self.find(area=area, style=style)
+        if s is not None:
+            s = s.clone()
         # a["map_overlay_control"] = "by_date"
 
         if plot_type == "stamp":
@@ -431,6 +433,19 @@ class MapConf:
         #     a["coastlines"] = s.to_request()
         # # return mv.geoview(**a)
         # return a
+
+def MAP_CONF():
+    global _MAP_CONF
+    if _MAP_CONF is None:
+        _MAP_CONF = MapConf()
+    assert not _MAP_CONF is None
+    return _MAP_CONF
+
+def map_styles():
+    return MAP_CONF().style_db.styles
+
+def map(**argv):
+    return MAP_CONF().make_geo_view(**argv)
 
 
 if __name__ == "__main__":

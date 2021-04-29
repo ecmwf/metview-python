@@ -216,6 +216,45 @@ class ParamInfo:
         return f"{self.__class__.__name__}[name={self.name}, level={self.level}, level_type={self.level_type}, scalar={self.scalar}]"
 
 
+class ParamDesc:
+    def __init__(self, name):
+        self.name = name
+        self.md = {}
+    
+    def load(self, db):  
+        md = {"typeOfLevel": [], "level": [], "date": [], "time": [], "step": []}
+        # print(f"par={par}")
+        for b_name, b_df in db.blocks.items():
+            if b_name == "scalar":            
+                q = f"shortName == '{self.name}'"
+                dft = b_df.query(q)
+            elif b_name == self.name:
+                dft = b_df    
+            else:
+                dft = None
+
+            if dft is not None:
+                for k in md.keys():
+                    # print(f"{self.name}/{k}")
+                    md[k].extend(dft[k].tolist())
+                    # print(f"   df[{k}]={df[k]}")
+            # print(df)
+        if len(md["level"]) > 0:
+            df = pd.DataFrame(md)      
+            lev_types = df["typeOfLevel"].unique().tolist()
+            for t in lev_types:
+                # print(f" t={t}")
+                    self.md[t] = dict()
+                    q = f"typeOfLevel == '{t}'"
+                    # print(q)
+                    dft = df.query(q)
+                    # print(dft)
+                    d ={}
+                    if dft is not None:
+                        for md_key in ["level", "date", "time", "step"]:
+                            d[md_key] = dft[md_key].unique().tolist()
+                    self.md[t] = d
+
 class IndexDb:
     ROOTDIR_PLACEHOLDER_TOKEN = "__ROOTDIR__"
 
@@ -257,6 +296,7 @@ class IndexDb:
         self._param_types = {}
         self.data_files = [] if data_files is None else data_files
         self.merge_conf = [] if merge_conf is None else merge_conf
+        self._params = {}
 
     def select_with_name(self, name):
         """
@@ -426,6 +466,74 @@ class IndexDb:
                         self._param_types[row[1]].append(row[2])
             # print(self._param_types)
         return self._param_types
+
+    def unique(self, key, param=None):
+        r = set()
+        if param is not None:
+            for _, v in self.blocks.items():
+                df_res = v.query(f"shortName = {param}")
+        else:
+            for _, v in self.blocks.items():
+                r.update(v[key].unique().tolist())
+        return sorted(list(r))
+
+    # def param_meta(self, param):
+    #     for _, v in self.blocks.items():
+    #         df_res = v.query(f"shortName = {param}")
+
+    @property
+    def param_meta(self):
+        if len(self._params) == 0:
+            self.load() 
+            for par in sorted(self.unique("shortName")):
+                self._params[par] = ParamDesc(par)
+                self._params[par].load(self)
+                # df = {"typeOfLevel": [], "level": [], "date": [], "time": [], "step": []}
+                # # print(f"par={par}")
+                # for _, v in self.blocks.items():
+                #     q = f"shortName == '{par}'"
+                #     # print(f" q={q}")
+
+                #     dft = v.query(q)
+                #     if dft is not None:
+                #         for k in df.keys():
+                #             df[k].extend(dft[k].tolist())
+
+                # # print(df)
+                # if len(df["level"]) > 0:
+                #     df = pd.DataFrame(df)      
+                #     lev_types = df["typeOfLevel"].unique().tolist()
+                #     for t in lev_types:
+                #         # print(f" t={t}")
+                #         self._params[par][t] = dict()
+                #         q = f"typeOfLevel == '{t}'"
+                #         # print(q)
+                #         dft = df.query(q)
+                #         # print(dft)
+                #         d ={}
+                #         if dft is not None:
+                #             d["level"] = dft["level"].unique().tolist()
+                #         self._params[par][t] = d
+        return self._params
+        
+    def format_list(self, v):
+        if len(v) > 2:
+            return [v[0], "...", v[-1]]
+        else:
+            return v
+  
+    def summary(self):
+        t = {"name": [], "typeOflevel": [], "level": [], "date": [], "time": [], "step": []}
+        for k, v in self.param_meta.items():
+            for md_k, md in v.md.items():
+                t["name"].append(k)
+                t["typeOflevel"].append(md_k)
+                for kk in ["level", "date", "time", "step"]:
+                    t[kk].append(self.format_list(md[kk]))
+        df = pd.DataFrame.from_dict(t)
+        df.set_index("name", inplace=True)
+        df = df.sort_values(by="name")
+        return df
 
     def to_df(self):
         return pd.concat([p for _, p in self.blocks.items()])
@@ -692,8 +800,22 @@ class ExperimentDb(IndexDb):
         return df
 
     def describe(self):
-        for k, v in self.param_types.items():
-            print(f"{k}: {v}")
+        # t = {"name": [], "typeOflevel": []}
+        # for k, v in self.param_types.items():
+        #     t["name"].append(k)
+        #     t["typeOflevel"].append(v)
+        # df = pd.DataFrame.from_dict(t)
+        # df.set_index("name", inplace=True)
+        # df = df.sort_values(by="name")
+        t = {"name": [], "typeOflevel": []}
+        for k, v in self.param_meta.items():
+            t["name"].append(k)
+            t["typeOflevel"].append(v)
+        df = pd.DataFrame.from_dict(t)
+        df.set_index("name", inplace=True)
+        df = df.sort_values(by="name")
+        
+        return df
 
 
 class TrackConf:
@@ -794,8 +916,8 @@ class Dataset:
 
     def load(self):
         data_dir = os.path.join(self.path, "data")
-        index_dir = os.path.join(self.path, "index_db")
-        data_conf_file = os.path.join(self.path, "data_conf.yaml")
+        index_dir = os.path.join(self.path, "index")
+        data_conf_file = os.path.join(self.path, "data.yaml")
         with open(data_conf_file, "rt") as f:
             d = yaml.safe_load(f)
             for item in d["experiments"]:
@@ -836,12 +958,18 @@ class Dataset:
 
     def describe(self):
         print("Dataset components:")
-        t = {"name": [], "desc": []}
+        t = {"Name": [], "Description": []}
         for _, f in self.field_conf.items():
-            t["name"].append(f.name)
-            t["desc"].append(f.desc)
+            t["Name"].append(f.name)
+            t["Description"].append(f.desc)
+        for _, f in self.track_conf.items():
+            t["Name"].append(f.name)
+            t["Description"].append("Storm track data")
         df = pd.DataFrame.from_dict(t)
-        df.reset_index(drop=True, inplace=True)
+        df.set_index("Name", inplace=True)
+        # df.reset_index(drop=True, inplace=True)
+        # df.style.set_properties(**{'text-align': 'left'}).set_table_styles([dict(selector='th', props=[('text-align', 'left')])])
+        return df
         print(df)
 
     def fetch(self, forced=False):
@@ -849,8 +977,8 @@ class Dataset:
             Path(self.path).mkdir(0o755, parents=True, exist_ok=True)
 
         files = {
-            "conf.tar": ["data_conf.yaml", "conf"],
-            f"index_db.tar.{self.COMPRESSION}": ["index_db"],
+            "conf.tar": ["data.yaml", "conf"],
+            f"index.tar.{self.COMPRESSION}": ["index"],
             f"data.tar.{self.COMPRESSION}": ["data"],
         }
 

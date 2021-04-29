@@ -3,7 +3,8 @@
 # --------------------
 # 2m dewpoint temperature
 -
-  diff_styles:
+  styles:
+    diff:
       - diff_t
   match:
       - 
@@ -13,7 +14,8 @@
         paramId: 168
 # 2m temperature
 -
-  diff_styles:
+  styles:
+    diff:
       - diff_t
   match:
       - 
@@ -23,8 +25,9 @@
         paramId: 167
 # 10m wind gust 3h
 -
-  diff_styles: 
-    - diff_10fg3
+  styles:
+    diff: 
+      - diff_10fg3
   match:
       - 
         info_name: 10fg3
@@ -33,8 +36,9 @@
         paramId: 228028
 # 10m wind speed
 -
-  diff_styles: 
-    - diff_speed
+  styles:
+    diff: 
+      - diff_speed
   match:
       - 
         info_name: 10si
@@ -43,10 +47,11 @@
         paramId: 207
 # absolute vorticity
 -
-  styles: 
-      - vo
-  diff_styles:
-      - diff_vo
+  styles:
+    basic: 
+        - vo
+    diff:
+        - diff_vo
   match:
       - 
         info_name: absv
@@ -55,10 +60,11 @@
         paramId: 3041
 # equivalent potential temperature
 -
-  styles: 
-      - pt
-  diff_styles:
-      - diff_pt
+  styles:
+    basic: 
+        - pt
+    diff:
+        - diff_pt
   match:
       - 
         info_name: eqpt
@@ -67,8 +73,9 @@
         paramId: 4       
 # geopotential
 -
-  diff_styles: 
-    - diff_z
+  styles:
+    diff: 
+      - diff_z
   match:
       - 
         info_name: z
@@ -78,8 +85,9 @@
 # mean_sea_level_pressure:
 - 
   styles:
+    basic:
       - msl
-  diff_styles:
+    diff:
       - diff_msl
   match:
       - 
@@ -89,9 +97,10 @@
         paramId: 131
 # potential temperature
 -
-  styles: 
+  styles:
+    basic: 
       - pt
-  diff_styles:
+    diff:
       - diff_pt
   match:
       - 
@@ -101,19 +110,21 @@
         paramId: 3
 # potential vorticity
 -
-  styles: 
+  styles:
+    basic: 
       - pv
-  diff_styles:
+    diff:
       - diff_vo
   match:
       - 
         info_name: pv
 # relative humidity
 -
-  diff_styles: 
-    - diff_r
-  xs_styles:
-    - xs_r
+  styles:
+    diff: 
+      - diff_r
+    xs:
+      - xs_r
   match:
       - 
         info_name: r
@@ -122,9 +133,10 @@
         paramId: 157 
 # relative vorticity
 - 
-  styles: 
+  styles:
+    basic: 
       - vo
-  diff_styles:
+    diff_styles:
       - diff_vo
   match:
       - 
@@ -134,8 +146,9 @@
         paramId: 138
 # specific humidity
 -
-  xs_styles:
-    - xs_q
+  styles:
+    xs:
+      - xs_q
   match:
       - 
         info_name: q
@@ -144,7 +157,8 @@
         paramId: 133 
 # sea surface temperature
 -
-  diff_styles:
+  styles:
+    diff:
       - diff_t
   match:
       - 
@@ -154,10 +168,11 @@
         paramId: 34
 # temperature
 -
-  diff_styles: 
-    - diff_t
-  xs_styles:
-    - xs_t
+  styles:
+    diff: 
+      - diff_t
+    xs:
+      - xs_t
   match:
       - 
         info_name: t
@@ -166,8 +181,9 @@
         paramId: 130  
 # total precipitation
 -
-  diff_styles: 
-    - diff_tp
+  styles:
+    diff: 
+      - diff_tp
   match:
       - 
         info_name: tp
@@ -176,7 +192,8 @@
         paramId: 228
 # vertical (pressure) velocity
 -
-  styles: 
+  styles:
+    basic: 
       - w
   match:
       - 
@@ -186,7 +203,8 @@
         paramId: 135
 # wind speed
 -
-  diff_styles:
+  styles:
+    diff:
       - diff_speed
   match:
       - 
@@ -200,7 +218,8 @@
 # wind 10 m
 -
   type: vector
-  styles: 
+  styles:
+    basic: 
       - arrow_blue_red_10
   match:
       - 
@@ -208,7 +227,8 @@
 # wind  (generic)
 -
   type: vector
-  styles: 
+  styles:
+    basic: 
       - arrow_blue_red
   match:
       - 
@@ -216,7 +236,8 @@
 # wind 850 hPa        
 - 
   type: vector
-  styles: 
+  styles:
+    basic: 
       -  arrow_blue_red_850
   match:
       - 
@@ -226,7 +247,8 @@
 # wind 700 hPa        
 - 
   type: vector
-  styles: 
+  styles:
+    basic: 
       -  arrow_blue_red_700
   match:
       - 
@@ -236,7 +258,8 @@
 # wind 750 hPa        
 - 
   type: vector
-  styles: 
+  styles:
+    basic: 
       -  arrow_blue_red_500
   match:
       - 
@@ -247,6 +270,7 @@
 -
   type: vector
   styles: 
+    basic: 
       -  arrow_blue_red_200
   match:
       - 
@@ -257,6 +281,7 @@
 -
   type: vector
   styles: 
+    basic: 
       - xs_arrow_black
   match:
       - 
@@ -265,13 +290,15 @@
 # PARAMETERS REPRESENTING GEOMETRIC SHAPES
 # -------------------------------------------
 -
-  styles: 
+  styles:
+    basic: 
       - box
   match:
       - 
         info_name: box
 -
-  styles: 
+  styles:
+    basic: 
       - frame
   match:
       - 
@@ -281,7 +308,8 @@
 # TRACKS
 # -------------------------------------------
 -
-  styles: 
+  styles:
+    basic: 
       - track
   match:
       - 
@@ -291,7 +319,8 @@
 # PARAMETERS WITHOUT A SHORTNAME
 # ---------------------------------
 -
-  styles: 
+  styles:
+    basic: 
       - t_flux
   match:
       - 
@@ -299,7 +328,8 @@
       - 
         mars.param: "110.128"
 -
-  styles: 
+  styles:
+    basic: 
       - t_flux
   match:
       - 
@@ -307,7 +337,8 @@
       - 
         mars.param: "106.128"
 -
-  styles: 
+  styles:
+    basic: 
       - t_flux
   match:
       - 
@@ -315,7 +346,8 @@
       - 
         mars.param: "94.128"
 -
-  styles: 
+  styles:
+    basic: 
       - t_flux
   match:
       - 
@@ -323,7 +355,8 @@
       - 
         mars.param: "99.128"
 -
-  styles: 
+  styles:
+    basic: 
       - t_flux
   match:
       - 
@@ -331,7 +364,8 @@
       - 
         mars.param: "109.128"
 -
-  styles: 
+  styles:
+    basic: 
       - t_flux
   match:
       - 
@@ -339,7 +373,8 @@
       - 
         mars.param: "105.128"
 -
-  styles: 
+  styles:
+    basic: 
       - t_flux
   match:
       - 
@@ -347,7 +382,8 @@
       - 
         mars.param: "95.128"
 -
-  styles: 
+  styles:
+    basic: 
       - t_flux
   match:
       - 

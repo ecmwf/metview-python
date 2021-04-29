@@ -48,7 +48,7 @@ experiments:
         dir: {oper_dir}
         fname : re"[A-Za-z0-9]+_[A-z]+\.grib"
 """
-    with open(os.path.join(DS_DIR, "data_conf.yaml"), "w") as f:
+    with open(os.path.join(DS_DIR, "data.yaml"), "w") as f:
         f.write(ds_def)
 
     shutil.copytree(
@@ -72,7 +72,7 @@ def test_dataset():
 
     # indexing
     ds.scan()
-    index_dir = os.path.join(DS_DIR, "index_db")
+    index_dir = os.path.join(DS_DIR, "index")
     assert os.path.exists(index_dir)
     for comp in ["an", "oper"]:
         for f in [

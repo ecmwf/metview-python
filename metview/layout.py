@@ -44,6 +44,12 @@ class Layout:
 
     def build_grid(self, page_num=0, rows=None, columns=None, layout=None, view=None):
         r, c = self._grid_row_col(page_num=page_num, rows=rows, columns=columns, layout=layout)
+        
+        if isinstance(view, mv.style.GeoView):
+            v = view.to_request() 
+        else:
+            v = view
+
         # if rows is None and columns is None:
         #     if layout is not None and layout != "":
         #         v = layout.split("x")
@@ -64,7 +70,7 @@ class Layout:
         #         else:
         #             raise Exception("")
 
-        return self._build_grid(rows=r, columns=c, view=view)
+        return self._build_grid(rows=r, columns=c, view=v)
 
     def _build_grid(self, rows=1, columns=1, view=None):
         assert rows >= 1 and columns >= 1

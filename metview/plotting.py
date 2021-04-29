@@ -18,7 +18,7 @@ import yaml
 
 import metview as mv
 from metview.layout import Layout
-from metview.style import Style, StyleDb, MapConf, GeoView
+from metview.style import Style, StyleDb, GeoView
 from metview.title import Title
 from metview.track import Track
 
@@ -84,7 +84,7 @@ def _make_visdef(data, vd, style_db="param", plot_type="map"):
 
 def _make_view(view):
     if view is None:
-        view = MapConf().view(area="base").to_request()
+        view = mv.style.map(area="base").to_request()
     elif isinstance(view, GeoView):
         view = view.to_request()
     return view
