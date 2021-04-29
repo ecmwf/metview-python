@@ -283,6 +283,8 @@ Gallery
             f.write(
                 f"""
 {CLEAR_BLOCK}  
+.. {gr["anchor"]}:
+
 {title}
 {"-" * (len(title)+1)}
 
@@ -312,7 +314,7 @@ def main():
     cnt = 1
     item_failed = []
     for group, item in conf.items():
-        gr_item = {"title": item["title"], "desc": item.get("desc", ""), "items": []}
+        gr_item = {"title": item["title"], "anchor": item.get("anchor", "_dummy"), "desc": item.get("desc", ""), "items": []}
         for name in item["examples"]:
             LOG.info(f"[{cnt}/{total}] {name}")
             script = os.path.join(GALLERY_DIR, name + ".py")

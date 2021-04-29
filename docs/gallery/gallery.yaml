@@ -1,5 +1,6 @@
 projection:
   title: Map projections
+  anchor: _gallery_group_map_projections
   desc: These examples feature various map projections.
   examples:
     - predefined_area
@@ -20,6 +21,7 @@ projection:
     - collignon
 coastlines:
   title: Coastlines
+  anchor: _gallery_group_coastlines
   desc: These examples feature coastlines settings.
   examples:
     - map_grid
@@ -32,6 +34,7 @@ coastlines:
     - coastlines_resolution
 map-scalar:
   title: Gridded scalar data on map
+  anchor: _gallery_group_map_scalar
   desc: These examples feature map plots with gridded scalar data.
   examples:
   - contour9
@@ -64,6 +67,7 @@ map-scalar:
   - nc_era5_ozone
 map-vector:
   title: Vector data on map
+  anchor: _gallery_group_map_vector
   desc: These examples feature map plots with vector data.
   examples:
   - wind4
@@ -81,6 +85,7 @@ map-vector:
   - geowind
 map-point:
   title: Point data on map
+  anchor: _gallery_group_map_point
   desc: These examples feature map plots with point data.
   examples:
   - nc_maritime_obs
@@ -95,6 +100,7 @@ map-point:
   - text_at_geopoints_locations
 map-curves:
   title: Tracks and curves on map
+  anchor: _gallery_group_map_curve
   desc: These examples feature map plots with tracks, curves and shapes.
   examples:
   - storm_track
@@ -105,6 +111,7 @@ map-curves:
   - geocircle_on_map
 sections:
   title: Vertical and temporal sections
+  anchor: _gallery_group_sections
   desc: These examples feature vertical cross sections, average
     cross sections and Hovmoeller diagrams.
   examples:
@@ -125,7 +132,8 @@ sections:
   - zonal_average_difference
   - meridional_average
 thermo:
-  title: Thermodinamic diagrams
+  title: Thermodynamic diagrams
+  anchor: _gallery_group_map_thermo
   desc: These examples feature thermodynamic 
     diagrams (tephigram and skew-t) and hodographs.
   examples:
@@ -137,6 +145,7 @@ thermo:
   - hodograph 
 xy:
   title: XY plots
+  anchor: _gallery_group_xy
   desc: >-
     These examples feature various xy plots: time-series, profiles, scatterplots and Taylor diagrams.
   examples:
