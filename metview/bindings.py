@@ -26,7 +26,7 @@ from metview.dataset import ParamInfo, FieldsetDb, Dataset
 from metview.style import StyleDb
 from metview import plotting
 
-__version__ = "1.8.0"
+__version__ = "1.7.1"
 
 
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
