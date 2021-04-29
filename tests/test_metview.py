@@ -10,6 +10,7 @@
 import os
 import numpy as np
 import datetime
+import glob
 import pickle
 import pytest
 import pandas as pd
@@ -2090,6 +2091,20 @@ def test_download_gallery_data():
     assert mv.type(g) == "fieldset"
     assert os.path.isfile(fname)
     os.remove(fname)
+
+
+def test_download_gallery_zipped_data():
+    fname = "major_basins_of_the_world_0_0_0.zip"
+    subname = "Major_Basins_of_the_World.prj"
+    assert not os.path.isfile(fname)
+    assert not os.path.isfile(subname)
+    g = mv.gallery.load_dataset(fname)
+    assert os.path.isfile(fname)
+    assert os.path.isfile(subname)
+    unzipped_files = glob.glob("Major_Basins_of_the_World.*")
+    os.remove(fname)
+    for f in unzipped_files:
+        os.remove(f)
 
 
 def test_download_gallery_data_bad_fname():
