@@ -1,11 +1,11 @@
-write
+append
 ************
 
-..  py:function:: write(path, obj1, [obj2, ...])
-..  py:function:: write(filehandler, obj1, [obj2, ...])
+..  py:function:: append(path, obj1, [obj2, ...])
+..  py:function:: append(filehandler, obj1, [obj2, ...])
     :noindex:
 
-    Writes output to a file specified by ``path`` or ``filehandler``.
+    Appends output to a file specified by ``path`` or ``filehandler``.
     
     :param path: output file path
     :type path: str
@@ -35,8 +35,6 @@ write
         * - other types
           - text
 
-    If you use :func:`write` sequentially, note that it will overwrite any previous output if called with a ``path``, but will add to previous output if called with a ``filehandler``.
-    
     Note that special characters such as newline and tab can be written to text files.
 
     .. note::

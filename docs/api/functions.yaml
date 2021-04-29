@@ -56,9 +56,14 @@
     type: icon
 - append:
     category:
-      io: 'Writes/appends the given data to file. args: (filehandler, any)'
-    desc: 'Writes/appends the given data to file. args: (filehandler, any)'
-    exclude: true
+      io: 'Appends the given data to file'
+    desc: Aappends the given data to file
+    group:
+    - grib
+    - geopoints
+    - bufr
+    - odb
+    - netcdf_object
     type: script
 - arguments:
     category:
@@ -555,9 +560,14 @@
     type: script
 - file:
     category:
-      io: 'Returns a file handler for the specified filename. args: (string)'
-    desc: 'Returns a file handler for the specified filename. args: (string)'
-    exclude: true
+      io: 'Returns a file handler for the specified filename'
+    desc: 'Returns a file handler for the specified filename'
+    group:
+    - grib
+    - geopoints
+    - bufr
+    - odb
+    - netcdf_object
     type: script
 - filetype:
     category:
