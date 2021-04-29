@@ -1868,8 +1868,8 @@ def test_ncols_gpts_to_dataframe():
     assert isinstance(df, pd.DataFrame)
     assert df.shape == (4, 9)
     assert df.loc[2]["stnid"] == None
-    assert df.loc[2]["latitude"] == 51.93
-    assert df.loc[0]["longitude"] == 35.85
+    assert np.isclose(df.loc[2]["latitude"], 51.93)
+    assert np.isclose(df.loc[0]["longitude"], 35.85)
     assert np.isclose(df.loc[1]["t2"], 274.9)
     assert np.isclose(df.loc[1]["o3"], 24)
     assert np.isclose(df.loc[1]["td"], 290.4)
