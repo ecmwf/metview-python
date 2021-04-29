@@ -1730,6 +1730,12 @@ def test_set_vector_from_int_numpy_array():
     assert np.array_equal(mv.abs(r), np.array([5, 8, 7, 1, 2900], dtype=np.float64))
 
 
+def test_set_vector_byte_from_numpy_array_raises_error():
+    r = np.arange(1, 21, dtype=np.byte)
+    with pytest.raises(TypeError):
+        a = mv.type(r)
+
+
 #    with pytest.raises(TypeError):
 #        a = mv.type(r)
 
