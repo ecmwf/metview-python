@@ -1,4 +1,4 @@
-return: :class:`fieldset`
+return: :class:`Fieldset`
 summary: Computes the relative humidity from temperature, specific humidity
   and logarithm of surface pressure (LNSP) GRIB data. LNSP is only required
   if the input data is specified on ECMWF model levels. The computations are

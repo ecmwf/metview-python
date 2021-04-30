@@ -1,4 +1,4 @@
-return: :class:`fieldset`
+return: :class:`Fieldset`
 summary: Interpolates gridded data in GRIB format into a lat-lon grid. In the past it was
     used to visualise data on certain geometries. At present, all these data can be directly
     visualised, so :func:`reprojection` is need not be used.
