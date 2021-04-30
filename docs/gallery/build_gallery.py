@@ -9,6 +9,7 @@
 # nor does it submit to any jurisdiction.
 
 import argparse
+from collections import Counter
 import glob
 import logging
 import os
@@ -128,7 +129,10 @@ class BackReference:
             "setoutput",
             "exist",
             "gallery.load_dataset",
+            "read_fn"
         ]
+
+        self.duplicates = {"read_fn": "read"}
 
     def add(self, vals, item):
         if vals:
@@ -149,7 +153,8 @@ class BackReference:
         for fn_name, fn_items in self.func.items():
             output = os.path.join(BACKREF_DIR, f"{fn_name}.rst")
             with open(output, "w") as f:
-                title = f"Gallery examples using ``metview.{fn_name}``"
+                label = self.duplicates.get(fn_name, fn_name)
+                title = f"Gallery examples using ``metview.{label}``"
                 f.write(f"""{title}\n{"^" * (len(title)+1)}""")
                 # for some functions just a link to the gallery is inserted
                 if fn_name in self.use_link:
@@ -240,6 +245,17 @@ class GalleryItem:
 
     def backref(self, t):
         m = re.findall(r"mv\.(\w+)\(", t)
+        # special treatment for the duplicate read
+        if "read" in m:
+            r = re.findall(r"mv\.read\([^=]+\)", t)
+            cnt = Counter(m)
+            if r and len(r) == cnt.get("read", 0):
+                m = ["read_fn" if x == "read" else x for x in m] 
+            else:
+                m.append("read_fn")
+            # has_fn = "read_fn" in m
+            # has_r = "read" in m
+            # print(f"  fn={has_fn} read={has_r}")
         BACKREF.add(m, self)
 
     def build_item(self, f):

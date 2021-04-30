@@ -29,6 +29,11 @@ class MvIncludeCode(Directive):
     RE_FUNCTION_PATTERN = re.compile(
         r"""mv<\/span><span class="o">\.<\/span><span class="n">(\w+)<\/span>"""
     )
+
+    RE_READ_FN_FUNCTION_PATTERN = re.compile(
+        r"""mv<\/span><span class="o">\.<\/span><span class="n">read<\/span><span class="p">\(<\/span><span class="n">[^=]+<\/span><span class="p">\)<\/span>"""
+    )
+
     required_arguments = 1
     optional_arguments = 0
 
@@ -59,6 +64,7 @@ class MvIncludeCode(Directive):
         # generate syntax highlighted text using pygments (html)
         t = highlight(t, PythonLexer(), HtmlFormatter())
 
+        self.full_text = t
         # replace function calls with links to function documentation
         t = re.sub(self.RE_FUNCTION_PATTERN, self.insert_anchor, t)
 
@@ -84,28 +90,42 @@ class MvIncludeCode(Directive):
 
     def insert_anchor(self, matchobj):
         """
-        Replace the captured function name with an achored version
+        Replace the captured function name with an anchored version
         """
         if matchobj:
             t = matchobj.group(0)
             if len(matchobj.groups()) == 1:
-                # the first caputre group is the function name
+                # the first capture group is the function name
                 fn = matchobj.group(1)
+                
+                has_read_fn = False
+                # special treatment for read in functions
+                if fn == "read":
+                    p = matchobj.start()
+                    line = self.full_text[p:].split("\n")
+                    if line and re.search(self.RE_READ_FN_FUNCTION_PATTERN, line[0]) is not None:
+                        target = os.path.join("api", "functions", fn + ".rst") 
+                        has_read_fn = True
+                        if not os.path.exists(target):
+                            return t
+                
                 # check if the function has an rst documentation
-                target = os.path.join("api", "functions", fn + ".rst")
-                if not os.path.exists(target):
+                if not has_read_fn:
                     target = os.path.join("gen_files", "icon_functions", fn + ".rst")
                     if not os.path.exists(target):
-                        return t
+                        target = os.path.join("api", "functions", fn + ".rst")
+                        if not os.path.exists(target):
+                            return t
 
                 # print(f"fn={fn}")
-                # perform the acnhor insertion
+                # perform the anchor insertion
                 target = os.path.join("..", "..", os.path.dirname(target), fn + ".html")
                 t_from = f"""<span class="n">{fn}</span>"""
                 t_to = """<span class="n"><a class="reference internal" href="{}#id0" title="{}">{}</span></a>""".format(
                     target, fn, fn
                 )
                 t = t.replace(t_from, t_to)
+
             return t
         else:
             return ""
