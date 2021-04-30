@@ -128,6 +128,7 @@ class ParamMatchCondition:
             self.cond.get("info_name", ""),
             self.cond.get("levtype", None),
             self.cond.get("levelist", []),
+            self.cond.get("mars.param", ""),
         )
 
 
@@ -165,9 +166,7 @@ class ParamStyle:
 
     def __str__(self):
         return "{}[name={},type={}]".format(
-            self.__class__.__name__,
-            self.info_name,
-            self.param_type
+            self.__class__.__name__, self.info_name, self.param_type
         )
 
 
@@ -182,13 +181,17 @@ class StyleDb:
 
         if LOCAL_CONF_PATH:
             self._load(
-                os.path.join(LOCAL_CONF_PATH, param_file_name) if param_file_name else "",
+                os.path.join(LOCAL_CONF_PATH, param_file_name)
+                if param_file_name
+                else "",
                 os.path.join(LOCAL_CONF_PATH, style_file_name),
             )
 
         if CUSTOM_CONF_PATH:
             self._load(
-                os.path.join(CUSTOM_CONF_PATH, param_file_name) if param_file_name else "",
+                os.path.join(CUSTOM_CONF_PATH, param_file_name)
+                if param_file_name
+                else "",
                 os.path.join(CUSTOM_CONF_PATH, style_file_name),
             )
 
@@ -298,11 +301,10 @@ class StyleDb:
                     vd.append(Visdef(verb, params))
             self.styles[name] = Style(name, vd)
 
-       
     def _load_params(self, conf, path):
         # TODO: review defaults for maps
         self._make_defaults()
-        
+
         for d in conf:
             assert isinstance(d, dict)
             # print(f"d={d}")
@@ -340,7 +342,7 @@ class GeoView:
             if k.lower() == "coastlines":
                 self.params.pop("coastlines", None)
         self.style = style
-    
+
     def to_request(self):
         v = copy.deepcopy(self.params)
         if self.style is not None and self.style:
@@ -433,6 +435,7 @@ class MapConf:
         # # return mv.geoview(**a)
         # return a
 
+
 def MAP_CONF():
     global _MAP_CONF
     if _MAP_CONF is None:
@@ -440,8 +443,10 @@ def MAP_CONF():
     assert not _MAP_CONF is None
     return _MAP_CONF
 
+
 def map_styles():
     return MAP_CONF().style_db.styles
+
 
 def map(**argv):
     return MAP_CONF().make_geo_view(**argv)

@@ -378,6 +378,15 @@
       - t_flux
   match:
       - 
+        info_name: tdyn
+      - 
+        mars.param: "93.128"
+-
+  styles:
+    basic: 
+      - t_flux
+  match:
+      - 
         info_name: trad
       - 
         mars.param: "95.128"

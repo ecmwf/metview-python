@@ -54,11 +54,12 @@ class ParamInfo:
     KNOWN_SURF_NAMES = ["2t", "2q", "10u", "10v", "msl", "wind10m"]
     VECTOR_NAMES = ["wind10m", "wind3d", "wind"]  # the longest ones first
 
-    def __init__(self, name, level, level_type, scalar=True):
+    def __init__(self, name, level, level_type, mars_param=None, scalar=None):
         self.name = name
         self.level = level
         self.level_type = level_type
-        self.scalar = scalar
+        self.mars_param = mars_param if mars_param is not None else ""
+        self.scalar = scalar if scalar is not None else True
 
     @staticmethod
     def build(full_name, param_level_types=None):
@@ -136,8 +137,8 @@ class ParamInfo:
     def build_from_fieldset(fs):
         assert isinstance(fs, mv.Fieldset)
         f = fs[0:3] if len(fs) >= 3 else fs
-        m = mv.grib_get(f, ["shortName", "level", "typeOfLevel"], "key")
-        name = level = lev_type = ""
+        m = mv.grib_get(f, ["shortName", "level", "typeOfLevel", "mars.param"], "key")
+        name = level = lev_type = mars_param = ""
         scalar = True
         if len(m[0]) == 3:
             if m[0] == ["u", "v", "w"] and len(set(m[1])) == 1 and len(set(m[2])) == 1:
@@ -168,9 +169,12 @@ class ParamInfo:
             name = m[0][0]
             level = m[1][0]
             lev_type = m[2][0]
+            mars_param = m[3][0]
 
         if name:
-            return ParamInfo(name, level, lev_type, scalar=scalar)
+            return ParamInfo(
+                name, level, lev_type, mars_param=mars_param, scalar=scalar
+            )
         else:
             return None
 
@@ -194,11 +198,14 @@ class ParamInfo:
             return True
         return False
 
-    def match(self, name, level_type, level):
-        # print(f"{self}, name={name}, level_type={level_type}, level={level}")
+    def match(self, name, level_type, level, mars_param):
+        # print(f"{self}, name={name}, mars_param={mars_param} level_type={level_type}, level={level}")
         r = 0
         if self.name == name:
             r += 1
+        if mars_param is not None and mars_param and self.mars_param == mars_param:
+            r += 1
+        if r > 0:
             if level_type is not None and level_type:
                 if level_type in self.LEVEL_TYPES:
                     level_type = self.LEVEL_TYPES[level_type]
@@ -226,23 +233,23 @@ class ParamInfo:
         return dims
 
     def __str__(self):
-        return f"{self.__class__.__name__}[name={self.name}, level={self.level}, level_type={self.level_type}, scalar={self.scalar}]"
+        return f"{self.__class__.__name__}[name={self.name}, mars.param={self.mars_param} level={self.level}, level_type={self.level_type}, scalar={self.scalar}]"
 
 
 class ParamDesc:
     def __init__(self, name):
         self.name = name
         self.md = {}
-    
-    def load(self, db):  
+
+    def load(self, db):
         md = {"typeOfLevel": [], "level": [], "date": [], "time": [], "step": []}
         # print(f"par={par}")
         for b_name, b_df in db.blocks.items():
-            if b_name == "scalar":            
+            if b_name == "scalar":
                 q = f"shortName == '{self.name}'"
                 dft = b_df.query(q)
             elif b_name == self.name:
-                dft = b_df    
+                dft = b_df
             else:
                 dft = None
 
@@ -253,20 +260,21 @@ class ParamDesc:
                     # print(f"   df[{k}]={df[k]}")
             # print(df)
         if len(md["level"]) > 0:
-            df = pd.DataFrame(md)      
+            df = pd.DataFrame(md)
             lev_types = df["typeOfLevel"].unique().tolist()
             for t in lev_types:
                 # print(f" t={t}")
-                    self.md[t] = dict()
-                    q = f"typeOfLevel == '{t}'"
-                    # print(q)
-                    dft = df.query(q)
-                    # print(dft)
-                    d ={}
-                    if dft is not None:
-                        for md_key in ["level", "date", "time", "step"]:
-                            d[md_key] = dft[md_key].unique().tolist()
-                    self.md[t] = d
+                self.md[t] = dict()
+                q = f"typeOfLevel == '{t}'"
+                # print(q)
+                dft = df.query(q)
+                # print(dft)
+                d = {}
+                if dft is not None:
+                    for md_key in ["level", "date", "time", "step"]:
+                        d[md_key] = dft[md_key].unique().tolist()
+                self.md[t] = d
+
 
 class IndexDb:
     ROOTDIR_PLACEHOLDER_TOKEN = "__ROOTDIR__"
@@ -497,7 +505,7 @@ class IndexDb:
     @property
     def param_meta(self):
         if len(self._params) == 0:
-            self.load() 
+            self.load()
             for par in sorted(self.unique("shortName")):
                 self._params[par] = ParamDesc(par)
                 self._params[par].load(self)
@@ -514,7 +522,7 @@ class IndexDb:
 
                 # # print(df)
                 # if len(df["level"]) > 0:
-                #     df = pd.DataFrame(df)      
+                #     df = pd.DataFrame(df)
                 #     lev_types = df["typeOfLevel"].unique().tolist()
                 #     for t in lev_types:
                 #         # print(f" t={t}")
@@ -528,15 +536,22 @@ class IndexDb:
                 #             d["level"] = dft["level"].unique().tolist()
                 #         self._params[par][t] = d
         return self._params
-        
+
     def format_list(self, v):
         if len(v) > 2:
             return [v[0], "...", v[-1]]
         else:
             return v
-  
+
     def summary(self):
-        t = {"name": [], "typeOflevel": [], "level": [], "date": [], "time": [], "step": []}
+        t = {
+            "name": [],
+            "typeOflevel": [],
+            "level": [],
+            "date": [],
+            "time": [],
+            "step": [],
+        }
         for k, v in self.param_meta.items():
             for md_k, md in v.md.items():
                 t["name"].append(k)
@@ -827,7 +842,7 @@ class ExperimentDb(IndexDb):
         df = pd.DataFrame.from_dict(t)
         df.set_index("name", inplace=True)
         df = df.sort_values(by="name")
-        
+
         return df
 
 
