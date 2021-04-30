@@ -4,6 +4,7 @@ read
 ************
 
 .. py:function:: read(path)
+    :noindex:
 
     Reads a data file specified by ``path``. 
 
@@ -34,5 +35,5 @@ read
           - object of the corresponding type 
   
 
-.. mv-minigallery:: read
+.. mv-minigallery:: read_fn
 

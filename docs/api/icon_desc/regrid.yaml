@@ -19,7 +19,7 @@ params:
 - data:
     default: ''
     desc: ''
-    ptype: :class:`Filedset`
+    ptype: :class:`Fieldset`
     values: ''
 - grid_definition_mode:
     default: grid
