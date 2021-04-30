@@ -138,11 +138,13 @@ class ParamInfo:
         f = fs[0:3] if len(fs) >= 3 else fs
         m = mv.grib_get(f, ["shortName", "level", "typeOfLevel"], "key")
         name = level = lev_type = ""
+        scalar = True
         if len(m[0]) == 3:
             if m[0] == ["u", "v", "w"] and len(set(m[1])) == 1 and len(set(m[2])) == 1:
                 name = "wind3d"
                 level = m[1][0]
                 lev_type = m[2][0]
+                scalar = False
         if not name and len(m[0]) >= 2:
             if (
                 m[0][0:2] == ["u", "v"]
@@ -152,15 +154,23 @@ class ParamInfo:
                 name = "wind"
                 level = m[1][0]
                 lev_type = m[2][0]
-                if lev_type == "sfc":
-                    name = "wind10"
+                scalar = False
+            elif (
+                m[0][0:2] == ["10u", "10v"]
+                and len(set(m[1][0:2])) == 1
+                and len(set(m[2][0:2])) == 1
+            ):
+                name = "wind10m"
+                level = 0
+                lev_type = "sfc"
+                scalar = False
         if not name:
             name = m[0][0]
             level = m[1][0]
             lev_type = m[2][0]
 
         if name:
-            return ParamInfo(name, level, lev_type)
+            return ParamInfo(name, level, lev_type, scalar=scalar)
         else:
             return None
 
@@ -194,12 +204,15 @@ class ParamInfo:
                     level_type = self.LEVEL_TYPES[level_type]
                 if level_type == self.level_type:
                     r += 1
-                    if level is not None and self.level is not None:
-                        if isinstance(level, list):
-                            if self.level in level:
+                    if level is not None and level and self.level is not None:
+                        try:
+                            if isinstance(level, list):
+                                if int(self.level) in level:
+                                    r += 1
+                            elif int(self.level) == level:
                                 r += 1
-                        elif level == self.level:
-                            r += 1
+                        except:
+                            pass
         return r
 
     def make_dims(self):

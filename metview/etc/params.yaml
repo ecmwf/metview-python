@@ -255,7 +255,7 @@
         info_name: wind
         levtype: pl 
         levelist: 700
-# wind 750 hPa        
+# wind 500 hPa        
 - 
   type: vector
   styles:

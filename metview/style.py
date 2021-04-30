@@ -164,11 +164,10 @@ class ParamStyle:
             return None
 
     def __str__(self):
-        return "{}[param={},style={}] groups={}".format(
+        return "{}[name={},type={}]".format(
             self.__class__.__name__,
-            self.param_name,
-            self.style.name,
-            [gr.__str__() for gr in self.groups],
+            self.info_name,
+            self.param_type
         )
 
 
@@ -220,7 +219,7 @@ class StyleDb:
         p_best = None
         for p in self.params:
             m = p.match(param)
-            # print(f"m={m}")
+            # print(f"p={p} m={m}")
             if m > r:
                 r = m
                 p_best = p
