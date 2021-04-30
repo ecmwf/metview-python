@@ -1893,16 +1893,20 @@
     - grib
     type: icon
     title: Grib Filter
-- read:
-    category: {}
-    desc: ''
-    type: null
+# - read:
+#     category: {}
+#     desc: ''
+#     type: null
 - read:
     category:
-      io: 'Reads the given file and returns a variable of the appropriate type. args:
-        (string)'
-    desc: 'Reads the given file and returns a variable of the appropriate type. args:
-      (string)'
+      io: 'Reads the given file and returns a variable of the appropriate type'
+    desc: 'Reads the given file and returns a variable of the appropriate type'
+    group:
+    - grib
+    - geopoints
+    - bufr
+    - odb
+    - netcdf_object
     type: script
 - read_mir:
     category: {}

@@ -9,7 +9,7 @@ Fieldset object
 Construction
 ############
 
-   Fieldsets can be directly constructed either as empty, with a path to a GRIB file or using :func:`read`:
+   Fieldsets can be directly constructed either as empty, with a path to a GRIB file or using :ref:`read() <read_fn>`:
 
    .. code-block:: python
 

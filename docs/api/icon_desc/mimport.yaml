@@ -11,7 +11,7 @@ params:
     values: ''
 - import_file:
     default: ''
-    desc: Specifies the image file as a Metview file object (result of :func:`read`). 
+    desc: Specifies the image file as a Metview file object (result of :ref:`read() <read_fn>`). 
         If both an object and a path are specified the object takes precedence.
     ptype: :class:`Request`
     values: ''

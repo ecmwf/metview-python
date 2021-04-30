@@ -11,7 +11,7 @@ NetCDF object
 Construction
 ############
 
-   A NetCDF file can be read from disk using :func:`read`:
+   A NetCDF file can be read from disk using :ref:`read() <read_fn>`:
 
    .. code-block:: python
 
