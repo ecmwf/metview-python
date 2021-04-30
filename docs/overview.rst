@@ -15,7 +15,6 @@ Metview can take input data from a variety of sources, including:
 * :doc:`ASCII data file </data_types/table>` (CSV, grids and scattered data)
 * :doc:`Geopoints </data_types/geopoints>` (Metview's own format for handling scattered data)
 * :doc:`NetCDF </data_types/netcdf>` files
-* Local databases
 
 Powerful data filtering and processing facilities are then available, and if graphics output is desired, then Metview can produce many plot types, including:
 
