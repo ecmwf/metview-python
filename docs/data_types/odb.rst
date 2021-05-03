@@ -22,7 +22,7 @@ What is ODB?
 Construction
 ^^^^^^^^^^^^^^^^^
 
-   A ODB can be read from disk using :func:`read`:
+   A ODB can be read from disk using :ref:`read() <read_fn>`:
    
       .. code-block:: python
    
