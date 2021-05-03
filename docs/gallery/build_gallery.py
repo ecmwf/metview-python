@@ -129,7 +129,7 @@ class BackReference:
             "setoutput",
             "exist",
             "gallery.load_dataset",
-            "read_fn"
+            "read_fn",
         ]
 
         self.duplicates = {"read_fn": "read"}
@@ -250,7 +250,7 @@ class GalleryItem:
             r = re.findall(r"mv\.read\([^=]+\)", t)
             cnt = Counter(m)
             if r and len(r) == cnt.get("read", 0):
-                m = ["read_fn" if x == "read" else x for x in m] 
+                m = ["read_fn" if x == "read" else x for x in m]
             else:
                 m.append("read_fn")
             # has_fn = "read_fn" in m
@@ -330,7 +330,12 @@ def main():
     cnt = 1
     item_failed = []
     for group, item in conf.items():
-        gr_item = {"title": item["title"], "anchor": item.get("anchor", "_dummy"), "desc": item.get("desc", ""), "items": []}
+        gr_item = {
+            "title": item["title"],
+            "anchor": item.get("anchor", "_dummy"),
+            "desc": item.get("desc", ""),
+            "items": [],
+        }
         for name in item["examples"]:
             LOG.info(f"[{cnt}/{total}] {name}")
             script = os.path.join(GALLERY_DIR, name + ".py")

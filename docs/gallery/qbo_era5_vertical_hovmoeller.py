@@ -66,11 +66,11 @@ vertical_axis = mv.maxis(
 # define view
 view = mv.mhovmoellerview(
     type="vertical_hovm",
-    area=[5, -180, -5, 180], # N,W,S,E
+    area=[5, -180, -5, 180],  # N,W,S,E
     bottom_level=70,
     top_level=7,
     time_axis=time_axis,
-	vertical_axis=vertical_axis
+    vertical_axis=vertical_axis,
 )
 
 # define contour shading

@@ -74,6 +74,7 @@ map-vector:
   - wind_coloured_by_t
   - gradient_vector
   - coloured_wind
+  - wave_direction_and_height
   - wind_overlay_and_legend_box
   - wind_from_spectral_div_and_vor
   - divergent_and_rotational_wind
@@ -124,6 +125,7 @@ sections:
   - cross_section_wind_parallel
   - cross_section_wind_3d
   - time_height_xs
+  - time_height_xs_wind
   - hovmoeller_area
   - ozone_era5_lat_hovmoeller
   - qbo_era5_vertical_hovmoeller
@@ -131,6 +133,12 @@ sections:
   - v_era5_temporal_zonal_average
   - zonal_average_difference
   - meridional_average
+vertical-profiles:
+  title: Vertical profiles
+  anchor: _gallery_group_map_vertical_profile
+  desc: These examples feature vertical profiles.
+  examples:
+    - ozone_era5_profile
 thermo:
   title: Thermodynamic diagrams
   anchor: _gallery_group_map_thermo

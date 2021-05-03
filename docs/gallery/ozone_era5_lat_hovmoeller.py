@@ -67,11 +67,11 @@ geo_axis = mv.maxis(
 # define view
 view = mv.mhovmoellerview(
     type="area_hovm",
-    area=[90, -180, -90, 180], # N,W,S,E
-	average_direcion="east_west",
-	swap_axis="no",
+    area=[90, -180, -90, 180],  # N,W,S,E
+    average_direcion="east_west",
+    swap_axis="no",
     time_axis=time_axis,
-	geo_axis=geo_axis
+    geo_axis=geo_axis,
 )
 
 # define contour shading
@@ -79,9 +79,9 @@ cont_shade = mv.mcont(
     legend="on",
     contour="off",
     contour_level_selection_type="interval",
-    contour_shade_max_level=7E-6,
+    contour_shade_max_level=7e-6,
     contour_shade_min_level=0,
-    contour_interval=5E-7,
+    contour_interval=5e-7,
     contour_label="off",
     contour_shade="on",
     contour_shade_colour_method="palette",

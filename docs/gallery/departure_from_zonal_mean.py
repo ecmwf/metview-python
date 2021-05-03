@@ -69,7 +69,7 @@ coast_dep = mv.mcoast(
     map_coastline_thickness=2,
     map_label_height=0.2,
     map_label_blanking="off",
-	map_grid_colour="RGB(0.5,0.5,0.5)"	
+    map_grid_colour="RGB(0.5,0.5,0.5)",
 )
 
 coast = mv.mcoast(
@@ -80,7 +80,7 @@ coast = mv.mcoast(
     map_coastline_sea_shade_colour="RGB(0.853,0.8859,0.9352)",
     map_label_height=0.2,
     map_label_blanking="off",
-	map_grid_colour="RGB(0.5,0.5,0.5)"
+    map_grid_colour="RGB(0.5,0.5,0.5)",
 )
 
 # define map view

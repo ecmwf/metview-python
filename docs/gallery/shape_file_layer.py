@@ -16,7 +16,7 @@ import os
 
 import metview as mv
 
-# get shape file containing "major river basins". 
+# get shape file containing "major river basins".
 # Data source: https://datacatalog.worldbank.org/dataset/major-river-basins-world
 # Data license: CC-BY 4.0
 

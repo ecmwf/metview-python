@@ -1,5 +1,5 @@
 """
-GRIB - Time-height Section
+GRIB - Time-height Section Hovmoeller
 """
 
 # (C) Copyright 2017- ECMWF.
@@ -21,9 +21,12 @@ if mv.exist(filename):
 else:
     data = mv.gallery.load_dataset(filename)
 
-# the hovmoeller view takes an area as an input.
-# We define the location by shrinking down the area to a point
-area = [47, 0, 47, 0]  # N/W/E/S
+delta = 0.3
+# The vertical hovmoeller modules take an area as an input.
+# We define the location by shrinking down the area to a point,
+# using a delta adjusted to the grid resolution (0.5x0.5 degrees)
+loc = [47, 0]  # lat/lon
+area = [loc[0] + delta, loc[1] - delta, loc[0] - delta, loc[1] + delta]  # N/W/S/E
 
 # read temperature fields and convert from K to C
 t = mv.read(data=data, param="t")

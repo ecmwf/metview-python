@@ -32,7 +32,7 @@ if use_cds:
             "variable": "v_component_of_wind",
             "pressure_level": pressures,
             "year": [2006],
-            "month": [3,4,5],
+            "month": [3, 4, 5],
             "day": "01",
             "time": "00:00",
             "area": [90, -180, -90, 180],
@@ -52,9 +52,9 @@ else:
 # compute temporal mean on each pressure level
 g_m = mv.Fieldset()
 for lev in pressures:
-	g_lev = mv.read(data=g, levelist=lev)
-	g_m.append(mv.mean(g_lev))
-	
+    g_lev = mv.read(data=g, levelist=lev)
+    g_m.append(mv.mean(g_lev))
+
 # define horizontal axis
 horiz_axis = mv.maxis(axis_tick_label_height=0.4)
 
@@ -75,7 +75,7 @@ vertical_axis = mv.maxis(
         150,
         100,
     ],
-    axis_tick_label_height=0.4
+    axis_tick_label_height=0.4,
 )
 
 # define averaging area - one half of the Northern Hemisphere
@@ -120,7 +120,10 @@ cont_t = mv.mcont(
     contour_interval=10,
 )
 
-title = mv.mtext(text_lines="ERA5 - Zonal Average of V wind component - 2006 March-April-May", text_font_size=0.4)
+title = mv.mtext(
+    text_lines="ERA5 - Zonal Average of V wind component - 2006 March-April-May",
+    text_font_size=0.4,
+)
 
 # define the output plot file
 mv.setoutput(mv.pdf_output(output_name="v_era5_temporal_zonal_average"))

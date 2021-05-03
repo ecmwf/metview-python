@@ -46,9 +46,7 @@ uv = mv.read(data=uv_sh, grid=218)
 
 # define wind plotting style
 wind_style = mv.mwind(
-    wind_thinning_factor=3,
-    wind_arrow_colour="navy",
-	wind_arrow_unit_velocity=25
+    wind_thinning_factor=3, wind_arrow_colour="navy", wind_arrow_unit_velocity=25
 )
 
 # define coastlines
