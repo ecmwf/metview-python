@@ -353,7 +353,7 @@ class IndexDb:
         fs._db = db
         # fs._param_info = self.get_param_info()
         # LOG.debug(f"fs={fs}")
-        # LOG.debug(f"blocks={fs._db.blocks}")
+        # print(f"blocks={fs._db.blocks}")
         return fs
 
     def _get_fields(self, dims):
@@ -367,7 +367,7 @@ class IndexDb:
         # LOG.debug(f"len_res={len(res)}")
         # LOG.debug(f"dfs={dfs}")
         # LOG.debug(f"res={res}")
-        c = FieldsetDb(res, name=self.name, blocks=dfs)
+        c = FieldsetDb(res, name=self.name, blocks=dfs, mars_params=self.mars_params)
         return c, res
 
     def _build_query(self, dims):
@@ -636,16 +636,22 @@ class FieldsetDb(IndexDb):
         )
 
         if self._indexer is not None:
-            db.indexer.indexer.update_keys(self._indexer.keys_ecc)
+            db.indexer.update_keys(self._indexer.keys_ecc)
         db.blocks = {k: v.copy() for k, v in self.blocks.items()}
         db.vector_loaded = self.vector_loaded
         return db
 
     def unique(self, key):
-        r = set()
+        r = list()
         for _, v in self.blocks.items():
-            r.update(v[key].unique().tolist())
-        return sorted(list(r))
+            r.extend(v[key].unique().tolist())
+        return list(dict.fromkeys(r))
+        
+        # r = set()
+        # for _, v in self.blocks.items():
+        #     r.update(v[key].unique().tolist())
+        # # return sorted(list(r))
+        # return r
 
     # def style(self, plot_type="map"):
     #     return StyleDb.get_db().style(self.fs, plot_type=plot_type)
@@ -670,17 +676,27 @@ class FieldsetDb(IndexDb):
         r._label = self.label
         return r
 
-    def deacc(self):
+    def deacc(self, skip_first=None):
         if len(self.fs) > 1:
-            r = self.fs[0] * 0
-            for i in range(1, len(self.fs)):
-                f = self.fs[i] - self.fs[i - 1]
-                r.append(f)
-            r = mv.grib_set_long(r, ["generatingProcessIdentifier", 148])
-            r._db = self._clone()
-            return r
-        else:
-            return fs
+            self.load()
+            step = self.unique("step")
+            if step:
+                v = self.select(step=step[0]) * 0
+                if skip_first is None or skip_first == False:
+                    r = v
+                else:
+                    r = mv.Fieldset()
+                for i in range(1, len(step)):
+                    v_next = self.select(step=step[i])
+                    r.append(v_next - v)
+                    v = v_next
+                r = mv.grib_set_long(r, ["generatingProcessIdentifier", 148])
+                r._param_info = self.fs._param_info
+                r._label = self.label
+                r._db = FieldsetDb(r, mars_params=self.mars_params)
+                # r._db.scan()
+                return r
+        return None
 
 
 class ExperimentDb(IndexDb):

@@ -282,7 +282,7 @@ def plot_xs(
     title_font_size=None,
     legend_font_size=None,
     frame=-1,
-    animate=True,
+    animate=False,
 ):
     """
     Plot cross section with map
@@ -293,14 +293,17 @@ def plot_xs(
 
     assert len(line) == 4
 
-    view = _make_view(view)
+    if map_data is not None:
+        view = _make_view(view)
 
     assert len(args) >= 1
     assert isinstance(args[0], mv.Fieldset)
     layers = _make_layers(*args, form_layout=False)
     assert len(layers) > 0
 
-    # build the layout
+    # build the layout - if no map_data is specified no map view is
+    # added to the layout
+    view = None if map_data is None else  _make_view(view)
     dw = Layout().build_xs(line=line, map_view=view)
 
     # the plot description
@@ -350,47 +353,48 @@ def plot_xs(
     # LOG.debug(f"desc={desc}")
 
     # build side map plot
-    desc.append(dw[1])
+    if map_data is not None:
+        desc.append(dw[1])
 
-    t = None
-    if map_data is not None and len(map_data) > 0:
-        layers = _make_layers(map_data, form_layout=False)
-        data_items = []
-        for layer in layers:
-            data = layer["data"]
-            vd = _make_visdef(data, layer["vd"])
+        t = None
+        if map_data is not None and len(map_data) > 0:
+            layers = _make_layers(map_data, form_layout=False)
+            data_items = []
+            for layer in layers:
+                data = layer["data"]
+                vd = _make_visdef(data, layer["vd"])
 
-            if isinstance(data, mv.Fieldset):
-                data_items.append(data)
-                if frame != -1:
-                    data = data[frame]
+                if isinstance(data, mv.Fieldset):
+                    data_items.append(data)
+                    if frame != -1:
+                        data = data[frame]
 
-            desc.append(data)
-            if vd:
-                desc.extend(vd)
+                desc.append(data)
+                if vd:
+                    desc.extend(vd)
 
-        if data_items:
-            t = title.build(data_items)
+            if data_items:
+                t = title.build(data_items)
 
-    # define xsection line graph
-    graph = mv.mgraph(
-        graph_line_colour="red", graph_line_thickness=3, graph_symbol="off"
-    )
+        # define xsection line graph
+        graph = mv.mgraph(
+            graph_line_colour="red", graph_line_thickness=3, graph_symbol="off"
+        )
 
-    lv = mv.input_visualiser(
-        input_plot_type="geo_points",
-        input_longitude_values=[line[1], line[3]],
-        input_latitude_values=[line[0], line[2]],
-    )
+        lv = mv.input_visualiser(
+            input_plot_type="geo_points",
+            input_longitude_values=[line[1], line[3]],
+            input_latitude_values=[line[0], line[2]],
+        )
 
-    desc.extend([lv, graph])
+        desc.extend([lv, graph])
 
-    if t is not None:
-        desc.append(t)
+        if t is not None:
+            desc.append(t)
 
     LOG.debug(f"desc={desc}")
-    animate = animate and mv.plot.plot_to_jupyter
-    return mv.plot(desc, animate=animate)
+    animate = False if animate is None else animate
+    return mv.plot(desc, animate=animate and mv.plot.plot_to_jupyter)
 
 
 # plot_stamp_maps(fs, vd, an=[], fc=[], )

@@ -321,7 +321,7 @@
 -
   styles:
     basic: 
-      - t_flux
+      - q_flux
   match:
       - 
         info_name: qcl
@@ -330,7 +330,7 @@
 -
   styles:
     basic: 
-      - t_flux
+      - q_flux
   match:
       - 
         info_name: qcon
@@ -339,7 +339,7 @@
 -
   styles:
     basic: 
-      - t_flux
+      - q_flux
   match:
       - 
         info_name: qdyn
@@ -348,7 +348,7 @@
 -
   styles:
     basic: 
-      - t_flux
+      - q_flux
   match:
       - 
         info_name: qvdiff

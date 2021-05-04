@@ -110,12 +110,6 @@ class Layout:
         return mv.plot_superpage(pages=[page_1, page_2, page_3])
 
     def build_xs(self, line, map_view):
-        page = mv.plot_page(
-            top=5,
-            bottom=35,
-            view=map_view
-        )
-
         xs_view = mv.mxsectview(
             line=line,
             bottom_level=1000,
@@ -126,11 +120,19 @@ class Layout:
             )
 
         page_1 = mv.plot_page(
-            top=35,
+            top=35 if map_view is not None else 5,
             view=xs_view
         )
 
-        return mv.plot_superpage(pages=[page_1,page])
+        if map_view is not None:
+            page = mv.plot_page(
+                top=5,
+                bottom=35,
+                view=map_view
+            )
+            return mv.plot_superpage(pages=[page_1,page])
+        else:
+            return mv.plot_superpage(pages=[page_1])
 
     def build_stamp(self, page_num=0, layout="", view=None):
 

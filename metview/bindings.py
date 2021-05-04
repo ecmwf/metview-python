@@ -709,13 +709,13 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         else:
             return None
 
-    def deacc(self):
-        if self._db is not None:
-            fs = self._db.deacc()
-            fs._param_info = self.param_info
-            return fs
-        else:
-            return None
+    def deacc(self, skip_first=None):
+        if self._db is None:
+            self._db = FieldsetDb(fs=self)  
+        assert self._db is not None
+        fs = self._db.deacc(skip_first=skip_first)
+        # fs._param_info = self.param_info
+        return fs
 
     def __getitem__(self, key):
         if isinstance(key, str):
