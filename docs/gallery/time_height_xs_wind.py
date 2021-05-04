@@ -39,16 +39,14 @@ else:
         g = mv.gallery.load_dataset(filename)
 
 delta = 0.3
-# The vertical hovmoeller modules take an area as an input.
+# The vertical hovmoeller module takes an area as an input.
 # We define the location by shrinking down the area to a point,
 # using a delta adjusted to the grid resolution (0.5x0.5 degrees)
 loc = [50, 5]  # lat/lon
 area = [loc[0] + delta, loc[1] - delta, loc[0] - delta, loc[1] + delta]  # N/W/S/E
 
-# read relative humidity fields
+# read relative humidity, u and v fields
 r = mv.read(data=g, param="r")
-
-# read u and v fields and computes wind speed
 u = mv.read(data=g, param="u")
 v = mv.read(data=g, param="v")
 
@@ -85,7 +83,7 @@ wind_style = mv.mwind(
     wind_field_type="flags", wind_thinning_factor=1, wind_flag_colour="black"
 )
 
-# set up the hovmoeller vertical view as cartesian view
+# set up the hovmoeller vertical view as a cartesian view
 horizontal_axis = mv.maxis(
     axis_type="date",
     axis_tick_label_height=0.4,
