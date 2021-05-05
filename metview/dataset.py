@@ -25,6 +25,7 @@ import metview as mv
 from metview.indexer import GribIndexer, FieldsetIndexer, ExperimentIndexer
 from metview.style import StyleDb, MapConf
 from metview.track import Track
+from metview.param import ParamInfo
 from metview import utils
 
 
@@ -33,207 +34,6 @@ ETC_PATH = os.path.join(os.path.dirname(__file__), "etc")
 # logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
 LOG = logging.getLogger(__name__)
-
-
-class ParamInfo:
-    """
-    Determines the parameter properties from a user specified name
-    """
-
-    SUFFIXES = {
-        "hPa": "isobaricInhPa",
-        "hpa": "isobaricInhPa",
-        "K": "theta",
-        "ml": "hybrid",
-    }
-    LEVEL_TYPES = {"pl": "isobaricInhPa", "ml": "hybrid"}
-    LEVEL_RE = re.compile(r"(\d+)")
-    NUM_RE = re.compile(r"[0-9]+")
-    SURF_RE = re.compile(r"^\d+\w+")
-    # SURF_NAME_MAPPER = {"t2": "2t", "q2": "2q", "u10": "10u", "v10": "10v"}
-    KNOWN_SURF_NAMES = ["2t", "2q", "10u", "10v", "msl", "wind10m"]
-    VECTOR_NAMES = ["wind10m", "wind3d", "wind"]  # the longest ones first
-
-    def __init__(self, name, level, level_type, mars_param=None, scalar=None):
-        self.name = name
-        self.level = level
-        self.level_type = level_type
-        self.mars_param = mars_param if mars_param is not None else ""
-        self.scalar = scalar if scalar is not None else True
-
-    @staticmethod
-    def build(full_name, param_level_types=None):
-        full_name = full_name
-        # adjust surface names
-        # if full_name in ParamInfo.SURF_NAME_MAPPER:
-        #     full_name = ParamInfo.SURF_NAME_MAPPER[full_name]
-
-        name = full_name
-        level = None
-        level_type = ""
-
-        # the name is a known param name
-        if param_level_types:
-            if name in param_level_types:
-                lev_t = param_level_types.get(name, [])
-                if len(lev_t) == 1:
-                    level_type = lev_t[0]
-                scalar = not name in ParamInfo.VECTOR_NAMES
-                return ParamInfo(name, level, level_type, scalar=scalar)
-
-        t = full_name
-        # surface fields
-        if t in ParamInfo.KNOWN_SURF_NAMES or ParamInfo.SURF_RE.match(t) is not None:
-            level_type = "surface"
-
-        else:
-            # guess the level type from the suffix
-            for k, v in ParamInfo.SUFFIXES.items():
-                if full_name.endswith(k):
-                    level_type = v
-                    t = full_name[: -(len(k))]
-                    break
-
-            # recognise vector params
-            for v in ParamInfo.VECTOR_NAMES:
-                if t.startswith(v):
-                    name = v
-                    t = t[len(v) :]
-                    break
-
-            # determine level value
-            m = ParamInfo.LEVEL_RE.search(t)
-            if m and m.groups() and len(m.groups()) == 1:
-                level = int(m.group(1))
-                if level_type == "" and level > 10:
-                    level_type = "isobaricInhPa"
-                if name == full_name:
-                    name = ParamInfo.NUM_RE.sub("", t)
-
-        # check param name in the conf
-        if param_level_types:
-            if not name in param_level_types:
-                raise Exception(
-                    f"Param={name} (guessed from name={full_name}) is not found in dataset!"
-                )
-
-            lev_t = param_level_types.get(name, [])
-            if lev_t:
-                if not level_type and len(lev_t) == 1:
-                    level_type = lev_t[0]
-                elif level_type and level_type not in lev_t:
-                    raise Exception(
-                        f"Level type cannot be guessed from param name={full_name}!"
-                    )
-
-        if level_type == "":
-            level = None
-        scalar = not name in ParamInfo.VECTOR_NAMES
-
-        LOG.debug(f"scalar={scalar}")
-        return ParamInfo(name, level, level_type, scalar=scalar)
-
-    @staticmethod
-    def build_from_fieldset(fs):
-        assert isinstance(fs, mv.Fieldset)
-        f = fs[0:3] if len(fs) >= 3 else fs
-        m = mv.grib_get(f, ["shortName", "level", "typeOfLevel", "mars.param"], "key")
-        name = level = lev_type = mars_param = ""
-        scalar = True
-        if len(m[0]) == 3:
-            if m[0] == ["u", "v", "w"] and len(set(m[1])) == 1 and len(set(m[2])) == 1:
-                name = "wind3d"
-                level = m[1][0]
-                lev_type = m[2][0]
-                scalar = False
-        if not name and len(m[0]) >= 2:
-            if (
-                m[0][0:2] == ["u", "v"]
-                and len(set(m[1][0:2])) == 1
-                and len(set(m[2][0:2])) == 1
-            ):
-                name = "wind"
-                level = m[1][0]
-                lev_type = m[2][0]
-                scalar = False
-            elif (
-                m[0][0:2] == ["10u", "10v"]
-                and len(set(m[1][0:2])) == 1
-                and len(set(m[2][0:2])) == 1
-            ):
-                name = "wind10m"
-                level = 0
-                lev_type = "sfc"
-                scalar = False
-        if not name:
-            name = m[0][0]
-            level = m[1][0]
-            lev_type = m[2][0]
-            mars_param = m[3][0]
-
-        if name:
-            return ParamInfo(
-                name, level, lev_type, mars_param=mars_param, scalar=scalar
-            )
-        else:
-            return None
-
-    @property
-    def data_id(self):
-        return f"{self.name}_{self.level_type}"
-
-    def match_ori(self, name, level_type, level):
-        if self.name == name:
-            if level_type:
-                if level_type in self.LEVEL_TYPES:
-                    level_type = self.LEVEL_TYPES[level_type]
-                if level_type != self.level_type:
-                    return False
-                if level is not None:
-                    if self.level is not None:
-                        if level != self.level:
-                            return False
-                    else:
-                        return False
-            return True
-        return False
-
-    def match(self, name, level_type, level, mars_param):
-        # print(f"{self}, name={name}, mars_param={mars_param} level_type={level_type}, level={level}")
-        r = 0
-        if self.name == name:
-            r += 1
-        if mars_param is not None and mars_param and self.mars_param == mars_param:
-            r += 1
-        if r > 0:
-            if level_type is not None and level_type:
-                if level_type in self.LEVEL_TYPES:
-                    level_type = self.LEVEL_TYPES[level_type]
-                if level_type == self.level_type:
-                    r += 1
-                    if level is not None and level and self.level is not None:
-                        try:
-                            if isinstance(level, list):
-                                if int(self.level) in level:
-                                    r += 1
-                            elif int(self.level) == level:
-                                r += 1
-                        except:
-                            pass
-        return r
-
-    def make_dims(self):
-        dims = {}
-        if self.name:
-            dims["shortName"] = [self.name]
-        if self.level:
-            dims["level"] = [self.level]
-        if self.level_type:
-            dims["typeOfLevel"] = [self.level_type]
-        return dims
-
-    def __str__(self):
-        return f"{self.__class__.__name__}[name={self.name}, mars.param={self.mars_param} level={self.level}, level_type={self.level_type}, scalar={self.scalar}]"
 
 
 class ParamDesc:
@@ -324,13 +124,14 @@ class IndexDb:
         Perform a select operation where selection options are derived
         from the specified name.
         """
-        p = self.get_param_info(name=name)
-        # print(f"p={p}")
-        if p is not None:
-            fs = self._select_fs(**p.make_dims())
-            # LOG.debug(f"fs={fs}")
+        if "wind" in name and not self.vector_loaded:
+            self.load(vector=True)
+        pnf = ParamInfo.build_from_name(name, param_level_types=self.param_types)
+        if pnf is not None:
+            fs = self._select_fs(**pnf.make_filter())
             if fs is not None:
-                fs._param_info = p
+                pnf.update_meta(fs._db._first_index_row())
+                fs._param_info = pnf
                 return fs
         return None
 
@@ -343,6 +144,7 @@ class IndexDb:
         will contain an index db.
         """
         LOG.debug(f"kwargs={kwargs}")
+        # print(f"kwargs={kwargs}")
         # LOG.debug(f"blocks={self.blocks}")
         dims = self._make_dims(kwargs)
         self.load(keys=list(dims.keys()), vector=("wind" in dims.get("shortName", "")))
@@ -367,12 +169,19 @@ class IndexDb:
         # LOG.debug(f"len_res={len(res)}")
         # LOG.debug(f"dfs={dfs}")
         # LOG.debug(f"res={res}")
-        c = FieldsetDb(res, name=self.name, blocks=dfs, mars_params=self.mars_params)
+        c = FieldsetDb(
+            res,
+            name=self.name,
+            blocks=dfs,
+            label=self.label,
+            mars_params=self.mars_params,
+        )
         return c, res
 
     def _build_query(self, dims):
         q = ""
         for column, v in dims.items():
+            # print(f"v={v}")
             if v:
                 if q:
                     q += " and "
@@ -416,17 +225,20 @@ class IndexDb:
     # def _load_block(self, key):
     #     return None
 
-    def get_param_info(self, name=""):
-        if name:
-            if "wind" in name and not self.vector_loaded:
-                self.load(vector=True)
-            return ParamInfo.build(name, param_level_types=self.param_types)
-        elif self.blocks:
+    def _make_param_info(self):
+        m = self._first_index_row()
+        if m:
+            pnf = ParamInfo(m["shortName"], meta=dict(m))
+            return pnf
+        return None
+
+    def _first_index_row(self):
+        if self.blocks:
             df = self.blocks[list(self.blocks.keys())[0]]
             if df is not None and not df.empty:
                 row = df.iloc[0]
-                return ParamInfo(row.shortName, row.level, row.typeOfLevel)
-        return None
+                return dict(row)
+        return {}
 
     def _make_dims(self, options):
         dims = {}
@@ -641,12 +453,19 @@ class FieldsetDb(IndexDb):
         db.vector_loaded = self.vector_loaded
         return db
 
+    @staticmethod
+    def make_param_info(fs):
+        if fs._db is not None:
+            return fs._db._make_param_info()
+        else:
+            return ParamInfo.build_from_fieldset(fs)
+
     def unique(self, key):
         r = list()
         for _, v in self.blocks.items():
             r.extend(v[key].unique().tolist())
         return list(dict.fromkeys(r))
-        
+
         # r = set()
         # for _, v in self.blocks.items():
         #     r.update(v[key].unique().tolist())
@@ -660,20 +479,15 @@ class FieldsetDb(IndexDb):
         r = mv.Fieldset()
         for i in range(len(self.fs) // 2):
             r.append(mv.sqrt(self.fs[2 * i] ** 2 + self.fs[2 * i + 1] ** 2))
-        p = self.fs.param_info
-        LOG.debug(f"speed p={p}")
-        if p is not None:
-            param_id = ""
-            if p.name == "wind10m":
-                param_id = 207
-            elif p.name == "wind":
-                param_id = 10
-            if param_id:
-                LOG.debug("set")
-                r = mv.grib_set_long(r, ["paramId", param_id])
-                # r._scan()
-                # LOG.debug(f"db={r._db.blocks}")
-        r._label = self.label
+        pnf = self.fs.param_info
+        LOG.debug(f"speed pnf={pnf}")
+        param_id = 10
+        if pnf is not None:
+            param_ids = {"wind10m": 207, "wind": 10}
+            param_id = param_ids.get(pnf.name, param_id)
+        r = mv.grib_set_long(r, ["paramId", param_id])
+        r._db = FieldsetDb(r, label=self.label)
+        r._db.load()
         return r
 
     def deacc(self, skip_first=None):
@@ -691,10 +505,8 @@ class FieldsetDb(IndexDb):
                     r.append(v_next - v)
                     v = v_next
                 r = mv.grib_set_long(r, ["generatingProcessIdentifier", 148])
-                r._param_info = self.fs._param_info
-                r._label = self.label
-                r._db = FieldsetDb(r, mars_params=self.mars_params)
-                # r._db.scan()
+                r._db = FieldsetDb(r, label=self.label, mars_params=self.mars_params)
+                r._db.load()
                 return r
         return None
 

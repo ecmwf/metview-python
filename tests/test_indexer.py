@@ -18,7 +18,7 @@ import pytest
 
 import metview as mv
 from metview import bindings
-from metview.dataset import ParamInfo
+from metview.param import ParamInfo
 from metview.indexer import GribIndexer
 
 PATH = os.path.dirname(__file__)
@@ -87,7 +87,7 @@ def test_fieldset_select_single_file():
     # -------------------------
     f = mv.read(file_in_testdir("tuv_pl.grib"))
     assert f._db is None
-    
+
     g = f.select(shortName=["t", "u"], level=[700, 500])
     assert len(g) == 4
     assert mv.grib_get(g, ["shortName", "level:l"]) == [
@@ -103,19 +103,19 @@ def test_fieldset_select_single_file():
     md = [
         ["t", "t", "u", "u"],
         ["130.128", "130.128", "131.128", "131.128"],
-        [20180801]*4,
-        [1200]*4,
-        [0]*4,
+        [20180801] * 4,
+        [1200] * 4,
+        [0] * 4,
         [500, 700, 500, 700],
-        ["isobaricInhPa"]*4,
-        ["0"]*4,
-        ["0001"]*4,
-        ["od"]*4,
-        ["oper"]*4,
-        ["an"]*4,
+        ["isobaricInhPa"] * 4,
+        ["0"] * 4,
+        ["0001"] * 4,
+        ["od"] * 4,
+        ["oper"] * 4,
+        ["an"] * 4,
         [0, 1, 2, 3],
     ]
-   
+
     df_ref = build_index_db_dataframe(md, key_def=DB_COLUMNS)
     df = g._db.blocks["scalar"]
     if not df.equals(df_ref):
@@ -143,7 +143,7 @@ def test_fieldset_select_single_file():
     # -------------------------
     f = mv.read(file_in_testdir("tuv_pl.grib"))
     assert f._db is None
-    
+
     g = f.select(shortName=["t"], level=[500, 700], gridType="regular_ll")
     assert len(g) == 2
     assert mv.grib_get(g, ["shortName", "level:l", "gridType"]) == [
@@ -156,7 +156,7 @@ def test_fieldset_select_single_file():
     # -------------------------
     f = mv.read(file_in_testdir("tuv_pl.grib"))
     assert f._db is None
-    
+
     g = f.select(shortName="wind", level=700)
     assert len(g) == 2
     assert mv.grib_get(g, ["shortName", "level:l"]) == [
@@ -183,7 +183,7 @@ def test_fieldset_select_single_file():
         [0],
         [1],
     ]
-   
+
     df_ref = build_index_db_dataframe(md, key_def=DB_COLUMNS_WIND2)
     df = g._db.blocks["wind"]
     if not df.equals(df_ref):
@@ -235,76 +235,84 @@ def test_fieldset_select_multi_file():
 
 
 def test_param_info():
-    # no exta info
-    p = ParamInfo.build("2t")
+    # no extra info
+    p = ParamInfo.build_from_name("2t")
     assert p.name == "2t"
-    assert p.level_type == "surface"
-    assert p.level is None
+    assert p.scalar == True
+    assert p.meta["typeOfLevel"] == "surface"
+    assert p.meta["level"] is None
 
-    # p = ParamInfo.build("t2")
-    # assert p.name == "2t"
-    # assert p.level_type == "surface"
-    # assert p.level is None
-
-    p = ParamInfo.build("msl")
+    p = ParamInfo.build_from_name("msl")
     assert p.name == "msl"
-    assert p.level_type == "surface"
-    assert p.level is None
+    assert p.scalar == True
+    assert p.meta["typeOfLevel"] == "surface"
+    assert p.meta["level"] is None
 
-    p = ParamInfo.build("t500")
+    p = ParamInfo.build_from_name("t500")
     assert p.name == "t"
-    assert p.level_type == "isobaricInhPa"
-    assert p.level == 500
+    assert p.scalar == True
+    assert p.meta["typeOfLevel"] == "isobaricInhPa"
+    assert p.meta["level"] == 500
 
-    p = ParamInfo.build("t500hPa")
+    p = ParamInfo.build_from_name("t500hPa")
     assert p.name == "t"
-    assert p.level_type == "isobaricInhPa"
-    assert p.level == 500
+    assert p.scalar == True
+    assert p.meta["typeOfLevel"] == "isobaricInhPa"
+    assert p.meta["level"] == 500
 
-    p = ParamInfo.build("t")
+    p = ParamInfo.build_from_name("t")
     assert p.name == "t"
-    assert p.level_type == ""
-    assert p.level is None
+    assert p.scalar == True
+    assert p.meta["typeOfLevel"] == ""
+    assert p.meta["level"] is None
 
-    p = ParamInfo.build("t320K")
+    p = ParamInfo.build_from_name("t320K")
     assert p.name == "t"
-    assert p.level_type == "theta"
-    assert p.level == 320
+    assert p.scalar == True
+    assert p.meta["typeOfLevel"] == "theta"
+    assert p.meta["level"] == 320
 
-    p = ParamInfo.build("t72ml")
+    p = ParamInfo.build_from_name("t72ml")
     assert p.name == "t"
-    assert p.level_type == "hybrid"
-    assert p.level == 72
+    assert p.scalar == True
+    assert p.meta["typeOfLevel"] == "hybrid"
+    assert p.meta["level"] == 72
 
-    p = ParamInfo.build("wind10m")
+    p = ParamInfo.build_from_name("wind10m")
     assert p.name == "wind10m"
-    assert p.level_type == "surface"
-    assert p.level is None
+    assert p.scalar == False
+    assert p.meta["typeOfLevel"] == "surface"
+    assert p.meta["level"] is None
 
-    p = ParamInfo.build("wind100")
+    p = ParamInfo.build_from_name("wind100")
     assert p.name == "wind"
-    assert p.level_type == "isobaricInhPa"
-    assert p.level == 100
+    assert p.scalar == False
+    assert p.meta["typeOfLevel"] == "isobaricInhPa"
+    assert p.meta["level"] == 100
 
-    p = ParamInfo.build("wind700")
+    p = ParamInfo.build_from_name("wind700")
     assert p.name == "wind"
-    assert p.level_type == "isobaricInhPa"
-    assert p.level == 700
+    assert p.scalar == False
+    assert p.meta["typeOfLevel"] == "isobaricInhPa"
+    assert p.meta["level"] == 700
 
-    p = ParamInfo.build("wind")
+    p = ParamInfo.build_from_name("wind")
     assert p.name == "wind"
-    assert p.level_type == ""
-    assert p.level == None
+    assert p.scalar == False
+    assert p.meta["typeOfLevel"] == ""
+    assert p.meta["level"] == None
 
-    p = ParamInfo.build("wind3d")
+    p = ParamInfo.build_from_name("wind3d")
     assert p.name == "wind3d"
-    assert p.level_type == ""
-    assert p.level == None
+    assert p.scalar == False
+    assert p.meta["typeOfLevel"] == ""
+    assert p.meta["level"] == None
 
-    p = ParamInfo.build("wind3d500")
+    p = ParamInfo.build_from_name("wind3d500")
     assert p.name == "wind3d"
-    assert p.level_type == "isobaricInhPa"
-    assert p.level == 500
+    assert p.scalar == False
+    assert p.meta["typeOfLevel"] == "isobaricInhPa"
+    assert p.meta["level"] == 500
 
     # exta info
     param_level_types = {
@@ -315,89 +323,210 @@ def test_param_info():
         "wind": ["isobaricInhPa"],
     }
 
-    p = ParamInfo.build("2t", param_level_types=param_level_types)
+    p = ParamInfo.build_from_name("2t", param_level_types=param_level_types)
     assert p.name == "2t"
-    assert p.level_type == "surface"
-    assert p.level is None
+    assert p.scalar == True
+    assert p.meta["typeOfLevel"] == "surface"
+    assert p.meta["level"] == None
 
     try:
-        p = ParamInfo.build("22t", param_level_types=param_level_types)
+        p = ParamInfo.build_from_name("22t", param_level_types=param_level_types)
         assert False
     except:
         pass
 
-    # p = ParamInfo.build("t2", param_level_types=param_level_types)
+    # p = ParamInfo.build_from_name("t2", param_level_types=param_level_types)
     # assert p.name == "2t"
     # assert p.level_type == "surface"
     # assert p.level is None
 
-    p = ParamInfo.build("msl", param_level_types=param_level_types)
+    p = ParamInfo.build_from_name("msl", param_level_types=param_level_types)
     assert p.name == "msl"
-    assert p.level_type == "surface"
-    assert p.level is None
+    assert p.scalar == True
+    assert p.meta["typeOfLevel"] == "surface"
+    assert p.meta["level"] == None
 
-    p = ParamInfo.build("t500", param_level_types=param_level_types)
+    p = ParamInfo.build_from_name("t500", param_level_types=param_level_types)
     assert p.name == "t"
-    assert p.level_type == "isobaricInhPa"
-    assert p.level == 500
+    assert p.scalar == True
+    assert p.meta["typeOfLevel"] == "isobaricInhPa"
+    assert p.meta["level"] == 500
 
-    p = ParamInfo.build("t500hPa", param_level_types=param_level_types)
+    p = ParamInfo.build_from_name("t500hPa", param_level_types=param_level_types)
     assert p.name == "t"
-    assert p.level_type == "isobaricInhPa"
-    assert p.level == 500
+    assert p.scalar == True
+    assert p.meta["typeOfLevel"] == "isobaricInhPa"
+    assert p.meta["level"] == 500
 
-    p = ParamInfo.build("t", param_level_types=param_level_types)
+    p = ParamInfo.build_from_name("t", param_level_types=param_level_types)
     assert p.name == "t"
-    assert p.level_type == ""
-    assert p.level is None
+    assert p.scalar == True
+    assert "typeOfLevel" not in p.meta
+    assert "level" not in p.meta
 
-    p = ParamInfo.build("t320K", param_level_types=param_level_types)
+    p = ParamInfo.build_from_name("t320K", param_level_types=param_level_types)
     assert p.name == "t"
-    assert p.level_type == "theta"
-    assert p.level == 320
+    assert p.scalar == True
+    assert p.meta["typeOfLevel"] == "theta"
+    assert p.meta["level"] == 320
 
     try:
-        p = ParamInfo.build("t72ml", param_level_types=param_level_types)
+        p = ParamInfo.build_from_name("t72ml", param_level_types=param_level_types)
         assert False
     except:
         pass
 
-    p = ParamInfo.build("wind10m", param_level_types=param_level_types)
+    p = ParamInfo.build_from_name("wind10m", param_level_types=param_level_types)
     assert p.name == "wind10m"
-    assert p.level_type == "surface"
-    assert p.level is None
+    assert p.scalar == False
+    assert p.meta["typeOfLevel"] == "surface"
+    assert p.meta["level"] is None
 
-    p = ParamInfo.build("wind100", param_level_types=param_level_types)
+    p = ParamInfo.build_from_name("wind100", param_level_types=param_level_types)
     assert p.name == "wind"
-    assert p.level_type == "isobaricInhPa"
-    assert p.level == 100
+    assert p.scalar == False
+    assert p.meta["typeOfLevel"] == "isobaricInhPa"
+    assert p.meta["level"] == 100
 
-    p = ParamInfo.build("wind700", param_level_types=param_level_types)
+    p = ParamInfo.build_from_name("wind700", param_level_types=param_level_types)
     assert p.name == "wind"
-    assert p.level_type == "isobaricInhPa"
-    assert p.level == 700
+    assert p.scalar == False
+    assert p.meta["typeOfLevel"] == "isobaricInhPa"
+    assert p.meta["level"] == 700
 
-    p = ParamInfo.build("wind", param_level_types=param_level_types)
+    p = ParamInfo.build_from_name("wind", param_level_types=param_level_types)
     assert p.name == "wind"
-    assert p.level_type == "isobaricInhPa"
-    assert p.level is None
+    assert p.scalar == False
+    assert p.meta["typeOfLevel"] == "isobaricInhPa"
+    assert p.meta["level"] is None
 
     try:
-        p = ParamInfo.build("wind3d", param_level_types=param_level_types)
+        p = ParamInfo.build_from_name("wind3d", param_level_types=param_level_types)
         assert False
     except:
         pass
 
     param_level_types["wind3d"] = ["isobaricInhPa"]
-    p = ParamInfo.build("wind3d", param_level_types=param_level_types)
+    p = ParamInfo.build_from_name("wind3d", param_level_types=param_level_types)
     assert p.name == "wind3d"
-    assert p.level_type == "isobaricInhPa"
-    assert p.level is None
+    assert p.scalar == False
+    assert p.meta["typeOfLevel"] == "isobaricInhPa"
+    assert p.meta["level"] is None
 
-    p = ParamInfo.build("wind3d500", param_level_types=param_level_types)
+    p = ParamInfo.build_from_name("wind3d500", param_level_types=param_level_types)
     assert p.name == "wind3d"
-    assert p.level_type == "isobaricInhPa"
-    assert p.level == 500
+    assert p.scalar == False
+    assert p.meta["typeOfLevel"] == "isobaricInhPa"
+    assert p.meta["level"] == 500
+
+
+def test_param_info_from_fs_single_file():
+    f = mv.read(file_in_testdir("tuv_pl.grib"))
+    g = f["u700"]
+    p = g.param_info
+    assert p.name == "u"
+    assert p.scalar == True
+    md = {
+        "shortName": "u",
+        "mars.param": "131.128",
+        "date": 20180801,
+        "time": 1200,
+        "step": "0",
+        "level": 700,
+        "typeOfLevel": "isobaricInhPa",
+        "number": "0",
+        "experimentVersionNumber": "0001",
+        "mars.class": "od",
+        "mars.stream": "oper",
+        "mars.type": "an",
+        "msgIndex1": 0,
+    }
+    assert md == p.meta
+
+    g = f["wind500"]
+    p = g.param_info
+    assert p.name == "wind"
+    assert p.scalar == False
+    md = {
+        "shortName": "wind",
+        "mars.param": "131.128",
+        "date": 20180801,
+        "time": 1200,
+        "step": "0",
+        "level": 500,
+        "typeOfLevel": "isobaricInhPa",
+        "number": "0",
+        "experimentVersionNumber": "0001",
+        "mars.class": "od",
+        "mars.stream": "oper",
+        "mars.type": "an",
+        "msgIndex1": 0,
+        "msgIndex2": 1,
+    }
+    assert md == p.meta
+
+    # we lose the db
+    g = g + 0
+    p = g.param_info
+    assert p.name == "wind"
+    assert p.scalar == False
+    md = {
+        "shortName": "u",
+        "mars.param": "131.128",
+        "date": 20180801,
+        "time": 1200,
+        "step": "0",
+        "level": 500,
+        "typeOfLevel": "isobaricInhPa",
+        "number": "0",
+        "experimentVersionNumber": "0001",
+        "mars.class": "od",
+        "mars.stream": "oper",
+        "mars.type": "an",
+    }
+    assert md == p.meta
+
+    g = f["t"]
+    p = g.param_info
+    assert p.name == "t"
+    assert p.scalar == True
+    md = {
+        "shortName": "t",
+        "mars.param": "130.128",
+        "date": 20180801,
+        "time": 1200,
+        "step": "0",
+        "level": None,
+        "typeOfLevel": "isobaricInhPa",
+        "number": "0",
+        "experimentVersionNumber": "0001",
+        "mars.class": "od",
+        "mars.stream": "oper",
+        "mars.type": "an",
+        "msgIndex1": 0,
+    }
+    assert md == p.meta
+
+    # we lose the db
+    g = g + 0
+    p = g.param_info
+    assert p.name == "t"
+    assert p.scalar == True
+    md = {
+        "shortName": "t",
+        "mars.param": "130.128",
+        "date": 20180801,
+        "time": 1200,
+        "step": "0",
+        "level": 300,
+        "typeOfLevel": "isobaricInhPa",
+        "number": "0",
+        "experimentVersionNumber": "0001",
+        "mars.class": "od",
+        "mars.stream": "oper",
+        "mars.type": "an",
+    }
+    assert md == p.meta
 
 
 def test_fieldset_select_operator_single_file():

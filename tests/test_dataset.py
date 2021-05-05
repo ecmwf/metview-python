@@ -20,7 +20,6 @@ import pytest
 
 import metview as mv
 from metview import bindings
-from metview.dataset import ParamInfo
 from metview.indexer import GribIndexer
 
 PATH = os.path.dirname(__file__)
@@ -58,11 +57,13 @@ experiments:
     if not os.path.exists(conf_dir):
         os.mkdir(conf_dir)
 
+
 def remove_dataset():
     global DS_DIR
     if DS_DIR and os.path.exists(DS_DIR) and not DS_DIR in ["/", "."]:
         shutil.rmtree(DS_DIR)
     DS_DIR = ""
+
 
 def test_dataset():
     build_dataset()
@@ -132,9 +133,7 @@ def test_dataset():
     v = d["wind10m"]
     assert isinstance(v, mv.Fieldset)
     assert len(v) == 4
-    assert mv.grib_get(
-        v, ["shortName", "date:l", "time:l", "typeOfLevel"]
-    ) == [
+    assert mv.grib_get(v, ["shortName", "date:l", "time:l", "typeOfLevel"]) == [
         ["10u", 20160925, 0, "surface"],
         ["10v", 20160925, 0, "surface"],
         ["10u", 20160926, 0, "surface"],
@@ -179,9 +178,8 @@ def test_dataset():
 
     # Oper
     run = mv.date("2016-09-25 00:00")
-    d = ds["oper"].select(
-        date=run.date(), time=run.time(), step=[120])
-    
+    d = ds["oper"].select(date=run.date(), time=run.time(), step=[120])
+
     assert set(ds["oper"].blocks.keys()) == set(["scalar", "wind10m", "wind", "wind3d"])
     assert set(d.blocks.keys()) == set(["scalar", "wind10m", "wind", "wind3d"])
 

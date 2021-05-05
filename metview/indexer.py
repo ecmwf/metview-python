@@ -51,6 +51,7 @@ class GribIndexer:
         "mars.type": ("s", str, False),
     }
 
+    DEFAULT_ECC_KEYS = [f"{k}:{v[0]}" for k, v in DEFAULT_KEYS.items()]
     BLOCK_KEYS = ["shortName", "typeOfLevel"]
 
     pd_types = {k: v[1] for k, v in DEFAULT_KEYS.items()}

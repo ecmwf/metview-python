@@ -15,6 +15,7 @@ import os
 
 import yaml
 import metview as mv
+from metview.param import ParamInfo
 
 # logging.basicConfig(level=logging.DEBUG)
 LOG = logging.getLogger(__name__)
@@ -118,27 +119,35 @@ class Style:
 
 class ParamMatchCondition:
     def __init__(self, cond):
+        self.name = cond.pop("info_name", "")
         self.cond = cond
-        if "levels" in self.cond:
+        if "levelist" in self.cond:
             if not isinstance(self.cond["levelist"], list):
                 self.cond["levelist"] = [self.cond["levelist"]]
+        # ParamInfo use "typeOfLevel" instead of "levtype" so we need to
+        # change the key a remap values
+        if "levtype" in self.cond:
+            v = self.cond.pop("levtype")
+            self.cond["typeOfLevel"] = v
+            self.cond["typeOfLevel"] = ParamInfo.LEVEL_TYPES.get(v, v)
 
-    def match(self, param):
-        return param.match(
-            self.cond.get("info_name", ""),
-            self.cond.get("levtype", None),
-            self.cond.get("levelist", []),
-            self.cond.get("mars.param", ""),
-        )
+        for k, v in self.cond.items():
+            if isinstance(v, list):
+                self.cond[k] = [str(x) for x in v]
+            else:
+                self.cond[k] = str(v)
+
+    def match(self, param_info):
+        return param_info.match(self.name, self.cond)
 
 
 class ParamStyle:
     def __init__(self, conf, db):
         self.cond = []
         for d in conf["match"]:
-            self.cond.append(ParamMatchCondition(d))
             if "info_name" in d:
                 self.info_name = d["info_name"]
+            self.cond.append(ParamMatchCondition(d))
         self.param_type = conf.get("param_type", "scalar")
 
         if self.param_type == "vector":
@@ -217,17 +226,17 @@ class StyleDb:
         else:
             return self.styles.get("default", None)
 
-    def get_param_style(self, param, scalar=True, plot_type="map"):
+    def get_layer_style(self, param_info, scalar=True, plot_type="map"):
         r = 0
         p_best = None
         for p in self.params:
-            m = p.match(param)
+            m = p.match(param_info)
             # print(f"p={p} m={m}")
             if m > r:
                 r = m
                 p_best = p
 
-        # print(f"param={param}")
+        # print(f"param_info={param_info}")
         if p_best is not None:
             s = p_best.find_style(plot_type)
             # print(f" -> style={s}")
@@ -241,9 +250,11 @@ class StyleDb:
         return None
 
     def style(self, fs, plot_type="map"):
-        param = fs.param_info
-        if param is not None:
-            vd = self.get_param_style(param, scalar=param.scalar, plot_type=plot_type)
+        param_info = fs.param_info
+        if param_info is not None:
+            vd = self.get_layer_style(
+                param_info, scalar=param_info.scalar, plot_type=plot_type
+            )
             # LOG.debug(f"vd={vd}")
             return vd
         return None

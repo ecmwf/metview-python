@@ -22,7 +22,7 @@ import tempfile
 import cffi
 import numpy as np
 
-from metview.dataset import ParamInfo, FieldsetDb, Dataset
+from metview.dataset import FieldsetDb, Dataset
 from metview.style import StyleDb
 from metview import plotting
 
@@ -673,10 +673,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
     @property
     def param_info(self):
         if self._param_info is None:
-            if self._db is not None:
-                self._param_info = self._db.get_param_info(name="")
-            else:
-                self._param_info = ParamInfo.build_from_fieldset(self)
+            self._param_info = FieldsetDb.make_param_info(self)
         return self._param_info
 
     @property
@@ -704,7 +701,6 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
     def speed(self):
         if self._db is not None:
             fs = self._db.speed()
-            # fs._param_info = self.param_info
             return fs
         else:
             return None
@@ -714,7 +710,6 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             self._db = FieldsetDb(fs=self)  
         assert self._db is not None
         fs = self._db.deacc(skip_first=skip_first)
-        # fs._param_info = self.param_info
         return fs
 
     def __getitem__(self, key):

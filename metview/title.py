@@ -54,7 +54,7 @@ class Title:
 
                 param = d.param_info
                 if param is not None:
-                    if param.level_type == "surface":
+                    if param.meta.get("typeOfLevel", "") == "surface":
                         # lines.append(self.build_surface_fc(d.experiment.label, d.param.name, condition=cond))
                         lines[f"text_line_{i+1}"] = self.build_surface_fc(
                             d.label, param.name, condition=cond
@@ -98,6 +98,33 @@ class Title:
         lev = LEVEL_PART.replace("{}", c)
         t = FC_TIME_PART.replace("{}", c)
         return f"""{label} Par: {par} {lev} {t}"""
+
+    def build_xs(self, data):
+        if data:
+            if not isinstance(data, list):
+                data = [data]
+
+            lines = []
+            for d in data:
+                line = d.label
+                # print(f"label={d.label}")
+                param = d.param_info
+                if param is not None:
+                    # print(f"meta={param.meta}")
+                    line += f" Par: {param.name}"
+                    meta = param.meta
+                    if meta.get("mars.type", "") == "an":
+                        pass
+                    else:
+                        r = meta.get("date", 0)
+                        h = meta.get("time", 0)
+                        s = meta.get("step", "")
+                        line += f" Run: {r} {h} UTC Step: +{s}h"
+                lines.append(line)
+
+            return mv.mtext(text_lines=lines, text_font_size=self.font_size)
+
+        return mv.mtext(text_font_size=self.font_size)
 
     def build_stamp(self, data, member=""):
         if data:

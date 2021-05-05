@@ -310,16 +310,18 @@ def plot_xs(
     desc = []
 
     title = Title(font_size=title_font_size)
+    data_items = []
 
     # build cross section plot
     desc.append(dw[0])
     for layer in layers:
         data = layer["data"]
         vd = _make_visdef(data, layer["vd"], plot_type="xs")
-        param = data.param_info
-        LOG.debug(f"param={param}")
-
-        if param is not None and param.name == "wind3d":
+        param_info = data.param_info
+        LOG.debug(f"param_info={param_info}")
+        data_items.append(data)
+        # print(f"data={len(data)}")
+        if param_info is not None and param_info.name == "wind3d":
             xs_d = mv.mcross_sect(
                 data=data,
                 line=line,
@@ -333,22 +335,22 @@ def plot_xs(
             )
             desc.append(xs_d)
         else:
-            if param is not None:
-                if param.name == "t":
+            if param_info is not None:
+                if param_info.name == "t":
                     data = data - 273.16
-                elif param.name == "pv":
+                elif param_info.name == "pv":
                     data = data * 1e6
-                elif param.name == "q":
+                elif param_info.name == "q":
                     data = data * 1e3
-                elif param.name in ["vo", "absv"]:
+                elif param_info.name in ["vo", "absv"]:
                     data = data * 1e5
             desc.append(data)
 
         if vd:
             desc.extend(vd)
 
-        # t = title.build_fc(dv.conf.conf)
-        # desc.append(t)
+    t = title.build_xs(data_items)
+    desc.append(t)
 
     # LOG.debug(f"desc={desc}")
 
@@ -395,9 +397,6 @@ def plot_xs(
     LOG.debug(f"desc={desc}")
     animate = False if animate is None else animate
     return mv.plot(desc, animate=animate and mv.plot.plot_to_jupyter)
-
-
-# plot_stamp_maps(fs, vd, an=[], fc=[], )
 
 
 def plot_stamp(
