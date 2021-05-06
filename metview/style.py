@@ -424,11 +424,16 @@ class MapConf:
     def find(self, area=None, style=None):
         area_v = "base" if area is None else area
         style_v = "grey_light_base" if style is None else style
-        a = self.areas.get(area_v, {})
         s = None
-        if len(a) == 0 and area_v.upper() in self.BUILTIN_AREAS:
-            a = {"area_mode": "name", "area_name": area}
-        # if a is not None:
+        if isinstance(area_v, list):
+            if len(area_v) == 4:
+                a = {"area_mode": "user", "map_projection": "cylindrical", "map_area_definition": "corners", "area": area_v}
+            else:
+                raise Exception("Invalid list specified for area. Require format: [N,W,S,E]")
+        else:
+            a = self.areas.get(area_v, {})
+            if len(a) == 0 and area_v.upper() in self.BUILTIN_AREAS:
+                a = {"area_mode": "name", "area_name": area}
         s = self.style_db.get_style(style_v)
         return a, s
 
