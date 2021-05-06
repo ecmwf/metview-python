@@ -1,5 +1,5 @@
 """
-Cross Section Normal Wind Component with Map
+Cross Section Unprojected Wind and Relative Humidity with Map
 """
 
 # (C) Copyright 2017- ECMWF.
@@ -14,7 +14,7 @@ Cross Section Normal Wind Component with Map
 
 import metview as mv
 
-# get data - superstorm Sandy
+# get data
 use_mars = False
 
 # get data from MARS
@@ -37,8 +37,10 @@ else:
     else:
         g = mv.gallery.load_dataset(filename)
 
-# read wind fields and z500
+
+# read pressure level data - superstorm Sandy
 f_uv = mv.read(data=g, param=["u", "v"])
+f_r = mv.read(data=g, param="r")
 f_z = mv.read(data=g, param="z", levelist=500)
 
 # ---------------------------
@@ -48,31 +50,32 @@ f_z = mv.read(data=g, param="z", levelist=500)
 # define cross section line
 line = [30.30, -79.83, 36.95, -63.92]
 
-# define cross section view wind projected to the normal vector of the
-# cross section plane
+# define cross section view with wind along the cross section plane
 xs = mv.mxsectview(
     bottom_level=1000,
     top_level=100,
     line=line,
     wind_parallel="off",
-    wind_perpendicular="on",
-    wind_intensity="off",
+    wind_perpendicular="off",
+    wind_intenisty="off",
+    wind_unprojected="on",
     vertical_scaling="log",
 )
 
-# define contour shading for normal wind component
-wind_shade = mv.mcont(
+# define relative humidity contour shading
+r_shade = mv.mcont(
+    contour_automatic_setting="style_name",
+    contour_style_name="sh_grnblu_f65t100i15_light",
     legend="on",
-    contour="off",
-    contour_level_selection_type="interval",
-    contour_shade_max_level=36,
-    contour_shade_min_level=-36,
-    contour_interval=4,
-    contour_label="off",
-    contour_shade="on",
-    contour_shade_colour_method="palette",
-    contour_shade_method="area_fill",
-    contour_shade_palette_name="colorbrewer_PuOr_18_r",
+)
+
+# define wind plotting style
+wind_style = mv.mwind(
+    wind_field_type="flags",
+    wind_thinning_factor=1,
+    wind_flag_colour="black",
+    wind_flag_origin_marker="off",
+    wind_flag_length=0.7,
 )
 
 # cross section title
@@ -146,7 +149,7 @@ dw = mv.plot_superpage(pages=[map_page, xs_page])
 # --------------------------------------------
 
 # define the output plot file
-mv.setoutput(mv.pdf_output(output_name="cross_section_wind_normal"))
+mv.setoutput(mv.pdf_output(output_name="cross_section_wind_unprojected"))
 
 # generate plot
 mv.plot(
@@ -157,8 +160,10 @@ mv.plot(
     graph_line,
     map_title,
     dw[1],
+    f_r,
+    r_shade,
     f_uv,
-    wind_shade,
+    wind_style,
     xs_title,
     xs_legend,
 )

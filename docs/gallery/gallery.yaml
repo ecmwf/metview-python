@@ -123,6 +123,7 @@ sections:
   - cross_section_via_pole
   - cross_section_wind_normal
   - cross_section_wind_parallel
+  - cross_section_wind_unprojected
   - cross_section_wind_3d
   - time_height_xs
   - time_height_xs_wind
