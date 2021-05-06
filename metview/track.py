@@ -18,20 +18,48 @@ from metview.style import Style, StyleDb
 
 
 class Track:
-    def __init__(self, path):
+    def __init__(
+        self,
+        path,
+        skiprows=None,
+        sep=None,
+        date_index=None,
+        time_index=None,
+        lat_index=None,
+        lon_index=None,
+    ):
         self.path = path
+        self.skiprows = 0 if skiprows is None else skiprows
+        self.sep = sep
+        if self.sep == " ":
+            self.sep = "\s+"
+        self.date_index = 0 if date_index is None else date_index
+        self.time_index = 1 if time_index is None else time_index
+        self.lat_index = 3 if lat_index is None else lat_index
+        self.lon_index = 2 if lon_index is None else lon_index
 
     def style(self):
         return StyleDb.get_db().get_style("track").clone()
 
     def build(self, style=[]):
-        df = pd.read_csv(filepath_or_buffer=self.path, skiprows=10, header=None)
+        df = pd.read_csv(
+            filepath_or_buffer=self.path,
+            sep=self.sep,
+            skiprows=self.skiprows,
+            header=None,
+            engine="python",
+        )
 
-        v_date = df.iloc[:, 0]
-        v_time = df.iloc[:, 1]
+        # print(df)
+
+        v_date = df.iloc[:, self.date_index]
+        v_time = df.iloc[:, self.time_index]
         val = ["{}/{:02d}".format(str(d)[-2:], t) for d, t in zip(v_date, v_time)]
-        lon = df.iloc[:, 4].values
-        lat = df.iloc[:, 3].values
+        lon = df.iloc[:, self.lon_index].values
+        lat = df.iloc[:, self.lat_index].values
+
+        # print(f"lon={lon}")
+        # print(f"lat={lat}")
 
         if len(style) == 0:
             s = StyleDb.get_db().get_style("track").clone()

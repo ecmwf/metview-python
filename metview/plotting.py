@@ -82,9 +82,14 @@ def _make_visdef(data, vd, style_db="param", plot_type="map"):
         return []
 
 
-def _make_view(view):
+def _make_view(view, area):
+    if view is not None and area is not None:
+        raise Exception("Cannot specify both view and area in plot command!")
     if view is None:
-        view = mv.style.map(area="base").to_request()
+        if area is not None:
+            view = mv.style.map(area=area).to_request()
+        else:
+            view = mv.style.map(area="base").to_request()
     elif isinstance(view, GeoView):
         view = view.to_request()
     return view
@@ -94,6 +99,7 @@ def plot_maps(
     *args,
     layout=None,
     view=None,
+    area=None,
     title_font_size=None,
     legend_font_size=None,
     frame=-1,
@@ -107,7 +113,7 @@ def plot_maps(
     legend_font_size = 0.35 if legend_font_size is None else legend_font_size
 
     # define the view
-    view = _make_view(view)
+    view = _make_view(view, area)
 
     # in the positional arguments we have two options:
     # 1. we only have non-list items. They belong to a single plot page.
@@ -170,6 +176,7 @@ def plot_diff_maps(
     *args,
     layout=None,
     view=None,
+    area=None,
     overlay=None,
     title_font_size=None,
     legend_font_size=None,
@@ -185,7 +192,7 @@ def plot_diff_maps(
     legend_font_size = 0.35 if legend_font_size is None else legend_font_size
 
     # define the view
-    view = _make_view(view)
+    view = _make_view(view, area)
 
     # build the layout
     dw = Layout().build_diff(view=view)
@@ -279,6 +286,7 @@ def plot_xs(
     line=[],
     layout="",
     view=None,
+    area=None,
     title_font_size=None,
     legend_font_size=None,
     frame=-1,
@@ -292,10 +300,6 @@ def plot_xs(
     legend_font_size = 0.35 if legend_font_size is None else legend_font_size
 
     assert len(line) == 4
-
-    if map_data is not None:
-        view = _make_view(view)
-
     assert len(args) >= 1
     assert isinstance(args[0], mv.Fieldset)
     layers = _make_layers(*args, form_layout=False)
@@ -303,7 +307,7 @@ def plot_xs(
 
     # build the layout - if no map_data is specified no map view is
     # added to the layout
-    view = None if map_data is None else  _make_view(view)
+    view = None if map_data is None else _make_view(view, area)
     dw = Layout().build_xs(line=line, map_view=view)
 
     # the plot description
@@ -405,6 +409,7 @@ def plot_stamp(
     fc=[],
     layout=None,
     view=None,
+    area=None,
     title_font_size=0.4,
     frame=-1,
     animate=True,
@@ -415,7 +420,7 @@ def plot_stamp(
     """
 
     # define the view
-    view = _make_view(view)
+    view = _make_view(view, area)
 
     desc = []
     data = {}

@@ -685,6 +685,7 @@ class TrackConf:
         self.file_name_pattern = conf.get("fname", "")
         # self.conf_dir = os.path.join("_conf", self.name)
         self.data_files = []
+        self.conf = conf
 
     def load_data_file_list(self):
         if len(self.data_files) == 0:
@@ -702,7 +703,8 @@ class TrackConf:
         self.load_data_file_list()
         for f in self.data_files:
             if name == os.path.basename(f).split(".")[0]:
-                return Track(f)
+                c = {x: self.conf.get(x, None) for x in ["skiprows", "date_index", "time_index", "lon_index", "lat_index"]}
+                return Track(f, **c)
         return None
 
 
