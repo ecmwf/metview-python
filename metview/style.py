@@ -226,7 +226,7 @@ class StyleDb:
         else:
             return self.styles.get("default", None)
 
-    def get_layer_style(self, param_info, scalar=True, plot_type="map"):
+    def get_param_style(self, param_info, scalar=True, plot_type="map"):
         r = 0
         p_best = None
         for p in self.params:
@@ -252,7 +252,7 @@ class StyleDb:
     def style(self, fs, plot_type="map"):
         param_info = fs.param_info
         if param_info is not None:
-            vd = self.get_layer_style(
+            vd = self.get_param_style(
                 param_info, scalar=param_info.scalar, plot_type=plot_type
             )
             # LOG.debug(f"vd={vd}")
