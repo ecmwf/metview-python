@@ -14,7 +14,7 @@ Cross Section Unprojected Wind and Relative Humidity with Map
 
 import metview as mv
 
-# get data
+# get data - superstorm Sandy
 use_mars = False
 
 # get data from MARS
@@ -37,8 +37,7 @@ else:
     else:
         g = mv.gallery.load_dataset(filename)
 
-
-# read pressure level data - superstorm Sandy
+# read pressure level data
 f_uv = mv.read(data=g, param=["u", "v"])
 f_r = mv.read(data=g, param="r")
 f_z = mv.read(data=g, param="z", levelist=500)
