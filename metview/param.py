@@ -129,8 +129,7 @@ class ParamInfo:
     def build_from_fieldset(fs):
         assert isinstance(fs, mv.Fieldset)
         f = fs[0:3] if len(fs) >= 3 else fs
-        md = mv.grib_get(f, GribIndexer.DEFAULT_ECC_KEYS, "key")
-        m = {GribIndexer.DEFAULT_ECC_KEYS[i].split(":")[0]: v for i, v in enumerate(md)}
+        m = ParamInfo._grib_get(f, GribIndexer.DEFAULT_ECC_KEYS)
         name = level = lev_type = mars_param = ""
         scalar = True
 
@@ -195,6 +194,23 @@ class ParamInfo:
 
     def update_meta(self, meta):
         self.meta = {**meta, **self.meta}
+
+    @staticmethod
+    def _grib_get(f, keys):
+        md = mv.grib_get(f, keys, "key")
+        m = {}
+        for k, v in zip(keys, md):
+            key_val = k.split(":")[0]
+            val = v
+            if k.endswith(":l"):
+                val = []
+                for x in v:
+                    try:
+                        val.append(int(x)) 
+                    except:
+                        val.append(None) 
+            m[key_val] = val  
+        return m
 
     def __str__(self):
         return "{}[name={}, scalar={}, meta={}]".format(
