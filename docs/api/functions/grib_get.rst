@@ -30,7 +30,7 @@ grib_get
    
    :Example:
    
-      The following lines of code on a particular 6-field fieldset:
+      The following lines of code on a particular fieldset with 3 fields:
       
       .. code-block:: python
 
@@ -43,8 +43,8 @@ grib_get
       
       .. code-block:: python
 
-         [[1,ecmf,1000,0],[1,ecmf,500,0],[1,ecmf,100,0],[1,ecmf,1000,48]]
-         [[1,1,1,1],[98,98,98,98],[1000,500,100,1000],[0,0,0,48]]
+         [['1', 'ecmf', '1000', '0'], ['1', 'ecmf', '925', '0'], ['1', 'ecmf', '850', '0']]
+         [['1', '1', '1'], [98.0, 98.0, 98.0], ['1000', '925', '850'], ['0', '0', '0']]
 
 
 .. py:function:: grib_get_long(fs, key)
