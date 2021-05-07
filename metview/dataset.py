@@ -124,6 +124,9 @@ class IndexDb:
         Perform a select operation where selection options are derived
         from the specified name.
         """
+        # print(f"select_with_name blocks: {self.blocks.keys()}")
+        # print(f"vector_loaded: {self.vector_loaded}")
+
         if "wind" in name and not self.vector_loaded:
             self.load(vector=True)
         pnf = ParamInfo.build_from_name(name, param_level_types=self.param_types)
@@ -556,8 +559,6 @@ class ExperimentDb(IndexDb):
         print(f"Generate index for dataset component={self.name} ...")
         self.data_files = []
         # self.blocks = {}
-        self.scalar = None
-        self.wind = {}
         indexer = ExperimentIndexer(self)
         indexer.scan()
 
@@ -703,7 +704,16 @@ class TrackConf:
         self.load_data_file_list()
         for f in self.data_files:
             if name == os.path.basename(f).split(".")[0]:
-                c = {x: self.conf.get(x, None) for x in ["skiprows", "date_index", "time_index", "lon_index", "lat_index"]}
+                c = {
+                    x: self.conf.get(x, None)
+                    for x in [
+                        "skiprows",
+                        "date_index",
+                        "time_index",
+                        "lon_index",
+                        "lat_index",
+                    ]
+                }
                 return Track(f, **c)
         return None
 

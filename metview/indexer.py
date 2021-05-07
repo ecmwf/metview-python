@@ -418,7 +418,7 @@ class ExperimentIndexer(GribIndexer):
                         cols.extend([f"msgIndex{i+1}", f"fileIndex{i+1}"])
                     w_df = self._make_dataframe(r, columns=cols)
                     # print(f"wind_len={len(w_df.index)}")
-                    self.db.wind[v_name] = w_df
+                    self.db.blocks[v_name] = w_df
                     self._write_dataframe(w_df, v_name, out_dir)
                 else:
                     LOG.debug(" No paired fields found!")
