@@ -1083,25 +1083,8 @@ class Plot:
         self.jupyter_args = {}
 
     def __call__(self, *args, **kwargs):
-        # if animate=True is supplied, then create a Jupyter animation
-        if kwargs.get("animate", False):
-            return animate(args, kwargs)
-
-        # otherwise create a single static plot
         if self.plot_to_jupyter:  # pragma: no cover
-            f, tmp = tempfile.mkstemp(".png")
-            os.close(f)
-
-            base, ext = os.path.splitext(tmp)
-
-            output_args = {"output_name": base, "output_name_first_page_number": "off"}
-            output_args.update(self.jupyter_args)
-            met_setoutput(png_output(output_args))
-            met_plot(*args)
-
-            image = Image(tmp)
-            os.unlink(tmp)
-            return image
+            return plot_to_notebook(args, **kwargs)
         else:
             map_outputs = {
                 "png": png_output,
@@ -1122,12 +1105,14 @@ plot = Plot()
 
 # animate - only usable within Jupyter notebooks
 # generates a widget allowing the user to select between plot frames
-def animate(*args, **kwargs):  # pragma: no cover
+def plot_to_notebook(*args, **kwargs):  # pragma: no cover
 
     if not plot.plot_to_jupyter:
         raise EnvironmentError(
-            "animate() can only be used after calling set_output('jupyter')"
+            "animate() can only be used after calling setoutput('jupyter')"
         )
+
+    animation_mode = kwargs.get("animate", "auto") # True, False or "auto"
 
     import ipywidgets as widgets
 
@@ -1138,47 +1123,9 @@ def animate(*args, **kwargs):  # pragma: no cover
         # height=400,
     )
 
-    frame_widget = widgets.IntSlider(
-        value=1,
-        min=1,
-        max=1,
-        step=1,
-        description="Frame:",
-        disabled=False,
-        continuous_update=True,
-        readout=True,
-    )
-
-    play_widget = widgets.Play(
-        value=1,
-        min=1,
-        max=1,
-        step=1,
-        interval=500,
-        description="Play animation",
-        disabled=False,
-    )
-
-    speed_widget = widgets.IntSlider(
-        value=3,
-        min=1,
-        max=20,
-        step=1,
-        description="Speed",
-        disabled=False,
-        continuous_update=True,
-        readout=True,
-    )
-
-    widgets.jslink((play_widget, "value"), (frame_widget, "value"))
-    play_and_speed_widget = widgets.HBox([play_widget, speed_widget])
-    controls = widgets.VBox([frame_widget, play_and_speed_widget])
-
-    controls.layout.visibility = "hidden"
     image_widget.layout.visibility = "hidden"
     waitl_widget = widgets.Label(value="Generating plots....")
-    frame_widget.layout.width = "800px"
-    display(image_widget, controls, waitl_widget)
+    display(image_widget, waitl_widget)
 
     # plot all frames to a temporary directory owned by Metview to enure cleanup
     tempdirpath = tempfile.mkdtemp(dir=os.environ.get("METVIEW_TMPDIR", None))
@@ -1196,9 +1143,60 @@ def animate(*args, **kwargs):  # pragma: no cover
         return
 
     files = [os.path.join(tempdirpath, f) for f in sorted(filenames)]
-    frame_widget.max = len(files)
-    frame_widget.description = "Frame (" + str(len(files)) + ") :"
-    play_widget.max = len(files)
+
+    if (animation_mode == True) or (animation_mode == "auto" and len(filenames) > 1):
+        frame_widget = widgets.IntSlider(
+            value=1,
+            min=1,
+            max=1,
+            step=1,
+            description="Frame:",
+            disabled=False,
+            continuous_update=True,
+            readout=True,
+        )
+
+        play_widget = widgets.Play(
+            value=1,
+            min=1,
+            max=1,
+            step=1,
+            interval=500,
+            description="Play animation",
+            disabled=False,
+        )
+
+        speed_widget = widgets.IntSlider(
+            value=3,
+            min=1,
+            max=20,
+            step=1,
+            description="Speed",
+            disabled=False,
+            continuous_update=True,
+            readout=True,
+        )
+
+        widgets.jslink((play_widget, "value"), (frame_widget, "value"))
+        play_and_speed_widget = widgets.HBox([play_widget, speed_widget])
+        controls = widgets.VBox([frame_widget, play_and_speed_widget])
+        controls.layout.visibility = "hidden"
+        frame_widget.layout.width = "800px"
+        display(controls)
+
+        frame_widget.max = len(files)
+        frame_widget.description = "Frame (" + str(len(files)) + ") :"
+        play_widget.max = len(files)
+
+        def on_frame_change(change):
+            plot_frame(change["new"])
+
+        def on_speed_change(change):
+            play_widget.interval = 1500 / change["new"]
+
+        frame_widget.observe(on_frame_change, names="value")
+        speed_widget.observe(on_speed_change, names="value")
+        controls.layout.visibility = "visible"
 
     def plot_frame(frame_index):
         im_file = open(files[frame_index - 1], "rb")
@@ -1206,21 +1204,11 @@ def animate(*args, **kwargs):  # pragma: no cover
         im_file.close()
         image_widget.value = imf
 
-    def on_frame_change(change):
-        plot_frame(change["new"])
-
+ 
+    # everything is ready now, so plot the first frame, hide the
+    # 'waiting' label and reveal the plot and the frame slider
     plot_frame(1)
-    frame_widget.observe(on_frame_change, names="value")
-
-    def on_speed_change(change):
-        play_widget.interval = 1500 / change["new"]
-
-    speed_widget.observe(on_speed_change, names="value")
-
-    # everything is ready now, so hide the 'waiting' label
-    # and reveal the plot and the frame slider
     waitl_widget.layout.visibility = "hidden"
-    controls.layout.visibility = "visible"
     image_widget.layout.visibility = "visible"
 
 
