@@ -36,13 +36,29 @@ ETC_PATH = os.path.join(os.path.dirname(__file__), "etc")
 LOG = logging.getLogger(__name__)
 
 
+def init_pandas_options():
+    display = pd.options.display
+    display.max_colwidth = 300
+    display.colheader_justify = "center"
+
+
 class ParamDesc:
     def __init__(self, name):
         self.name = name
         self.md = {}
 
     def load(self, db):
-        md = {"typeOfLevel": [], "level": [], "date": [], "time": [], "step": []}
+        md = {
+            "typeOfLevel": [],
+            "level": [],
+            "date": [],
+            "time": [],
+            "step": [],
+            "number": [],
+            "mars.param": [],
+            "mars.stream": [],
+            "mars.type": [],
+        }
         # print(f"par={par}")
         for b_name, b_df in db.blocks.items():
             if b_name == "scalar":
@@ -59,8 +75,14 @@ class ParamDesc:
                     md[k].extend(dft[k].tolist())
                     # print(f"   df[{k}]={df[k]}")
             # print(df)
+
         if len(md["level"]) > 0:
             df = pd.DataFrame(md)
+
+            # mars_types = df["mars.type"].unique().tolist()
+            # if "an" in mars_types:
+            #     df_an = df.query("mars.type == 'an'")
+
             lev_types = df["typeOfLevel"].unique().tolist()
             for t in lev_types:
                 # print(f" t={t}")
@@ -71,9 +93,25 @@ class ParamDesc:
                 # print(dft)
                 d = {}
                 if dft is not None:
-                    for md_key in ["level", "date", "time", "step"]:
+                    for md_key in list(md.keys())[1:]:
                         d[md_key] = dft[md_key].unique().tolist()
                 self.md[t] = d
+
+    def _details(self, df):
+        pass
+        # lev_types = df["typeOfLevel"].unique().tolist()
+        #     for t in lev_types:
+        #         # print(f" t={t}")
+        #         self.md[t] = dict()
+        #         q = f"typeOfLevel == '{t}'"
+        #         # print(q)
+        #         dft = df.query(q)
+        #         # print(dft)
+        #         d = {}
+        #         if dft is not None:
+        #             for md_key in ["level", "date", "time", "step"]:
+        #                 d[md_key] = dft[md_key].unique().tolist()
+        #         self.md[t] = d
 
 
 class IndexDb:
@@ -353,30 +391,61 @@ class IndexDb:
         return self._params
 
     def format_list(self, v):
-        if len(v) > 2:
-            return [v[0], "...", v[-1]]
+        if len(v) == 1:
+            return v[0]
+        if len(v) > 4:
+            return ",".join([str(x) for x in [v[0], v[1], "...", v[-2], v[-1]]])
         else:
-            return v
+            return ",".join([str(x) for x in v])
 
-    def summary(self):
-        t = {
-            "name": [],
-            "typeOflevel": [],
-            "level": [],
-            "date": [],
-            "time": [],
-            "step": [],
-        }
-        for k, v in self.param_meta.items():
-            for md_k, md in v.md.items():
-                t["name"].append(k)
-                t["typeOflevel"].append(md_k)
-                for kk in ["level", "date", "time", "step"]:
-                    t[kk].append(self.format_list(md[kk]))
-        df = pd.DataFrame.from_dict(t)
-        df.set_index("name", inplace=True)
-        df = df.sort_values(by="name")
-        return df
+    def describe(self, param=None):
+        init_pandas_options()
+        if param is None:
+            t = {
+                "typeOfLevel": [],
+                "name": [],
+            }
+            for k, v in self.param_meta.items():
+                for md_k, md in v.md.items():
+                    t["name"].append(k)
+                    t["typeOfLevel"].append(md_k)
+                    for kk, md_v in md.items():
+                        if not kk in t:
+                            t[kk] = []
+                        t[kk].append(self.format_list(md_v))
+            df = pd.DataFrame.from_dict(t)
+            # df.set_index("name", inplace=True)
+            df = df.sort_values(by=["typeOfLevel", "name"])
+            df = df.set_index(["typeOfLevel", "name"])
+            return df
+        else:
+            print(f"Parameter: {param}")
+            t = {
+                # "name": [],
+                "typeOfLevel": [],
+                "key": [],
+                "val": [],
+            }
+            v = self.param_meta.get(param, None)
+            if v is not None:
+                for md_k, md in v.md.items():
+                    # t["name"].append(name)
+                    # t["typeOfLevel"].append(md_k)
+                    for kk, md_v in md.items():
+                        # t["name"].append(name)
+                        t["typeOfLevel"].append(md_k)
+                        t["key"].append(kk)
+                        t["val"].append(md_v)
+            df = pd.DataFrame.from_dict(t)
+            df = df.set_index(["typeOfLevel", "key"])
+            # df = pd.DataFrame.from_dict(t, orient='index')
+            # df.set_index("name", inplace=True)
+            # df = df.sort_values(by=["typeOfLevel", "name"])
+            return df
+
+    def _init_pandas_options(self):
+        display = pd.options.display
+        display.max_colwidth = 300
 
     def to_df(self):
         return pd.concat([p for _, p in self.blocks.items()])
@@ -477,6 +546,24 @@ class FieldsetDb(IndexDb):
 
     # def style(self, plot_type="map"):
     #     return StyleDb.get_db().style(self.fs, plot_type=plot_type)
+
+    def ls(self, param=None):
+        keys = [
+            "edition",
+            "centre",
+            "typeOfLevel",
+            "level",
+            "dataDate",
+            "stepRange",
+            "dataType",
+            "shortName",
+            "packingType",
+            "gridType",
+        ]
+        m = mv.grib_get(self.fs, keys, "key")
+        md = {k: v for k, v in zip(keys, m)}
+        df = pd.DataFrame.from_dict(md)
+        return df
 
     def speed(self):
         r = mv.Fieldset()
@@ -656,24 +743,6 @@ class ExperimentDb(IndexDb):
         df.drop([f"fileIndex{x+1}" for x in range(comp_num)], axis=1, inplace=True)
         return df
 
-    def describe(self):
-        # t = {"name": [], "typeOflevel": []}
-        # for k, v in self.param_types.items():
-        #     t["name"].append(k)
-        #     t["typeOflevel"].append(v)
-        # df = pd.DataFrame.from_dict(t)
-        # df.set_index("name", inplace=True)
-        # df = df.sort_values(by="name")
-        t = {"name": [], "typeOflevel": []}
-        for k, v in self.param_meta.items():
-            t["name"].append(k)
-            t["typeOflevel"].append(v)
-        df = pd.DataFrame.from_dict(t)
-        df.set_index("name", inplace=True)
-        df = df.sort_values(by="name")
-
-        return df
-
 
 class TrackConf:
     def __init__(self, name, conf, data_dir, dataset):
@@ -825,20 +894,20 @@ class Dataset:
             return None
 
     def describe(self):
+        init_pandas_options()
         print("Dataset components:")
-        t = {"Name": [], "Description": []}
+        t = {"Component": [], "Description": []}
         for _, f in self.field_conf.items():
-            t["Name"].append(f.name)
+            t["Component"].append(f.name)
             t["Description"].append(f.desc)
         for _, f in self.track_conf.items():
-            t["Name"].append(f.name)
+            t["Component"].append(f.name)
             t["Description"].append("Storm track data")
         df = pd.DataFrame.from_dict(t)
-        df.set_index("Name", inplace=True)
+        df.set_index("Component", inplace=True)
         # df.reset_index(drop=True, inplace=True)
         # df.style.set_properties(**{'text-align': 'left'}).set_table_styles([dict(selector='th', props=[('text-align', 'left')])])
         return df
-        print(df)
 
     def fetch(self, forced=False):
         if not os.path.isdir(self.path):

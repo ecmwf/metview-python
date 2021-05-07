@@ -670,6 +670,16 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         else:
             return self._db.select(**kwargs)
 
+    def describe(self, **kwargs):
+        if self._db is None:
+            self._db = FieldsetDb(fs=self)
+        return self._db.describe(**kwargs)
+
+    def ls(self, **kwargs):
+        if self._db is None:
+            self._db = FieldsetDb(fs=self)
+        return self._db.ls(**kwargs)
+
     @property
     def param_info(self):
         if self._param_info is None:
