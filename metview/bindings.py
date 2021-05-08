@@ -1249,8 +1249,6 @@ def plot_to_notebook(*args, **kwargs):  # pragma: no cover
 
     animation_mode = kwargs.get("animate", "auto") # True, False or "auto"
 
-    import ipywidgets as widgets
-
     # create all the widgets first so that the 'waiting' label is at the bottom
     image_widget = widgets.Image(
         format="png"
@@ -1354,10 +1352,7 @@ def plot_to_notebook(*args, **kwargs):  # pragma: no cover
 def setoutput(*args, **kwargs):
     if "jupyter" in args:  # pragma: no cover
         try:
-            global Image
-            global get_ipython
-            IPython = __import__("IPython", globals(), locals())
-            Image = IPython.display.Image
+            import IPython
             get_ipython = IPython.get_ipython
         except ImportError as imperr:
             print("Could not import IPython module - plotting to Jupyter will not work")
@@ -1372,6 +1367,14 @@ def setoutput(*args, **kwargs):
                 "ERROR: setoutput('jupyter') was set, but we are not in a Jupyter environment"
             )
             raise (Exception("Could not set output to jupyter"))
+
+        try:
+            global widgets
+            widgets = __import__("ipywidgets", globals(), locals())
+        except ImportError as imperr:
+            print("Could not import ipywidgets module - plotting to Jupyter will not work")
+            raise imperr
+
     else:
         plot.plot_to_jupyter = False
         met_setoutput(*args)
