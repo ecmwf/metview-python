@@ -1242,12 +1242,7 @@ plot = Plot()
 # generates a widget allowing the user to select between plot frames
 def plot_to_notebook(*args, **kwargs):  # pragma: no cover
 
-    if not plot.plot_to_jupyter:
-        raise EnvironmentError(
-            "animate() can only be used after calling setoutput('jupyter')"
-        )
-
-    animation_mode = kwargs.get("animate", "auto") # True, False or "auto"
+    animation_mode = kwargs.get("animate", "auto")  # True, False or "auto"
 
     # create all the widgets first so that the 'waiting' label is at the bottom
     image_widget = widgets.Image(
@@ -1337,7 +1332,6 @@ def plot_to_notebook(*args, **kwargs):  # pragma: no cover
         im_file.close()
         image_widget.value = imf
 
- 
     # everything is ready now, so plot the first frame, hide the
     # 'waiting' label and reveal the plot and the frame slider
     plot_frame(1)
@@ -1353,6 +1347,7 @@ def setoutput(*args, **kwargs):
     if "jupyter" in args:  # pragma: no cover
         try:
             import IPython
+
             get_ipython = IPython.get_ipython
         except ImportError as imperr:
             print("Could not import IPython module - plotting to Jupyter will not work")
@@ -1372,7 +1367,9 @@ def setoutput(*args, **kwargs):
             global widgets
             widgets = __import__("ipywidgets", globals(), locals())
         except ImportError as imperr:
-            print("Could not import ipywidgets module - plotting to Jupyter will not work")
+            print(
+                "Could not import ipywidgets module - plotting to Jupyter will not work"
+            )
             raise imperr
 
     else:
