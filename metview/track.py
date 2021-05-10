@@ -14,7 +14,7 @@ from datetime import datetime
 import metview as mv
 import pandas as pd
 
-from metview.style import Style, StyleDb
+from metview.style import Style
 
 
 class Track:
@@ -39,7 +39,7 @@ class Track:
         self.lon_index = 2 if lon_index is None else lon_index
 
     def style(self):
-        return StyleDb.get_db().get_style("track").clone()
+        return mv.style.get_db().get_style("track").clone()
 
     def build(self, style=[]):
         df = pd.read_csv(
@@ -62,12 +62,12 @@ class Track:
         # print(f"lat={lat}")
 
         if len(style) == 0:
-            s = StyleDb.get_db().get_style("track").clone()
+            s = mv.style.get_db().get_style("track").clone()
         if len(style) == 1 and isinstance(style[0], Style):
             s = style[0].clone()
         else:
             assert all(not isinstance(x, Style) for x in style)
-            s = StyleDb.get_db().get_style("track").clone()
+            s = mv.style.get_db().get_style("track").clone()
 
         for vd in s.visdefs:
             if vd.verb == "msymb":

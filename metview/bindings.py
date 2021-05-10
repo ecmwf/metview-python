@@ -23,7 +23,6 @@ import cffi
 import numpy as np
 
 from metview.dataset import FieldsetDb, Dataset
-from metview.style import StyleDb
 from metview import plotting
 
 __version__ = "1.8.0"
@@ -702,12 +701,9 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             return []
 
     def style(self, plot_type="map"):
-        return StyleDb.get_db().style(self, plot_type=plot_type)
-        # if self._db:
-        #     return self._db.style(plot_type=plot_type)
-        # else:
-        #     return None
-
+        from metview import style
+        return style.get_db().style(self, plot_type=plot_type)
+    
     def speed(self):
         if self._db is not None:
             fs = self._db.speed()

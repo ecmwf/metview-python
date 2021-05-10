@@ -1,0 +1,3 @@
+- base:
+   map_area_definition: "corners"
+   area: [-90,-180,90,180]

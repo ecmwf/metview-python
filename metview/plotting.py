@@ -18,7 +18,7 @@ import yaml
 
 import metview as mv
 from metview.layout import Layout
-from metview.style import Style, StyleDb, GeoView
+from metview.style import Style, GeoView
 from metview.title import Title
 from metview.track import Track
 
@@ -70,7 +70,7 @@ def _make_layers(*args, form_layout=False):
 def _make_visdef(data, vd, style_db="param", plot_type="map"):
     if isinstance(data, mv.Fieldset):
         if len(vd) == 0:
-            vd = StyleDb.get_db(name=style_db).visdef(data, plot_type=plot_type)
+            vd = mv.style.get_db(name=style_db).visdef(data, plot_type=plot_type)
         else:
             for i, v in enumerate(vd):
                 if isinstance(v, Style):
@@ -149,15 +149,6 @@ def plot_maps(
             vd = _make_visdef(data, vd, style_db="param", plot_type="map")
             if vd:
                 desc.extend(vd)
-
-            # if not isinstance(data, Track):
-            #     if len(vd) == 0:
-            #         vd = StyleDb.get_db().visdef(data)
-            #     for i, v in enumerate(vd):
-            #         if isinstance(v, Style):
-            #             vd[i] = v.to_request()
-            #     if vd is not None and all(x is not None for x in vd):
-            #         desc.extend(vd)
 
         if data_items:
             legend = mv.mlegend(legend_text_font_size=legend_font_size)
