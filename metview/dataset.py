@@ -543,9 +543,10 @@ class FieldsetDb(IndexDb):
         # # return sorted(list(r))
         # return r
 
-    def ls(self, param=None, keys=None):
+    def ls(self, param=None, extra_keys=None):
         default_keys = [
             "centre",
+            "shortName",
             "typeOfLevel",
             "level",
             "dataDate",
@@ -555,12 +556,12 @@ class FieldsetDb(IndexDb):
             "shortName",
             "gridType",
         ]
-        all_keys = default_keys
-        if keys is not None:
-            [all_keys.append(x) for x in keys if x not in all_keys]
+        keys = default_keys
+        if extra_keys is not None:
+            [keys.append(x) for x in extra_keys if x not in keys]
 
-        m = mv.grib_get(self.fs, all_keys, "key")
-        md = {k: v for k, v in zip(all_keys, m)}
+        m = mv.grib_get(self.fs, keys, "key")
+        md = {k: v for k, v in zip(keys, m)}
         df = pd.DataFrame.from_dict(md)
         return df
 
