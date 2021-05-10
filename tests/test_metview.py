@@ -1510,7 +1510,8 @@ def test_plot_2():
         "contour_shade_colour_direction": "clockwise",
     }
     degraded_field = mv.read(data=TEST_FIELDSET, grid=[4, 4])
-    mv.plot(png, degraded_field, mv.mcont(grid_shade))
+    # animate=True just to check that it is allowed and ignored as a param
+    mv.plot(png, degraded_field, mv.mcont(grid_shade), animate=True)
     output_name_from_magics = output_name + ".1.png"
     assert os.path.isfile(output_name_from_magics)
     os.remove(output_name_from_magics)
@@ -1555,12 +1556,6 @@ def test_plot_2_pages():
     output_name_from_magics = output_name + ".1.png"
     assert os.path.isfile(output_name_from_magics)
     os.remove(output_name_from_magics)
-
-
-def test_animate_exception():
-    # this should fail because we are not in a Jupyter environment
-    with pytest.raises(EnvironmentError):
-        mv.plot(animate=True)
 
 
 def test_macro_error():
