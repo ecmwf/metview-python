@@ -10,6 +10,7 @@
 #
 
 import copy
+import json
 import logging
 import os
 
@@ -21,23 +22,112 @@ from metview.param import ParamInfo
 LOG = logging.getLogger(__name__)
 
 _DB = {
-    "param": (None, "params.yaml", "param_styles.yaml"),
-    "map": (None, "", "map_styles.yaml"),
+    "param": [None, "params.yaml", "param_styles.yaml"],
+    "map": [None, "", "map_styles.yaml"],
 }
 
 _MAP_CONF = None
 ETC_PATH = os.path.join(os.path.dirname(__file__), "etc")
-CUSTOM_CONF_PATH = ""
+CUSTOM_CONF_PATH = []
 LOCAL_CONF_PATH = ""
 
-# def get_db(name="param"):
-#     global _DB
-#     assert name in _DB
-#     if _DB[name][0] is None:
-#         _DB[name] = (StyleDb(_DB[name][1]), "")
-#     return _DB[name][0]
 
 PARAM_VISDEF_VERBS = ["mcont", "mwind", "mcoast", "msymb", "mgraph"]
+
+
+# _DB = None
+
+
+# def cont():
+#     global _DB
+#     if not _DB:
+#         _DB = StyleDb()
+#     return _DB
+
+
+class ContourStyleDbItem:
+    def __init__(self, name, db):
+        self.name = name
+        self.db = db
+        self.keywords = []
+        self.colours = []
+        self.layers = []
+        self.description = ""
+
+    def list_match(self, lst, pattern):
+        p = pattern.lower()
+        for t in lst:
+            if p in t.lower():
+                return True
+        return False
+
+    def keyword_match(self, pattern):
+        return self.list_match(self.keywords, pattern)
+
+    def layer_match(self, pattern):
+        return self.list_match(self.layers, pattern)
+
+    def colour_match(self, pattern):
+        return self.list_match(self.colours, pattern)
+
+    def preview_file(self):
+        if self.db.preview_path:
+            return os.path.join(self.db.preview_path, self.name + ".png")
+        else:
+            return str()
+
+
+class ContourStyleDb:
+    def __init__(self):
+        self.SHARE_DIR = os.path.join(
+            mv.version_info()["metview_dir"], "share", "metview", "eccharts"
+        )
+        self.preview_path = os.path.join(self.SHARE_DIR, "style_previews")
+        self.items = []
+        self.keywords = []
+        self.colours = []
+        self.layers = []
+        self._load()
+        self._load_magics_def()
+
+    def _load(self):
+        file_path = os.path.join(self.SHARE_DIR, "styles.json")
+        print(f"file_path={file_path}")
+        try:
+            with open(file_path, "rt") as f:
+                conf = json.load(f)
+                col_set = set()
+                key_set = set()
+                layer_set = set()
+                for name, c in conf.items():
+                    item = ContourStyleDbItem(name, self)
+                    item.colours = c.get("colours", [])
+                    item.keywords = c.get("keywords", [])
+                    item.layers = c.get("layers", [])
+                    col_set.update(item.colours)
+                    key_set.update(item.keywords)
+                    layer_set.update(item.layers)
+                    self.items.append(item)
+            self.colours = sorted(list(col_set))
+            self.keywords = sorted(list(key_set))
+            self.layers = sorted(list(layer_set))
+        except:
+            pass
+        #     LOG.exception("Failed to read eccharts styles", popup=True)
+
+        self._load_magics_def()
+
+    def find_by_name(self, name):
+        for i, item in enumerate(self.items):
+            if item.name == name:
+                return i, item
+        return -1, None
+
+    def _load_magics_def(self):
+        pass
+
+    def names(self):
+        return sorted([item.name for item in self.items])
 
 
 class Visdef:
@@ -187,38 +277,38 @@ class StyleDb:
     def __init__(self, param_file_name, style_file_name):
         self.params = []
         self.styles = {}
+        self.param_file_name = param_file_name
+        self.style_file_name = style_file_name
 
-        if LOCAL_CONF_PATH:
-            self._load(
-                os.path.join(LOCAL_CONF_PATH, param_file_name)
-                if param_file_name
-                else "",
-                os.path.join(LOCAL_CONF_PATH, style_file_name),
-            )
+        self._load_system_config()
+        self._load_custom_config()
+        self._load_local_config()
 
-        if CUSTOM_CONF_PATH:
-            self._load(
-                os.path.join(CUSTOM_CONF_PATH, param_file_name)
-                if param_file_name
-                else "",
-                os.path.join(CUSTOM_CONF_PATH, style_file_name),
-            )
-
-        # load system defs
+    def _load_system_config(self):
         self._load(
-            os.path.join(ETC_PATH, param_file_name) if param_file_name else "",
-            os.path.join(ETC_PATH, style_file_name),
+            os.path.join(ETC_PATH, self.param_file_name)
+            if self.param_file_name
+            else "",
+            os.path.join(ETC_PATH, self.style_file_name),
         )
 
-        # LOG.debug(f"custom_conf_path={CUSTOM_CONF_PATH}")
+    def _load_custom_config(self):
+        if CUSTOM_CONF_PATH and CUSTOM_CONF_PATH[-1]:
+            self._load(
+                os.path.join(CUSTOM_CONF_PATH[-1], self.param_file_name)
+                if self.param_file_name
+                else "",
+                os.path.join(CUSTOM_CONF_PATH[-1], self.style_file_name),
+            )
 
-    @staticmethod
-    def get_db(name="param"):
-        global _DB
-        assert name in _DB
-        if _DB[name][0] is None:
-            _DB[name] = (StyleDb(_DB[name][1], _DB[name][2]), "")
-        return _DB[name][0]
+    def _load_local_config(self):
+        if LOCAL_CONF_PATH:
+            self._load(
+                os.path.join(LOCAL_CONF_PATH, self.param_file_name)
+                if self.param_file_name
+                else "",
+                os.path.join(LOCAL_CONF_PATH, self.style_file_name),
+            )
 
     def get_style(self, style):
         if style in self.styles:
@@ -262,11 +352,6 @@ class StyleDb:
     def visdef(self, fs, plot_type="map"):
         vd = self.style(fs, plot_type=plot_type)
         return vd.to_request() if vd is not None else None
-
-    @staticmethod
-    def set_config(conf_dir):
-        global CUSTOM_CONF_PATH
-        CUSTOM_CONF_PATH = conf_dir
 
     def _make_defaults(self):
         d = {
@@ -402,12 +487,18 @@ class MapConf:
 
     def __init__(self):
         self.areas = {}
-        self.style_db = StyleDb.get_db(name="map")
+        self.style_db = get_db(name="map")
 
         # load areas
         self._load_areas(os.path.join(ETC_PATH, "areas.yaml"))
-        if CUSTOM_CONF_PATH:
-            self._load_areas(os.path.join(CUSTOM_CONF_PATH, "areas.yaml"))
+        self._load_custom_config()
+        self._load_local_config()
+
+    def _load_custom_config(self):
+        if CUSTOM_CONF_PATH and CUSTOM_CONF_PATH[-1]:
+            self._load_areas(os.path.join(CUSTOM_CONF_PATH[-1], "areas.yaml"))
+
+    def _load_local_config(self):
         if LOCAL_CONF_PATH:
             self._load_areas(os.path.join(LOCAL_CONF_PATH, "areas.yaml"))
 
@@ -423,13 +514,20 @@ class MapConf:
 
     def find(self, area=None, style=None):
         area_v = "base" if area is None else area
-        style_v = "grey_light_base" if style is None else style
+        style_v = "base" if style is None else style
         s = None
         if isinstance(area_v, list):
             if len(area_v) == 4:
-                a = {"area_mode": "user", "map_projection": "cylindrical", "map_area_definition": "corners", "area": area_v}
+                a = {
+                    "area_mode": "user",
+                    "map_projection": "cylindrical",
+                    "map_area_definition": "corners",
+                    "area": area_v,
+                }
             else:
-                raise Exception("Invalid list specified for area. Require format: [N,W,S,E]")
+                raise Exception(
+                    "Invalid list specified for area. Required format: [S,W,N,E]"
+                )
         else:
             a = self.areas.get(area_v, {})
             if len(a) == 0 and area_v.upper() in self.BUILTIN_AREAS:
@@ -446,10 +544,6 @@ class MapConf:
         if plot_type == "stamp":
             s = s.update({"map_grid": "off", "map_label": "off"})
         return GeoView(a, s)
-        # if s is not None and s:
-        #     a["coastlines"] = s.to_request()
-        # # return mv.geoview(**a)
-        # return a
 
 
 def MAP_CONF():
@@ -466,6 +560,44 @@ def map_styles():
 
 def map(**argv):
     return MAP_CONF().make_geo_view(**argv)
+
+
+def get_db(name=None):
+    global _DB
+    name = "param" if name is None else name
+    assert name in _DB
+    if _DB[name][0] is None:
+        _DB[name][0] = StyleDb(_DB[name][1], _DB[name][2])
+    return _DB[name][0]
+
+
+def load_custom_config(conf_dir):
+    global CUSTOM_CONF_PATH
+    if CUSTOM_CONF_PATH and CUSTOM_CONF_PATH[-1] == conf_dir:
+        return
+    else:
+        CUSTOM_CONF_PATH.append(conf_dir)
+        if _MAP_CONF is not None:
+            _MAP_CONF._load_custom_config()
+
+        for k, v in _DB.items():
+            if v[0] is not None:
+                v[0]._load_custom_config()
+
+
+def reset_config():
+    global CUSTOM_CONF_PATH
+    if CUSTOM_CONF_PATH:
+        CUSTOM_CONF_PATH = []
+        global _DB
+        global _MAP_CONF
+        for name, v in _DB.items():
+            if v[0] is not None:
+                v[0] = None
+                get_db(name=name)
+        if _MAP_CONF is not None:
+            _MAP_CONF = None
+            _MAP_CONF = MapConf()
 
 
 if __name__ == "__main__":

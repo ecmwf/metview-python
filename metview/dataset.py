@@ -23,7 +23,6 @@ import yaml
 
 import metview as mv
 from metview.indexer import GribIndexer, FieldsetIndexer, ExperimentIndexer
-from metview.style import StyleDb, MapConf
 from metview.track import Track
 from metview.param import ParamInfo
 from metview import utils
@@ -544,24 +543,24 @@ class FieldsetDb(IndexDb):
         # # return sorted(list(r))
         # return r
 
-    # def style(self, plot_type="map"):
-    #     return StyleDb.get_db().style(self.fs, plot_type=plot_type)
-
-    def ls(self, param=None):
-        keys = [
-            "edition",
+    def ls(self, param=None, keys=None):
+        default_keys = [
             "centre",
             "typeOfLevel",
             "level",
             "dataDate",
+            "dataTime",
             "stepRange",
             "dataType",
             "shortName",
-            "packingType",
             "gridType",
         ]
-        m = mv.grib_get(self.fs, keys, "key")
-        md = {k: v for k, v in zip(keys, m)}
+        all_keys = default_keys
+        if keys is not None:
+            [all_keys.append(x) for x in keys if x not in all_keys]
+
+        m = mv.grib_get(self.fs, all_keys, "key")
+        md = {k: v for k, v in zip(all_keys, m)}
         df = pd.DataFrame.from_dict(md)
         return df
 
@@ -829,7 +828,7 @@ class Dataset:
 
         if load_style:
             conf_dir = os.path.join(self.path, "conf")
-            StyleDb.set_config(conf_dir)
+            mv.style.load_custom_config(conf_dir)
 
         self.load()
 
@@ -945,5 +944,11 @@ class Dataset:
 
     def __getitem__(self, key):
         if isinstance(key, str):
-            return self.find(key, comp="all")
+            r = self.find(key, comp="all")
+            if r is None:
+                raise Exception(f"No component={key} found in {self}")
+            return r
         return None
+
+    def __str__(self):
+        return f"{self.__class__.__name__}[name={self.name}]"
