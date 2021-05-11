@@ -103,7 +103,7 @@ def plot_maps(
     title_font_size=None,
     legend_font_size=None,
     frame=-1,
-    animate=True,
+    animate="auto",
 ):
     """
     Plot maps with generic contents
@@ -159,7 +159,6 @@ def plot_maps(
 
     LOG.debug(f"desc={desc}")
 
-    animate = animate and mv.plot.plot_to_jupyter
     return mv.plot(desc, animate=animate)
 
 
@@ -172,7 +171,7 @@ def plot_diff_maps(
     title_font_size=None,
     legend_font_size=None,
     frame=-1,
-    animate=True,
+    animate="auto",
 ):
     """
     Plot difference maps
@@ -267,7 +266,6 @@ def plot_diff_maps(
 
     LOG.debug(f"desc={desc}")
 
-    animate = animate and mv.plot.plot_to_jupyter
     return mv.plot(desc, animate=animate)
 
 
@@ -281,7 +279,7 @@ def plot_xs(
     title_font_size=None,
     legend_font_size=None,
     frame=-1,
-    animate=False,
+    animate="auto",
 ):
     """
     Plot cross section with map
@@ -390,8 +388,7 @@ def plot_xs(
             desc.append(t)
 
     LOG.debug(f"desc={desc}")
-    animate = False if animate is None else animate
-    return mv.plot(desc, animate=animate and mv.plot.plot_to_jupyter)
+    return mv.plot(desc, animate=animate)
 
 
 def plot_stamp(
@@ -403,7 +400,7 @@ def plot_stamp(
     area=None,
     title_font_size=0.4,
     frame=-1,
-    animate=True,
+    animate="auto",
     diff_base=None,
 ):
     """
@@ -506,5 +503,4 @@ def plot_stamp(
         t = title.build(dummy)
         desc.extend([dw[-1], t, dummy, cont])
 
-    animate = animate and mv.plot.plot_to_jupyter
     return mv.plot(desc, animate=animate)
