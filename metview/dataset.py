@@ -45,6 +45,7 @@ class ParamDesc:
     def __init__(self, name):
         self.name = name
         self.md = {}
+        self.levels = {}
 
     def load(self, db):
         md = {
@@ -58,6 +59,10 @@ class ParamDesc:
             "mars.stream": [],
             "mars.type": [],
         }
+
+        self.md = {}
+        self.levels = {}
+
         # print(f"par={par}")
         for b_name, b_df in db.blocks.items():
             if b_name == "scalar":
@@ -75,42 +80,164 @@ class ParamDesc:
                     # print(f"   df[{k}]={df[k]}")
             # print(df)
 
-        if len(md["level"]) > 0:
+        if "level" in md and len(md["level"]) > 0:
             df = pd.DataFrame(md)
 
-            # mars_types = df["mars.type"].unique().tolist()
-            # if "an" in mars_types:
-            #     df_an = df.query("mars.type == 'an'")
+            for md_key in list(md.keys())[2:]:
+                d = df[md_key].unique().tolist()
+                self.md[md_key] = d
 
             lev_types = df["typeOfLevel"].unique().tolist()
             for t in lev_types:
                 # print(f" t={t}")
-                self.md[t] = dict()
+                self.levels[t] = []
                 q = f"typeOfLevel == '{t}'"
                 # print(q)
                 dft = df.query(q)
-                # print(dft)
-                d = {}
                 if dft is not None:
-                    for md_key in list(md.keys())[1:]:
-                        d[md_key] = dft[md_key].unique().tolist()
-                self.md[t] = d
+                    self.levels[t] = dft["level"].unique().tolist()
 
-    def _details(self, df):
-        pass
-        # lev_types = df["typeOfLevel"].unique().tolist()
-        #     for t in lev_types:
-        #         # print(f" t={t}")
-        #         self.md[t] = dict()
-        #         q = f"typeOfLevel == '{t}'"
-        #         # print(q)
-        #         dft = df.query(q)
-        #         # print(dft)
-        #         d = {}
-        #         if dft is not None:
-        #             for md_key in ["level", "date", "time", "step"]:
-        #                 d[md_key] = dft[md_key].unique().tolist()
-        #         self.md[t] = d
+    @staticmethod
+    def describe(db, param=None):
+        in_jupyter = False
+        try:
+            import IPython
+
+            # test whether we're in the Jupyter environment
+            if IPython.get_ipython() is not None:
+                in_jupyter = True
+        except:
+            pass
+
+        # describe all the params
+        if param is None:
+            t = {"parameter": [], "typeOfLevel": [], "level": []}
+            need_number = False
+            for k, v in db.param_meta.items():
+                if not v.md.get("number", None) in [["0"], [None]]:
+                    need_number = True
+                    break
+
+            for k, v in db.param_meta.items():
+                t["parameter"].append(k)
+                if len(v.levels) > 1:
+                    lev_type = ""
+                    level = ""
+                    cnt = 0
+                    for md_k, md in v.levels.items():
+                        if in_jupyter:
+                            lev_type += md_k + "<br>"
+                            level += str(ParamDesc.format_list(md)) + "<br>"
+                        else:
+                            prefix = " " if cnt > 0 else ""
+                            lev_type += prefix + f"[{cnt+1}]:" + md_k
+                            level += (
+                                prefix + f"[{cnt+1}]:" + str(ParamDesc.format_list(md))
+                            )
+                        cnt += 1
+                    t["typeOfLevel"].append(lev_type)
+                    t["level"].append(level)
+                else:
+                    for md_k, md in v.levels.items():
+                        t["typeOfLevel"].append(md_k)
+                        t["level"].append(ParamDesc.format_list(md))
+
+                for md_k, md in v.md.items():
+                    if md_k != "number" or need_number:
+                        if not md_k in t:
+                            t[md_k] = []
+                        # print(f"k={k} md_k={md_k} append: {self.format_list(md)}")
+                        t[md_k].append(ParamDesc.format_list(md))
+
+            if in_jupyter:
+                txt = ParamDesc._make_html_table(t)
+                from IPython.display import HTML
+
+                return HTML(txt)
+            else:
+                df = pd.DataFrame.from_dict(t)
+                df = df.set_index(["parameter"])
+                print(df)
+
+        # specific param
+        else:
+            t = {
+                "key": ["parameter"],
+                "val": [param],
+            }
+            txt = ""
+            v = db.param_meta.get(param, None)
+            if v is not None:
+                add_cnt = len(v.levels) > 1
+                cnt = 0
+                for md_k, md in v.levels.items():
+                    t["key"].append("typeOfLevel" + f"[{cnt+1}]" if add_cnt else "")
+                    t["val"].append(md_k)
+                    t["key"].append("level" + f"[{cnt+1}]" if add_cnt else "")
+                    t["val"].append(ParamDesc.format_list(md, full=True))
+                    cnt += 1
+
+                for kk, md_v in v.md.items():
+                    if kk == "number" and md_v == ["0"]:
+                        continue
+                    t["key"].append(kk)
+                    t["val"].append(ParamDesc.format_list(md_v, full=True))
+
+            if in_jupyter:
+                txt = ParamDesc._make_html_table(t, header=False)
+                from IPython.display import HTML
+
+                return HTML(txt)
+            else:
+                df = pd.DataFrame.from_dict(t)
+                df = df.set_index("key")
+                print(df)
+
+    @staticmethod
+    def _make_html_table(d, header=None):
+        header = header if header is not None else True
+        if len(d) > 1:
+            first_column_name = list(d.keys())[0]
+            txt = """  
+                <table>
+                <tr>{}</tr>
+                {}
+                </table>""".format(
+                "" if not header else "".join([f"<th>{k}</th>" for k in d.keys()]),
+                "".join(
+                    [
+                        "<tr><th style='text-align: right;'>"
+                        + d[first_column_name][i]
+                        + "</th>"
+                        + "".join(
+                            [
+                                f"<td style='text-align: left;'>{ParamDesc.format_list(d[k][i], full=True)}</td>"
+                                for k in list(d.keys())[1:]
+                            ]
+                        )
+                        + "</tr>"
+                        for i in range(len(d[first_column_name]))
+                    ]
+                ),
+            )
+            return txt
+        else:
+            return ""
+
+    @staticmethod
+    def format_list(v, full=None):
+        if isinstance(v, list):
+            if full is True:
+                return ",".join([str(x) for x in v])
+            else:
+                if len(v) == 1:
+                    return v[0]
+                if len(v) > 2:
+                    return ",".join([str(x) for x in [v[0], v[1], "..."]])
+                else:
+                    return ",".join([str(x) for x in v])
+        else:
+            return v
 
 
 class IndexDb:
@@ -350,10 +477,6 @@ class IndexDb:
                 r.update(v[key].unique().tolist())
         return sorted(list(r))
 
-    # def param_meta(self, param):
-    #     for _, v in self.blocks.items():
-    #         df_res = v.query(f"shortName = {param}")
-
     @property
     def param_meta(self):
         if len(self._params) == 0:
@@ -361,86 +484,10 @@ class IndexDb:
             for par in sorted(self.unique("shortName")):
                 self._params[par] = ParamDesc(par)
                 self._params[par].load(self)
-                # df = {"typeOfLevel": [], "level": [], "date": [], "time": [], "step": []}
-                # # print(f"par={par}")
-                # for _, v in self.blocks.items():
-                #     q = f"shortName == '{par}'"
-                #     # print(f" q={q}")
-
-                #     dft = v.query(q)
-                #     if dft is not None:
-                #         for k in df.keys():
-                #             df[k].extend(dft[k].tolist())
-
-                # # print(df)
-                # if len(df["level"]) > 0:
-                #     df = pd.DataFrame(df)
-                #     lev_types = df["typeOfLevel"].unique().tolist()
-                #     for t in lev_types:
-                #         # print(f" t={t}")
-                #         self._params[par][t] = dict()
-                #         q = f"typeOfLevel == '{t}'"
-                #         # print(q)
-                #         dft = df.query(q)
-                #         # print(dft)
-                #         d ={}
-                #         if dft is not None:
-                #             d["level"] = dft["level"].unique().tolist()
-                #         self._params[par][t] = d
         return self._params
 
-    def format_list(self, v):
-        if len(v) == 1:
-            return v[0]
-        if len(v) > 4:
-            return ",".join([str(x) for x in [v[0], v[1], "...", v[-2], v[-1]]])
-        else:
-            return ",".join([str(x) for x in v])
-
     def describe(self, param=None):
-        init_pandas_options()
-        if param is None:
-            t = {
-                "typeOfLevel": [],
-                "name": [],
-            }
-            for k, v in self.param_meta.items():
-                for md_k, md in v.md.items():
-                    t["name"].append(k)
-                    t["typeOfLevel"].append(md_k)
-                    for kk, md_v in md.items():
-                        if not kk in t:
-                            t[kk] = []
-                        t[kk].append(self.format_list(md_v))
-            df = pd.DataFrame.from_dict(t)
-            # df.set_index("name", inplace=True)
-            df = df.sort_values(by=["typeOfLevel", "name"])
-            df = df.set_index(["typeOfLevel", "name"])
-            return df
-        else:
-            print(f"Parameter: {param}")
-            t = {
-                # "name": [],
-                "typeOfLevel": [],
-                "key": [],
-                "val": [],
-            }
-            v = self.param_meta.get(param, None)
-            if v is not None:
-                for md_k, md in v.md.items():
-                    # t["name"].append(name)
-                    # t["typeOfLevel"].append(md_k)
-                    for kk, md_v in md.items():
-                        # t["name"].append(name)
-                        t["typeOfLevel"].append(md_k)
-                        t["key"].append(kk)
-                        t["val"].append(md_v)
-            df = pd.DataFrame.from_dict(t)
-            df = df.set_index(["typeOfLevel", "key"])
-            # df = pd.DataFrame.from_dict(t, orient='index')
-            # df.set_index("name", inplace=True)
-            # df = df.sort_values(by=["typeOfLevel", "name"])
-            return df
+        return ParamDesc.describe(self, param=param)
 
     def _init_pandas_options(self):
         display = pd.options.display
