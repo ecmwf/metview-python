@@ -56,8 +56,10 @@ class ParamDesc:
             "step": [],
             "number": [],
             "paramId": [],
+            "marsClass": [],
             "marsStream": [],
             "marsType": [],
+            "experimentVersionNumber": [],
         }
 
         self.md = {}
@@ -82,7 +84,6 @@ class ParamDesc:
 
         if "level" in md and len(md["level"]) > 0:
             df = pd.DataFrame(md)
-
             for md_key in list(md.keys())[2:]:
                 d = df[md_key].unique().tolist()
                 self.md[md_key] = d
@@ -100,6 +101,7 @@ class ParamDesc:
     @staticmethod
     def describe(db, param=None):
         in_jupyter = False
+        labels = {"marsClass": "class", "marsStream": "stream", "marsType": "type"}
         try:
             import IPython
 
@@ -144,9 +146,9 @@ class ParamDesc:
 
                 for md_k, md in v.md.items():
                     if md_k != "number" or need_number:
+                        md_k = labels.get(md_k, md_k)
                         if not md_k in t:
                             t[md_k] = []
-                        # print(f"k={k} md_k={md_k} append: {self.format_list(md)}")
                         t[md_k].append(ParamDesc.format_list(md))
 
             if in_jupyter:
@@ -180,7 +182,7 @@ class ParamDesc:
                 for kk, md_v in v.md.items():
                     if kk == "number" and md_v == ["0"]:
                         continue
-                    t["key"].append(kk)
+                    t["key"].append(labels.get(kk, kk))
                     t["val"].append(ParamDesc.format_list(md_v, full=True))
 
             if in_jupyter:
@@ -441,7 +443,7 @@ class IndexDb:
             if pd_type is not None:
                 for i, t in enumerate(v):
                     v[i] = pd_type(t)
-       
+
         # remap some names to ones already in the default set of indexer keys
         if name in ["type", "mars.type"]:
             name = "marsType"
@@ -652,7 +654,9 @@ class FieldsetDb(IndexDb):
                     r.append(v_next - v)
                     v = v_next
                 r = mv.grib_set_long(r, ["generatingProcessIdentifier", 148])
-                r._db = FieldsetDb(r, label=self.label, mapped_params=self.mapped_params)
+                r._db = FieldsetDb(
+                    r, label=self.label, mapped_params=self.mapped_params
+                )
                 r._db.load()
                 return r
         return None
@@ -682,7 +686,7 @@ class ExperimentDb(IndexDb):
             file_name_pattern=conf.get("fname", ""),
             db_dir=os.path.join(db_root_dir, name),
             merge_conf=conf.get("merge", []),
-            mapped_params={v: k for k,v in conf.get("mapped_params", {}).items()},
+            mapped_params={v: k for k, v in conf.get("mapped_params", {}).items()},
             blocks={},
             dataset=dataset,
         )
