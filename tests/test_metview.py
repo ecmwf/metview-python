@@ -415,6 +415,70 @@ def test_fieldset_not():
     assert s == 104821
 
 
+def test_valid_date_nogrib():
+    vd = mv.valid_date(base=mv.date("20201231"), step=33)
+    assert isinstance(vd, list)
+    assert vd[0] == datetime.datetime(2021, 1, 1, 9, 0, 0)
+
+    vd = mv.valid_date(base=mv.date("20201231"), step=[11, 33])
+    assert isinstance(vd, list)
+    assert vd == [
+        datetime.datetime(2020, 12, 31, 11, 0, 0),
+        datetime.datetime(2021, 1, 1, 9, 0, 0),
+    ]
+
+    vd = mv.valid_date(base=mv.date("2020-12-31 15:00"), step=[11, 34])
+    assert isinstance(vd, list)
+    assert vd == [
+        datetime.datetime(2021, 1, 1, 2, 0, 0),
+        datetime.datetime(2021, 1, 2, 1, 0, 0),
+    ]
+
+    vd = mv.valid_date(
+        base=mv.date("2020-12-31 15:00"),
+        step=[11, 34],
+        step_units=datetime.timedelta(hours=1),
+    )
+    assert isinstance(vd, list)
+    assert vd == [
+        datetime.datetime(2021, 1, 1, 2, 0, 0),
+        datetime.datetime(2021, 1, 2, 1, 0, 0),
+    ]
+
+    vd = mv.valid_date(
+        base=mv.date("2020-12-31 15:00"),
+        step=[1, 2],
+        step_units=datetime.timedelta(hours=10),
+    )
+    assert isinstance(vd, list)
+    assert vd == [
+        datetime.datetime(2021, 1, 1, 1, 0, 0),
+        datetime.datetime(2021, 1, 1, 11, 0, 0),
+    ]
+
+    vd = mv.valid_date(
+        base=mv.date("2020-12-31 15:00"),
+        step=[11, 34],
+        step_units=datetime.timedelta(minutes=2),
+    )
+    assert isinstance(vd, list)
+    assert vd == [
+        datetime.datetime(2020, 12, 31, 15, 22, 0),
+        datetime.datetime(2020, 12, 31, 16, 8, 0),
+    ]
+
+    vd = mv.valid_date(
+        base=mv.date("2020-12-31 15:00"),
+        step=[11, 34],
+        step_units=datetime.timedelta(minutes=2),
+    )
+    assert isinstance(vd, list)
+    assert vd == [
+        datetime.datetime(2020, 12, 31, 15, 22, 0),
+        datetime.datetime(2020, 12, 31, 16, 8, 0),
+    ]
+
+
 def test_valid_date_len_1():
     vd = mv.valid_date(TEST_FIELDSET)
     assert isinstance(vd, datetime.datetime)

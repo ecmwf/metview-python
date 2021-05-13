@@ -401,15 +401,17 @@ def push_vector(npa):
         )
 
 
-def valid_date(*args, base=None, step=[]):
+def valid_date(*args, base=None, step=None, step_units=None):
     LOG.debug(f"args={args} base={base}")
     if len(args) != 0:
         return call("valid_date", *args)
     else:
-        assert base is not None
+        assert isinstance(base, datetime.datetime)
+        step = [] if step is None else step
+        step_units = datetime.timedelta(hours=1) if step_units is None else step_units
         if not isinstance(step, list):
             step = [step]
-        return [base + datetime.timedelta(hours=int(x)) for x in step]
+        return [base + step_units * int(x) for x in step]
 
 
 def get_file_list(path, file_name_pattern=None):
@@ -702,8 +704,9 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
 
     def style(self, plot_type="map"):
         from metview import style
+
         return style.get_db().style(self, plot_type=plot_type)
-    
+
     def speed(self):
         if self._db is not None:
             fs = self._db.speed()
@@ -713,7 +716,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
 
     def deacc(self, skip_first=None):
         if self._db is None:
-            self._db = FieldsetDb(fs=self)  
+            self._db = FieldsetDb(fs=self)
         assert self._db is not None
         fs = self._db.deacc(skip_first=skip_first)
         return fs
@@ -1149,7 +1152,7 @@ def bind_functions(namespace, module_name=None):
     namespace["plot_diff_maps"] = plotting.plot_diff_maps
     namespace["plot_xs"] = plotting.plot_xs
     namespace["plot_stamp"] = plotting.plot_stamp
-    
+
     namespace["Fieldset"] = Fieldset
     namespace["Request"] = Request
 
