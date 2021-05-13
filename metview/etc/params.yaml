@@ -20,9 +20,9 @@
   match:
       - 
         info_name: 2t
-      -
-        shortName: 2t
-        paramId: 167
+      # -
+      #   shortName: 2t
+      #   paramId: 167
 # 10m wind gust 3h
 -
   styles:
@@ -92,9 +92,6 @@
   match:
       - 
         info_name: msl
-      -
-        shortName: msl
-        paramId: 131
 # potential temperature
 -
   styles:
@@ -326,7 +323,7 @@
       - 
         info_name: qcl
       - 
-        mars.param: "110.128"
+        paramId: 110
 -
   styles:
     basic: 
@@ -335,7 +332,7 @@
       - 
         info_name: qcon
       - 
-        mars.param: "106.128"
+        paramId: 106
 -
   styles:
     basic: 
@@ -344,7 +341,7 @@
       - 
         info_name: qdyn
       - 
-        mars.param: "94.128"
+        paramId: 94
 -
   styles:
     basic: 
@@ -353,7 +350,7 @@
       - 
         info_name: qvdiff
       - 
-        mars.param: "99.128"
+        paramId: 99
 -
   styles:
     basic: 
@@ -362,7 +359,7 @@
       - 
         info_name: tcl
       - 
-        mars.param: "109.128"
+        paramId: 109
 -
   styles:
     basic: 
@@ -371,7 +368,7 @@
       - 
         info_name: tcon
       - 
-        mars.param: "105.128"
+        paramId: 105
 -
   styles:
     basic: 
@@ -380,7 +377,7 @@
       - 
         info_name: tdyn
       - 
-        mars.param: "93.128"
+        paramId: 93
 -
   styles:
     basic: 
@@ -389,7 +386,7 @@
       - 
         info_name: trad
       - 
-        mars.param: "95.128"
+        paramId: 95
 -
   styles:
     basic: 
@@ -398,4 +395,4 @@
       - 
         info_name: tvdiff
       - 
-        mars.param: "98.128"
+        paramId: 98

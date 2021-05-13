@@ -55,9 +55,9 @@ class ParamDesc:
             "time": [],
             "step": [],
             "number": [],
-            "mars.param": [],
-            "mars.stream": [],
-            "mars.type": [],
+            "paramId": [],
+            "marsStream": [],
+            "marsType": [],
         }
 
         self.md = {}
@@ -255,7 +255,7 @@ class IndexDb:
         blocks=None,
         data_files=None,
         merge_conf=None,
-        mars_params=None,
+        mapped_params=None,
         dataset=None,
     ):
         self.name = name
@@ -275,7 +275,7 @@ class IndexDb:
             self.file_name_pattern = os.path.basename(self.path)
 
         self.db_dir = "" if db_dir is None else db_dir
-        self.mars_params = {} if mars_params is None else mars_params
+        self.mapped_params = {} if mapped_params is None else mapped_params
         self.blocks = {} if blocks is None else blocks
         self.vector_loaded = False
         self._param_types = {}
@@ -341,7 +341,7 @@ class IndexDb:
             name=self.name,
             blocks=dfs,
             label=self.label,
-            mars_params=self.mars_params,
+            mapped_params=self.mapped_params,
         )
         return c, res
 
@@ -354,6 +354,8 @@ class IndexDb:
                     q += " and "
                 if column == "basedate":
                     column = "date*10000 + time"
+                else:
+                    column = f"`{column}`"
                 if not isinstance(v, list):
                     q += f"{column} == {v}"
                 else:
@@ -439,8 +441,16 @@ class IndexDb:
             if pd_type is not None:
                 for i, t in enumerate(v):
                     v[i] = pd_type(t)
-        if name is not None:
-            name = name.replace(":", "_")
+       
+        # remap some names to ones already in the default set of indexer keys
+        if name in ["type", "mars.type"]:
+            name = "marsType"
+        elif name in ["stream", "mars.stream"]:
+            name = "marsStream"
+        elif name in ["class", "mars.class", "class_"]:
+            name = "marsClass"
+        elif name in ["perturbationNumber"]:
+            name = "number"
 
         return name, v
 
@@ -642,7 +652,7 @@ class FieldsetDb(IndexDb):
                     r.append(v_next - v)
                     v = v_next
                 r = mv.grib_set_long(r, ["generatingProcessIdentifier", 148])
-                r._db = FieldsetDb(r, label=self.label, mars_params=self.mars_params)
+                r._db = FieldsetDb(r, label=self.label, mapped_params=self.mapped_params)
                 r._db.load()
                 return r
         return None
@@ -672,7 +682,7 @@ class ExperimentDb(IndexDb):
             file_name_pattern=conf.get("fname", ""),
             db_dir=os.path.join(db_root_dir, name),
             merge_conf=conf.get("merge", []),
-            mars_params=conf.get("mars_params", []),
+            mapped_params={v: k for k,v in conf.get("mapped_params", {}).items()},
             blocks={},
             dataset=dataset,
         )
@@ -683,7 +693,7 @@ class ExperimentDb(IndexDb):
             self.name,
             label=self.label,
             db_dir=self.db_dir,
-            mars_params=self.mars_params,
+            mapped_params=self.mapped_params,
             dataset=self.dataset,
             data_files=self.data_files,
             rootdir_placeholder_value=self.rootdir_placeholder_value,

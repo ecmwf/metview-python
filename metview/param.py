@@ -130,7 +130,7 @@ class ParamInfo:
         assert isinstance(fs, mv.Fieldset)
         f = fs[0:3] if len(fs) >= 3 else fs
         m = ParamInfo._grib_get(f, GribIndexer.DEFAULT_ECC_KEYS)
-        name = level = lev_type = mars_param = ""
+        name = level = lev_type = ""
         scalar = True
 
         meta_same = True
@@ -180,7 +180,7 @@ class ParamInfo:
         r = 0
         if self.name == name:
             r += 1
-        for n in ["shortName", "mars.param"]:
+        for n in ["shortName", "paramId"]:
             if self._meta_match(meta, n):
                 r += 1
         # we only check the rest if the param is ok

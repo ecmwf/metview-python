@@ -328,7 +328,7 @@ def plot_xs(
         data = layer["data"]
         vd = _make_visdef(data, layer["vd"], plot_type="xs")
         param_info = data.param_info
-        LOG.debug(f"param_info={param_info}")
+        # print(f"param_info={param_info}")
         data_items.append(data)
         # print(f"data={len(data)}")
         if param_info is not None and param_info.name == "wind3d":
@@ -358,6 +358,7 @@ def plot_xs(
 
         if vd:
             desc.extend(vd)
+            # print(f"vd={vd}")
 
     t = title.build_xs(data_items)
     desc.append(t)

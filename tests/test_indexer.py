@@ -27,7 +27,7 @@ DB_COLUMNS = copy.deepcopy(GribIndexer.DEFAULT_KEYS)
 DB_COLUMNS["msgIndex1"] = ("l", np.int64, False)
 DB_COLUMNS_WIND2 = copy.deepcopy(DB_COLUMNS)
 DB_COLUMNS_WIND2["msgIndex2"] = ("l", np.int64, False)
-
+DB_DEFAULT_COLUMN_NAMES = list(GribIndexer.DEFAULT_KEYS.keys())
 
 def file_in_testdir(filename):
     return os.path.join(PATH, filename)
@@ -60,7 +60,7 @@ def test_fieldset_select_single_file():
     assert len(g._db.blocks) == 1
     md = [
         ["u"],
-        ["131.128"],
+        [131],
         [20180801],
         [1200],
         ["0"],
@@ -78,6 +78,42 @@ def test_fieldset_select_single_file():
     # print(g._db.blocks)
     df = g._db.blocks["scalar"]
     # print(df.dtypes)
+    if not df.equals(df_ref):
+        print(df.compare(df_ref))
+        assert False
+
+    # ------------------------------------
+    # single resulting field - paramId
+    # ------------------------------------
+    g = f.select(paramId=131, level=700)
+    assert len(g) == 1
+    assert mv.grib_get(g, ["paramId:l", "level:l"]) == [[131, 700]]
+
+    g1 = mv.read(data=f, param="131.128", levelist=700)
+    d = g - g1
+    assert np.allclose(d.values(), np.zeros(len(d.values())))
+
+    # check index db contents
+    assert g._db is not None
+    assert "scalar" in g._db.blocks
+    assert len(g._db.blocks) == 1
+    md = [
+        ["u"],
+        [131],
+        [20180801],
+        [1200],
+        ["0"],
+        [700],
+        ["isobaricInhPa"],
+        ["0"],
+        ["0001"],
+        ["od"],
+        ["oper"],
+        ["an"],
+        [0],
+    ]
+    df_ref = build_index_db_dataframe(md, key_def=DB_COLUMNS)
+    df = g._db.blocks["scalar"]
     if not df.equals(df_ref):
         print(df.compare(df_ref))
         assert False
@@ -102,7 +138,7 @@ def test_fieldset_select_single_file():
     assert "scalar" in g._db.blocks
     md = [
         ["t", "t", "u", "u"],
-        ["130.128", "130.128", "131.128", "131.128"],
+        [130, 130, 131, 131],
         [20180801] * 4,
         [1200] * 4,
         [0] * 4,
@@ -139,6 +175,42 @@ def test_fieldset_select_single_file():
     assert len(g) == 0
 
     # -------------------------
+    # mars keys
+    # -------------------------
+    f = mv.read(file_in_testdir("tuv_pl.grib"))
+    assert f._db is None
+
+    g = f.select(shortName=["t"], level=[500, 700], marsType="an")
+    assert len(g) == 2
+    assert mv.grib_get(g, ["shortName", "level:l", "marsType"]) == [
+        ["t", 500, "an"],
+        ["t", 700, "an"],
+    ]
+
+    g = f.select(shortName=["t"], level=[500, 700], type="an")
+    assert len(g) == 2
+    assert mv.grib_get(g, ["shortName", "level:l", "type"]) == [
+        ["t", 500, "an"],
+        ["t", 700, "an"],
+    ]
+    # check the index db contents. "type" must be mapped to the "marsType" column of the
+    # db so no rescanning should happen. The db should only contain the default set of columns.
+    assert g._db is not None
+    assert "scalar" in g._db.blocks
+    assert len(g._db.blocks) == 1
+    assert list(g._db.blocks["scalar"].keys())[:-1] == DB_DEFAULT_COLUMN_NAMES
+
+    g = f.select(shortName=["t"], level=[500, 700], type="fc")
+    assert len(g) == 0
+
+    g = f.select({"shortName":"t", "level": [500, 700], "mars.type": "an"})
+    assert len(g) == 2
+    assert mv.grib_get(g, ["shortName", "level:l", "mars.type"]) == [
+        ["t", 500, "an"],
+        ["t", 700, "an"],
+    ]
+   
+    # -------------------------
     # custom keys
     # -------------------------
     f = mv.read(file_in_testdir("tuv_pl.grib"))
@@ -150,6 +222,18 @@ def test_fieldset_select_single_file():
         ["t", 500, "regular_ll"],
         ["t", 700, "regular_ll"],
     ]
+
+    g = f.select({"shortName": ["t"], "level": [500, 700], "mars.param:s": "130.128"})
+    assert len(g) == 2
+    assert mv.grib_get(g, ["shortName", "level:l", "mars.param"]) == [
+        ["t", 500, "130.128"],
+        ["t", 700, "130.128"],
+    ]
+
+    assert g._db is not None
+    assert "scalar" in g._db.blocks
+    assert len(g._db.blocks) == 1
+    assert list(g._db.blocks["scalar"].keys())[:-1] == [*DB_DEFAULT_COLUMN_NAMES, "gridType", "mars.param:s"]
 
     # -------------------------
     # wind
@@ -169,7 +253,7 @@ def test_fieldset_select_single_file():
     assert "wind" in g._db.blocks
     md = [
         ["wind"],
-        ["131.128"],
+        [131],
         [20180801],
         [1200],
         [0],
@@ -428,7 +512,7 @@ def test_param_info_from_fs_single_file():
     assert p.scalar == True
     md = {
         "shortName": "u",
-        "mars.param": "131.128",
+        "paramId": 131,
         "date": 20180801,
         "time": 1200,
         "step": "0",
@@ -436,9 +520,9 @@ def test_param_info_from_fs_single_file():
         "typeOfLevel": "isobaricInhPa",
         "number": "0",
         "experimentVersionNumber": "0001",
-        "mars.class": "od",
-        "mars.stream": "oper",
-        "mars.type": "an",
+        "marsClass": "od",
+        "marsStream": "oper",
+        "marsType": "an",
         "msgIndex1": 0,
     }
     assert md == p.meta
@@ -449,7 +533,7 @@ def test_param_info_from_fs_single_file():
     assert p.scalar == False
     md = {
         "shortName": "wind",
-        "mars.param": "131.128",
+        "paramId": 131,
         "date": 20180801,
         "time": 1200,
         "step": "0",
@@ -457,9 +541,9 @@ def test_param_info_from_fs_single_file():
         "typeOfLevel": "isobaricInhPa",
         "number": "0",
         "experimentVersionNumber": "0001",
-        "mars.class": "od",
-        "mars.stream": "oper",
-        "mars.type": "an",
+        "marsClass": "od",
+        "marsStream": "oper",
+        "marsType": "an",
         "msgIndex1": 0,
         "msgIndex2": 1,
     }
@@ -472,7 +556,7 @@ def test_param_info_from_fs_single_file():
     assert p.scalar == False
     md = {
         "shortName": "u",
-        "mars.param": "131.128",
+        "paramId": 131,
         "date": 20180801,
         "time": 1200,
         "step": "0",
@@ -480,9 +564,9 @@ def test_param_info_from_fs_single_file():
         "typeOfLevel": "isobaricInhPa",
         "number": "0",
         "experimentVersionNumber": "0001",
-        "mars.class": "od",
-        "mars.stream": "oper",
-        "mars.type": "an",
+        "marsClass": "od",
+        "marsStream": "oper",
+        "marsType": "an",
     }
     assert md == p.meta
 
@@ -492,7 +576,7 @@ def test_param_info_from_fs_single_file():
     assert p.scalar == True
     md = {
         "shortName": "t",
-        "mars.param": "130.128",
+        "paramId": 130,
         "date": 20180801,
         "time": 1200,
         "step": "0",
@@ -500,9 +584,9 @@ def test_param_info_from_fs_single_file():
         "typeOfLevel": "isobaricInhPa",
         "number": "0",
         "experimentVersionNumber": "0001",
-        "mars.class": "od",
-        "mars.stream": "oper",
-        "mars.type": "an",
+        "marsClass": "od",
+        "marsStream": "oper",
+        "marsType": "an",
         "msgIndex1": 0,
     }
     assert md == p.meta
@@ -514,7 +598,7 @@ def test_param_info_from_fs_single_file():
     assert p.scalar == True
     md = {
         "shortName": "t",
-        "mars.param": "130.128",
+        "paramId": 130,
         "date": 20180801,
         "time": 1200,
         "step": "0",
@@ -522,9 +606,9 @@ def test_param_info_from_fs_single_file():
         "typeOfLevel": "isobaricInhPa",
         "number": "0",
         "experimentVersionNumber": "0001",
-        "mars.class": "od",
-        "mars.stream": "oper",
-        "mars.type": "an",
+        "marsClass": "od",
+        "marsStream": "oper",
+        "marsType": "an",
     }
     assert md == p.meta
 

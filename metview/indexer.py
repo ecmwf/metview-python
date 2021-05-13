@@ -38,7 +38,7 @@ class GribIndexer:
     # 0: ecCodes type, 1: pandas type, 2: use in duplicate check
     DEFAULT_KEYS = {
         "shortName": ("s", str, False),
-        "mars.param": ("s", str, False),
+        "paramId": ("l", np.int32, False),
         "date": ("l", np.int64, True),
         "time": ("l", np.int64, True),
         "step": ("s", str, True),
@@ -46,9 +46,9 @@ class GribIndexer:
         "typeOfLevel": ("s", str, False),
         "number": ("s", str, True),
         "experimentVersionNumber": ("s", str, False),
-        "mars.class": ("s", str, False),
-        "mars.stream": ("s", str, False),
-        "mars.type": ("s", str, False),
+        "marsClass": ("s", str, False),
+        "marsStream": ("s", str, False),
+        "marsType": ("s", str, False),
     }
 
     DEFAULT_ECC_KEYS = [f"{k}:{v[0]}" for k, v in DEFAULT_KEYS.items()]
@@ -75,9 +75,9 @@ class GribIndexer:
 
         self.shortname_index = self.keys.index("shortName")
         self.levtype_index = self.keys.index("typeOfLevel")
-        self.type_index = self.keys.index("mars.type")
+        self.type_index = self.keys.index("marsType")
         self.number_index = self.keys.index("number")
-        self.mars_param_index = self.keys.index("mars.param")
+        self.param_id_index = self.keys.index("paramId")
 
         self.wind_check_index = []
         for v in [
@@ -89,9 +89,9 @@ class GribIndexer:
             "level",
             "number",
             "experimentVersionNumber",
-            "mars.class",
-            "mars.stream",
-            "mars.type",
+            "marsClass",
+            "marsStream",
+            "marsType",
         ]:
             self.wind_check_index.append(self.keys.index(v) + 1)
 
@@ -99,24 +99,13 @@ class GribIndexer:
 
         self.pd_types = {k: v[1] for k, v in GribIndexer.DEFAULT_KEYS.items()}
 
-        # for k in extra_keys:
-        #     name = k
-        #     name_ecc = k
-        #     if ":" in k:
-        #         name = k.split(":")[0]
-        #     if name not in self.keys:
-        #         self.keys.append(name)
-        #     if name_ecc not in self.keys_ecc:
-        #         self.keys_ecc.append(name_ecc)
-
     def update_keys(self, keys):
         ret = False
         for k in keys:
             name = k
-            name_ecc = name.replace("_", ":")
             if name not in self.keys:
                 self.keys.append(name)
-                self.keys_ecc.append(name_ecc)
+                self.keys_ecc.append(name)
                 self.pd_types[name] = str
                 ret = True
         return ret
@@ -272,24 +261,24 @@ class FieldsetIndexer(GribIndexer):
         self.ref_column_count = 1
 
     def scan(self, vector=False):
-        data = self._scan(self.db.fs, mars_params=self.db.mars_params)
+        data = self._scan(self.db.fs, mapped_params=self.db.mapped_params)
         if data:
             df = self._make_dataframe(data)
             self.db.blocks["scalar"] = df
             if vector:
                 self._scan_vector()
 
-    def _scan(self, fs, mars_params={}):
+    def _scan(self, fs, mapped_params={}):
         LOG.info(f" scan fields ...")
         data = {}
         # print(f"fs_len={len(fs)}")
         if isinstance(fs, mv.Fieldset) and len(fs) > 0:
             md_vals = mv.grib_get(fs, self.keys_ecc, "key")
-            if mars_params:
+            if mapped_params:
                 for i in range(len(fs)):
-                    v = md_vals[self.mars_param_index][i]
-                    if v in mars_params:
-                        short_name = mars_params[v]
+                    v = md_vals[self.param_id_index][i]
+                    if v in mapped_params:
+                        short_name = mapped_params[v]
                         md_vals[self.shortname_index][i] = short_name
 
             assert len(self.keys) == len(self.keys_ecc)
@@ -372,7 +361,7 @@ class ExperimentIndexer(GribIndexer):
                         input_dir=c["data"].path,
                         file_name_pattern=c["data"].file_name_pattern,
                         input_files=input_files,
-                        mars_params=self.db.mars_params,
+                        mapped_params=self.db.mapped_params,
                         ens=c["ens"],
                         data=data,
                         rootdir_placeholder_value=c["data"].rootdir_placeholder_value,
@@ -384,7 +373,7 @@ class ExperimentIndexer(GribIndexer):
                 input_dir=self.db.path,
                 file_name_pattern=self.db.file_name_pattern,
                 input_files=[],
-                mars_params=self.db.mars_params,
+                mapped_params=self.db.mapped_params,
                 ens={},
                 data=data,
                 rootdir_placeholder_value=self.db.rootdir_placeholder_value,
@@ -429,7 +418,7 @@ class ExperimentIndexer(GribIndexer):
         input_dir="",
         file_name_pattern="",
         input_files=[],
-        mars_params={},
+        mapped_params={},
         ens={},
         data={},
         rootdir_placeholder_value="",
@@ -451,11 +440,11 @@ class ExperimentIndexer(GribIndexer):
                 file_index = len(input_files) + len(input_files_tmp) - 1
                 md_vals = mv.grib_get(fs, self.keys_ecc, "key")
 
-                if mars_params:
+                if mapped_params:
                     for i in range(len(fs)):
-                        v = md_vals[self.mars_param_index][i]
-                        if v in mars_params:
-                            short_name = mars_params[v]
+                        v = md_vals[self.param_id_index][i]
+                        if v in mapped_params:
+                            short_name = mapped_params[v]
                             md_vals[self.shortname_index][i] = short_name
                 if ens:
                     for i in range(len(fs)):
