@@ -15,8 +15,8 @@ import metview as mv
 
 LOG = logging.getLogger(__name__)
 
-FC_TIME_PART = "Step: +<grib_info key='step'{} />h Valid: <grib_info key='valid-date' format='%Y-%m-%d %H' {} />"
-LEVEL_PART = "Lev: <grib_info key='level' {} /> (<grib_info key='levelType' {} />)"
+FC_TIME_PART = "Step: +<grib_info key='step' />h Valid: <grib_info key='valid-date' format='%Y-%m-%d %H' />"
+LEVEL_PART = "Lev: <grib_info key='level' /> (<grib_info key='levelType' />)"
 
 
 class Title:
@@ -36,43 +36,34 @@ class Title:
             if not isinstance(data, list):
                 data = [data]
 
-            # exp_conf = data[0].experiment
-            label = data[0].label
-            # print(f"data type={type(data[0])}")
-            # print(f"  label={label}")
-            # # fixed_shortname = sum([1 for x in data if not x.has_ecc_shortname()]) > 0
-
             lines = []
             lines = {"text_line_count": len(data)}
-            for i, d in enumerate(data):
-                LOG.debug(f"d={d}")
-                cond = None
-                # if len(data) == 1:
-                #     cond = None
-                # else:
-                #     cond = {"shortName": d.param.name}
+            for i, d_item in enumerate(data):
+                # print(f"d_item={d_item}")
+                if isinstance(d_item, tuple):
+                    d = d_item[0]
+                    data_id = d_item[1]
+                else:
+                    d = d_item
+                    data_id = None
 
                 param = d.param_info
                 if param is not None:
                     if param.meta.get("typeOfLevel", "") == "surface":
                         # lines.append(self.build_surface_fc(d.experiment.label, d.param.name, condition=cond))
                         lines[f"text_line_{i+1}"] = self.build_surface_fc(
-                            d.label, param.name, condition=cond
+                            d.label, param.name, data_id=data_id
                         )
                     else:
                         # lines.append(self.build_upper_fc(d.experiment.label, d.param.name, condition=cond))
                         lines[f"text_line_{i+1}"] = self.build_upper_fc(
-                            d.label, param.name, condition=cond
+                            d.label, param.name, data_id=data_id
                         )
 
-                # return mv.mtext(text_lines=lines, text_font_size=font_size)
-                return mv.mtext(**lines, text_font_size=font_size)
+            # print(f"line={lines}")
+            # return mv.mtext(text_lines=lines, text_font_size=font_size)
+            return mv.mtext(**lines, text_font_size=font_size)
 
-            # if len(data) == 1:
-            #     if data[0].param.level_type == "surface":
-            #         return self.build_surface_fc(label)
-            #     else:
-            #         return self.build_upper_fc(label)
 
         return mv.mtext(
             {
@@ -89,14 +80,21 @@ class Title:
             return t
         return str()
 
-    def build_surface_fc(self, label, par, condition=None):
-        t = FC_TIME_PART.replace("{}", self._build_condition_str(condition))
+    def _add_grib_info(self, t, data_id):
+        if data_id is not None and data_id != "":
+            t = t.replace("<grib_info", f"<grib_info id='{data_id}'")
+        return t
+
+    def build_surface_fc(self, label, par, condition=None, data_id=None):
+        t = FC_TIME_PART
+        t = self._add_grib_info(t, data_id)
         return f"""{label} Par: {par} {t}"""
 
-    def build_upper_fc(self, label, par, condition=None):
-        c = self._build_condition_str(condition)
-        lev = LEVEL_PART.replace("{}", c)
-        t = FC_TIME_PART.replace("{}", c)
+    def build_upper_fc(self, label, par, condition=None, data_id=None):
+        lev = LEVEL_PART
+        t = FC_TIME_PART
+        lev = self._add_grib_info(lev, data_id)
+        t = self._add_grib_info(t, data_id)
         return f"""{label} Par: {par} {lev} {t}"""
 
     def build_xs(self, data):

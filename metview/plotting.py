@@ -18,7 +18,7 @@ import yaml
 
 import metview as mv
 from metview.layout import Layout
-from metview.style import Style, GeoView
+from metview.style import Visdef, Style, GeoView
 from metview.title import Title
 from metview.track import Track
 
@@ -67,13 +67,20 @@ def _make_layers(*args, form_layout=False):
         return layers[0] if layers else []
 
 
-def _make_visdef(data, vd, style_db="param", plot_type="map"):
+def _make_visdef(data, vd, style_db="param", plot_type="map", data_id=None):
     if isinstance(data, mv.Fieldset):
         if len(vd) == 0:
-            vd = mv.style.get_db(name=style_db).visdef(data, plot_type=plot_type)
+            vd = mv.style.get_db(name=style_db).visdef(
+                data, plot_type=plot_type, data_id=data_id
+            )
         else:
             for i, v in enumerate(vd):
                 if isinstance(v, Style):
+                    v = v.set_data_id(data_id)
+                    vd[i] = v.to_request()
+                elif isinstance(v, mv.Request) and data_id is not None and data_id != "":
+                    v = Visdef.from_request(v)
+                    v.set_data_id(data_id)
                     vd[i] = v.to_request()
 
         vd = [x for x in vd if x is not None]
@@ -130,25 +137,35 @@ def plot_maps(
     title = Title(font_size=title_font_size)
 
     # build each scene
+    data_id = ("d0", 0)
     for i, sc_def in enumerate(plot_def):
         desc.append(dw[i])
         # define layers
         data_items = []
+        use_data_id = sum([1 for layer in sc_def if isinstance(layer["data"], mv.Fieldset)]) > 1
         for layer in sc_def:
             data = layer["data"]
             vd = layer["vd"]
             if isinstance(data, mv.Fieldset):
-                data_items.append(data)
+                if use_data_id:
+                    data_items.append((data, data_id[0]))
+                else:
+                    data_items.append(data)
                 if frame != -1:
                     data = data[frame]
-
-            if isinstance(data, Track):
+            elif isinstance(data, Track):
                 data = data.build(style=vd)
-
+            
             desc.append(data)
-            vd = _make_visdef(data, vd, style_db="param", plot_type="map")
-            if vd:
-                desc.extend(vd)
+            
+            if isinstance(data, mv.Fieldset):
+                vd = _make_visdef(
+                    data, vd, style_db="param", plot_type="map", data_id=data_id[0] if use_data_id else None
+                )
+                if vd:
+                    desc.extend(vd)
+            
+            data_id = (f"d{data_id[1]+1}", data_id[1] + 1)
 
         if data_items:
             legend = mv.mlegend(legend_text_font_size=legend_font_size)

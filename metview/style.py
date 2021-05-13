@@ -92,7 +92,7 @@ class ContourStyleDb:
 
     def _load(self):
         file_path = os.path.join(self.SHARE_DIR, "styles.json")
-        print(f"file_path={file_path}")
+        # print(f"file_path={file_path}")
         try:
             with open(file_path, "rt") as f:
                 conf = json.load(f)
@@ -140,7 +140,7 @@ class Visdef:
     # }
 
     def __init__(self, verb, params):
-        self.verb = verb
+        self.verb = verb.lower()
         self.params = params
 
         self.BUILDER = {
@@ -163,6 +163,16 @@ class Visdef:
         if self.verb == "msymb":
             if self.params.get("symbol_type", "").lower() == "text":
                 self.params["symbol_text_list"] = value
+
+    def set_data_id(self, data_id):
+        if self.verb in ["mcont", "mwind"] and data_id is not None and data_id != "":
+            self.params["grib_id"] = data_id
+
+    @staticmethod
+    def from_request(req):
+        params = {k:v for k, v in req.items() if not k.startswith("_")}
+        vd = Visdef(req.verb.lower(), copy.deepcopy(params))
+        return vd
 
     def to_request(self):
         fn = self.BUILDER.get(self.verb, None)
@@ -191,14 +201,25 @@ class Style:
     def to_request(self):
         return [vd.to_request() for vd in self.visdefs]
 
-    def update(self, *args, inplace=None):
+    def update(self, *args, inplace=None, verb=None):
         s = self if inplace == True else self.clone()
         for i, v in enumerate(args):
             if i < len(s.visdefs):
                 if isinstance(v, dict):
-                    v = {v_key.lower(): v_val for v_key, v_val in v.items()}
-                    s.visdefs[i].params.update(v)
+                    if verb is None or s.visdefs[i].verb in verb:
+                        v = {v_key.lower(): v_val for v_key, v_val in v.items()}
+                        s.visdefs[i].params.update(v)
         return s
+
+    def set_data_id(self, data_id):
+        allowed_verbs = ["mcont", "mwind"]
+        if isinstance(data_id, str) and any(x in allowed_verbs for x in self.verbs()):
+            return self.update({"grib_id": data_id}, verb=allowed_verbs)
+        else:
+            return self
+
+    def verbs(self):
+        return [vd.verb for vd in self.visdefs]
 
     def __str__(self):
         t = f"{self.__class__.__name__}[name={self.name}] "
@@ -316,7 +337,7 @@ class StyleDb:
         else:
             return self.styles.get("default", None)
 
-    def get_param_style(self, param_info, scalar=True, plot_type="map"):
+    def get_param_style(self, param_info, scalar=True, plot_type="map", data_id=None):
         r = 0
         p_best = None
         for p in self.params:
@@ -326,31 +347,39 @@ class StyleDb:
                 r = m
                 p_best = p
 
+        s = None
         # print(f"param_info={param_info}")
         if p_best is not None:
-            s = p_best.find_style(plot_type)
-            # print(f" -> style={s}")
-            return self.styles.get(s, None)
+            style_name = p_best.find_style(plot_type)
+            # print(f" -> style_name={style_name}")
+            s = self.styles.get(style_name, None)
         else:
             if scalar:
-                return self.styles.get(self.SCALAR_DEFAULT_STYLE_NAME, None)
+                s = self.styles.get(self.SCALAR_DEFAULT_STYLE_NAME, None)
             else:
-                return self.styles.get(self.VECTOR_DEFAULT_STYLE_NAME, None)
+                s = self.styles.get(self.VECTOR_DEFAULT_STYLE_NAME, None)
 
+        if s is not None:
+            # print(f"data_id={data_id}")
+            if data_id is not None:
+                s = s.set_data_id(data_id)
+                return s
+            else:
+                return s.clone()
         return None
 
-    def style(self, fs, plot_type="map"):
+    def style(self, fs, plot_type="map", data_id=None):
         param_info = fs.param_info
         if param_info is not None:
             vd = self.get_param_style(
-                param_info, scalar=param_info.scalar, plot_type=plot_type
+                param_info, scalar=param_info.scalar, plot_type=plot_type, data_id=data_id
             )
             # LOG.debug(f"vd={vd}")
             return vd
         return None
 
-    def visdef(self, fs, plot_type="map"):
-        vd = self.style(fs, plot_type=plot_type)
+    def visdef(self, fs, plot_type="map", data_id=None):
+        vd = self.style(fs, plot_type=plot_type, data_id=data_id)
         return vd.to_request() if vd is not None else None
 
     def _make_defaults(self):
