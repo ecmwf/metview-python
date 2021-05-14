@@ -72,7 +72,7 @@ green_blue:
     map_coastline: 'on'
     map_coastline_land_shade: 'on'
     map_coastline_land_shade_colour: RGB(0.2233,0.7101,0.3369)
-    map_coastline_land_shade: 'on'
+    map_coastline_sea_shade: 'on'
     map_coastline_sea_shade_colour: RGB(0.4923,0.6884,0.8489)
     map_coastline_colour: BLACK
 green_land_only:
