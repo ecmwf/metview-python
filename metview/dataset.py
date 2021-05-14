@@ -34,11 +34,31 @@ ETC_PATH = os.path.join(os.path.dirname(__file__), "etc")
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
 LOG = logging.getLogger(__name__)
 
+PANDAS_ORI_OPTIONS = {}
+
 
 def init_pandas_options():
-    display = pd.options.display
-    display.max_colwidth = 300
-    display.colheader_justify = "center"
+    global PANDAS_ORI_OPTIONS
+    if len(PANDAS_ORI_OPTIONS) == 0:
+        opt = {
+            "display.max_colwidth": 300,
+            "display.colheader_justify": "center",
+            "display.max_columns": 100,
+            "display.max_rows": 500,
+            "display.width": None,
+        }
+        for k, _ in opt.items():
+            PANDAS_ORI_OPTIONS[k] = pd.get_option(k)
+        for k, v in opt.items():
+            pd.set_option(k, v)
+
+
+def reset_pandas_options():
+    global PANDAS_ORI_OPTIONS
+    if len(PANDAS_ORI_OPTIONS) > 0:
+        for k, v in PANDAS_ORI_OPTIONS.items():
+            pd.set_option(k, v)
+        PANDAS_ORI_OPTIONS = {}
 
 
 class ParamDesc:
@@ -159,6 +179,7 @@ class ParamDesc:
             else:
                 df = pd.DataFrame.from_dict(t)
                 df = df.set_index(["parameter"])
+                init_pandas_options()
                 print(df)
 
         # specific param
@@ -173,9 +194,9 @@ class ParamDesc:
                 add_cnt = len(v.levels) > 1
                 cnt = 0
                 for md_k, md in v.levels.items():
-                    t["key"].append("typeOfLevel" + f"[{cnt+1}]" if add_cnt else "")
+                    t["key"].append("typeOfLevel" + (f"[{cnt+1}]" if add_cnt else ""))
                     t["val"].append(md_k)
-                    t["key"].append("level" + f"[{cnt+1}]" if add_cnt else "")
+                    t["key"].append("level" + (f"[{cnt+1}]" if add_cnt else ""))
                     t["val"].append(ParamDesc.format_list(md, full=True))
                     cnt += 1
 
@@ -193,6 +214,7 @@ class ParamDesc:
             else:
                 df = pd.DataFrame.from_dict(t)
                 df = df.set_index("key")
+                init_pandas_options()
                 print(df)
 
     @staticmethod
@@ -365,20 +387,23 @@ class IndexDb:
         return q
 
     def _filter_df(self, df=None, dims={}):
-        df_res = None
-        if df is not None:
-            q = self._build_query(dims)
-            # LOG.debug("query={}".format(q))
-            # print("query={}".format(q))
-            # print("types={}".format(df.dtypes))
-            if q != "":
-                df_res = df.query(q)
-                df_res.reset_index(drop=True, inplace=True)
-                # print(f"df_res={df_res}")
-                # LOG.debug(f"df_res={df_res}")
-            else:
-                return df
-        return df_res
+        if len(dims) == 0:
+            return df
+        else:
+            df_res = None
+            if df is not None:
+                q = self._build_query(dims)
+                # LOG.debug("query={}".format(q))
+                # print("query={}".format(q))
+                # print("types={}".format(df.dtypes))
+                if q != "":
+                    df_res = df.query(q)
+                    df_res.reset_index(drop=True, inplace=True)
+                    # print(f"df_res={df_res}")
+                    # LOG.debug(f"df_res={df_res}")
+                else:
+                    return df
+            return df_res
 
     def _get_fields_for_block(self, key, dims, dfs, res):
         # LOG.debug(f"block={self.blocks[key]}")
@@ -501,10 +526,6 @@ class IndexDb:
     def describe(self, param=None):
         return ParamDesc.describe(self, param=param)
 
-    def _init_pandas_options(self):
-        display = pd.options.display
-        display.max_colwidth = 300
-
     def to_df(self):
         return pd.concat([p for _, p in self.blocks.items()])
 
@@ -622,7 +643,16 @@ class FieldsetDb(IndexDb):
         m = mv.grib_get(self.fs, keys, "key")
         md = {k: v for k, v in zip(keys, m)}
         df = pd.DataFrame.from_dict(md)
-        return df
+        init_pandas_options()
+        try:
+            import IPython
+
+            # test whether we're in the Jupyter environment
+            if IPython.get_ipython() is not None:
+                return df
+        except:
+            pass
+        print(df)
 
     def speed(self):
         r = mv.Fieldset()
@@ -803,6 +833,11 @@ class ExperimentDb(IndexDb):
             df[f"msgIndex{k+1}"] = v
         df.drop([f"fileIndex{x+1}" for x in range(comp_num)], axis=1, inplace=True)
         return df
+
+    def to_fieldset(self):
+        db, fs = self._get_fields({})
+        fs._db = db
+        return fs
 
 
 class TrackConf:
