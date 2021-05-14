@@ -621,6 +621,74 @@ class MapConf:
         return GeoView(a, s)
 
 
+class StyleGallery:
+    def __init__(self):
+        pass
+
+    def to_base64(self, image_path):
+        import base64
+
+        with open(image_path, "rb") as img_file:
+            return base64.b64encode(img_file.read()).decode("utf-8")
+
+    def build_gallery(self, names, images, row_height=None):
+        figures = []
+        # print(len(names))
+        # print(len(images))
+        row_height = "150px" if row_height is None else row_height
+        for name, image in zip(names, images):
+            src = f"data:image/png;base64,{image}"
+            caption = f'<figcaption style="text-align: center; font-size: 0.8em">{name}</figcaption>'
+            figures.append(
+                f"""
+                <figure style="margin: 2px !important;">
+                <img src="{src}" style="height: {row_height}">
+                {caption}
+                </figure>
+            """
+            )
+        return f"""
+            <div style="display: flex; flex-flow: row wrap; text-align: center;">
+            {''.join(figures)}
+            </div>
+        """
+
+    def build(self):
+        try:
+            import IPython
+
+            # test whether we're in the Jupyter environment
+            if IPython.get_ipython() is None:
+                return
+        except:
+            return
+
+        img = []
+        names = []
+        img_size = 120
+        tmp_dir = os.getenv("METVIEW_TMPDIR", "")
+        for name, d in map_styles().items():
+            f_name = os.path.join(tmp_dir, name + ".png")
+            if not os.path.exists(f_name):
+                view = map(area="europe", style=name)
+                mv.setoutput(
+                    mv.png_output(
+                        output_name=f_name[:-4],
+                        output_width=300,
+                        output_name_first_page_number="off",
+                    )
+                )
+                mv.plot(view.to_request())
+            if os.path.exists(f_name):
+                names.append(name)
+                img.append(self.to_base64(f_name))
+
+        if len(img) > 0:
+            from IPython.display import HTML
+
+            return HTML(self.build_gallery(names, img, row_height=f"{img_size}px"))
+
+
 def MAP_CONF():
     global _MAP_CONF
     if _MAP_CONF is None:
@@ -631,6 +699,11 @@ def MAP_CONF():
 
 def map_styles():
     return MAP_CONF().style_db.styles
+
+
+def map_style_gallery():
+    g = StyleGallery()
+    return g.build()
 
 
 def map(**argv):
