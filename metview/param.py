@@ -179,7 +179,7 @@ class ParamInfo:
         # print(f"{self}, name={name}, meta={meta}")
         r = 0
         if self.name == name:
-            r += 1
+            r += 3
         for n in ["shortName", "paramId"]:
             if self._meta_match(meta, n):
                 r += 1

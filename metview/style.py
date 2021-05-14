@@ -170,7 +170,7 @@ class Visdef:
 
     @staticmethod
     def from_request(req):
-        params = {k:v for k, v in req.items() if not k.startswith("_")}
+        params = {k: v for k, v in req.items() if not k.startswith("_")}
         vd = Visdef(req.verb.lower(), copy.deepcopy(params))
         return vd
 
@@ -284,6 +284,16 @@ class ParamStyle:
         else:
             return None
 
+    def styles(self, plot_type):
+        if plot_type == "" or plot_type == "map":
+            return self.style
+        elif plot_type == "diff":
+            return self.diff_style
+        elif plot_type == "xs":
+            return self.xs_style
+        else:
+            return []
+
     def __str__(self):
         return "{}[name={},type={}]".format(
             self.__class__.__name__, self.info_name, self.param_type
@@ -337,7 +347,7 @@ class StyleDb:
         else:
             return self.styles.get("default", None)
 
-    def get_param_style(self, param_info, scalar=True, plot_type="map", data_id=None):
+    def _best_param_match(self, param_info):
         r = 0
         p_best = None
         for p in self.params:
@@ -346,7 +356,32 @@ class StyleDb:
             if m > r:
                 r = m
                 p_best = p
+        return p_best
 
+    def get_param_style_list(self, param_info, scalar=True, plot_type="map"):
+        p_best = self._best_param_match(param_info)
+        s = []
+        # print(f"param_info={param_info}")
+        if p_best is not None:
+            s = p_best.styles(plot_type)
+            # print(f" -> style_name={style_name}")
+        if scalar:
+            s.append(self.SCALAR_DEFAULT_STYLE_NAME)
+        else:
+            s.append(self.VECTOR_DEFAULT_STYLE_NAME)
+        return s
+
+    def get_param_style(self, param_info, scalar=True, plot_type="map", data_id=None):
+        # r = 0
+        # p_best = None
+        # for p in self.params:
+        #     m = p.match(param_info)
+        #     # print(f"p={p} m={m}")
+        #     if m > r:
+        #         r = m
+        #         p_best = p
+
+        p_best = self._best_param_match(param_info)
         s = None
         # print(f"param_info={param_info}")
         if p_best is not None:
@@ -372,7 +407,10 @@ class StyleDb:
         param_info = fs.param_info
         if param_info is not None:
             vd = self.get_param_style(
-                param_info, scalar=param_info.scalar, plot_type=plot_type, data_id=data_id
+                param_info,
+                scalar=param_info.scalar,
+                plot_type=plot_type,
+                data_id=data_id,
             )
             # LOG.debug(f"vd={vd}")
             return vd
@@ -381,6 +419,14 @@ class StyleDb:
     def visdef(self, fs, plot_type="map", data_id=None):
         vd = self.style(fs, plot_type=plot_type, data_id=data_id)
         return vd.to_request() if vd is not None else None
+
+    def style_list(self, fs, plot_type="map"):
+        param_info = fs.param_info
+        if param_info is not None:
+            return self.get_param_style_list(
+                param_info, scalar=param_info.scalar, plot_type=plot_type
+            )
+        return []
 
     def _make_defaults(self):
         d = {
@@ -598,6 +644,15 @@ def get_db(name=None):
     if _DB[name][0] is None:
         _DB[name][0] = StyleDb(_DB[name][1], _DB[name][2])
     return _DB[name][0]
+
+
+def find(name):
+    db = get_db()
+    s = db.styles.get(name, None)
+    if s is not None:
+        return s.clone()
+    else:
+        return None
 
 
 def load_custom_config(conf_dir):

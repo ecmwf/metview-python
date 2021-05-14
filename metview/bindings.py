@@ -704,8 +704,11 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
 
     def style(self, plot_type="map"):
         from metview import style
-
         return style.get_db().style(self, plot_type=plot_type)
+
+    def style_list(self, plot_type="map"):
+        from metview import style
+        return style.get_db().style_list(self, plot_type=plot_type)
 
     def speed(self):
         if self._db is not None:

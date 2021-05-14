@@ -20,9 +20,9 @@
   match:
       - 
         info_name: 2t
-      # -
-      #   shortName: 2t
-      #   paramId: 167
+      -
+        shortName: 2t
+        paramId: 167
 # 10m wind gust 3h
 -
   styles:
@@ -92,6 +92,9 @@
   match:
       - 
         info_name: msl
+      -
+        shortName: msl
+        paramId: 151
 # potential temperature
 -
   styles:
@@ -212,68 +215,105 @@
 # --------------------
 # VECTOR PARAMETERS
 # --------------------
-# wind 10 m
--
-  type: vector
-  styles:
-    basic: 
-      - arrow_blue_red_10
-  match:
-      - 
-        info_name: wind10m
 # wind  (generic)
 -
   type: vector
   styles:
     basic: 
       - arrow_blue_red
+      - arrow_black
   match:
       - 
         info_name: wind
-# wind 850 hPa        
+# wind 10 m
+-
+  type: vector
+  styles:
+    basic: 
+      - arrow_blue_red_10
+      - arrow_black_10
+      - flag_black_10
+  match:
+      - 
+        info_name: wind10m
+# wind 1000 hPa
+-
+  type: vector
+  styles:
+    basic: 
+      - arrow_blue_red_10
+      - arrow_black_10
+      - flag_black_10
+  match:
+      - 
+        info_name: wind
+        levtype: pl 
+        levelist: 1000
+# wind 925-850 hPa        
 - 
   type: vector
   styles:
     basic: 
       -  arrow_blue_red_850
+      -  arrow_black_850
+      -  flag_black_upper
   match:
       - 
         info_name: wind
         levtype: pl 
-        levelist: 850
-# wind 700 hPa        
+        levelist: [925,850]
+# wind 700-600 hPa        
 - 
   type: vector
   styles:
     basic: 
       -  arrow_blue_red_700
+      -  arrow_black_700
+      -  flag_black_upper
   match:
       - 
         info_name: wind
         levtype: pl 
-        levelist: 700
-# wind 500 hPa        
+        levelist: [700, 600]
+# wind 500-400 hPa        
 - 
   type: vector
   styles:
     basic: 
       -  arrow_blue_red_500
+      -  arrow_black_500
+      -  flag_black_upper
   match:
       - 
         info_name: wind
         levtype: pl 
-        levelist: 500
-# wind 200 hPa        
+        levelist: [500, 400]
+# wind 300-150 hPa        
 -
   type: vector
   styles: 
     basic: 
       -  arrow_blue_red_200
+      -  arrow_black_200
+      -  flag_black_upper
   match:
       - 
         info_name: wind
         levtype: pl 
-        levelist: 200
+        levelist: [300, 250, 200, 150]
+# wind 100- hPa        
+-
+  type: vector
+  styles: 
+    basic: 
+      -  arrow_blue_red_100
+      -  arrow_black_100
+      -  flag_black_upper
+  match:
+      - 
+        info_name: wind
+        levtype: pl 
+        levelist: 100
 # wind3d  (generic)
 -
   type: vector

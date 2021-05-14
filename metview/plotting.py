@@ -152,7 +152,10 @@ def plot_maps(
                 else:
                     data_items.append(data)
                 if frame != -1:
-                    data = data[frame]
+                    if data.param_info.scalar:
+                        data = data[frame]
+                    else:
+                        data = data[2*frame:2*frame+2]
             elif isinstance(data, Track):
                 data = data.build(style=vd)
             

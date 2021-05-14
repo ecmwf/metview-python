@@ -97,7 +97,55 @@ t_flux:
 # ------------------------
 # VECTOR STYLES
 # ------------------------
-# style for 
+# black wind arrows
+# -------------------
+arrow_black:
+  mwind: &arrow_black
+    legend: "off"
+    wind_advanced_method: "off"
+    wind_thinning_factor: 5
+    wind_arrow_colour: "black"
+    wind_arrow_min_speed: 0
+# 10m
+arrow_black_10:
+  mwind: 
+    <<: *arrow_black
+    wind_arrow_max_speed: 30
+    wind_arrow_unit_velocity: 20.0 
+# 850 hPa 
+arrow_black_850:
+  mwind:
+    <<: *arrow_black  
+    wind_arrow_max_speed: 50
+    wind_arrow_unit_velocity: 30.0
+# 700 hPa
+arrow_black_700:
+  mwind:
+    <<: *arrow_black 
+    wind_arrow_max_speed: 60
+    wind_arrow_unit_velocity: 30.0
+# 500 hPa
+arrow_black_500:
+  mwind:
+    <<: *arrow_black  
+    wind_arrow_max_speed: 70
+    wind_arrow_unit_velocity: 50.0
+# 200 hPa 
+arrow_black_200:
+  mwind:
+    <<: *arrow_black    
+    wind_arrow_max_speed: 100
+    wind_arrow_unit_velocity: 70.0
+# 100 hPa 
+arrow_black_100:
+  mwind:
+    <<: *arrow_black    
+    wind_arrow_max_speed: 60
+    wind_arrow_unit_velocity: 30.0
+# ----------------------
+# Blue-red wind arrows
+# ----------------------
+# generic 
 arrow_blue_red:
   mwind: &arrow_blue_red
     legend: "on"
@@ -107,22 +155,14 @@ arrow_blue_red:
     wind_advanced_colour_min_level_colour: "blue"
     wind_advanced_colour_direction: "anticlockwise"
     wind_thinning_factor: 5
-# style for 10m wind arrows
+    wind_advanced_colour_min_value: 0
+# 10m
 arrow_blue_red_10:
   mwind: 
     <<: *arrow_blue_red
     wind_advanced_colour_max_value: 30
-    wind_advanced_colour_min_value: 0
     wind_advanced_colour_level_interval: 5
     wind_arrow_unit_velocity: 20.0   
-# style for 10m wind flags
-flag_10: 
-  mwind:
-    wind_field_type: "flags"
-    wind_flag_calm_indicator: "off"
-    wind_flag_length: 0.3
-    wind_flag_origin_marker: "off"
-    wind_flag_colour: "blue"
 # style for wind arrows
 arrow_blue_red:
   mwind:
@@ -131,43 +171,57 @@ arrow_blue_red:
     wind_advanced_colour_min_value: 0
     wind_advanced_colour_level_interval: 10
     wind_arrow_unit_velocity: 50.0
-# style for 850 hPa wind arrows 
+# 850 hPa
 arrow_blue_red_850:
   mwind:
     <<: *arrow_blue_red    
     wind_advanced_colour_max_value: 50
-    wind_advanced_colour_min_value: 0
     wind_arrow_unit_velocity: 30.0
-# style for 850 hPa wind arrows 
+# 700 hPa 
 arrow_blue_red_700:
   mwind:
     <<: *arrow_blue_red    
     wind_advanced_colour_max_value: 60
-    wind_advanced_colour_min_value: 0
     wind_arrow_unit_velocity: 30.0
-# style for 500 hPa wind arrows 
+# 500 hPa 
 arrow_blue_red_500:
   mwind:
     <<: *arrow_blue_red    
     wind_advanced_colour_max_value: 70
-    wind_advanced_colour_min_value: 0
     wind_arrow_unit_velocity: 50.0
-# style for 200 hPa wind arrows 
+# 200 hPa
 arrow_blue_red_200:
   mwind:
     <<: *arrow_blue_red    
     wind_advanced_colour_max_value: 100
-    wind_advanced_colour_min_value: 0
     wind_arrow_unit_velocity: 70.0
-# style for wind flags
-flag_pl: 
+# 200 hPa
+arrow_blue_red_100:
+  mwind:
+    <<: *arrow_blue_red    
+    wind_advanced_colour_max_value: 60
+    wind_arrow_unit_velocity: 30.0
+# ----------------------
+# Black wind flags
+# ----------------------   
+# 10m
+flag_black_10: 
   mwind:
     wind_field_type: "flags"
     wind_flag_calm_indicator: "off"
-    wind_flag_length: 0.3
+    wind_flag_length: 0.7
     wind_flag_origin_marker: "off"
-    wind_flag_colour: "blue"
-    wind_thinning_factor: 4
+    wind_flag_colour: "black"
+    wind_thinning_factor: 6
+# upper levels
+flag_black_upper: 
+  mwind:
+    wind_field_type: "flags"
+    wind_flag_calm_indicator: "off"
+    wind_flag_length: 0.5
+    wind_flag_origin_marker: "off"
+    wind_flag_colour: "black"
+    wind_thinning_factor: 6
 # ------------------------
 # CROSS SECTION STYLES
 # ------------------------
