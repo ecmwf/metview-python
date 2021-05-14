@@ -1080,12 +1080,12 @@ def merge(*args):
 class Plot:
     def __init__(self):
         self.plot_to_jupyter = False
-        self.use_widget = True
+        self.plot_widget = True
         self.jupyter_args = {}
 
     def __call__(self, *args, **kwargs):
         if self.plot_to_jupyter:  # pragma: no cover
-            if self.use_widget:
+            if self.plot_widget:
                 return plot_to_notebook(args, **kwargs)
             else:
                 return plot_to_notebook_return_image(args, **kwargs)
@@ -1240,9 +1240,9 @@ def setoutput(*args, **kwargs):
         # test whether we're in the Jupyter environment
         if get_ipython() is not None:
             plot.plot_to_jupyter = True
-            plot.use_widget = kwargs.get("use_widget", True)
-            if "use_widget" in kwargs:
-                del kwargs["use_widget"]
+            plot.plot_widget = kwargs.get("plot_widget", True)
+            if "plot_widget" in kwargs:
+                del kwargs["plot_widget"]
             plot.jupyter_args = kwargs
         else:
             print(
