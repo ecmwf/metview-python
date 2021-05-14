@@ -1217,11 +1217,15 @@ def merge(*args):
 class Plot:
     def __init__(self):
         self.plot_to_jupyter = False
+        self.use_widget = True
         self.jupyter_args = {}
 
     def __call__(self, *args, **kwargs):
         if self.plot_to_jupyter:  # pragma: no cover
-            return plot_to_notebook(args, **kwargs)
+            if self.use_widget:
+                return plot_to_notebook(args, **kwargs)
+            else:
+                return plot_to_notebook_return_image(args, **kwargs)
         else:
             map_outputs = {
                 "png": png_output,
@@ -1341,6 +1345,21 @@ def plot_to_notebook(*args, **kwargs):  # pragma: no cover
     image_widget.layout.visibility = "visible"
 
 
+def plot_to_notebook_return_image(*args, **kwargs):  # pragma: no cover
+
+    from IPython.display import Image
+
+    f, tmp = tempfile.mkstemp(".png")
+    os.close(f)
+    base, ext = os.path.splitext(tmp)
+    plot.jupyter_args.update(output_name=base, output_name_first_page_number="off")
+    met_setoutput(png_output(plot.jupyter_args))
+    met_plot(*args)
+    image = Image(tmp)
+    os.unlink(tmp)
+    return image
+
+
 # On a test system, importing IPython took approx 0.5 seconds, so to avoid that hit
 # under most circumstances, we only import it when the user asks for Jupyter
 # functionality. Since this occurs within a function, we need a little trickery to
@@ -1358,6 +1377,9 @@ def setoutput(*args, **kwargs):
         # test whether we're in the Jupyter environment
         if get_ipython() is not None:
             plot.plot_to_jupyter = True
+            plot.use_widget = kwargs.get("use_widget", True)
+            if "use_widget" in kwargs:
+                del kwargs["use_widget"]
             plot.jupyter_args = kwargs
         else:
             print(
