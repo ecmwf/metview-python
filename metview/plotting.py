@@ -328,6 +328,7 @@ def plot_diff_maps(
 
 def plot_xs(
     *args,
+    map_line=None,
     map_data=None,
     line=[],
     layout="",
@@ -344,6 +345,7 @@ def plot_xs(
 
     title_font_size = 0.4 if title_font_size is None else title_font_size
     legend_font_size = 0.35 if legend_font_size is None else legend_font_size
+    map_line = True if map_line is None else map_line
 
     assert len(line) == 4
     assert len(args) >= 1
@@ -353,7 +355,10 @@ def plot_xs(
 
     # build the layout - if no map_data is specified no map view is
     # added to the layout
-    view = None if map_data is None else _make_view(view, area)
+    if not map_line and map_data is None:
+        view = None
+    else:
+        view = _make_view(view, area)
     dw = Layout().build_xs(line=line, map_view=view)
 
     # the plot description
@@ -406,9 +411,8 @@ def plot_xs(
     # LOG.debug(f"desc={desc}")
 
     # build side map plot
-    if map_data is not None:
+    if map_line or map_data is not None:
         desc.append(dw[1])
-
         t = None
         if map_data is not None and len(map_data) > 0:
             layers = _make_layers(map_data, form_layout=False)
@@ -429,18 +433,19 @@ def plot_xs(
             if data_items:
                 t = title.build(data_items)
 
-        # define xsection line graph
-        graph = mv.mgraph(
-            graph_line_colour="red", graph_line_thickness=3, graph_symbol="off"
-        )
+        if map_line:
+            # define xsection line graph
+            graph = mv.mgraph(
+                graph_line_colour="red", graph_line_thickness=3, graph_symbol="off"
+            )
 
-        lv = mv.input_visualiser(
-            input_plot_type="geo_points",
-            input_longitude_values=[line[1], line[3]],
-            input_latitude_values=[line[0], line[2]],
-        )
+            lv = mv.input_visualiser(
+                input_plot_type="geo_points",
+                input_longitude_values=[line[1], line[3]],
+                input_latitude_values=[line[0], line[2]],
+            )
 
-        desc.extend([lv, graph])
+            desc.extend([lv, graph])
 
         if t is not None:
             desc.append(t)
