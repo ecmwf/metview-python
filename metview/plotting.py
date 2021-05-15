@@ -67,18 +67,35 @@ def _make_layers(*args, form_layout=False):
         return layers[0] if layers else []
 
 
-def _make_visdef(data, vd, style_db="param", plot_type="map", data_id=None):
+def _make_visdef(
+    data, vd, style_db="param", plot_type="map", data_id=None, pos_values=None
+):
     if isinstance(data, mv.Fieldset):
         if len(vd) == 0:
             vd = mv.style.get_db(name=style_db).visdef(
                 data, plot_type=plot_type, data_id=data_id
             )
+            if plot_type == "diff" and pos_values is not None and pos_values:
+                s = mv.style.get_db(name=style_db).style(
+                    data, plot_type=plot_type, data_id=data_id
+                )
+                if s is not None and len(s.visdefs) == 2:
+                    neg_values = [-x for x in reversed(pos_values)]
+                    s.visdefs[0].set_values_list(neg_values)
+                    s.visdefs[1].set_values_list(pos_values)
+                    vd = s.to_request()
+            else:
+                vd = mv.style.get_db(name=style_db).visdef(
+                    data, plot_type=plot_type, data_id=data_id
+                )
         else:
             for i, v in enumerate(vd):
                 if isinstance(v, Style):
                     v = v.set_data_id(data_id)
                     vd[i] = v.to_request()
-                elif isinstance(v, mv.Request) and data_id is not None and data_id != "":
+                elif (
+                    isinstance(v, mv.Request) and data_id is not None and data_id != ""
+                ):
                     v = Visdef.from_request(v)
                     v.set_data_id(data_id)
                     vd[i] = v.to_request()
@@ -89,14 +106,15 @@ def _make_visdef(data, vd, style_db="param", plot_type="map", data_id=None):
         return []
 
 
-def _make_view(view, area):
+def _make_view(view, area, plot_type=None):
+    plot_type = "map" if plot_type is None else plot_type
     if view is not None and area is not None:
         raise Exception("Cannot specify both view and area in plot command!")
     if view is None:
         if area is not None:
-            view = mv.style.map(area=area).to_request()
+            view = mv.style.map(area=area, plot_type=plot_type).to_request()
         else:
-            view = mv.style.map(area="base").to_request()
+            view = mv.style.map(area="base", plot_type=plot_type).to_request()
     elif isinstance(view, GeoView):
         view = view.to_request()
     return view
@@ -142,7 +160,9 @@ def plot_maps(
         desc.append(dw[i])
         # define layers
         data_items = []
-        use_data_id = sum([1 for layer in sc_def if isinstance(layer["data"], mv.Fieldset)]) > 1
+        use_data_id = (
+            sum([1 for layer in sc_def if isinstance(layer["data"], mv.Fieldset)]) > 1
+        )
         for layer in sc_def:
             data = layer["data"]
             vd = layer["vd"]
@@ -155,19 +175,23 @@ def plot_maps(
                     if data.param_info.scalar:
                         data = data[frame]
                     else:
-                        data = data[2*frame:2*frame+2]
+                        data = data[2 * frame : 2 * frame + 2]
             elif isinstance(data, Track):
                 data = data.build(style=vd)
-            
+
             desc.append(data)
-            
+
             if isinstance(data, mv.Fieldset):
                 vd = _make_visdef(
-                    data, vd, style_db="param", plot_type="map", data_id=data_id[0] if use_data_id else None
+                    data,
+                    vd,
+                    style_db="param",
+                    plot_type="map",
+                    data_id=data_id[0] if use_data_id else None,
                 )
                 if vd:
                     desc.extend(vd)
-            
+
             data_id = (f"d{data_id[1]+1}", data_id[1] + 1)
 
         if data_items:
@@ -188,6 +212,8 @@ def plot_diff_maps(
     view=None,
     area=None,
     overlay=None,
+    diff_style=None,
+    pos_values=None,
     title_font_size=None,
     legend_font_size=None,
     frame=-1,
@@ -200,9 +226,13 @@ def plot_diff_maps(
     # handle default arguments
     title_font_size = 0.4 if title_font_size is None else title_font_size
     legend_font_size = 0.35 if legend_font_size is None else legend_font_size
+    pos_values = [] if pos_values is None else pos_values
+    diff_style = [] if diff_style is None else diff_style
+    if not isinstance(diff_style, list):
+        diff_style = [diff_style]
 
     # define the view
-    view = _make_view(view, area)
+    view = _make_view(view, area, plot_type="diff")
 
     # build the layout
     dw = Layout().build_diff(view=view)
@@ -258,13 +288,21 @@ def plot_diff_maps(
     data["d"] = data["0"] - data["1"]
     data["d"]._param_info = data["1"].param_info
     data["d"]._label = "{}-{}".format(data["0"].label, data["1"].label)
-    vd["d"] = _make_visdef(data["d"], [], plot_type="diff")
+    vd["d"] = _make_visdef(
+        data["d"], diff_style, plot_type="diff", pos_values=pos_values
+    )
 
     # LOG.debug("len_d={}".format(len(data["d"])))
 
     for i, k in enumerate(["d", "0", "1"]):
         desc.append(dw[i])
-        d = data[k] if frame == -1 else data[k][frame]
+        if frame == -1:
+            d = data[k]
+        else:
+            d = data[k][frame]
+            d._param_info = data[k]._param_info
+            d._label = data[k]._label
+
         desc.append(d)
         if vd[k]:
             desc.append(vd[k])
@@ -279,13 +317,12 @@ def plot_diff_maps(
             if k in ov_vd and ov_vd[k]:
                 desc.append(ov_vd[k])
 
-        t = title.build(d)
+        t = title.build(data[k])
         legend = mv.mlegend(legend_text_font_size=legend_font_size)
         desc.append(legend)
         desc.append(t)
 
-    LOG.debug(f"desc={desc}")
-
+    # print(desc)
     return mv.plot(desc, animate=animate)
 
 

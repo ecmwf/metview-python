@@ -342,7 +342,14 @@ minus_core:
       #contour_shade_min_level_colour: blue
       contour_shade_colour_direction: anticlockwise
       grib_scaling_of_derived_fields: "on"
-# mean sea level pressure (hPa)
+plus_core_shade_only: 
+  - mcont: &plus_shade
+      <<: *plus
+      contour: "off"
+minus_core_shade_only: 
+  - mcont: &minus_shade
+      <<: *minus
+      contour: "off"      
 # diff_msl:
 #   mcont: 
 #     <<: *diff_core
@@ -351,55 +358,79 @@ minus_core:
 diff_msl:
   - mcont: 
       # contour_level_list: [-50,-20,-10,-5,-0.5,0.5,5,10,20,50]
-      <<: *minus
-      contour_level_list: [-50,-20,-10,-5,-0.5]
+      <<: *minus_shade
+      contour_level_list: [-50,-15,-10,-5,-2]
   - mcont:
-      <<: *plus
-      contour_level_list: [0.5,5,10,20,50]
+      <<: *plus_shade
+      contour_level_list: [2,5,10,15,50]
 # temperature (K)
 diff_t:
   - mcont:
-      <<: *minus
-      contour_level_list: [-12,-10,-8,-6,-4,-2]
+      <<: *minus_shade
+      contour_level_list: [-30,-10,-8,-6,-4,-2]
       grib_scaling_of_derived_fields: "off"
   - mcont:
-      <<: *plus
-      contour_level_list: [2,4,6,8,10,12]
+      <<: *plus_shade
+      contour_level_list: [2,4,6,8,10,30]
       grib_scaling_of_derived_fields: "off"
 # equivalent potential temperature (K)
 diff_pt:
   - mcont:
-      <<: *minus
-      contour_level_list: [-30,-25,-20,-15,-10,-5,-2]
+      <<: *minus_shade
+      contour_level_list: [-50,-25,-20,-15,-10,-5,-2]
       grib_scaling_of_derived_fields: "off"
   - mcont:
-      <<: *plus
-      contour_level_list: [2,5,10,15,20,25,30]
+      <<: *plus_shade
+      contour_level_list: [2,5,10,15,20,25,50]
       grib_scaling_of_derived_fields: "off"
+# potential vorticity
+diff_pv:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-100,-20,-10,-5,-2]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [2,5,10,20,100]
 # geopotential (dkm)
 diff_z:
   - mcont:
-      <<: *minus
-      contour_level_list: [-25,-20,-15,-10,-5,-2]
+      <<: *minus_shade
+      contour_level_list: [-50,-20,-15,-10,-5,-2]
   - mcont:
-      <<: *plus
-      contour_level_list: [2,5,10,15,20,25]
+      <<: *plus_shade
+      contour_level_list: [2,5,10,15,20,50]
 # precipitation (mm)
 diff_tp:
   - mcont:
-      <<: *minus
-      contour_level_list: [-50,-20,-10,-5,-0.5]
+      <<: *minus_shade
+      contour_level_list: [-200,-20,-10,-5,-0.5]
   - mcont:
-      <<: *plus
-      contour_level_list: [0.5,5,10,20,50]
+      <<: *plus_shade
+      contour_level_list: [0.5,5,10,20,200]
 # wind speed (m/s)
-diff_speed:
+diff_speed_10:
   - mcont:
-      <<: *minus
-      contour_level_list: [-20,-10,-5,-2]
+      <<: *minus_shade
+      contour_level_list: [-70,-10,-8,-5,-2,-1]
   - mcont:
-      <<: *plus
-      contour_level_list: [2,5,10,20]
+      <<: *plus_shade
+      contour_level_list: [1,2,5,8,10,70]
+# wind speed 700 hPa (m/s)
+diff_speed_700:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-100,-20,-10,-5,-2]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [2,5,10,20,100]
+# wind speed 200 hPa(m/s)
+diff_speed_200:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-100,-30,-20,-10,-5]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [5,10,20,30,100]
 # wind gust (m/s)
 diff_10fg3:
   - mcont:
@@ -411,16 +442,48 @@ diff_10fg3:
 # relative humidity (0-100)
 diff_r:
   - mcont:
-      <<: *minus
-      contour_level_list: [-30,-20,-10,5,2]
+      <<: *minus_shade
+      contour_level_list: [-100,-60,-30,-10,-5]
   - mcont:
-      <<: *plus
-      contour_level_list: [2,5,10,20,30]
+      <<: *plus_shade
+      contour_level_list: [5,10,30,60,100] 
+# specific humidity (0-28)
+diff_q:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-30,-10,-5,-2,-1,-0.5]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [0.5,1,2,5,10,30]
 # vorticity (1E-5 1/s)
 diff_vo:
   - mcont:
-      <<: *minus
-      contour_level_list: [-12,-6,-4,-2,-1]
+      <<: *minus_shade
+      contour_level_list: [-100,-20,-10,-5,-2]
   - mcont:
-      <<: *plus
-      contour_level_list: [1,2,4,6,12]
+      <<: *plus_shade
+      contour_level_list: [2,5,10,20,100]
+#  vertical velocity (Pa/s)
+diff_w:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-100,-2,-1,-0.5,-0.2,-0.1]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [0.1,0.2,0.5,1,2,100]
+# t flux
+diff_q_flux:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-0.1,-0.01,-0.005,-0.001,-0.0005]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [0.0005, 0.001, 0.005, 0.01, 0.1]
+# t flux
+diff_t_flux:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-100,-20,-10,-5,-2,-1]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [1,2,5,10,20,100]

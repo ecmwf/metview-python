@@ -656,17 +656,18 @@ class FieldsetDb(IndexDb):
 
     def speed(self):
         r = mv.Fieldset()
-        for i in range(len(self.fs) // 2):
-            r.append(mv.sqrt(self.fs[2 * i] ** 2 + self.fs[2 * i + 1] ** 2))
-        pnf = self.fs.param_info
-        LOG.debug(f"speed pnf={pnf}")
-        param_id = 10
-        if pnf is not None:
-            param_ids = {"wind10m": 207, "wind": 10}
-            param_id = param_ids.get(pnf.name, param_id)
-        r = mv.grib_set_long(r, ["paramId", param_id])
-        r._db = FieldsetDb(r, label=self.label)
-        r._db.load()
+        if len(self.fs) >= 2:
+            for i in range(len(self.fs) // 2):
+                r.append(mv.sqrt(self.fs[2 * i] ** 2 + self.fs[2 * i + 1] ** 2))
+            pnf = self.fs.param_info
+            LOG.debug(f"speed pnf={pnf}")
+            param_id = 10
+            if pnf is not None:
+                param_ids = {"wind10m": 207, "wind": 10}
+                param_id = param_ids.get(pnf.name, param_id)
+            r = mv.grib_set_long(r, ["paramId", param_id])
+            r._db = FieldsetDb(r, label=self.label)
+            r._db.load()
         return r
 
     def deacc(self, skip_first=None):
@@ -674,9 +675,9 @@ class FieldsetDb(IndexDb):
             self.load()
             step = self.unique("step")
             if step:
-                v = self.select(step=step[0]) * 0
+                v = self.select(step=step[0])
                 if skip_first is None or skip_first == False:
-                    r = v
+                    r = v * 0
                 else:
                     r = mv.Fieldset()
                 for i in range(1, len(step)):

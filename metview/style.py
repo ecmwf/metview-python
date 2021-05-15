@@ -168,6 +168,11 @@ class Visdef:
         if self.verb in ["mcont", "mwind"] and data_id is not None and data_id != "":
             self.params["grib_id"] = data_id
 
+    def set_values_list(self, values):
+        if self.verb == "mcont":
+            if self.params.get("contour_level_list", []):
+                self.params["contour_level_list"] = values
+
     @staticmethod
     def from_request(req):
         params = {k: v for k, v in req.items() if not k.startswith("_")}
@@ -611,11 +616,11 @@ class MapConf:
         return a, s
 
     def make_geo_view(self, area=None, style=None, plot_type=None):
+        if style is None and plot_type == "diff":
+            style = "base_diff"
         a, s = self.find(area=area, style=style)
         if s is not None:
             s = s.clone()
-        # a["map_overlay_control"] = "by_date"
-
         if plot_type == "stamp":
             s = s.update({"map_grid": "off", "map_label": "off"})
         return GeoView(a, s)
@@ -730,16 +735,17 @@ def find(name):
 
 def load_custom_config(conf_dir):
     global CUSTOM_CONF_PATH
+    global _MAP_CONF
     if CUSTOM_CONF_PATH and CUSTOM_CONF_PATH[-1] == conf_dir:
         return
     else:
         CUSTOM_CONF_PATH.append(conf_dir)
-        if _MAP_CONF is not None:
-            _MAP_CONF._load_custom_config()
-
         for k, v in _DB.items():
             if v[0] is not None:
                 v[0]._load_custom_config()
+        if _MAP_CONF is not None:
+            _MAP_CONF = None
+            _MAP_CONF = MapConf()
 
 
 def reset_config():
