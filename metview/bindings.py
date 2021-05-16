@@ -21,8 +21,10 @@ import tempfile
 
 import cffi
 import numpy as np
+from numpy.lib.arraysetops import isin
 
 from metview.dataset import FieldsetDb, Dataset
+from metview.style import GeoView, Style, Visdef
 from metview import plotting
 
 __version__ = "1.7.2"
@@ -401,6 +403,14 @@ def push_vector(npa):
         )
 
 
+def push_style_object(s):
+    r = s.to_request()
+    if isinstance(r, list):
+        push_list(r)
+    else:
+        r.push()
+
+
 def valid_date(*args, base=None, step=None, step_units=None):
     LOG.debug(f"args={args} base={base}")
     if len(args) != 0:
@@ -704,10 +714,12 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
 
     def style(self, plot_type="map"):
         from metview import style
+
         return style.get_db().style(self, plot_type=plot_type)
 
     def style_list(self, plot_type="map"):
         from metview import style
+
         return style.get_db().style_list(self, plot_type=plot_type)
 
     def speed(self):
@@ -919,6 +931,9 @@ class ValuePusher:
             (datetime.date, lambda n: push_datetime_date(n)),
             (np.ndarray, lambda n: push_vector(n)),
             (File, lambda n: n.push()),
+            (GeoView, lambda n: push_style_object(n)),
+            (Style, lambda n: push_style_object(n)),
+            (Visdef, lambda n: push_style_object(n)),
         )
 
     def push_value(self, val):
