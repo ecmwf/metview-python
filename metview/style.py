@@ -377,15 +377,6 @@ class StyleDb:
         return s
 
     def get_param_style(self, param_info, scalar=True, plot_type="map", data_id=None):
-        # r = 0
-        # p_best = None
-        # for p in self.params:
-        #     m = p.match(param_info)
-        #     # print(f"p={p} m={m}")
-        #     if m > r:
-        #         r = m
-        #         p_best = p
-
         p_best = self._best_param_match(param_info)
         s = None
         # print(f"param_info={param_info}")
@@ -592,6 +583,11 @@ class MapConf:
                         ((name, conf),) = item.items()
                         self.areas[name] = conf
 
+    def area_names(self):
+        r = list(self.areas.keys())
+        r.extend([a.lower() for a in self.BUILTIN_AREAS])
+        return r
+
     def find(self, area=None, style=None):
         area_v = "base" if area is None else area
         style_v = "base" if style is None else style
@@ -668,12 +664,22 @@ class StyleGallery:
         except:
             return
 
+        img_size = 120
+        img, names = self._build(img_size)
+        if len(img) > 0:
+            from IPython.display import HTML
+
+            return HTML(self.build_gallery(names, img, row_height=f"{img_size}px"))
+
+
+class MapStyleGallery(StyleGallery):
+    def _build(self, img_size):
         img = []
         names = []
-        img_size = 120
+        # img_size = 120
         tmp_dir = os.getenv("METVIEW_TMPDIR", "")
         for name, d in map_styles().items():
-            f_name = os.path.join(tmp_dir, name + ".png")
+            f_name = os.path.join(tmp_dir, "_mapstyle_" + name + ".png")
             if not os.path.exists(f_name):
                 view = map(area="europe", style=name)
                 mv.setoutput(
@@ -688,10 +694,32 @@ class StyleGallery:
                 names.append(name)
                 img.append(self.to_base64(f_name))
 
-        if len(img) > 0:
-            from IPython.display import HTML
+        return (img, names)
 
-            return HTML(self.build_gallery(names, img, row_height=f"{img_size}px"))
+
+class MapAreaGallery(StyleGallery):
+    def _build(self, img_size):
+        img = []
+        names = []
+        # img_size = 120
+        tmp_dir = os.getenv("METVIEW_TMPDIR", "")
+        for name in map_area_names():
+            f_name = os.path.join(tmp_dir, "_maparea_" + name + ".png")
+            if not os.path.exists(f_name):
+                view = map(area=name, style="grey_1")
+                mv.setoutput(
+                    mv.png_output(
+                        output_name=f_name[:-4],
+                        output_width=300,
+                        output_name_first_page_number="off",
+                    )
+                )
+                mv.plot(view.to_request())
+            if os.path.exists(f_name):
+                names.append(name)
+                img.append(self.to_base64(f_name))
+
+        return (img, names)
 
 
 def MAP_CONF():
@@ -707,7 +735,16 @@ def map_styles():
 
 
 def map_style_gallery():
-    g = StyleGallery()
+    g = MapStyleGallery()
+    return g.build()
+
+
+def map_area_names():
+    return MAP_CONF().area_names()
+
+
+def map_area_gallery():
+    g = MapAreaGallery()
     return g.build()
 
 
