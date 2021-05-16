@@ -283,7 +283,7 @@ class FieldsetIndexer(GribIndexer):
 
             assert len(self.keys) == len(self.keys_ecc)
             data = {k: md_vals[i] for i, k in enumerate(self.keys)}
-            data["msgIndex1"] = list(range(len(fs)))
+            data["_msgIndex1"] = list(range(len(fs)))
             LOG.info(f" {len(fs)} GRIB messages processed")
         return data
 
@@ -296,7 +296,7 @@ class FieldsetIndexer(GribIndexer):
                 if r:
                     cols = [*self.keys]
                     for i in range(comp_num):
-                        cols.extend([f"msgIndex{i+1}"])
+                        cols.extend([f"_msgIndex{i+1}"])
                     w_df = self._make_dataframe(r, columns=cols)
                     self.db.blocks[v_name] = w_df
                     # self._write_dataframe(w_df, v_name, out_dir)
@@ -315,7 +315,7 @@ class ExperimentIndexer(GribIndexer):
         Path(out_dir).mkdir(exist_ok=True, parents=True)
         LOG.info(f"scan {self.db} out_dir={out_dir} ...")
 
-        data = {k: [] for k in [*self.keys, "msgIndex1", "fileIndex1"]}
+        data = {k: [] for k in [*self.keys, "_msgIndex1", "_fileIndex1"]}
         input_files = []
 
         # print(f"out_dir={out_dir}")
@@ -404,7 +404,7 @@ class ExperimentIndexer(GribIndexer):
                 if r:
                     cols = [*self.keys]
                     for i in range(comp_num):
-                        cols.extend([f"msgIndex{i+1}", f"fileIndex{i+1}"])
+                        cols.extend([f"_msgIndex{i+1}", f"_fileIndex{i+1}"])
                     w_df = self._make_dataframe(r, columns=cols)
                     # print(f"wind_len={len(w_df.index)}")
                     self.db.blocks[v_name] = w_df
@@ -454,8 +454,8 @@ class ExperimentIndexer(GribIndexer):
                 assert len(self.keys) == len(self.keys_ecc)
                 for i, c in enumerate(self.keys):
                     data[c].extend(md_vals[i])
-                data["msgIndex1"].extend(list(range(len(fs))))
-                data["fileIndex1"].extend([file_index] * len(fs))
+                data["_msgIndex1"].extend(list(range(len(fs))))
+                data["_fileIndex1"].extend([file_index] * len(fs))
 
                 # print({k: len(v) for k, v in data.items()})
 

@@ -569,11 +569,11 @@ class FieldsetDb(IndexDb):
             return None
 
         # print(f"cols={df.columns}")
-        if "msgIndex3" in df.columns:
+        if "_msgIndex3" in df.columns:
             comp_num = 3
-        elif "msgIndex2" in df.columns:
+        elif "_msgIndex2" in df.columns:
             comp_num = 2
-        elif "msgIndex1" in df.columns:
+        elif "_msgIndex1" in df.columns:
             comp_num = 1
         else:
             return None
@@ -589,7 +589,7 @@ class FieldsetDb(IndexDb):
         # generate a new dataframe
         df = df.copy()
         for k, v in enumerate(idx):
-            df[f"msgIndex{k+1}"] = v
+            df[f"_msgIndex{k+1}"] = v
         return df
 
     def _clone(self):
@@ -809,11 +809,11 @@ class ExperimentDb(IndexDb):
         if df.empty:
             return None
 
-        if "fileIndex3" in df.columns:
+        if "_fileIndex3" in df.columns:
             comp_num = 3
-        elif "fileIndex2" in df.columns:
+        elif "_fileIndex2" in df.columns:
             comp_num = 2
-        elif "fileIndex1" in df.columns:
+        elif "_fileIndex1" in df.columns:
             comp_num = 1
         else:
             return None
@@ -831,8 +831,8 @@ class ExperimentDb(IndexDb):
         # generate a new dataframe
         df = df.copy()
         for k, v in enumerate(idx):
-            df[f"msgIndex{k+1}"] = v
-        df.drop([f"fileIndex{x+1}" for x in range(comp_num)], axis=1, inplace=True)
+            df[f"_msgIndex{k+1}"] = v
+        df.drop([f"_fileIndex{x+1}" for x in range(comp_num)], axis=1, inplace=True)
         return df
 
     def to_fieldset(self):

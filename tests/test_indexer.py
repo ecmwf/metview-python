@@ -24,9 +24,9 @@ from metview.indexer import GribIndexer
 PATH = os.path.dirname(__file__)
 
 DB_COLUMNS = copy.deepcopy(GribIndexer.DEFAULT_KEYS)
-DB_COLUMNS["msgIndex1"] = ("l", np.int64, False)
+DB_COLUMNS["_msgIndex1"] = ("l", np.int64, False)
 DB_COLUMNS_WIND2 = copy.deepcopy(DB_COLUMNS)
-DB_COLUMNS_WIND2["msgIndex2"] = ("l", np.int64, False)
+DB_COLUMNS_WIND2["_msgIndex2"] = ("l", np.int64, False)
 DB_DEFAULT_COLUMN_NAMES = list(GribIndexer.DEFAULT_KEYS.keys())
 
 def file_in_testdir(filename):
@@ -523,7 +523,7 @@ def test_param_info_from_fs_single_file():
         "marsClass": "od",
         "marsStream": "oper",
         "marsType": "an",
-        "msgIndex1": 0,
+        "_msgIndex1": 0,
     }
     assert md == p.meta
 
@@ -544,8 +544,8 @@ def test_param_info_from_fs_single_file():
         "marsClass": "od",
         "marsStream": "oper",
         "marsType": "an",
-        "msgIndex1": 0,
-        "msgIndex2": 1,
+        "_msgIndex1": 0,
+        "_msgIndex2": 1,
     }
     assert md == p.meta
 
@@ -587,7 +587,7 @@ def test_param_info_from_fs_single_file():
         "marsClass": "od",
         "marsStream": "oper",
         "marsType": "an",
-        "msgIndex1": 0,
+        "_msgIndex1": 0,
     }
     assert md == p.meta
 
