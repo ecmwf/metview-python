@@ -343,8 +343,8 @@ def plot_xs(
     Plot cross section with map
     """
 
-    title_font_size = 0.4 if title_font_size is None else title_font_size
-    legend_font_size = 0.35 if legend_font_size is None else legend_font_size
+    title_font_size = 0.3 if title_font_size is None else title_font_size
+    legend_font_size = 0.2 if legend_font_size is None else legend_font_size
     map_line = True if map_line is None else map_line
 
     assert len(line) == 4
