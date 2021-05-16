@@ -666,6 +666,10 @@ class StyleGallery:
 
         img_size = 120
         img, names = self._build(img_size)
+        
+        # reset jupyter output settings 
+        mv.setoutput("jupyter", **mv.plot.jupyter_args)
+        
         if len(img) > 0:
             from IPython.display import HTML
 
