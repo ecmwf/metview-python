@@ -1,3 +1,12 @@
+base:
+    map_coastline_land_shade: "off"
+    map_coastline_sea_shade: 'off'
+base_diff:
+    map_coastline_colour: CHARCOAL
+    map_coastline_land_shade: "on"
+    map_coastline_land_shade_colour: "RGB(0.8549,0.8549,0.8549)"
+    map_coastline_sea_shade: 'off'
+    map_coastline_land_shade_colour: WHITE
 grey_light_blue:
     map_coastline_land_shade: "on"
     map_coastline_land_shade_colour: "grey"
