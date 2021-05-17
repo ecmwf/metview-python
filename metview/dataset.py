@@ -925,8 +925,7 @@ class Dataset:
                 self.fetch(forced=False)
 
         if load_style:
-            conf_dir = os.path.join(self.path, "conf")
-            mv.style.load_custom_config(conf_dir)
+            self.load_style()
 
         self.load()
 
@@ -1047,6 +1046,10 @@ class Dataset:
                 raise Exception(f"No component={key} found in {self}")
             return r
         return None
+
+    def load_style(self):
+        conf_dir = os.path.join(self.path, "conf")
+        mv.style.load_custom_config(conf_dir, force=True)
 
     def __str__(self):
         return f"{self.__class__.__name__}[name={self.name}]"

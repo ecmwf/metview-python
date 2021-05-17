@@ -666,10 +666,10 @@ class StyleGallery:
 
         img_size = 120
         img, names = self._build(img_size)
-        
-        # reset jupyter output settings 
+
+        # reset jupyter output settings
         mv.setoutput("jupyter", **mv.plot.jupyter_args)
-        
+
         if len(img) > 0:
             from IPython.display import HTML
 
@@ -774,19 +774,24 @@ def find(name):
         return None
 
 
-def load_custom_config(conf_dir):
+def load_custom_config(conf_dir, force=None):
     global CUSTOM_CONF_PATH
     global _MAP_CONF
-    if CUSTOM_CONF_PATH and CUSTOM_CONF_PATH[-1] == conf_dir:
-        return
-    else:
-        CUSTOM_CONF_PATH.append(conf_dir)
-        for k, v in _DB.items():
-            if v[0] is not None:
-                v[0]._load_custom_config()
-        if _MAP_CONF is not None:
-            _MAP_CONF = None
-            _MAP_CONF = MapConf()
+    force = False if force is None else force
+    if CUSTOM_CONF_PATH:
+        if CUSTOM_CONF_PATH[-1] == conf_dir:
+            if force:
+                CUSTOM_CONF_PATH.pop()
+            else:
+                return
+
+    CUSTOM_CONF_PATH.append(conf_dir)
+    for k, v in _DB.items():
+        if v[0] is not None:
+            v[0]._load_custom_config()
+    if _MAP_CONF is not None:
+        _MAP_CONF = None
+        _MAP_CONF = MapConf()
 
 
 def reset_config():
