@@ -10,6 +10,7 @@
 import os
 import numpy as np
 import datetime
+import glob
 import pickle
 import pytest
 import pandas as pd
@@ -1509,7 +1510,8 @@ def test_plot_2():
         "contour_shade_colour_direction": "clockwise",
     }
     degraded_field = mv.read(data=TEST_FIELDSET, grid=[4, 4])
-    mv.plot(png, degraded_field, mv.mcont(grid_shade))
+    # animate=True just to check that it is allowed and ignored as a param
+    mv.plot(png, degraded_field, mv.mcont(grid_shade), animate=True)
     output_name_from_magics = output_name + ".1.png"
     assert os.path.isfile(output_name_from_magics)
     os.remove(output_name_from_magics)
@@ -1554,12 +1556,6 @@ def test_plot_2_pages():
     output_name_from_magics = output_name + ".1.png"
     assert os.path.isfile(output_name_from_magics)
     os.remove(output_name_from_magics)
-
-
-def test_animate_exception():
-    # this should fail because we are not in a Jupyter environment
-    with pytest.raises(EnvironmentError):
-        mv.plot(animate=True)
 
 
 def test_macro_error():
@@ -1729,6 +1725,12 @@ def test_set_vector_from_int_numpy_array():
     assert np.array_equal(mv.abs(r), np.array([5, 8, 7, 1, 2900], dtype=np.float64))
 
 
+def test_set_vector_byte_from_numpy_array_raises_error():
+    r = np.arange(1, 21, dtype=np.byte)
+    with pytest.raises(TypeError):
+        a = mv.type(r)
+
+
 #    with pytest.raises(TypeError):
 #        a = mv.type(r)
 
@@ -1853,6 +1855,21 @@ def test_xyv_gpts_to_dataframe():
     assert df.loc[5]["latitude"] == 70
     assert df.loc[25]["longitude"] == 20
     assert np.isclose(df.loc[4]["value"], -10.8656)
+
+
+def test_ncols_gpts_to_dataframe():
+    gpt = mv.read(file_in_testdir("geo_ncols_8.gpt"))
+    df = gpt.to_dataframe()
+    assert isinstance(df, pd.DataFrame)
+    assert df.shape == (4, 9)
+    assert df.loc[2]["stnid"] == None
+    assert np.isclose(df.loc[2]["latitude"], 51.93)
+    assert np.isclose(df.loc[0]["longitude"], 35.85)
+    assert np.isclose(df.loc[1]["t2"], 274.9)
+    assert np.isclose(df.loc[1]["o3"], 24)
+    assert np.isclose(df.loc[1]["td"], 290.4)
+    assert np.isclose(df.loc[1]["rh"], 68)
+    assert np.isclose(df.loc[1]["octa"], 1)
 
 
 def test_grib_to_dataset():
@@ -2090,6 +2107,20 @@ def test_download_gallery_data():
     assert mv.type(g) == "fieldset"
     assert os.path.isfile(fname)
     os.remove(fname)
+
+
+def test_download_gallery_zipped_data():
+    fname = "major_basins_of_the_world_0_0_0.zip"
+    subname = "Major_Basins_of_the_World.prj"
+    assert not os.path.isfile(fname)
+    assert not os.path.isfile(subname)
+    g = mv.gallery.load_dataset(fname)
+    assert os.path.isfile(fname)
+    assert os.path.isfile(subname)
+    unzipped_files = glob.glob("Major_Basins_of_the_World.*")
+    os.remove(fname)
+    for f in unzipped_files:
+        os.remove(f)
 
 
 def test_download_gallery_data_bad_fname():

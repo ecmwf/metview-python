@@ -21,7 +21,7 @@ import cffi
 import numpy as np
 
 
-__version__ = "1.7.1"
+__version__ = "1.7.2"
 
 
 def string_from_ffi(s):
@@ -45,7 +45,7 @@ class MetviewInvoker:
         self.debug = os.environ.get("METVIEW_PYTHON_DEBUG", "0") == "1"
 
         # check whether we're in a running Metview session
-        if "METVIEW_TITLE_PROD" in os.environ:
+        if "METVIEW_TITLE_PROD" in os.environ:  # pragma: no cover
             self.persistent_session = True
             self.info_section = {"METVIEW_LIB": os.environ["METVIEW_LIB"]}
             return
@@ -54,7 +54,7 @@ class MetviewInvoker:
         import time
         import subprocess
 
-        if self.debug:
+        if self.debug:  # pragma: no cover
             print("MetviewInvoker: Invoking Metview")
         self.persistent_session = False
         self.metview_replied = False
@@ -77,14 +77,14 @@ class MetviewInvoker:
             env_file.name,
             str(pid),
         ]
-        if self.debug:
+        if self.debug:  # pragma: no cover
             metview_flags.insert(2, "-slog")
             print("Starting Metview using these command args:")
             print(metview_flags)
 
         try:
             subprocess.Popen(metview_flags)
-        except Exception as exp:
+        except Exception as exp:  # pragma: no cover
             print(
                 "Could not run the Metview executable ('" + metview_startup_cmd + "'); "
                 "check that the binaries for Metview (version 5 at least) are installed "
@@ -99,7 +99,7 @@ class MetviewInvoker:
         ):
             time.sleep(0.001)
 
-        if not (self.metview_replied):
+        if not (self.metview_replied):  # pragma: no cover
             raise Exception(
                 'Command "metview" did not respond within '
                 + str(self.metview_startup_timeout)
@@ -121,7 +121,7 @@ class MetviewInvoker:
     def destroy(self):
         """Kills the Metview session. Raises an exception if it could not do it."""
 
-        if self.persistent_session:
+        if self.persistent_session:  # pragma: no cover
             return
 
         if self.metview_replied:
@@ -188,7 +188,7 @@ try:
         # MacOS systems
         lib = ffi.dlopen(os.path.join(mv_lib, "libMvMacro"))
 
-except Exception as exp:
+except Exception as exp:  # pragma: no cover
     print(
         "Error loading Metview/libMvMacro. LD_LIBRARY_PATH="
         + os.environ.get("LD_LIBRARY_PATH", "")
@@ -597,7 +597,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         # soft dependency on cfgrib
         try:
             import xarray as xr
-        except ImportError:
+        except ImportError:  # pragma: no cover
             print("Package xarray not found. Try running 'pip install xarray'.")
             raise
         dataset = xr.open_dataset(self.url(), engine="cfgrib", backend_kwargs=kwarg)
@@ -639,7 +639,7 @@ class Geopoints(FileBackedValueWithOperators, ContainerValue):
     def to_dataframe(self):
         try:
             import pandas as pd
-        except ImportError:
+        except ImportError:  # pragma: no cover
             print("Package pandas not found. Try running 'pip install pandas'.")
             raise
 
@@ -665,7 +665,7 @@ class NetCDF(FileBackedValueWithOperators):
         # soft dependency on xarray
         try:
             import xarray as xr
-        except ImportError:
+        except ImportError:  # pragma: no cover
             print("Package xarray not found. Try running 'pip install xarray'.")
             raise
         dataset = xr.open_dataset(self.url())
@@ -679,7 +679,7 @@ class Odb(FileBackedValue):
     def to_dataframe(self):
         try:
             import pandas as pd
-        except ImportError:
+        except ImportError:  # pragma: no cover
             print("Package pandas not found. Try running 'pip install pandas'.")
             raise
 
@@ -700,7 +700,7 @@ class Table(FileBackedValue):
     def to_dataframe(self):
         try:
             import pandas as pd
-        except ImportError:
+        except ImportError:  # pragma: no cover
             print("Package pandas not found. Try running 'pip install pandas'.")
             raise
 
@@ -867,7 +867,7 @@ def vector_from_metview(val):
     elif s == 8:
         nptype = np.float64
         b = lib.p_vector_double_array(vec)
-    else:
+    else:  # pragma: no cover
         raise Exception("Metview vector data type cannot be handled: ", s)
 
     bsize = n * s
@@ -1080,28 +1080,15 @@ def merge(*args):
 class Plot:
     def __init__(self):
         self.plot_to_jupyter = False
+        self.plot_widget = True
         self.jupyter_args = {}
 
     def __call__(self, *args, **kwargs):
-        # if animate=True is supplied, then create a Jupyter animation
-        if kwargs.get("animate", False):
-            return animate(args, kwargs)
-
-        # otherwise create a single static plot
-        if self.plot_to_jupyter:
-            f, tmp = tempfile.mkstemp(".png")
-            os.close(f)
-
-            base, ext = os.path.splitext(tmp)
-
-            output_args = {"output_name": base, "output_name_first_page_number": "off"}
-            output_args.update(self.jupyter_args)
-            met_setoutput(png_output(output_args))
-            met_plot(*args)
-
-            image = Image(tmp)
-            os.unlink(tmp)
-            return image
+        if self.plot_to_jupyter:  # pragma: no cover
+            if self.plot_widget:
+                return plot_to_notebook(args, **kwargs)
+            else:
+                return plot_to_notebook_return_image(args, **kwargs)
         else:
             map_outputs = {
                 "png": png_output,
@@ -1122,14 +1109,9 @@ plot = Plot()
 
 # animate - only usable within Jupyter notebooks
 # generates a widget allowing the user to select between plot frames
-def animate(*args, **kwargs):
+def plot_to_notebook(*args, **kwargs):  # pragma: no cover
 
-    if not plot.plot_to_jupyter:
-        raise EnvironmentError(
-            "animate() can only be used after calling set_output('jupyter')"
-        )
-
-    import ipywidgets as widgets
+    animation_mode = kwargs.get("animate", "auto")  # True, False or "auto"
 
     # create all the widgets first so that the 'waiting' label is at the bottom
     image_widget = widgets.Image(
@@ -1138,47 +1120,9 @@ def animate(*args, **kwargs):
         # height=400,
     )
 
-    frame_widget = widgets.IntSlider(
-        value=1,
-        min=1,
-        max=1,
-        step=1,
-        description="Frame:",
-        disabled=False,
-        continuous_update=True,
-        readout=True,
-    )
-
-    play_widget = widgets.Play(
-        value=1,
-        min=1,
-        max=1,
-        step=1,
-        interval=500,
-        description="Play animation",
-        disabled=False,
-    )
-
-    speed_widget = widgets.IntSlider(
-        value=3,
-        min=1,
-        max=20,
-        step=1,
-        description="Speed",
-        disabled=False,
-        continuous_update=True,
-        readout=True,
-    )
-
-    widgets.jslink((play_widget, "value"), (frame_widget, "value"))
-    play_and_speed_widget = widgets.HBox([play_widget, speed_widget])
-    controls = widgets.VBox([frame_widget, play_and_speed_widget])
-
-    controls.layout.visibility = "hidden"
     image_widget.layout.visibility = "hidden"
     waitl_widget = widgets.Label(value="Generating plots....")
-    frame_widget.layout.width = "800px"
-    display(image_widget, controls, waitl_widget)
+    display(image_widget, waitl_widget)
 
     # plot all frames to a temporary directory owned by Metview to enure cleanup
     tempdirpath = tempfile.mkdtemp(dir=os.environ.get("METVIEW_TMPDIR", None))
@@ -1196,9 +1140,60 @@ def animate(*args, **kwargs):
         return
 
     files = [os.path.join(tempdirpath, f) for f in sorted(filenames)]
-    frame_widget.max = len(files)
-    frame_widget.description = "Frame (" + str(len(files)) + ") :"
-    play_widget.max = len(files)
+
+    if (animation_mode == True) or (animation_mode == "auto" and len(filenames) > 1):
+        frame_widget = widgets.IntSlider(
+            value=1,
+            min=1,
+            max=1,
+            step=1,
+            description="Frame:",
+            disabled=False,
+            continuous_update=True,
+            readout=True,
+        )
+
+        play_widget = widgets.Play(
+            value=1,
+            min=1,
+            max=1,
+            step=1,
+            interval=500,
+            description="Play animation",
+            disabled=False,
+        )
+
+        speed_widget = widgets.IntSlider(
+            value=3,
+            min=1,
+            max=20,
+            step=1,
+            description="Speed",
+            disabled=False,
+            continuous_update=True,
+            readout=True,
+        )
+
+        widgets.jslink((play_widget, "value"), (frame_widget, "value"))
+        play_and_speed_widget = widgets.HBox([play_widget, speed_widget])
+        controls = widgets.VBox([frame_widget, play_and_speed_widget])
+        controls.layout.visibility = "hidden"
+        frame_widget.layout.width = "800px"
+        display(controls)
+
+        frame_widget.max = len(files)
+        frame_widget.description = "Frame (" + str(len(files)) + ") :"
+        play_widget.max = len(files)
+
+        def on_frame_change(change):
+            plot_frame(change["new"])
+
+        def on_speed_change(change):
+            play_widget.interval = 1500 / change["new"]
+
+        frame_widget.observe(on_frame_change, names="value")
+        speed_widget.observe(on_speed_change, names="value")
+        controls.layout.visibility = "visible"
 
     def plot_frame(frame_index):
         im_file = open(files[frame_index - 1], "rb")
@@ -1206,22 +1201,26 @@ def animate(*args, **kwargs):
         im_file.close()
         image_widget.value = imf
 
-    def on_frame_change(change):
-        plot_frame(change["new"])
-
+    # everything is ready now, so plot the first frame, hide the
+    # 'waiting' label and reveal the plot and the frame slider
     plot_frame(1)
-    frame_widget.observe(on_frame_change, names="value")
-
-    def on_speed_change(change):
-        play_widget.interval = 1500 / change["new"]
-
-    speed_widget.observe(on_speed_change, names="value")
-
-    # everything is ready now, so hide the 'waiting' label
-    # and reveal the plot and the frame slider
     waitl_widget.layout.visibility = "hidden"
-    controls.layout.visibility = "visible"
     image_widget.layout.visibility = "visible"
+
+
+def plot_to_notebook_return_image(*args, **kwargs):  # pragma: no cover
+
+    from IPython.display import Image
+
+    f, tmp = tempfile.mkstemp(".png")
+    os.close(f)
+    base, ext = os.path.splitext(tmp)
+    plot.jupyter_args.update(output_name=base, output_name_first_page_number="off")
+    met_setoutput(png_output(plot.jupyter_args))
+    met_plot(*args)
+    image = Image(tmp)
+    os.unlink(tmp)
+    return image
 
 
 # On a test system, importing IPython took approx 0.5 seconds, so to avoid that hit
@@ -1229,12 +1228,10 @@ def animate(*args, **kwargs):
 # functionality. Since this occurs within a function, we need a little trickery to
 # get the IPython functions into the global namespace so that the plot object can use them
 def setoutput(*args, **kwargs):
-    if "jupyter" in args:
+    if "jupyter" in args:  # pragma: no cover
         try:
-            global Image
-            global get_ipython
-            IPython = __import__("IPython", globals(), locals())
-            Image = IPython.display.Image
+            import IPython
+
             get_ipython = IPython.get_ipython
         except ImportError as imperr:
             print("Could not import IPython module - plotting to Jupyter will not work")
@@ -1243,12 +1240,25 @@ def setoutput(*args, **kwargs):
         # test whether we're in the Jupyter environment
         if get_ipython() is not None:
             plot.plot_to_jupyter = True
+            plot.plot_widget = kwargs.get("plot_widget", True)
+            if "plot_widget" in kwargs:
+                del kwargs["plot_widget"]
             plot.jupyter_args = kwargs
         else:
             print(
                 "ERROR: setoutput('jupyter') was set, but we are not in a Jupyter environment"
             )
             raise (Exception("Could not set output to jupyter"))
+
+        try:
+            global widgets
+            widgets = __import__("ipywidgets", globals(), locals())
+        except ImportError as imperr:
+            print(
+                "Could not import ipywidgets module - plotting to Jupyter will not work"
+            )
+            raise imperr
+
     else:
         plot.plot_to_jupyter = False
         met_setoutput(*args)

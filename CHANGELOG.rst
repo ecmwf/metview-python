@@ -2,6 +2,12 @@
 Changelog for Metview's Python interface
 ========================================
 
+1.7.2
+------------------
+- new argument to setoutput(plot_widget=) - default True, set False to allow images to be saved into the notebook
+- multi-page plots in Jupyter notebooks now contain the animation controls by default
+
+
 1.7.1
 ------------------
 - added automatic play and speed controls to animated plots in Jupyter notebooks
