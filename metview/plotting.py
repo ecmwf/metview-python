@@ -287,7 +287,10 @@ def plot_diff_maps(
     # compute diff
     data["d"] = data["0"] - data["1"]
     data["d"]._param_info = data["1"].param_info
-    data["d"]._label = "{}-{}".format(data["0"].label, data["1"].label)
+    if data["0"].label and data["1"].label:
+        data["d"]._label = "{}-{}".format(data["0"].label, data["1"].label)
+    else:
+        data["d"]._label = ""
     vd["d"] = _make_visdef(
         data["d"], diff_style, plot_type="diff", pos_values=pos_values
     )
