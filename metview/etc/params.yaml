@@ -74,6 +74,8 @@
 # geopotential
 -
   styles:
+    basic:
+      - z
     diff: 
       - diff_z
   match:

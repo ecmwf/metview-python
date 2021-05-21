@@ -20,6 +20,7 @@ default_diff:
 # ------------------------
 msl:
   mcont:
+    legend: "off"
     contour_highlight_colour: black
     contour_highlight_thickness: 4
     contour_interval: 5
@@ -94,6 +95,19 @@ t_flux:
     contour_shade_method: "area_fill"
     contour_shade_colour_method: "palette"
     contour_shade_palette_name: "colorbrewer_PuOr_15"
+z:
+  mcont:
+    legend: "off"
+    contour_highlight_colour: black
+    contour_highlight_thickness: 4
+    contour_interval: 5
+    contour_label: "on"
+    contour_label_frequency: 2
+    contour_label_height: 0.4
+    contour_level_selection_type: interval
+    contour_line_colour: black
+    contour_line_thickness: 2
+    contour_reference_level: 1010
 # ------------------------
 # VECTOR STYLES
 # ------------------------
