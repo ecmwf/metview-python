@@ -13,6 +13,7 @@ import copy
 import json
 import logging
 import os
+from pathlib import Path
 
 import yaml
 import metview as mv
@@ -681,11 +682,13 @@ class MapStyleGallery(StyleGallery):
         img = []
         names = []
         # img_size = 120
-        tmp_dir = os.getenv("METVIEW_TMPDIR", "")
+        tmp_dir = os.path.join(os.getenv("METVIEW_TMPDIR", ""), "_mapstyle_")
+        Path(tmp_dir).mkdir(exist_ok=True)
         for name, d in map_styles().items():
-            f_name = os.path.join(tmp_dir, "_mapstyle_" + name + ".png")
+            f_name = os.path.join(tmp_dir, name + ".png")
             if not os.path.exists(f_name):
-                view = map(area="europe", style=name)
+                view = map(area=[30, -30, 75, 45], style=name)
+                view.style.update({"MAP_COASTLINE_RESOLUTION": "low"}, inplace=True)
                 mv.setoutput(
                     mv.png_output(
                         output_name=f_name[:-4],
@@ -706,9 +709,10 @@ class MapAreaGallery(StyleGallery):
         img = []
         names = []
         # img_size = 120
-        tmp_dir = os.getenv("METVIEW_TMPDIR", "")
+        tmp_dir = os.path.join(os.getenv("METVIEW_TMPDIR", ""), "_maparea_")
+        Path(tmp_dir).mkdir(exist_ok=True)
         for name in map_area_names():
-            f_name = os.path.join(tmp_dir, "_maparea_" + name + ".png")
+            f_name = os.path.join(tmp_dir, name + ".png")
             if not os.path.exists(f_name):
                 view = map(area=name, style="grey_1")
                 mv.setoutput(
