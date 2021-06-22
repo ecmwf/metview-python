@@ -3,7 +3,7 @@ Metview Python bindings
 =======================
 
 Python interface to Metview, a meteorological workstation and batch system for accessing, examining, manipulating and visualising meteorological data.
-See documentation at https://confluence.ecmwf.int/metview/Metview's+Python+Interface
+See documentation at https://metview.readthedocs.io/en/latest/index.html
 
 
 Try the example notebooks on Binder!
@@ -81,7 +81,7 @@ Code quality  .. image:: https://travis-ci.com/ecmwf/metview-python.svg?branch=m
 License
 -------
 
-Copyright 2017-2020 European Centre for Medium-Range Weather Forecasts (ECMWF).
+Copyright 2017-2021 European Centre for Medium-Range Weather Forecasts (ECMWF).
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
