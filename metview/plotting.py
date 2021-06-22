@@ -99,9 +99,10 @@ def _make_visdef(
                     v = Visdef.from_request(v)
                     v.set_data_id(data_id)
                     vd[i] = v.to_request()
-
-        vd = [x for x in vd if x is not None]
-        return vd
+        if vd is not None:
+            return [x for x in vd if x is not None]
+        else:
+            return []
     else:
         return []
 

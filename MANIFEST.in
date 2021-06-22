@@ -4,6 +4,7 @@ include LICENSE
 include Makefile
 include *.rst
 include tox.ini
+graft metview/etc
 
 recursive-include docs *.gitkeep
 recursive-include docs *.py
