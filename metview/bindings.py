@@ -24,7 +24,7 @@ import numpy as np
 from numpy.lib.arraysetops import isin
 
 from metview.dataset import FieldsetDb, Dataset
-from metview.style import GeoView, Style, Visdef
+from metview.style import GeoView, Style, Visdef, map_area_gallery, map_style_gallery
 from metview import plotting
 
 __version__ = "1.7.2"
@@ -1147,7 +1147,7 @@ def make(mfname):
 def _make_function_for_object(name):
     """
     Creates a function to invoke the method called name on obj. This will make it
-    possible to call some object methods as global functions. E.g.: if name="ls" and 
+    possible to call some object methods as global functions. E.g.: if name="ls" and
     f is a Fieldset we could invoke the ls() method as mv.ls(f) on top of f.ls()
     """
 
@@ -1195,7 +1195,8 @@ def bind_functions(namespace, module_name=None):
     namespace["plot_diff_maps"] = plotting.plot_diff_maps
     namespace["plot_xs"] = plotting.plot_xs
     namespace["plot_stamp"] = plotting.plot_stamp
-
+    namespace["map_style_gallery"] = map_style_gallery
+    namespace["map_area_gallery"] = map_area_gallery
     namespace["Fieldset"] = Fieldset
     namespace["Request"] = Request
 
