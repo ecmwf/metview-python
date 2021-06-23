@@ -412,7 +412,6 @@ def push_style_object(s):
 
 
 def valid_date(*args, base=None, step=None, step_units=None):
-    LOG.debug(f"args={args} base={base}")
     if len(args) != 0:
         return call("valid_date", *args)
     else:
@@ -1099,6 +1098,19 @@ def value_from_metview(val):
 
 
 # -----------------------------------------------------------------------------
+#
+# -----------------------------------------------------------------------------
+
+
+def to_dataset(fs, *args, **kwargs):
+    return fs.to_dataset(args, kwargs)
+
+
+def to_dataset(fs, *args, **kwargs):
+    return fs.to_dataset(args, kwargs)
+
+
+# -----------------------------------------------------------------------------
 #                        Creating and calling Macro functions
 # -----------------------------------------------------------------------------
 
@@ -1124,12 +1136,25 @@ def make(mfname):
     def wrapped(*args, **kwargs):
         err = _call_function(mfname, *args, **kwargs)
         if err:
-            pass  # throw Exceception
+            pass  # throw Exception
 
         val = lib.p_result_as_value()
         return value_from_metview(val)
 
     return wrapped
+
+
+def _make_function_for_object(name):
+    """
+    Creates a function to invoke the method called name on obj. This will make it
+    possible to call some object methods as global functions. E.g.: if name="ls" and 
+    f is a Fieldset we could invoke the ls() method as mv.ls(f) on top of f.ls()
+    """
+
+    def fn(obj, *args, **kwargs):
+        return getattr(obj, name)(*args, **kwargs)
+
+    return fn
 
 
 def bind_functions(namespace, module_name=None):
@@ -1150,7 +1175,7 @@ def bind_functions(namespace, module_name=None):
         # else:
         #    print('metview function %r not bound to python' % metview_name)
 
-    # HACK: some fuctions are missing from the 'dictionary' call.
+    # HACK: some functions are missing from the 'dictionary' call.
     namespace["neg"] = make("neg")
     namespace["nil"] = make("nil")
     namespace["div"] = div
@@ -1173,6 +1198,10 @@ def bind_functions(namespace, module_name=None):
 
     namespace["Fieldset"] = Fieldset
     namespace["Request"] = Request
+
+    # add some object methods the to global namespace
+    for name in ["to_dataset", "to_dataframe", "ls", "describe", "select"]:
+        namespace[name] = _make_function_for_object(name)
 
 
 # some explicit bindings are used here
