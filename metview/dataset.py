@@ -369,6 +369,17 @@ class IndexDb:
         )
         return c, res
 
+    def _get_meta(self, dims):
+        LOG.debug(f"dims={dims}")
+        key = "scalar"
+        if key in self.blocks:
+            if self.blocks[key] is None:
+                self._load_block(key)
+            df = self._filter_df(df=self.blocks[key], dims=dims)
+            # LOG.debug(f"df={df}")
+            return df
+        return None
+
     def _build_query(self, dims):
         q = ""
         for column, v in dims.items():
@@ -417,9 +428,6 @@ class IndexDb:
             if df_fs is not None:
                 # LOG.debug(f"df_fs={df_fs}")
                 dfs[key] = df_fs
-
-    # def _load_block(self, key):
-    #     return None
 
     def _make_param_info(self):
         m = self._first_index_row()
@@ -623,7 +631,7 @@ class FieldsetDb(IndexDb):
         # # return sorted(list(r))
         # return r
 
-    def ls(self, param=None, extra_keys=None):
+    def ls(self, extra_keys=None, filter=None):
         default_keys = [
             "centre",
             "shortName",
@@ -633,16 +641,35 @@ class FieldsetDb(IndexDb):
             "dataTime",
             "stepRange",
             "dataType",
-            "shortName",
+            "number",
             "gridType",
         ]
-        keys = default_keys
+        ls_keys = default_keys
         if extra_keys is not None:
-            [keys.append(x) for x in extra_keys if x not in keys]
+            [ls_keys.append(x) for x in extra_keys if x not in ls_keys]
+        keys = list(ls_keys)
 
-        m = mv.grib_get(self.fs, keys, "key")
-        md = {k: v for k, v in zip(keys, m)}
-        df = pd.DataFrame.from_dict(md)
+        dims = {} if filter is None else filter
+        dims = self._make_dims(dims)
+        [keys.append(k) for k, v in dims.items() if k not in keys]
+
+        # get metadata
+        self.load(keys=keys, vector=False)
+
+        # performs filter
+        df = self._get_meta(dims)
+
+        # extract results
+        keys = list(ls_keys)
+        keys.append("_msgIndex1")
+        df = df[keys]
+        df = df.sort_values(by="_msgIndex1")
+        df = df.rename(columns={"_msgIndex1": "Message"})
+        df = df.set_index("Message")
+
+        # m = mv.grib_get(self.fs, keys, "key")
+        # md = {k: v for k, v in zip(keys, m)}
+        # df = pd.DataFrame.from_dict(md)
         init_pandas_options()
         try:
             import IPython
@@ -652,6 +679,7 @@ class FieldsetDb(IndexDb):
                 return df
         except:
             pass
+
         print(df)
 
     def speed(self):
