@@ -275,6 +275,60 @@ def test_fieldset_select_single_file():
         assert False
 
 
+def test_fieldset_select_date():
+    # date and time
+    f = mv.read(file_in_testdir("t_time_series.grib"))
+    assert f._db is None
+
+    g = f.select(date="20201221", time="12", step="9")
+    assert len(g) == 2
+
+    ref_keys = ["shortName", "date", "time", "step"]
+    ref = [
+        ["t", "20201221", "1200", "9"],
+        ["z", "20201221", "1200", "9"],
+    ]
+
+    assert mv.grib_get(g, ref_keys) == ref
+
+    g = f.select(date=20201221, time="1200", step=9)
+    assert len(g) == 2
+    assert mv.grib_get(g, ref_keys) == ref
+
+    g = f.select(date=20201221, time="12:00", step=9)
+    assert len(g) == 2
+    assert mv.grib_get(g, ref_keys) == ref
+
+    g = f.select(date=20201221, time=12, step=9)
+    assert len(g) == 2
+    assert mv.grib_get(g, ref_keys) == ref
+
+    g = f.select(date="2020-12-21", time=1200, step=9)
+    assert len(g) == 2
+    assert mv.grib_get(g, ref_keys) == ref
+
+    g = f.select(date=datetime.datetime(2020, 12, 21), time=datetime.time(hour=12, minute=0), step=9)
+    assert len(g) == 2
+    assert mv.grib_get(g, ref_keys) == ref
+
+     # date date and time
+    g = f.select(dataDate="20201221", dataTime="12", step=9)
+    assert len(g) == 2
+    assert mv.grib_get(g, ref_keys) == ref
+   
+    g = f.select(dataDate="2020-12-21", dataTime="12:00", step=9)
+    assert len(g) == 2
+    assert mv.grib_get(g, ref_keys) == ref
+
+    # validity date and time
+    g = f.select(validityDate="20201221", validityTime="21")
+    assert len(g) == 2
+    assert mv.grib_get(g, ref_keys) == ref
+   
+    g = f.select(validityDate="2020-12-21", validityTime="21:00")
+    assert len(g) == 2
+    assert mv.grib_get(g, ref_keys) == ref
+
 def test_fieldset_select_multi_file():
     f = mv.read(file_in_testdir("tuv_pl.grib"))
     f.append(mv.read(file_in_testdir("ml_data.grib")))

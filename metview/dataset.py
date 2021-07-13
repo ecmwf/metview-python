@@ -380,22 +380,39 @@ class IndexDb:
             return df
         return None
 
-    def _build_query(self, dims):
+    def _build_query(self, dims, df):
         q = ""
         for column, v in dims.items():
             # print(f"v={v}")
             if v:
+                col_type = None
                 if q:
                     q += " and "
                 if column == "basedate":
                     column = "date*10000 + time"
                 else:
+                    col_type = df.dtypes[column]
                     column = f"`{column}`"
+
                 if not isinstance(v, list):
-                    q += f"{column} == {v}"
+                    q += f"{column} == {self._convert_query_value(v, col_type)}"
                 else:
+                    v = [self._convert_query_value(x, col_type) for x in v]
                     q += f"{column} in {v}"
         return q
+
+    def _convert_query_value(self, v, col_type):
+        if isinstance(v, datetime.date):
+            t = v.strftime("%Y%m%d")
+            return int(t) if col_type != "object" else t
+        elif isinstance(v, datetime.time):
+            t = v.strftime("%H%M")
+            return int(t) if col_type != "object" else t
+        elif isinstance(v, datetime.datetime):
+            t = v.strftime("%Y%m%d%H%M")
+            return int(t) if col_type != "object" else t
+        else:
+            return v if col_type != "object" else str(v)
 
     def _filter_df(self, df=None, dims={}):
         if len(dims) == 0:
@@ -403,10 +420,9 @@ class IndexDb:
         else:
             df_res = None
             if df is not None:
-                q = self._build_query(dims)
-                # LOG.debug("query={}".format(q))
-                # print("query={}".format(q))
                 # print("types={}".format(df.dtypes))
+                q = self._build_query(dims, df)
+                # print("query={}".format(q))
                 if q != "":
                     df_res = df.query(q)
                     df_res.reset_index(drop=True, inplace=True)
@@ -459,18 +475,30 @@ class IndexDb:
 
     def _check_dims(self, name, v):
         v = self._to_list(v)
+        valid_name = name.split(":")[0] if ":" in name else name
         if name == "basedate":
             for i, t in enumerate(v):
                 self._check_type(t, name, datetime.datetime)
                 v[i] = int(t.strftime("%Y%m%d%H%M"))
-        elif name == "date":
+        elif valid_name in [
+            "date",
+            "dataDate",
+            "validityDate",
+            "mars.date",
+            "marsDate",
+        ]:
             for i, t in enumerate(v):
-                self._check_type(t, name, (datetime.datetime, datetime.date))
-                v[i] = int(t.strftime("%Y%m%d"))
-        elif name == "time":
+                v[i] = self._convert_date(name, t)
+        elif valid_name in [
+            "time",
+            "dataTime",
+            "validityTime",
+            "mars.time",
+            "marsTime",
+        ]:
             for i, t in enumerate(v):
-                self._check_type(t, name, datetime.time)
-                v[i] = int(t.strftime("%H%M"))
+                v[i] = self._convert_time(name, t)
+                # print(f"t={t} -> {v[i]}")
         else:
             pd_type = GribIndexer.pd_types.get(name, None)
             if pd_type is not None:
@@ -486,8 +514,65 @@ class IndexDb:
             name = "marsClass"
         elif name in ["perturbationNumber"]:
             name = "number"
+        elif name in ["mars.date", "marsDate"]:
+            name = "date"
+        elif name in ["mars.time", "marsTime"]:
+            name = "time"
 
         return name, v
+
+    def _convert_date(self, param, v):
+        try:
+            if isinstance(v, datetime.datetime):
+                return v.date()
+            elif isinstance(v, datetime.date):
+                return v
+            elif isinstance(v, str):
+                return mv.date(v).date()
+            elif isinstance(v, (int, float)):
+                return mv.date(str(v)).date()
+            else:
+                raise
+        except:
+            raise Exception(f"Invalid date value={v} specified for key={param}")
+
+    def _convert_time(self, param, v):
+        try:
+            if isinstance(v, (datetime.datetime)):
+                return v.time()
+            elif isinstance(v, datetime.time):
+                return v
+            elif isinstance(v, str):
+                return self._convert_str_to_time(v)
+            elif isinstance(v, int):
+                return self._convert_str_to_time(str(v))
+            else:
+                raise
+        except:
+            raise Exception(f"Invalid time value={v} specified for key={param}")
+
+    def _convert_str_to_time(self, v):
+        h = m = 0
+        if not ":" in v:
+            # formats: h[mm], hh[mm]
+            if len(v) in [1, 2]:
+                h = int(v)
+            elif len(v) in [3, 4]:
+                r = int(v)
+                h = int(r / 100)
+                m = int(r - h * 100)
+            else:
+                raise Exception(f"Invalid time={v}")
+        else:
+            # formats: h:mm, hh:mm
+            lst = v.split(":")
+            if len(lst) >= 2:
+                h = int(lst[0])
+                m = int(lst[1])
+            else:
+                raise Exception(f"Invalid time={v}")
+
+        return datetime.time(hour=h, minute=m)
 
     def _check_type(self, v, name, dtypes):
         if not isinstance(v, dtypes):
