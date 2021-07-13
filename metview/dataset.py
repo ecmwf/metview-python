@@ -102,9 +102,29 @@ class ParamDesc:
                     # print(f"   df[{k}]={df[k]}")
             # print(df)
 
+        self._parse(md)
+        # if "level" in md and len(md["level"]) > 0:
+        #     df = pd.DataFrame(md)
+        #     for md_key in list(md.keys())[2:]:
+        #         d = df[md_key].unique().tolist()
+        #         self.md[md_key] = d
+
+        #     lev_types = df["typeOfLevel"].unique().tolist()
+        #     for t in lev_types:
+        #         # print(f" t={t}")
+        #         self.levels[t] = []
+        #         q = f"typeOfLevel == '{t}'"
+        #         # print(q)
+        #         dft = df.query(q)
+        #         if dft is not None:
+        #             self.levels[t] = dft["level"].unique().tolist()
+
+    def _parse(self, md):
         if "level" in md and len(md["level"]) > 0:
             df = pd.DataFrame(md)
-            for md_key in list(md.keys())[2:]:
+            md.pop("typeOfLevel")
+            md.pop("level")
+            for md_key in list(md.keys()):
                 d = df[md_key].unique().tolist()
                 self.md[md_key] = d
 
@@ -184,12 +204,23 @@ class ParamDesc:
 
         # specific param
         else:
-            t = {
-                "key": ["parameter"],
-                "val": [param],
-            }
-            txt = ""
-            v = db.param_meta.get(param, None)
+            v = None
+            if isinstance(param, str):
+                v = db.param_meta.get(param, None)
+                t = {
+                    "key": ["shortName", "paramId"],
+                    "val": [v.name, ParamDesc.format_list(v.md["paramId"], full=True)],
+                }
+            elif isinstance(param, int):
+                v = db.param_id_meta(param)
+                t = {
+                    "key": ["shortName", "paramId"],
+                    "val": [
+                        ParamDesc.format_list(v.md["shortName"], full=True),
+                        v.param_id,
+                    ],
+                }
+
             if v is not None:
                 add_cnt = len(v.levels) > 1
                 cnt = 0
@@ -203,13 +234,14 @@ class ParamDesc:
                 for kk, md_v in v.md.items():
                     if kk == "number" and md_v == ["0"]:
                         continue
-                    t["key"].append(labels.get(kk, kk))
-                    t["val"].append(ParamDesc.format_list(md_v, full=True))
+                    if not kk in ["shortName", "paramId"]:
+                        t["key"].append(labels.get(kk, kk))
+                        t["val"].append(ParamDesc.format_list(md_v, full=True))
 
             if in_jupyter:
-                txt = ParamDesc._make_html_table(t, header=False)
                 from IPython.display import HTML
 
+                txt = ParamDesc._make_html_table(t, header=False)
                 return HTML(txt)
             else:
                 df = pd.DataFrame.from_dict(t)
@@ -262,6 +294,41 @@ class ParamDesc:
                     return ",".join([str(x) for x in v])
         else:
             return v
+
+
+class ParamIdDesc(ParamDesc):
+    def __init__(self, param_id):
+        super().__init__("")
+        self.param_id = param_id
+
+    def load(self, db):
+        md = {
+            "shortName": [],
+            "typeOfLevel": [],
+            "level": [],
+            "date": [],
+            "time": [],
+            "step": [],
+            "number": [],
+            "paramId": [],
+            "marsClass": [],
+            "marsStream": [],
+            "marsType": [],
+            "experimentVersionNumber": [],
+        }
+
+        self.md = {}
+        self.levels = {}
+
+        # print(f"par={par}")
+        b_df = db.blocks.get("scalar", None)
+        if b_df is not None:
+            q = f"paramId == '{self.param_id}'"
+            dft = b_df.query(q)
+            if dft is not None:
+                for k in md.keys():
+                    md[k].extend(dft[k].tolist())
+                self._parse(md)
 
 
 class IndexDb:
@@ -615,6 +682,12 @@ class IndexDb:
                 self._params[par] = ParamDesc(par)
                 self._params[par].load(self)
         return self._params
+
+    def param_id_meta(self, param_id):
+        self.load()
+        p = ParamIdDesc(param_id)
+        p.load(self)
+        return p
 
     def describe(self, param=None):
         return ParamDesc.describe(self, param=param)
