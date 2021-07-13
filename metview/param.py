@@ -206,10 +206,10 @@ class ParamInfo:
                 val = []
                 for x in v:
                     try:
-                        val.append(int(x)) 
+                        val.append(int(x))
                     except:
-                        val.append(None) 
-            m[key_val] = val  
+                        val.append(None)
+            m[key_val] = val
         return m
 
     def __str__(self):

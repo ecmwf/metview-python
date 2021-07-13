@@ -65,7 +65,9 @@ class Cache:
                     with open(cont_file, "r") as f:
                         try:
                             for item in f.read().split("\n"):
-                                if item and not os.path.exists(os.path.join(path, item)):
+                                if item and not os.path.exists(
+                                    os.path.join(path, item)
+                                ):
                                     return False
                         except:
                             return False

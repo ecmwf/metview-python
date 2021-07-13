@@ -645,10 +645,12 @@ class FieldsetDb(IndexDb):
             "gridType",
         ]
         ls_keys = default_keys
+        extra_keys = [] if extra_keys is None else extra_keys
         if extra_keys is not None:
             [ls_keys.append(x) for x in extra_keys if x not in ls_keys]
         keys = list(ls_keys)
 
+        # add keys appearing in the filter to the full list of keys
         dims = {} if filter is None else filter
         dims = self._make_dims(dims)
         [keys.append(k) for k, v in dims.items() if k not in keys]
@@ -667,9 +669,16 @@ class FieldsetDb(IndexDb):
         df = df.rename(columns={"_msgIndex1": "Message"})
         df = df.set_index("Message")
 
-        # m = mv.grib_get(self.fs, keys, "key")
-        # md = {k: v for k, v in zip(keys, m)}
-        # df = pd.DataFrame.from_dict(md)
+        # only show the column for number in the default set of keys if
+        # there are any valid values in it
+        if "number" not in extra_keys:
+            r = df["number"].unique()
+            skip = False
+            if len(r) == 1:
+                skip = r[0] in ["0", None]
+            if skip:
+                df.drop("number", axis=1, inplace=True)
+
         init_pandas_options()
         try:
             import IPython

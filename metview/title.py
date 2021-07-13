@@ -64,7 +64,6 @@ class Title:
             # return mv.mtext(text_lines=lines, text_font_size=font_size)
             return mv.mtext(**lines, text_font_size=font_size)
 
-
         return mv.mtext(
             {
                 "text_line_1": f"""{label} Par: <grib_info key='shortName'/> Lev: <grib_info key='level'/> (<grib_info key='levelType'/>) Step: +<grib_info key='step'/>h Valid: <grib_info key='valid-date' format='%Y-%m-%d %H'/>""",
