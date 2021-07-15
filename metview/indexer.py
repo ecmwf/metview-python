@@ -9,7 +9,8 @@
 # nor does it submit to any jurisdiction.
 #
 
-import glob
+import copy
+import datetime
 import logging
 import os
 from pathlib import Path
@@ -37,24 +38,44 @@ class GribIndexer:
 
     # 0: ecCodes type, 1: pandas type, 2: use in duplicate check
     DEFAULT_KEYS = {
-        "shortName": ("s", str, False),
-        "paramId": ("l", np.int32, False),
-        "date": ("l", np.int64, True),
-        "time": ("l", np.int64, True),
-        "step": ("s", str, True),
-        "level": ("l", np.int32, True),
-        "typeOfLevel": ("s", str, False),
-        "number": ("s", str, True),
-        "experimentVersionNumber": ("s", str, False),
-        "marsClass": ("s", str, False),
-        "marsStream": ("s", str, False),
-        "marsType": ("s", str, False),
+        "shortName": ("s", str, str, False),
+        "paramId": ("l", "Int32", int, False),
+        "date": ("l", "Int64", int, True),
+        "time": ("l", "Int64", int, True),
+        "step": ("s", str, str, True),
+        "level": ("l", "Int32", int, True),
+        "typeOfLevel": ("s", str, str, False),
+        "number": ("s", str, str, True),
+        "experimentVersionNumber": ("s", str, str, False),
+        "marsClass": ("s", str, str, False),
+        "marsStream": ("s", str, str, False),
+        "marsType": ("s", str, str, False),
     }
 
     DEFAULT_ECC_KEYS = [f"{k}:{v[0]}" for k, v in DEFAULT_KEYS.items()]
     BLOCK_KEYS = ["shortName", "typeOfLevel"]
 
-    pd_types = {k: v[1] for k, v in DEFAULT_KEYS.items()}
+    DATE_KEYS = {
+        k: ("l", "Int64", int)
+        for k in ["date", "dataDate", "validityDate", "mars.date", "marsDate"]
+    }
+    TIME_KEYS = {
+        k: ("l", "Int64", int)
+        for k in ["time", "dataTime", "validityTime", "mars.time", "marsTime"]
+    }
+
+    DATETIME_KEYS = {
+        "_dateTime": ("date", "time"),
+        "_dataDateTime": ("dataDate", "dataTime"),
+        "_validityDateTime": ("validityDate", "validityTime"),
+    }
+
+    PREDEF_KEYS = copy.deepcopy(DEFAULT_KEYS)
+    PREDEF_KEYS.update(DATE_KEYS)
+    PREDEF_KEYS.update(TIME_KEYS)
+
+    PREDEF_PD_TYPES = {k: v[1] for k, v in PREDEF_KEYS.items()}
+    PREDEF_PT_TYPES = {k: v[2] for k, v in PREDEF_KEYS.items()}
 
     def __init__(self, db):
         self.db = db
@@ -70,7 +91,7 @@ class GribIndexer:
             self.keys_ecc.append(name)
 
         self.keys_duplicate_check = [
-            k for k, v in GribIndexer.DEFAULT_KEYS.items() if v[2] == True
+            k for k, v in GribIndexer.DEFAULT_KEYS.items() if v[3] == True
         ]
 
         self.shortname_index = self.keys.index("shortName")
@@ -98,15 +119,21 @@ class GribIndexer:
         # self.block_key_index = [self.keys.index(v) for v in GribIndexer.BLOCK_KEYS]
 
         self.pd_types = {k: v[1] for k, v in GribIndexer.DEFAULT_KEYS.items()}
+        self.pt_types = {k: v[2] for k, v in GribIndexer.DEFAULT_KEYS.items()}
 
     def update_keys(self, keys):
         ret = False
         for k in keys:
             name = k
-            if name not in self.keys:
+            # we do not add datetime keys (they are pseudo keys, and their value
+            # is always generated on the fly)
+            if name not in self.keys and name not in GribIndexer.DATETIME_KEYS:
                 self.keys.append(name)
-                self.keys_ecc.append(name)
-                self.pd_types[name] = str
+                p = GribIndexer.PREDEF_KEYS.get(name, ("", str, str))
+                ecc_name = name if p[0] == "" else name + ":" + p[0]
+                self.keys_ecc.append(ecc_name)
+                self.pd_types[name] = p[1]
+                self.pt_types[name] = p[2]
                 ret = True
         return ret
 
@@ -215,9 +242,15 @@ class GribIndexer:
 
     def _make_dataframe(self, data, columns=None):
         if columns is not None:
-            df = pd.DataFrame(data, columns=columns).astype(self.pd_types)
+            df = pd.DataFrame(data, columns=columns)
         else:
-            df = pd.DataFrame(data).astype(self.pd_types)
+            df = pd.DataFrame(data)
+
+        for c in df.columns:
+            if self.pd_types.get(c, "") in ["Int32", "Int64"]:
+                df[c].fillna(value=np.nan, inplace=True)
+            df = df.astype(self.pd_types)
+
         df = df.sort_values(
             by=list(df.columns),
             key=lambda col: col.str.pad(side="left", fillchar="0", width=4)
@@ -237,7 +270,7 @@ class GribIndexer:
         name = key
         f_name = os.path.join(dir_name, f"{name}.csv.gz")
         # LOG.debug("f_name={}".format(f_name))
-        return pd.read_csv(f_name, index_col=None, dtype=GribIndexer.pd_types)
+        return pd.read_csv(f_name, index_col=None, dtype=GribIndexer.PREDEF_PD_TYPES)
 
     @staticmethod
     def get_storage_key_list(dir_name):
@@ -253,6 +286,160 @@ class GribIndexer:
     @staticmethod
     def is_key_wind(key):
         return key in GribIndexer.VECTOR_PARAMS
+
+    @staticmethod
+    def _convert_query_value(v, col_type):
+        # print(f"v={v} {type(v)} {col_type}")
+        return v if col_type != "object" else str(v)
+        # if isinstance(v, datetime.datetime):
+        #     t = v.strftime("%Y%m%d%H%M")
+        #     # print(f"  -> {t}")
+        #     return int(t) if col_type != "object" else t
+        # elif isinstance(v, datetime.date):
+        #     t = v.strftime("%Y%m%d")
+        #     return int(t) if col_type != "object" else t
+        # elif isinstance(v, datetime.time):
+        #     t = v.strftime("%H%M")
+        #     return int(t) if col_type != "object" else t
+        # else:
+        #     return v if col_type != "object" else str(v)
+
+    @staticmethod
+    def _check_datetime_in_filter_input(keys):
+        for k, v in GribIndexer.DATETIME_KEYS.items():
+            name = k[1:]
+            name_date = v[0]
+            name_time = v[1]
+            if keys.get(name, []) and (
+                keys.get(name_date, []) or keys.get(name_time, [])
+            ):
+                raise Exception(
+                    "Cannot specify {name} together with {name_date} and {name_time}!"
+                )
+
+    @staticmethod
+    def _convert_filter_value(name, v):
+        """
+        Analyse the filter key-value pairs and performs the necessary conversions
+        """
+        valid_name = name.split(":")[0] if ":" in name else name
+
+        # datetime keys are pseudo keys, they start with _. Their value is converted to
+        # datetime. The key itself is not added to the scan!
+        if ("_" + valid_name) in GribIndexer.DATETIME_KEYS:
+            valid_name = "_" + valid_name
+            name_date = GribIndexer.DATETIME_KEYS[valid_name][0]
+            name_time = GribIndexer.DATETIME_KEYS[valid_name][1]
+            for i, t in enumerate(v):
+                v[i] = GribIndexer._to_datetime(name, t)
+                # print(f"t={t} -> {v[i]}")
+            # We add the date and time components with an empty value. So they will be
+            # added to the scan, but they will be ignored by the query. Conversely,
+            # the datetime key itself will be ignored in the scan, but will be used
+            # in the query.
+            return [("_" + name, v), (name_date, []), (name_time, [])]
+        # we convert dates to int
+        elif valid_name in GribIndexer.DATE_KEYS:
+            for i, t in enumerate(v):
+                v[i] = int(GribIndexer._to_date(name, t).strftime("%Y%m%d"))
+        # we convert times to int
+        elif valid_name in GribIndexer.TIME_KEYS:
+            for i, t in enumerate(v):
+                v[i] = int(GribIndexer._to_time(name, t).strftime("%H%M"))
+                # print(f"t={t} -> {v[i]}")
+        else:
+            pt_type = GribIndexer.PREDEF_PT_TYPES.get(name, None)
+            # print(f"name={name} {pt_type}")
+            if pt_type is not None:
+                for i, t in enumerate(v):
+                    v[i] = pt_type(t)
+                    # print(f" t={t} -> {v[i]}")
+
+        # remap some names to ones already in the default set of indexer keys
+        if name in ["type", "mars.type"]:
+            name = "marsType"
+        elif name in ["stream", "mars.stream"]:
+            name = "marsStream"
+        elif name in ["class", "mars.class", "class_"]:
+            name = "marsClass"
+        elif name in ["perturbationNumber"]:
+            name = "number"
+        elif name in ["mars.date", "marsDate"]:
+            name = "date"
+        elif name in ["mars.time", "marsTime"]:
+            name = "time"
+
+        return [(name, v)]
+
+    @staticmethod
+    def _to_datetime(param, v):
+        try:
+            if isinstance(v, datetime.datetime):
+                return v
+            elif isinstance(v, str):
+                return mv.date(v)
+            elif isinstance(v, (int, float)):
+                return mv.date(str(v))
+            else:
+                raise
+        except:
+            raise Exception(f"Invalid datetime value={v} specified for key={param}")
+
+    @staticmethod
+    def _to_date(param, v):
+        try:
+            if isinstance(v, datetime.datetime):
+                return v.date()
+            elif isinstance(v, datetime.date):
+                return v
+            elif isinstance(v, str):
+                return mv.date(v).date()
+            elif isinstance(v, (int, float)):
+                return mv.date(str(v)).date()
+            else:
+                raise
+        except:
+            raise Exception(f"Invalid date value={v} specified for key={param}")
+
+    @staticmethod
+    def _to_time(param, v):
+        try:
+            if isinstance(v, (datetime.datetime)):
+                return v.time()
+            elif isinstance(v, datetime.time):
+                return v
+            elif isinstance(v, str):
+                return GribIndexer._str_to_time(v)
+            elif isinstance(v, int):
+                return GribIndexer._str_to_time(str(v))
+            else:
+                raise
+        except:
+            raise Exception(f"Invalid time value={v} specified for key={param}")
+
+    @staticmethod
+    def _str_to_time(v):
+        h = m = 0
+        if not ":" in v:
+            # formats: h[mm], hh[mm]
+            if len(v) in [1, 2]:
+                h = int(v)
+            elif len(v) in [3, 4]:
+                r = int(v)
+                h = int(r / 100)
+                m = int(r - h * 100)
+            else:
+                raise Exception(f"Invalid time={v}")
+        else:
+            # formats: h:mm, hh:mm
+            lst = v.split(":")
+            if len(lst) >= 2:
+                h = int(lst[0])
+                m = int(lst[1])
+            else:
+                raise Exception(f"Invalid time={v}")
+
+        return datetime.time(hour=h, minute=m)
 
 
 class FieldsetIndexer(GribIndexer):

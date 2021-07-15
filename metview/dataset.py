@@ -405,6 +405,7 @@ class IndexDb:
         # print(f"kwargs={kwargs}")
         # LOG.debug(f"blocks={self.blocks}")
         dims = self._make_dims(kwargs)
+        # print(f"dims={dims}")
         self.load(keys=list(dims.keys()), vector=("wind" in dims.get("shortName", "")))
         # fs = mv.Fieldset()
         db, fs = self._get_fields(dims)
@@ -455,31 +456,38 @@ class IndexDb:
                 col_type = None
                 if q:
                     q += " and "
-                if column == "basedate":
-                    column = "date*10000 + time"
+
+                # datetime columns
+                if column in GribIndexer.DATETIME_KEYS:
+                    name_date = GribIndexer.DATETIME_KEYS[column][0]
+                    name_time = GribIndexer.DATETIME_KEYS[column][1]
+                    # here we should simply say: name_date*10000 + name_time. However,
+                    # pandas cannot handle it in the query because the column types are
+                    # Int64. np.int64 would work but that cannot handle missing values. So
+                    # we need to break down the condition into individual logical components!
+                    s = []
+                    for x in v:
+                        # print(f"x={x}")
+                        # print(" date=" + x.strftime("%Y%m%d"))
+                        # print(" time=" + x.strftime("%H%M"))
+                        s.append(
+                            f"(`{name_date}` == "
+                            + str(int(x.strftime("%Y%m%d")))
+                            + " and "
+                            + f"`{name_time}` == "
+                            + str(int(x.strftime("%H%M")))
+                            + ")"
+                        )
+                    q += "(" + " or ".join(s) + " ) "
                 else:
                     col_type = df.dtypes[column]
                     column = f"`{column}`"
-
-                if not isinstance(v, list):
-                    q += f"{column} == {self._convert_query_value(v, col_type)}"
-                else:
-                    v = [self._convert_query_value(x, col_type) for x in v]
-                    q += f"{column} in {v}"
+                    if not isinstance(v, list):
+                        q += f"{column} == {GribIndexer._convert_query_value(v, col_type)}"
+                    else:
+                        v = [GribIndexer._convert_query_value(x, col_type) for x in v]
+                        q += f"{column} in {v}"
         return q
-
-    def _convert_query_value(self, v, col_type):
-        if isinstance(v, datetime.date):
-            t = v.strftime("%Y%m%d")
-            return int(t) if col_type != "object" else t
-        elif isinstance(v, datetime.time):
-            t = v.strftime("%H%M")
-            return int(t) if col_type != "object" else t
-        elif isinstance(v, datetime.datetime):
-            t = v.strftime("%Y%m%d%H%M")
-            return int(t) if col_type != "object" else t
-        else:
-            return v if col_type != "object" else str(v)
 
     def _filter_df(self, df=None, dims={}):
         if len(dims) == 0:
@@ -529,121 +537,15 @@ class IndexDb:
 
     def _make_dims(self, options):
         dims = {}
+        GribIndexer._check_datetime_in_filter_input(options)
         for k, v in options.items():
             name = str(k)
             vv = copy.deepcopy(v)
-            name, vv = self._check_dims(name, vv)
-            if vv:
-                dims[name] = vv
-
-        if dims.get("basedate", []) and (dims.get("date", []) or dims.get("time", [])):
-            raise Exception("Cannot specify basedate together with date and time!")
+            r = GribIndexer._convert_filter_value(name, self._to_list(vv))
+            for name, vv in r:
+                if len(r) > 1 or vv:
+                    dims[name] = vv
         return dims
-
-    def _check_dims(self, name, v):
-        v = self._to_list(v)
-        valid_name = name.split(":")[0] if ":" in name else name
-        if name == "basedate":
-            for i, t in enumerate(v):
-                self._check_type(t, name, datetime.datetime)
-                v[i] = int(t.strftime("%Y%m%d%H%M"))
-        elif valid_name in [
-            "date",
-            "dataDate",
-            "validityDate",
-            "mars.date",
-            "marsDate",
-        ]:
-            for i, t in enumerate(v):
-                v[i] = self._convert_date(name, t)
-        elif valid_name in [
-            "time",
-            "dataTime",
-            "validityTime",
-            "mars.time",
-            "marsTime",
-        ]:
-            for i, t in enumerate(v):
-                v[i] = self._convert_time(name, t)
-                # print(f"t={t} -> {v[i]}")
-        else:
-            pd_type = GribIndexer.pd_types.get(name, None)
-            if pd_type is not None:
-                for i, t in enumerate(v):
-                    v[i] = pd_type(t)
-
-        # remap some names to ones already in the default set of indexer keys
-        if name in ["type", "mars.type"]:
-            name = "marsType"
-        elif name in ["stream", "mars.stream"]:
-            name = "marsStream"
-        elif name in ["class", "mars.class", "class_"]:
-            name = "marsClass"
-        elif name in ["perturbationNumber"]:
-            name = "number"
-        elif name in ["mars.date", "marsDate"]:
-            name = "date"
-        elif name in ["mars.time", "marsTime"]:
-            name = "time"
-
-        return name, v
-
-    def _convert_date(self, param, v):
-        try:
-            if isinstance(v, datetime.datetime):
-                return v.date()
-            elif isinstance(v, datetime.date):
-                return v
-            elif isinstance(v, str):
-                return mv.date(v).date()
-            elif isinstance(v, (int, float)):
-                return mv.date(str(v)).date()
-            else:
-                raise
-        except:
-            raise Exception(f"Invalid date value={v} specified for key={param}")
-
-    def _convert_time(self, param, v):
-        try:
-            if isinstance(v, (datetime.datetime)):
-                return v.time()
-            elif isinstance(v, datetime.time):
-                return v
-            elif isinstance(v, str):
-                return self._convert_str_to_time(v)
-            elif isinstance(v, int):
-                return self._convert_str_to_time(str(v))
-            else:
-                raise
-        except:
-            raise Exception(f"Invalid time value={v} specified for key={param}")
-
-    def _convert_str_to_time(self, v):
-        h = m = 0
-        if not ":" in v:
-            # formats: h[mm], hh[mm]
-            if len(v) in [1, 2]:
-                h = int(v)
-            elif len(v) in [3, 4]:
-                r = int(v)
-                h = int(r / 100)
-                m = int(r - h * 100)
-            else:
-                raise Exception(f"Invalid time={v}")
-        else:
-            # formats: h:mm, hh:mm
-            lst = v.split(":")
-            if len(lst) >= 2:
-                h = int(lst[0])
-                m = int(lst[1])
-            else:
-                raise Exception(f"Invalid time={v}")
-
-        return datetime.time(hour=h, minute=m)
-
-    def _check_type(self, v, name, dtypes):
-        if not isinstance(v, dtypes):
-            raise Exception(f"Invalid {name}={v} specified! Accepted types={dtypes}.")
 
     def _to_list(self, v):
         if not isinstance(v, list):

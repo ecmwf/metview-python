@@ -90,7 +90,7 @@ def test_dataset():
 
     # Analysis
     d = ds["an"].select(
-        basedate=[mv.date("2016-09-25 00:00"), mv.date("2016-09-26 00:00")]
+        dateTime=[mv.date("2016-09-25 00:00"), mv.date("2016-09-26 00:00")]
     )
     assert set(ds["an"].blocks.keys()) == set(["scalar", "wind10m", "wind", "wind3d"])
     assert set(d.blocks.keys()) == set(["scalar", "wind10m", "wind", "wind3d"])

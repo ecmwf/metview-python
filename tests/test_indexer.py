@@ -29,6 +29,7 @@ DB_COLUMNS_WIND2 = copy.deepcopy(DB_COLUMNS)
 DB_COLUMNS_WIND2["_msgIndex2"] = ("l", np.int64, False)
 DB_DEFAULT_COLUMN_NAMES = list(GribIndexer.DEFAULT_KEYS.keys())
 
+
 def file_in_testdir(filename):
     return os.path.join(PATH, filename)
 
@@ -203,13 +204,13 @@ def test_fieldset_select_single_file():
     g = f.select(shortName=["t"], level=[500, 700], type="fc")
     assert len(g) == 0
 
-    g = f.select({"shortName":"t", "level": [500, 700], "mars.type": "an"})
+    g = f.select({"shortName": "t", "level": [500, 700], "mars.type": "an"})
     assert len(g) == 2
     assert mv.grib_get(g, ["shortName", "level:l", "mars.type"]) == [
         ["t", 500, "an"],
         ["t", 700, "an"],
     ]
-   
+
     # -------------------------
     # custom keys
     # -------------------------
@@ -233,7 +234,11 @@ def test_fieldset_select_single_file():
     assert g._db is not None
     assert "scalar" in g._db.blocks
     assert len(g._db.blocks) == 1
-    assert list(g._db.blocks["scalar"].keys())[:-1] == [*DB_DEFAULT_COLUMN_NAMES, "gridType", "mars.param:s"]
+    assert list(g._db.blocks["scalar"].keys())[:-1] == [
+        *DB_DEFAULT_COLUMN_NAMES,
+        "gridType",
+        "mars.param:s",
+    ]
 
     # -------------------------
     # wind
@@ -307,27 +312,117 @@ def test_fieldset_select_date():
     assert len(g) == 2
     assert mv.grib_get(g, ref_keys) == ref
 
-    g = f.select(date=datetime.datetime(2020, 12, 21), time=datetime.time(hour=12, minute=0), step=9)
+    g = f.select(
+        date=datetime.datetime(2020, 12, 21),
+        time=datetime.time(hour=12, minute=0),
+        step=9,
+    )
     assert len(g) == 2
     assert mv.grib_get(g, ref_keys) == ref
 
-     # date date and time
+    # dataDate and dataTime
     g = f.select(dataDate="20201221", dataTime="12", step=9)
     assert len(g) == 2
     assert mv.grib_get(g, ref_keys) == ref
-   
+
     g = f.select(dataDate="2020-12-21", dataTime="12:00", step=9)
     assert len(g) == 2
     assert mv.grib_get(g, ref_keys) == ref
 
-    # validity date and time
+    # validityDate and validityTime
     g = f.select(validityDate="20201221", validityTime="21")
     assert len(g) == 2
     assert mv.grib_get(g, ref_keys) == ref
-   
+
     g = f.select(validityDate="2020-12-21", validityTime="21:00")
     assert len(g) == 2
     assert mv.grib_get(g, ref_keys) == ref
+
+    # dateTime
+    g = f.select(dateTime="2020-12-21 12:00", step=9)
+    assert len(g) == 2
+    assert mv.grib_get(g, ref_keys) == ref
+
+    # dataDateTime
+    g = f.select(dataDateTime="2020-12-21 12:00", step=9)
+    assert len(g) == 2
+    assert mv.grib_get(g, ref_keys) == ref
+
+    # validityDateTime
+    g = f.select(validityDateTime="2020-12-21 21:00")
+    assert len(g) == 2
+    assert mv.grib_get(g, ref_keys) == ref
+
+    # ------------------------------------
+    # check multiple dates/times
+    # ------------------------------------
+
+    ref = [
+        ["t", "20201221", "1200", "3"],
+        ["t", "20201221", "1200", "9"],
+        ["z", "20201221", "1200", "3"],
+        ["z", "20201221", "1200", "9"],
+    ]
+
+    # date and time
+    g = f.select(date="2020-12-21", time=12, step=[3, 9])
+    assert len(g) == 4
+    assert mv.grib_get(g, ref_keys) == ref
+
+    # dateTime
+    g = f.select(dateTime="2020-12-21 12:00", step=[3, 9])
+    assert len(g) == 4
+    assert mv.grib_get(g, ref_keys) == ref
+
+    # validityDate and validityTime
+    g = f.select(validityDate="2020-12-21", validityTime=[15, 21])
+    assert len(g) == 4
+    assert mv.grib_get(g, ref_keys) == ref
+
+    # validityDateTime
+    g = f.select(validityDateTime=["2020-12-21 15:00", "2020-12-21 21:00"])
+    assert len(g) == 4
+    assert mv.grib_get(g, ref_keys) == ref
+
+    # ------------------------------------
+    # check times with 1 digit hours
+    # ------------------------------------
+
+    # we create a new fieldset
+    f = mv.merge(f[0], mv.grib_set_long(f[2:4], ["time", 600]))
+
+    ref = [
+        ["t", "20201221", "0600", "3"],
+        ["z", "20201221", "0600", "3"],
+    ]
+
+    g = f.select(date="20201221", time="6", step="3")
+    assert len(g) == 2
+    assert mv.grib_get(g, ref_keys) == ref
+
+    g = f.select(date=20201221, time="06", step=3)
+    assert len(g) == 2
+    assert mv.grib_get(g, ref_keys) == ref
+
+    g = f.select(date=20201221, time="0600", step=3)
+    assert len(g) == 2
+    assert mv.grib_get(g, ref_keys) == ref
+
+    g = f.select(date=20201221, time="06:00", step=3)
+    assert len(g) == 2
+    assert mv.grib_get(g, ref_keys) == ref
+
+    g = f.select(validityDate="2020-12-21", validityTime=9)
+    assert len(g) == 2
+    assert mv.grib_get(g, ref_keys) == ref
+
+    g = f.select(validityDate="2020-12-21", validityTime="09")
+    assert len(g) == 2
+    assert mv.grib_get(g, ref_keys) == ref
+
+    g = f.select(validityDate="2020-12-21", validityTime=18)
+    assert len(g) == 0
+
 
 def test_fieldset_select_multi_file():
     f = mv.read(file_in_testdir("tuv_pl.grib"))
@@ -351,7 +446,7 @@ def test_fieldset_select_multi_file():
     assert "scalar" in g._db.blocks
     md = [
         ["t"],
-        ["130"],
+        [130],
         [20180111],
         [1200],
         [12],
