@@ -580,8 +580,12 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             raise ValueError("Fieldset cannot take both path and fields")
 
         if path is not None:
-            temp = read(path)
-            self.steal_val_pointer(temp)
+            if isinstance(path, list):
+                # fill the 'fields' var - it will be used a few lines down
+                fields = [read(p) for p in path]
+            else:
+                temp = read(path)
+                self.steal_val_pointer(temp)
 
         if fields is not None:
             for f in fields:

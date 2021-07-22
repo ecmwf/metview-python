@@ -748,6 +748,15 @@ def test_fieldset_contructor_with_path():
     assert ni0["index"] == 21597
 
 
+def test_fieldset_create_from_list_of_paths():
+    paths = [os.path.join(PATH, "t_for_xs.grib"), os.path.join(PATH, "ml_data.grib")]
+    f = mv.Fieldset(path=paths)
+    assert f.count() == 42
+    assert f[0:2].grib_get_long("level") == [1000, 850]
+    assert f[5:9].grib_get_long("level") == [300, 1, 1, 5]
+    assert f[40:42].grib_get_long("level") == [133, 137]
+
+
 def test_fieldset_append_from_empty():
     f = mv.Fieldset()
     g = mv.read(os.path.join(PATH, "tuv_pl.grib"))
