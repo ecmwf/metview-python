@@ -2,6 +2,11 @@
 Changelog for Metview's Python interface
 ========================================
 
+1.7.3
+------------------
+- the Fieldset constructor can now take a list of paths to GRIB files
+  - e.g. a = Fieldset(path=['/path1/to/data1.grib', 'relpath/data2.grib'])
+
 1.7.2
 ------------------
 - new argument to setoutput(plot_widget=) - default True, set False to allow images to be saved into the notebook
