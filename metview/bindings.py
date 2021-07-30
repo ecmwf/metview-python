@@ -340,6 +340,13 @@ class Request(dict, Value):
     def __getitem__(self, index):
         return subset(self, index)
 
+    def __setitem__(self, index, value):
+        if self.val_pointer:
+            push_arg(index)
+            push_arg(value)
+            lib.p_set_subvalue_from_arg_stack(self.val_pointer)
+        dict.__setitem__(self, index, value)
+
 
 def push_bytes(b):
     lib.p_push_string(b)
@@ -630,14 +637,13 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         if (path is not None) and (fields is not None):
             raise ValueError("Fieldset cannot take both path and fields")
 
-        if path is not None and path != "":
-            for f in get_file_list(path):
-                # LOG.debug(f"f={f}")
-                if len(self) == 0:
-                    temp = read(f)
-                    self.steal_val_pointer(temp)
-                else:
-                    self.append(read(f))
+        if path is not None:
+            if isinstance(path, list):
+                # fill the 'fields' var - it will be used a few lines down
+                fields = [read(p) for p in path]
+            else:
+                temp = read(path)
+                self.steal_val_pointer(temp)
 
         if fields is not None:
             for f in fields:
