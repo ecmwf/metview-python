@@ -101,6 +101,26 @@ def test_definitions_as_dict():
     assert mcont_dict["CONTOUR_MIN_LEVEL"] == 4.9
 
 
+def test_modify_request():
+    c = mv.mcont(
+        {
+            "CONTOUR_LINE_COLOUR": "PURPLE",
+            "CONTOUR_LINE_THICKNESS": 3,
+            "CONTOUR_HIGHLIGHT": False,
+        }
+    )
+    c["CONTOUR_linE_COLOUR"] = "GREEN"
+    c["CONTOUR_linE_style"] = "dash"
+    assert c["CONTOUR_LINE_THICKNESS"] == 3
+    assert c["CONTOUR_LINE_COLOUR"] == "GREEN"
+    assert c["CONTOUR_LINE_STYLE"] == "DASH"
+    assert c["CONTour_LINE_STYLE"] == "DASH"
+    # for visual testing
+    #mv.setoutput(mv.png_output(output_name="ff"))
+    #a = mv.read(os.path.join(PATH, "test.grib"))
+    #mv.plot(a, c)
+
+
 def test_print():
     mv.print("Start ", 7, 1, 3, " Finished!")
     mv.print(6, 2, " Middle ", 6)
@@ -2078,9 +2098,9 @@ def test_read_request():
     assert isinstance(req["CONTOUR_LEVEL_LIST"], list)
     assert isinstance(req["CONTOUR_LEVEL_LIST"][0], float)
     assert req["CONTOUR_LEVEL_LIST"] == [-10, 0, 10]
-    assert isinstance(req["contour_COLOUR_list"], list)
-    assert isinstance(req["contour_colour_list"][0], str)
-    assert req["CONTOUR_coLour_liSt"] == [
+    assert isinstance(req["contour_sHade_COLOUR_list"], list)
+    assert isinstance(req["contour_shade_colour_list"][0], str)
+    assert req["CONTOUR_sHADe_coLour_liSt"] == [
         "RGB(0.5,0.2,0.8)",
         "RGB(0.8,0.7,0.3)",
         "RGB(0.4,0.8,0.3)",

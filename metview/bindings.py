@@ -330,6 +330,13 @@ class Request(dict, Value):
     def __getitem__(self, index):
         return subset(self, index)
 
+    def __setitem__(self, index, value):
+        if self.val_pointer:
+            push_arg(index)
+            push_arg(value)
+            lib.p_set_subvalue_from_arg_stack(self.val_pointer)
+        dict.__setitem__(self, index, value)
+
 
 def push_bytes(b):
     lib.p_push_string(b)
