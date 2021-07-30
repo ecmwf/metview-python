@@ -337,6 +337,11 @@ class Request(dict, Value):
 
             lib.p_push_request(r)
 
+    def update(self, items):
+        for key in items:
+            self.__setitem__(key, items[key])
+
+
     def __getitem__(self, index):
         return subset(self, index)
 
