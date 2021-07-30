@@ -116,7 +116,27 @@ def test_modify_request():
     assert c["CONTOUR_LINE_STYLE"] == "DASH"
     assert c["CONTour_LINE_STYLE"] == "DASH"
     # for visual testing
-    #mv.setoutput(mv.png_output(output_name="ff"))
+    # mv.setoutput(mv.png_output(output_name="ff"))
+    # a = mv.read(os.path.join(PATH, "test.grib"))
+    # mv.plot(a, c)
+
+
+def test_modify_request_via_update():
+    c = mv.mcont(
+        {
+            "CONTOUR_LINE_COLOUR": "PURPLE",
+            "CONTOUR_LINE_THICKNESS": 3,
+            "CONTOUR_HIGHLIGHT": False,
+        }
+    )
+    new_params = {"CONTOUR_linE_COLOUR": "OliVE", "CONTOUR_linE_style": "DOT"}
+    c.update(new_params)
+    assert c["CONTOUR_LINE_THICKNESS"] == 3
+    assert c["CONTOUR_LINE_COLOUR"] == "OliVE"
+    assert c["CONTOUR_LINE_STYLE"] == "DOT"
+    assert c["CONTour_LINE_STYLE"] == "DOT"
+    # for visual testing
+    #mv.setoutput(mv.png_output(output_name="gg"))
     #a = mv.read(os.path.join(PATH, "test.grib"))
     #mv.plot(a, c)
 
