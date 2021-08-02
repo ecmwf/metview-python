@@ -327,13 +327,21 @@ class Request(dict, Value):
 
             lib.p_push_request(r)
 
-    def update(self, items):
-        for key in items:
-            self.__setitem__(key, items[key])
-
+    def update(self, items, sub=""):
+        if sub:
+            subreq = self[sub.upper()]
+            subreq.update(items)
+            self[sub] = subreq
+        else:
+            for key in items:
+                self.__setitem__(key, items[key])
 
     def __getitem__(self, index):
-        return subset(self, index)
+        item = subset(self, index)
+        # subrequests can return '#' if not uppercase
+        if item == "#":
+            item = subset(self, index.upper())
+        return item
 
     def __setitem__(self, index, value):
         if self.val_pointer:

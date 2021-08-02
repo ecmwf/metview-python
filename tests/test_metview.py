@@ -141,6 +141,33 @@ def test_modify_request_via_update():
     #mv.plot(a, c)
 
 
+def test_modify_embedded_request_via_update():
+
+    coastlines = mv.mcoast(
+        map_coastline_thickness         = 3,
+        map_coastline_land_shade        = "on",
+        map_coastline_land_shade_colour = "cyan"
+        )
+
+    gv = mv.geoview(
+        map_area_definition = "corners",
+        area                = [17.74,-35.85,81.57,63.93],
+        coastlines          = coastlines
+        )
+
+    gv.update({"MAP_COASTLINE_land_SHADE_COLOUR": "green"}, sub="COASTlines")
+
+    assert gv["map_area_definition"] == "CORNERS"
+    c = gv["COAStLINES"]
+    assert c["MAP_COASTLINE_LAND_SHADE_COLOUR"] == "green"
+    assert c["map_coastline_land_shade_colour"] == "green"
+
+    # for visual testing
+    #mv.setoutput(mv.png_output(output_name="gg"))
+    #a = mv.read(os.path.join(PATH, "test.grib"))
+    #mv.plot(a, gv)
+
+
 def test_print():
     mv.print("Start ", 7, 1, 3, " Finished!")
     mv.print(6, 2, " Middle ", 6)
