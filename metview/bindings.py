@@ -341,7 +341,6 @@ class Request(dict, Value):
         for key in items:
             self.__setitem__(key, items[key])
 
-
     def __getitem__(self, index):
         return subset(self, index)
 
@@ -644,11 +643,15 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
 
         if path is not None:
             if isinstance(path, list):
-                # fill the 'fields' var - it will be used a few lines down
-                fields = [read(p) for p in path]
+                v = []
+                for p in path:
+                    v.extend(get_file_list(p))
+                path = v
             else:
-                temp = read(path)
-                self.steal_val_pointer(temp)
+                path = get_file_list(path)
+
+            # fill the 'fields' var - it will be used a few lines down
+            fields = [read(p) for p in path]
 
         if fields is not None:
             for f in fields:

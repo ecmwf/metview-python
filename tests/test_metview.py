@@ -136,9 +136,9 @@ def test_modify_request_via_update():
     assert c["CONTOUR_LINE_STYLE"] == "DOT"
     assert c["CONTour_LINE_STYLE"] == "DOT"
     # for visual testing
-    #mv.setoutput(mv.png_output(output_name="gg"))
-    #a = mv.read(os.path.join(PATH, "test.grib"))
-    #mv.plot(a, c)
+    # mv.setoutput(mv.png_output(output_name="gg"))
+    # a = mv.read(os.path.join(PATH, "test.grib"))
+    # mv.plot(a, c)
 
 
 def test_print():
@@ -859,6 +859,72 @@ def test_fieldset_create_from_list_of_paths():
     assert f[0:2].grib_get_long("level") == [1000, 850]
     assert f[5:9].grib_get_long("level") == [300, 1, 1, 5]
     assert f[40:42].grib_get_long("level") == [133, 137]
+
+
+def test_fieldset_create_from_glob_path_single():
+    f = mv.Fieldset(path=os.path.join(PATH, "test.g*ib"))
+    assert type(f) == mv.Fieldset
+    assert len(f) == 1
+    ni = mv.nearest_gridpoint_info(f, 57.193, -2.360)
+    ni0 = ni[0]
+    assert np.isclose(ni0["latitude"], 57.0)
+    assert np.isclose(ni0["longitude"], 357.75)
+    assert np.isclose(ni0["distance"], 22.4505)
+    assert np.isclose(ni0["value"], 282.436)
+    assert ni0["index"] == 21597
+
+
+def test_fieldset_create_from_glob_path_multi():
+    f = mv.Fieldset(path=os.path.join(PATH, "t_*.grib"))
+    assert type(f) == mv.Fieldset
+    assert len(f) == 16
+    par_ref = [
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["t", "850"],
+        ["t", "700"],
+        ["t", "500"],
+        ["t", "400"],
+        ["t", "300"],
+    ]
+    assert par_ref == mv.grib_get(f, ["shortName", "level"])
+
+
+def test_fieldset_create_from_glob_paths():
+    f = mv.Fieldset(
+        path=[os.path.join(PATH, "test.g*ib"), os.path.join(PATH, "t_*.grib")]
+    )
+    assert type(f) == mv.Fieldset
+    assert len(f) == 17
+    par_ref = [
+        ["2t", "0"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["t", "850"],
+        ["t", "700"],
+        ["t", "500"],
+        ["t", "400"],
+        ["t", "300"],
+    ]
+    assert par_ref == mv.grib_get(f, ["shortName", "level"])
 
 
 def test_fieldset_append_from_empty():
