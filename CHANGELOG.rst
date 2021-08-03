@@ -8,6 +8,8 @@ Changelog for Metview's Python interface
   - e.g. a = Fieldset(path=['/path1/to/data1.grib', 'relpath/data2.grib'])
 - the result of a call to mcont() etc can now be modified, e.g.
   - c = mv.mcont() ; c["contour_line_colour"] = "green" ; mv.plot(data, c)
+  - gv.update({"MAP_COASTLINE_land_SHADE_COLOUR": "green"}, sub="COASTlines")
+
 
 1.7.2
 ------------------
