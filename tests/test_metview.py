@@ -155,12 +155,17 @@ def test_modify_embedded_request_via_update():
         coastlines          = coastlines
         )
 
-    gv.update({"MAP_COASTLINE_land_SHADE_COLOUR": "green"}, sub="COASTlines")
+    with pytest.raises(IndexError):
+        gv.update({"MAP_COASTLINE_land_SHADE_COLOUR": "yellow"}, sub="XXCOASTlines")
+    with pytest.raises(IndexError):
+        gv.update({"MAP_COASTLINE_land_SHADE_COLOUR": "yellow"}, sub=["a", 2])
 
+    gv.update({"MAP_COASTLINE_land_SHADE_COLOUR": "green"}, sub="COASTlines")
     assert gv["map_area_definition"] == "CORNERS"
     c = gv["COAStLINES"]
     assert c["MAP_COASTLINE_LAND_SHADE_COLOUR"] == "green"
     assert c["map_coastline_land_shade_colour"] == "green"
+
 
     # for visual testing
     #mv.setoutput(mv.png_output(output_name="gg"))

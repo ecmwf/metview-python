@@ -339,9 +339,14 @@ class Request(dict, Value):
 
     def update(self, items, sub=""):
         if sub:
+            if not isinstance(sub, str):
+                raise IndexError("sub argument should be a string")
             subreq = self[sub.upper()]
-            subreq.update(items)
-            self[sub] = subreq
+            if subreq:
+                subreq.update(items)
+                self[sub] = subreq
+            else:
+                raise IndexError("'" + sub + "' not a valid subrequest in " + str(self))
         else:
             for key in items:
                 self.__setitem__(key, items[key])
@@ -354,7 +359,7 @@ class Request(dict, Value):
         return item
 
     def __setitem__(self, index, value):
-        if self.val_pointer:
+        if self.val_pointer and value is not None:
             push_arg(index)
             push_arg(value)
             lib.p_set_subvalue_from_arg_stack(self.val_pointer)
