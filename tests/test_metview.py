@@ -136,24 +136,24 @@ def test_modify_request_via_update():
     assert c["CONTOUR_LINE_STYLE"] == "DOT"
     assert c["CONTour_LINE_STYLE"] == "DOT"
     # for visual testing
-    #mv.setoutput(mv.png_output(output_name="gg"))
-    #a = mv.read(os.path.join(PATH, "test.grib"))
-    #mv.plot(a, c)
+    # mv.setoutput(mv.png_output(output_name="gg"))
+    # a = mv.read(os.path.join(PATH, "test.grib"))
+    # mv.plot(a, c)
 
 
 def test_modify_embedded_request_via_update():
 
     coastlines = mv.mcoast(
-        map_coastline_thickness         = 3,
-        map_coastline_land_shade        = "on",
-        map_coastline_land_shade_colour = "cyan"
-        )
+        map_coastline_thickness=3,
+        map_coastline_land_shade="on",
+        map_coastline_land_shade_colour="cyan",
+    )
 
     gv = mv.geoview(
-        map_area_definition = "corners",
-        area                = [17.74,-35.85,81.57,63.93],
-        coastlines          = coastlines
-        )
+        map_area_definition="corners",
+        area=[17.74, -35.85, 81.57, 63.93],
+        coastlines=coastlines,
+    )
 
     with pytest.raises(IndexError):
         gv.update({"MAP_COASTLINE_land_SHADE_COLOUR": "yellow"}, sub="XXCOASTlines")
@@ -166,11 +166,10 @@ def test_modify_embedded_request_via_update():
     assert c["MAP_COASTLINE_LAND_SHADE_COLOUR"] == "green"
     assert c["map_coastline_land_shade_colour"] == "green"
 
-
     # for visual testing
-    #mv.setoutput(mv.png_output(output_name="gg"))
-    #a = mv.read(os.path.join(PATH, "test.grib"))
-    #mv.plot(a, gv)
+    # mv.setoutput(mv.png_output(output_name="gg"))
+    # a = mv.read(os.path.join(PATH, "test.grib"))
+    # mv.plot(a, gv)
 
 
 def test_print():
