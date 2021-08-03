@@ -24,7 +24,7 @@ import numpy as np
 from numpy.lib.arraysetops import isin
 
 from metview.dataset import FieldsetDb, Dataset
-from metview.style import GeoView, Style, Visdef, map_area_gallery, map_style_gallery
+from metview.style import GeoView, Style, Visdef, map_area_gallery, map_style_gallery, make_geoview
 from metview import plotting
 
 __version__ = "1.7.2"
@@ -1211,6 +1211,7 @@ def bind_functions(namespace, module_name=None):
     namespace["plot_stamp"] = plotting.plot_stamp
     namespace["map_style_gallery"] = map_style_gallery
     namespace["map_area_gallery"] = map_area_gallery
+    namespace["make_geoview"] = make_geoview
     namespace["Fieldset"] = Fieldset
     namespace["Request"] = Request
 

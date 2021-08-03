@@ -615,12 +615,24 @@ class MapConf:
     def make_geo_view(self, area=None, style=None, plot_type=None):
         if style is None and plot_type == "diff":
             style = "base_diff"
+
         a, s = self.find(area=area, style=style)
         if s is not None:
             s = s.clone()
+
         if plot_type == "stamp":
             s = s.update({"map_grid": "off", "map_label": "off"})
-        return GeoView(a, s)
+
+        if a is not None and a:
+            a = copy.deepcopy(a)
+        else:
+            a = {}
+
+        if s is not None and s:
+            a["coastlines"] = s.to_request()
+
+        return mv.geoview(**a)
+        # return GeoView(a, s)
 
 
 class StyleGallery:
@@ -756,7 +768,7 @@ def map_area_gallery():
     return g.build()
 
 
-def map(**argv):
+def make_geoview(**argv):
     return MAP_CONF().make_geo_view(**argv)
 
 

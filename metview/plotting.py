@@ -113,11 +113,9 @@ def _make_view(view, area, plot_type=None):
         raise Exception("Cannot specify both view and area in plot command!")
     if view is None:
         if area is not None:
-            view = mv.style.map(area=area, plot_type=plot_type).to_request()
+            view = mv.make_geoview(area=area, plot_type=plot_type)
         else:
-            view = mv.style.map(area="base", plot_type=plot_type).to_request()
-    elif isinstance(view, GeoView):
-        view = view.to_request()
+            view = mv.make_geoview(area="base", plot_type=plot_type)
     return view
 
 
