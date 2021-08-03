@@ -344,7 +344,7 @@ class Request(dict, Value):
         return item
 
     def __setitem__(self, index, value):
-        if self.val_pointer:
+        if self.val_pointer and value is not None:
             push_arg(index)
             push_arg(value)
             lib.p_set_subvalue_from_arg_stack(self.val_pointer)
