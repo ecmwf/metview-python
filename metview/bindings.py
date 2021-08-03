@@ -329,9 +329,14 @@ class Request(dict, Value):
 
     def update(self, items, sub=""):
         if sub:
+            if not isinstance(sub, str):
+                raise IndexError("sub argument should be a string")
             subreq = self[sub.upper()]
-            subreq.update(items)
-            self[sub] = subreq
+            if subreq:
+                subreq.update(items)
+                self[sub] = subreq
+            else:
+                raise IndexError("'" + sub + "' not a valid subrequest in " + str(self))
         else:
             for key in items:
                 self.__setitem__(key, items[key])
