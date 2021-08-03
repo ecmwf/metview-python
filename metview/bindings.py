@@ -289,7 +289,7 @@ class Request(dict, Value):
             n = lib.p_get_req_num_params(req)
             for i in range(0, n):
                 param = string_from_ffi(lib.p_get_req_param(req, i))
-                self[param] = self[param]
+                dict.__setitem__(self, param, self[param])
             # self['_MACRO'] = 'BLANK'
             # self['_PATH']  = 'BLANK'
 
