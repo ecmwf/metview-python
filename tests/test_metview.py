@@ -931,6 +931,13 @@ def test_fieldset_merge_4():
     assert g3.grib_get_long("level") == [1000, 850, 700]
 
 
+def test_fieldset_str():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    assert str(grib) == "Fieldset (6 fields)"
+    assert str(grib[4]) == "Fieldset (1 field)"
+    assert str(mv.Fieldset()) == "Fieldset (0 fields)"
+
+
 def test_fieldset_pickling():
     pickled_fname = file_in_testdir("pickled_fieldset.p")
     g = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
