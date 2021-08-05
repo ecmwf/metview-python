@@ -9,6 +9,8 @@ Changelog for Metview's Python interface
 - the result of a call to mcont() etc can now be modified, e.g.
   - c = mv.mcont() ; c["contour_line_colour"] = "green" ; mv.plot(data, c)
   - gv.update({"MAP_COASTLINE_land_SHADE_COLOUR": "green"}, sub="COASTlines")
+- improved the output of print(Fieldset):
+  - "Fieldset (6 fields)"
 
 
 1.7.2

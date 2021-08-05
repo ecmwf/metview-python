@@ -788,6 +788,13 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         self.__dict__.update(state)
         self.__init__(val_pointer=None, path=state["url_path"])
 
+    def __str__(self):
+        n = int(self.count())
+        s = "s"
+        if n == 1:
+            s = ""
+        return "Fieldset (" + str(n) + " field" + s + ")"
+
 
 class Bufr(FileBackedValue):
     def __init__(self, val_pointer):

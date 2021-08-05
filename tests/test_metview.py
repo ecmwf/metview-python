@@ -144,16 +144,16 @@ def test_modify_request_via_update():
 def test_modify_embedded_request_via_update():
 
     coastlines = mv.mcoast(
-        map_coastline_thickness         = 3,
-        map_coastline_land_shade        = "on",
-        map_coastline_land_shade_colour = "cyan"
-        )
+        map_coastline_thickness=3,
+        map_coastline_land_shade="on",
+        map_coastline_land_shade_colour="cyan",
+    )
 
     gv = mv.geoview(
-        map_area_definition = "corners",
-        area                = [17.74,-35.85,81.57,63.93],
-        coastlines          = coastlines
-        )
+        map_area_definition="corners",
+        area=[17.74, -35.85, 81.57, 63.93],
+        coastlines=coastlines,
+    )
 
     with pytest.raises(IndexError):
         gv.update({"MAP_COASTLINE_land_SHADE_COLOUR": "yellow"}, sub="XXCOASTlines")
@@ -166,11 +166,10 @@ def test_modify_embedded_request_via_update():
     assert c["MAP_COASTLINE_LAND_SHADE_COLOUR"] == "green"
     assert c["map_coastline_land_shade_colour"] == "green"
 
-
     # for visual testing
-    #mv.setoutput(mv.png_output(output_name="gg"))
-    #a = mv.read(os.path.join(PATH, "test.grib"))
-    #mv.plot(a, gv)
+    # mv.setoutput(mv.png_output(output_name="gg"))
+    # a = mv.read(os.path.join(PATH, "test.grib"))
+    # mv.plot(a, gv)
 
 
 def test_print():
@@ -1060,6 +1059,13 @@ def test_fieldset_merge_4():
     g3 = mv.merge(grib[:3])
     assert g3.count() == 3
     assert g3.grib_get_long("level") == [1000, 850, 700]
+
+
+def test_fieldset_str():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    assert str(grib) == "Fieldset (6 fields)"
+    assert str(grib[4]) == "Fieldset (1 field)"
+    assert str(mv.Fieldset()) == "Fieldset (0 fields)"
 
 
 def test_fieldset_pickling():
