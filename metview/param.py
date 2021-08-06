@@ -8,12 +8,10 @@
 # nor does it submit to any jurisdiction.
 #
 
-import copy
-import datetime
 import logging
-import os
+from metview import dataset
 import re
-import sys
+import pandas as pd
 
 import metview as mv
 from metview.indexer import GribIndexer
@@ -21,6 +19,32 @@ from metview.indexer import GribIndexer
 # logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
 LOG = logging.getLogger(__name__)
+
+PANDAS_ORI_OPTIONS = {}
+
+
+def init_pandas_options():
+    global PANDAS_ORI_OPTIONS
+    if len(PANDAS_ORI_OPTIONS) == 0:
+        opt = {
+            "display.max_colwidth": 300,
+            "display.colheader_justify": "center",
+            "display.max_columns": 100,
+            "display.max_rows": 500,
+            "display.width": None,
+        }
+        for k, _ in opt.items():
+            PANDAS_ORI_OPTIONS[k] = pd.get_option(k)
+        for k, v in opt.items():
+            pd.set_option(k, v)
+
+
+def reset_pandas_options():
+    global PANDAS_ORI_OPTIONS
+    if len(PANDAS_ORI_OPTIONS) > 0:
+        for k, v in PANDAS_ORI_OPTIONS.items():
+            pd.set_option(k, v)
+        PANDAS_ORI_OPTIONS = {}
 
 
 class ParamInfo:
@@ -216,3 +240,320 @@ class ParamInfo:
         return "{}[name={}, scalar={}, meta={}]".format(
             self.__class__.__name__, self.name, self.scalar, self.meta
         )
+
+
+class ParamDesc:
+    def __init__(self, name):
+        self.db = None
+        # self.name = name
+        self.md = {}
+        self.levels = {}
+        self._short_name = None
+        self._param_id = None
+        self._long_name = None
+        self._units = None
+
+    def load(self, db):
+        raise NotImplementedError
+
+    def _parse(self, md):
+        if "level" in md and len(md["level"]) > 0:
+            df = pd.DataFrame(md)
+            md.pop("typeOfLevel")
+            md.pop("level")
+            for md_key in list(md.keys()):
+                d = df[md_key].unique().tolist()
+                self.md[md_key] = d
+
+            lev_types = df["typeOfLevel"].unique().tolist()
+            for t in lev_types:
+                # print(f" t={t}")
+                self.levels[t] = []
+                q = f"typeOfLevel == '{t}'"
+                # print(q)
+                dft = df.query(q)
+                if dft is not None:
+                    self.levels[t] = dft["level"].unique().tolist()
+
+    @property
+    def short_name(self):
+        if self._short_name is None:
+            self._short_name = ""
+            if self.md["shortName"]:
+                self._short_name = self.md["shortName"][0]
+        return self._short_name
+
+    @property
+    def param_id(self):
+        if self._param_id is None:
+            self._param_id = ""
+            if self.md["paramId"]:
+                self._param_id = self.md["paramId"][0]
+        return self._param_id
+
+    @property
+    def long_name(self):
+        if self._long_name is None:
+            self._long_name = ""
+            if self.db is not None:
+                self._long_name, self._units = self.db.get_longname_and_units(
+                    self.short_name, self.param_id
+                )
+        return self._long_name
+
+    @property
+    def units(self):
+        if self._units is None:
+            self._units = ""
+            if self.db:
+                self._long_name, self._units = self.db.get_longname_and_units(
+                    self.short_name, self.param_id
+                )
+        return self._units
+
+    @staticmethod
+    def describe(db, param=None):
+        in_jupyter = False
+        labels = {"marsClass": "class", "marsStream": "stream", "marsType": "type"}
+        try:
+            import IPython
+
+            # test whether we're in the Jupyter environment
+            if IPython.get_ipython() is not None:
+                in_jupyter = True
+        except:
+            pass
+
+        # describe all the params
+        if param is None:
+            t = {"parameter": [], "typeOfLevel": [], "level": []}
+            need_number = False
+            for k, v in db.param_meta.items():
+                if not v.md.get("number", None) in [["0"], [None]]:
+                    need_number = True
+                    break
+
+            for k, v in db.param_meta.items():
+                t["parameter"].append(k)
+                if len(v.levels) > 1:
+                    lev_type = ""
+                    level = ""
+                    cnt = 0
+                    for md_k, md in v.levels.items():
+                        if in_jupyter:
+                            lev_type += md_k + "<br>"
+                            level += str(ParamDesc.format_list(md)) + "<br>"
+                        else:
+                            prefix = " " if cnt > 0 else ""
+                            lev_type += prefix + f"[{cnt+1}]:" + md_k
+                            level += (
+                                prefix + f"[{cnt+1}]:" + str(ParamDesc.format_list(md))
+                            )
+                        cnt += 1
+                    t["typeOfLevel"].append(lev_type)
+                    t["level"].append(level)
+                else:
+                    for md_k, md in v.levels.items():
+                        t["typeOfLevel"].append(md_k)
+                        t["level"].append(ParamDesc.format_list(md))
+
+                for md_k, md in v.md.items():
+                    if md_k != "number" or need_number:
+                        md_k = labels.get(md_k, md_k)
+                        if not md_k in t:
+                            t[md_k] = []
+                        t[md_k].append(ParamDesc.format_list(md))
+
+            if in_jupyter:
+                txt = ParamDesc._make_html_table(t)
+                from IPython.display import HTML
+
+                return HTML(txt)
+            else:
+                df = pd.DataFrame.from_dict(t)
+                df = df.set_index(["parameter"])
+                init_pandas_options()
+                print(df)
+
+        # specific param
+        else:
+            v = None
+            if isinstance(param, str):
+                v = db.param_meta.get(param, None)
+            elif isinstance(param, int):
+                v = db.param_id_meta(param)
+
+            if v is None:
+                print(f"No shortName/paramId={param} found in data!")
+                return
+
+            #  if v is not None:
+            t = {
+                "key": ["shortName"],
+                "val": [v.short_name],
+            }
+
+            if v.long_name != "" or v.units != "":
+                t["key"].append("name")
+                t["val"].append(v.long_name)
+
+            t["key"].append("paramId")
+            t["val"].append(v.param_id)
+            # ParamDesc.format_list(v.md["shortName"], full=True),
+
+            if v.long_name != "" or v.units != "":
+                t["key"].append("units")
+                t["val"].append(v.units)
+
+            add_cnt = len(v.levels) > 1
+            cnt = 0
+            for md_k, md in v.levels.items():
+                t["key"].append("typeOfLevel" + (f"[{cnt+1}]" if add_cnt else ""))
+                t["val"].append(md_k)
+                t["key"].append("level" + (f"[{cnt+1}]" if add_cnt else ""))
+                t["val"].append(ParamDesc.format_list(md, full=True))
+                cnt += 1
+
+            for kk, md_v in v.md.items():
+                if kk == "number" and md_v == ["0"]:
+                    continue
+                if not kk in ["shortName", "paramId"]:
+                    t["key"].append(labels.get(kk, kk))
+                    t["val"].append(ParamDesc.format_list(md_v, full=True))
+
+            if in_jupyter:
+                from IPython.display import HTML
+
+                txt = ParamDesc._make_html_table(t, header=False)
+                return HTML(txt)
+            else:
+                df = pd.DataFrame.from_dict(t)
+                df = df.set_index("key")
+                init_pandas_options()
+                print(df)
+
+    @staticmethod
+    def _make_html_table(d, header=None):
+        header = header if header is not None else True
+        if len(d) > 1:
+            first_column_name = list(d.keys())[0]
+            txt = """  
+                <table>
+                <tr>{}</tr>
+                {}
+                </table>""".format(
+                "" if not header else "".join([f"<th>{k}</th>" for k in d.keys()]),
+                "".join(
+                    [
+                        "<tr><th style='text-align: right;'>"
+                        + d[first_column_name][i]
+                        + "</th>"
+                        + "".join(
+                            [
+                                f"<td style='text-align: left;'>{ParamDesc.format_list(d[k][i], full=True)}</td>"
+                                for k in list(d.keys())[1:]
+                            ]
+                        )
+                        + "</tr>"
+                        for i in range(len(d[first_column_name]))
+                    ]
+                ),
+            )
+            return txt
+        else:
+            return ""
+
+    @staticmethod
+    def format_list(v, full=None):
+        if isinstance(v, list):
+            if full is True:
+                return ",".join([str(x) for x in v])
+            else:
+                if len(v) == 1:
+                    return v[0]
+                if len(v) > 2:
+                    return ",".join([str(x) for x in [v[0], v[1], "..."]])
+                else:
+                    return ",".join([str(x) for x in v])
+        else:
+            return v
+
+
+class ParamNameDesc(ParamDesc):
+    def __init__(self, name):
+        super().__init__(name)
+        self._short_name = name
+
+    def load(self, db):
+        md = {
+            "typeOfLevel": [],
+            "level": [],
+            "date": [],
+            "time": [],
+            "step": [],
+            "number": [],
+            "paramId": [],
+            "marsClass": [],
+            "marsStream": [],
+            "marsType": [],
+            "experimentVersionNumber": [],
+        }
+
+        self.db = db
+        self.md = {}
+        self.levels = {}
+
+        # print(f"par={par}")
+        for b_name, b_df in db.blocks.items():
+            if b_name == "scalar":
+                q = f"shortName == '{self.short_name}'"
+                dft = b_df.query(q)
+            elif b_name == self.short_name:
+                dft = b_df
+            else:
+                dft = None
+
+            if dft is not None:
+                for k in md.keys():
+                    # print(f"{self.name}/{k}")
+                    md[k].extend(dft[k].tolist())
+                    # print(f"   df[{k}]={df[k]}")
+            # print(df)
+
+        self._parse(md)
+
+
+class ParamIdDesc(ParamDesc):
+    def __init__(self, param_id):
+        super().__init__("")
+        self._param_id = param_id
+
+    def load(self, db):
+        md = {
+            "shortName": [],
+            "typeOfLevel": [],
+            "level": [],
+            "date": [],
+            "time": [],
+            "step": [],
+            "number": [],
+            "paramId": [],
+            "marsClass": [],
+            "marsStream": [],
+            "marsType": [],
+            "experimentVersionNumber": [],
+        }
+
+        self.db = db
+        self.md = {}
+        self.levels = {}
+
+        # print(f"par={par}")
+        b_df = db.blocks.get("scalar", None)
+        if b_df is not None:
+            q = f"paramId == '{self._param_id}'"
+            dft = b_df.query(q)
+            if dft is not None:
+                for k in md.keys():
+                    md[k].extend(dft[k].tolist())
+                self._parse(md)

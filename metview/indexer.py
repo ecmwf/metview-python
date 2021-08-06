@@ -320,7 +320,7 @@ class GribIndexer:
     @staticmethod
     def _convert_filter_value(name, v):
         """
-        Analyse the filter key-value pairs and performs the necessary conversions
+        Analyse the filter key-value pairs and perform the necessary conversions
         """
         valid_name = name.split(":")[0] if ":" in name else name
 
