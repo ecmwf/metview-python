@@ -300,7 +300,8 @@ class IndexDb:
         p.load(self)
         return p
 
-    def describe(self, param=None):
+    def describe(self, *args):
+        param = args[0] if len (args) == 1 else None
         return ParamNameDesc.describe(self, param=param)
 
     def to_df(self):
