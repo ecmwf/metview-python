@@ -92,8 +92,10 @@ def test_dataset():
     d = ds["an"].select(
         dateTime=[mv.date("2016-09-25 00:00"), mv.date("2016-09-26 00:00")]
     )
+
+    assert isinstance(d, mv.Fieldset)
     assert set(ds["an"].blocks.keys()) == set(["scalar", "wind10m", "wind", "wind3d"])
-    assert set(d.blocks.keys()) == set(["scalar", "wind10m", "wind", "wind3d"])
+    assert set(d._db.blocks.keys()) == set(["scalar", "wind10m", "wind", "wind3d"])
 
     v = d["msl"]
     assert isinstance(v, mv.Fieldset)
@@ -180,8 +182,9 @@ def test_dataset():
     run = mv.date("2016-09-25 00:00")
     d = ds["oper"].select(date=run.date(), time=run.time(), step=[120])
 
+    assert isinstance(d, mv.Fieldset)
     assert set(ds["oper"].blocks.keys()) == set(["scalar", "wind10m", "wind", "wind3d"])
-    assert set(d.blocks.keys()) == set(["scalar", "wind10m", "wind", "wind3d"])
+    assert set(d._db.blocks.keys()) == set(["scalar", "wind10m", "wind", "wind3d"])
 
     v = d["msl"]
     assert isinstance(v, mv.Fieldset)

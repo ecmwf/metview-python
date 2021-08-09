@@ -656,3 +656,10 @@ class ExperimentIndexer(GribIndexer):
 
         LOG.info(f" {cnt} GRIB files processed")
         return input_files
+
+    def allowed_keys(self):
+        r = list(self.keys)
+        r.extend(GribIndexer.DATE_KEYS)
+        r.extend(GribIndexer.TIME_KEYS)
+        r.extend(list(GribIndexer.DATETIME_KEYS.keys()))
+        return set(r)

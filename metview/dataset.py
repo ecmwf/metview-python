@@ -532,6 +532,7 @@ class ExperimentDb(IndexDb):
         super().__init__(name, **kwargs)
         self.fs = {}
         self.vector_loaded = True
+        self._indexer = None
         LOG.debug(f"rootdir_placeholder_value={self.rootdir_placeholder_value}")
 
     @staticmethod
@@ -568,14 +569,26 @@ class ExperimentDb(IndexDb):
             rootdir_placeholder_value=self.rootdir_placeholder_value,
         )
 
+    @property
+    def indexer(self):
+        if self._indexer is None:
+            self._indexer = ExperimentIndexer(self)
+        return self._indexer
+
     def scan(self, vector=True):
         print(f"Generate index for dataset component={self.name} ...")
         self.data_files = []
         # self.blocks = {}
-        indexer = ExperimentIndexer(self)
-        indexer.scan()
+        self.indexer.scan()
 
-    def load(self, keys=[], vector=True):
+    def load(self, keys=None, vector=True):
+        keys = [] if keys is None else keys
+        ivk = [x for x in keys if x not in self.indexer.allowed_keys()]
+        if ivk:
+            raise Exception(
+                f"{self} keys={ivk} cannot be used! The allowed set of keys={self.indexer.allowed_keys()}"
+            )
+
         self.load_data_file_list()
         if len(self.data_files) == 0:
             self.scan(vector=True)
@@ -609,21 +622,11 @@ class ExperimentDb(IndexDb):
             return self.select_with_name(key)
         return None
 
-    # return a view
-    def select(self, **kwargs):
-        c = self._clone()
-        dims = self._make_dims(kwargs)
-        blocks = self._filter_blocks(dims)
-        c.blocks = blocks
-        # c.data_files = self.data_files
-        # c.rootdir_placeholder_value = self.rootdir_placeholder_value
-        return c
-
     def _filter_blocks(self, dims):
         self.load()
         dfs = {}
         # LOG.debug(f"data_files={self.data_files}")
-        LOG.debug(f"dims={dims}")
+        # LOG.debug(f"dims={dims}")
         cnt = 0
         for key, df in self.blocks.items():
             # LOG.debug(f"key={key}")
@@ -636,7 +639,7 @@ class ExperimentDb(IndexDb):
                 # LOG.debug(f" matching rows={len(df)}")
                 dfs[key] = f_df
 
-        LOG.debug(f"total matching rows={cnt}")
+        # LOG.debug(f"total matching rows={cnt}")
         return dfs
 
     def _extract_fields(self, df, fs, max_count):
@@ -732,34 +735,30 @@ class Dataset:
     )
     COMPRESSION = "bz2"
 
-    def __init__(self, name, path="", load_style=True):
+    def __init__(self, name, path=None, load_style=True):
         self.name = name
-        self.path = path
+        self.path = path if path is not None else ""
         self.field_conf = {}
         self.track_conf = {}
 
         assert self.name
         LOG.debug(f"name={self.name}")
 
-        if self.path:
-            # If the path does not exists, it must be a built-in dataset. Data will be
-            # downloaded into path.
-            if not os.path.isdir(self.path):
-                if self.check_remote():
-                    self.fetch(forced=True)
-                else:
-                    raise Exception(
-                        f"Could not find dataset={self.name} either under path={self.path} or on data server"
-                    )
-        else:
-            local_path = os.path.join(self.LOCAL_ROOT, self.name)
-            # dataset exists locally
-            if os.path.exists(local_path):
-                self.path = local_path
-            # dataset must be in the CACHE. Will be downloaded if necessary.
+        # set local path
+        if self.path == "":
+            self.path = os.path.join(self.LOCAL_ROOT, self.name)
+
+        # If the path does not exists, it must be a built-in dataset. Data will be
+        # downloaded into path.
+        if not os.path.isdir(self.path):
+            if self.check_remote():
+                self.fetch(forced=True)
             else:
-                self.path = os.path.join(utils.CACHE.ROOT_DIR, self.name)
-                self.fetch(forced=False)
+                raise Exception(
+                    f"Could not find dataset={self.name} either under path={self.path} or on data server"
+                )
+        # WARN: we do not store the dataset in the CACHE any more. Check code versions before
+        # 09082021 to see how the CACHE was used.
 
         if load_style:
             self.load_style()
@@ -838,8 +837,6 @@ class Dataset:
             t["Description"].append("Storm track data")
         df = pd.DataFrame.from_dict(t)
         df.set_index("Component", inplace=True)
-        # df.reset_index(drop=True, inplace=True)
-        # df.style.set_properties(**{'text-align': 'left'}).set_table_styles([dict(selector='th', props=[('text-align', 'left')])])
         return df
 
     def fetch(self, forced=False):
@@ -854,7 +851,8 @@ class Dataset:
 
         checked = False
         for src, targets in files.items():
-            if forced or not utils.CACHE.all_exists(targets, self.path):
+            # if forced or not utils.CACHE.all_exists(targets, self.path):
+            if forced:
                 if not checked and not self.check_remote():
                     raise Exception(
                         f"Could not find dataset={self.name} on data server"
@@ -866,11 +864,13 @@ class Dataset:
                 target_file = os.path.join(self.path, src)
                 # LOG.debug(f"target_file={target_file}")
                 try:
-                    print("Download data ...")
+                    # print("Download data ...")
                     utils.download(remote_file, target_file)
-                    print("Unpack data ...")
+                    print(f"Unpack data ... {src}")
                     utils.unpack(target_file, remove=True)
-                    utils.CACHE.make_reference(targets, self.path)
+                    # TODO: we skip the reference creation to make things faster. Enable it when
+                    # it is needed!
+                    # utils.CACHE.make_reference(targets, self.path)
                 except:
                     # if os.exists(target_file):
                     #     os.remove(target_file)

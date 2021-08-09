@@ -207,7 +207,6 @@ def plot_maps(
 
 def plot_diff_maps(
     *args,
-    layout=None,
     view=None,
     area=None,
     overlay=None,
