@@ -301,7 +301,7 @@ class IndexDb:
         return p
 
     def describe(self, *args):
-        param = args[0] if len (args) == 1 else None
+        param = args[0] if len(args) == 1 else None
         return ParamNameDesc.describe(self, param=param)
 
     def to_df(self):
@@ -706,6 +706,19 @@ class TrackConf:
         if tr is None:
             raise Exception(f"No track is available with name={name}!")
         return tr
+
+    def describe(self):
+        self.load_data_file_list()
+        init_pandas_options()
+        print("Tracks:")
+        t = {"Name": [], "Suffix": []}
+        for f in self.data_files:
+            n, s = os.path.splitext(os.path.basename(f))
+            t["Name"].append(n)
+            t["Suffix"].append(s)
+        df = pd.DataFrame.from_dict(t)
+        df.set_index("Name", inplace=True)
+        return df
 
     def _make(self, name):
         self.load_data_file_list()
