@@ -287,20 +287,24 @@ frame:
     contour_shade_technique: grid_shading
     contour_shade_colour_method: "list"
     contour_shade_colour_list: "red"
-track:        
+track:    
+  - msymb:
+      symbol_type: "text"
+      symbol_table_mode: "advanced"
+      symbol_advanced_table_selection_type: "list"
+      symbol_advanced_table_text_font_colour: "black"
+      symbol_advanced_table_text_font_size: 0.5
+      symbol_advanced_table_text_font_style: "normal"
+      symbol_advanced_table_text_display_type: "right"    
   - mgraph:
       graph_line_colour: red
       graph_line_thickness: 4
       graph_symbol: "on"
-      graph_symbol_colour: green
-      graph_symbol_height: 0.3
+      graph_symbol_colour: white
+      graph_symbol_height: 0.5
       graph_symbol_marker_index: 15
       graph_symbol_outline: "on"
-      graph_symbol_outline_colour: green
-  - msymb:
-      symbol_type: "text"
-      symbol_colour: black
-      symbol_text_font_size: 0.5
+      graph_symbol_outline_colour: red
 # ------------------------
 # DIFFERENCE STYLES
 # ------------------------

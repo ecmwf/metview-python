@@ -54,12 +54,16 @@ class Track:
 
         v_date = df.iloc[:, self.date_index]
         v_time = df.iloc[:, self.time_index]
-        val = ["{}/{:02d}".format(str(d)[-2:], t) for d, t in zip(v_date, v_time)]
+        val = [" {}/{:02d}".format(str(d)[-2:], t) for d, t in zip(v_date, v_time)]
         lon = df.iloc[:, self.lon_index].values
         lat = df.iloc[:, self.lat_index].values
+        idx_val = list(range(len(val)))
 
         # print(f"lon={lon}")
         # print(f"lat={lat}")
+        # print(f"val={val}")
+        # for x in style:
+        #     print(f"style={x}")
 
         if len(style) == 0:
             s = mv.style.get_db().get_style("track").clone()
@@ -71,13 +75,15 @@ class Track:
 
         for vd in s.visdefs:
             if vd.verb == "msymb":
-                vd.change_symbol_text_list(val)
+                vd.change_symbol_text_list(val, idx_val)
+
         r = s.to_request()
 
         vis = mv.input_visualiser(
             input_plot_type="geo_points",
             input_longitude_values=lon,
             input_latitude_values=lat,
+            input_values=idx_val,
         )
 
         return [vis, *r]

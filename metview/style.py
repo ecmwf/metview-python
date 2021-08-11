@@ -159,11 +159,12 @@ class Visdef:
         if verb == self.verb:
             self.params[param] = value
 
-    def change_symbol_text_list(self, value):
+    def change_symbol_text_list(self, text_value, idx_value):
         assert self.verb == "msymb"
         if self.verb == "msymb":
             if self.params.get("symbol_type", "").lower() == "text":
-                self.params["symbol_text_list"] = value
+                self.params["symbol_advanced_table_text_list"] = text_value
+                self.params["symbol_advanced_table_level_list"] = idx_value
 
     def set_data_id(self, data_id):
         if self.verb in ["mcont", "mwind"] and data_id is not None and data_id != "":
