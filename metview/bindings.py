@@ -354,7 +354,7 @@ class Request(dict, Value):
     def __getitem__(self, index):
         item = subset(self, index)
         # subrequests can return '#' if not uppercase
-        if item == "#":
+        if isinstance(item, str) and item == "#":
             item = subset(self, index.upper())
         return item
 
