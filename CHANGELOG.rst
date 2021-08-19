@@ -2,8 +2,15 @@
 Changelog for Metview's Python interface
 ========================================
 
-1.7.3
+1.8.0
 ------------------
+- new functions/methods on Fieldset to give an overview of contents:
+  - fs.describe()
+  - fs.describe("tp")
+  - fs.ls()
+  - see Jupyter notebook example
+- new GRIB filtering function, select(), offers different filtering options from read() and is faster
+  - see Jupyter notebook example 
 - the Fieldset constructor can now take a list of paths to GRIB files
   - e.g. a = Fieldset(path=['/path1/to/data1.grib', 'relpath/data2.grib'])
 - the result of a call to mcont() etc can now be modified, e.g.
