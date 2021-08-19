@@ -812,7 +812,7 @@ def test_fieldset_select_operator_multi_file():
     assert np.allclose(d.values(), np.zeros(len(d.values())))
 
 
-def test_indexer_dataframe_sort_by_key():
+def test_indexer_dataframe_sort_value_with_key():
 
     md = {
         "paramId": [1, 2, 1, 2, 3],
