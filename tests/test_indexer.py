@@ -810,3 +810,28 @@ def test_fieldset_select_operator_multi_file():
     g1 = mv.read(data=f, param="t", levelist=61, levtype="ml")
     d = g - g1
     assert np.allclose(d.values(), np.zeros(len(d.values())))
+
+
+def test_indexer_dataframe_sort_by_key():
+
+    md = {
+        "paramId": [1, 2, 1, 2, 3],
+        "level": [925, 850, 925, 850, 850],
+        "step": ["12", "110", "1", "3", "1"],
+        "rest": ["1", "2", "aa", "b1", "1b"],
+    }
+
+    md_ref = {
+        "paramId": [1, 1, 2, 2, 3],
+        "level": [925, 925, 850, 850, 850],
+        "step": ["1", "12", "3", "110", "1"],
+        "rest": ["aa", "1", "b1", "2", "1b"],
+    }
+
+    df = pd.DataFrame(md)
+    df = GribIndexer._sort_dataframe(df)
+    df_ref = pd.DataFrame(md_ref)
+
+    if not df.equals(df_ref):
+        print(df.compare(df_ref))
+        assert False

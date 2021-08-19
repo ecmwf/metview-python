@@ -11,11 +11,10 @@
 
 import copy
 import datetime
+from distutils.version import StrictVersion
 import logging
 import os
 from pathlib import Path
-import re
-import sys
 
 import metview as mv
 import numpy as np
@@ -251,12 +250,31 @@ class GribIndexer:
                 df[c].fillna(value=np.nan, inplace=True)
             df = df.astype(self.pd_types)
 
-        df = df.sort_values(
-            by=list(df.columns),
-            key=lambda col: col.str.pad(side="left", fillchar="0", width=4)
-            if col.name == "step"
-            else col,
-        )
+        df = GribIndexer._sort_dataframe(df)
+
+        return df
+
+    @staticmethod
+    def _sort_dataframe(df):
+        # the key arguments is available from pandas 1.1.0
+        if StrictVersion(pd.__version__) >= StrictVersion("1.1.0"):
+            df = df.sort_values(
+                by=list(df.columns),
+                key=lambda col: col.str.pad(7, side="left", fillchar="0")
+                if col.name == "step"
+                else col,
+            )
+        # for an older pandas version we use this ad hoc method
+        else:
+            step_ori = []
+            if "step" in list(df.columns):
+                step_ori = list(df.step)
+                df.step = df.step.str.pad(7, side="left", fillchar="0")
+            df = df.sort_values(by=list(df.columns))
+            if step_ori:
+                df.step = [step_ori[idx] for idx in df.index]
+
+        df = df.reset_index(drop=True)
         return df
 
     def _write_dataframe(self, df, name, out_dir):
