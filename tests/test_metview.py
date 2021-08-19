@@ -57,8 +57,10 @@ def test_version_info_python():
     assert isinstance(out["metview_python_version"], str)
 
 
-def test_describe():
-    mv.describe("type")
+# describe() is now a method/function on Fieldsets, and calling it
+# on a string does not work - we may want to re-add this in the future
+# def test_describe():
+#     mv.describe("type")
 
 
 def test_definitions():
