@@ -27,7 +27,7 @@ from metview.dataset import FieldsetDb, Dataset
 from metview.style import GeoView, Style, Visdef, map_area_gallery, map_style_gallery, make_geoview
 from metview import plotting
 
-__version__ = "1.7.2"
+__version__ = "1.8.0"
 
 
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
