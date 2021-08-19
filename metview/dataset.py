@@ -208,7 +208,7 @@ class IndexDb:
                 q = self._build_query(dims, df)
                 # print("query={}".format(q))
                 if q != "":
-                    df_res = df.query(q)
+                    df_res = df.query(q, engine="python")
                     df_res.reset_index(drop=True, inplace=True)
                     # print(f"df_res={df_res}")
                     # LOG.debug(f"df_res={df_res}")
