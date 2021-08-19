@@ -249,14 +249,13 @@ class GribIndexer:
             if self.pd_types.get(c, "") in ["Int32", "Int64"]:
                 df[c].fillna(value=np.nan, inplace=True)
             df = df.astype(self.pd_types)
-
         df = GribIndexer._sort_dataframe(df)
 
         return df
 
     @staticmethod
     def _sort_dataframe(df):
-        # the key arguments is available from pandas 1.1.0
+        # the key argument is available from pandas 1.1.0
         if StrictVersion(pd.__version__) >= StrictVersion("1.1.0"):
             df = df.sort_values(
                 by=list(df.columns),
