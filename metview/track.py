@@ -32,7 +32,7 @@ class Track:
         self.skiprows = 0 if skiprows is None else skiprows
         self.sep = sep
         if self.sep == " ":
-            self.sep = "\s+"
+            self.sep = r"\s+"
         self.date_index = 0 if date_index is None else date_index
         self.time_index = 1 if time_index is None else time_index
         self.lat_index = 3 if lat_index is None else lat_index

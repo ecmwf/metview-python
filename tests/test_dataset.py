@@ -36,7 +36,7 @@ def build_dataset():
     an_dir = os.path.join("__ROOTDIR__", "an")
     oper_dir = os.path.join("__ROOTDIR__", "oper")
 
-    ds_def = f"""
+    ds_def = fr"""
 experiments:
     - an:
         label: "an"
