@@ -50,9 +50,7 @@ experiments:
     with open(os.path.join(DS_DIR, "data.yaml"), "w") as f:
         f.write(ds_def)
 
-    shutil.copytree(
-        os.path.join(PATH, "ds"), os.path.join(DS_DIR, "data"), dirs_exist_ok=True
-    )
+    shutil.copytree(os.path.join(PATH, "ds"), os.path.join(DS_DIR, "data"))
     conf_dir = os.path.join(DS_DIR, "conf")
     if not os.path.exists(conf_dir):
         os.mkdir(conf_dir)
