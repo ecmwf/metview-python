@@ -464,7 +464,7 @@ def get_file_list(path, file_name_pattern=None):
     else:
         if isinstance(file_name_pattern, str) and file_name_pattern != "":
             path = os.path.join(path, file_name_pattern)
-        return glob.glob(path)
+        return sorted(glob.glob(path))
 
 
 class File(Value):
