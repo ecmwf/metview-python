@@ -119,6 +119,30 @@ def _make_view(view, area, plot_type=None):
     return view
 
 
+def _prepare_grid(d1, d2):
+    if d1._db is not None and d2._db is not None:
+        # interpolate from d2 to d1
+        if d1._db.name in d2._db.regrid_from:
+            # print(f"regrid: {d1.label} -> {d2.label}")
+            d11 = d1 + 0
+            d = mv.regrid(data=d11, grid_definition_mode='template',
+                   template_data=d2[0])
+            d = mv.grib_set_long(d, ["generatingProcessIdentifier", 148])
+            d._db = d1._db._clone()
+            return (d, d2)
+        # interpolate from d1 to d2
+        elif d2._db.name in d1._db.regrid_from:
+            # print(f"regrid: {d2.label} -> {d1.label}")
+            d22 = d2 + 0
+            d = mv.regrid(data=d2, grid_definition_mode='template',
+                   template_data=d1[0])
+            d = mv.grib_set_long(d, ["generatingProcessIdentifier", 148])
+            d._db = d2._db._clone()
+            return (d1, d)
+
+    return None
+
+
 def plot_maps(
     *args,
     layout=None,
@@ -283,7 +307,13 @@ def plot_diff_maps(
     title = Title(font_size=title_font_size)
 
     # compute diff
+    d = _prepare_grid(data["0"], data["1"])
+    if d is not None and len(d) == 2:
+        data["0"] = d[0]
+        data["1"] = d[1]
+
     data["d"] = data["0"] - data["1"]
+
     data["d"]._param_info = data["1"].param_info
     if data["0"].label and data["1"].label:
         data["d"]._label = "{}-{}".format(data["0"].label, data["1"].label)

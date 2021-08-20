@@ -49,6 +49,7 @@ class IndexDb:
         data_files=None,
         merge_conf=None,
         mapped_params=None,
+        regrid_from=None,
         dataset=None,
     ):
         self.name = name
@@ -69,6 +70,7 @@ class IndexDb:
 
         self.db_dir = "" if db_dir is None else db_dir
         self.mapped_params = {} if mapped_params is None else mapped_params
+        self.regrid_from = [] if regrid_from is None else regrid_from
         self.blocks = {} if blocks is None else blocks
         self.vector_loaded = False
         self._param_types = {}
@@ -143,6 +145,7 @@ class IndexDb:
             blocks=dfs,
             label=self.label,
             mapped_params=self.mapped_params,
+            regrid_from=self.regrid_from
         )
         return c, res
 
@@ -384,6 +387,7 @@ class FieldsetDb(IndexDb):
         db = FieldsetDb(
             self.name,
             label=self.label,
+            regrid_from=self.regrid_from
         )
 
         if self._indexer is not None:
@@ -537,8 +541,8 @@ class ExperimentDb(IndexDb):
         LOG.debug(f"rootdir_placeholder_value={self.rootdir_placeholder_value}")
 
     @staticmethod
-    def make_from_conf(name, conf, root_dir, db_root_dir, dataset):
-        LOG.debug(f"conf={conf}")
+    def make_from_conf(name, conf, root_dir, db_root_dir, regrid_conf, dataset):
+        # LOG.debug(f"conf={conf}")
         db = ExperimentDb(
             name,
             label=conf.get("label", ""),
@@ -554,6 +558,7 @@ class ExperimentDb(IndexDb):
             db_dir=os.path.join(db_root_dir, name),
             merge_conf=conf.get("merge", []),
             mapped_params={v: k for k, v in conf.get("mapped_params", {}).items()},
+            regrid_from=regrid_conf.get(name, []),
             blocks={},
             dataset=dataset,
         )
@@ -565,6 +570,7 @@ class ExperimentDb(IndexDb):
             label=self.label,
             db_dir=self.db_dir,
             mapped_params=self.mapped_params,
+            regrid_from=self.regrid_from,
             dataset=self.dataset,
             data_files=self.data_files,
             rootdir_placeholder_value=self.rootdir_placeholder_value,
@@ -803,13 +809,14 @@ class Dataset:
         data_conf_file = os.path.join(self.path, "data.yaml")
         with open(data_conf_file, "rt") as f:
             d = yaml.safe_load(f)
+            regrid_conf = d.get("regrid", {})
             for item in d["experiments"]:
                 ((name, conf),) = item.items()
                 if conf.get("type") == "track":
                     self.track_conf[name] = TrackConf(name, conf, data_dir, self)
                 else:
                     c = ExperimentDb.make_from_conf(
-                        name, conf, data_dir, index_dir, self
+                        name, conf, data_dir, index_dir, regrid_conf, self
                     )
                     self.field_conf[c.name] = c
 
