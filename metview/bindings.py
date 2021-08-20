@@ -24,7 +24,14 @@ import numpy as np
 from numpy.lib.arraysetops import isin
 
 from metview.dataset import FieldsetDb, Dataset
-from metview.style import GeoView, Style, Visdef, map_area_gallery, map_style_gallery, make_geoview
+from metview.style import (
+    GeoView,
+    Style,
+    Visdef,
+    map_area_gallery,
+    map_style_gallery,
+    make_geoview,
+)
 from metview import plotting
 
 __version__ = "1.8.0"
@@ -450,9 +457,9 @@ def valid_date(*args, base=None, step=None, step_units=None):
 
 def get_file_list(path, file_name_pattern=None):
     m = None
-    #if isinstance(file_name_pattern, re.Pattern):
+    # if isinstance(file_name_pattern, re.Pattern):
     #    m = file_name_pattern.match
-    #elif isinstance(file_name_pattern, str):
+    # elif isinstance(file_name_pattern, str):
     if isinstance(file_name_pattern, str):
         if file_name_pattern.startswith('re"'):
             m = re.compile(file_name_pattern[3:-1]).match
