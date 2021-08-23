@@ -7,21 +7,38 @@
 # granted to it by virtue of its status as an intergovernmental organisation
 # nor does it submit to any jurisdiction.
 
-
+import builtins
 import datetime
+from enum import Enum
+import glob
 import keyword
+import logging
 import os
 import pkgutil
+import re
 import signal
 import tempfile
-import builtins
-from enum import Enum
 
 import cffi
 import numpy as np
+from numpy.lib.arraysetops import isin
+
+from metview.dataset import FieldsetDb, Dataset
+from metview.style import (
+    GeoView,
+    Style,
+    Visdef,
+    map_area_gallery,
+    map_style_gallery,
+    make_geoview,
+)
+from metview import plotting
+
+__version__ = "1.8.0"
 
 
-__version__ = "1.7.2"
+# logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
+LOG = logging.getLogger(__name__)
 
 
 def string_from_ffi(s):
@@ -279,7 +296,7 @@ class Request(dict, Value):
             n = lib.p_get_req_num_params(req)
             for i in range(0, n):
                 param = string_from_ffi(lib.p_get_req_param(req, i))
-                self[param] = self[param]
+                dict.__setitem__(self, param, self[param])
             # self['_MACRO'] = 'BLANK'
             # self['_PATH']  = 'BLANK'
 
@@ -327,8 +344,33 @@ class Request(dict, Value):
 
             lib.p_push_request(r)
 
+    def update(self, items, sub=""):
+        if sub:
+            if not isinstance(sub, str):
+                raise IndexError("sub argument should be a string")
+            subreq = self[sub.upper()]
+            if subreq:
+                subreq.update(items)
+                self[sub] = subreq
+            else:
+                raise IndexError("'" + sub + "' not a valid subrequest in " + str(self))
+        else:
+            for key in items:
+                self.__setitem__(key, items[key])
+
     def __getitem__(self, index):
-        return subset(self, index)
+        item = subset(self, index)
+        # subrequests can return '#' if not uppercase
+        if isinstance(item, str) and item == "#":
+            item = subset(self, index.upper())
+        return item
+
+    def __setitem__(self, index, value):
+        if self.val_pointer and value is not None:
+            push_arg(index)
+            push_arg(value)
+            lib.p_set_subvalue_from_arg_stack(self.val_pointer)
+        dict.__setitem__(self, index, value)
 
 
 def push_bytes(b):
@@ -391,6 +433,45 @@ def push_vector(npa):
             "Only float32 and float64 numPy arrays can be passed to Metview, not ",
             npa.dtype,
         )
+
+
+def push_style_object(s):
+    r = s.to_request()
+    if isinstance(r, list):
+        push_list(r)
+    else:
+        r.push()
+
+
+def valid_date(*args, base=None, step=None, step_units=None):
+    if len(args) != 0:
+        return call("valid_date", *args)
+    else:
+        assert isinstance(base, datetime.datetime)
+        step = [] if step is None else step
+        step_units = datetime.timedelta(hours=1) if step_units is None else step_units
+        if not isinstance(step, list):
+            step = [step]
+        return [base + step_units * int(x) for x in step]
+
+
+def get_file_list(path, file_name_pattern=None):
+    m = None
+    # if isinstance(file_name_pattern, re.Pattern):
+    #    m = file_name_pattern.match
+    # elif isinstance(file_name_pattern, str):
+    if isinstance(file_name_pattern, str):
+        if file_name_pattern.startswith('re"'):
+            m = re.compile(file_name_pattern[3:-1]).match
+
+    if m is not None:
+        return [
+            os.path.join(path, f) for f in builtins.filter(m, os.listdir(path=path))
+        ]
+    else:
+        if isinstance(file_name_pattern, str) and file_name_pattern != "":
+            path = os.path.join(path, file_name_pattern)
+        return sorted(glob.glob(path))
 
 
 class File(Value):
@@ -575,13 +656,24 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             element_types=Fieldset,
             support_slicing=True,
         )
+        self._db = None
+        self._param_info = None
+        self._label = ""
 
         if (path is not None) and (fields is not None):
             raise ValueError("Fieldset cannot take both path and fields")
 
         if path is not None:
-            temp = read(path)
-            self.steal_val_pointer(temp)
+            if isinstance(path, list):
+                v = []
+                for p in path:
+                    v.extend(get_file_list(p))
+                path = v
+            else:
+                path = get_file_list(path)
+
+            # fill the 'fields' var - it will be used a few lines down
+            fields = [read(p) for p in path]
 
         if fields is not None:
             for f in fields:
@@ -603,6 +695,91 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         dataset = xr.open_dataset(self.url(), engine="cfgrib", backend_kwargs=kwarg)
         return dataset
 
+    def index(self, path=""):
+        pass
+
+    def load_index(self, path):
+        pass
+
+    def _scan(self):
+        if self._db is None:
+            self._db = FieldsetDb(fs=self)
+            self._db.scan()
+
+    def select(self, *args, **kwargs):
+        if self._db is None:
+            self._db = FieldsetDb(fs=self)
+        # LOG.debug(f"kwargs={kwargs}")
+        assert self._db is not None
+        if len(args) == 1 and isinstance(args[0], dict):
+            return self._db.select(**args[0])
+        else:
+            return self._db.select(**kwargs)
+
+    def describe(self, *args):
+        if self._db is None:
+            self._db = FieldsetDb(fs=self)
+        return self._db.describe(*args)
+
+    def ls(self, **kwargs):
+        if self._db is None:
+            self._db = FieldsetDb(fs=self)
+        return self._db.ls(**kwargs)
+
+    @property
+    def param_info(self):
+        if self._param_info is None:
+            self._param_info = FieldsetDb.make_param_info(self)
+        return self._param_info
+
+    @property
+    def label(self):
+        if self._label is not None and self._label:
+            return self._label
+        elif self._db is not None:
+            return self._db.label
+        else:
+            return str()
+
+    def unique(self, key):
+        if self._db:
+            return self._db.unique(key)
+        else:
+            return []
+
+    def style(self, plot_type="map"):
+        from metview import style
+
+        return style.get_db().style(self, plot_type=plot_type)
+
+    def style_list(self, plot_type="map"):
+        from metview import style
+
+        return style.get_db().style_list(self, plot_type=plot_type)
+
+    def speed(self):
+        if self._db is not None:
+            fs = self._db.speed()
+            return fs
+        else:
+            return None
+
+    def deacc(self, skip_first=None):
+        if self._db is None:
+            self._db = FieldsetDb(fs=self)
+        assert self._db is not None
+        fs = self._db.deacc(skip_first=skip_first)
+        return fs
+
+    def __getitem__(self, key):
+        if isinstance(key, str):
+            self._scan()
+            if self._db is not None:
+                return self._db.select_with_name(key)
+            return None
+        else:
+            return super().__getitem__(key)
+
     def __getstate__(self):
         # used for pickling
         # we cannot (and do not want to) directly pickle the Value pointer
@@ -618,6 +795,13 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         # read the data from the pickled path
         self.__dict__.update(state)
         self.__init__(val_pointer=None, path=state["url_path"])
+
+    def __str__(self):
+        n = int(self.count())
+        s = "s"
+        if n == 1:
+            s = ""
+        return "Fieldset (" + str(n) + " field" + s + ")"
 
 
 class Bufr(FileBackedValue):
@@ -789,6 +973,9 @@ class ValuePusher:
             (datetime.date, lambda n: push_datetime_date(n)),
             (np.ndarray, lambda n: push_vector(n)),
             (File, lambda n: n.push()),
+            (GeoView, lambda n: push_style_object(n)),
+            (Style, lambda n: push_style_object(n)),
+            (Visdef, lambda n: push_style_object(n)),
         )
 
     def push_value(self, val):
@@ -954,6 +1141,19 @@ def value_from_metview(val):
 
 
 # -----------------------------------------------------------------------------
+#
+# -----------------------------------------------------------------------------
+
+
+def to_dataset(fs, *args, **kwargs):
+    return fs.to_dataset(args, kwargs)
+
+
+def to_dataset(fs, *args, **kwargs):
+    return fs.to_dataset(args, kwargs)
+
+
+# -----------------------------------------------------------------------------
 #                        Creating and calling Macro functions
 # -----------------------------------------------------------------------------
 
@@ -979,12 +1179,25 @@ def make(mfname):
     def wrapped(*args, **kwargs):
         err = _call_function(mfname, *args, **kwargs)
         if err:
-            pass  # throw Exceception
+            pass  # throw Exception
 
         val = lib.p_result_as_value()
         return value_from_metview(val)
 
     return wrapped
+
+
+def _make_function_for_object(name):
+    """
+    Creates a function to invoke the method called name on obj. This will make it
+    possible to call some object methods as global functions. E.g.: if name="ls" and
+    f is a Fieldset we could invoke the ls() method as mv.ls(f) on top of f.ls()
+    """
+
+    def fn(obj, *args, **kwargs):
+        return getattr(obj, name)(*args, **kwargs)
+
+    return fn
 
 
 def bind_functions(namespace, module_name=None):
@@ -1005,7 +1218,7 @@ def bind_functions(namespace, module_name=None):
         # else:
         #    print('metview function %r not bound to python' % metview_name)
 
-    # HACK: some fuctions are missing from the 'dictionary' call.
+    # HACK: some functions are missing from the 'dictionary' call.
     namespace["neg"] = make("neg")
     namespace["nil"] = make("nil")
     namespace["div"] = div
@@ -1018,9 +1231,22 @@ def bind_functions(namespace, module_name=None):
     namespace["version_info"] = version_info
     namespace["merge"] = merge
     namespace["dataset_to_fieldset"] = dataset_to_fieldset
-
+    namespace["valid_date"] = valid_date
+    namespace["get_file_list"] = get_file_list
+    namespace["load_dataset"] = Dataset.load_dataset
+    namespace["plot_maps"] = plotting.plot_maps
+    namespace["plot_diff_maps"] = plotting.plot_diff_maps
+    namespace["plot_xs"] = plotting.plot_xs
+    namespace["plot_stamp"] = plotting.plot_stamp
+    namespace["map_style_gallery"] = map_style_gallery
+    namespace["map_area_gallery"] = map_area_gallery
+    namespace["make_geoview"] = make_geoview
     namespace["Fieldset"] = Fieldset
     namespace["Request"] = Request
+
+    # add some object methods the to global namespace
+    for name in ["to_dataset", "to_dataframe", "ls", "describe", "select"]:
+        namespace[name] = _make_function_for_object(name)
 
 
 # some explicit bindings are used here

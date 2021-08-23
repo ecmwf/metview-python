@@ -1,0 +1,496 @@
+# --------------------
+# SCALAR PARAMETERS
+# --------------------
+# 2m dewpoint temperature
+-
+  styles:
+    diff:
+      - diff_t
+  match:
+      - 
+        info_name: 2d
+      -
+        shortName: 2d
+        paramId: 168
+# 2m temperature
+-
+  styles:
+    diff:
+      - diff_t
+  match:
+      - 
+        info_name: 2t
+      -
+        shortName: 2t
+        paramId: 167
+# 10m wind gust 3h
+-
+  styles:
+    diff: 
+      - diff_10fg3
+  match:
+      - 
+        info_name: 10fg3
+      -
+        shortName: 10fg3
+        paramId: 228028
+# 10m wind speed
+-
+  styles:
+    diff: 
+      - diff_speed_10
+  match:
+      - 
+        info_name: 10si
+      -
+        shortName: 10si
+        paramId: 207
+# absolute vorticity
+-
+  styles:
+    basic: 
+        - vo
+    diff:
+        - diff_vo
+  match:
+      - 
+        info_name: absv
+      -
+        shortName: absv
+        paramId: 3041
+# equivalent potential temperature
+-
+  styles:
+    basic: 
+        - pt
+    diff:
+        - diff_pt
+  match:
+      - 
+        info_name: eqpt
+      -
+        shortName: eqpt
+        paramId: 4       
+# geopotential
+-
+  styles:
+    basic:
+      - z
+    diff: 
+      - diff_z
+  match:
+      - 
+        info_name: z
+      -
+        shortName: z
+        paramId: 129  
+# mean_sea_level_pressure:
+- 
+  styles:
+    basic:
+      - msl
+    diff:
+      - diff_msl
+  match:
+      - 
+        info_name: msl
+      -
+        shortName: msl
+        paramId: 151
+# potential temperature
+-
+  styles:
+    basic: 
+      - pt
+    diff:
+      - diff_pt
+  match:
+      - 
+        info_name: pt
+      -
+        shortName: pt
+        paramId: 3
+# potential vorticity
+-
+  styles:
+    basic: 
+      - pv
+    diff:
+      - diff_pv
+  match:
+      - 
+        info_name: pv
+# relative humidity
+-
+  styles:
+    diff: 
+      - diff_r
+    xs:
+      - xs_r
+  match:
+      - 
+        info_name: r
+      -
+        shortName: r
+        paramId: 157 
+# relative vorticity
+- 
+  styles:
+    basic: 
+      - vo
+    diff:
+      - diff_vo
+  match:
+      - 
+        info_name: vo
+      -
+        shortName: vo
+        paramId: 138
+# specific humidity
+-
+  styles:
+    diff:
+      - diff_q
+    xs:
+      - xs_q
+  match:
+      - 
+        info_name: q
+      -
+        shortName: q
+        paramId: 133 
+# sea surface temperature
+-
+  styles:
+    diff:
+      - diff_t
+  match:
+      - 
+        info_name: sst
+      -
+        shortName: sst
+        paramId: 34
+# temperature
+-
+  styles:
+    diff: 
+      - diff_t
+    xs:
+      - xs_t
+  match:
+      - 
+        info_name: t
+      -
+        shortName: t
+        paramId: 130  
+# total precipitation
+-
+  styles:
+    diff: 
+      - diff_tp
+  match:
+      - 
+        info_name: tp
+      -
+        shortName: tp
+        paramId: 228
+# vertical (pressure) velocity
+-
+  styles:
+    basic: 
+      - w
+    diff:
+      - diff_w
+  match:
+      - 
+        info_name: w
+      -
+        shortName: w
+        paramId: 135
+# wind speed 1000hPa
+-
+  styles:
+    diff:
+      - diff_speed_10
+  match:
+      - 
+        info_name: ws
+        levtype: pl 
+        levelist: 1000
+      -
+        shortName: ws
+        paramId: 10
+        levtype: pl 
+        levelist: 1000
+# wind speed around 700 hPa + 100 hPa
+-
+  styles:
+    diff:
+      - diff_speed_700
+  match:
+      - 
+        info_name: ws
+        levtype: pl 
+        levelist: [925, 850, 700, 600, 100]
+      -
+        shortName: ws
+        paramId: 10
+        levtype: pl 
+        levelist: [925, 850, 700, 600, 100]
+# wind speed around 200 hPa
+-
+  styles:
+    diff:
+      - diff_speed_200
+  match:
+      - 
+        info_name: ws
+        levtype: pl 
+        levelist: [500, 400, 300, 250, 200, 150]
+      -
+        shortName: ws
+        paramId: 10
+        levtype: pl 
+        levelist: [500, 400, 300, 250, 200, 150]
+# --------------------
+# VECTOR PARAMETERS
+# --------------------
+# wind  (generic)
+-
+  type: vector
+  styles:
+    basic: 
+      - arrow_blue_red
+      - arrow_black
+  match:
+      - 
+        info_name: wind
+# wind 10 m
+-
+  type: vector
+  styles:
+    basic: 
+      - arrow_blue_red_10
+      - arrow_black_10
+      - flag_black_10
+  match:
+      - 
+        info_name: wind10m
+# wind 1000 hPa
+-
+  type: vector
+  styles:
+    basic: 
+      - arrow_blue_red_10
+      - arrow_black_10
+      - flag_black_10
+  match:
+      - 
+        info_name: wind
+        levtype: pl 
+        levelist: 1000
+# wind 925-850 hPa        
+- 
+  type: vector
+  styles:
+    basic: 
+      -  arrow_blue_red_850
+      -  arrow_black_850
+      -  flag_black_upper
+  match:
+      - 
+        info_name: wind
+        levtype: pl 
+        levelist: [925,850]
+# wind 700-600 hPa        
+- 
+  type: vector
+  styles:
+    basic: 
+      -  arrow_blue_red_700
+      -  arrow_black_700
+      -  flag_black_upper
+  match:
+      - 
+        info_name: wind
+        levtype: pl 
+        levelist: [700, 600]
+# wind 500-400 hPa        
+- 
+  type: vector
+  styles:
+    basic: 
+      -  arrow_blue_red_500
+      -  arrow_black_500
+      -  flag_black_upper
+  match:
+      - 
+        info_name: wind
+        levtype: pl 
+        levelist: [500, 400]
+# wind 300-150 hPa        
+-
+  type: vector
+  styles: 
+    basic: 
+      -  arrow_blue_red_200
+      -  arrow_black_200
+      -  flag_black_upper
+  match:
+      - 
+        info_name: wind
+        levtype: pl 
+        levelist: [300, 250, 200, 150]
+# wind 100- hPa        
+-
+  type: vector
+  styles: 
+    basic: 
+      -  arrow_blue_red_100
+      -  arrow_black_100
+      -  flag_black_upper
+  match:
+      - 
+        info_name: wind
+        levtype: pl 
+        levelist: 100
+# wind3d  (generic)
+-
+  type: vector
+  styles: 
+    basic: 
+      - xs_arrow_black
+  match:
+      - 
+        info_name: wind3d
+# -------------------------------------------
+# PARAMETERS REPRESENTING GEOMETRIC SHAPES
+# -------------------------------------------
+-
+  styles:
+    basic: 
+      - box
+  match:
+      - 
+        info_name: box
+-
+  styles:
+    basic: 
+      - frame
+  match:
+      - 
+        info_name: frame
+
+# -------------------------------------------
+# TRACKS
+# -------------------------------------------
+-
+  styles:
+    basic: 
+      - track
+  match:
+      - 
+        info_name: track
+
+# ---------------------------------
+# PARAMETERS WITHOUT A SHORTNAME
+# ---------------------------------
+-
+  styles:
+    basic: 
+      - q_flux
+    diff:
+      - diff_q_flux
+  match:
+      - 
+        info_name: qcl
+      - 
+        paramId: 110
+-
+  styles:
+    basic: 
+      - q_flux
+    diff:
+      - diff_q_flux
+  match:
+      - 
+        info_name: qcon
+      - 
+        paramId: 106
+-
+  styles:
+    basic: 
+      - q_flux
+    diff:
+      - diff_q_flux
+  match:
+      - 
+        info_name: qdyn
+      - 
+        paramId: 94
+-
+  styles:
+    basic: 
+      - q_flux
+    diff:
+      - diff_q_flux
+  match:
+      - 
+        info_name: qvdiff
+      - 
+        paramId: 99
+-
+  styles:
+    basic: 
+      - t_flux
+    diff:
+      - diff_t_flux
+  match:
+      - 
+        info_name: tcl
+      - 
+        paramId: 109
+-
+  styles:
+    basic: 
+      - t_flux
+    diff:
+      - diff_t_flux
+  match:
+      - 
+        info_name: tcon
+      - 
+        paramId: 105
+-
+  styles:
+    basic: 
+      - t_flux
+    diff:
+      - diff_t_flux
+  match:
+      - 
+        info_name: tdyn
+      - 
+        paramId: 93
+-
+  styles:
+    basic: 
+      - t_flux
+    diff:
+      - diff_t_flux
+  match:
+      - 
+        info_name: trad
+      - 
+        paramId: 95
+-
+  styles:
+    basic: 
+      - t_flux
+    diff:
+      - diff_t_flux
+  match:
+      - 
+        info_name: tvdiff
+      - 
+        paramId: 98

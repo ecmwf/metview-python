@@ -57,8 +57,10 @@ def test_version_info_python():
     assert isinstance(out["metview_python_version"], str)
 
 
-def test_describe():
-    mv.describe("type")
+# describe() is now a method/function on Fieldsets, and calling it
+# on a string does not work - we may want to re-add this in the future
+# def test_describe():
+#     mv.describe("type")
 
 
 def test_definitions():
@@ -99,6 +101,77 @@ def test_definitions_as_dict():
     assert mcont_dict["CONTOUR_LEVEL_LIST"] == [5, 7, 8.8, 9]
     assert mcont_dict["CONTOUR_HI_TEXT"] == "My high text"
     assert mcont_dict["CONTOUR_MIN_LEVEL"] == 4.9
+
+
+def test_modify_request():
+    c = mv.mcont(
+        {
+            "CONTOUR_LINE_COLOUR": "PURPLE",
+            "CONTOUR_LINE_THICKNESS": 3,
+            "CONTOUR_HIGHLIGHT": False,
+        }
+    )
+    c["CONTOUR_linE_COLOUR"] = "GREEN"
+    c["CONTOUR_linE_style"] = "dash"
+    assert c["CONTOUR_LINE_THICKNESS"] == 3
+    assert c["CONTOUR_LINE_COLOUR"] == "GREEN"
+    assert c["CONTOUR_LINE_STYLE"] == "DASH"
+    assert c["CONTour_LINE_STYLE"] == "DASH"
+    # for visual testing
+    # mv.setoutput(mv.png_output(output_name="ff"))
+    # a = mv.read(os.path.join(PATH, "test.grib"))
+    # mv.plot(a, c)
+
+
+def test_modify_request_via_update():
+    c = mv.mcont(
+        {
+            "CONTOUR_LINE_COLOUR": "PURPLE",
+            "CONTOUR_LINE_THICKNESS": 3,
+            "CONTOUR_HIGHLIGHT": False,
+        }
+    )
+    new_params = {"CONTOUR_linE_COLOUR": "OliVE", "CONTOUR_linE_style": "DOT"}
+    c.update(new_params)
+    assert c["CONTOUR_LINE_THICKNESS"] == 3
+    assert c["CONTOUR_LINE_COLOUR"] == "OliVE"
+    assert c["CONTOUR_LINE_STYLE"] == "DOT"
+    assert c["CONTour_LINE_STYLE"] == "DOT"
+    # for visual testing
+    # mv.setoutput(mv.png_output(output_name="gg"))
+    # a = mv.read(os.path.join(PATH, "test.grib"))
+    # mv.plot(a, c)
+
+
+def test_modify_embedded_request_via_update():
+
+    coastlines = mv.mcoast(
+        map_coastline_thickness=3,
+        map_coastline_land_shade="on",
+        map_coastline_land_shade_colour="cyan",
+    )
+
+    gv = mv.geoview(
+        map_area_definition="corners",
+        area=[17.74, -35.85, 81.57, 63.93],
+        coastlines=coastlines,
+    )
+
+    with pytest.raises(IndexError):
+        gv.update({"MAP_COASTLINE_land_SHADE_COLOUR": "yellow"}, sub="XXCOASTlines")
+    with pytest.raises(IndexError):
+        gv.update({"MAP_COASTLINE_land_SHADE_COLOUR": "yellow"}, sub=["a", 2])
+
+    gv.update({"MAP_COASTLINE_land_SHADE_COLOUR": "green"}, sub="COASTlines")
+    assert gv["map_area_definition"] == "CORNERS"
+    c = gv["COAStLINES"]
+    assert c["MAP_COASTLINE_LAND_SHADE_COLOUR"] == "green"
+    assert c["map_coastline_land_shade_colour"] == "green"
+
+    # for visual testing
+    # mv.setoutput(mv.png_output(output_name="gg"))
+    # a = mv.read(os.path.join(PATH, "test.grib"))
+    # mv.plot(a, gv)
 
 
 def test_print():
@@ -413,6 +486,70 @@ def test_fieldset_not():
     t = ~(TEST_FIELDSET < 250)
     s = mv.accumulate(t)
     assert s == 104821
+
+
+def test_valid_date_nogrib():
+    vd = mv.valid_date(base=mv.date("20201231"), step=33)
+    assert isinstance(vd, list)
+    assert vd[0] == datetime.datetime(2021, 1, 1, 9, 0, 0)
+
+    vd = mv.valid_date(base=mv.date("20201231"), step=[11, 33])
+    assert isinstance(vd, list)
+    assert vd == [
+        datetime.datetime(2020, 12, 31, 11, 0, 0),
+        datetime.datetime(2021, 1, 1, 9, 0, 0),
+    ]
+
+    vd = mv.valid_date(base=mv.date("2020-12-31 15:00"), step=[11, 34])
+    assert isinstance(vd, list)
+    assert vd == [
+        datetime.datetime(2021, 1, 1, 2, 0, 0),
+        datetime.datetime(2021, 1, 2, 1, 0, 0),
+    ]
+
+    vd = mv.valid_date(
+        base=mv.date("2020-12-31 15:00"),
+        step=[11, 34],
+        step_units=datetime.timedelta(hours=1),
+    )
+    assert isinstance(vd, list)
+    assert vd == [
+        datetime.datetime(2021, 1, 1, 2, 0, 0),
+        datetime.datetime(2021, 1, 2, 1, 0, 0),
+    ]
+
+    vd = mv.valid_date(
+        base=mv.date("2020-12-31 15:00"),
+        step=[1, 2],
+        step_units=datetime.timedelta(hours=10),
+    )
+    assert isinstance(vd, list)
+    assert vd == [
+        datetime.datetime(2021, 1, 1, 1, 0, 0),
+        datetime.datetime(2021, 1, 1, 11, 0, 0),
+    ]
+
+    vd = mv.valid_date(
+        base=mv.date("2020-12-31 15:00"),
+        step=[11, 34],
+        step_units=datetime.timedelta(minutes=2),
+    )
+    assert isinstance(vd, list)
+    assert vd == [
+        datetime.datetime(2020, 12, 31, 15, 22, 0),
+        datetime.datetime(2020, 12, 31, 16, 8, 0),
+    ]
+
+    vd = mv.valid_date(
+        base=mv.date("2020-12-31 15:00"),
+        step=[11, 34],
+        step_units=datetime.timedelta(minutes=2),
+    )
+    assert isinstance(vd, list)
+    assert vd == [
+        datetime.datetime(2020, 12, 31, 15, 22, 0),
+        datetime.datetime(2020, 12, 31, 16, 8, 0),
+    ]
 
 
 def test_valid_date_len_1():
@@ -748,6 +885,81 @@ def test_fieldset_contructor_with_path():
     assert ni0["index"] == 21597
 
 
+def test_fieldset_create_from_list_of_paths():
+    paths = [os.path.join(PATH, "t_for_xs.grib"), os.path.join(PATH, "ml_data.grib")]
+    f = mv.Fieldset(path=paths)
+    assert f.count() == 42
+    assert f[0:2].grib_get_long("level") == [1000, 850]
+    assert f[5:9].grib_get_long("level") == [300, 1, 1, 5]
+    assert f[40:42].grib_get_long("level") == [133, 137]
+
+
+def test_fieldset_create_from_glob_path_single():
+    f = mv.Fieldset(path=os.path.join(PATH, "test.g*ib"))
+    assert type(f) == mv.Fieldset
+    assert len(f) == 1
+    ni = mv.nearest_gridpoint_info(f, 57.193, -2.360)
+    ni0 = ni[0]
+    assert np.isclose(ni0["latitude"], 57.0)
+    assert np.isclose(ni0["longitude"], 357.75)
+    assert np.isclose(ni0["distance"], 22.4505)
+    assert np.isclose(ni0["value"], 282.436)
+    assert ni0["index"] == 21597
+
+
+def test_fieldset_create_from_glob_path_multi():
+    f = mv.Fieldset(path=os.path.join(PATH, "t_*.grib"))
+    assert type(f) == mv.Fieldset
+    assert len(f) == 16
+    par_ref = [
+        ["t", "1000"],
+        ["t", "850"],
+        ["t", "700"],
+        ["t", "500"],
+        ["t", "400"],
+        ["t", "300"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+    ]
+    assert par_ref == mv.grib_get(f, ["shortName", "level"])
+
+
+def test_fieldset_create_from_glob_paths():
+    f = mv.Fieldset(
+        path=[os.path.join(PATH, "test.g*ib"), os.path.join(PATH, "t_*.grib")]
+    )
+    assert type(f) == mv.Fieldset
+    assert len(f) == 17
+    par_ref = [
+        ["2t", "0"],
+        ["t", "1000"],
+        ["t", "850"],
+        ["t", "700"],
+        ["t", "500"],
+        ["t", "400"],
+        ["t", "300"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+    ]
+    assert par_ref == mv.grib_get(f, ["shortName", "level"])
+
+
 def test_fieldset_append_from_empty():
     f = mv.Fieldset()
     g = mv.read(os.path.join(PATH, "tuv_pl.grib"))
@@ -849,6 +1061,13 @@ def test_fieldset_merge_4():
     g3 = mv.merge(grib[:3])
     assert g3.count() == 3
     assert g3.grib_get_long("level") == [1000, 850, 700]
+
+
+def test_fieldset_str():
+    grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
+    assert str(grib) == "Fieldset (6 fields)"
+    assert str(grib[4]) == "Fieldset (1 field)"
+    assert str(mv.Fieldset()) == "Fieldset (0 fields)"
 
 
 def test_fieldset_pickling():
@@ -2069,9 +2288,9 @@ def test_read_request():
     assert isinstance(req["CONTOUR_LEVEL_LIST"], list)
     assert isinstance(req["CONTOUR_LEVEL_LIST"][0], float)
     assert req["CONTOUR_LEVEL_LIST"] == [-10, 0, 10]
-    assert isinstance(req["contour_COLOUR_list"], list)
-    assert isinstance(req["contour_colour_list"][0], str)
-    assert req["CONTOUR_coLour_liSt"] == [
+    assert isinstance(req["contour_sHade_COLOUR_list"], list)
+    assert isinstance(req["contour_shade_colour_list"][0], str)
+    assert req["CONTOUR_sHADe_coLour_liSt"] == [
         "RGB(0.5,0.2,0.8)",
         "RGB(0.8,0.7,0.3)",
         "RGB(0.4,0.8,0.3)",

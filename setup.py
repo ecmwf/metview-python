@@ -53,6 +53,7 @@ setuptools.setup(
         "cffi",
         "numpy",
         "pandas",
+        "PyYAML",
     ],
     tests_require=[
         "pytest",

@@ -1,0 +1,149 @@
+base:
+    map_coastline_land_shade: "off"
+    map_coastline_sea_shade: 'off'
+base_diff:
+    map_coastline_colour: CHARCOAL
+    map_coastline_land_shade: "on"
+    map_coastline_land_shade_colour: "RGB(0.8549,0.8549,0.8549)"
+    map_coastline_sea_shade: 'off'
+    map_coastline_land_shade_colour: WHITE
+grey_light_blue:
+    map_coastline_land_shade: "on"
+    map_coastline_land_shade_colour: "grey"
+    map_coastline_sea_shade: "on"
+    map_coastline_sea_shade_colour: "RGB(0.86,0.94,1)"
+    map_boundaries: "off"
+    map_boundaries_colour: "RGB(0.21,0.21,0.21)"
+    map_disputed_boundaries: "off"
+    map_administrative_boundaries: "off"
+    map_grid_colour: "RGB(0.294,0.294,0.2941)"
+    map_label_colour: "RGB(0.294,0.294,0.2941)"
+black_coast_only: 
+    map_coastline: 'on'
+    map_coastline_land_shade: 'off'
+    map_coastline_sea_shade: 'off'
+    # map_coastline_colour: BLACK
+black_grey:
+    map_coastline_land_shade: 'on'
+    map_coastline_land_shade_colour: black
+    map_coastline_sea_shade: 'on'
+    map_coastline_sea_shade_colour: RGB(0.7767,0.7932,0.8076)
+    map_coastline: 'on'
+    map_coastline_colour: BACKGROUND
+    map_coastline_style: solid
+    map_coastline_thickness: 1
+blue_sea_only:
+    map_coastline: 'on'
+    map_coastline_sea_shade: 'on'
+    map_coastline_sea_shade_colour: RGB(0.7373,0.9294,0.9608)
+brown:
+    map_coastline: 'on'
+    map_coastline_land_shade: 'on'
+    map_coastline_land_shade_colour: RGB(0.7216,0.6863,0.6471)
+    map_coastline_sea_shade: 'on'
+    map_coastline_sea_shade_colour: RGB(0.9059,0.9176,0.9373)
+    map_coastline_colour: TAN
+cream_blue:
+    map_coastline: 'on'
+    map_coastline_land_shade: 'on'
+    map_coastline_land_shade_colour: CREAM
+    map_coastline_sea_shade: 'on'
+    map_coastline_sea_shade_colour: SKY
+cream_land_only:
+    map_coastline_land_shade: 'on'
+    map_coastline_land_shade_colour: CREAM
+    map_coastline_sea_shade: 'off'
+    map_coastline_sea_shade_colour: WHITE
+    map_coastline_colour: BLACK
+    map_coastline_style: solid
+    map_coastline_thickness: 1
+dark_1:
+    map_coastline: 'on'
+    map_coastline_land_shade: 'on'
+    map_coastline_land_shade_colour: CHARCOAL
+    map_coastline_sea_shade: 'on'
+    map_coastline_sea_shade_colour: RGB(0.3677,0.3677,0.4009)
+    map_coastline_colour: WHITE
+dark_2:
+    map_coastline: 'on'
+    map_coastline_land_shade: 'on'
+    map_coastline_land_shade_colour: CHARCOAL
+    map_coastline_sea_shade: 'on'
+    map_coastline_sea_shade_colour: RGB(0.2471,0.2471,0.2471)
+    map_coastline_colour: WHITE
+dark_3:       
+    map_coastline: 'on'
+    map_coastline_land_shade: 'on'
+    map_coastline_land_shade_colour: RGB(0.4431,0.4431,0.4431)
+    map_coastline_sea_shade: 'on'
+    map_coastline_sea_shade_colour: RGB(0.3176,0.3176,0.3176)
+green_blue:
+    map_coastline: 'on'
+    map_coastline_land_shade: 'on'
+    map_coastline_land_shade_colour: RGB(0.2233,0.7101,0.3369)
+    map_coastline_sea_shade: 'on'
+    map_coastline_sea_shade_colour: RGB(0.4923,0.6884,0.8489)
+    map_coastline_colour: BLACK
+green_land_only:
+    map_coastline: 'on'
+    map_coastline_land_shade: 'on'
+    map_coastline_land_shade_colour: RGB(0.1020,0.4000,0.0000)
+    map_coastline_sea_shade: 'off'
+green_navy:
+    map_coastline: 'on'
+    map_coastline_land_shade: 'on'
+    map_coastline_land_shade_colour: EVERGREEN
+    map_coastline_sea_shade: 'on'
+    map_coastline_sea_shade_colour: RGB(0.0000,0.0000,0.5020)
+grey_1:
+    map_coastline: 'on'
+    map_coastline_land_shade: 'on'
+    map_coastline_land_shade_colour: RGB(0.3725,0.4157,0.5451)
+    map_coastline_sea_shade: 'on'
+    map_coastline_sea_shade_colour: RGB(0.7767,0.7932,0.8076)
+    map_coastline_colour: BLACK
+    map_coastline_style: solid
+    map_coastline_thickness: 1
+grey_2:
+    map_coastline: 'on'
+    map_coastline_land_shade: 'on'
+    map_coastline_land_shade_colour: GREY
+    map_coastline_sea_shade: 'on'
+    map_coastline_sea_shade_colour: RGB(0.9059,0.9176,0.9373)
+    map_coastline_colour: CHARCOAL
+grey_3:
+    map_coastline: 'on'
+    map_coastline_land_shade: 'on'
+    map_coastline_land_shade_colour: RGB(0.5373,0.5373,0.5373)
+    map_coastline_sea_shade: 'on'
+    map_coastline_sea_shade_colour: RGB(0.8392,0.8510,0.8706)
+    map_coastline_colour: CHARCOAL
+grey_4:
+    map_coastline: 'on'
+    map_coastline_land_shade: 'on'
+    map_coastline_land_shade_colour: RGB(0.5569,0.5569,0.5569)
+    map_coastline_sea_shade: 'on'
+    map_coastline_sea_shade_colour: RGB(0.8000,0.8000,0.8000)
+    map_coastline_colour: CHARCOAL
+grey_blue:
+    map_coastline: 'on'
+    map_coastline_land_shade: 'on'
+    map_coastline_land_shade_colour: GREY
+    map_coastline_sea_shade: 'on'
+    map_coastline_sea_shade_colour: RGB(0.7922,0.8431,0.9412)
+    map_coastline_colour: CHARCOAL
+grey_darker_land_only:
+    map_coastline: 'on'
+    map_coastline_land_shade: 'on'
+    map_coastline_land_shade_colour: RGB(0.5020,0.5020,0.5020)
+    map_coastline_sea_shade: 'off'
+grey_land_only:
+    map_coastline: 'on'
+    map_coastline_land_shade: 'on'
+    map_coastline_land_shade_colour: RGB(0.8549,0.8549,0.8549)
+    map_coastline_sea_shade: 'off'
+white_coast_only:
+    map_coastline: 'on'
+    map_coastline_land_shade: 'off'
+    map_coastline_sea_shade: 'off'
+    map_coastline_colour: WHITE

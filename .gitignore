@@ -58,3 +58,6 @@ docs/_build/
 .pytest_cache
 tests/*.idx
 
+# vscode
+.vscode/
+

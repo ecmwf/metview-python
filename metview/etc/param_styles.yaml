@@ -1,0 +1,511 @@
+# ------------------------
+# DEFAULT STYLES
+# ------------------------
+# this is the default style assigned to a scalar param!
+default_mcont:
+  mcont:
+    contour_automatic_setting: ecmwf
+    legend: "on"
+# this is the default style assigned to a vector param!
+default_mwind:
+  mwind:
+    wind_thinning_factor: 4
+    legend: "on"
+# this is the default style for difference fields
+default_diff:
+  mcont:
+    legend: "off"
+# ------------------------
+# SCALAR STYLES
+# ------------------------
+msl:
+  mcont:
+    legend: "off"
+    contour_highlight_colour: black
+    contour_highlight_thickness: 4
+    contour_interval: 5
+    contour_label: "on"
+    contour_label_frequency: 2
+    contour_label_height: 0.4
+    contour_level_selection_type: interval
+    contour_line_colour: black
+    contour_line_thickness: 2
+    contour_reference_level: 1010
+# style for potential temperature
+pt: 
+  mcont:
+    legend: "on"
+    contour: "off"
+    contour_level_selection_type: "interval"
+    contour_max_level: 380
+    contour_min_level: 260
+    contour_interval: 5
+    contour_label: "off"
+    contour_shade: "on"
+    contour_shade_method: "area_fill"
+    contour_shade_colour_method: "palette"
+    contour_shade_palette_name: eccharts_rainbow_blue_purple_24
+    grib_scaling_of_retrieved_fields: "off"
+# style for pressure velocity
+w:
+  mcont:
+    contour_automatic_setting: style_name
+    contour_style_name: sh_viobrn_fM5t5lst
+    legend: "on"
+# style for relative and absolute vorticity
+vo:
+  mcont:
+    contour_automatic_setting: style_name
+    contour_style_name: sh_blured_fM50t50lst_less
+    legend: "on"
+    grib_scaling_of_derived_fields: "on"
+# style for potential vorticity on 320K
+pv:
+  mcont:
+    legend: "on"
+    contour: "off"
+    contour_level_selection_type: "level_list"
+    contour_level_list: [1,2,4,6,8,10,20,30]
+    contour_label: "off"
+    contour_shade: "on"
+    contour_shade_method: "area_fill"
+    contour_shade_colour_method: "palette"
+    contour_shade_palette_name: matplotlib_Plasma_7_r
+q_flux:
+  mcont:
+    legend: "on"
+    contour: "off"
+    contour_level_selection_type: "interval"
+    contour_level_selection_type: "level_list"
+    contour_level_list: [-0.04, -0.01, -0.008, -0.004, -0.002, -0.001, -0.0005, -0.0002, 0.0002, 0.0005, 0.001, 0.002, 0.004, 0.008, 0.01, 0.04]
+    contour_label: "off"
+    contour_shade: "on"
+    contour_shade_method: "area_fill"
+    contour_shade_colour_method: "palette"
+    contour_shade_palette_name: "colorbrewer_PRGn_15_r"
+t_flux:
+  mcont:
+    legend: "on"
+    contour: "off"
+    contour_level_selection_type: "interval"
+    contour_level_selection_type: "level_list"
+    contour_level_list: [-120,-50,-20,-10,-5,-2,-1,-0.5, 0.5,1,2, 5, 10, 20, 50, 120]
+    contour_label: "off"
+    contour_shade: "on"
+    contour_shade_method: "area_fill"
+    contour_shade_colour_method: "palette"
+    contour_shade_palette_name: "colorbrewer_PuOr_15"
+z:
+  mcont:
+    legend: "off"
+    contour_highlight_colour: black
+    contour_highlight_thickness: 4
+    contour_interval: 5
+    contour_label: "on"
+    contour_label_frequency: 2
+    contour_label_height: 0.4
+    contour_level_selection_type: interval
+    contour_line_colour: black
+    contour_line_thickness: 2
+    contour_reference_level: 1010
+# ------------------------
+# VECTOR STYLES
+# ------------------------
+# black wind arrows
+# -------------------
+arrow_black:
+  mwind: &arrow_black
+    legend: "off"
+    wind_advanced_method: "off"
+    wind_thinning_method: "automatic"
+    wind_thinning_factor:  2
+    wind_arrow_colour: "black"
+    wind_arrow_min_speed: 0
+# 10m
+arrow_black_10:
+  mwind: 
+    <<: *arrow_black
+    wind_arrow_max_speed: 30
+    wind_arrow_unit_velocity: 20.0 
+# 850 hPa 
+arrow_black_850:
+  mwind:
+    <<: *arrow_black  
+    wind_arrow_max_speed: 50
+    wind_arrow_unit_velocity: 30.0
+# 700 hPa
+arrow_black_700:
+  mwind:
+    <<: *arrow_black 
+    wind_arrow_max_speed: 60
+    wind_arrow_unit_velocity: 30.0
+# 500 hPa
+arrow_black_500:
+  mwind:
+    <<: *arrow_black  
+    wind_arrow_max_speed: 70
+    wind_arrow_unit_velocity: 50.0
+# 200 hPa 
+arrow_black_200:
+  mwind:
+    <<: *arrow_black    
+    wind_arrow_max_speed: 100
+    wind_arrow_unit_velocity: 70.0
+# 100 hPa 
+arrow_black_100:
+  mwind:
+    <<: *arrow_black    
+    wind_arrow_max_speed: 60
+    wind_arrow_unit_velocity: 30.0
+# ----------------------
+# Blue-red wind arrows
+# ----------------------
+# generic 
+arrow_blue_red:
+  mwind: &arrow_blue_red
+    legend: "on"
+    wind_advanced_method: "on"
+    wind_advanced_colour_selection_type: "interval"
+    wind_advanced_colour_max_level_colour: "red"
+    wind_advanced_colour_min_level_colour: "blue"
+    wind_advanced_colour_direction: "anticlockwise"
+    wind_thinning_method: "automatic"
+    wind_thinning_factor:  2
+    wind_advanced_colour_min_value: 0
+# 10m
+arrow_blue_red_10:
+  mwind: 
+    <<: *arrow_blue_red
+    wind_advanced_colour_max_value: 30
+    wind_advanced_colour_level_interval: 5
+    wind_arrow_unit_velocity: 20.0   
+# style for wind arrows
+arrow_blue_red:
+  mwind:
+    <<: *arrow_blue_red
+    wind_advanced_colour_max_value: 70
+    wind_advanced_colour_min_value: 0
+    wind_advanced_colour_level_interval: 10
+    wind_arrow_unit_velocity: 50.0
+# 850 hPa
+arrow_blue_red_850:
+  mwind:
+    <<: *arrow_blue_red    
+    wind_advanced_colour_max_value: 50
+    wind_arrow_unit_velocity: 30.0
+# 700 hPa 
+arrow_blue_red_700:
+  mwind:
+    <<: *arrow_blue_red    
+    wind_advanced_colour_max_value: 60
+    wind_arrow_unit_velocity: 30.0
+# 500 hPa 
+arrow_blue_red_500:
+  mwind:
+    <<: *arrow_blue_red    
+    wind_advanced_colour_max_value: 70
+    wind_arrow_unit_velocity: 50.0
+# 200 hPa
+arrow_blue_red_200:
+  mwind:
+    <<: *arrow_blue_red    
+    wind_advanced_colour_max_value: 100
+    wind_arrow_unit_velocity: 70.0
+# 200 hPa
+arrow_blue_red_100:
+  mwind:
+    <<: *arrow_blue_red    
+    wind_advanced_colour_max_value: 60
+    wind_arrow_unit_velocity: 30.0
+# ----------------------
+# Black wind flags
+# ----------------------   
+# 10m
+flag_black_10: 
+  mwind:
+    wind_field_type: "flags"
+    wind_flag_calm_indicator: "off"
+    wind_flag_length: 0.7
+    wind_flag_origin_marker: "off"
+    wind_flag_colour: "black"
+    wind_thinning_method: "automatic"
+    wind_thinning_factor:  1
+# upper levels
+flag_black_upper: 
+  mwind:
+    wind_field_type: "flags"
+    wind_flag_calm_indicator: "off"
+    wind_flag_length: 0.5
+    wind_flag_origin_marker: "off"
+    wind_flag_colour: "black"
+    wind_thinning_method: "automatic"
+    wind_thinning_factor:  1
+# ------------------------
+# CROSS SECTION STYLES
+# ------------------------
+xs_q:
+    mcont:
+      contour_automatic_setting: style_name
+      contour_style_name: sh_spechum_option1
+      legend: "on"
+xs_r:
+    mcont:
+      contour_automatic_setting: style_name
+      contour_style_name: sh_grnblu_f65t100i15_light
+      legend: "on"
+xs_t:
+    mcont:
+      contour_automatic_setting: style_name
+      contour_style_name: sh_all_fM80t56i4_v2
+      legend: "on" 
+# style for black wind arrows used in cross section   
+xs_arrow_black:
+  mwind:
+    legend: "off"
+    wind_advanced_method: "off"
+    wind_arrow_colour: "black"
+    #wind_advanced_colour_min_value: 0
+    #wind_advanced_colour_level_interval: 10
+    wind_arrow_unit_velocity: 30.0
+    wind_thinning_factor: 1
+# ------------------------
+# SHAPES AND TRACKS
+# ------------------------
+box:
+  mcont:
+    contour: "off"
+    contour_level_selection_type: "level_list"
+    contour_level_list: [0.5,1.1]
+    contour_label: "off"
+    contour_shade: "on"
+    contour_shade_technique: grid_shading
+    contour_shade_colour_method: "list"
+    contour_shade_colour_list: "RGBA(1,0,0,128)"
+frame:
+  mcont:
+    contour: "off"
+    contour_level_selection_type: "level_list"
+    contour_level_list: [0.5,1.1]
+    contour_label: "off"
+    contour_shade: "on"
+    contour_shade_technique: grid_shading
+    contour_shade_colour_method: "list"
+    contour_shade_colour_list: "red"
+track:    
+  - msymb:
+      symbol_type: "text"
+      symbol_table_mode: "advanced"
+      symbol_advanced_table_selection_type: "list"
+      symbol_advanced_table_text_font_colour: "black"
+      symbol_advanced_table_text_font_size: 0.5
+      symbol_advanced_table_text_font_style: "normal"
+      symbol_advanced_table_text_display_type: "right"    
+  - mgraph:
+      graph_line_colour: red
+      graph_line_thickness: 4
+      graph_symbol: "on"
+      graph_symbol_colour: white
+      graph_symbol_height: 0.5
+      graph_symbol_marker_index: 15
+      graph_symbol_outline: "on"
+      graph_symbol_outline_colour: red
+# ------------------------
+# DIFFERENCE STYLES
+# ------------------------
+diff_core_9:
+  mcont:  &diff_core
+    legend: "on"
+    contour: "on"
+    contour_line_colour: "charcoal"
+    contour_highlight: "off"
+    contour_level_selection_type: "level_list"
+    contour_label: "off"
+    contour_shade: "on"
+    contour_shade_method: "area_fill"
+    contour_shade_colour_method: "palette"
+    # contour_shade_palette_name: eccharts_blue_white_red_9
+    # contour_shade_palette_name: colorbrewer_RdBu_9
+    contour_shade_palette_name: colorbrewer_RdBu_11
+    grib_scaling_of_derived_fields: "on"
+plus_core: 
+  - mcont: &plus
+      legend: "on"
+      contour: "on"
+      contour_highlight: "off"
+      contour_line_colour: "black"
+      contour_level_selection_type: "level_list"
+      #contour_max_level: 40
+      #contour_min_level: 0
+      #contour_interval: 5
+      contour_label: "off"
+      contour_shade: "on"
+      contour_shade_method: "area_fill"
+      #contour_shade_max_level_colour: red
+      contour_shade_max_level_colour: "RGB(110./255.,0,0)"
+      contour_shade_min_level_colour: "RGB(0.937,0.804,0.8041)"
+      contour_shade_colour_direction: anticlockwise
+      grib_scaling_of_derived_fields: "on"
+# core definition for the negative range
+minus_core: 
+  - mcont: &minus
+      legend: "on"
+      contour: "on"
+      contour_highlight: "off"
+      contour_line_colour: black
+      contour_level_selection_type: level_list
+      #contour_max_level: 40
+      #contour_min_level: 0
+      #contour_interval: 5
+      contour_label: "off"
+      contour_shade: "on"
+      contour_shade_method: area_fill
+      contour_shade_max_level_colour: "RGB(0.798,0.798,0.9192)"
+      contour_shade_min_level_colour: "RGB(0,25./255,51./255)"
+      #contour_shade_min_level_colour: blue
+      contour_shade_colour_direction: anticlockwise
+      grib_scaling_of_derived_fields: "on"
+plus_core_shade_only: 
+  - mcont: &plus_shade
+      <<: *plus
+      contour: "off"
+minus_core_shade_only: 
+  - mcont: &minus_shade
+      <<: *minus
+      contour: "off"      
+# diff_msl:
+#   mcont: 
+#     <<: *diff_core
+#     # contour_level_list: [-50,-20,-10,-5,-0.5,0.5,5,10,20,50]
+#     contour_level_list: [-50,-30,-20,-10,-5,-0.5,0.5,5,10,20,30, 50]
+diff_msl:
+  - mcont: 
+      # contour_level_list: [-50,-20,-10,-5,-0.5,0.5,5,10,20,50]
+      <<: *minus_shade
+      contour_level_list: [-50,-15,-10,-5,-2]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [2,5,10,15,50]
+# temperature (K)
+diff_t:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-30,-10,-8,-6,-4,-2]
+      grib_scaling_of_derived_fields: "off"
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [2,4,6,8,10,30]
+      grib_scaling_of_derived_fields: "off"
+# equivalent potential temperature (K)
+diff_pt:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-50,-25,-20,-15,-10,-5,-2]
+      grib_scaling_of_derived_fields: "off"
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [2,5,10,15,20,25,50]
+      grib_scaling_of_derived_fields: "off"
+# potential vorticity
+diff_pv:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-100,-20,-10,-5,-2]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [2,5,10,20,100]
+# geopotential (dkm)
+diff_z:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-50,-20,-15,-10,-5,-2]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [2,5,10,15,20,50]
+# precipitation (mm)
+diff_tp:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-200,-20,-10,-5,-0.5]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [0.5,5,10,20,200]
+# wind speed (m/s)
+diff_speed_10:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-70,-10,-8,-5,-2,-1]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [1,2,5,8,10,70]
+# wind speed 700 hPa (m/s)
+diff_speed_700:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-100,-20,-10,-5,-2]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [2,5,10,20,100]
+# wind speed 200 hPa(m/s)
+diff_speed_200:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-100,-30,-20,-10,-5]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [5,10,20,30,100]
+# wind gust (m/s)
+diff_10fg3:
+  - mcont:
+      <<: *minus
+      contour_level_list: [-35,-20,-10,-5,-3]
+  - mcont:
+      <<: *plus
+      contour_level_list: [3,5,10,20,35]
+# relative humidity (0-100)
+diff_r:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-100,-60,-30,-10,-5]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [5,10,30,60,100] 
+# specific humidity (0-28)
+diff_q:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-30,-10,-5,-2,-1,-0.5]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [0.5,1,2,5,10,30]
+# vorticity (1E-5 1/s)
+diff_vo:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-100,-20,-10,-5,-2]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [2,5,10,20,100]
+#  vertical velocity (Pa/s)
+diff_w:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-100,-2,-1,-0.5,-0.2,-0.1]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [0.1,0.2,0.5,1,2,100]
+# t flux
+diff_q_flux:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-0.1,-0.01,-0.005,-0.001,-0.0005]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [0.0005, 0.001, 0.005, 0.01, 0.1]
+# t flux
+diff_t_flux:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-100,-20,-10,-5,-2,-1]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [1,2,5,10,20,100]

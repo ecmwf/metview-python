@@ -3,7 +3,7 @@ Metview Python bindings
 =======================
 
 Python interface to Metview, a meteorological workstation and batch system for accessing, examining, manipulating and visualising meteorological data.
-See documentation at https://confluence.ecmwf.int/metview/Metview's+Python+Interface
+See documentation at https://metview.readthedocs.io/en/latest/index.html
 
 
 Try the example notebooks on Binder!
@@ -18,8 +18,8 @@ Requirements
 ------------
 
 - A working Metview 5 installation (at least version 5.0.3, ideally 5.3.0 or above), either from binaries or built from source.
-  Binary installation packages are available for many Linux distributions.
-  See https://confluence.ecmwf.int/metview/Releases
+  Conda packages are available for Linux, and native packages are available for many Linux distributions.
+  See https://metview.readthedocs.io/en/latest/install.html
 
   - An alternative is to build from the Metview Source Bundle.
     See https://confluence.ecmwf.int/metview/The+Metview+Source+Bundle
@@ -36,6 +36,11 @@ Install
 The package is installed from PyPI with::
 
     $ pip install metview
+
+
+or from conda-forge with::
+
+    $ conda install metview-python -c conda-forge
 
 
 Test
@@ -81,7 +86,7 @@ Code quality  .. image:: https://travis-ci.com/ecmwf/metview-python.svg?branch=m
 License
 -------
 
-Copyright 2017-2020 European Centre for Medium-Range Weather Forecasts (ECMWF).
+Copyright 2017-2021 European Centre for Medium-Range Weather Forecasts (ECMWF).
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
