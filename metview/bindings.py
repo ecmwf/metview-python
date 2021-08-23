@@ -1238,6 +1238,7 @@ def bind_functions(namespace, module_name=None):
     namespace["plot_diff_maps"] = plotting.plot_diff_maps
     namespace["plot_xs"] = plotting.plot_xs
     namespace["plot_stamp"] = plotting.plot_stamp
+    namespace["plot_rmse"] = plotting.plot_rmse
     namespace["map_style_gallery"] = map_style_gallery
     namespace["map_area_gallery"] = map_area_gallery
     namespace["make_geoview"] = make_geoview

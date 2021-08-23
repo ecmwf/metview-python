@@ -150,3 +150,29 @@ class Title:
                 "text_font_size": self.font_size,
             }
         )
+
+    def build_rmse(self, ref, data):
+        if data:
+            if not isinstance(data, list):
+                data = [data]
+
+            lines = []
+            for d in data:
+                line = f"RMSE(ref={ref.label}) {d.label}"
+                # print(f"label={d.label}")
+                param = d.param_info
+                if param is not None:
+                    # print(f"meta={param.meta}")
+                    line += f" Par: {param.name}"
+                    meta = param.meta
+                    if meta.get("mars.type", "") == "an":
+                        pass
+                    else:
+                        r = meta.get("date", 0)
+                        h = meta.get("time", 0)
+                        line += f" Run: {r} {h} UTC"
+                lines.append(line)
+
+            return mv.mtext(text_lines=lines, text_font_size=self.font_size)
+
+        return mv.mtext(text_font_size=self.font_size)

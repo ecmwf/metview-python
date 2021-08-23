@@ -142,3 +142,93 @@ class Layout:
 
         # g = self.build_grid(page_num=page_num, layout=layout, view=view)
         # return g
+
+    def build_rmse(self, xmin, xmax, ymin, ymax, xtick, ytick, xtitle, ytitle):
+
+        horizontal_axis = mv.maxis(
+            axis_type="date",
+            axis_orientation="horizontal",
+            axis_position="bottom",
+            # axis_title               :  'on',
+            # axis_title_height        :   0.4,
+            axis_grid="on",
+            axis_grid_colour="grey",
+            # axis_title_text          :  xtitle,
+            # axis_title_quality       :  'high',
+            axis_tick_interval=xtick,
+            axis_tick_label_height=0.6,
+            axis_date_type="days",
+            axis_years_label="off",
+            axis_months_label="off",
+            axis_days_label_height="0.3",
+        )
+
+        vertical_axis = mv.maxis(
+            axis_orientation="vertical",
+            axis_position="left",
+            axis_grid="on",
+            axis_grid_colour="grey",
+            axis_title="on",
+            axis_title_height=0.6,
+            axis_title_text=ytitle,
+            # axis_title_quality       :  'high',
+            axis_tick_interval=ytick,
+            axis_tick_label_height=0.3,
+        )
+
+        cview = mv.cartesianview(
+            page_frame="off",
+            x_axis_type="date",
+            y_axis_type="regular",
+            y_automatic="off",
+            x_automatic="off",
+            y_min=ymin,
+            y_max=ymax,
+            x_date_min=xmin,
+            x_date_max=xmax,
+            horizontal_axis=horizontal_axis,
+            vertical_axis=vertical_axis,
+        )
+
+        return cview
+
+    @staticmethod
+    def compute_axis_range(v_min, v_max):
+        count = 15
+        d = math.fabs(v_max - v_min)
+        if d > 0:
+            b = d / count
+            n = math.floor(math.log10(b))
+            v = b / math.pow(10, n)
+            # print("d={} b={} n={} v={}".format(d,b,n,v))
+
+            if v <= 1:
+                v = 1
+            elif v <= 2:
+                v = 2
+            elif v <= 5:
+                v = 5
+            else:
+                v = 10
+
+            bin_size = v * math.pow(10, n)
+            bin_start = math.ceil(v_min / bin_size) * bin_size
+            if bin_start >= v_min and math.fabs(bin_start - v_min) < bin_size / 10000:
+                bin_start = bin_start - bin_size / 100000
+                av = v_min
+            else:
+                bin_start = bin_start - bin_size
+                av = bin_start
+
+            max_iter = 100
+            act_iter = 0
+            while av < v_max:
+                av += bin_size
+                act_iter += 1
+                if act_iter > max_iter:
+                    return (0, v_min, v_max)
+
+            bin_end = av  # + bin_size / 100000
+            return bin_size, bin_start, bin_end
+        else:
+            return (0, v_min, v_max)

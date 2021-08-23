@@ -8,13 +8,12 @@
 # nor does it submit to any jurisdiction.
 #
 
-import copy
-import datetime
-import logging
-import os
 
+import logging
+import math
+
+import numpy as np
 import pandas as pd
-import yaml
 
 import metview as mv
 from metview.layout import Layout
@@ -124,23 +123,29 @@ def _prepare_grid(d1, d2):
         # interpolate from d2 to d1
         if d1._db.name in d2._db.regrid_from:
             # print(f"regrid: {d1.label} -> {d2.label}")
-            d11 = d1 + 0
-            d = mv.regrid(data=d11, grid_definition_mode='template',
-                   template_data=d2[0])
+            # d11 = d1 + 0
+            d = mv.regrid(data=d1, grid_definition_mode="template", template_data=d2[0])
             d = mv.grib_set_long(d, ["generatingProcessIdentifier", 148])
             d._db = d1._db._clone()
+            # print(f"{ len(d)}")
+            # print(f"{ len(d2)}")
+            # print(" {}".format(mv.grib_get(d[0], ["numberOfDataPoints"])))
+            # print(" {}".format(mv.grib_get(d2[0], ["numberOfDataPoints"])))
             return (d, d2)
         # interpolate from d1 to d2
         elif d2._db.name in d1._db.regrid_from:
             # print(f"regrid: {d2.label} -> {d1.label}")
-            d22 = d2 + 0
-            d = mv.regrid(data=d2, grid_definition_mode='template',
-                   template_data=d1[0])
+            # d22 = d2 + 0
+            d = mv.regrid(data=d2, grid_definition_mode="template", template_data=d1[0])
             d = mv.grib_set_long(d, ["generatingProcessIdentifier", 148])
             d._db = d2._db._clone()
             return (d1, d)
 
-    return None
+    return (d1, d2)
+
+
+def _y_max(data):
+    return max([max(d) for d in data])
 
 
 def plot_maps(
@@ -307,11 +312,7 @@ def plot_diff_maps(
     title = Title(font_size=title_font_size)
 
     # compute diff
-    d = _prepare_grid(data["0"], data["1"])
-    if d is not None and len(d) == 2:
-        data["0"] = d[0]
-        data["1"] = d[1]
-
+    data["0"], data["1"] = _prepare_grid(data["0"], data["1"])
     data["d"] = data["0"] - data["1"]
 
     data["d"]._param_info = data["1"].param_info
@@ -598,3 +599,150 @@ def plot_stamp(
         desc.extend([dw[-1], t, dummy, cont])
 
     return mv.plot(desc, animate=animate)
+
+
+def plot_rmse(*args, ref=None, view=None, area=None, title_font_size=0.4, y_max=None):
+    """
+    Plot RMSE curve
+    """
+
+    desc = []
+
+    if not isinstance(ref, mv.Fieldset):
+        raise Exception(f"Missing or invalid ref argument!")
+
+    layers = _make_layers(*args, form_layout=False)
+
+    # compute the rmse for each input layer
+    data = []  # list of tuples
+    rmse_data = []
+    title_data = []
+    has_ef = False
+
+    for layer in layers:
+        if isinstance(layer["data"], mv.Fieldset):
+            # determine ens number
+            members = layer["data"].unique("number")
+            print(f"members={members}")
+            # ens forecast
+            if len(members) > 1:
+                if has_ef:
+                    raise Exception("Only one ENS fieldset can be used in plot_rmse()!")
+                has_ef = True
+                em_d = None  # ens mean
+                for m in members:
+                    pf_d = layer["data"].select(number=m)
+                    ref_d, pf_d = _prepare_grid(ref, pf_d)
+                    data.append(("cf" if m == "0" else "pf", layer["data"]))
+                    rmse_data.append(mv.sqrt(mv.average((pf_d - ref_d) ** 2)))
+                    em_d = pf_d if em_d is None else em_d + pf_d
+
+                # compute rmse for ens mean
+                data.append(("em", layer["data"]))
+                rmse_data.append(
+                    mv.sqrt(mv.average((em_d / len(members) - ref_d) ** 2))
+                )
+
+            # deterministic forecast
+            else:
+                ref_d, dd = _prepare_grid(ref, layer["data"])
+                data.append(("fc", layer["data"]))
+                rmse_data.append(mv.sqrt(mv.average((dd - ref_d) ** 2)))
+
+            title_data.append(layer["data"])
+
+    # define x axis params
+    dates = ref.valid_date()
+    x_min = dates[0]
+    x_max = dates[-1]
+    x_tick = 1
+    x_title = ""
+
+    # define y axis params
+    y_min = 0
+    if y_max is None:
+        y_tick, _, y_max = Layout.compute_axis_range(0, _y_max(rmse_data))
+    else:
+        y_tick, _, _ = Layout.compute_axis_range(0, y_max)
+    y_title = "RMSE [" + mv.grib_get_string(ref[0], "units") + "]"
+
+    print(f"y_tick={y_tick} y_max={y_max}")
+
+    # define the view
+    view = Layout().build_rmse(
+        x_min, x_max, y_min, y_max, x_tick, y_tick, x_title, y_title
+    )
+    desc.append(view)
+
+    # define curves
+    ef_label = {"cf": "ENS cf", "pf": "ENS pf", "em": "ENS mean"}
+    ef_colour = {"cf": "black", "pf": "red", "em": "kelly_green"}
+    fc_colour = ["red", "blue", "green", "black", "cyan", "evergreen", "gold", "pink"]
+    if has_ef:
+        fc_colour = [x for x in fc_colour if x not in list(ef_colour.values())]
+
+    pf_label_added = False
+    colour_idx = -1
+    for i, d in enumerate(rmse_data):
+        vis = mv.input_visualiser(
+            input_x_type="date", input_date_x_values=dates, input_y_values=d
+        )
+
+        vd = {"graph_type": "curve"}
+        line_colour = "black"
+        line_width = 1
+
+        if data[i][0] == "fc":
+            line_width = 3
+            colour_idx = (colour_idx + 1) % len(fc_colour)
+            line_colour = fc_colour[colour_idx]
+            vd["legend_user_text"] = data[i][0]
+            vd["legend"] = "on"
+        elif data[i][0] == "pf":
+            line_width = 1
+            line_colour = ef_colour["pf"]
+            if not pf_label_added:
+                pf_label_added = True
+                vd["legend_user_text"] = ef_label.get("pf", "")
+                vd["legend"] = "on"
+        elif data[i][0] in ["cf", "em"]:
+            line_width = 3
+            line_colour = ef_colour[data[i][0]]
+            vd["legend_user_text"] = ef_label.get(data[i][0], "")
+            vd["legend"] = "on"
+
+        vd["graph_line_colour"] = line_colour
+        vd["graph_line_thickness"] = line_width
+
+        desc.append(vis)
+        desc.append(mv.mgraph(**vd))
+
+    # add title
+    title = Title(font_size=title_font_size)
+    t = title.build_rmse(ref, title_data)
+    if t is not None:
+        desc.append(t)
+
+    # add legend
+    legX = 3.5
+    legY = 14
+
+    # Legend
+    legend = mv.mlegend(
+        legend_display_type="disjoint",
+        legend_entry_plot_direction="column",  # "row",
+        legend_text_composition="user_text_only",
+        legend_border="on",
+        legend_border_colour="black",
+        legend_box_mode="positional",
+        legend_box_x_position=legX,
+        legend_box_y_position=legY,
+        legend_box_x_length=4,
+        legend_box_y_length=3,
+        legend_text_font_size=0.35,
+        legend_box_blanking="on",
+        # legend_user_lines       =["oper"]
+    )
+    desc.append(legend)
+
+    mv.plot(desc, animate=False)
