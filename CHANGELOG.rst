@@ -8,11 +8,12 @@ Changelog for Metview's Python interface
   - fs.describe()
   - fs.describe("tp")
   - fs.ls()
-  - see Jupyter notebook example
+  - see Jupyter notebook example at https://metview.readthedocs.io/en/latest/notebook_gallery.html
 - new GRIB filtering function, select(), offers different filtering options from read() and is faster
-  - see Jupyter notebook example 
-- the Fieldset constructor can now take a list of paths to GRIB files
-  - e.g. a = Fieldset(path=['/path1/to/data1.grib', 'relpath/data2.grib'])
+  - see Jupyter notebook example at https://metview.readthedocs.io/en/latest/notebook_gallery.html
+- the Fieldset constructor can now take a list of paths to GRIB files or a wildcard:
+  - e.g. a = mv.Fieldset(path=["/path1/to/data1.grib", "relpath/data2.grib"])
+  - e.g. a = mv.Fieldset(path="data/*.grib")
 - the result of a call to mcont() etc can now be modified, e.g.
   - c = mv.mcont() ; c["contour_line_colour"] = "green" ; mv.plot(data, c)
   - gv.update({"MAP_COASTLINE_land_SHADE_COLOUR": "green"}, sub="COASTlines")
