@@ -1,0 +1,123 @@
+{
+    "C": [
+        {
+            "from" : "K",
+            "to" : "C",
+            "offset" : -273.15,
+            "scaling" : 1
+        }
+    ],
+    "pv units" : [
+        {
+            "from" : "K m**2 kg**-1 s**-1",
+            "offset" : -0.0,
+            "to" : "pv units",
+            "scaling" : 1000000.0
+        }
+    ],
+    "10**5/sec" : [
+        {        
+            "from" : "s**-1",
+            "to" : "10**5/sec",
+            "offset" : -0.0,
+            "scaling" : 100000.0
+        }
+    ],
+    "g/kg" : [
+        {    
+            "from" : "kg kg**-1",
+            "to" : "g/kg",
+            "offset" : -0.0,
+            "scaling" : 1000.0
+        },
+        {
+            "from" : "1",
+            "to" : "gr kg-1",
+            "offset" : 0.0,
+            "scaling" : 1000.0
+        }    
+    ],
+    "mm" : [
+        {    
+            "from" : "m",
+            "to" : "mm",
+            "offset" : -0.0,
+            "scaling" : 1000.0
+        },
+        {    
+            "from" : "m of water equivalent",
+            "to" : "mm",
+            "offset" : -0.0,
+            "scaling" : 1000.0
+        },
+        {    
+            "from" : "m of water",
+            "to" : "mm",
+            "offset" : -0.0,
+            "scaling" : 1000.0
+        }
+    ],
+    "cm" : [
+        {    
+            "from" : "m",
+            "to" : "cm",
+            "offset" : -0.0,
+            "scaling" : 100.0
+        },
+        {    
+            "from" : "m of water equivalent",
+            "to" : "cm",
+            "offset" : -0.0,
+            "scaling" : 100.0
+        }
+    ],
+    "dam" : [
+        {
+            "from" : "m**2 s**-2",
+            "offset" : -0.0,
+            "to" : "dam",
+            "scaling" : 0.0101971621297793
+        },
+        {
+            "from" : "m",
+            "offset" : -0.0,
+            "to" : "dam",
+            "scaling" : 10.0
+        },
+        {
+            "from" : "gpm",
+            "offset" : -0.0,
+            "to" : "dam",
+            "scaling" : 10.0
+        }
+    ],
+    "hPa" : [
+        {
+            "from" : "Pa",
+            "offset" : -0.0,
+            "to" : "hPa",
+            "scaling" : 0.01
+        }
+    ],
+    "kg m**-2 h**-1" : [
+        {
+            "from" : "kg m**-2 s**-1",
+            "offset" : -0.0,
+            "to" : "kg m**-2 h**-1",
+            "scaling" : 3600.0
+        }
+    ],    
+    "Dob" : [
+        {
+            "from" : "kg m**-2",
+            "offset" : -0.0,
+            "to" : "Dob",
+            "scaling" : 46696.2409526033
+        }
+    ]
+}
+
+
+
+
+

@@ -20,6 +20,7 @@ from metview.layout import Layout
 from metview.style import Visdef, Style, GeoView
 from metview.title import Title
 from metview.track import Track
+from metview.scaling import Scaling
 
 # logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
@@ -146,6 +147,10 @@ def _prepare_grid(d1, d2):
 
 def _y_max(data):
     return max([max(d) for d in data])
+
+
+def _y_min(data):
+    return min([min(d) for d in data])
 
 
 def plot_maps(
@@ -742,6 +747,161 @@ def plot_rmse(*args, ref=None, view=None, area=None, title_font_size=0.4, y_max=
         legend_text_font_size=0.35,
         legend_box_blanking="on",
         # legend_user_lines       =["oper"]
+    )
+    desc.append(legend)
+
+    mv.plot(desc, animate=False)
+
+
+def plot_cdf(*args, location=None, title_font_size=0.4, x_range=None):
+    """
+    Plot CDF curve
+    """
+
+    # check x range
+    x_range = [] if x_range is None else x_range
+    if x_range and len(x_range) not in [2, 3]:
+        raise Exception(
+            f"plot_cdf: invalid x_range specified. Format [x_min, x_max, [x_tick]]"
+        )
+    if len(x_range) == 2 and x_range[1] <= x_range[0]:
+        raise Exception(
+            f"plot_cdf: invalid x_range specified. x_min={x_range[0]} >= x_max={x_range[1]}"
+        )
+
+    layers = _make_layers(*args, form_layout=False)
+
+    desc = []
+    cdf_data = []
+    cdf_label = []
+    title_data = []
+    y_values = np.arange(0, 101)
+    plot_units = ""
+    units_scaler = None
+
+    # compute the cdf for each input layer
+    for layer in layers:
+        if isinstance(layer["data"], mv.Fieldset):
+            # we assume each field has the same units and paramId
+            if plot_units == "":
+                meta = mv.grib_get(layer["data"][0], ["units", "paramId"])
+                if meta and len(meta[0]) == 2:
+                    meta = {"units": meta[0][0], "paramId": meta[0][1]}
+                    units_scaler = Scaling.find_item(meta)
+                    if units_scaler is not None:
+                        plot_units = units_scaler.to_units
+                    else:
+                        plot_units = meta.get("units", "")
+
+            # determine ens number and steps
+            members = layer["data"].unique("number")
+            steps = layer["data"].unique("step")
+            # print(f"members={members}")
+            # ens forecast
+            if len(members) > 1:
+                for step in steps:
+                    v = layer["data"].select(step=step)
+                    v = mv.nearest_gridpoint(v, location)
+                    print(f"step={step}")
+                    x = np.percentile(v, y_values)
+                    if units_scaler is not None:
+                        x = units_scaler.scale_value(x)
+                    # print(f" x={x}")
+                    cdf_data.append(x)
+                    cdf_label.append(layer["data"].label + " +" + step + "h")
+
+            # deterministic forecast
+            else:
+                raise Exception(f"plot_cds: only ENS data accepted as input!")
+
+            title_data.append(layer["data"])
+
+    # define x axis params
+    if not x_range:
+        x_tick, x_min, x_max = Layout.compute_axis_range(
+            _y_min(cdf_data), _y_max(cdf_data)
+        )
+    elif len(x_range) == 2:
+        x_min = x_range[0]
+        x_max = x_range[1]
+        x_tick, _, _ = Layout.compute_axis_range(x_min, x_max)
+    elif len(x_range) == 3:
+        x_min = x_range[0]
+        x_max = x_range[1]
+        x_tick = x_range[2]
+    else:
+        raise Exception(f"plot_cdf: invalid x_range={x_range} specified!")
+
+    print(f"x_tick={x_tick} x_min={x_min} x_max={x_max}")
+    x_title = f"[{plot_units}]"
+
+    # define y axis params
+    y_min = 0
+    y_max = 100
+    y_tick = 10
+    y_title = "Percentage [%]"
+
+    # define the view
+    view = Layout().build_xy(
+        x_min, x_max, y_min, y_max, x_tick, y_tick, x_title, y_title
+    )
+    desc.append(view)
+
+    # define curves
+    line_colours = [
+        "red",
+        "blue",
+        "green",
+        "black",
+        "cyan",
+        "evergreen",
+        "gold",
+        "pink",
+    ]
+    line_styles = ["solid", "dash", "dotted"]
+
+    colour_idx = -1
+    style_idx = 0
+
+    for i, d in enumerate(cdf_data):
+        vis = mv.input_visualiser(input_x_values=d, input_y_values=y_values)
+        colour_idx = (colour_idx + 1) % len(line_colours)
+
+        vd = mv.mgraph(
+            graph_type="curve",
+            graph_line_colour=line_colours[colour_idx],
+            graph_line_thickness=3,
+            legend_user_text=cdf_label[i],
+            legend="on",
+        )
+
+        desc.append(vis)
+        desc.append(vd)
+
+    # add title
+    title = Title(font_size=title_font_size)
+    t = title.build_cdf(title_data)
+    if t is not None:
+        desc.append(t)
+
+    # add legend
+    legX = 3.5
+    legY = 14
+
+    # Legend
+    legend = mv.mlegend(
+        legend_display_type="disjoint",
+        legend_entry_plot_direction="column",
+        legend_text_composition="user_text_only",
+        legend_border="on",
+        legend_border_colour="black",
+        legend_box_mode="positional",
+        legend_box_x_position=legX,
+        legend_box_y_position=legY,
+        legend_box_x_length=4,
+        legend_box_y_length=3,
+        legend_text_font_size=0.35,
+        legend_box_blanking="on",
     )
     desc.append(legend)
 

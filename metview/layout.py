@@ -192,6 +192,57 @@ class Layout:
 
         return cview
 
+    def build_xy(self, xmin, xmax, ymin, ymax, xtick, ytick, xtitle, ytitle):
+
+        horizontal_axis = mv.maxis(
+            axis_orientation="horizontal",
+            axis_position="bottom",
+            axis_title="on",
+            axis_title_height=0.6,
+            axis_title_text=xtitle,
+            # axis_title               :  'on',
+            # axis_title_height        :   0.4,
+            axis_grid="on",
+            axis_grid_colour="grey",
+            # axis_title_text          :  xtitle,
+            # axis_title_quality       :  'high',
+            axis_tick_interval=xtick,
+            axis_tick_label_height=0.6,
+            axis_date_type="days",
+            axis_years_label="off",
+            axis_months_label="off",
+            axis_days_label_height="0.3",
+        )
+
+        vertical_axis = mv.maxis(
+            axis_orientation="vertical",
+            axis_position="left",
+            axis_grid="on",
+            axis_grid_colour="grey",
+            axis_title="on",
+            axis_title_height=0.6,
+            axis_title_text=ytitle,
+            # axis_title_quality       :  'high',
+            axis_tick_interval=ytick,
+            axis_tick_label_height=0.3,
+        )
+
+        cview = mv.cartesianview(
+            page_frame="off",
+            x_axis_type="regular",
+            y_axis_type="regular",
+            y_automatic="off",
+            x_automatic="off",
+            y_min=ymin,
+            y_max=ymax,
+            x_min=xmin,
+            x_max=xmax,
+            horizontal_axis=horizontal_axis,
+            vertical_axis=vertical_axis,
+        )
+
+        return cview
+
     @staticmethod
     def compute_axis_range(v_min, v_max):
         count = 15
