@@ -34,7 +34,7 @@ from metview.style import (
 )
 from metview import plotting
 
-__version__ = "1.8.0"
+__version__ = "1.9.0"
 
 
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
