@@ -145,7 +145,7 @@ class IndexDb:
             blocks=dfs,
             label=self.label,
             mapped_params=self.mapped_params,
-            regrid_from=self.regrid_from
+            regrid_from=self.regrid_from,
         )
         return c, res
 
@@ -384,11 +384,7 @@ class FieldsetDb(IndexDb):
         return df
 
     def _clone(self):
-        db = FieldsetDb(
-            self.name,
-            label=self.label,
-            regrid_from=self.regrid_from
-        )
+        db = FieldsetDb(self.name, label=self.label, regrid_from=self.regrid_from)
 
         if self._indexer is not None:
             db.indexer.update_keys(self._indexer.keys_ecc)

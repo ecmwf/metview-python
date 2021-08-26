@@ -19,6 +19,7 @@ LOG = logging.getLogger(__name__)
 
 ETC_PATH = os.path.join(os.path.dirname(__file__), "etc")
 
+
 class UnitsScalingMethod:
     """
     Performs units scaling of values
