@@ -1306,6 +1306,9 @@ def merge(*args):
 
 
 class Plot:
+    has_pillow = None
+    padding = np.array([x * 40 for x in [-1, -1, 1, 1]])
+
     def __init__(self):
         self.plot_to_jupyter = False
         self.plot_widget = True
@@ -1331,6 +1334,43 @@ class Plot:
             # the Macro plot command returns an empty definition, but
             # None is better for Python
             return None
+
+    def crop_image(self, path):
+        if Plot.has_pillow is None:
+            try:
+                import PIL
+
+                Plot.has_pillow = True
+            except ImportError as e:
+                Plot.has_pillow = False
+        if Plot.has_pillow:
+            try:
+                from PIL import Image
+                from PIL import ImageOps
+
+                im = Image.open(path)
+                im.load()
+
+                # find inner part
+                im_invert = im.convert("RGB")
+                im_invert = ImageOps.invert(im_invert)
+                box = im_invert.getbbox()
+
+                # crop to box
+                if box[2] - box[0] > 100 or box[3] - box[1] > 100:
+                    box = list(np.asarray(box) + Plot.padding)
+                    box = (
+                        max(0, box[0]),
+                        max(0, box[1]),
+                        min(im.size[0], box[2]),
+                        min(im.size[1], box[3]),
+                    )
+                    im_crop = im.crop(box)
+                    im.close()
+                    im_crop.save(path)
+            except Exception as e:
+                # print(f"ERROR={e}")
+                pass
 
 
 plot = Plot()
@@ -1368,6 +1408,9 @@ def plot_to_notebook(*args, **kwargs):  # pragma: no cover
         return
 
     files = [os.path.join(tempdirpath, f) for f in sorted(filenames)]
+
+    for f in files:
+        plot.crop_image(f)
 
     if (animation_mode == True) or (animation_mode == "auto" and len(filenames) > 1):
         frame_widget = widgets.IntSlider(
@@ -1446,6 +1489,8 @@ def plot_to_notebook_return_image(*args, **kwargs):  # pragma: no cover
     plot.jupyter_args.update(output_name=base, output_name_first_page_number="off")
     met_setoutput(png_output(plot.jupyter_args))
     met_plot(*args)
+    plot.crop_image(tmp)
+
     image = Image(tmp)
     os.unlink(tmp)
     return image

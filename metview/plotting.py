@@ -234,6 +234,9 @@ def plot_maps(
             # LOG.debug(f"t={t}")
             desc.append(t)
 
+    for i in range(len(plot_def), len(dw)):
+        desc.append(dw[i])
+
     LOG.debug(f"desc={desc}")
 
     return mv.plot(desc, animate=animate)
