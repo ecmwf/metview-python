@@ -1353,8 +1353,7 @@ class Plot:
 
                 # find inner part
                 im_invert = im.convert("RGB")
-                im_invert = ImageOps.invert(im_invert)
-                box = im_invert.getbbox()
+                box = ImageOps.invert(im_invert).getbbox()
 
                 # crop to box
                 if box[2] - box[0] > 100 or box[3] - box[1] > 100:
