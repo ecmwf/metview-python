@@ -730,7 +730,7 @@ class MapAreaGallery(StyleGallery):
         for name in map_area_names():
             f_name = os.path.join(tmp_dir, name + ".png")
             if not os.path.exists(f_name):
-                view = map(area=name, style="grey_1")
+                view = mv.make_geoview(area=name, style="grey_1")
                 mv.setoutput(
                     mv.png_output(
                         output_name=f_name[:-4],
@@ -738,7 +738,7 @@ class MapAreaGallery(StyleGallery):
                         output_name_first_page_number="off",
                     )
                 )
-                mv.plot(view.to_request())
+                mv.plot(view)
             if os.path.exists(f_name):
                 names.append(name)
                 img.append(self.to_base64(f_name))
