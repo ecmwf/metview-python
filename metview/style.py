@@ -700,8 +700,8 @@ class MapStyleGallery(StyleGallery):
         for name, d in map_styles().items():
             f_name = os.path.join(tmp_dir, name + ".png")
             if not os.path.exists(f_name):
-                view = map(area=[30, -30, 75, 45], style=name)
-                view.style.update({"MAP_COASTLINE_RESOLUTION": "low"}, inplace=True)
+                view = mv.make_geoview(area=[30, -30, 75, 45], style=name)
+                view.update({"MAP_COASTLINE_RESOLUTION": "low"}, sub="coastlines")
                 mv.setoutput(
                     mv.png_output(
                         output_name=f_name[:-4],
@@ -709,7 +709,7 @@ class MapStyleGallery(StyleGallery):
                         output_name_first_page_number="off",
                     )
                 )
-                mv.plot(view.to_request())
+                mv.plot(view)
             if os.path.exists(f_name):
                 names.append(name)
                 img.append(self.to_base64(f_name))
