@@ -9,7 +9,8 @@ default_mcont:
 # this is the default style assigned to a vector param!
 default_mwind:
   mwind:
-    wind_thinning_factor: 4
+    wind_thinning_method: "density"
+    wind_densisty: 4
     legend: "on"
 # this is the default style for difference fields
 default_diff:
@@ -117,8 +118,8 @@ arrow_black:
   mwind: &arrow_black
     legend: "off"
     wind_advanced_method: "off"
-    wind_thinning_method: "automatic"
-    wind_thinning_factor:  2
+    wind_thinning_method: "density"
+    wind_densisty: 2
     wind_arrow_colour: "black"
     wind_arrow_min_speed: 0
 # 10m
@@ -169,8 +170,8 @@ arrow_blue_red:
     wind_advanced_colour_max_level_colour: "red"
     wind_advanced_colour_min_level_colour: "blue"
     wind_advanced_colour_direction: "anticlockwise"
-    wind_thinning_method: "automatic"
-    wind_thinning_factor:  2
+    wind_thinning_method: "density"
+    wind_density:  2
     wind_advanced_colour_min_value: 0
 # 10m
 arrow_blue_red_10:
@@ -228,8 +229,8 @@ flag_black_10:
     wind_flag_length: 0.7
     wind_flag_origin_marker: "off"
     wind_flag_colour: "black"
-    wind_thinning_method: "automatic"
-    wind_thinning_factor:  1
+    wind_thinning_method: "density"
+    wind_density:  1
 # upper levels
 flag_black_upper: 
   mwind:
@@ -238,8 +239,9 @@ flag_black_upper:
     wind_flag_length: 0.5
     wind_flag_origin_marker: "off"
     wind_flag_colour: "black"
-    wind_thinning_method: "automatic"
-    wind_thinning_factor:  1
+    wind_thinning_method: "density"
+    wind_density:  1
+    wind_flag_colour: "black"
 # ------------------------
 # CROSS SECTION STYLES
 # ------------------------
