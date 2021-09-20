@@ -107,11 +107,42 @@ def _make_visdef(
         return []
 
 
-def _make_view(view, area, plot_type=None):
+def _get_data_area(data):
+    bb = []
+    for d in data:
+        b = d.bounding_box()
+        if len(b) == 4:
+            if math.fabs(b[1] - b[0]) > 160:
+                b[0] = -90
+                b[2] = 90
+            if math.fabs(b[3] - b[1]) > 340:
+                b[1] = -180
+                b[3] = 180
+        if len(bb) == 0:
+            bb = b.tolist()
+        else:
+            bb = [
+                min(b[0], bb[0]),
+                min(b[1], bb[1]),
+                max(b[2], bb[2]),
+                max(b[3], bb[3]),
+            ]
+    return bb
+
+
+def _make_view(view, area, plot_type=None, data=None):
     plot_type = "map" if plot_type is None else plot_type
-    if view is not None and area is not None:
-        raise Exception("Cannot specify both view and area in plot command!")
-    if view is None:
+    data = [] if data is None else data
+
+    if area == "data" and data:
+        area = _get_data_area(data)
+        if len(area) != 4:
+            area = "base"
+
+    if view is not None:
+        if area is not None:
+            view = mv.make_geoview(area=area, style=view["coastlines"])
+    else:
         if area is not None:
             view = mv.make_geoview(area=area, plot_type=plot_type)
         else:
@@ -158,6 +189,7 @@ def plot_maps(
     layout=None,
     view=None,
     area=None,
+    style=None,
     title_font_size=None,
     legend_font_size=None,
     frame=-1,
@@ -170,17 +202,28 @@ def plot_maps(
     title_font_size = 0.4 if title_font_size is None else title_font_size
     legend_font_size = 0.35 if legend_font_size is None else legend_font_size
 
-    # define the view
-    view = _make_view(view, area)
-
     # in the positional arguments we have two options:
     # 1. we only have non-list items. They belong to a single plot page.
     # 2. we only have list items. Each list item defines a separate plot page.
     plot_def = _make_layers(*args, form_layout=True)
 
+    # collect the data items
+    data_items = []
+    for i, sc_def in enumerate(plot_def):
+        for layer in sc_def:
+            data = layer["data"]
+            if isinstance(data, mv.Fieldset):
+                data_items.append(data[0])
+
+    # define the view
+    view = _make_view(view, area, data=data_items)
+
     # build the layout
     num_plot = len(plot_def)
     dw = Layout().build_grid(page_num=num_plot, layout=layout, view=view)
+
+    #
+    use_ecc_style = style == "eccharts"
 
     # the plot description
     desc = []

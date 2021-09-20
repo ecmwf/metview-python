@@ -610,7 +610,10 @@ class MapConf:
             a = self.areas.get(area_v, {})
             if len(a) == 0 and area_v.upper() in self.BUILTIN_AREAS:
                 a = {"area_mode": "name", "area_name": area}
-        s = self.style_db.get_style(style_v)
+        if isinstance(style_v, mv.Request):
+            s = style_v
+        else:
+            s = self.style_db.get_style(style_v)
         return a, s
 
     def make_geo_view(self, area=None, style=None, plot_type=None):
@@ -618,22 +621,22 @@ class MapConf:
             style = "base_diff"
 
         a, s = self.find(area=area, style=style)
-        if s is not None:
-            s = s.clone()
-
-        if plot_type == "stamp":
-            s = s.update({"map_grid": "off", "map_label": "off"})
-
         if a is not None and a:
             a = copy.deepcopy(a)
         else:
             a = {}
 
-        if s is not None and s:
-            a["coastlines"] = s.to_request()
+        if s is not None:
+            if isinstance(s, mv.Request):
+                s = Visdef.from_request(s)
+            else:
+                s = s.clone()
+            if plot_type == "stamp":
+                s = s.update({"map_grid": "off", "map_label": "off"})
+            if s:
+                a["coastlines"] = s.to_request()
 
         return mv.geoview(**a)
-        # return GeoView(a, s)
 
 
 class StyleGallery:
