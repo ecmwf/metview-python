@@ -68,26 +68,36 @@ def _make_layers(*args, form_layout=False):
 
 
 def _make_visdef(
-    data, vd, style_db="param", plot_type="map", data_id=None, pos_values=None
+    data,
+    vd,
+    use_eccharts=None,
+    style_db="param",
+    plot_type="map",
+    data_id=None,
+    pos_values=None,
 ):
+    use_eccharts = False if use_eccharts is None else use_eccharts
     if isinstance(data, mv.Fieldset):
         if len(vd) == 0:
-            vd = mv.style.get_db(name=style_db).visdef(
-                data, plot_type=plot_type, data_id=data_id
-            )
-            if plot_type == "diff" and pos_values is not None and pos_values:
-                s = mv.style.get_db(name=style_db).style(
-                    data, plot_type=plot_type, data_id=data_id
-                )
-                if s is not None and len(s.visdefs) == 2:
-                    neg_values = [-x for x in reversed(pos_values)]
-                    s.visdefs[0].set_values_list(neg_values)
-                    s.visdefs[1].set_values_list(pos_values)
-                    vd = s.to_request()
+            if use_eccharts:
+                return [mv.style.make_eccharts_mcont()]
             else:
                 vd = mv.style.get_db(name=style_db).visdef(
                     data, plot_type=plot_type, data_id=data_id
                 )
+                if plot_type == "diff" and pos_values is not None and pos_values:
+                    s = mv.style.get_db(name=style_db).style(
+                        data, plot_type=plot_type, data_id=data_id
+                    )
+                    if s is not None and len(s.visdefs) == 2:
+                        neg_values = [-x for x in reversed(pos_values)]
+                        s.visdefs[0].set_values_list(neg_values)
+                        s.visdefs[1].set_values_list(pos_values)
+                        vd = s.to_request()
+                else:
+                    vd = mv.style.get_db(name=style_db).visdef(
+                        data, plot_type=plot_type, data_id=data_id
+                    )
         else:
             for i, v in enumerate(vd):
                 if isinstance(v, Style):
@@ -189,7 +199,7 @@ def plot_maps(
     layout=None,
     view=None,
     area=None,
-    style=None,
+    use_eccharts=None,
     title_font_size=None,
     legend_font_size=None,
     frame=-1,
@@ -201,6 +211,7 @@ def plot_maps(
 
     title_font_size = 0.4 if title_font_size is None else title_font_size
     legend_font_size = 0.35 if legend_font_size is None else legend_font_size
+    use_eccharts = False if use_eccharts is None else use_eccharts
 
     # in the positional arguments we have two options:
     # 1. we only have non-list items. They belong to a single plot page.
@@ -221,9 +232,6 @@ def plot_maps(
     # build the layout
     num_plot = len(plot_def)
     dw = Layout().build_grid(page_num=num_plot, layout=layout, view=view)
-
-    #
-    use_ecc_style = style == "eccharts"
 
     # the plot description
     desc = []
@@ -261,6 +269,7 @@ def plot_maps(
                 vd = _make_visdef(
                     data,
                     vd,
+                    use_eccharts=use_eccharts,
                     style_db="param",
                     plot_type="map",
                     data_id=data_id[0] if use_data_id else None,
