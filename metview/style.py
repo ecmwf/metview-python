@@ -210,12 +210,20 @@ class Style:
 
     def update(self, *args, inplace=None, verb=None):
         s = self if inplace == True else self.clone()
-        for i, v in enumerate(args):
-            if i < len(s.visdefs):
+        if isinstance(verb, str):
+            verb = [verb]
+        if verb:
+            for v in args:
                 if isinstance(v, dict):
-                    if verb is None or s.visdefs[i].verb in verb:
-                        v = {v_key.lower(): v_val for v_key, v_val in v.items()}
-                        s.visdefs[i].params.update(v)
+                    v_vals = {v_key.lower(): v_val for v_key, v_val in v.items()}
+                    for i, vd in enumerate(s.visdefs):
+                        if vd.verb in verb:
+                            vd.params.update(v_vals)
+        else:
+            for i, v in enumerate(args):
+                if isinstance(v, dict) and i < len(s.visdefs):
+                    v = {v_key.lower(): v_val for v_key, v_val in v.items()}
+                    s.visdefs[i].params.update(v)
         return s
 
     def set_data_id(self, data_id):
@@ -774,6 +782,10 @@ def map_area_gallery():
 
 def make_geoview(**argv):
     return MAP_CONF().make_geo_view(**argv)
+
+
+def make_eccharts_mcont():
+    return mv.mcont(contour_automatic_settings="ecmwf", legend="on")
 
 
 def get_db(name=None):
