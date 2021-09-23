@@ -276,48 +276,56 @@ class Request(dict, Value):
     verb = "UNKNOWN"
 
     def __init__(self, req, myverb=None):
-        self.val_pointer = None
 
-        # initialise from Python object (dict/Request)
+        if isinstance(req, Request):  # copy an existing Request
+            self.xx = _request(req.get_verb(), req)  # to avoid deletion of Macro object
+            self.val_pointer = self.xx.val_pointer
+            self.verb = req.get_verb()
+            self.update(req)  # copy into dict
+            return
+
+        if myverb:
+            self.verb = myverb
         if isinstance(req, dict):
-            self.update(req)
-            self.to_metview_style()
-            if isinstance(req, Request):
-                self.verb = req.verb
-                self.val_pointer = req.val_pointer
-            else:
-                if myverb is not None:
-                    self.set_verb(myverb)
+            self.create_new(self.verb, req)
+            self.update(req)  # copy into dict
+            return
 
         # initialise from a Macro pointer
         else:
             Value.__init__(self, req)
             self.verb = string_from_ffi(lib.p_get_req_verb(req))
-            n = lib.p_get_req_num_params(req)
-            for i in range(0, n):
-                param = string_from_ffi(lib.p_get_req_param(req, i))
-                dict.__setitem__(self, param, self[param])
-            # self['_MACRO'] = 'BLANK'
-            # self['_PATH']  = 'BLANK'
+            super().update(self.to_dict())  # update dict
 
     def __str__(self):
         return "VERB: " + self.verb + super().__str__()
 
-    # translate Python classes into Metview ones where needed
-    def to_metview_style(self):
-        for k in list(self):
+    def to_dict(self):
+        keys = _keywords(self)
+        d = {}
+        for k in keys:
+            d[k] = self[k]
+        return d
 
-            # bool -> on/off
-            v = self.get(k)  # self[k] returns 1 for True
-            if isinstance(v, bool):
-                conversion_dict = {True: "on", False: "off"}
-                self[k] = conversion_dict[v]
+    # translate Python classes into Metview ones where needed - single parameter
+    def item_to_metview_style(self, key, value):
+        modified = False
+        delete_original_key = False
 
-            # class_ -> class (because 'class' is a Python keyword and cannot be
-            # used as a named parameter)
-            elif k == "class_":
-                self["class"] = v
-                del self["class_"]
+        # bool -> on/off
+        if isinstance(value, bool):
+            conversion_dict = {True: "on", False: "off"}
+            value = conversion_dict[value]
+            modified = True
+
+        # class_ -> class (because 'class' is a Python keyword and cannot be
+        # used as a named parameter)
+        elif key == "class_":
+            key = "class"
+            delete_original_key = True
+            modified = True
+
+        return (key, value, modified, delete_original_key)
 
     def set_verb(self, v):
         self.verb = v
@@ -325,23 +333,20 @@ class Request(dict, Value):
     def get_verb(self):
         return self.verb
 
+    def create_new(self, rverb, rdict):
+        r = definition()  # new, empty definition
+        self.val_pointer = r.val_pointer
+        self.xx = r  # to avoid deletion of Macro object
+        self.update(rdict)  # will set all parameters via __setitem__
+        return
+
     def push(self):
         # if we have a pointer to a Metview Value, then use that because it's more
         # complete than the dict
         if self.val_pointer:
             Value.push(self)
         else:
-            r = lib.p_new_request(self.verb.encode("utf-8"))
-
-            # to populate a request on the Macro side, we push each
-            # value onto its stack, and then tell it to create a new
-            # parameter with that name for the request. This allows us to
-            # use Macro to handle the addition of complex data types to
-            # a request
-            for k, v in self.items():
-                push_arg(v)
-                lib.p_set_request_value_from_pop(r, k.encode("utf-8"))
-
+            self.create_new(self.verb, self)
             lib.p_push_request(r)
 
     def update(self, items, sub=""):
@@ -366,9 +371,10 @@ class Request(dict, Value):
         return item
 
     def __setitem__(self, index, value):
-        if self.val_pointer and value is not None:
-            push_arg(index)
-            push_arg(value)
+        if (self.val_pointer) and (value is not None):
+            new_key, new_val, _, _ = self.item_to_metview_style(index, value)
+            push_arg(new_key)
+            push_arg(new_val)
             lib.p_set_subvalue_from_arg_stack(self.val_pointer)
         dict.__setitem__(self, index, value)
 
@@ -1255,12 +1261,14 @@ def bind_functions(namespace, module_name=None):
 add = make("+")
 call = make("call")
 count = make("count")
+definition = make("definition")
 div = make("/")
 download = make("download")
 equal = make("=")
 filter = make("filter")
 greater_equal_than = make(">=")
 greater_than = make(">")
+_keywords = make("keywords")
 lower_equal_than = make("<=")
 lower_than = make("<")
 met_merge = make("&")
@@ -1281,6 +1289,7 @@ met_and = make("and")
 met_or = make("or")
 met_not = make("not")
 met_version_info = make("version_info")
+_request = make("request")
 write = make("write")
 
 

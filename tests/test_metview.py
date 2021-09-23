@@ -2220,8 +2220,8 @@ def test_request():
     r = mv.Request(d)
     assert isinstance(r, mv.Request)
     assert isinstance(r, dict)
-    r.set_verb("MSYMB")
-    assert r.get_verb() == "MSYMB"
+    r.set_verb("DVERB1")
+    assert r.get_verb() == "DVERB1"
     assert r["param1"] == "value1"
     assert r["param2"] == 180
     r["param3"] = 108
@@ -2229,10 +2229,10 @@ def test_request():
 
     # set verb in constructor
     d = {"param1": "value1", "param2": 180}
-    r = mv.Request(d, "MCOAST")
+    r = mv.Request(d, "DVERB2")
     assert isinstance(r, mv.Request)
     assert isinstance(r, dict)
-    assert r.get_verb() == "MCOAST"
+    assert r.get_verb() == "DVERB2"
     assert r["param1"] == "value1"
     assert r["param2"] == 180
     r["param3"] = 108
@@ -2242,17 +2242,20 @@ def test_request():
     r2 = mv.Request(r)
     assert isinstance(r2, mv.Request)
     assert isinstance(r2, dict)
-    assert r2.get_verb() == "MCOAST"
+    assert r2.get_verb() == "DVERB2"
     assert r2["param1"] == "value1"
     assert r2["param2"] == 180
     r2["param3"] = 108
     assert r2["param3"] == 108
+    r2["param3"] = 179
+    assert r2["param3"] == 179
+    assert r["param3"] == 108  # original request is unchanged
 
     # destroy r and check that r2 is still ok
     r = 0
     assert isinstance(r2, mv.Request)
     assert isinstance(r2, dict)
-    assert r2.get_verb() == "MCOAST"
+    assert r2.get_verb() == "DVERB2"
     assert r2["param1"] == "value1"
     assert r2["param2"] == 180
     r2["param3"] = 108
@@ -2260,8 +2263,20 @@ def test_request():
 
     # check the string representation
     d = {"param1": "value1", "param2": 180}
-    r = mv.Request(d, "MCOAST")
-    assert str(r) == "VERB: MCOAST{'param1': 'value1', 'param2': 180}"
+    r = mv.Request(d, "DVERB3")
+    rstr = str(r)
+    assert rstr == "VERB: DVERB3{'param1': 'value1', 'param2': 180}"
+
+    # test the copying of an mcont
+    m1 = mv.mcont(contour_line_style="dot")
+    assert m1["contour_line_style"] == "DOT"
+    m2 = mv.Request(m1)
+    assert m1.val_pointer != m2.val_pointer
+    assert isinstance(m2, mv.Request)
+    assert m2["contour_line_style"] == "DOT"
+    m2["contour_line_style"] = "DASH"
+    assert m2["contour_line_style"] == "DASH"
+    assert m1["contour_line_style"] == "DOT"
 
 
 def test_read_request():
