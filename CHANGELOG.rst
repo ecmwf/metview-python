@@ -2,6 +2,10 @@
 Changelog for Metview's Python interface
 ========================================
 
+1.8.1
+------------------
+
+
 1.8.0
 ------------------
 - new functions/methods on Fieldset to give an overview of contents:
