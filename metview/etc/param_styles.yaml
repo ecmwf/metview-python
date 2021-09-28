@@ -10,7 +10,7 @@ default_mcont:
 default_mwind:
   mwind:
     wind_thinning_method: "density"
-    wind_densisty: 4
+    wind_density: 4
     legend: "on"
 # this is the default style for difference fields
 default_diff:
@@ -119,7 +119,7 @@ arrow_black:
     legend: "off"
     wind_advanced_method: "off"
     wind_thinning_method: "density"
-    wind_densisty: 2
+    wind_density: 2
     wind_arrow_colour: "black"
     wind_arrow_min_speed: 0
 # 10m

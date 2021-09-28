@@ -2,6 +2,14 @@
 Changelog for Metview's Python interface
 ========================================
 
+1.8.1
+------------------
+- fixed case where map_area_gallery() crashed
+- fixed case where map_style_gallery() crashed
+- fixed issue where plot_maps() could not plot wind data
+- fixed issue where a style could not be updated when verb argument is specified
+
+
 1.8.0
 ------------------
 - new functions/methods on Fieldset to give an overview of contents:
