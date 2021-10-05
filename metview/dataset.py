@@ -24,6 +24,7 @@ from metview.indexer import GribIndexer, FieldsetIndexer, ExperimentIndexer
 from metview.track import Track
 from metview.param import ParamInfo, ParamNameDesc, ParamIdDesc, init_pandas_options
 from metview import utils
+from metview.ipython import is_ipython_active
 
 
 ETC_PATH = os.path.join(os.path.dirname(__file__), "etc")
@@ -460,14 +461,10 @@ class FieldsetDb(IndexDb):
                 df.drop("number", axis=1, inplace=True)
 
         init_pandas_options()
-        try:
-            import IPython
 
-            # test whether we're in the Jupyter environment
-            if IPython.get_ipython() is not None:
-                return df
-        except:
-            pass
+        # test whether we're in the Jupyter environment
+        if is_ipython_active():
+            return df
 
         print(df)
 
