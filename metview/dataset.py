@@ -748,11 +748,16 @@ class Dataset:
     )
     COMPRESSION = "bz2"
 
-    def __init__(self, name, path=None, load_style=True):
-        self.name = name
-        self.path = path if path is not None else ""
+    def __init__(self, name_or_path, load_style=True):
         self.field_conf = {}
         self.track_conf = {}
+
+        self.path = name_or_path
+        if any(x in self.path for x in ["/", "\\", "..", "./"]):
+            self.name = os.path.basename(self.path)
+        else:
+            self.name = self.path
+            self.path = ""
 
         assert self.name
         LOG.debug(f"name={self.name}")
@@ -906,8 +911,14 @@ class Dataset:
         return f"{self.__class__.__name__}[name={self.name}]"
 
 
-def create_dataset_template(name, path=None):
-    path = path if path is not None else ""
+def create_dataset_template(name_or_path):
+    path = name_or_path
+    if any(x in path for x in ["/", "\\", "..", "./"]):
+        name = os.path.basename(path)
+    else:
+        name = path
+        path = ""
+
     if path == "":
         path = os.path.join(Dataset.LOCAL_ROOT, name)
 

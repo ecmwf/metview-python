@@ -8,19 +8,12 @@
 # nor does it submit to any jurisdiction.
 #
 
-import copy
-import datetime
 import os
 import shutil
 import tempfile
 
-import numpy as np
-import pandas as pd
-import pytest
-
 import metview as mv
-from metview import bindings
-from metview.indexer import GribIndexer
+
 
 PATH = os.path.dirname(__file__)
 DS_DIR = ""
@@ -66,8 +59,9 @@ def remove_dataset():
 def test_dataset():
     build_dataset()
 
-    ds = mv.load_dataset("test", path=DS_DIR)
+    ds = mv.load_dataset(DS_DIR)
     assert list(ds.field_conf.keys()) == ["an", "oper"]
+    assert ds.name == os.path.basename(DS_DIR)
 
     # indexing
     ds.scan()
@@ -84,7 +78,7 @@ def test_dataset():
             assert os.path.exists(os.path.join(index_dir, comp, f))
 
     # reload ds
-    ds = mv.load_dataset("test", path=DS_DIR)
+    ds = mv.load_dataset(DS_DIR)
 
     # Analysis
     d = ds["an"].select(
@@ -199,13 +193,13 @@ def test_dataset_create_template():
     global DS_DIR
     DS_DIR = tempfile.mkdtemp()
 
-    mv.dataset.create_dataset_template("test", path=DS_DIR)
+    mv.dataset.create_dataset_template(DS_DIR)
 
     for d in ["conf", "data", "index"]:
         d_path = os.path.join(DS_DIR, d)
         assert os.path.isdir(d_path)
 
-    for f in ["params.yaml", "param_styles.yaml","areas.yaml", "map_styles"]:
+    for f in ["params.yaml", "param_styles.yaml", "areas.yaml", "map_styles"]:
         f_path = os.path.join(DS_DIR, "conf", f)
         assert os.path.exists(d_path)
 
