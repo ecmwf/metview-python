@@ -118,8 +118,6 @@ arrow_black:
   mwind: &arrow_black
     legend: "off"
     wind_advanced_method: "off"
-    wind_thinning_method: "density"
-    wind_density: 2
     wind_arrow_colour: "black"
     wind_arrow_min_speed: 0
 # 10m
@@ -314,21 +312,6 @@ track:
 # ------------------------
 # DIFFERENCE STYLES
 # ------------------------
-diff_core_9:
-  mcont:  &diff_core
-    legend: "on"
-    contour: "on"
-    contour_line_colour: "charcoal"
-    contour_highlight: "off"
-    contour_level_selection_type: "level_list"
-    contour_label: "off"
-    contour_shade: "on"
-    contour_shade_method: "area_fill"
-    contour_shade_colour_method: "palette"
-    # contour_shade_palette_name: eccharts_blue_white_red_9
-    # contour_shade_palette_name: colorbrewer_RdBu_9
-    contour_shade_palette_name: colorbrewer_RdBu_11
-    grib_scaling_of_derived_fields: "on"
 plus_core: 
   - mcont: &plus
       legend: "on"
