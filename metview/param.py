@@ -15,6 +15,7 @@ import pandas as pd
 
 import metview as mv
 from metview.indexer import GribIndexer
+from metview.ipython import is_ipython_active
 
 # logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
@@ -313,16 +314,8 @@ class ParamDesc:
 
     @staticmethod
     def describe(db, param=None):
-        in_jupyter = False
         labels = {"marsClass": "class", "marsStream": "stream", "marsType": "type"}
-        try:
-            import IPython
-
-            # test whether we're in the Jupyter environment
-            if IPython.get_ipython() is not None:
-                in_jupyter = True
-        except:
-            pass
+        in_jupyter = is_ipython_active()
 
         # describe all the params
         if param is None:

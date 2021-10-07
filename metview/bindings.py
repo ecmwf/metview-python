@@ -33,6 +33,7 @@ from metview.style import (
     make_geoview,
 )
 from metview import plotting
+from metview.ipython import is_ipython_active
 
 __version__ = "1.9.0"
 
@@ -1510,16 +1511,7 @@ def plot_to_notebook_return_image(*args, **kwargs):  # pragma: no cover
 # get the IPython functions into the global namespace so that the plot object can use them
 def setoutput(*args, **kwargs):
     if "jupyter" in args:  # pragma: no cover
-        try:
-            import IPython
-
-            get_ipython = IPython.get_ipython
-        except ImportError as imperr:
-            print("Could not import IPython module - plotting to Jupyter will not work")
-            raise imperr
-
-        # test whether we're in the Jupyter environment
-        if get_ipython() is not None:
+        if is_ipython_active():
             plot.plot_to_jupyter = True
             plot.plot_widget = kwargs.get("plot_widget", True)
             if "plot_widget" in kwargs:

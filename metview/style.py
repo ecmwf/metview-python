@@ -18,6 +18,7 @@ from pathlib import Path
 import yaml
 import metview as mv
 from metview.param import ParamInfo
+from metview.ipython import is_ipython_active
 
 # logging.basicConfig(level=logging.DEBUG)
 LOG = logging.getLogger(__name__)
@@ -680,13 +681,7 @@ class StyleGallery:
         """
 
     def build(self):
-        try:
-            import IPython
-
-            # test whether we're in the Jupyter environment
-            if IPython.get_ipython() is None:
-                return
-        except:
+        if not is_ipython_active():
             return
 
         img_size = 120

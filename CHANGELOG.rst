@@ -2,6 +2,9 @@
 Changelog for Metview's Python interface
 ========================================
 
+1.9.0
+------------------
+
 1.8.1
 ------------------
 - fixed case where map_area_gallery() crashed
