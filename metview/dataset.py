@@ -12,7 +12,7 @@ import copy
 import logging
 import os
 from pathlib import Path
-
+import shutil
 
 import pandas as pd
 import requests
@@ -907,3 +907,38 @@ class Dataset:
 
     def __str__(self):
         return f"{self.__class__.__name__}[name={self.name}]"
+
+
+def create_dataset_template(name, path=None):
+    path = path if path is not None else ""
+    if path == "":
+        path = os.path.join(Dataset.LOCAL_ROOT, name)
+
+    if not os.path.exists(path):
+        os.mkdir(path)
+    else:
+        if not os.path.isdir(path):
+            raise Exception(f"path must be a directory!")
+        if os.path.exists(os.path.join("path", "data.yaml")):
+            raise Exception(
+                f"The specified dataset directory={path} already exists and is not empty!"
+            )
+
+    # create dirs
+    for dir_name in ["conf", "data", "index"]:
+        os.mkdir(os.path.join(path, dir_name))
+
+    # copy files
+    files = {
+        "params.yaml": ("conf", ""),
+        "param_styles.yaml": ("conf", ""),
+        "areas.yaml": ("conf", ""),
+        "map_styles_template.yaml": ("conf", "map_styles.yaml"),
+        "dataset_template.yaml": ("", "data.yaml"),
+    }
+    for src_name, target in files.items():
+        target_dir = os.path.join(path, target[0]) if target[0] else path
+        target_name = target[1] if target[1] else src_name
+        shutil.copyfile(
+            os.path.join(ETC_PATH, src_name), os.path.join(target_dir, target_name)
+        )

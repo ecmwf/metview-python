@@ -1,0 +1,14 @@
+experiments:
+  - myexp:
+      label: "myexp"
+      dir: __ROOTDIR__/myexp
+      fname : "*.grib"
+  - track:
+      type: track
+      dir: __ROOTDIR__/track
+      fname: "*.csv"
+      skiprows: 10
+      date_index: 0
+      time_index: 1
+      lat_index: 3
+      lon_index: 4

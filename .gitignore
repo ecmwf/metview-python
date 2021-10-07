@@ -60,4 +60,5 @@ tests/*.idx
 
 # vscode
 .vscode/
+.env
 

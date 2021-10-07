@@ -192,3 +192,24 @@ def test_dataset():
     ]
 
     remove_dataset()
+
+
+def test_dataset_create_template():
+
+    global DS_DIR
+    DS_DIR = tempfile.mkdtemp()
+
+    mv.dataset.create_dataset_template("test", path=DS_DIR)
+
+    for d in ["conf", "data", "index"]:
+        d_path = os.path.join(DS_DIR, d)
+        assert os.path.isdir(d_path)
+
+    for f in ["params.yaml", "param_styles.yaml","areas.yaml", "map_styles"]:
+        f_path = os.path.join(DS_DIR, "conf", f)
+        assert os.path.exists(d_path)
+
+    f_path = os.path.join(DS_DIR, "data.yaml")
+    assert os.path.exists(f_path)
+
+    remove_dataset()

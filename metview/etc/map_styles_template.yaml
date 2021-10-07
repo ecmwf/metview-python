@@ -1,0 +1,29 @@
+base:
+    map_coastline_resolution: "low"
+    map_coastline_land_shade: "on"
+    map_coastline_land_shade_colour: "grey"
+    map_coastline_sea_shade: "on"
+    map_coastline_sea_shade_colour: "RGB(0.86,0.94,1)"
+    map_boundaries: "on"
+    map_boundaries_colour: "RGB(0.21,0.21,0.21)"
+    map_disputed_boundaries: "off"
+    map_administrative_boundaries: "off"
+    map_grid_latitude_increment: 10
+    map_grid_longitude_increment: 10
+    map_grid_colour: "RGB(0.294,0.294,0.2941)"
+    map_label_colour: "RGB(0.294,0.294,0.2941)"
+base_diff:
+    map_coastline_resolution: "low"
+    map_coastline_colour: CHARCOAL
+    map_coastline_land_shade: "on"
+    map_coastline_land_shade_colour: "RGB(0.8549,0.8549,0.8549)"
+    map_coastline_sea_shade: "off"
+    map_coastline_sea_shade_colour: "white"
+    map_boundaries: "on"
+    map_boundaries_colour: "RGB(0.21,0.21,0.21)"
+    map_disputed_boundaries: "off"
+    map_administrative_boundaries: "off"
+    map_grid_latitude_increment: 10
+    map_grid_longitude_increment: 10
+    map_grid_colour: "RGB(0.294,0.294,0.2941)"
+    map_label_colour: "RGB(0.294,0.294,0.2941)"
