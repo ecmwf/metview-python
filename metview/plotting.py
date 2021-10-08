@@ -661,7 +661,7 @@ def plot_stamp(
     return mv.plot(desc, animate=animate)
 
 
-def plot_rmse(*args, ref=None, view=None, area=None, title_font_size=0.4, y_max=None):
+def plot_rmse(*args, ref=None, area=None, title_font_size=0.4, y_max=None):
     """
     Plot RMSE curve
     """
@@ -743,6 +743,7 @@ def plot_rmse(*args, ref=None, view=None, area=None, title_font_size=0.4, y_max=
 
     pf_label_added = False
     colour_idx = -1
+    legend_item_count = 0
     for i, d in enumerate(rmse_data):
         vis = mv.input_visualiser(
             input_x_type="date", input_date_x_values=dates, input_y_values=d
@@ -756,8 +757,10 @@ def plot_rmse(*args, ref=None, view=None, area=None, title_font_size=0.4, y_max=
             line_width = 3
             colour_idx = (colour_idx + 1) % len(fc_colour)
             line_colour = fc_colour[colour_idx]
-            vd["legend_user_text"] = data[i][0]
+            print(f"label={data[i][1][0].label}")
+            vd["legend_user_text"] = data[i][1].label
             vd["legend"] = "on"
+            legend_item_count += 1
         elif data[i][0] == "pf":
             line_width = 1
             line_colour = ef_colour["pf"]
@@ -765,11 +768,13 @@ def plot_rmse(*args, ref=None, view=None, area=None, title_font_size=0.4, y_max=
                 pf_label_added = True
                 vd["legend_user_text"] = ef_label.get("pf", "")
                 vd["legend"] = "on"
+                legend_item_count += 1
         elif data[i][0] in ["cf", "em"]:
             line_width = 3
             line_colour = ef_colour[data[i][0]]
             vd["legend_user_text"] = ef_label.get(data[i][0], "")
             vd["legend"] = "on"
+            legend_item_count += 1
 
         vd["graph_line_colour"] = line_colour
         vd["graph_line_thickness"] = line_width
@@ -784,8 +789,10 @@ def plot_rmse(*args, ref=None, view=None, area=None, title_font_size=0.4, y_max=
         desc.append(t)
 
     # add legend
-    legX = 3.5
-    legY = 14
+    leg_left = 3.5
+    # legY = 14
+    leg_height = legend_item_count * (0.35 + 0.5) + (legend_item_count + 1) * 0.1
+    leg_bottom = 17.5 - leg_height
 
     # Legend
     legend = mv.mlegend(
@@ -795,13 +802,12 @@ def plot_rmse(*args, ref=None, view=None, area=None, title_font_size=0.4, y_max=
         legend_border="on",
         legend_border_colour="black",
         legend_box_mode="positional",
-        legend_box_x_position=legX,
-        legend_box_y_position=legY,
+        legend_box_x_position=leg_left,
+        legend_box_y_position=leg_bottom,
         legend_box_x_length=4,
-        legend_box_y_length=3,
+        legend_box_y_length=leg_height,
         legend_text_font_size=0.35,
         legend_box_blanking="on",
-        # legend_user_lines       =["oper"]
     )
     desc.append(legend)
 

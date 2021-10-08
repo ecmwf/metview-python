@@ -158,7 +158,12 @@ class Title:
 
             lines = []
             for d in data:
-                line = f"RMSE(ref={ref.label}) {d.label}"
+                line = "RMSE"
+                if ref.label:
+                    line += f"(ref={ref.label})"
+                if d.label:
+                    line += f" {d.label}"
+
                 # print(f"label={d.label}")
                 param = d.param_info
                 if param is not None:

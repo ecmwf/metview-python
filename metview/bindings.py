@@ -21,7 +21,7 @@ import tempfile
 
 import cffi
 import numpy as np
-from numpy.lib.arraysetops import isin
+from numpy.lib.arraysetops import _setxor1d_dispatcher, isin
 
 from metview.dataset import FieldsetDb, Dataset
 from metview.style import (
@@ -747,6 +747,19 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             return self._db.label
         else:
             return str()
+
+    @label.setter
+    def label(self, value):
+        if self._db is not None:
+            if self._db.label:
+                print(
+                    f"Warning: cannot set label! It is already set on index database as {self._db.label}!"
+                )
+                return
+            else:
+                self._db.label = value
+
+        self._label = value
 
     def unique(self, key):
         if self._db:
