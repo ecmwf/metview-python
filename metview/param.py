@@ -9,7 +9,6 @@
 #
 
 import logging
-from metview import dataset
 import re
 import pandas as pd
 
