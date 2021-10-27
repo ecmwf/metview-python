@@ -4,6 +4,9 @@ Changelog for Metview's Python interface
 
 1.9.0
 ------------------
+- the plot functions now automatically plot inline if running inside a Jupyter notebook
+  - it is no longer necessary to call setoutput('jupyter')
+  - call setoutput('screen') to force the interactive plot window to appear
 
 1.8.1
 ------------------

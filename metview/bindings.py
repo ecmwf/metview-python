@@ -1336,8 +1336,17 @@ class Plot:
         self.plot_to_jupyter = False
         self.plot_widget = True
         self.jupyter_args = {}
+        self.called_once = False
+        self.setoutput_called_once = False
 
     def __call__(self, *args, **kwargs):
+        # first time called? If we are in Jupyter and user did not specify,
+        # then plot inline to Jupyter by default
+        if not (self.called_once or self.setoutput_called_once):
+            if is_ipython_active():
+                setoutput("jupyter")
+        self.called_once = True
+
         if self.plot_to_jupyter:  # pragma: no cover
             if self.plot_widget:
                 return plot_to_notebook(args, **kwargs)
@@ -1523,6 +1532,7 @@ def plot_to_notebook_return_image(*args, **kwargs):  # pragma: no cover
 # functionality. Since this occurs within a function, we need a little trickery to
 # get the IPython functions into the global namespace so that the plot object can use them
 def setoutput(*args, **kwargs):
+    plot.setoutput_called_once = True
     if "jupyter" in args:  # pragma: no cover
         if is_ipython_active():
             plot.plot_to_jupyter = True
