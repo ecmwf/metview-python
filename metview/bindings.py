@@ -1535,8 +1535,13 @@ def setoutput(*args, **kwargs):
     plot.setoutput_called_once = True
     if "jupyter" in args:  # pragma: no cover
         if is_ipython_active():
+            global widgets
             plot.plot_to_jupyter = True
             plot.plot_widget = kwargs.get("plot_widget", True)
+            if plot.plot_widget:
+                widgets = import_widgets()
+                if not widgets:
+                    plot.plot_widget = False
             if "plot_widget" in kwargs:
                 del kwargs["plot_widget"]
             plot.jupyter_args = kwargs
@@ -1545,11 +1550,6 @@ def setoutput(*args, **kwargs):
                 "ERROR: setoutput('jupyter') was set, but we are not in a Jupyter environment"
             )
             raise (Exception("Could not set output to jupyter"))
-
-        global widgets
-        widgets = import_widgets()
-        if isinstance(widgets, Exception):
-            raise widgets
 
     else:
         plot.plot_to_jupyter = False
