@@ -38,4 +38,4 @@ def import_widgets():
         return widgets
     except ImportError as imperr:
         print("Could not import ipywidgets module - plotting to Jupyter will not work")
-        return None
+        return imperr

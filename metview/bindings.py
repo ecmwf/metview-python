@@ -1548,8 +1548,8 @@ def setoutput(*args, **kwargs):
 
         global widgets
         widgets = import_widgets()
-        if not widgets:
-            raise imperr
+        if isinstance(widgets, Exception):
+            raise widgets
 
     else:
         plot.plot_to_jupyter = False
