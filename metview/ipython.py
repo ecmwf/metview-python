@@ -30,3 +30,12 @@ def is_ipython_active():
         except Exception:
             ipython_active = False
     return ipython_active
+
+
+def import_widgets():
+    try:
+        widgets = __import__("ipywidgets", globals(), locals())
+        return widgets
+    except ImportError as imperr:
+        print("Could not import ipywidgets module - plotting to Jupyter will not work")
+        return None

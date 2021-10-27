@@ -33,7 +33,7 @@ from metview.style import (
     make_geoview,
 )
 from metview import plotting
-from metview.ipython import is_ipython_active
+from metview.ipython import is_ipython_active, import_widgets
 
 __version__ = "1.9.0"
 
@@ -1546,13 +1546,9 @@ def setoutput(*args, **kwargs):
             )
             raise (Exception("Could not set output to jupyter"))
 
-        try:
-            global widgets
-            widgets = __import__("ipywidgets", globals(), locals())
-        except ImportError as imperr:
-            print(
-                "Could not import ipywidgets module - plotting to Jupyter will not work"
-            )
+        global widgets
+        widgets = import_widgets()
+        if not widgets:
             raise imperr
 
     else:
