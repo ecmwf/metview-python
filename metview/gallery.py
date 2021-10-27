@@ -7,12 +7,16 @@
 # granted to it by virtue of its status as an intergovernmental organisation
 # nor does it submit to any jurisdiction.
 
+import os
 import zipfile
 
 import metview as mv
 
 
-def load_dataset(filename):
+def load_dataset(filename, check_local=False):
+    if check_local and os.path.exists(filename):
+        return mv.read(filename)
+
     base_url = "http://download.ecmwf.org/test-data/metview/gallery/"
     try:
         d = mv.download(url=base_url + filename, target=filename)
