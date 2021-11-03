@@ -26,8 +26,14 @@ class CodesHandle:
         s = "CodesHandle("
         return s + str(self.handle) + "," + self.path + "," + str(self.offset) + ")"
 
-    def grib_get_string(self, key):
+    def get_string(self, key):
         return eccodes.codes_get_string(self.handle, key)
+
+    def get_long(self, key):
+        return eccodes.codes_get_long(self.handle, key)
+
+    def get_double(self, key):
+        return eccodes.codes_get_double(self.handle, key)
 
 
 class GribFile:
@@ -74,7 +80,13 @@ class Field:
         # print("Field=", handle, gribfile)
 
     def grib_get_string(self, key):
-        return self.handle.grib_get_string(key)
+        return self.handle.get_string(key)
+
+    def grib_get_long(self, key):
+        return self.handle.get_long(key)
+
+    def grib_get_double(self, key):
+        return self.handle.get_double(key)
 
 
 class Fieldset:
@@ -92,8 +104,20 @@ class Fieldset:
     def __len__(self):
         return len(self.fields)
 
+    @staticmethod
+    def _list_or_single(lst):
+        if len(lst) == 1:
+            lst = lst[0]
+        return lst
+
     def grib_get_string(self, key):
         ret = [x.grib_get_string(key) for x in self.fields]
-        if len(ret) == 1:
-            ret = ret[0]
-        return ret
+        return Fieldset._list_or_single(ret)
+
+    def grib_get_long(self, key):
+        ret = [x.grib_get_long(key) for x in self.fields]
+        return Fieldset._list_or_single(ret)
+
+    def grib_get_double(self, key):
+        ret = [x.grib_get_double(key) for x in self.fields]
+        return Fieldset._list_or_single(ret)

@@ -7,6 +7,7 @@
 # granted to it by virtue of its status as an intergovernmental organisation
 # nor does it submit to any jurisdiction.
 
+import numpy as np
 import os
 import pytest
 
@@ -48,3 +49,49 @@ def test_grib_get_string_18():
     f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
     sn = f.grib_get_string("shortName")
     assert sn == ["t", "u", "v"] * 6
+
+
+def test_grib_get_long_1():
+    f = mv.Fieldset(path=os.path.join(PATH, "test.grib"))
+    lev = f.grib_get_long("level")
+    assert lev == 0
+
+
+def test_grib_get_long_18():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    lev = f.grib_get_long("level")
+    assert lev == ([1000] * 3) + ([850] * 3) + ([700] * 3) + ([500] * 3) + (
+        [400] * 3
+    ) + ([300] * 3)
+
+
+def test_grib_get_double_1():
+    f = mv.Fieldset(path=os.path.join(PATH, "test.grib"))
+    m = f.grib_get_double("max")
+    assert np.isclose(m, 316.061)
+
+
+def test_grib_get_double_18():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    m = f.grib_get_double("max")
+    ref_m = [
+        320.564,
+        21.7131,
+        19.8335,
+        304.539,
+        43.1016,
+        28.661,
+        295.265,
+        44.1455,
+        31.6385,
+        275.843,
+        52.74,
+        47.0099,
+        264.003,
+        62.2138,
+        55.9496,
+        250.653,
+        66.4555,
+        68.9203,
+    ]
+    np.testing.assert_allclose(m, ref_m, 0.001)
