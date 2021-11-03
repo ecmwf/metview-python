@@ -14,10 +14,13 @@ import eccodes
 class CodesHandle:
     """Wraps an ecCodes handle"""
 
+    missing_value = 1e34
+
     def __init__(self, handle, path, offset):
         self.handle = handle
         self.path = path
         self.offset = offset
+        eccodes.codes_set(handle, "missingValue", self.missing_value)
 
     def __del__(self):
         # print("CodesHandle:release ", self)
@@ -43,7 +46,10 @@ class CodesHandle:
         return eccodes.codes_get_double_array(self.handle, key)
 
     def get_values(self):
-        return eccodes.codes_get_values(self.handle)
+        vals = eccodes.codes_get_values(self.handle)
+        if self.get_long("bitmapPresent"):
+            vals[vals == self.missing_value] = np.nan
+        return vals
 
 
 class GribFile:
@@ -154,4 +160,5 @@ class Fieldset:
         ret = Fieldset._list_or_single(ret)
         if isinstance(ret, list):  # create a 2D array
             ret = np.stack(ret, axis=0)
+
         return ret

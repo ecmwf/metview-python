@@ -160,3 +160,16 @@ def test_values_18():
     assert np.isclose(v[0][1088], 304.5642, eps)
     assert np.isclose(v[17][0], -3.0797, eps)
     assert np.isclose(v[17][2663], -11.0797, eps)
+
+
+def test_values_with_missing():
+    f = mv.Fieldset(path=os.path.join(PATH, "t_with_missing.grib"))
+    v = f.values()
+    assert isinstance(v, np.ndarray)
+    assert v.shape == (2664,)
+    eps = 0.001
+    assert np.isclose(v[0], 272.5642, eps)
+    assert np.isnan(v[798])
+    assert np.isnan(v[806])
+    assert np.isnan(v[1447])
+    assert np.isclose(v[2663], 240.5642, eps)
