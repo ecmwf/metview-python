@@ -95,3 +95,21 @@ def test_grib_get_double_18():
         68.9203,
     ]
     np.testing.assert_allclose(m, ref_m, 0.001)
+
+def test_grib_get_long_array_1():
+    f = mv.Fieldset(path=os.path.join(PATH, "rgg_small_subarea_cellarea_ref.grib"))
+    pl = f.grib_get_long_array("pl")
+    assert len(pl) == 73
+    assert pl[0] == 24
+    assert pl[1] == 28
+    assert pl[20] == 104
+    assert pl[72] == 312
+
+def test_grib_get_double_array_1():
+    f = mv.Fieldset(path=os.path.join(PATH, "test.grib"))
+    v = f.grib_get_double_array("values")
+    assert len(v) == 115680
+    assert np.isclose(v[0], 260.4356)
+    assert np.isclose(v[24226], 276.1856)
+    assert np.isclose(v[36169], 287.9356)
+    assert np.isclose(v[115679], 227.1856)

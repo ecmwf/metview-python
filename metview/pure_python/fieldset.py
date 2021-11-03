@@ -35,6 +35,11 @@ class CodesHandle:
     def get_double(self, key):
         return eccodes.codes_get_double(self.handle, key)
 
+    def get_long_array(self, key):
+        return eccodes.codes_get_long_array(self.handle, key)
+
+    def get_double_array(self, key):
+        return eccodes.codes_get_double_array(self.handle, key)
 
 class GribFile:
     """ Encapsulates a GRIB file, giving access to an iteration of CodesHandles """
@@ -88,7 +93,11 @@ class Field:
     def grib_get_double(self, key):
         return self.handle.get_double(key)
 
+    def grib_get_long_array(self, key):
+        return self.handle.get_long_array(key)
 
+    def grib_get_double_array(self, key):
+        return self.handle.get_double_array(key)
 class Fieldset:
     """A set of Fields, each of which can come from different GRIB files"""
 
@@ -120,4 +129,12 @@ class Fieldset:
 
     def grib_get_double(self, key):
         ret = [x.grib_get_double(key) for x in self.fields]
+        return Fieldset._list_or_single(ret)
+
+    def grib_get_long_array(self, key):
+        ret = [x.grib_get_long_array(key) for x in self.fields]
+        return Fieldset._list_or_single(ret)
+    
+    def grib_get_double_array(self, key):
+        ret = [x.grib_get_double_array(key) for x in self.fields]
         return Fieldset._list_or_single(ret)
