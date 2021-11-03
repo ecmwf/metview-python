@@ -7,6 +7,7 @@
 # granted to it by virtue of its status as an intergovernmental organisation
 # nor does it submit to any jurisdiction.
 
+import numpy as np
 import eccodes
 
 
@@ -40,6 +41,9 @@ class CodesHandle:
 
     def get_double_array(self, key):
         return eccodes.codes_get_double_array(self.handle, key)
+
+    def get_values(self):
+        return eccodes.codes_get_values(self.handle)
 
 
 class GribFile:
@@ -100,6 +104,9 @@ class Field:
     def grib_get_double_array(self, key):
         return self.handle.get_double_array(key)
 
+    def values(self):
+        return self.handle.get_values()
+
 
 class Fieldset:
     """A set of Fields, each of which can come from different GRIB files"""
@@ -141,3 +148,10 @@ class Fieldset:
     def grib_get_double_array(self, key):
         ret = [x.grib_get_double_array(key) for x in self.fields]
         return Fieldset._list_or_single(ret)
+
+    def values(self):
+        ret = [x.values() for x in self.fields]
+        ret = Fieldset._list_or_single(ret)
+        if isinstance(ret, list):  # create a 2D array
+            ret = np.stack(ret, axis=0)
+        return ret

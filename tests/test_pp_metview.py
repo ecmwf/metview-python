@@ -133,3 +133,30 @@ def test_grib_get_double_array_18():
     assert np.isclose(v[0][1088], 304.5642, eps)
     assert np.isclose(v[17][0], -3.0797, eps)
     assert np.isclose(v[17][2663], -11.0797, eps)
+
+
+def test_values_1():
+    f = mv.Fieldset(path=os.path.join(PATH, "test.grib"))
+    v = f.values()
+    assert isinstance(v, np.ndarray)
+    assert len(v) == 115680
+    assert np.isclose(v[0], 260.4356)
+    assert np.isclose(v[24226], 276.1856)
+    assert np.isclose(v[36169], 287.9356)
+    assert np.isclose(v[115679], 227.1856)
+
+
+def test_values_18():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    v = f.values()
+    assert isinstance(v, np.ndarray)
+    assert v.shape == (18, 2664)
+    assert isinstance(v[0], np.ndarray)
+    assert isinstance(v[17], np.ndarray)
+    assert len(v[0]) == 2664
+    assert len(v[17]) == 2664
+    eps = 0.001
+    assert np.isclose(v[0][0], 272.5642, eps)
+    assert np.isclose(v[0][1088], 304.5642, eps)
+    assert np.isclose(v[17][0], -3.0797, eps)
+    assert np.isclose(v[17][2663], -11.0797, eps)
