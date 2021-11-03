@@ -26,6 +26,9 @@ class CodesHandle:
         s = "CodesHandle("
         return s + str(self.handle) + "," + self.path + "," + str(self.offset) + ")"
 
+    def grib_get_string(self, key):
+        return eccodes.codes_get_string(self.handle, key)
+
 
 class GribFile:
     """ Encapsulates a GRIB file, giving access to an iteration of CodesHandles """
@@ -70,6 +73,9 @@ class Field:
         self.gribfile = gribfile
         # print("Field=", handle, gribfile)
 
+    def grib_get_string(self, key):
+        return self.handle.grib_get_string(key)
+
 
 class Fieldset:
     """A set of Fields, each of which can come from different GRIB files"""
@@ -85,3 +91,9 @@ class Fieldset:
 
     def __len__(self):
         return len(self.fields)
+
+    def grib_get_string(self, key):
+        ret = [x.grib_get_string(key) for x in self.fields]
+        if len(ret) == 1:
+            ret = ret[0]
+        return ret

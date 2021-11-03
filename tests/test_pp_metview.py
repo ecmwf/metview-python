@@ -38,4 +38,13 @@ def test_non_empty_fieldset_contructor_len_18():
     assert len(f) == 18
 
 
-# test_non_empty_fieldset_contructor_len_18()
+def test_grib_get_string_1():
+    f = mv.Fieldset(path=os.path.join(PATH, "test.grib"))
+    sn = f.grib_get_string("shortName")
+    assert sn == "2t"
+
+
+def test_grib_get_string_18():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    sn = f.grib_get_string("shortName")
+    assert sn == ["t", "u", "v"] * 6
