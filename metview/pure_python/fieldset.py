@@ -206,3 +206,9 @@ class Fieldset:
         for f in self.fields:
             result._append_field(f.field_func(func))
         return result
+
+    def __neg__(self):
+        def neg(x):
+            return -x
+
+        return self.field_func(neg)

@@ -200,3 +200,13 @@ def test_field_func():
     vf = f.values()
     vg = g.values()
     np.testing.assert_allclose(vg, vf * vf)
+
+
+def test_field_func_neg():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    g = -f
+    assert type(g) == mv.Fieldset
+    assert len(g) == 18
+    vf = f.values()
+    vg = g.values()
+    np.testing.assert_allclose(vg, -vf)
