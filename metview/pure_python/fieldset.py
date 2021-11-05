@@ -93,10 +93,11 @@ class GribFile:
 class Field:
     """Encapsulates single GRIB message"""
 
-    def __init__(self, handle, gribfile):
+    def __init__(self, handle, gribfile, keep_values_in_memory=False):
         self.handle = handle
         self.gribfile = gribfile
-        # print("Field=", handle, gribfile)
+        self.vals = None
+        self.keep_values_in_memory = keep_values_in_memory
 
     def grib_get_string(self, key):
         return self.handle.get_string(key)
@@ -114,7 +115,13 @@ class Field:
         return self.handle.get_double_array(key)
 
     def values(self):
-        return self.handle.get_values()
+        if not self.vals:
+            vals = self.handle.get_values()
+            if self.keep_values_in_memory:
+                self.vals = vals
+        else:
+            vals = self.vals
+        return vals
 
     def write(self, fout):
         self.handle.write(fout)
@@ -123,14 +130,14 @@ class Field:
 class Fieldset:
     """A set of Fields, each of which can come from different GRIB files"""
 
-    def __init__(self, path=None, fields=None):
+    def __init__(self, path=None, fields=None, keep_values_in_memory=False):
         self.fields = []
         self.count = 0
         if path:
             g = GribFile(path)
             self.count = len(g)
             for handle in g:
-                self.fields.append(Field(handle, path))
+                self.fields.append(Field(handle, path, keep_values_in_memory))
 
     def __len__(self):
         return len(self.fields)
