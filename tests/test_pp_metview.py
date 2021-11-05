@@ -187,3 +187,16 @@ def test_write_fieldset():
     assert sn == ["t", "u", "v"] * 6
     f = 0
     os.remove(temp_path)
+
+
+def test_field_func():
+    def sqr_func(x):
+        return x * x
+
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    g = f.field_func(sqr_func)
+    assert type(g) == mv.Fieldset
+    assert len(g) == 18
+    vf = f.values()
+    vg = g.values()
+    np.testing.assert_allclose(vg, vf * vf)

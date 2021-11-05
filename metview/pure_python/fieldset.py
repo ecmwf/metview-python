@@ -115,7 +115,7 @@ class Field:
         return self.handle.get_double_array(key)
 
     def values(self):
-        if not self.vals:
+        if self.vals is None:
             vals = self.handle.get_values()
             if self.keep_values_in_memory:
                 self.vals = vals
@@ -125,6 +125,21 @@ class Field:
 
     def write(self, fout):
         self.handle.write(fout)
+
+    def clone(self):
+        c = Field(
+            eccodes.codes_clone(self.handle.handle),
+            self.gribfile,
+            self.keep_values_in_memory,
+        )
+        c.vals = None
+        return c
+
+    def field_func(self, func):
+        """Applies a function to all values, returning a new Field"""
+        result = self.clone()
+        result.vals = func(self.values())
+        return result
 
 
 class Fieldset:
@@ -181,3 +196,13 @@ class Fieldset:
         for f in self.fields:
             f.write(fout)
         fout.close()
+
+    def _append_field(self, field):
+        self.fields.append(field)
+
+    def field_func(self, func):
+        """Applies a function to all values in all fields"""
+        result = Fieldset()
+        for f in self.fields:
+            result._append_field(f.field_func(func))
+        return result
