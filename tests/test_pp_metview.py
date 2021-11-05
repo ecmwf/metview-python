@@ -173,3 +173,17 @@ def test_values_with_missing():
     assert np.isnan(v[806])
     assert np.isnan(v[1447])
     assert np.isclose(v[2663], 240.5642, eps)
+
+
+def test_write_fieldset():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    temp_path = "written_tuv_pl.grib"
+    f.write(temp_path)
+    assert os.path.isfile(temp_path)
+    g = mv.Fieldset(path=temp_path)
+    assert type(g) == mv.Fieldset
+    assert len(g) == 18
+    sn = g.grib_get_string("shortName")
+    assert sn == ["t", "u", "v"] * 6
+    f = 0
+    os.remove(temp_path)

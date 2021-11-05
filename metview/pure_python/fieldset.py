@@ -51,6 +51,9 @@ class CodesHandle:
             vals[vals == self.missing_value] = np.nan
         return vals
 
+    def write(self, fout):
+        eccodes.codes_write(self.handle, fout)
+
 
 class GribFile:
     """ Encapsulates a GRIB file, giving access to an iteration of CodesHandles """
@@ -113,6 +116,9 @@ class Field:
     def values(self):
         return self.handle.get_values()
 
+    def write(self, fout):
+        self.handle.write(fout)
+
 
 class Fieldset:
     """A set of Fields, each of which can come from different GRIB files"""
@@ -162,3 +168,9 @@ class Fieldset:
             ret = np.stack(ret, axis=0)
 
         return ret
+
+    def write(self, path):
+        fout = open(path, "wb")
+        for f in self.fields:
+            f.write(fout)
+        fout.close()
