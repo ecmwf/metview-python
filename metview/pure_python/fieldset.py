@@ -10,6 +10,8 @@
 import numpy as np
 import eccodes
 
+from .temporary import temp_file
+
 
 class CodesHandle:
     """Wraps an ecCodes handle"""
@@ -25,6 +27,10 @@ class CodesHandle:
     def __del__(self):
         # print("CodesHandle:release ", self)
         eccodes.codes_release(self.handle)
+
+    def clone(self):
+        new_handle = eccodes.codes_clone(self.handle)
+        return CodesHandle(new_handle, None, None)
 
     def __str__(self):
         s = "CodesHandle("
@@ -93,9 +99,10 @@ class GribFile:
 class Field:
     """Encapsulates single GRIB message"""
 
-    def __init__(self, handle, gribfile, keep_values_in_memory=False):
+    def __init__(self, handle, gribfile, keep_values_in_memory=False, temp=None):
         self.handle = handle
         self.gribfile = gribfile
+        self.temp = temp
         self.vals = None
         self.keep_values_in_memory = keep_values_in_memory
 
@@ -123,15 +130,12 @@ class Field:
             vals = self.vals
         return vals
 
-    def write(self, fout):
+    def write(self, fout, temp=None):
+        self.temp = temp  # store a reference to the temp file object for persistence
         self.handle.write(fout)
 
     def clone(self):
-        c = Field(
-            eccodes.codes_clone(self.handle.handle),
-            self.gribfile,
-            self.keep_values_in_memory,
-        )
+        c = Field(self.handle.clone(), self.gribfile, self.keep_values_in_memory,)
         c.vals = None
         return c
 
@@ -145,14 +149,20 @@ class Field:
 class Fieldset:
     """A set of Fields, each of which can come from different GRIB files"""
 
-    def __init__(self, path=None, fields=None, keep_values_in_memory=False):
+    def __init__(
+        self, path=None, fields=None, keep_values_in_memory=False, temporary=False
+    ):
         self.fields = []
         self.count = 0
+        self.temporary = None
+
         if path:
             g = GribFile(path)
             self.count = len(g)
             for handle in g:
                 self.fields.append(Field(handle, path, keep_values_in_memory))
+        if temporary:
+            self.temporary = temp_file()
 
     def __len__(self):
         return len(self.fields)
@@ -196,19 +206,21 @@ class Fieldset:
         return ret
 
     def write(self, path):
-        fout = open(path, "wb")
-        for f in self.fields:
-            f.write(fout)
-        fout.close()
+        with open(path, "wb") as fout:
+            for f in self.fields:
+                f.write(fout)
+            fout.close()
 
     def _append_field(self, field):
         self.fields.append(field)
 
     def field_func(self, func):
         """Applies a function to all values in all fields"""
-        result = Fieldset()
-        for f in self.fields:
-            result._append_field(f.field_func(func))
+        result = Fieldset(temporary=True)
+        with open(result.temporary.path, "wb") as fout:
+            for f in self.fields:
+                result._append_field(f.field_func(func))
+                result.fields[-1].write(fout, temp=result.temporary)
         return result
 
     def __neg__(self):
@@ -230,7 +242,5 @@ class Fieldset:
     # TODO: add slicing
 
     # TODO: add iteration
-
-    # TODO: write computation result to temporary file
 
     # TODO: function to write to single file if fields from different files

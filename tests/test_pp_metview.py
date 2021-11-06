@@ -210,3 +210,21 @@ def test_field_func_neg():
     vf = f.values()
     vg = g.values()
     np.testing.assert_allclose(vg, -vf)
+
+
+def test_temporary_file():
+    # create a temp file, then delete the fieldset - temp should be removed
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    g = -f
+    temp_path = g.temporary.path
+    assert os.path.isfile(temp_path)
+    g = None
+    assert not os.path.isfile(temp_path)
+
+
+def test_permanent_file_not_accidentally_deleted():
+    path = os.path.join(PATH, "tuv_pl.grib")
+    f = mv.Fieldset(path=path)
+    assert os.path.isfile(path)
+    f = None
+    assert os.path.isfile(temp_path)
