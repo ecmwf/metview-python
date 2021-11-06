@@ -183,6 +183,10 @@ class Fieldset:
         ret = [x.grib_get_double_array(key) for x in self.fields]
         return Fieldset._list_or_single(ret)
 
+    # TODO: grib_get() general function
+
+    # TODO: grib_set functions
+
     def values(self):
         ret = [x.values() for x in self.fields]
         ret = Fieldset._list_or_single(ret)
@@ -212,3 +216,21 @@ class Fieldset:
             return -x
 
         return self.field_func(neg)
+
+    # TODO: add all the field_func functions
+
+    # TODO: add all field_field_func functions
+
+    # TODO: add all field_scalar_func functions
+
+    # TODO: allow these methods to be called as functions (?)
+
+    # TODO: add indexing
+
+    # TODO: add slicing
+
+    # TODO: add iteration
+
+    # TODO: write computation result to temporary file
+
+    # TODO: function to write to single file if fields from different files
