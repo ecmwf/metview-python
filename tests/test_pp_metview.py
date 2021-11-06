@@ -227,4 +227,4 @@ def test_permanent_file_not_accidentally_deleted():
     f = mv.Fieldset(path=path)
     assert os.path.isfile(path)
     f = None
-    assert os.path.isfile(temp_path)
+    assert os.path.isfile(path)
