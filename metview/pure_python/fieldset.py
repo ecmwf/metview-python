@@ -224,6 +224,9 @@ class Fieldset:
                 result.fields[-1].write(fout, temp=result.temporary)
         return result
 
+    def abs(self):
+        return self.field_func(maths.abs)
+
     def __neg__(self):
         return self.field_func(maths.neg)
 

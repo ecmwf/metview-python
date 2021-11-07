@@ -212,6 +212,16 @@ def test_field_func_neg():
     np.testing.assert_allclose(vg, -vf)
 
 
+def test_field_func_abs():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    g = f.abs()
+    assert type(g) == mv.Fieldset
+    assert len(g) == 18
+    vf = f.values()
+    vg = g.values()
+    np.testing.assert_allclose(vg, np.abs(vf))
+
+
 def test_temporary_file():
     # create a temp file, then delete the fieldset - temp should be removed
     f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))

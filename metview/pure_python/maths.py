@@ -6,6 +6,10 @@
 # In applying this licence, ECMWF does not waive the privileges and immunities
 # granted to it by virtue of its status as an intergovernmental organisation
 # nor does it submit to any jurisdiction.
+import numpy as np
 
 def neg(x):
     return -x
+
+def abs(x):
+    return np.abs(x)
