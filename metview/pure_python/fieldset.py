@@ -10,6 +10,7 @@
 import numpy as np
 import eccodes
 
+import metview.pure_python.maths as maths
 from .temporary import temp_file
 
 
@@ -224,10 +225,7 @@ class Fieldset:
         return result
 
     def __neg__(self):
-        def neg(x):
-            return -x
-
-        return self.field_func(neg)
+        return self.field_func(maths.neg)
 
     # TODO: add all the field_func functions
 
