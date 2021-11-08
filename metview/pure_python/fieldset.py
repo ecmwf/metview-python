@@ -225,7 +225,10 @@ class Fieldset:
 
     def __getitem__(self, index):
         try:
-            return Fieldset(fields=self._always_list(self.fields[index]))
+            if isinstance(index, np.ndarray):
+                return Fieldset(fields=[self.fields[i] for i in index])
+            else:
+                return Fieldset(fields=self._always_list(self.fields[index]))
         except IndexError as ide:
             print("This Fieldset contains", len(self), "fields")
             raise ide
@@ -252,8 +255,6 @@ class Fieldset:
     # TODO: add all field_scalar_func functions
 
     # TODO: allow these methods to be called as functions (?)
-
-    # TODO: add indexing via array of indexes
 
     # TODO: add iteration
 

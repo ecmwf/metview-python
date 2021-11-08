@@ -299,3 +299,17 @@ def test_slice_0_5():
     assert len(f) == 18
     sn = f.grib_get_string("shortName")
     assert sn == ["t", "u", "v"] * 6
+
+
+def test_array_indexing():
+    path = os.path.join(PATH, "tuv_pl.grib")
+    f = mv.Fieldset(path=path)
+    indexes = np.array([1, 16, 5, 9])
+    fv = f[indexes]
+    assert type(fv) is mv.Fieldset
+    assert len(fv) == 4
+    assert fv.grib_get_string("shortName") == ["u", "u", "v", "t"]
+    # check with bad indexes
+    indexes = np.array([1, 36, 5, 9])
+    with pytest.raises(IndexError):
+        fvbad = f[indexes]
