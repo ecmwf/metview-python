@@ -419,3 +419,22 @@ def test_field_scalar_func():
     np.testing.assert_allclose(h.values(), f.values() + 20)
     r = 25 - f
     np.testing.assert_allclose(r.values(), 25 - f.values())
+
+
+def test_fieldset_fieldset_func():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))[0:3]
+    g = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))[5:8]
+    h = f + g
+    np.testing.assert_allclose(h.values(), f.values() + g.values())
+    i = g + f
+    np.testing.assert_allclose(i.values(), g.values() + f.values())
+    q = f - g
+    np.testing.assert_allclose(q.values(), f.values() - g.values())
+    r = g - f
+    np.testing.assert_allclose(r.values(), g.values() - f.values())
+
+
+def test_fieldset_multiple_funcs():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    g = 1 - ((f[0] + f[3]) - 5)
+    np.testing.assert_allclose(g.values(), 1 - ((f[0].values() + f[3].values()) - 5))

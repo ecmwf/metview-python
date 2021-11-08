@@ -146,16 +146,15 @@ class Field:
         result.vals = func(self.values())
         return result
 
-    def field_scalar_func(self, func, scalar):
-        """Applies a function with a scalar to all values, returning a new Field"""
+    def field_other_func(self, func, other, reverse_args=False):
+        """Applies a function with something to all values, returning a new Field"""
         result = self.clone()
-        result.vals = func(self.values(), scalar)
-        return result
-
-    def scalar_field_func(self, func, scalar):
-        """Applies a function with a scalar to all values, returning a new Field"""
-        result = self.clone()
-        result.vals = func(scalar, self.values())
+        if isinstance(other, Field):
+            other = other.values()
+        if reverse_args:
+            result.vals = func(other, self.values())
+        else:
+            result.vals = func(self.values(), other)
         return result
 
 
@@ -268,29 +267,34 @@ class Fieldset:
     def __neg__(self):
         return self.field_func(maths.neg)
 
-    def field_scalar_func(self, func, scalar, reverse_args=False):
-        """Applies a function to a fieldset and a scalar, e.g. F+5"""
+    def fieldset_other_func(self, func, other, reverse_args=False):
+        """Applies a function to a fieldset and a scalar/fieldset, e.g. F+5"""
         result = Fieldset(temporary=True)
         with open(result.temporary.path, "wb") as fout:
-            for f in self.fields:
-                if reverse_args:
-                    result._append_field(f.scalar_field_func(func, scalar))
-                else:
-                    result._append_field(f.field_scalar_func(func, scalar))
-                result.fields[-1].write(fout, temp=result.temporary)
+            if isinstance(other, Fieldset):
+                for f, g in zip(self.fields, other.fields):
+                    new_field = f.field_other_func(func, g, reverse_args=reverse_args)
+                    result._append_field(new_field)
+            else:
+                for f in self.fields:
+                    new_field = f.field_other_func(
+                        func, other, reverse_args=reverse_args
+                    )
+                    result._append_field(new_field)
+            result.fields[-1].write(fout, temp=result.temporary)
         return result
 
     def __add__(self, other):
-        return self.field_scalar_func(maths.add, other)
+        return self.fieldset_other_func(maths.add, other)
 
     def __radd__(self, other):
-        return self.field_scalar_func(maths.add, other, reverse_args=True)
+        return self.fieldset_other_func(maths.add, other, reverse_args=True)
 
     def __sub__(self, other):
-        return self.field_scalar_func(maths.sub, other)
+        return self.fieldset_other_func(maths.sub, other)
 
     def __rsub__(self, other):
-        return self.field_scalar_func(maths.sub, other, reverse_args=True)
+        return self.fieldset_other_func(maths.sub, other, reverse_args=True)
 
     # TODO: add all the field_func functions
 
