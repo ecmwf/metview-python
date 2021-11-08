@@ -256,6 +256,4 @@ class Fieldset:
 
     # TODO: allow these methods to be called as functions (?)
 
-    # TODO: add iteration
-
     # TODO: function to write to single file if fields from different files

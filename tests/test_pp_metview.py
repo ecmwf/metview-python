@@ -313,3 +313,74 @@ def test_array_indexing():
     indexes = np.array([1, 36, 5, 9])
     with pytest.raises(IndexError):
         fvbad = f[indexes]
+
+
+def test_fieldset_iterator():
+    grib = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    sn = grib.grib_get_string("shortName")
+    assert len(sn) == 18
+    iter_sn = []
+    for f in grib:
+        iter_sn.append(f.grib_get_string("shortName"))
+    assert len(iter_sn) == len(sn)
+    assert iter_sn == sn
+    iter_sn = [f.grib_get_string("shortName") for f in grib]
+    assert iter_sn == sn
+
+
+def test_fieldset_iterator_multiple():
+    grib = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    sn = grib.grib_get_string("shortName")
+    assert len(sn) == 18
+    for i in [1, 2, 3]:
+        iter_sn = []
+        for f in grib:
+            iter_sn.append(f.grib_get_string("shortName"))
+        assert len(iter_sn) == len(sn)
+        for i in range(0, 18):
+            assert sn[i] == iter_sn[i]
+
+
+def test_fieldset_iterator_with_zip():
+    # this tests something different with the iterator - this does not try to
+    # 'go off the edge' of the fieldset, because the length is determined by
+    # the list of levels
+    grib = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    ref_levs = grib.grib_get_long("level")
+    assert len(ref_levs) == 18
+    levs1 = []
+    levs2 = []
+    for k, f in zip(grib.grib_get_long("level"), grib):
+        levs1.append(k)
+        levs2.append(f.grib_get_long("level"))
+    assert levs1 == ref_levs
+    assert levs2 == ref_levs
+
+
+def test_fieldset_iterator_with_zip_multiple():
+    # same as test_fieldset_iterator_with_zip() but multiple times
+    grib = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    ref_levs = grib.grib_get_long("level")
+    assert len(ref_levs) == 18
+    for i in [1, 2, 3]:
+        levs1 = []
+        levs2 = []
+        for k, f in zip(grib.grib_get_long("level"), grib):
+            levs1.append(k)
+            levs2.append(f.grib_get_long("level"))
+        print(grib.grib_get_long("level"))
+        assert levs1 == ref_levs
+        assert levs2 == ref_levs
+
+
+def test_fieldset_reverse_iterator():
+    grib = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    sn = grib.grib_get_string("shortName")
+    sn_reversed = list(reversed(sn))
+    assert sn_reversed[0] == "v"
+    assert sn_reversed[17] == "t"
+    gribr = reversed(grib)
+    iter_sn = [f.grib_get_string("shortName") for f in gribr]
+    assert len(iter_sn) == len(sn_reversed)
+    assert iter_sn == sn_reversed
+    assert iter_sn == ["v", "u", "t"] * 6
