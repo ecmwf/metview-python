@@ -245,6 +245,7 @@ def test_single_index_0():
     f = mv.Fieldset(path=path)
     f0 = f[0]
     assert type(f0) is mv.Fieldset
+    assert len(f0) == 1
     assert f0.grib_get_string("shortName") == "t"
     v = f0.values()
     eps = 0.001
@@ -257,6 +258,7 @@ def test_single_index_17():
     f = mv.Fieldset(path=path)
     f17 = f[17]
     assert type(f17) is mv.Fieldset
+    assert len(f17) == 1
     assert f17.grib_get_string("shortName") == "v"
     v = f17.values()
     eps = 0.001
@@ -269,6 +271,7 @@ def test_single_index_minus_1():
     f = mv.Fieldset(path=path)
     fm1 = f[-1]
     assert type(fm1) is mv.Fieldset
+    assert len(fm1) == 1
     assert fm1.grib_get_string("shortName") == "v"
     v = fm1.values()
     eps = 0.001
