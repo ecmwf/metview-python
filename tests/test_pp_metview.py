@@ -463,3 +463,8 @@ def test_fieldset_multiple_funcs():
     f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
     g = 1 - ((f[0] + f[3]) - 5)
     np.testing.assert_allclose(g.values(), 1 - ((f[0].values() + f[3].values()) - 5))
+
+
+def test_str():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    assert str(f) == "Fieldset (18 fields)"

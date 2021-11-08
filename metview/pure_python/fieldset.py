@@ -33,7 +33,7 @@ class CodesHandle:
         new_handle = eccodes.codes_clone(self.handle)
         return CodesHandle(new_handle, None, None)
 
-    #def __str__(self):
+    # def __str__(self):
     #    s = "CodesHandle("
     #    return s + str(self.handle) + "," + self.path + "," + str(self.offset) + ")"
 
@@ -185,6 +185,8 @@ class Field:
 class Fieldset:
     """A set of Fields, each of which can come from different GRIB files"""
 
+    # TODO: add glob to init
+
     def __init__(
         self, path=None, fields=None, keep_values_in_memory=False, temporary=False
     ):
@@ -204,6 +206,13 @@ class Fieldset:
 
     def __len__(self):
         return len(self.fields)
+
+    def __str__(self):
+        n = len(self)
+        s = "s"
+        if n == 1:
+            s = ""
+        return "Fieldset (" + str(n) + " field" + s + ")"
 
     @staticmethod
     def _list_or_single(lst):
@@ -345,3 +354,7 @@ class Fieldset:
     # TODO: allow these methods to be called as functions (?)
 
     # TODO: function to write to single file if fields from different files
+
+    # TODO: to_dataset()
+
+    # TODO: pickling
