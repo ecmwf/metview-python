@@ -284,3 +284,18 @@ def test_single_index_bad():
     f = mv.Fieldset(path=path)
     with pytest.raises(IndexError):
         fbad = f[27]
+
+
+def test_slice_0_5():
+    path = os.path.join(PATH, "tuv_pl.grib")
+    f = mv.Fieldset(path=path)
+    f05 = f[0:5]
+    assert type(f05) is mv.Fieldset
+    assert len(f05) == 5
+    assert f05.grib_get_string("shortName") == ["t", "u", "v", "t", "u"]
+    v = f05.values()
+    assert v.shape == (5, 2664)
+    # check the original fieldset
+    assert len(f) == 18
+    sn = f.grib_get_string("shortName")
+    assert sn == ["t", "u", "v"] * 6

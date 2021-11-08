@@ -255,8 +255,6 @@ class Fieldset:
 
     # TODO: add indexing via array of indexes
 
-    # TODO: add slicing
-
     # TODO: add iteration
 
     # TODO: function to write to single file if fields from different files
