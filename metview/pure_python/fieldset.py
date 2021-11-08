@@ -58,6 +58,15 @@ class CodesHandle:
             vals[vals == self.missing_value] = np.nan
         return vals
 
+    def set_string(self, key, value):
+        eccodes.codes_set_string(self.handle, key, value)
+
+    def set_long(self, key, value):
+        eccodes.codes_set_long(self.handle, key, value)
+
+    def set_double(self, key, value):
+        eccodes.codes_set_double(self.handle, key, value)
+
     def write(self, fout):
         eccodes.codes_write(self.handle, fout)
 
@@ -130,6 +139,21 @@ class Field:
         else:
             vals = self.vals
         return vals
+
+    def grib_set_string(self, key, value):
+        result = self.clone()
+        result.handle.set_string(key, value)
+        return result
+
+    def grib_set_long(self, key, value):
+        result = self.clone()
+        result.handle.set_long(key, value)
+        return result
+
+    def grib_set_double(self, key, value):
+        result = self.clone()
+        result.handle.set_double(key, value)
+        return result
 
     def write(self, fout, temp=None):
         self.temp = temp  # store a reference to the temp file object for persistence
@@ -216,6 +240,30 @@ class Fieldset:
     # TODO: grib_get() general function
 
     # TODO: grib_set functions
+
+    def grib_set_string(self, key, value):
+        result = Fieldset(temporary=True)
+        with open(result.temporary.path, "wb") as fout:
+            for f in self.fields:
+                result._append_field(f.grib_set_string(key, value))
+                result.fields[-1].write(fout, temp=result.temporary)
+        return result
+
+    def grib_set_long(self, key, value):
+        result = Fieldset(temporary=True)
+        with open(result.temporary.path, "wb") as fout:
+            for f in self.fields:
+                result._append_field(f.grib_set_long(key, value))
+                result.fields[-1].write(fout, temp=result.temporary)
+        return result
+
+    def grib_set_double(self, key, value):
+        result = Fieldset(temporary=True)
+        with open(result.temporary.path, "wb") as fout:
+            for f in self.fields:
+                result._append_field(f.grib_set_double(key, value))
+                result.fields[-1].write(fout, temp=result.temporary)
+        return result
 
     def values(self):
         ret = [x.values() for x in self.fields]

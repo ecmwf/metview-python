@@ -175,6 +175,31 @@ def test_values_with_missing():
     assert np.isclose(v[2663], 240.5642, eps)
 
 
+def test_grib_set_string():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))[0:2]
+    g = f.grib_set_string("pressureUnits", "silly")
+    assert g.grib_get_string("pressureUnits") == ["silly"] * 2
+    assert f.grib_get_string("pressureUnits") == ["hPa"] * 2
+
+
+def test_grib_set_long():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))[0:2]
+    g = f.grib_set_long("level", 95)
+    assert g.grib_get_long("level") == [95] * 2
+    assert f.grib_get_long("level") == [1000] * 2
+
+
+def test_grib_set_double():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))[0:2]
+    g = f.grib_set_double("level", 95)
+    assert g.grib_get_double("level") == [95] * 2
+    assert f.grib_get_double("level") == [1000] * 2
+    orig_point = f.grib_get_double("longitudeOfFirstGridPointInDegrees")
+    g = f.grib_set_double("longitudeOfFirstGridPointInDegrees", 95.6)
+    assert g.grib_get_double("longitudeOfFirstGridPointInDegrees") == [95.6] * 2
+    assert f.grib_get_double("longitudeOfFirstGridPointInDegrees") == orig_point
+
+
 def test_write_fieldset():
     f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
     temp_path = "written_tuv_pl.grib"
