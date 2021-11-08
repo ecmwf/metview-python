@@ -33,9 +33,9 @@ class CodesHandle:
         new_handle = eccodes.codes_clone(self.handle)
         return CodesHandle(new_handle, None, None)
 
-    def __str__(self):
-        s = "CodesHandle("
-        return s + str(self.handle) + "," + self.path + "," + str(self.offset) + ")"
+    #def __str__(self):
+    #    s = "CodesHandle("
+    #    return s + str(self.handle) + "," + self.path + "," + str(self.offset) + ")"
 
     def get_string(self, key):
         return eccodes.codes_get_string(self.handle, key)

@@ -29,11 +29,11 @@ class TmpFile:
     def __del__(self):
         self.cleanup()
 
-    def __enter__(self):
-        return self.path
+    #def __enter__(self):
+    #    return self.path
 
-    def __exit__(self, *args, **kwargs):
-        self.cleanup()
+    #def __exit__(self, *args, **kwargs):
+    #    self.cleanup()
 
     def cleanup(self):
         if self.path is not None:
@@ -57,11 +57,11 @@ def temp_file(extension=".tmp"):
     return TmpFile(path)
 
 
-class TmpDirectory(tempfile.TemporaryDirectory):
-    @property
-    def path(self):
-        return self.name
+#class TmpDirectory(tempfile.TemporaryDirectory):
+#    @property
+#    def path(self):
+#        return self.name
 
 
-def temp_directory():
-    return TmpDirectory()
+#def temp_directory():
+#    return TmpDirectory()
