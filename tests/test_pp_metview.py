@@ -18,7 +18,7 @@ PATH = os.path.dirname(__file__)
 
 def test_empty_fieldset_contructor():
     f = mv.Fieldset()
-    assert type(f) == mv.Fieldset
+    assert type(f) is mv.Fieldset
     assert len(f) == 0
 
 
@@ -29,13 +29,13 @@ def test_fieldset_contructor_bad_file_path():
 
 def test_non_empty_fieldset_contructor_len():
     f = mv.Fieldset(path=os.path.join(PATH, "test.grib"))
-    assert type(f) == mv.Fieldset
+    assert type(f) is mv.Fieldset
     assert len(f) == 1
 
 
 def test_non_empty_fieldset_contructor_len_18():
     f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
-    assert type(f) == mv.Fieldset
+    assert type(f) is mv.Fieldset
     assert len(f) == 18
 
 
@@ -238,3 +238,46 @@ def test_permanent_file_not_accidentally_deleted():
     assert os.path.isfile(path)
     f = None
     assert os.path.isfile(path)
+
+
+def test_single_index_0():
+    path = os.path.join(PATH, "tuv_pl.grib")
+    f = mv.Fieldset(path=path)
+    f0 = f[0]
+    assert type(f0) is mv.Fieldset
+    assert f0.grib_get_string("shortName") == "t"
+    v = f0.values()
+    eps = 0.001
+    assert len(v) == 2664
+    assert np.isclose(v[1088], 304.5642, eps)
+
+
+def test_single_index_17():
+    path = os.path.join(PATH, "tuv_pl.grib")
+    f = mv.Fieldset(path=path)
+    f17 = f[17]
+    assert type(f17) is mv.Fieldset
+    assert f17.grib_get_string("shortName") == "v"
+    v = f17.values()
+    eps = 0.001
+    assert len(v) == 2664
+    assert np.isclose(v[2663], -11.0797, eps)
+
+
+def test_single_index_minus_1():
+    path = os.path.join(PATH, "tuv_pl.grib")
+    f = mv.Fieldset(path=path)
+    fm1 = f[-1]
+    assert type(fm1) is mv.Fieldset
+    assert fm1.grib_get_string("shortName") == "v"
+    v = fm1.values()
+    eps = 0.001
+    assert len(v) == 2664
+    assert np.isclose(v[2663], -11.0797, eps)
+
+
+def test_single_index_bad():
+    path = os.path.join(PATH, "tuv_pl.grib")
+    f = mv.Fieldset(path=path)
+    with pytest.raises(IndexError):
+        fbad = f[27]

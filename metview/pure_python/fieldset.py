@@ -164,6 +164,8 @@ class Fieldset:
                 self.fields.append(Field(handle, path, keep_values_in_memory))
         if temporary:
             self.temporary = temp_file()
+        if fields:
+            self.fields = fields
 
     def __len__(self):
         return len(self.fields)
@@ -173,6 +175,12 @@ class Fieldset:
         if len(lst) == 1:
             lst = lst[0]
         return lst
+
+    @staticmethod
+    def _always_list(items):
+        if not isinstance(items, list):
+            return [items]
+        return items
 
     def grib_get_string(self, key):
         ret = [x.grib_get_string(key) for x in self.fields]
@@ -215,6 +223,13 @@ class Fieldset:
     def _append_field(self, field):
         self.fields.append(field)
 
+    def __getitem__(self, index):
+        try:
+            return Fieldset(fields=self._always_list(self.fields[index]))
+        except IndexError as ide:
+            print("This Fieldset contains", len(self), "fields")
+            raise ide
+
     def field_func(self, func):
         """Applies a function to all values in all fields"""
         result = Fieldset(temporary=True)
@@ -238,7 +253,7 @@ class Fieldset:
 
     # TODO: allow these methods to be called as functions (?)
 
-    # TODO: add indexing
+    # TODO: add indexing via array of indexes
 
     # TODO: add slicing
 
