@@ -239,8 +239,6 @@ class Fieldset:
 
     # TODO: grib_get() general function
 
-    # TODO: grib_set functions
-
     def _grib_set_any(self, key, value, funcname):
         result = Fieldset(temporary=True)
         with open(result.temporary.path, "wb") as fout:
