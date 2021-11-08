@@ -384,3 +384,20 @@ def test_fieldset_reverse_iterator():
     assert len(iter_sn) == len(sn_reversed)
     assert iter_sn == sn_reversed
     assert iter_sn == ["v", "u", "t"] * 6
+
+
+def test_fieldset_append():
+    g = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    h = mv.Fieldset(path=os.path.join(PATH, "all_missing_vals.grib"))
+    i = g[0:3]
+    i.append(h)
+    assert i.grib_get_string("shortName") == ["t", "u", "v", "z"]
+
+
+def test_fieldset_merge():
+    g = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    h = mv.Fieldset(path=os.path.join(PATH, "all_missing_vals.grib"))
+    i = g[0:3]
+    j = i.merge(h)  # does not alter the original fieldset
+    assert i.grib_get_string("shortName") == ["t", "u", "v"]
+    assert j.grib_get_string("shortName") == ["t", "u", "v", "z"]

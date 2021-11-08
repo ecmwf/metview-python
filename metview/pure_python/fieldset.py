@@ -233,6 +233,14 @@ class Fieldset:
             print("This Fieldset contains", len(self), "fields")
             raise ide
 
+    def append(self, other):
+        self.fields = self.fields + other.fields
+
+    def merge(self, other):
+        result = Fieldset(fields=self.fields, temporary=True)
+        result.append(other)
+        return result
+
     def field_func(self, func):
         """Applies a function to all values in all fields"""
         result = Fieldset(temporary=True)
