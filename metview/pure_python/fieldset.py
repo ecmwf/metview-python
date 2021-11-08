@@ -241,29 +241,23 @@ class Fieldset:
 
     # TODO: grib_set functions
 
-    def grib_set_string(self, key, value):
+    def _grib_set_any(self, key, value, funcname):
         result = Fieldset(temporary=True)
         with open(result.temporary.path, "wb") as fout:
             for f in self.fields:
-                result._append_field(f.grib_set_string(key, value))
+                func = getattr(f, funcname)
+                result._append_field(func(key, value))
                 result.fields[-1].write(fout, temp=result.temporary)
         return result
+
+    def grib_set_string(self, key, value):
+        return self._grib_set_any(key, value, "grib_set_string")
 
     def grib_set_long(self, key, value):
-        result = Fieldset(temporary=True)
-        with open(result.temporary.path, "wb") as fout:
-            for f in self.fields:
-                result._append_field(f.grib_set_long(key, value))
-                result.fields[-1].write(fout, temp=result.temporary)
-        return result
+        return self._grib_set_any(key, value, "grib_set_long")
 
     def grib_set_double(self, key, value):
-        result = Fieldset(temporary=True)
-        with open(result.temporary.path, "wb") as fout:
-            for f in self.fields:
-                result._append_field(f.grib_set_double(key, value))
-                result.fields[-1].write(fout, temp=result.temporary)
-        return result
+        return self._grib_set_any(key, value, "grib_set_double")
 
     def values(self):
         ret = [x.values() for x in self.fields]
