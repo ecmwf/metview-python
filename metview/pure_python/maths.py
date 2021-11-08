@@ -13,3 +13,9 @@ def neg(x):
 
 def abs(x):
     return np.abs(x)
+
+def add(x, y):
+    return x+y
+
+def sub(x, y):
+    return x-y

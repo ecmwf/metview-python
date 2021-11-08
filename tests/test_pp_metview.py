@@ -401,3 +401,21 @@ def test_fieldset_merge():
     j = i.merge(h)  # does not alter the original fieldset
     assert i.grib_get_string("shortName") == ["t", "u", "v"]
     assert j.grib_get_string("shortName") == ["t", "u", "v", "z"]
+
+
+def test_field_scalar_func():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))[0:3]
+    # fieldset op scalar
+    g = f + 10
+    assert type(g) == mv.Fieldset
+    assert len(g) == 3
+    np.testing.assert_allclose(g.values(), f.values() + 10)
+    q = f - 5
+    np.testing.assert_allclose(q.values(), f.values() - 5)
+    # scalar op fieldset
+    h = 20 + f
+    assert type(h) == mv.Fieldset
+    assert len(h) == 3
+    np.testing.assert_allclose(h.values(), f.values() + 20)
+    r = 25 - f
+    np.testing.assert_allclose(r.values(), 25 - f.values())

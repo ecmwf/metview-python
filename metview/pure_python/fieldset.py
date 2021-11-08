@@ -146,6 +146,18 @@ class Field:
         result.vals = func(self.values())
         return result
 
+    def field_scalar_func(self, func, scalar):
+        """Applies a function with a scalar to all values, returning a new Field"""
+        result = self.clone()
+        result.vals = func(self.values(), scalar)
+        return result
+
+    def scalar_field_func(self, func, scalar):
+        """Applies a function with a scalar to all values, returning a new Field"""
+        result = self.clone()
+        result.vals = func(scalar, self.values())
+        return result
+
 
 class Fieldset:
     """A set of Fields, each of which can come from different GRIB files"""
@@ -255,6 +267,30 @@ class Fieldset:
 
     def __neg__(self):
         return self.field_func(maths.neg)
+
+    def field_scalar_func(self, func, scalar, reverse_args=False):
+        """Applies a function to a fieldset and a scalar, e.g. F+5"""
+        result = Fieldset(temporary=True)
+        with open(result.temporary.path, "wb") as fout:
+            for f in self.fields:
+                if reverse_args:
+                    result._append_field(f.scalar_field_func(func, scalar))
+                else:
+                    result._append_field(f.field_scalar_func(func, scalar))
+                result.fields[-1].write(fout, temp=result.temporary)
+        return result
+
+    def __add__(self, other):
+        return self.field_scalar_func(maths.add, other)
+
+    def __radd__(self, other):
+        return self.field_scalar_func(maths.add, other, reverse_args=True)
+
+    def __sub__(self, other):
+        return self.field_scalar_func(maths.sub, other)
+
+    def __rsub__(self, other):
+        return self.field_scalar_func(maths.sub, other, reverse_args=True)
 
     # TODO: add all the field_func functions
 
