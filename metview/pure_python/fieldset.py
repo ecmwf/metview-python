@@ -52,6 +52,12 @@ class CodesHandle:
     def get_double_array(self, key):
         return eccodes.codes_get_double_array(self.handle, key)
 
+    def get_native(self, key):
+        if eccodes.codes_get_size(self.handle, key) > 1:
+            return eccodes.codes_get_array(self.handle, key)
+        else:
+            return eccodes.codes_get(self.handle, key)
+
     def get_values(self):
         vals = eccodes.codes_get_values(self.handle)
         if self.get_long("bitmapPresent"):
@@ -139,6 +145,9 @@ class Field:
 
     def grib_get_double_array(self, key):
         return self.handle.get_double_array(key)
+
+    def grib_get_native(self, key):
+        return self.handle.get_native(key)
 
     def values(self):
         if self.vals is None:
@@ -279,8 +288,6 @@ class Fieldset:
         if grouping == "key":
             ret = list(map(list, zip(*ret)))  # transpose lists of lists
         return ret
-
-    # TODO: implement 'native' type in grib_get
 
     def _grib_set_any(self, key, value, funcname):
         result = Fieldset(temporary=True)

@@ -149,6 +149,14 @@ def test_grib_get_generic():
     assert lgk == [[1000, 1000, 1000, 850], ["t", "u", "v", "t"]]
     with pytest.raises(ValueError):
         lgk = f.grib_get(["level:d", "cfVarName"], "silly")
+    ln = f.grib_get(["level:n"])
+    assert ln == [[1000], [1000], [1000], [850]]
+    cn = f.grib_get(["centre:n"])
+    assert cn == [["ecmf"], ["ecmf"], ["ecmf"], ["ecmf"]]
+    vn = f[0].grib_get(["longitudes:n"])
+    assert vn[0][0][0] == 0
+    assert vn[0][0][1] == 5
+    assert vn[0][0][5] == 25
 
 
 def test_values_1():
