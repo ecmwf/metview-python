@@ -135,6 +135,22 @@ def test_grib_get_double_array_18():
     assert np.isclose(v[17][2663], -11.0797, eps)
 
 
+def test_grib_get_generic():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))[0:4]
+    sn = f.grib_get(["shortName"])
+    assert sn == [["t"], ["u"], ["v"], ["t"]]
+    cs = f.grib_get(["centre:s"])
+    assert cs == [["ecmf"], ["ecmf"], ["ecmf"], ["ecmf"]]
+    cl = f.grib_get(["centre:l"])
+    assert cl == [[98], [98], [98], [98]]
+    lg = f.grib_get(["level:d", "cfVarName"])
+    assert lg == [[1000, "t"], [1000, "u"], [1000, "v"], [850, "t"]]
+    lgk = f.grib_get(["level:d", "cfVarName"], "key")
+    assert lgk == [[1000, 1000, 1000, 850], ["t", "u", "v", "t"]]
+    with pytest.raises(ValueError):
+        lgk = f.grib_get(["level:d", "cfVarName"], "silly")
+
+
 def test_values_1():
     f = mv.Fieldset(path=os.path.join(PATH, "test.grib"))
     v = f.values()

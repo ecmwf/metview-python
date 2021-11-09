@@ -109,6 +109,15 @@ class GribFile:
 class Field:
     """Encapsulates single GRIB message"""
 
+    KEY_TYPES = {
+        "s": "grib_get_string",
+        "d": "grib_get_double",
+        "l": "grib_get_long",
+        "la": "grib_get_long_array",
+        "da": "grib_get_double_array",
+        "n": "grib_get_native",
+    }
+
     def __init__(self, handle, gribfile, keep_values_in_memory=False, temp=None):
         self.handle = handle
         self.gribfile = gribfile
@@ -139,6 +148,23 @@ class Field:
         else:
             vals = self.vals
         return vals
+
+    def grib_get(self, keys, grouping):
+        result = []
+        for key in keys:
+            ktype = "s"  # default is str
+            parts = key.split(":")
+            if len(parts) == 2:
+                key = parts[0]
+                ktype = parts[1]
+            try:
+                funcname = Field.KEY_TYPES[ktype]
+            except Exception as e:
+                print("Invalid key type: ", ktype)
+                raise e
+            func = getattr(self, funcname)
+            result.append(func(key))
+        return result
 
     def grib_set_string(self, key, value):
         result = self.clone()
@@ -246,7 +272,15 @@ class Fieldset:
         ret = [x.grib_get_double_array(key) for x in self.fields]
         return Fieldset._list_or_single(ret)
 
-    # TODO: grib_get() general function
+    def grib_get(self, keys, grouping="field"):
+        if grouping != "field" and grouping != "key":
+            raise ValueError("grib_get: grouping must be field or key, not " + grouping)
+        ret = [x.grib_get(keys, grouping) for x in self.fields]
+        if grouping == "key":
+            ret = list(map(list, zip(*ret)))  # transpose lists of lists
+        return ret
+
+    # TODO: implement 'native' type in grib_get
 
     def _grib_set_any(self, key, value, funcname):
         result = Fieldset(temporary=True)
