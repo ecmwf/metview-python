@@ -261,6 +261,16 @@ def test_field_func_neg():
     np.testing.assert_allclose(vg, -vf)
 
 
+def test_field_func_pos():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    g = +f  # should return values unaltered
+    assert type(g) == mv.Fieldset
+    assert len(g) == 18
+    vf = f.values()
+    vg = g.values()
+    np.testing.assert_allclose(vg, vf)
+
+
 def test_field_func_abs():
     f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
     g = f.abs()
@@ -461,6 +471,67 @@ def test_field_scalar_func():
     np.testing.assert_allclose(g.values(), f.values() + 10)
     q = f - 5
     np.testing.assert_allclose(q.values(), f.values() - 5)
+    m = f * 1.5
+    np.testing.assert_allclose(m.values(), f.values() * 1.5)
+    d = f / 3.0
+    np.testing.assert_allclose(d.values(), f.values() / 3.0)
+    p = f ** 2
+    np.testing.assert_allclose(p.values(), f.values() ** 2)
+    first_val = f.values()[0][0]  # 272
+    ge = f >= first_val
+    v = ge.values()
+    assert v[0][0] == 1  # 272
+    assert v[0][2645] == 0  # 240
+    assert v[0][148] == 1  # 280
+    assert v[1][0] == 0  # -6
+    gt = f > first_val
+    v = gt.values()
+    assert v[0][0] == 0  # 272
+    assert v[0][2645] == 0  # 240
+    assert v[0][148] == 1  # 280
+    assert v[1][0] == 0  # - 6
+    lt = f < first_val
+    v = lt.values()
+    assert v[0][0] == 0  # 272
+    assert v[0][2645] == 1  # 240
+    assert v[0][148] == 0  # 280
+    assert v[1][0] == 1  # - 6
+    lt = f <= first_val
+    v = lt.values()
+    assert v[0][0] == 1  # 272
+    assert v[0][2645] == 1  # 240
+    assert v[0][148] == 0  # 280
+    assert v[1][0] == 1  # - 6
+    e = f == first_val
+    v = e.values()
+    assert v[0][0] == 1  # 272
+    assert v[0][2645] == 0  # 240
+    assert v[0][148] == 0  # 280
+    assert v[1][0] == 0  # - 6
+    ne = f != first_val
+    v = ne.values()
+    assert v[0][0] == 0  # 272
+    assert v[0][2645] == 1  # 240
+    assert v[0][148] == 1  # 280
+    assert v[1][0] == 1  # - 6
+    andd = (f > 270) & (f < 290)  # and
+    v = andd.values()
+    assert v[0][0] == 1  # 272
+    assert v[0][2645] == 0  # 240
+    assert v[0][148] == 1  # 280
+    assert v[1][0] == 0  # - 6
+    orr = (f < 270) | (f > 279)  # or
+    v = orr.values()
+    assert v[0][0] == 0  # 272
+    assert v[0][2645] == 1  # 240
+    assert v[0][148] == 1  # 280
+    assert v[1][0] == 1  # - 6
+    nott = ~((f > 270) & (f < 290))  # not
+    v = nott.values()
+    assert v[0][0] == 0  # 272
+    assert v[0][2645] == 1  # 240
+    assert v[0][148] == 0  # 280
+    assert v[1][0] == 1  # - 6
     # scalar op fieldset
     h = 20 + f
     assert type(h) == mv.Fieldset
@@ -468,6 +539,12 @@ def test_field_scalar_func():
     np.testing.assert_allclose(h.values(), f.values() + 20)
     r = 25 - f
     np.testing.assert_allclose(r.values(), 25 - f.values())
+    mr = 3 * f
+    np.testing.assert_allclose(mr.values(), f.values() * 3)
+    dr = 200 / f
+    np.testing.assert_allclose(dr.values(), 200 / f.values())
+    pr = 2 ** f
+    np.testing.assert_allclose(pr.values(), 2 ** f.values())
 
 
 def test_fieldset_fieldset_func():

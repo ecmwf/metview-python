@@ -8,14 +8,71 @@
 # nor does it submit to any jurisdiction.
 import numpy as np
 
+
 def neg(x):
     return -x
+
+
+def pos(x):
+    return x
+
 
 def abs(x):
     return np.abs(x)
 
+
+def not_func(x):
+    return (~(x != 0)).astype(int)
+
+
 def add(x, y):
-    return x+y
+    return x + y
+
 
 def sub(x, y):
-    return x-y
+    return x - y
+
+
+def mul(x, y):
+    return x * y
+
+
+def div(x, y):
+    return x / y
+
+
+def pow(x, y):
+    return x ** y
+
+
+def ge(x, y):
+    return (x >= y).astype(int)
+
+
+def gt(x, y):
+    return (x > y).astype(int)
+
+
+def le(x, y):
+    return (x <= y).astype(int)
+
+
+def lt(x, y):
+    return (x < y).astype(int)
+
+
+def eq(x, y):
+    return (x == y).astype(int)
+
+
+def ne(x, y):
+    return (x != y).astype(int)
+
+
+def and_func(x, y):
+    return ne(x, 0) * ne(y, 0)
+
+
+def or_func(x, y):
+    return np.clip(ne(x, 0) + ne(y, 0), 0, 1)
+

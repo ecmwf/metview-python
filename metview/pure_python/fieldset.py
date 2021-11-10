@@ -357,6 +357,12 @@ class Fieldset:
     def __neg__(self):
         return self.field_func(maths.neg)
 
+    def __pos__(self):
+        return self.field_func(maths.pos)
+
+    def __invert__(self):
+        return self.field_func(maths.not_func)
+
     def fieldset_other_func(self, func, other, reverse_args=False):
         """Applies a function to a fieldset and a scalar/fieldset, e.g. F+5"""
         result = Fieldset(temporary=True)
@@ -386,11 +392,56 @@ class Fieldset:
     def __rsub__(self, other):
         return self.fieldset_other_func(maths.sub, other, reverse_args=True)
 
+    def __mul__(self, other):
+        return self.fieldset_other_func(maths.mul, other)
+
+    def __rmul__(self, other):
+        return self.fieldset_other_func(maths.mul, other, reverse_args=True)
+
+    def __truediv__(self, other):
+        return self.fieldset_other_func(maths.div, other)
+
+    def __rtruediv__(self, other):
+        return self.fieldset_other_func(maths.div, other, reverse_args=True)
+
+    def __pow__(self, other):
+        return self.fieldset_other_func(maths.pow, other)
+
+    def __rpow__(self, other):
+        return self.fieldset_other_func(maths.pow, other, reverse_args=True)
+
+    def __ge__(self, other):
+        return self.fieldset_other_func(maths.ge, other)
+
+    def __gt__(self, other):
+        return self.fieldset_other_func(maths.gt, other)
+
+    def __le__(self, other):
+        return self.fieldset_other_func(maths.le, other)
+
+    def __lt__(self, other):
+        return self.fieldset_other_func(maths.lt, other)
+
+    def __eq__(self, other):
+        return self.fieldset_other_func(maths.eq, other)
+
+    def __ne__(self, other):
+        return self.fieldset_other_func(maths.ne, other)
+
+    def __and__(self, other):
+        return self.fieldset_other_func(maths.and_func, other)
+
+    def __or__(self, other):
+        return self.fieldset_other_func(maths.or_func, other)
+
     # TODO: add all the field_func functions
 
     # TODO: add all field_field_func functions
 
     # TODO: add all field_scalar_func functions
+
+    # TODO: add tests for all fieldset-fieldset methods:
+    # *, /, **, >, >=, <, <=, ==, !=, &, |
 
     # TODO: allow these methods to be called as functions (?)
 
