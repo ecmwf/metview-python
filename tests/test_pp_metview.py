@@ -569,3 +569,65 @@ def test_fieldset_multiple_funcs():
 def test_str():
     f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
     assert str(f) == "Fieldset (18 fields)"
+
+
+def test_set_values_single_field():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    f0 = f[0]
+    f0_vals = f0.values()
+    vals_plus_10 = f0_vals + 10
+    f0_modified = f0.set_values(vals_plus_10)
+    f0_mod_vals = f0_modified.values()
+    np.testing.assert_allclose(f0_mod_vals, vals_plus_10)
+    # write to disk, read and check again
+    testpath = "f0_modified.grib"
+    f0_modified.write(testpath)
+    f0_read = mv.Fieldset(path=testpath)
+    np.testing.assert_allclose(f0_read.values(), vals_plus_10)
+    os.remove(testpath)
+
+
+def test_set_values_multiple_fields():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    f03 = f[0:3]
+    f47 = f[4:7]
+    f03_modified = f03.set_values(f47.values())
+    np.testing.assert_allclose(f03_modified.values(), f47.values())
+    # same, but with a list of arrays instead of a 2D array
+    list_of_arrays = [f.values() for f in f47]
+    f03_modified_2 = f03.set_values(list_of_arrays)
+    np.testing.assert_allclose(f03_modified_2.values(), f47.values())
+    # wrong number of arrays
+    f48 = f[4:8]
+    with pytest.raises(ValueError):
+        f03_modified_3 = f03.set_values(f48.values())
+
+
+def test_set_values_with_missing_values():
+    f = mv.Fieldset(path=os.path.join(PATH, "t_with_missing.grib"))
+    new_vals = f.values() + 40
+    g = f.set_values(new_vals)
+    v = g.values()
+    assert v.shape == (2664,)
+    eps = 0.001
+    assert np.isclose(v[0], 272.5642 + 40, eps)
+    assert np.isnan(v[798])
+    assert np.isnan(v[806])
+    assert np.isnan(v[1447])
+    assert np.isclose(v[2663], 240.5642 + 40, eps)
+
+
+def test_set_values_resize():
+    # NOTE: the current change in behavour - in 'standard Metview' the user
+    # has to supply "resize" as an optional argument in order to allow an array
+    # of different size to be used; if not supplied, and the given array is not the
+    # same size as the original field, an error is thrown; here, we allow resizing
+    # without the need for an extra argument - do we want to do this check?
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    f0 = f[0]
+    f0_20vals = f0.values()[0:20]
+    f0_modified = f0.set_values(f0_20vals)
+    f0_mod_vals = f0_modified.values()
+    eps = 0.001
+    np.testing.assert_allclose(f0_mod_vals, f0_20vals, eps)
+

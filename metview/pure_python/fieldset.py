@@ -73,6 +73,14 @@ class CodesHandle:
     def set_double(self, key, value):
         eccodes.codes_set_double(self.handle, key, value)
 
+    def set_double_array(self, key, value):
+        eccodes.codes_set_double_array(self.handle, key, value)
+
+    def set_values(self, value):
+        # replace nans with missing values
+        values_nans_replaced = np.nan_to_num(value, copy=True, nan=self.missing_value)
+        self.set_double_array("values", values_nans_replaced)
+
     def write(self, fout):
         eccodes.codes_write(self.handle, fout)
 
@@ -188,6 +196,16 @@ class Field:
     def grib_set_double(self, key, value):
         result = self.clone()
         result.handle.set_double(key, value)
+        return result
+
+    # def grib_set_double_array(self, key, value):
+    #    result = self.clone()
+    #    result.handle.set_double_array(key, value)
+    #    return result
+
+    def set_values(self, value):
+        result = self.clone()
+        result.handle.set_values(value)
         return result
 
     def write(self, fout, temp=None):
@@ -307,6 +325,9 @@ class Fieldset:
     def grib_set_double(self, key, value):
         return self._grib_set_any(key, value, "grib_set_double")
 
+    # def grib_set_double_array(self, key, value):
+    #    return self._grib_set_any(key, value, "grib_set_double_array")
+
     def values(self):
         ret = [x.values() for x in self.fields]
         ret = Fieldset._list_or_single(ret)
@@ -314,6 +335,25 @@ class Fieldset:
             ret = np.stack(ret, axis=0)
 
         return ret
+
+    def set_values(self, values):
+        if isinstance(values, list):
+            list_of_arrays = values
+        else:
+            if len(values.shape) > 1:
+                list_of_arrays = [a for a in values]
+            else:
+                list_of_arrays = [values]
+        if len(list_of_arrays) != len(self.fields):
+            msg = str(len(list_of_arrays)) + " instead of " + str(len(self.fields))
+            raise ValueError("set_values has the wrong number of arrays: " + msg)
+
+        result = Fieldset(temporary=True)
+        with open(result.temporary.path, "wb") as fout:
+            for f, a in zip(self.fields, list_of_arrays):
+                result._append_field(f.set_values(a))
+                result.fields[-1].write(fout, temp=result.temporary)
+        return result
 
     def write(self, path):
         with open(path, "wb") as fout:
@@ -331,7 +371,7 @@ class Fieldset:
             else:
                 return Fieldset(fields=self._always_list(self.fields[index]))
         except IndexError as ide:
-            print("This Fieldset contains", len(self), "fields")
+            # print("This Fieldset contains", len(self), "fields; index is", index)
             raise ide
 
     def append(self, other):
@@ -447,6 +487,10 @@ class Fieldset:
 
     # TODO: function to write to single file if fields from different files
 
+    # TODO: optimise write() to copy file if exists
+
     # TODO: to_dataset()
 
     # TODO: pickling
+
+    # TODO: gribsetbits, default=24
