@@ -1241,6 +1241,7 @@ def bind_functions(namespace, module_name=None):
     # HACK: some functions are missing from the 'dictionary' call.
     namespace["neg"] = make("neg")
     namespace["nil"] = make("nil")
+    namespace["dialog"] = make("dialog")
     namespace["div"] = div
     namespace["mod"] = mod
     # override some functions that need special treatment
