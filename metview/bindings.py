@@ -33,7 +33,7 @@ from metview.style import (
     make_geoview,
 )
 from metview import plotting
-from metview.ipython import is_ipython_active
+from metview.ipython import is_ipython_active, import_widgets
 
 __version__ = "1.9.0"
 
@@ -1536,8 +1536,13 @@ def setoutput(*args, **kwargs):
     plot.setoutput_called_once = True
     if "jupyter" in args:  # pragma: no cover
         if is_ipython_active():
+            global widgets
             plot.plot_to_jupyter = True
             plot.plot_widget = kwargs.get("plot_widget", True)
+            if plot.plot_widget:
+                widgets = import_widgets()
+                if not widgets:
+                    plot.plot_widget = False
             if "plot_widget" in kwargs:
                 del kwargs["plot_widget"]
             plot.jupyter_args = kwargs
@@ -1546,15 +1551,6 @@ def setoutput(*args, **kwargs):
                 "ERROR: setoutput('jupyter') was set, but we are not in a Jupyter environment"
             )
             raise (Exception("Could not set output to jupyter"))
-
-        try:
-            global widgets
-            widgets = __import__("ipywidgets", globals(), locals())
-        except ImportError as imperr:
-            print(
-                "Could not import ipywidgets module - plotting to Jupyter will not work"
-            )
-            raise imperr
 
     else:
         plot.plot_to_jupyter = False

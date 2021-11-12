@@ -30,3 +30,13 @@ def is_ipython_active():
         except Exception:
             ipython_active = False
     return ipython_active
+
+
+def import_widgets():
+    try:
+        widgets = __import__("ipywidgets", globals(), locals())
+        return widgets
+    except ImportError as imperr:
+        print("Could not import ipywidgets module - animation widget will not appear")
+        print("Call setoutput('jupyter', plot_widget=False) to suppress this message")
+        return None
