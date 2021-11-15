@@ -375,7 +375,7 @@ class ParamDesc:
             elif isinstance(param, int):
                 v = db.param_id_meta(param)
 
-            if v is None:
+            if v is None or len(v.md) == 0:
                 print(f"No shortName/paramId={param} found in data!")
                 return
 
@@ -540,10 +540,10 @@ class ParamIdDesc(ParamDesc):
         self.md = {}
         self.levels = {}
 
-        # print(f"par={par}")
+        # print(f"par={par}"
         b_df = db.blocks.get("scalar", None)
         if b_df is not None:
-            q = f"paramId == '{self._param_id}'"
+            q = f"paramId == {self._param_id}"
             dft = b_df.query(q)
             if dft is not None:
                 for k in md.keys():
