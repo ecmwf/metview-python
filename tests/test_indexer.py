@@ -8,10 +8,8 @@
 # nor does it submit to any jurisdiction.
 #
 
-from contextlib import redirect_stdout
 import copy
 import datetime
-import io
 import os
 
 import numpy as np
