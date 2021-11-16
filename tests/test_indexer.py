@@ -863,6 +863,9 @@ def test_describe():
 
     assert ref == df.to_dict()
 
+    df = f.describe()
+    assert ref == df.to_dict()
+
     # single param by shortName
     df = f.describe("t", no_print=True)
 
@@ -887,6 +890,10 @@ def test_describe():
     assert ref == df.to_dict()
 
     df = f.describe(param="t", no_print=True)
+    assert ref == df.to_dict()
+    df = f.describe("t")
+    assert ref == df.to_dict()
+    df = f.describe(param="t")
     assert ref == df.to_dict()
 
     # single param by paramId
@@ -913,4 +920,8 @@ def test_describe():
     assert ref == df.to_dict()
 
     df = f.describe(param=130, no_print=True)
+    assert ref == df.to_dict()
+    df = f.describe(130)
+    assert ref == df.to_dict()
+    df = f.describe(param=130)
     assert ref == df.to_dict()
