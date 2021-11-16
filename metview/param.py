@@ -366,10 +366,9 @@ class ParamDesc:
                 df = pd.DataFrame.from_dict(t)
                 df = df.set_index(["parameter"])
                 init_pandas_options()
-                if no_print:
-                    return df
-                else:
+                if not no_print:
                     print(df)
+                return df
 
         # specific param
         else:
@@ -426,10 +425,9 @@ class ParamDesc:
                 df = pd.DataFrame.from_dict(t)
                 df = df.set_index("key")
                 init_pandas_options()
-                if no_print:
-                    return df
-                else:
+                if not no_print:
                     print(df)
+                return df
 
     @staticmethod
     def _make_html_table(d, header=None):
