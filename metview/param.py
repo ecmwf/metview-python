@@ -312,9 +312,10 @@ class ParamDesc:
         return self._units
 
     @staticmethod
-    def describe(db, param=None):
+    def describe(db, param=None, no_print=None):
         labels = {"marsClass": "class", "marsStream": "stream", "marsType": "type"}
         in_jupyter = is_ipython_active()
+        no_print = False if no_print is None else no_print
 
         # describe all the params
         if param is None:
@@ -365,7 +366,10 @@ class ParamDesc:
                 df = pd.DataFrame.from_dict(t)
                 df = df.set_index(["parameter"])
                 init_pandas_options()
-                print(df)
+                if no_print:
+                    return df
+                else:
+                    print(df)
 
         # specific param
         else:
@@ -422,7 +426,10 @@ class ParamDesc:
                 df = pd.DataFrame.from_dict(t)
                 df = df.set_index("key")
                 init_pandas_options()
-                print(df)
+                if no_print:
+                    return df
+                else:
+                    print(df)
 
     @staticmethod
     def _make_html_table(d, header=None):

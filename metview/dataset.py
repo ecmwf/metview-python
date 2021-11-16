@@ -304,9 +304,11 @@ class IndexDb:
         p.load(self)
         return p
 
-    def describe(self, *args):
+    def describe(self, *args, **kwargs):
         param = args[0] if len(args) == 1 else None
-        return ParamNameDesc.describe(self, param=param)
+        if param is None:
+            param = kwargs.pop("param", None)
+        return ParamNameDesc.describe(self, param=param, **kwargs)
 
     def to_df(self):
         return pd.concat([p for _, p in self.blocks.items()])

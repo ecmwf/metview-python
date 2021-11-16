@@ -8,8 +8,10 @@
 # nor does it submit to any jurisdiction.
 #
 
+from contextlib import redirect_stdout
 import copy
 import datetime
+import io
 import os
 
 import numpy as np
@@ -835,3 +837,82 @@ def test_indexer_dataframe_sort_value_with_key():
     if not df.equals(df_ref):
         print(df.compare(df_ref))
         assert False
+
+
+def test_describe():
+
+    f = mv.read(file_in_testdir("tuv_pl.grib"))
+
+    # full contents
+    df = f.describe(no_print=True)
+
+    ref = {
+        "typeOfLevel": {
+            "t": "isobaricInhPa",
+            "u": "isobaricInhPa",
+            "v": "isobaricInhPa",
+        },
+        "level": {"t": "300,400,...", "u": "300,400,...", "v": "300,400,..."},
+        "date": {"t": 20180801, "u": 20180801, "v": 20180801},
+        "time": {"t": 1200, "u": 1200, "v": 1200},
+        "step": {"t": "0", "u": "0", "v": "0"},
+        "paramId": {"t": 130, "u": 131, "v": 132},
+        "class": {"t": "od", "u": "od", "v": "od"},
+        "stream": {"t": "oper", "u": "oper", "v": "oper"},
+        "type": {"t": "an", "u": "an", "v": "an"},
+        "experimentVersionNumber": {"t": "0001", "u": "0001", "v": "0001"},
+    }
+
+    assert ref == df.to_dict()
+
+    # single param by shortName
+    df = f.describe("t", no_print=True)
+
+    ref = {
+        "val": {
+            "shortName": "t",
+            "name": "Temperature",
+            "paramId": 130,
+            "units": "K",
+            "typeOfLevel": "isobaricInhPa",
+            "level": "300,400,500,700,850,1000",
+            "date": "20180801",
+            "time": "1200",
+            "step": "0",
+            "class": "od",
+            "stream": "oper",
+            "type": "an",
+            "experimentVersionNumber": "0001",
+        }
+    }
+
+    assert ref == df.to_dict()
+
+    df = f.describe(param="t", no_print=True)
+    assert ref == df.to_dict()
+
+    # single param by paramId
+    df = f.describe(130, no_print=True)
+
+    ref = {
+        "val": {
+            "shortName": "t",
+            "name": "Temperature",
+            "paramId": 130,
+            "units": "K",
+            "typeOfLevel": "isobaricInhPa",
+            "level": "300,400,500,700,850,1000",
+            "date": "20180801",
+            "time": "1200",
+            "step": "0",
+            "class": "od",
+            "stream": "oper",
+            "type": "an",
+            "experimentVersionNumber": "0001",
+        }
+    }
+
+    assert ref == df.to_dict()
+
+    df = f.describe(param=130, no_print=True)
+    assert ref == df.to_dict()
