@@ -312,7 +312,7 @@ class ParamDesc:
         return self._units
 
     @staticmethod
-    def describe(db, param=None):
+    def describe(db, param=None, no_print=False):
         labels = {"marsClass": "class", "marsStream": "stream", "marsType": "type"}
         in_jupyter = is_ipython_active()
 
@@ -365,7 +365,9 @@ class ParamDesc:
                 df = pd.DataFrame.from_dict(t)
                 df = df.set_index(["parameter"])
                 init_pandas_options()
-                print(df)
+                if not no_print:
+                    print(df)
+                return df
 
         # specific param
         else:
@@ -375,7 +377,7 @@ class ParamDesc:
             elif isinstance(param, int):
                 v = db.param_id_meta(param)
 
-            if v is None:
+            if v is None or len(v.md) == 0:
                 print(f"No shortName/paramId={param} found in data!")
                 return
 
@@ -422,11 +424,12 @@ class ParamDesc:
                 df = pd.DataFrame.from_dict(t)
                 df = df.set_index("key")
                 init_pandas_options()
-                print(df)
+                if not no_print:
+                    print(df)
+                return df
 
     @staticmethod
-    def _make_html_table(d, header=None):
-        header = header if header is not None else True
+    def _make_html_table(d, header=True):
         if len(d) > 1:
             first_column_name = list(d.keys())[0]
             txt = """  
@@ -456,7 +459,7 @@ class ParamDesc:
             return ""
 
     @staticmethod
-    def format_list(v, full=None):
+    def format_list(v, full=False):
         if isinstance(v, list):
             if full is True:
                 return ",".join([str(x) for x in v])
@@ -540,10 +543,10 @@ class ParamIdDesc(ParamDesc):
         self.md = {}
         self.levels = {}
 
-        # print(f"par={par}")
+        # print(f"par={par}"
         b_df = db.blocks.get("scalar", None)
         if b_df is not None:
-            q = f"paramId == '{self._param_id}'"
+            q = f"paramId == {self._param_id}"
             dft = b_df.query(q)
             if dft is not None:
                 for k in md.keys():

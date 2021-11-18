@@ -46,18 +46,9 @@ setuptools.setup(
     url="https://github.com/ecmwf/metview-python",
     packages=setuptools.find_packages(),
     include_package_data=True,
-    setup_requires=[
-        "pytest-runner",
-    ],
-    install_requires=[
-        "cffi",
-        "numpy",
-        "pandas",
-        "PyYAML",
-    ],
-    tests_require=[
-        "pytest",
-    ],
+    setup_requires=["pytest-runner",],
+    install_requires=["cffi", "numpy", "pandas", "PyYAML", "requests",],
+    tests_require=["pytest",],
     test_suite="tests",
     zip_safe=True,
     classifiers=[

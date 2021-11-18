@@ -70,13 +70,12 @@ def _make_layers(*args, form_layout=False):
 def _make_visdef(
     data,
     vd,
-    use_eccharts=None,
+    use_eccharts=False,
     style_db="param",
     plot_type="map",
     data_id=None,
     pos_values=None,
 ):
-    use_eccharts = False if use_eccharts is None else use_eccharts
     if isinstance(data, mv.Fieldset):
         if len(vd) == 0:
             if use_eccharts:
@@ -140,8 +139,7 @@ def _get_data_area(data):
     return bb
 
 
-def _make_view(view, area, plot_type=None, data=None):
-    plot_type = "map" if plot_type is None else plot_type
+def _make_view(view, area, plot_type="map", data=None):
     data = [] if data is None else data
 
     if area == "data" and data:
@@ -199,19 +197,15 @@ def plot_maps(
     layout=None,
     view=None,
     area=None,
-    use_eccharts=None,
-    title_font_size=None,
-    legend_font_size=None,
+    use_eccharts=False,
+    title_font_size=0.4,
+    legend_font_size=0.35,
     frame=-1,
     animate="auto",
 ):
     """
     Plot maps with generic contents
     """
-
-    title_font_size = 0.4 if title_font_size is None else title_font_size
-    legend_font_size = 0.35 if legend_font_size is None else legend_font_size
-    use_eccharts = False if use_eccharts is None else use_eccharts
 
     # in the positional arguments we have two options:
     # 1. we only have non-list items. They belong to a single plot page.
@@ -301,8 +295,8 @@ def plot_diff_maps(
     overlay=None,
     diff_style=None,
     pos_values=None,
-    title_font_size=None,
-    legend_font_size=None,
+    title_font_size=0.4,
+    legend_font_size=0.35,
     frame=-1,
     animate="auto",
 ):
@@ -311,8 +305,6 @@ def plot_diff_maps(
     """
 
     # handle default arguments
-    title_font_size = 0.4 if title_font_size is None else title_font_size
-    legend_font_size = 0.35 if legend_font_size is None else legend_font_size
     pos_values = [] if pos_values is None else pos_values
     diff_style = [] if diff_style is None else diff_style
     if not isinstance(diff_style, list):
@@ -420,24 +412,20 @@ def plot_diff_maps(
 
 def plot_xs(
     *args,
-    map_line=None,
+    map_line=True,
     map_data=None,
     line=[],
     layout="",
     view=None,
     area=None,
-    title_font_size=None,
-    legend_font_size=None,
+    title_font_size=0.3,
+    legend_font_size=0.2,
     frame=-1,
     animate="auto",
 ):
     """
     Plot cross section with map
     """
-
-    title_font_size = 0.3 if title_font_size is None else title_font_size
-    legend_font_size = 0.2 if legend_font_size is None else legend_font_size
-    map_line = True if map_line is None else map_line
 
     assert len(line) == 4
     assert len(args) >= 1

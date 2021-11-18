@@ -723,10 +723,10 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         else:
             return self._db.select(**kwargs)
 
-    def describe(self, *args):
+    def describe(self, *args, **kwargs):
         if self._db is None:
             self._db = FieldsetDb(fs=self)
-        return self._db.describe(*args)
+        return self._db.describe(*args, **kwargs)
 
     def ls(self, **kwargs):
         if self._db is None:
@@ -1241,6 +1241,7 @@ def bind_functions(namespace, module_name=None):
     # HACK: some functions are missing from the 'dictionary' call.
     namespace["neg"] = make("neg")
     namespace["nil"] = make("nil")
+    namespace["dialog"] = make("dialog")
     namespace["div"] = div
     namespace["mod"] = mod
     # override some functions that need special treatment
@@ -1265,6 +1266,11 @@ def bind_functions(namespace, module_name=None):
     namespace["make_geoview"] = make_geoview
     namespace["Fieldset"] = Fieldset
     namespace["Request"] = Request
+
+    # some ui specific functions are prefixed with _. They will be exposed via the ui module!
+    for name in ["dialog", "any", "colour", "icon", "option_menu", "slider", "toggle"]:
+        namespace["_" + name] = namespace[name]
+        namespace.pop(name)
 
     # add some object methods the to global namespace
     for name in ["to_dataset", "to_dataframe", "ls", "describe", "select"]:

@@ -209,7 +209,7 @@ class Style:
     def to_request(self):
         return [vd.to_request() for vd in self.visdefs]
 
-    def update(self, *args, inplace=None, verb=None):
+    def update(self, *args, inplace=False, verb=None):
         s = self if inplace == True else self.clone()
         if isinstance(verb, str):
             verb = [verb]
@@ -658,11 +658,10 @@ class StyleGallery:
         with open(image_path, "rb") as img_file:
             return base64.b64encode(img_file.read()).decode("utf-8")
 
-    def build_gallery(self, names, images, row_height=None):
+    def build_gallery(self, names, images, row_height="150px"):
         figures = []
         # print(len(names))
         # print(len(images))
-        row_height = "150px" if row_height is None else row_height
         for name, image in zip(names, images):
             src = f"data:image/png;base64,{image}"
             caption = f'<figcaption style="text-align: center; font-size: 0.8em">{name}</figcaption>'
@@ -783,9 +782,8 @@ def make_eccharts_mcont():
     return mv.mcont(contour_automatic_settings="ecmwf", legend="on")
 
 
-def get_db(name=None):
+def get_db(name="param"):
     global _DB
-    name = "param" if name is None else name
     assert name in _DB
     if _DB[name][0] is None:
         _DB[name][0] = StyleDb(_DB[name][1], _DB[name][2])
@@ -801,10 +799,9 @@ def find(name):
         return None
 
 
-def load_custom_config(conf_dir, force=None):
+def load_custom_config(conf_dir, force=False):
     global CUSTOM_CONF_PATH
     global _MAP_CONF
-    force = False if force is None else force
     if CUSTOM_CONF_PATH:
         if CUSTOM_CONF_PATH[-1] == conf_dir:
             if force:
