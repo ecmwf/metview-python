@@ -312,10 +312,9 @@ class ParamDesc:
         return self._units
 
     @staticmethod
-    def describe(db, param=None, no_print=None):
+    def describe(db, param=None, no_print=False):
         labels = {"marsClass": "class", "marsStream": "stream", "marsType": "type"}
         in_jupyter = is_ipython_active()
-        no_print = False if no_print is None else no_print
 
         # describe all the params
         if param is None:
@@ -430,8 +429,7 @@ class ParamDesc:
                 return df
 
     @staticmethod
-    def _make_html_table(d, header=None):
-        header = header if header is not None else True
+    def _make_html_table(d, header=True):
         if len(d) > 1:
             first_column_name = list(d.keys())[0]
             txt = """  
@@ -461,7 +459,7 @@ class ParamDesc:
             return ""
 
     @staticmethod
-    def format_list(v, full=None):
+    def format_list(v, full=False):
         if isinstance(v, list):
             if full is True:
                 return ",".join([str(x) for x in v])

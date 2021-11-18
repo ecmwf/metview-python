@@ -40,12 +40,12 @@ class IndexDb:
     def __init__(
         self,
         name,
-        label=None,
-        desc=None,
-        path=None,
-        rootdir_placeholder_value=None,
-        file_name_pattern=None,
-        db_dir=None,
+        label="",
+        desc="",
+        path="",
+        rootdir_placeholder_value="",
+        file_name_pattern="",
+        db_dir="",
         blocks=None,
         data_files=None,
         merge_conf=None,
@@ -58,18 +58,16 @@ class IndexDb:
         self.label = label
         if self.label is None or self.label == "":
             self.label = self.name
-        self.desc = "" if desc is None else desc
-        self.path = "" if path is None else path
+        self.desc = desc
+        self.path = path
 
-        self.rootdir_placeholder_value = (
-            "" if rootdir_placeholder_value is None else rootdir_placeholder_value
-        )
-        self.file_name_pattern = "" if file_name_pattern is None else file_name_pattern
+        self.rootdir_placeholder_value = rootdir_placeholder_value
+        self.file_name_pattern = file_name_pattern
         if self.file_name_pattern == "":
             self.path = os.path.dirname(self.path)
             self.file_name_pattern = os.path.basename(self.path)
 
-        self.db_dir = "" if db_dir is None else db_dir
+        self.db_dir = db_dir
         self.mapped_params = {} if mapped_params is None else mapped_params
         self.regrid_from = [] if regrid_from is None else regrid_from
         self.blocks = {} if blocks is None else blocks
@@ -125,13 +123,10 @@ class IndexDb:
         # print(f"blocks={fs._db.blocks}")
         return fs
 
-    def _get_fields(self, dims, max_count=None):
+    def _get_fields(self, dims, max_count=-1):
         res = mv.Fieldset()
         dfs = {}
         LOG.debug(f"dims={dims}")
-
-        max_count = -1 if max_count is None else max_count
-        cnt = 0
         for key in self.blocks.keys():
             self._get_fields_for_block(key, dims, dfs, res, max_count)
             if max_count != -1 and len(res) >= max_count:
@@ -486,13 +481,13 @@ class FieldsetDb(IndexDb):
             r._db.load()
         return r
 
-    def deacc(self, skip_first=None):
+    def deacc(self, skip_first=False):
         if len(self.fs) > 1:
             self.load()
             step = self.unique("step")
             if step:
                 v = self.select(step=step[0])
-                if skip_first is None or skip_first == False:
+                if not skip_first:
                     r = v * 0
                 else:
                     r = mv.Fieldset()
