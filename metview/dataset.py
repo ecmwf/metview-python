@@ -409,7 +409,7 @@ class FieldsetDb(IndexDb):
         # # return sorted(list(r))
         # return r
 
-    def ls(self, extra_keys=None, filter=None):
+    def ls(self, extra_keys=None, filter=None, no_print=False):
         default_keys = [
             "centre",
             "shortName",
@@ -462,8 +462,9 @@ class FieldsetDb(IndexDb):
         # test whether we're in the Jupyter environment
         if is_ipython_active():
             return df
-
-        print(df)
+        elif not no_print:
+            print(df)
+        return df
 
     def speed(self):
         r = mv.Fieldset()

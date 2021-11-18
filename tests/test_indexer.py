@@ -925,3 +925,70 @@ def test_describe():
     assert ref == df.to_dict()
     df = f.describe(param=130)
     assert ref == df.to_dict()
+
+
+def test_ls():
+
+    f = mv.read(file_in_testdir("tuv_pl.grib"))
+
+    # default keys
+    df = f[:4].ls(no_print=True)
+
+    ref = {
+        "centre": {0: "ecmf", 1: "ecmf", 2: "ecmf", 3: "ecmf"},
+        "shortName": {0: "t", 1: "u", 2: "v", 3: "t"},
+        "typeOfLevel": {
+            0: "isobaricInhPa",
+            1: "isobaricInhPa",
+            2: "isobaricInhPa",
+            3: "isobaricInhPa",
+        },
+        "level": {0: 1000, 1: 1000, 2: 1000, 3: 850},
+        "dataDate": {0: 20180801, 1: 20180801, 2: 20180801, 3: 20180801},
+        "dataTime": {0: 1200, 1: 1200, 2: 1200, 3: 1200},
+        "stepRange": {0: "0", 1: "0", 2: "0", 3: "0"},
+        "dataType": {0: "an", 1: "an", 2: "an", 3: "an"},
+        "gridType": {
+            0: "regular_ll",
+            1: "regular_ll",
+            2: "regular_ll",
+            3: "regular_ll",
+        },
+    }
+
+    assert ref == df.to_dict()
+
+    # extra keys
+    df = f[:2].ls(extra_keys=["paramId"], no_print=True)
+
+    ref = {
+        "centre": {0: "ecmf", 1: "ecmf"},
+        "shortName": {0: "t", 1: "u"},
+        "typeOfLevel": {0: "isobaricInhPa", 1: "isobaricInhPa"},
+        "level": {0: 1000, 1: 1000},
+        "dataDate": {0: 20180801, 1: 20180801},
+        "dataTime": {0: 1200, 1: 1200},
+        "stepRange": {0: "0", 1: "0"},
+        "dataType": {0: "an", 1: "an"},
+        "gridType": {0: "regular_ll", 1: "regular_ll"},
+        "paramId": {0: 130, 1: 131},
+    }
+
+    assert ref == df.to_dict()
+
+    # filter
+    df = f.ls(filter={"shortName": ["t", "v"], "level": 850}, no_print=True)
+
+    ref = {
+        "centre": {3: "ecmf", 5: "ecmf"},
+        "shortName": {3: "t", 5: "v"},
+        "typeOfLevel": {3: "isobaricInhPa", 5: "isobaricInhPa"},
+        "level": {3: 850, 5: 850},
+        "dataDate": {3: 20180801, 5: 20180801},
+        "dataTime": {3: 1200, 5: 1200},
+        "stepRange": {3: "0", 5: "0"},
+        "dataType": {3: "an", 5: "an"},
+        "gridType": {3: "regular_ll", 5: "regular_ll"},
+    }
+
+    assert ref == df.to_dict()
