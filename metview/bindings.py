@@ -1267,6 +1267,11 @@ def bind_functions(namespace, module_name=None):
     namespace["Fieldset"] = Fieldset
     namespace["Request"] = Request
 
+    # some ui specific functions are prefixed with _. They will be exposed via the ui module!
+    for name in ["dialog", "any", "colour", "icon", "option_menu", "slider", "toggle"]:
+        namespace["_" + name] = namespace[name]
+        namespace.pop(name)
+
     # add some object methods the to global namespace
     for name in ["to_dataset", "to_dataframe", "ls", "describe", "select"]:
         namespace[name] = _make_function_for_object(name)
