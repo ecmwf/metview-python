@@ -547,7 +547,7 @@ class ParamIdDesc(ParamDesc):
         b_df = db.blocks.get("scalar", None)
         if b_df is not None:
             q = f"paramId == {self._param_id}"
-            dft = b_df.query(q)
+            dft = b_df.query(q, engine="python")
             if dft is not None:
                 for k in md.keys():
                     md[k].extend(dft[k].tolist())
