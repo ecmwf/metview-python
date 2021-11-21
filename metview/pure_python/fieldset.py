@@ -240,6 +240,10 @@ class Fieldset:
 
     # TODO: add glob to init
 
+    # QUALIFIER_MAP = {"float": "d"}
+
+    # INT_KEYS = ["Nx", "Ny", "number"]
+
     def __init__(
         self, path=None, fields=None, keep_values_in_memory=False, temporary=False
     ):
@@ -368,6 +372,28 @@ class Fieldset:
         try:
             if isinstance(index, np.ndarray):
                 return Fieldset(fields=[self.fields[i] for i in index])
+            # # GRIB key
+            # elif isinstance(index, str):
+            #     keyname = index
+            #     qualifier = "n"
+            #     parts = keyname.split(":")
+            #     if len(parts) > 1:
+            #         keyname = parts[0]
+            #         qualifier = Fieldset.QUALIFIER_MAP[parts[1]]
+
+            #     native_key = keyname + ":" + qualifier
+            #     # print("native_key", native_key)
+            #     value = self.grib_get([native_key])[0][0]
+            #     # print(value)
+            #     if value is None:
+            #         raise IndexError
+            #     if index in Fieldset.INT_KEYS:
+            #         # print("int value:", int(value))
+            #         return int(value)
+            #     # if isinstance(value, float):
+            #     #    return int(value)
+            #     return value
+
             else:
                 return Fieldset(fields=self._always_list(self.fields[index]))
         except IndexError as ide:
@@ -381,6 +407,27 @@ class Fieldset:
         result = Fieldset(fields=self.fields, temporary=True)
         result.append(other)
         return result
+
+    # def items(self):
+    #     its = []
+    #     for i in range(len(self)):
+    #         its.append((i, Fieldset(fields=[self.fields[i]])))
+    #     return its
+
+    # def to_dataset(self, via_file=True, **kwarg):
+    #     # soft dependency on cfgrib
+    #     try:
+    #         import xarray as xr
+    #     except ImportError:  # pragma: no cover
+    #         print("Package xarray not found. Try running 'pip install xarray'.")
+    #         raise
+    #     # dataset = xr.open_dataset(self.url(), engine="cfgrib", backend_kwargs=kwarg)
+    #     if via_file:
+    #         dataset = xr.open_dataset(self.url(), engine="cfgrib", backend_kwargs=kwarg)
+    #     else:
+    #         print("Using experimental cfgrib interface to go directly from Fieldset")
+    #         dataset = xr.open_dataset(self, engine="cfgrib", backend_kwargs=kwarg)
+    #     return dataset
 
     def field_func(self, func):
         """Applies a function to all values in all fields"""
@@ -494,3 +541,49 @@ class Fieldset:
     # TODO: pickling
 
     # TODO: gribsetbits, default=24
+
+
+class FieldsetCF:
+    def __init__(self, fs):
+        self.fs = fs
+
+    def items(self):
+        its = []
+        for i in range(len(self.fs)):
+            its.append((i, FieldCF(self.fs[i])))
+        # print("FieldsetCF items: ", d)
+        return its
+
+    def __getitem__(self, index):
+        return FieldCF(self.fs[index])
+
+
+class FieldCF:
+
+    QUALIFIER_MAP = {"float": "d"}
+
+    INT_KEYS = ["Nx", "Ny", "number"]
+
+    def __init__(self, fs):
+        self.fs = fs
+
+    def __getitem__(self, key):
+        keyname = key
+        qualifier = "n"
+        parts = key.split(":")
+        if len(parts) > 1:
+            keyname = parts[0]
+            qualifier = FieldCF.QUALIFIER_MAP[parts[1]]
+
+        native_key = keyname + ":" + qualifier
+        # print("native_key", native_key)
+        value = self.fs.grib_get([native_key])[0][0]
+        # print(value)
+        if value is None:
+            raise IndexError
+        if key in FieldCF.INT_KEYS:
+            # print("int value:", int(value))
+            return int(value)
+        # if isinstance(value, float):
+        #    return int(value)
+        return value
