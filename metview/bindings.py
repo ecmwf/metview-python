@@ -927,7 +927,7 @@ def dataset_to_fieldset(val, **kwarg):
     # we try to import xarray as locally as possible to reduce startup time
     # try to write the xarray as a GRIB file, then read into a fieldset
     import xarray as xr
-    import cfgrib
+    from cfgrib.xarray_to_grib import to_grib
 
     if not isinstance(val, xr.core.dataset.Dataset):
         raise TypeError(
@@ -941,7 +941,7 @@ def dataset_to_fieldset(val, **kwarg):
 
     try:
         # could add keys, e.g. grib_keys={'centre': 'ecmf'})
-        cfgrib.to_grib(val, tmp, **kwarg)
+        to_grib(val, tmp, **kwarg)
     except:
         print(
             "Error trying to write xarray dataset to GRIB for conversion to Metview Fieldset"
