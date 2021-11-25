@@ -528,7 +528,7 @@ class Fieldset:
     # TODO: add all field_scalar_func functions
 
     # TODO: add tests for all fieldset-fieldset methods:
-    # *, /, **, >, >=, <, <=, ==, !=, &, |
+    # **, ==, !=, &, |
 
     # TODO: allow these methods to be called as functions (?)
 

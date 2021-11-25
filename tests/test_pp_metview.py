@@ -558,6 +558,30 @@ def test_fieldset_fieldset_func():
     np.testing.assert_allclose(q.values(), f.values() - g.values())
     r = g - f
     np.testing.assert_allclose(r.values(), g.values() - f.values())
+    t = g * f
+    np.testing.assert_allclose(t.values(), g.values() * f.values())
+    d = g / f
+    np.testing.assert_allclose(d.values(), g.values() / f.values())
+    gt = f > g
+    assert gt[0].values()[0] == 1
+    assert gt[1].values()[0] == 0
+    assert gt[2].values()[0] == 1
+    assert gt[2].values()[22] == 0
+    gt = f >= g
+    assert gt[0].values()[0] == 1
+    assert gt[1].values()[0] == 0
+    assert gt[2].values()[0] == 1
+    assert gt[2].values()[22] == 0
+    lt = f < g
+    assert lt[0].values()[0] == 0
+    assert lt[1].values()[0] == 1
+    assert lt[2].values()[0] == 0
+    assert lt[2].values()[22] == 1
+    lt = f <= g
+    assert lt[0].values()[0] == 0
+    assert lt[1].values()[0] == 1
+    assert lt[2].values()[0] == 0
+    assert lt[2].values()[22] == 1
 
 
 def test_fieldset_multiple_funcs():
