@@ -363,7 +363,6 @@ class Fieldset:
         with open(path, "wb") as fout:
             for f in self.fields:
                 f.write(fout)
-            fout.close()
 
     def _append_field(self, field):
         self.fields.append(field)
