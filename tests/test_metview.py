@@ -910,7 +910,7 @@ def test_fieldset_create_from_glob_path_single():
 def test_fieldset_create_from_glob_path_multi():
     f = mv.Fieldset(path=os.path.join(PATH, "t_*.grib"))
     assert type(f) == mv.Fieldset
-    assert len(f) == 16
+    assert len(f) == 17
     par_ref = [
         ["t", "1000"],
         ["t", "850"],
@@ -928,6 +928,7 @@ def test_fieldset_create_from_glob_path_multi():
         ["z", "1000"],
         ["t", "1000"],
         ["z", "1000"],
+        ["t", "1000"],
     ]
     assert par_ref == mv.grib_get(f, ["shortName", "level"])
 
@@ -937,7 +938,7 @@ def test_fieldset_create_from_glob_paths():
         path=[os.path.join(PATH, "test.g*ib"), os.path.join(PATH, "t_*.grib")]
     )
     assert type(f) == mv.Fieldset
-    assert len(f) == 17
+    assert len(f) == 18
     par_ref = [
         ["2t", "0"],
         ["t", "1000"],
@@ -956,6 +957,7 @@ def test_fieldset_create_from_glob_paths():
         ["z", "1000"],
         ["t", "1000"],
         ["z", "1000"],
+        ["t", "1000"],
     ]
     assert par_ref == mv.grib_get(f, ["shortName", "level"])
 

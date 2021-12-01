@@ -115,9 +115,10 @@ class IndexDb:
 
     def _get_fields(self, dims, max_count=-1):
         # TODO: make it work with bot fieldset implementations
-        res = mv.Fieldset()
-        # from metview.pure_python import fieldset as FS
-        # res = FS.Fieldset()
+        # res = mv.Fieldset()
+        from metview.pure_python import fieldset as FS
+
+        res = FS.Fieldset()
         dfs = {}
         LOG.debug(f"dims={dims}")
         for key in self.blocks.keys():
