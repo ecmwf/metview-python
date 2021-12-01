@@ -162,14 +162,14 @@ class GribIndexer:
         comp_df = []
         for i, comp_name in enumerate(v_comp):
             query = f"shortName == '{comp_name}'"
-            r = df.query(query)
+            r = df.query(query, engine="python")
             # if we do not use copy, the assignment below as:
             # comp_df[0].loc[...
             # generates the SettingWithCopyWarning warning!!!
             if i == 0:
-                r = df.query(query).copy()
+                r = df.query(query, engine="python").copy()
             else:
-                r = df.query(query)
+                r = df.query(query, engine="python")
             if r.empty:
                 return []
             else:

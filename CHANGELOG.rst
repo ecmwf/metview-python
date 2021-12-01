@@ -7,6 +7,28 @@ Changelog for Metview's Python interface
 - the plot functions now automatically plot inline if running inside a Jupyter notebook
   - it is no longer necessary to call setoutput('jupyter')
   - call setoutput('screen') to force the interactive plot window to appear
+- inline plots in Jupyter notebooks will be automatically trimmed of surrounding whitespace if pillow is installed
+- new functions to build popup dialogs and read in user input. Available via the newly added ui module.
+  - ui.dialog()
+  - ui.any()
+  - ui.colour()
+  - ui.icon()
+  - ui.option_menu()
+  - ui.slider() 
+  - ui.toggle()
+- added high-level plotting functions to be used with Datasets or in Jupyter notebooks
+  - plot_maps()
+  - plot_diff_maps()
+  - plot_xs()
+  - plot_rmse()
+- new object Track to represent a storm track
+- new function make_geoview() to generate a geoview object with predefined settings
+- new interface for Datasets
+  - a Dataset represents a collection of data files (GRIB and CSV) and a set of predefined styles to visualise the data. Ideal for training courses or case studies. 
+  - see Jupyter notebook example at https://metview.readthedocs.io/en/latest/notebook_gallery.html
+- added new keyword argument called check_local to gallery.load_dataset(). If it is True and the data file exists locally it will not be downloaded.
+- fixed issue when describe() crashed when called with a paramId
+
 
 1.8.1
 ------------------

@@ -41,7 +41,8 @@ class Track:
     def style(self):
         return mv.style.get_db().get_style("track").clone()
 
-    def build(self, style=[]):
+    def build(self, style=None):
+        style = [] if style is None else style
         df = pd.read_csv(
             filepath_or_buffer=self.path,
             sep=self.sep,
