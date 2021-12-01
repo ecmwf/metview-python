@@ -280,7 +280,7 @@ def test_field_func():
     assert len(g) == 18
     vf = f.values()
     vg = g.values()
-    np.testing.assert_allclose(vg, vf * vf)
+    np.testing.assert_allclose(vg, vf * vf, 0.0001)
 
 
 def test_field_func_neg():
@@ -506,7 +506,7 @@ def test_field_scalar_func():
     m = f * 1.5
     np.testing.assert_allclose(m.values(), f.values() * 1.5)
     d = f / 3.0
-    np.testing.assert_allclose(d.values(), f.values() / 3.0)
+    np.testing.assert_allclose(d.values(), f.values() / 3.0, 0.0001)
     p = f ** 2
     np.testing.assert_allclose(p.values(), f.values() ** 2)
     first_val = f.values()[0][0]  # 272
@@ -574,9 +574,9 @@ def test_field_scalar_func():
     mr = 3 * f
     np.testing.assert_allclose(mr.values(), f.values() * 3)
     dr = 200 / f
-    np.testing.assert_allclose(dr.values(), 200 / f.values())
+    np.testing.assert_allclose(dr.values(), 200 / f.values(), 0.0001)
     pr = 2 ** f
-    np.testing.assert_allclose(pr.values(), 2 ** f.values())
+    np.testing.assert_allclose(pr.values(), 2 ** f.values(), 1)
 
 
 def test_fieldset_fieldset_func():
@@ -591,9 +591,9 @@ def test_fieldset_fieldset_func():
     r = g - f
     np.testing.assert_allclose(r.values(), g.values() - f.values())
     t = g * f
-    np.testing.assert_allclose(t.values(), g.values() * f.values())
+    np.testing.assert_allclose(t.values(), g.values() * f.values(), 0.0001)
     d = g / f
-    np.testing.assert_allclose(d.values(), g.values() / f.values())
+    np.testing.assert_allclose(d.values(), g.values() / f.values(), 0.0001)
     gt = f > g
     assert gt[0].values()[0] == 1
     assert gt[1].values()[0] == 0
@@ -686,3 +686,21 @@ def test_set_values_resize():
     f0_mod_vals = f0_modified.values()
     eps = 0.001
     np.testing.assert_allclose(f0_mod_vals, f0_20vals, eps)
+
+
+def test_vals_destroyed():
+    f = mv.Fieldset(path=os.path.join(PATH, "test.grib"))
+    assert f.fields[0].vals is None
+    g = f.values()
+    assert isinstance(g, np.ndarray)
+    assert f.fields[0].vals is None
+    f = -f
+    assert f.fields[0].vals is None
+    g = f.values()
+    assert isinstance(g, np.ndarray)
+    assert f.fields[0].vals is None
+    f = f + 1
+    assert f.fields[0].vals is None
+    g = f.values()
+    assert isinstance(g, np.ndarray)
+    assert f.fields[0].vals is None
