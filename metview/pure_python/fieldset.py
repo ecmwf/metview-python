@@ -25,7 +25,7 @@ class CodesHandle:
         self.handle = handle
         self.path = path
         self.offset = offset
-        eccodes.codes_set(handle, "missingValue", self.missing_value)
+        eccodes.codes_set(handle, "missingValue", CodesHandle.missing_value)
 
     def __del__(self):
         # print("CodesHandle:release ", self)
@@ -63,7 +63,7 @@ class CodesHandle:
     def get_values(self):
         vals = eccodes.codes_get_values(self.handle)
         if self.get_long("bitmapPresent"):
-            vals[vals == self.missing_value] = np.nan
+            vals[vals == CodesHandle.missing_value] = np.nan
         return vals
 
     def set_string(self, key, value):
@@ -80,7 +80,7 @@ class CodesHandle:
 
     def set_values(self, value):
         # replace nans with missing values
-        values_nans_replaced = np.nan_to_num(value, copy=True, nan=self.missing_value)
+        values_nans_replaced = np.nan_to_num(value, copy=True, nan=CodesHandle.missing_value)
         self.set_double_array("values", values_nans_replaced)
 
     def write(self, fout):
@@ -272,22 +272,16 @@ class Fieldset:
 
     def __str__(self):
         n = len(self)
-        s = "s"
-        if n == 1:
-            s = ""
-        return "Fieldset (" + str(n) + " field" + s + ")"
+        s = "s" if n > 1 else ""
+        return f"Fieldset ({n} field{s})"
 
     @staticmethod
     def _list_or_single(lst):
-        if len(lst) == 1:
-            lst = lst[0]
-        return lst
+        return lst if len(lst) != 1 else lst[0] 
 
     @staticmethod
     def _always_list(items):
-        if not isinstance(items, list):
-            return [items]
-        return items
+        return items if isinstance(items, list) else [items]
 
     def grib_get_string(self, key):
         ret = [x.grib_get_string(key) for x in self.fields]
@@ -550,26 +544,23 @@ class Fieldset:
 
     # TODO: gribsetbits, default=24
 
-    def select(self, *args, **kwargs):
+    def _get_db(self):
         if self._db is None:
             self._db = indexdb.FieldsetDb(fs=self)
-        # LOG.debug(f"kwargs={kwargs}")
         assert self._db is not None
+        return self._db
+
+    def select(self, *args, **kwargs):
         if len(args) == 1 and isinstance(args[0], dict):
-            return self._db.select(**args[0])
+            return self._get_db().select(**args[0])
         else:
-            return self._db.select(**kwargs)
+            return self._get_db().select(**kwargs)
 
     def describe(self, *args, **kwargs):
-        if self._db is None:
-            self._db = indexdb.FieldsetDb(fs=self)
-        return self._db.describe(*args, **kwargs)
+        return self._get_db().describe(*args, **kwargs)
 
     def ls(self, **kwargs):
-        if self._db is None:
-            self._db = indexdb.FieldsetDb(fs=self)
-            print(self._db)
-        return self._db.ls(**kwargs)
+        return self._get_db().ls(**kwargs)
 
 
 class FieldsetCF:
