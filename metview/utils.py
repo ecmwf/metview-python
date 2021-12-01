@@ -15,12 +15,32 @@ import logging
 from pathlib import Path
 import shutil
 import os
+import re
 import tempfile
 
 LOG = logging.getLogger(__name__)
 
 
 CACHE_DIR = os.path.join(tempfile.gettempdir(), f"mpy-{getpass.getuser()}")
+
+
+def get_file_list(path, file_name_pattern=None):
+    m = None
+    # if isinstance(file_name_pattern, re.Pattern):
+    #    m = file_name_pattern.match
+    # elif isinstance(file_name_pattern, str):
+    if isinstance(file_name_pattern, str):
+        if file_name_pattern.startswith('re"'):
+            m = re.compile(file_name_pattern[3:-1]).match
+
+    if m is not None:
+        return [
+            os.path.join(path, f) for f in builtins.filter(m, os.listdir(path=path))
+        ]
+    else:
+        if isinstance(file_name_pattern, str) and file_name_pattern != "":
+            path = os.path.join(path, file_name_pattern)
+        return sorted(glob.glob(path))
 
 
 def unpack(file_path, remove=False):

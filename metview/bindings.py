@@ -10,12 +10,10 @@
 import builtins
 import datetime
 from enum import Enum
-import glob
 import keyword
 import logging
 import os
 import pkgutil
-import re
 import signal
 import tempfile
 
@@ -23,7 +21,8 @@ import cffi
 import numpy as np
 from numpy.lib.arraysetops import _setxor1d_dispatcher, isin
 
-from metview.dataset import FieldsetDb, Dataset
+from metview.indexdb import FieldsetDb
+from metview.dataset import Dataset
 from metview.style import (
     GeoView,
     Style,
@@ -34,6 +33,7 @@ from metview.style import (
 )
 from metview import plotting
 from metview.ipython import is_ipython_active, import_widgets
+from metview import utils
 
 __version__ = "1.9.0"
 
@@ -462,25 +462,6 @@ def valid_date(*args, base=None, step=None, step_units=None):
         return [base + step_units * int(x) for x in step]
 
 
-def get_file_list(path, file_name_pattern=None):
-    m = None
-    # if isinstance(file_name_pattern, re.Pattern):
-    #    m = file_name_pattern.match
-    # elif isinstance(file_name_pattern, str):
-    if isinstance(file_name_pattern, str):
-        if file_name_pattern.startswith('re"'):
-            m = re.compile(file_name_pattern[3:-1]).match
-
-    if m is not None:
-        return [
-            os.path.join(path, f) for f in builtins.filter(m, os.listdir(path=path))
-        ]
-    else:
-        if isinstance(file_name_pattern, str) and file_name_pattern != "":
-            path = os.path.join(path, file_name_pattern)
-        return sorted(glob.glob(path))
-
-
 class File(Value):
     def __init__(self, val_pointer):
         Value.__init__(self, val_pointer)
@@ -674,10 +655,10 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             if isinstance(path, list):
                 v = []
                 for p in path:
-                    v.extend(get_file_list(p))
+                    v.extend(utils.get_file_list(p))
                 path = v
             else:
-                path = get_file_list(path)
+                path = utils.get_file_list(path)
 
             # fill the 'fields' var - it will be used a few lines down
             fields = [read(p) for p in path]
@@ -1253,7 +1234,6 @@ def bind_functions(namespace, module_name=None):
     namespace["merge"] = merge
     namespace["dataset_to_fieldset"] = dataset_to_fieldset
     namespace["valid_date"] = valid_date
-    namespace["get_file_list"] = get_file_list
     namespace["load_dataset"] = Dataset.load_dataset
     namespace["plot_maps"] = plotting.plot_maps
     namespace["plot_diff_maps"] = plotting.plot_diff_maps

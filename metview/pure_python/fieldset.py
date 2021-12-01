@@ -13,6 +13,8 @@ import eccodes
 import metview.pure_python.maths as maths
 from .temporary import temp_file
 
+import metview.indexdb as indexdb
+
 
 class CodesHandle:
     """Wraps an ecCodes handle"""
@@ -86,7 +88,7 @@ class CodesHandle:
 
 
 class GribFile:
-    """ Encapsulates a GRIB file, giving access to an iteration of CodesHandles """
+    """Encapsulates a GRIB file, giving access to an iteration of CodesHandles"""
 
     def __init__(self, path):
         self.path = path
@@ -213,7 +215,11 @@ class Field:
         self.handle.write(fout)
 
     def clone(self):
-        c = Field(self.handle.clone(), self.gribfile, self.keep_values_in_memory,)
+        c = Field(
+            self.handle.clone(),
+            self.gribfile,
+            self.keep_values_in_memory,
+        )
         c.vals = None
         return c
 
@@ -250,6 +256,7 @@ class Fieldset:
         self.fields = []
         self.count = 0
         self.temporary = None
+        self._db = None
 
         if path:
             g = GribFile(path)
@@ -540,6 +547,27 @@ class Fieldset:
     # TODO: pickling
 
     # TODO: gribsetbits, default=24
+
+    def select(self, *args, **kwargs):
+        if self._db is None:
+            self._db = indexdb.FieldsetDb(fs=self)
+        # LOG.debug(f"kwargs={kwargs}")
+        assert self._db is not None
+        if len(args) == 1 and isinstance(args[0], dict):
+            return self._db.select(**args[0])
+        else:
+            return self._db.select(**kwargs)
+
+    def describe(self, *args, **kwargs):
+        if self._db is None:
+            self._db = indexdb.FieldsetDb(fs=self)
+        return self._db.describe(*args, **kwargs)
+
+    def ls(self, **kwargs):
+        if self._db is None:
+            self._db = indexdb.FieldsetDb(fs=self)
+            print(self._db)
+        return self._db.ls(**kwargs)
 
 
 class FieldsetCF:

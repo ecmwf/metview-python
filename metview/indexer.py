@@ -17,6 +17,7 @@ import os
 from pathlib import Path
 
 import metview as mv
+from metview import utils
 import numpy as np
 import pandas as pd
 import yaml
@@ -294,7 +295,7 @@ class GribIndexer:
         r = []
         # LOG.debug(f"dir_name={dir_name}")
         suffix = ".csv.gz"
-        for f in mv.get_file_list(os.path.join(dir_name, f"*{suffix}")):
+        for f in utils.get_file_list(os.path.join(dir_name, f"*{suffix}")):
             name = os.path.basename(f)
             # LOG.debug(f"name={name}")
             r.append(name[: -len(suffix)])
@@ -476,8 +477,10 @@ class FieldsetIndexer(GribIndexer):
         LOG.info(f" scan fields ...")
         data = {}
         # print(f"fs_len={len(fs)}")
-        if isinstance(fs, mv.Fieldset) and len(fs) > 0:
-            md_vals = mv.grib_get(fs, self.keys_ecc, "key")
+        # TODO: allow to check if fs is a fieldset
+        # if isinstance(fs, mv.Fieldset) and len(fs) > 0:
+        if len(fs) > 0:
+            md_vals = fs.grib_get(self.keys_ecc, "key")
             if mapped_params:
                 for i in range(len(fs)):
                     v = md_vals[self.param_id_index][i]
@@ -635,7 +638,9 @@ class ExperimentIndexer(GribIndexer):
         # for f_path in glob.glob(f_pattern):
         cnt = 0
         input_files_tmp = []
-        for f_path in mv.get_file_list(input_dir, file_name_pattern=file_name_pattern):
+        for f_path in utils.get_file_list(
+            input_dir, file_name_pattern=file_name_pattern
+        ):
             # LOG.debug(f"  f_path={f_path}")
             fs = mv.read(f_path)
             if isinstance(fs, mv.Fieldset) and len(fs) > 0:

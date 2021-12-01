@@ -654,4 +654,3 @@ def test_set_values_resize():
     f0_mod_vals = f0_modified.values()
     eps = 0.001
     np.testing.assert_allclose(f0_mod_vals, f0_20vals, eps)
-
