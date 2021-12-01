@@ -203,10 +203,8 @@ class Field:
     #    result.handle.set_double_array(key, value)
     #    return result
 
-    def set_values(self, value):
-        result = self.clone()
-        result.handle.set_values(value)
-        return result
+    def encode_values(self, value):
+        self.handle.set_values(value)
 
     def write(self, fout, temp=None):
         self.temp = temp  # store a reference to the temp file object for persistence
@@ -232,6 +230,7 @@ class Field:
             result.vals = func(other, self.values())
         else:
             result.vals = func(self.values(), other)
+        result.encode_values(result.vals)
         return result
 
 
@@ -352,12 +351,9 @@ class Fieldset:
             msg = str(len(list_of_arrays)) + " instead of " + str(len(self.fields))
             raise ValueError("set_values has the wrong number of arrays: " + msg)
 
-        result = Fieldset(temporary=True)
-        with open(result.temporary.path, "wb") as fout:
-            for f, a in zip(self.fields, list_of_arrays):
-                result._append_field(f.set_values(a))
-                result.fields[-1].write(fout, temp=result.temporary)
-        return result
+        return self.fieldset_other_func(
+            maths.set_from_other, list_of_arrays, index_other=True
+        )
 
     def write(self, path):
         with open(path, "wb") as fout:
@@ -449,7 +445,7 @@ class Fieldset:
     def __invert__(self):
         return self.field_func(maths.not_func)
 
-    def fieldset_other_func(self, func, other, reverse_args=False):
+    def fieldset_other_func(self, func, other, reverse_args=False, index_other=False):
         """Applies a function to a fieldset and a scalar/fieldset, e.g. F+5"""
         result = Fieldset(temporary=True)
         with open(result.temporary.path, "wb") as fout:
@@ -457,13 +453,19 @@ class Fieldset:
                 for f, g in zip(self.fields, other.fields):
                     new_field = f.field_other_func(func, g, reverse_args=reverse_args)
                     result._append_field(new_field)
+                    result.fields[-1].write(fout, temp=result.temporary)
+            elif index_other:
+                for f, g in zip(self.fields, other):
+                    new_field = f.field_other_func(func, g, reverse_args=reverse_args)
+                    result._append_field(new_field)
+                    result.fields[-1].write(fout, temp=result.temporary)
             else:
                 for f in self.fields:
                     new_field = f.field_other_func(
                         func, other, reverse_args=reverse_args
                     )
                     result._append_field(new_field)
-            result.fields[-1].write(fout, temp=result.temporary)
+                    result.fields[-1].write(fout, temp=result.temporary)
         return result
 
     def __add__(self, other):

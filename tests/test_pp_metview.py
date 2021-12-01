@@ -238,6 +238,22 @@ def test_write_fieldset():
     os.remove(temp_path)
 
 
+def test_write_modified_fieldset():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    fp20 = f + 20
+    temp_path = "written_tuv_pl.grib"
+    fp20.write(temp_path)
+    assert os.path.isfile(temp_path)
+    g = mv.Fieldset(path=temp_path)
+    assert type(g) == mv.Fieldset
+    assert len(g) == 18
+    sn = g.grib_get_string("shortName")
+    assert sn == ["t", "u", "v"] * 6
+    np.testing.assert_allclose(g.values(), f.values() + 20)
+    f = 0
+    os.remove(temp_path)
+
+
 def test_field_func():
     def sqr_func(x):
         return x * x
