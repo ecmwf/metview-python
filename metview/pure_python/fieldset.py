@@ -80,7 +80,9 @@ class CodesHandle:
 
     def set_values(self, value):
         # replace nans with missing values
-        values_nans_replaced = np.nan_to_num(value, copy=True, nan=CodesHandle.missing_value)
+        values_nans_replaced = np.nan_to_num(
+            value, copy=True, nan=CodesHandle.missing_value
+        )
         self.set_double_array("values", values_nans_replaced)
 
     def write(self, fout):
@@ -277,7 +279,7 @@ class Fieldset:
 
     @staticmethod
     def _list_or_single(lst):
-        return lst if len(lst) != 1 else lst[0] 
+        return lst if len(lst) != 1 else lst[0]
 
     @staticmethod
     def _always_list(items):

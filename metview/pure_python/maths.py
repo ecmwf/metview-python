@@ -76,5 +76,6 @@ def and_func(x, y):
 def or_func(x, y):
     return np.clip(ne(x, 0) + ne(y, 0), 0, 1)
 
+
 def set_from_other(x, y):
     return y
