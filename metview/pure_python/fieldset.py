@@ -215,11 +215,7 @@ class Field:
         self.handle.write(fout)
 
     def clone(self):
-        c = Field(
-            self.handle.clone(),
-            self.gribfile,
-            self.keep_values_in_memory,
-        )
+        c = Field(self.handle.clone(), self.gribfile, self.keep_values_in_memory,)
         c.vals = None
         return c
 
@@ -227,6 +223,7 @@ class Field:
         """Applies a function to all values, returning a new Field"""
         result = self.clone()
         result.vals = func(self.values())
+        result.encode_values(result.vals)
         return result
 
     def field_other_func(self, func, other, reverse_args=False):
