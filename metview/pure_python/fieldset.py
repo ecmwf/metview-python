@@ -16,6 +16,9 @@ from .temporary import temp_file
 import metview.indexdb as indexdb
 
 
+BITS_PER_VALUE_FOR_WRITING = 24
+
+
 class CodesHandle:
     """Wraps an ecCodes handle"""
 
@@ -83,6 +86,7 @@ class CodesHandle:
         values_nans_replaced = np.nan_to_num(
             value, copy=True, nan=CodesHandle.missing_value
         )
+        self.set_long("bitsPerValue", BITS_PER_VALUE_FOR_WRITING)
         self.set_double_array("values", values_nans_replaced)
 
     def write(self, fout):
@@ -209,17 +213,15 @@ class Field:
 
     def encode_values(self, value):
         self.handle.set_values(value)
+        if not self.keep_values_in_memory:
+            self.vals = None
 
     def write(self, fout, temp=None):
         self.temp = temp  # store a reference to the temp file object for persistence
         self.handle.write(fout)
 
     def clone(self):
-        c = Field(
-            self.handle.clone(),
-            self.gribfile,
-            self.keep_values_in_memory,
-        )
+        c = Field(self.handle.clone(), self.gribfile, self.keep_values_in_memory,)
         c.vals = None
         return c
 
@@ -227,6 +229,7 @@ class Field:
         """Applies a function to all values, returning a new Field"""
         result = self.clone()
         result.vals = func(self.values())
+        result.encode_values(result.vals)
         return result
 
     def field_other_func(self, func, other, reverse_args=False):

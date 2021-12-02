@@ -238,7 +238,7 @@ def test_write_fieldset():
     os.remove(temp_path)
 
 
-def test_write_modified_fieldset():
+def test_write_modified_fieldset_binop():
     f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
     fp20 = f + 20
     temp_path = "written_tuv_pl.grib"
@@ -254,6 +254,22 @@ def test_write_modified_fieldset():
     os.remove(temp_path)
 
 
+def test_write_modified_fieldset_unop():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    negf = -f
+    temp_path = "written_tuv_pl_unop.grib"
+    negf.write(temp_path)
+    assert os.path.isfile(temp_path)
+    g = mv.Fieldset(path=temp_path)
+    assert type(g) == mv.Fieldset
+    assert len(g) == 18
+    sn = g.grib_get_string("shortName")
+    assert sn == ["t", "u", "v"] * 6
+    np.testing.assert_allclose(g.values(), -f.values(), 0.0001)
+    f = 0
+    os.remove(temp_path)
+
+
 def test_field_func():
     def sqr_func(x):
         return x * x
@@ -264,7 +280,7 @@ def test_field_func():
     assert len(g) == 18
     vf = f.values()
     vg = g.values()
-    np.testing.assert_allclose(vg, vf * vf)
+    np.testing.assert_allclose(vg, vf * vf, 0.0001)
 
 
 def test_field_func_neg():
@@ -490,7 +506,7 @@ def test_field_scalar_func():
     m = f * 1.5
     np.testing.assert_allclose(m.values(), f.values() * 1.5)
     d = f / 3.0
-    np.testing.assert_allclose(d.values(), f.values() / 3.0)
+    np.testing.assert_allclose(d.values(), f.values() / 3.0, 0.0001)
     p = f ** 2
     np.testing.assert_allclose(p.values(), f.values() ** 2)
     first_val = f.values()[0][0]  # 272
@@ -558,9 +574,9 @@ def test_field_scalar_func():
     mr = 3 * f
     np.testing.assert_allclose(mr.values(), f.values() * 3)
     dr = 200 / f
-    np.testing.assert_allclose(dr.values(), 200 / f.values())
+    np.testing.assert_allclose(dr.values(), 200 / f.values(), 0.0001)
     pr = 2 ** f
-    np.testing.assert_allclose(pr.values(), 2 ** f.values())
+    np.testing.assert_allclose(pr.values(), 2 ** f.values(), 1)
 
 
 def test_fieldset_fieldset_func():
@@ -575,9 +591,9 @@ def test_fieldset_fieldset_func():
     r = g - f
     np.testing.assert_allclose(r.values(), g.values() - f.values())
     t = g * f
-    np.testing.assert_allclose(t.values(), g.values() * f.values())
+    np.testing.assert_allclose(t.values(), g.values() * f.values(), 0.0001)
     d = g / f
-    np.testing.assert_allclose(d.values(), g.values() / f.values())
+    np.testing.assert_allclose(d.values(), g.values() / f.values(), 0.0001)
     gt = f > g
     assert gt[0].values()[0] == 1
     assert gt[1].values()[0] == 0
@@ -670,3 +686,21 @@ def test_set_values_resize():
     f0_mod_vals = f0_modified.values()
     eps = 0.001
     np.testing.assert_allclose(f0_mod_vals, f0_20vals, eps)
+
+
+def test_vals_destroyed():
+    f = mv.Fieldset(path=os.path.join(PATH, "test.grib"))
+    assert f.fields[0].vals is None
+    g = f.values()
+    assert isinstance(g, np.ndarray)
+    assert f.fields[0].vals is None
+    f = -f
+    assert f.fields[0].vals is None
+    g = f.values()
+    assert isinstance(g, np.ndarray)
+    assert f.fields[0].vals is None
+    f = f + 1
+    assert f.fields[0].vals is None
+    g = f.values()
+    assert isinstance(g, np.ndarray)
+    assert f.fields[0].vals is None
