@@ -395,9 +395,9 @@ class GribIndexer:
             if isinstance(v, datetime.datetime):
                 return v
             elif isinstance(v, str):
-                return mv.date(v)
+                return utils.date_from_str(v)
             elif isinstance(v, (int, float)):
-                return mv.date(str(v))
+                return utils.date_from_str(str(v))
             else:
                 raise
         except:
@@ -411,9 +411,9 @@ class GribIndexer:
             elif isinstance(v, datetime.date):
                 return v
             elif isinstance(v, str):
-                return mv.date(v).date()
+                return utils.date_from_str(v).date()
             elif isinstance(v, (int, float)):
-                return mv.date(str(v)).date()
+                return utils.date_from_str(str(v)).date()
             else:
                 raise
         except:
@@ -427,37 +427,13 @@ class GribIndexer:
             elif isinstance(v, datetime.time):
                 return v
             elif isinstance(v, str):
-                return GribIndexer._str_to_time(v)
+                return utils.time_from_str(v)
             elif isinstance(v, int):
-                return GribIndexer._str_to_time(str(v))
+                return utils.time_from_str(str(v))
             else:
                 raise
         except:
             raise Exception(f"Invalid time value={v} specified for key={param}")
-
-    @staticmethod
-    def _str_to_time(v):
-        h = m = 0
-        if not ":" in v:
-            # formats: h[mm], hh[mm]
-            if len(v) in [1, 2]:
-                h = int(v)
-            elif len(v) in [3, 4]:
-                r = int(v)
-                h = int(r / 100)
-                m = int(r - h * 100)
-            else:
-                raise Exception(f"Invalid time={v}")
-        else:
-            # formats: h:mm, hh:mm
-            lst = v.split(":")
-            if len(lst) >= 2:
-                h = int(lst[0])
-                m = int(lst[1])
-            else:
-                raise Exception(f"Invalid time={v}")
-
-        return datetime.time(hour=h, minute=m)
 
 
 class FieldsetIndexer(GribIndexer):

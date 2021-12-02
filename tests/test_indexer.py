@@ -14,10 +14,8 @@ import os
 
 import numpy as np
 import pandas as pd
-import pytest
 
 import metview as mv
-from metview import bindings
 from metview.param import ParamInfo
 from metview.indexer import GribIndexer
 

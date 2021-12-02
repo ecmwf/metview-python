@@ -9,6 +9,7 @@
 # nor does it submit to any jurisdiction.
 #
 
+import datetime
 import getpass
 import glob
 import logging
@@ -22,6 +23,59 @@ LOG = logging.getLogger(__name__)
 
 
 CACHE_DIR = os.path.join(tempfile.gettempdir(), f"mpy-{getpass.getuser()}")
+
+
+def date_from_str(d_str):
+    # yyyymmdd
+    if len(d_str) == 8:
+        return datetime.datetime.strptime(d_str, "%Y%m%d")
+    # yyyy-mm-dd ....
+    elif len(d_str) >= 10 and d_str[4] == "-" and d_str[7] == "-":
+        # yyyy-mm-dd
+        if len(d_str) == 10:
+            return datetime.datetime.strptime(d_str, "%Y-%m-%d")
+        # yyyy-mm-dd hh
+        elif len(d_str) == 13:
+            return datetime.datetime.strptime(d_str, "%Y-%m-%d %H")
+        # yyyy-mm-dd hh:mm
+        elif len(d_str) == 16:
+            return datetime.datetime.strptime(d_str, "%Y-%m-%d %H:%M")
+        # yyyy-mm-dd hh:mm:ss
+        elif len(d_str) == 19:
+            return datetime.datetime.strptime(d_str, "%Y-%m-%d %H:%M:%S")
+    # yyyymmdd.decimal_day
+    elif len(d_str) > 8 and d_str[8] == ".":
+        f = float("0" + d_str[8:])
+        if f >= 1:
+            raise ValueError
+        else:
+            return datetime.datetime.strptime(d_str[:8], "%Y%m%d") + datetime.timedelta(
+                seconds=int(f * 86400)
+            )
+
+
+def time_from_str(t_str):
+    h = m = 0
+    if not ":" in t_str:
+        # formats: h[mm], hh[mm]
+        if len(t_str) in [1, 2]:
+            h = int(t_str)
+        elif len(t_str) in [3, 4]:
+            r = int(t_str)
+            h = int(r / 100)
+            m = int(r - h * 100)
+        else:
+            raise Exception(f"Invalid time={t_str}")
+    else:
+        # formats: h:mm, hh:mm
+        lst = t_str.split(":")
+        if len(lst) >= 2:
+            h = int(lst[0])
+            m = int(lst[1])
+        else:
+            raise Exception(f"Invalid time={t_str}")
+
+    return datetime.time(hour=h, minute=m)
 
 
 def get_file_list(path, file_name_pattern=None):
