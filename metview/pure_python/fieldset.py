@@ -217,6 +217,7 @@ class Field:
     #    return result
 
     def encode_values(self, value):
+        self.handle.set_long("bitmapPresent", 1)
         self.handle.set_values(value)
         if not self.keep_values_in_memory:
             self.vals = None
