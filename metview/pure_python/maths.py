@@ -17,8 +17,8 @@ def pos(x):
     return x
 
 
-def abs(x):
-    return np.abs(x)
+# def abs(x):
+#     return np.abs(x)
 
 
 def not_func(x):
@@ -79,3 +79,51 @@ def or_func(x, y):
 
 def set_from_other(x, y):
     return y
+
+
+def abs(x):
+    return np.fabs(x)
+
+
+def acos(x):
+    return np.arccos(x)
+
+
+def asin(x):
+    return np.arcsin(x)
+
+
+def atan(x):
+    return np.arctan(x)
+
+
+def cos(x):
+    return np.cos(x)
+
+
+def exp(x):
+    return np.exp(x)
+
+
+def log(x):
+    return np.log(x)
+
+
+def log10(x):
+    return np.log10(x)
+
+
+def sqr(x):
+    return np.sqr(x)
+
+
+def sqrt(x):
+    return np.sqrt(x)
+
+
+def sin(x):
+    return np.sin(x)
+
+
+def tan(x):
+    return np.tan(x)

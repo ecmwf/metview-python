@@ -7,6 +7,9 @@
 # granted to it by virtue of its status as an intergovernmental organisation
 # nor does it submit to any jurisdiction.
 
+import functools
+from os import WEXITED
+
 import numpy as np
 import eccodes
 
@@ -246,8 +249,37 @@ class Field:
         return result
 
 
+# docorator to implement math functions in Fieldset
+def wrap_maths(cls):
+    def wrap_method(fn):
+        def wrapper(self, *args, **kwargs):
+            return self.field_func(fn)
+
+        return wrapper
+
+    for name, fn in cls.WRAP_MATHS_ATTRS.items():
+        setattr(cls, name, wrap_method(fn))
+    return cls
+
+
+@wrap_maths
 class Fieldset:
     """A set of Fields, each of which can come from different GRIB files"""
+
+    WRAP_MATHS_ATTRS = {
+        "abs": maths.abs,
+        "acos": maths.acos,
+        "asin": maths.asin,
+        "atan": maths.atan,
+        "cos": maths.cos,
+        "exp": maths.exp,
+        "log": maths.log,
+        "log10": maths.log10,
+        "sin": maths.sin,
+        "sqr": maths.sqrt,
+        "sqrt": maths.sqrt,
+        "tan": maths.tan,
+    }
 
     # TODO: add glob to init
 
@@ -445,15 +477,13 @@ class Fieldset:
 
     def field_func(self, func):
         """Applies a function to all values in all fields"""
+        print(f"func={func}")
         result = Fieldset(temporary=True)
         with open(result.temporary.path, "wb") as fout:
             for f in self.fields:
                 result._append_field(f.field_func(func))
                 result.fields[-1].write(fout, temp=result.temporary)
         return result
-
-    def abs(self):
-        return self.field_func(maths.abs)
 
     def __neg__(self):
         return self.field_func(maths.neg)
