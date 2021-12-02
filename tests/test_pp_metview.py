@@ -7,6 +7,7 @@
 # granted to it by virtue of its status as an intergovernmental organisation
 # nor does it submit to any jurisdiction.
 
+from inspect import ArgInfo
 import numpy as np
 import os
 import pytest
@@ -690,6 +691,67 @@ def test_fieldset_multiple_funcs():
     f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
     g = 1 - ((f[0] + f[3]) - 5)
     np.testing.assert_allclose(g.values(), 1 - ((f[0].values() + f[3].values()) - 5))
+
+
+def test_field_maths_funcs():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    f = f[0]
+    v = f.values()
+
+    # no arg
+    r = f.abs()
+    np.testing.assert_allclose(r.values(), np.fabs(v), rtol=1e-05)
+
+    r = f.cos()
+    np.testing.assert_allclose(r.values(), np.cos(v), rtol=1e-05)
+
+    f1 = f / 100
+    r = f1.exp()
+    np.testing.assert_allclose(r.values(), np.exp(f1.values()), rtol=1e-05)
+
+    r = f.log()
+    np.testing.assert_allclose(r.values(), np.log(v), rtol=1e-05)
+
+    r = f.log10()
+    np.testing.assert_allclose(r.values(), np.log10(v), rtol=1e-05)
+
+    r = f.sgn()
+    np.testing.assert_allclose(r.values(), np.sign(v), rtol=1e-05)
+
+    r = f.sin()
+    np.testing.assert_allclose(r.values(), np.sin(v), rtol=1e-05)
+
+    r = f.sqrt()
+    np.testing.assert_allclose(r.values(), np.sqrt(v), rtol=1e-05)
+
+    r = f.tan()
+    np.testing.assert_allclose(r.values(), np.tan(v), rtol=1e-04)
+
+    # inverse functions
+    # scale input between [-1, 1]
+    f1 = (f - 282) / 80
+    v1 = f1.values()
+    r = f1.acos()
+    np.testing.assert_allclose(r.values(), np.arccos(v1), rtol=1e-05)
+
+    r = f1.asin()
+    np.testing.assert_allclose(r.values(), np.arcsin(v1), rtol=1e-05)
+
+    r = f1.atan()
+    np.testing.assert_allclose(r.values(), np.arctan(v1), rtol=1e-05)
+
+    # 1 arg
+    f1 = f - 274
+    v1 = f1.values()
+
+    r = f.atan2(f1)
+    np.testing.assert_allclose(r.values(), np.arctan2(v, v1), rtol=1e-05)
+
+    r = f.div(f1)
+    np.testing.assert_allclose(r.values(), np.floor_divide(v, v1), rtol=1e-05)
+
+    r = f.mod(f1)
+    np.testing.assert_allclose(r.values(), np.mod(v, v1), rtol=1e-04)
 
 
 def test_str():

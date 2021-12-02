@@ -7,7 +7,8 @@
 # granted to it by virtue of its status as an intergovernmental organisation
 # nor does it submit to any jurisdiction.
 
-import functools
+
+from inspect import signature
 from os import WEXITED
 
 import numpy as np
@@ -251,14 +252,24 @@ class Field:
 
 # docorator to implement math functions in Fieldset
 def wrap_maths(cls):
-    def wrap_method(fn):
+    def wrap_single_method(fn):
         def wrapper(self, *args, **kwargs):
             return self.field_func(fn)
 
         return wrapper
 
+    def wrap_double_method(fn):
+        def wrapper(self, *args, **kwargs):
+            return self.fieldset_other_func(fn, *args, **kwargs)
+
+        return wrapper
+
     for name, fn in cls.WRAP_MATHS_ATTRS.items():
-        setattr(cls, name, wrap_method(fn))
+        n = len(signature(fn).parameters)
+        if n == 1:
+            setattr(cls, name, wrap_single_method(fn))
+        elif n == 2:
+            setattr(cls, name, wrap_double_method(fn))
     return cls
 
 
@@ -271,10 +282,14 @@ class Fieldset:
         "acos": maths.acos,
         "asin": maths.asin,
         "atan": maths.atan,
+        "atan2": maths.atan2,
         "cos": maths.cos,
+        "div": maths.floor_div,
         "exp": maths.exp,
         "log": maths.log,
         "log10": maths.log10,
+        "mod": maths.mod,
+        "sgn": maths.sgn,
         "sin": maths.sin,
         "sqr": maths.sqrt,
         "sqrt": maths.sqrt,
@@ -477,7 +492,6 @@ class Fieldset:
 
     def field_func(self, func):
         """Applies a function to all values in all fields"""
-        print(f"func={func}")
         result = Fieldset(temporary=True)
         with open(result.temporary.path, "wb") as fout:
             for f in self.fields:

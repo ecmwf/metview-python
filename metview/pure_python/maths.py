@@ -81,6 +81,9 @@ def set_from_other(x, y):
     return y
 
 
+# single argument functions
+
+
 def abs(x):
     return np.fabs(x)
 
@@ -113,6 +116,10 @@ def log10(x):
     return np.log10(x)
 
 
+def sgn(x):
+    return np.sign(x)
+
+
 def sqr(x):
     return np.sqr(x)
 
@@ -127,3 +134,18 @@ def sin(x):
 
 def tan(x):
     return np.tan(x)
+
+
+# double argument functions
+
+
+def atan2(x, y):
+    return np.arctan2(x, y)
+
+
+def floor_div(x, y):
+    return np.floor_divide(x, y)
+
+
+def mod(x, y):
+    return np.mod(x, y)
