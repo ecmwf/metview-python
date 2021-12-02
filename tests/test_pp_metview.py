@@ -805,6 +805,18 @@ def test_set_values_with_missing_values():
     assert np.isclose(v[2663], 240.5642 + 40, eps)
 
 
+def test_set_values_with_missing_values_2():
+    f = mv.Fieldset(path=os.path.join(PATH, "t_with_missing.grib"))
+    g = f[0]
+    v = g.values()
+    v[1] = np.nan
+    h = g.set_values(v)
+    hv = h.values()[:10]
+    assert np.isclose(hv[0], 272.56417847)
+    assert np.isnan(hv[1])
+    assert np.isclose(hv[2], 272.56417847)
+
+
 def test_set_values_resize():
     # NOTE: the current change in behavour - in 'standard Metview' the user
     # has to supply "resize" as an optional argument in order to allow an array
