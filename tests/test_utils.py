@@ -65,3 +65,16 @@ def test_utils_time():
 
     d = utils.time_from_str("14:57")
     assert d == datetime.time(14, 57, 0)
+
+
+def test_has_globbing():
+
+    assert utils.has_globbing("a*") == True
+    assert utils.has_globbing("a?") == True
+    assert utils.has_globbing("my_path/a*.grib") == True
+    assert utils.has_globbing("my_path/[Aa].grib") == True
+    assert utils.has_globbing("my_path/[a-m].grib") == True
+    assert utils.has_globbing("my_path/test.grib") == False
+    assert utils.has_globbing("my_path/te[st.grib") == False
+    assert utils.has_globbing("my_path/tes]t.grib") == False
+    # assert utils.has_globbing("my_path/t]e[st.grib") == False

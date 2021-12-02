@@ -92,7 +92,20 @@ def get_file_list(path, file_name_pattern=None):
     else:
         if isinstance(file_name_pattern, str) and file_name_pattern != "":
             path = os.path.join(path, file_name_pattern)
-        return sorted(glob.glob(path))
+        elif not has_globbing(path):
+            return [path]
+        else:
+            return sorted(glob.glob(path))
+
+
+def has_globbing(text):
+    for x in ["*", "?"]:
+        if x in text:
+            return True
+    if "[" in text and "]" in text:
+        return True
+    else:
+        return False
 
 
 def unpack(file_path, remove=False):

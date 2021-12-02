@@ -39,6 +39,76 @@ def test_non_empty_fieldset_contructor_len_18():
     assert len(f) == 18
 
 
+def test_fieldset_create_from_list_of_paths():
+    paths = [os.path.join(PATH, "t_for_xs.grib"), os.path.join(PATH, "ml_data.grib")]
+    f = mv.Fieldset(path=paths)
+    assert len(f) == 42
+    assert f[0:2].grib_get_long("level") == [1000, 850]
+    assert f[5:9].grib_get_long("level") == [300, 1, 1, 5]
+    assert f[40:42].grib_get_long("level") == [133, 137]
+
+
+def test_fieldset_create_from_glob_path_single():
+    f = mv.Fieldset(path=os.path.join(PATH, "test.g*ib"))
+    assert type(f) == mv.Fieldset
+    assert len(f) == 1
+
+
+def test_fieldset_create_from_glob_path_multi():
+    f = mv.Fieldset(path=os.path.join(PATH, "t_*.grib"))
+    assert type(f) == mv.Fieldset
+    assert len(f) == 17
+    par_ref = [
+        ["t", "1000"],
+        ["t", "850"],
+        ["t", "700"],
+        ["t", "500"],
+        ["t", "400"],
+        ["t", "300"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+    ]
+    assert par_ref == f.grib_get(["shortName", "level"])
+
+
+def test_fieldset_create_from_glob_paths():
+    f = mv.Fieldset(
+        path=[os.path.join(PATH, "test.g*ib"), os.path.join(PATH, "t_*.grib")]
+    )
+    assert type(f) == mv.Fieldset
+    assert len(f) == 18
+    par_ref = [
+        ["2t", "0"],
+        ["t", "1000"],
+        ["t", "850"],
+        ["t", "700"],
+        ["t", "500"],
+        ["t", "400"],
+        ["t", "300"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+        ["z", "1000"],
+        ["t", "1000"],
+    ]
+    assert par_ref == f.grib_get(["shortName", "level"])
+
+
 def test_grib_get_string_1():
     f = mv.Fieldset(path=os.path.join(PATH, "test.grib"))
     sn = f.grib_get_string("shortName")

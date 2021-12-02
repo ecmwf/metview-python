@@ -14,6 +14,7 @@ import metview.pure_python.maths as maths
 from .temporary import temp_file
 
 import metview.indexdb as indexdb
+import metview.utils as utils
 
 
 BITS_PER_VALUE_FOR_WRITING = 24
@@ -262,11 +263,23 @@ class Fieldset:
         self.temporary = None
         self._db = None
 
+        if (path is not None) and (fields is not None):
+            raise ValueError("Fieldset cannot take both path and fields")
+
         if path:
-            g = GribFile(path)
-            self.count = len(g)
-            for handle in g:
-                self.fields.append(Field(handle, path, keep_values_in_memory))
+            if isinstance(path, list):
+                v = []
+                for p in path:
+                    v.extend(utils.get_file_list(p))
+                path = v
+            else:
+                path = utils.get_file_list(path)
+
+            for p in path:
+                g = GribFile(p)
+                self.count = len(g)
+                for handle in g:
+                    self.fields.append(Field(handle, p, keep_values_in_memory))
         if temporary:
             self.temporary = temp_file()
         if fields:
