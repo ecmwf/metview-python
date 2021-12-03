@@ -597,6 +597,18 @@ class Fieldset:
             result[i] = f.values().mean()
         return result
 
+    def maxvalue(self):
+        result = np.array([np.nan] * len(self.fields))
+        for i, f in enumerate(self.fields):
+            result[i] = f.values().max()
+        return result.max()
+
+    def minvalue(self):
+        result = np.array([np.nan] * len(self.fields))
+        for i, f in enumerate(self.fields):
+            result[i] = f.values().min()
+        return result.min()
+
     def _make_single_result(self, v):
         assert len(self.fields) > 0
         result = Fieldset(temporary=True)
@@ -628,7 +640,7 @@ class Fieldset:
             return None
 
     def stdev(self):
-        v = self._var_as_array()
+        v = self._compute_var()
         return self._make_single_result(np.sqrt(v)) if v is not None else None
 
     def sum(self):
@@ -641,10 +653,10 @@ class Fieldset:
             return None
 
     def var(self):
-        v = self._var_as_array()
+        v = self._compute_var()
         return self._make_single_result(v) if v is not None else None
 
-    def _var_as_array(self):
+    def _compute_var(self):
         if len(self.fields) > 0:
             v2 = self.fields[0].values()
             v1 = np.square(v2)

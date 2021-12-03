@@ -853,6 +853,8 @@ def test_vals_destroyed():
 def test_accumulate():
     f = mv.Fieldset(path=os.path.join(PATH, "t1000_LL_7x7.grb"))
     v = mv.accumulate(f)
+    assert isinstance(v, np.ndarray)
+    assert len(v) == 1
     assert np.isclose(v, 393334.244141)
 
     f = mv.Fieldset(path=os.path.join(PATH, "monthly_avg.grib"))
@@ -876,10 +878,14 @@ def test_average():
 
     # const fields
     v = mv.average(fs * 0 + 1)
+    assert isinstance(v, np.ndarray)
+    assert len(v) == 1
     assert np.isclose(v, 1)
 
     # # single field
     v = mv.average(fs)
+    assert isinstance(v, np.ndarray)
+    assert len(v) == 1
     assert np.isclose(v, 279.06647863)
 
     # multiple fields
@@ -918,6 +924,28 @@ def test_mean():
     v_ref = mv.values(fs) * 2
     assert len(r) == 1
     np.testing.assert_allclose(r.values(), v_ref, rtol=1e-05)
+
+
+def test_maxvalue():
+    fs = mv.Fieldset(path=os.path.join(PATH, "test.grib"))
+
+    f = fs
+    f = f.merge(3 * fs)
+    f = f.merge(2 * fs)
+    v = mv.maxvalue(f)
+    assert isinstance(v, float)
+    assert np.isclose(v, 948.1818237304688)
+
+
+def test_minvalue():
+    fs = mv.Fieldset(path=os.path.join(PATH, "test.grib"))
+
+    f = 3 * fs
+    f = f.merge(fs)
+    f = f.merge(2 * fs)
+    v = mv.minvalue(f)
+    assert isinstance(v, float)
+    assert np.isclose(v, 206.93560791015625)
 
 
 def test_stdev():
