@@ -587,6 +587,20 @@ class Fieldset:
     def __or__(self, other):
         return self.fieldset_other_func(maths.or_func, other)
 
+    def base_date(self):
+        result = []
+        for f in self.fields:
+            md = f.grib_get(["dataDate", "dataTime"], "field")
+            result.append(utils.date_from_ecc_keys(md[0], md[1]))
+        return Fieldset._list_or_single(result)
+
+    def valid_date(self):
+        result = []
+        for f in self.fields:
+            md = f.grib_get(["validityDate", "validityTime"], "field")
+            result.append(utils.date_from_ecc_keys(md[0], md[1]))
+        return Fieldset._list_or_single(result)
+
     def accumulate(self):
         result = np.array([np.nan] * len(self.fields))
         for i, f in enumerate(self.fields):

@@ -78,6 +78,15 @@ def time_from_str(t_str):
     return datetime.time(hour=h, minute=m)
 
 
+def date_from_ecc_keys(d, t):
+    try:
+        return datetime.datetime.combine(
+            date_from_str(str(d)).date(), time_from_str(str(t))
+        )
+    except:
+        return None
+
+
 def get_file_list(path, file_name_pattern=None):
     m = None
     # if isinstance(file_name_pattern, re.Pattern):

@@ -13,6 +13,7 @@ import os
 import pytest
 
 from metview.pure_python import fieldset as mv
+from metview import utils
 
 PATH = os.path.dirname(__file__)
 
@@ -1114,3 +1115,31 @@ def test_var():
 
     v_ref = np.ma.var(np.array([x.values() for x in fs]), axis=0)
     np.testing.assert_allclose(r.values(), v_ref, rtol=1e-03)
+
+
+def test_date():
+
+    fs = mv.Fieldset(path=os.path.join(PATH, "monthly_avg.grib"))
+
+    # analysis, so valid=base
+    bdate_ref = [
+        "2016-01-01 00:00:00",
+        "2016-02-01 00:00:00",
+        "2016-03-01 00:00:00",
+        "2016-04-01 00:00:00",
+        "2016-05-01 00:00:00",
+        "2016-06-01 00:00:00",
+        "2016-07-01 00:00:00",
+        "2016-08-01 00:00:00",
+    ]
+    vdate_ref = bdate_ref
+
+    v = mv.base_date(fs)
+    assert len(v) == len(fs)
+    for i, d in enumerate(v):
+        assert d == utils.date_from_str(bdate_ref[i])
+
+    v = mv.valid_date(fs)
+    assert len(v) == len(fs)
+    for i, d in enumerate(v):
+        assert d == utils.date_from_str(vdate_ref[i])
