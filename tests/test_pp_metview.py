@@ -850,6 +850,27 @@ def test_vals_destroyed():
     assert f.fields[0].vals is None
 
 
+def test_accumulate():
+    f = mv.Fieldset(path=os.path.join(PATH, "t1000_LL_7x7.grb"))
+    v = mv.accumulate(f)
+    assert np.isclose(v, 393334.244141)
+
+    f = mv.Fieldset(path=os.path.join(PATH, "monthly_avg.grib"))
+    v = mv.accumulate(f)
+    v_ref = [
+        408058.256226,
+        413695.059631,
+        430591.282776,
+        428943.981812,
+        422329.622498,
+        418016.024231,
+        409755.097961,
+        402741.786194,
+    ]
+    assert len(v) == len(f)
+    np.testing.assert_allclose(v, v_ref)
+
+
 def test_mean():
     fs = mv.Fieldset(path=os.path.join(PATH, "test.grib"))
 
@@ -867,3 +888,29 @@ def test_mean():
     v_ref = mv.values(fs) * 2
     assert len(r) == 1
     np.testing.assert_allclose(r.values(), v_ref, rtol=1e-05)
+
+
+def test_sum():
+    fs = mv.Fieldset(path=os.path.join(PATH, "t1000_LL_7x7.grb"))
+
+    # single fields
+    f = fs
+    r = mv.sum(f)
+    assert len(r) == 1
+    np.testing.assert_allclose(r.values(), fs.values())
+
+    # known sum
+    f = fs.merge(fs)
+    f = f.merge(fs)
+    r = f.sum()
+    assert len(r) == 1
+    np.testing.assert_allclose(r.values(), fs.values() * 3)
+
+    # real life example
+    f = mv.Fieldset(path=os.path.join(PATH, "monthly_avg.grib"))
+    r = f.sum()
+    assert len(r) == 1
+    v_ref = r.values() * 0
+    for g in f:
+        v_ref += g.values()
+    np.testing.assert_allclose(r.values(), v_ref)
