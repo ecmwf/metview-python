@@ -817,18 +817,6 @@ def test_set_values_with_missing_values_2():
     assert np.isclose(hv[2], 272.56417847)
 
 
-def test_set_values_with_missing_values_3():
-    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
-    g = f[0]
-    v = g.values()
-    v[1] = np.nan
-    h = g.set_values(v)
-    hv = h.values()[:10]
-    assert np.isclose(hv[0], 272.56417847)
-    assert np.isnan(hv[1])
-    assert np.isclose(hv[2], 272.56417847)
-
-
 def test_set_values_resize():
     # NOTE: the current change in behavour - in 'standard Metview' the user
     # has to supply "resize" as an optional argument in order to allow an array
@@ -860,3 +848,22 @@ def test_vals_destroyed():
     g = f.values()
     assert isinstance(g, np.ndarray)
     assert f.fields[0].vals is None
+
+
+def test_mean():
+    fs = mv.Fieldset(path=os.path.join(PATH, "test.grib"))
+
+    # single fields
+    f = fs
+    r = mv.mean(f)
+    v_ref = mv.values(fs)
+    assert len(r) == 1
+    np.testing.assert_allclose(r.values(), v_ref, rtol=1e-05)
+
+    # known mean
+    f = fs.merge(2 * fs)
+    f = f.merge(3 * fs)
+    r = f.mean()
+    v_ref = mv.values(fs) * 2
+    assert len(r) == 1
+    np.testing.assert_allclose(r.values(), v_ref, rtol=1e-05)
