@@ -298,8 +298,6 @@ class Fieldset:
         "tan": maths.tan,
     }
 
-    # TODO: add glob to init
-
     # QUALIFIER_MAP = {"float": "d"}
 
     # INT_KEYS = ["Nx", "Ny", "number"]
@@ -587,6 +585,64 @@ class Fieldset:
     def __or__(self, other):
         return self.fieldset_other_func(maths.or_func, other)
 
+    def accumulate(self):
+        result = np.zeros(len(self.fields))
+        for i, f in enumerate(self.fields):
+            result[i] = np.sum(f.values())
+        return result
+
+    def _make_single_result(self, v):
+        assert len(self.fields) > 0
+        result = Fieldset(temporary=True)
+        with open(result.temporary.path, "wb") as fout:
+            f = self.fields[0].clone()
+            f.encode_values(v)
+            result._append_field(f)
+            result.fields[-1].write(fout, temp=result.temporary)
+        return result
+
+    def mean(self):
+        if len(self.fields) > 0:
+            v = self.fields[0].values()
+            for i in range(1, len(self.fields)):
+                v += self.fields[i].values()
+            v = v / len(self.fields)
+            return self._make_single_result(v)
+        else:
+            return None
+
+    def rms(self):
+        if len(self.fields) > 0:
+            v = np.sqr(self.fields[0].values())
+            for i in range(1, len(self.fields)):
+                v += np.sqr(self.fields[i].values())
+            v = np.sqrt(v / len(self.fields))
+            return self._make_single_result(v)
+        else:
+            return None
+
+    def sum(self):
+        if len(self.fields) > 0:
+            v = self.fields[0].values()
+            for i in range(1, len(self.fields)):
+                v += self.fields[i].values()
+            return self._make_single_result(v)
+        else:
+            return None
+
+    def var(self):
+        if len(self.fields) > 0:
+            v2 = self.fields[0].values()
+            v1 = np.sqr(v2)
+            for i in range(1, len(self.fields)):
+                v = self.fields[i].values()
+                v2 += np.sqr(v)
+                v1 += v
+            v1 = v1 / len(self.fields) - np.sqr(v2 / len(self.fields))
+            return self._make_single_result(v1)
+        else:
+            return None
+
     # TODO: add all the field_func functions
 
     # TODO: add all field_field_func functions
@@ -677,8 +733,10 @@ class FieldCF:
 def _make_module_func(name):
     def wrapped(fs, *args):
         return getattr(fs, name)(*args)
+
     return wrapped
-    
+
+
 module_obj = sys.modules[__name__]
 for fn in dir(Fieldset):
     if callable(getattr(Fieldset, fn)) and not fn.startswith("_"):
