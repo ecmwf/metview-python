@@ -10,6 +10,7 @@
 
 from inspect import signature
 from os import WEXITED
+import sys
 
 import numpy as np
 import eccodes
@@ -670,3 +671,15 @@ class FieldCF:
         # if isinstance(value, float):
         #    return int(value)
         return value
+
+
+# expose all Fieldset functions as a module level function
+def _make_module_func(name):
+    def wrapped(fs, *args):
+        return getattr(fs, name)(*args)
+    return wrapped
+    
+module_obj = sys.modules[__name__]
+for fn in dir(Fieldset):
+    if callable(getattr(Fieldset, fn)) and not fn.startswith("_"):
+        setattr(module_obj, fn, _make_module_func(fn))
