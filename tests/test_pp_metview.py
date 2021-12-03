@@ -907,6 +907,68 @@ def test_average():
     np.testing.assert_allclose(v, v_ref)
 
 
+def test_latitudes():
+    fs = mv.Fieldset(path=os.path.join(PATH, "t1000_LL_2x2.grb"))
+
+    v = mv.latitudes(fs)
+    assert isinstance(v, np.ndarray)
+    assert len(v) == 16380
+    assert np.isclose(v[0], 90)
+    assert np.isclose(v[1], 90)
+    assert np.isclose(v[8103], 0)
+    assert np.isclose(v[11335], -34)
+    assert np.isclose(v[16379], -90)
+
+    f = fs.merge(fs)
+    lst = mv.latitudes(f)
+    assert len(lst) == 2
+    for v in lst:
+        assert np.isclose(v[0], 90)
+        assert np.isclose(v[1], 90)
+        assert np.isclose(v[8103], 0)
+        assert np.isclose(v[11335], -34)
+        assert np.isclose(v[16379], -90)
+
+
+def test_longitudes():
+    fs = mv.Fieldset(path=os.path.join(PATH, "t1000_LL_2x2.grb"))
+
+    v = mv.longitudes(fs)
+    assert isinstance(v, np.ndarray)
+    assert len(v) == 16380
+    assert np.isclose(v[0], 0)
+    assert np.isclose(v[1], 2)
+    assert np.isclose(v[8103], 6)
+    assert np.isclose(v[11335], 350)
+    assert np.isclose(v[16379], 358)
+
+    f = fs.merge(fs)
+    lst = mv.longitudes(f)
+    assert len(lst) == 2
+    for v in lst:
+        assert np.isclose(v[0], 0)
+        assert np.isclose(v[1], 2)
+        assert np.isclose(v[8103], 6)
+        assert np.isclose(v[11335], 350)
+        assert np.isclose(v[16379], 358)
+
+
+def test_coslat():
+    fs = mv.Fieldset(path=os.path.join(PATH, "t1000_LL_7x7.grb"))
+
+    f = fs
+    v = mv.coslat(f)
+    assert isinstance(v, np.ndarray)
+    assert len(v) == 1404
+    np.testing.assert_allclose(v, np.cos(np.deg2rad(f.latitudes())))
+
+    f = fs.merge(fs)
+    lst = mv.coslat(f)
+    assert len(lst) == 2
+    for i, v in enumerate(lst):
+        np.testing.assert_allclose(v, np.cos(np.deg2rad(f[i].latitudes())))
+
+
 def test_mean():
     fs = mv.Fieldset(path=os.path.join(PATH, "test.grib"))
 
@@ -946,6 +1008,38 @@ def test_minvalue():
     v = mv.minvalue(f)
     assert isinstance(v, float)
     assert np.isclose(v, 206.93560791015625)
+
+
+def test_sinlat():
+    fs = mv.Fieldset(path=os.path.join(PATH, "t1000_LL_7x7.grb"))
+
+    f = fs
+    v = mv.sinlat(f)
+    assert isinstance(v, np.ndarray)
+    assert len(v) == 1404
+    np.testing.assert_allclose(v, np.sin(np.deg2rad(f.latitudes())))
+
+    f = fs.merge(fs)
+    lst = mv.sinlat(f)
+    assert len(lst) == 2
+    for i, v in enumerate(lst):
+        np.testing.assert_allclose(v, np.sin(np.deg2rad(f[i].latitudes())))
+
+
+def test_tanlat():
+    fs = mv.Fieldset(path=os.path.join(PATH, "t1000_LL_7x7.grb"))
+
+    f = fs
+    v = mv.tanlat(f)
+    assert isinstance(v, np.ndarray)
+    assert len(v) == 1404
+    np.testing.assert_allclose(v, np.tan(np.deg2rad(f.latitudes())))
+
+    f = fs.merge(fs)
+    lst = mv.tanlat(f)
+    assert len(lst) == 2
+    for i, v in enumerate(lst):
+        np.testing.assert_allclose(v, np.tan(np.deg2rad(f[i].latitudes())))
 
 
 def test_stdev():

@@ -180,6 +180,12 @@ class Field:
             vals = self.vals
         return vals
 
+    def latitudes(self):
+        return self.handle.get_double_array("latitudes")
+
+    def longitudes(self):
+        return self.handle.get_double_array("longitudes")
+
     def grib_get(self, keys, grouping):
         result = []
         for key in keys:
@@ -398,12 +404,8 @@ class Fieldset:
     #    return self._grib_set_any(key, value, "grib_set_double_array")
 
     def values(self):
-        ret = [x.values() for x in self.fields]
-        ret = Fieldset._list_or_single(ret)
-        if isinstance(ret, list):  # create a 2D array
-            ret = np.stack(ret, axis=0)
-
-        return ret
+        v = [x.values() for x in self.fields]
+        return self._make_2d_array(v)
 
     def set_values(self, values):
         if isinstance(values, list):
@@ -665,6 +667,31 @@ class Fieldset:
                 v1 += np.square(v)
                 v2 += v
             return v1 / len(self.fields) - np.square(v2 / len(self.fields))
+
+    def latitudes(self):
+        v = [x.latitudes() for x in self.fields]
+        return self._make_2d_array(v)
+
+    def longitudes(self):
+        v = [x.longitudes() for x in self.fields]
+        return self._make_2d_array(v)
+
+    def coslat(self):
+        v = [np.cos(np.deg2rad(x.latitudes())) for x in self.fields]
+        return self._make_2d_array(v)
+
+    def sinlat(self):
+        v = [np.sin(np.deg2rad(x.latitudes())) for x in self.fields]
+        return self._make_2d_array(v)
+
+    def tanlat(self):
+        v = [np.tan(np.deg2rad(x.latitudes())) for x in self.fields]
+        return self._make_2d_array(v)
+
+    def _make_2d_array(self, v):
+        """Forms a 2D ndarray from a list of 1D ndarrays"""
+        v = Fieldset._list_or_single(v)
+        return np.stack(v, axis=0) if isinstance(v, list) else v
 
     # TODO: add all the field_func functions
 
