@@ -1491,10 +1491,7 @@ def test_odb_filter():
     assert mv.count(db) == 88
 
     db_res = mv.odb_filter(
-        {
-            "odb_data": db,
-            "odb_query": "select p, t, val where val < -8",
-        }
+        {"odb_data": db, "odb_query": "select p, t, val where val < -8",}
     )
 
     # assert isinstance(db_res,mv.Odb)
@@ -1558,10 +1555,7 @@ def test_odb_to_dataframe_2():
 # as input and output
 def test_cross_section_data():
     grib = mv.read(os.path.join(PATH, "t_for_xs.grib"))
-    xs_data = mv.mcross_sect(
-        line=[59.9, -180, -13.5, 158.08],
-        data=grib,
-    )
+    xs_data = mv.mcross_sect(line=[59.9, -180, -13.5, 158.08], data=grib,)
     # the result of this should be a netCDF variable
     assert mv.type(xs_data) == "netcdf"
     mv.setcurrent(xs_data, "t")
@@ -1789,10 +1783,7 @@ def test_value_file_path():
 
 
 @pytest.mark.parametrize(
-    "file_name",
-    [
-        "ml_data.grib",
-    ],
+    "file_name", ["ml_data.grib",],
 )
 def test_temporary_file_deletion(file_name):
     g = mv.read(file_in_testdir(file_name))

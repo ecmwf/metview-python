@@ -145,11 +145,7 @@ class Title:
                 }
             )
 
-        return mv.mtext(
-            {
-                "text_font_size": self.font_size,
-            }
-        )
+        return mv.mtext({"text_font_size": self.font_size,})
 
     def build_rmse(self, ref, data):
         if data:
