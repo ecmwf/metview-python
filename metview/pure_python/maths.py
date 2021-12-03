@@ -120,8 +120,8 @@ def sgn(x):
     return np.sign(x)
 
 
-def sqr(x):
-    return np.sqr(x)
+def square(x):
+    return np.square(x)
 
 
 def sqrt(x):

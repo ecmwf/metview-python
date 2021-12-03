@@ -293,7 +293,7 @@ class Fieldset:
         "mod": maths.mod,
         "sgn": maths.sgn,
         "sin": maths.sin,
-        "sqr": maths.sqrt,
+        "square": maths.square,
         "sqrt": maths.sqrt,
         "tan": maths.tan,
     }
@@ -586,9 +586,15 @@ class Fieldset:
         return self.fieldset_other_func(maths.or_func, other)
 
     def accumulate(self):
-        result = np.zeros(len(self.fields))
+        result = np.array([np.nan] * len(self.fields))
         for i, f in enumerate(self.fields):
             result[i] = np.sum(f.values())
+        return result
+
+    def average(self):
+        result = np.array([np.nan] * len(self.fields))
+        for i, f in enumerate(self.fields):
+            result[i] = f.values().mean()
         return result
 
     def _make_single_result(self, v):
@@ -613,13 +619,17 @@ class Fieldset:
 
     def rms(self):
         if len(self.fields) > 0:
-            v = np.sqr(self.fields[0].values())
+            v = np.square(self.fields[0].values())
             for i in range(1, len(self.fields)):
-                v += np.sqr(self.fields[i].values())
+                v += np.square(self.fields[i].values())
             v = np.sqrt(v / len(self.fields))
             return self._make_single_result(v)
         else:
             return None
+
+    def stdev(self):
+        v = self._var_as_array()
+        return self._make_single_result(np.sqrt(v)) if v is not None else None
 
     def sum(self):
         if len(self.fields) > 0:
@@ -631,17 +641,18 @@ class Fieldset:
             return None
 
     def var(self):
+        v = self._var_as_array()
+        return self._make_single_result(v) if v is not None else None
+
+    def _var_as_array(self):
         if len(self.fields) > 0:
             v2 = self.fields[0].values()
-            v1 = np.sqr(v2)
+            v1 = np.square(v2)
             for i in range(1, len(self.fields)):
                 v = self.fields[i].values()
-                v2 += np.sqr(v)
-                v1 += v
-            v1 = v1 / len(self.fields) - np.sqr(v2 / len(self.fields))
-            return self._make_single_result(v1)
-        else:
-            return None
+                v1 += np.square(v)
+                v2 += v
+            return v1 / len(self.fields) - np.square(v2 / len(self.fields))
 
     # TODO: add all the field_func functions
 

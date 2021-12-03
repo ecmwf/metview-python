@@ -871,6 +871,36 @@ def test_accumulate():
     np.testing.assert_allclose(v, v_ref)
 
 
+def test_average():
+    fs = mv.Fieldset(path=os.path.join(PATH, "test.grib"))
+
+    # const fields
+    v = mv.average(fs * 0 + 1)
+    assert np.isclose(v, 1)
+
+    # # single field
+    v = mv.average(fs)
+    assert np.isclose(v, 279.06647863)
+
+    # multiple fields
+    f = mv.Fieldset(path=os.path.join(PATH, "monthly_avg.grib"))
+    v = mv.average(f)
+
+    v_ref = [
+        290.639783636,
+        294.654600877,
+        306.688947846,
+        305.515656561,
+        300.804574428,
+        297.732210991,
+        291.848360371,
+        286.85312407,
+    ]
+
+    assert len(v) == len(f)
+    np.testing.assert_allclose(v, v_ref)
+
+
 def test_mean():
     fs = mv.Fieldset(path=os.path.join(PATH, "test.grib"))
 
@@ -888,6 +918,30 @@ def test_mean():
     v_ref = mv.values(fs) * 2
     assert len(r) == 1
     np.testing.assert_allclose(r.values(), v_ref, rtol=1e-05)
+
+
+def test_stdev():
+    fs = mv.Fieldset(path=os.path.join(PATH, "t1000_LL_7x7.grb"))
+
+    # single field
+    r = mv.stdev(fs)
+    assert len(r) == 1
+    np.testing.assert_allclose(r.values(), fs.values() * 0)
+
+    # known variance
+    f = fs.merge(4 * fs)
+    f = f.merge(10 * fs)
+    r = mv.stdev(f)
+    assert len(r) == 1
+    np.testing.assert_allclose(r.values(), np.sqrt(np.square(fs.values()) * 42 / 3))
+
+    # real life example
+    fs = mv.Fieldset(path=os.path.join(PATH, "monthly_avg.grib"))
+    r = mv.stdev(fs)
+    assert len(r) == 1
+
+    v_ref = np.ma.std(np.array([x.values() for x in fs]), axis=0)
+    np.testing.assert_allclose(r.values(), v_ref, rtol=1e-03)
 
 
 def test_sum():
@@ -914,3 +968,27 @@ def test_sum():
     for g in f:
         v_ref += g.values()
     np.testing.assert_allclose(r.values(), v_ref)
+
+
+def test_var():
+    fs = mv.Fieldset(path=os.path.join(PATH, "t1000_LL_7x7.grb"))
+
+    # single field
+    r = mv.var(fs)
+    assert len(r) == 1
+    np.testing.assert_allclose(r.values(), fs.values() * 0)
+
+    # known variance
+    f = fs.merge(4 * fs)
+    f = f.merge(10 * fs)
+    r = mv.var(f)
+    assert len(r) == 1
+    np.testing.assert_allclose(r.values(), np.square(fs.values()) * 42 / 3)
+
+    # real life example
+    fs = mv.Fieldset(path=os.path.join(PATH, "monthly_avg.grib"))
+    r = mv.var(fs)
+    assert len(r) == 1
+
+    v_ref = np.ma.var(np.array([x.values() for x in fs]), axis=0)
+    np.testing.assert_allclose(r.values(), v_ref, rtol=1e-03)
