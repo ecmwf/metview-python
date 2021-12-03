@@ -854,12 +854,12 @@ def test_vals_destroyed():
 def test_accumulate():
     f = mv.Fieldset(path=os.path.join(PATH, "t1000_LL_7x7.grb"))
     v = mv.accumulate(f)
-    assert isinstance(v, np.ndarray)
-    assert len(v) == 1
+    assert isinstance(v, float)
     assert np.isclose(v, 393334.244141)
 
     f = mv.Fieldset(path=os.path.join(PATH, "monthly_avg.grib"))
     v = mv.accumulate(f)
+    assert isinstance(v, list)
     v_ref = [
         408058.256226,
         413695.059631,
@@ -879,20 +879,18 @@ def test_average():
 
     # const fields
     v = mv.average(fs * 0 + 1)
-    assert isinstance(v, np.ndarray)
-    assert len(v) == 1
+    assert isinstance(v, float)
     assert np.isclose(v, 1)
 
     # # single field
     v = mv.average(fs)
-    assert isinstance(v, np.ndarray)
-    assert len(v) == 1
+    assert isinstance(v, float)
     assert np.isclose(v, 279.06647863)
 
     # multiple fields
     f = mv.Fieldset(path=os.path.join(PATH, "monthly_avg.grib"))
     v = mv.average(f)
-
+    assert isinstance(v, list)  
     v_ref = [
         290.639783636,
         294.654600877,

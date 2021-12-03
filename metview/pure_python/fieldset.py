@@ -261,23 +261,26 @@ class Field:
 # docorator to implement math functions in Fieldset
 def wrap_maths(cls):
     def wrap_single_method(fn):
-        def wrapper(self, *args, **kwargs):
+        def wrapper(self):
             return self.field_func(fn)
 
         return wrapper
 
-    def wrap_double_method(fn):
-        def wrapper(self, *args, **kwargs):
-            return self.fieldset_other_func(fn, *args, **kwargs)
+    def wrap_double_method(fn, **opt):
+        def wrapper(self, *args):
+            return self.fieldset_other_func(fn, *args, **opt)
 
         return wrapper
 
-    for name, fn in cls.WRAP_MATHS_ATTRS.items():
+    for name, it in cls.WRAP_MATHS_ATTRS.items():
+        if not isinstance(it, tuple):
+            it = (it, {})
+        fn, opt = it
         n = len(signature(fn).parameters)
         if n == 1:
             setattr(cls, name, wrap_single_method(fn))
         elif n == 2:
-            setattr(cls, name, wrap_double_method(fn))
+            setattr(cls, name, wrap_double_method(fn, **opt))
     return cls
 
 
@@ -302,6 +305,27 @@ class Fieldset:
         "square": maths.square,
         "sqrt": maths.sqrt,
         "tan": maths.tan,
+        "__neg__": maths.neg,
+        "__pos__": maths.pos,
+        "__invert__": maths.not_func,
+        "__add__": maths.add,
+        "__radd__": (maths.add, {"reverse_args": True}),
+        "__sub__": maths.sub,
+        "__rsub__": (maths.sub, {"reverse_args": True}),
+        "__mul__": maths.mul,
+        "__rmul__": (maths.mul, {"reverse_args": True}),
+        "__truediv__": maths.div,
+        "__rtruediv__": (maths.div, {"reverse_args": True}),
+        "__pow__": maths.pow,
+        "__rpow__": (maths.pow, {"reverse_args": True}),
+        "__ge__": maths.ge,
+        "__gt__": maths.gt,
+        "__le__": maths.le,
+        "__lt__": maths.lt,
+        "__eq__": maths.eq,
+        "__ne__": maths.ne,
+        "__and__": maths.and_func,
+        "__or__": maths.or_func,
     }
 
     # QUALIFIER_MAP = {"float": "d"}
@@ -345,14 +369,6 @@ class Fieldset:
         n = len(self)
         s = "s" if n > 1 else ""
         return f"Fieldset ({n} field{s})"
-
-    @staticmethod
-    def _list_or_single(lst):
-        return lst if len(lst) != 1 else lst[0]
-
-    @staticmethod
-    def _always_list(items):
-        return items if isinstance(items, list) else [items]
 
     def grib_get_string(self, key):
         ret = [x.grib_get_string(key) for x in self.fields]
@@ -501,17 +517,9 @@ class Fieldset:
                 result.fields[-1].write(fout, temp=result.temporary)
         return result
 
-    def __neg__(self):
-        return self.field_func(maths.neg)
-
-    def __pos__(self):
-        return self.field_func(maths.pos)
-
-    def __invert__(self):
-        return self.field_func(maths.not_func)
-
     def fieldset_other_func(self, func, other, reverse_args=False, index_other=False):
         """Applies a function to a fieldset and a scalar/fieldset, e.g. F+5"""
+        print(f"FUNC={func}, reverse_args={reverse_args}")
         result = Fieldset(temporary=True)
         with open(result.temporary.path, "wb") as fout:
             if isinstance(other, Fieldset):
@@ -533,100 +541,56 @@ class Fieldset:
                     result.fields[-1].write(fout, temp=result.temporary)
         return result
 
-    def __add__(self, other):
-        return self.fieldset_other_func(maths.add, other)
-
-    def __radd__(self, other):
-        return self.fieldset_other_func(maths.add, other, reverse_args=True)
-
-    def __sub__(self, other):
-        return self.fieldset_other_func(maths.sub, other)
-
-    def __rsub__(self, other):
-        return self.fieldset_other_func(maths.sub, other, reverse_args=True)
-
-    def __mul__(self, other):
-        return self.fieldset_other_func(maths.mul, other)
-
-    def __rmul__(self, other):
-        return self.fieldset_other_func(maths.mul, other, reverse_args=True)
-
-    def __truediv__(self, other):
-        return self.fieldset_other_func(maths.div, other)
-
-    def __rtruediv__(self, other):
-        return self.fieldset_other_func(maths.div, other, reverse_args=True)
-
-    def __pow__(self, other):
-        return self.fieldset_other_func(maths.pow, other)
-
-    def __rpow__(self, other):
-        return self.fieldset_other_func(maths.pow, other, reverse_args=True)
-
-    def __ge__(self, other):
-        return self.fieldset_other_func(maths.ge, other)
-
-    def __gt__(self, other):
-        return self.fieldset_other_func(maths.gt, other)
-
-    def __le__(self, other):
-        return self.fieldset_other_func(maths.le, other)
-
-    def __lt__(self, other):
-        return self.fieldset_other_func(maths.lt, other)
-
-    def __eq__(self, other):
-        return self.fieldset_other_func(maths.eq, other)
-
-    def __ne__(self, other):
-        return self.fieldset_other_func(maths.ne, other)
-
-    def __and__(self, other):
-        return self.fieldset_other_func(maths.and_func, other)
-
-    def __or__(self, other):
-        return self.fieldset_other_func(maths.or_func, other)
-
     def base_date(self):
-        result = []
-        for f in self.fields:
-            md = f.grib_get(["dataDate", "dataTime"], "field")
-            result.append(utils.date_from_ecc_keys(md[0], md[1]))
-        return Fieldset._list_or_single(result)
+        if len(self.fields) > 0:
+            result = []
+            for f in self.fields:
+                md = f.grib_get(["dataDate", "dataTime"], "field")
+                result.append(
+                    utils.date_from_ecc_keys(md[0], md[1]) if len(md) == 2 else None
+                )
+            return Fieldset._list_or_single(result)
 
     def valid_date(self):
-        result = []
-        for f in self.fields:
-            md = f.grib_get(["validityDate", "validityTime"], "field")
-            result.append(utils.date_from_ecc_keys(md[0], md[1]))
-        return Fieldset._list_or_single(result)
+        if len(self.fields) > 0:
+            result = []
+            for f in self.fields:
+                md = f.grib_get(["validityDate", "validityTime"], "field")
+                result.append(
+                    utils.date_from_ecc_keys(md[0], md[1]) if len(md) == 2 else None
+                )
+            return Fieldset._list_or_single(result)
 
     def accumulate(self):
-        result = np.array([np.nan] * len(self.fields))
-        for i, f in enumerate(self.fields):
-            result[i] = np.sum(f.values())
-        return result
+        if len(self.fields) > 0:
+            result = [np.nan] * len(self.fields)
+            for i, f in enumerate(self.fields):
+                result[i] = np.sum(f.values())
+            return Fieldset._list_or_single(result)
 
     def average(self):
-        result = np.array([np.nan] * len(self.fields))
-        for i, f in enumerate(self.fields):
-            result[i] = f.values().mean()
-        return result
+        if len(self.fields) > 0:
+            result = [np.nan] * len(self.fields)
+            for i, f in enumerate(self.fields):
+                result[i] = f.values().mean()
+            return Fieldset._list_or_single(result)
 
     def maxvalue(self):
-        result = np.array([np.nan] * len(self.fields))
-        for i, f in enumerate(self.fields):
-            result[i] = f.values().max()
-        return result.max()
+        if len(self.fields) > 0:
+            result = np.array([np.nan] * len(self.fields))
+            for i, f in enumerate(self.fields):
+                result[i] = f.values().max()
+            return result.max()
 
     def minvalue(self):
-        result = np.array([np.nan] * len(self.fields))
-        for i, f in enumerate(self.fields):
-            result[i] = f.values().min()
-        return result.min()
+        if len(self.fields) > 0:
+            result = np.array([np.nan] * len(self.fields))
+            for i, f in enumerate(self.fields):
+                result[i] = f.values().min()
+            return result.min()
 
     def _make_single_result(self, v):
-        assert len(self.fields) > 0
+        assert len(self) > 0
         result = Fieldset(temporary=True)
         with open(result.temporary.path, "wb") as fout:
             f = self.fields[0].clone()
@@ -684,25 +648,34 @@ class Fieldset:
 
     def latitudes(self):
         v = [x.latitudes() for x in self.fields]
-        return self._make_2d_array(v)
+        return Fieldset._make_2d_array(v)
 
     def longitudes(self):
         v = [x.longitudes() for x in self.fields]
-        return self._make_2d_array(v)
+        return Fieldset._make_2d_array(v)
 
     def coslat(self):
         v = [np.cos(np.deg2rad(x.latitudes())) for x in self.fields]
-        return self._make_2d_array(v)
+        return Fieldset._make_2d_array(v)
 
     def sinlat(self):
         v = [np.sin(np.deg2rad(x.latitudes())) for x in self.fields]
-        return self._make_2d_array(v)
+        return Fieldset._make_2d_array(v)
 
     def tanlat(self):
         v = [np.tan(np.deg2rad(x.latitudes())) for x in self.fields]
-        return self._make_2d_array(v)
+        return Fieldset._make_2d_array(v)
 
-    def _make_2d_array(self, v):
+    @staticmethod
+    def _list_or_single(lst):
+        return lst if len(lst) != 1 else lst[0]
+
+    @staticmethod
+    def _always_list(items):
+        return items if isinstance(items, list) else [items]
+
+    @staticmethod
+    def _make_2d_array(v):
         """Forms a 2D ndarray from a list of 1D ndarrays"""
         v = Fieldset._list_or_single(v)
         return np.stack(v, axis=0) if isinstance(v, list) else v
