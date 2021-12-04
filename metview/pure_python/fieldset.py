@@ -326,6 +326,8 @@ class Fieldset:
         "__ne__": maths.ne,
         "__and__": maths.and_func,
         "__or__": maths.or_func,
+        "bitmap": (maths.bitmap, {"use_first_from_other": True}),
+        "nobitmap": maths.nobitmap,
     }
 
     # QUALIFIER_MAP = {"float": "d"}
@@ -517,28 +519,43 @@ class Fieldset:
                 result.fields[-1].write(fout, temp=result.temporary)
         return result
 
-    def fieldset_other_func(self, func, other, reverse_args=False, index_other=False):
+    def fieldset_other_func(
+        self,
+        func,
+        other,
+        reverse_args=False,
+        index_other=False,
+        use_first_from_other=False,
+    ):
         """Applies a function to a fieldset and a scalar/fieldset, e.g. F+5"""
-        print(f"FUNC={func}, reverse_args={reverse_args}")
+        # print(
+        #     f"Fieldset.fieldset_other_func() func={func}, other={other}, reverse_args={reverse_args}, index_other={index_other}, use_first_from_other={use_first_from_other}"
+        # )
+
+        def _process_one(f, g, result):
+            new_field = f.field_other_func(func, g, reverse_args=reverse_args)
+            result._append_field(new_field)
+            result.fields[-1].write(fout, temp=result.temporary)
+
         result = Fieldset(temporary=True)
         with open(result.temporary.path, "wb") as fout:
             if isinstance(other, Fieldset):
-                for f, g in zip(self.fields, other.fields):
-                    new_field = f.field_other_func(func, g, reverse_args=reverse_args)
-                    result._append_field(new_field)
-                    result.fields[-1].write(fout, temp=result.temporary)
+                if len(other) == len(self.fields):
+                    for f, g in zip(self.fields, other.fields):
+                        _process_one(f, g, result)
+                elif use_first_from_other:
+                    for f in self.fields:
+                        _process_one(f, other.fields[0], result)
+                else:
+                    raise Exception(
+                        f"Fieldsets must have the same number of fields for this operation! {len(self.fields)} != {len(other)}"
+                    )
             elif index_other:
                 for f, g in zip(self.fields, other):
-                    new_field = f.field_other_func(func, g, reverse_args=reverse_args)
-                    result._append_field(new_field)
-                    result.fields[-1].write(fout, temp=result.temporary)
+                    _process_one(f, g, result)
             else:
                 for f in self.fields:
-                    new_field = f.field_other_func(
-                        func, other, reverse_args=reverse_args
-                    )
-                    result._append_field(new_field)
-                    result.fields[-1].write(fout, temp=result.temporary)
+                    _process_one(f, other, result)
         return result
 
     def base_date(self):
@@ -665,6 +682,28 @@ class Fieldset:
     def tanlat(self):
         v = [np.tan(np.deg2rad(x.latitudes())) for x in self.fields]
         return Fieldset._make_2d_array(v)
+
+    # def bitmap(self, value):
+    #     return self.fieldset_other_func(maths.bitmap, value, use_first_from_other=True)
+    #     if isinstance(value, (int, float)):
+    #         return self.field_func(maths.bitmap, value=value)
+    #     elif isinstance(value, Fieldset):
+    #         return self.fieldset_other_func(maths.bitmap,)
+
+    #     result = Fieldset(temporary=True)
+    #     with open(result.temporary.path, "wb") as fout:
+    #         for f in self.fields:
+    #             result._append_field(f.bitmap(val))
+    #             result.fields[-1].write(fout, temp=result.temporary)
+    #     return result
+
+    # def nobitmap(self, val):
+    #     result = Fieldset(temporary=True)
+    #     with open(result.temporary.path, "wb") as fout:
+    #         for f in self.fields:
+    #             result._append_field(f.bitmap(val))
+    #             result.fields[-1].write(fout, temp=result.temporary)
+    #     return result
 
     @staticmethod
     def _list_or_single(lst):

@@ -6,6 +6,7 @@
 # In applying this licence, ECMWF does not waive the privileges and immunities
 # granted to it by virtue of its status as an intergovernmental organisation
 # nor does it submit to any jurisdiction.
+from os import initgroups
 import numpy as np
 
 
@@ -149,3 +150,22 @@ def floor_div(x, y):
 
 def mod(x, y):
     return np.mod(x, y)
+
+
+# bitmapping
+
+
+def bitmap(x, y):
+    print(f"x={x}")
+    print(f"y={y}")
+    if isinstance(y, (int, float)):
+        x[x == y] = np.nan
+        return x
+    elif isinstance(y, np.ndarray):
+        x[np.isnan(y)] = np.nan
+        return x
+
+
+def nobitmap(x, y):
+    x[np.isnan(x)] = y
+    return x
