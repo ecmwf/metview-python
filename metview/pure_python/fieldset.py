@@ -683,28 +683,6 @@ class Fieldset:
         v = [np.tan(np.deg2rad(x.latitudes())) for x in self.fields]
         return Fieldset._make_2d_array(v)
 
-    # def bitmap(self, value):
-    #     return self.fieldset_other_func(maths.bitmap, value, use_first_from_other=True)
-    #     if isinstance(value, (int, float)):
-    #         return self.field_func(maths.bitmap, value=value)
-    #     elif isinstance(value, Fieldset):
-    #         return self.fieldset_other_func(maths.bitmap,)
-
-    #     result = Fieldset(temporary=True)
-    #     with open(result.temporary.path, "wb") as fout:
-    #         for f in self.fields:
-    #             result._append_field(f.bitmap(val))
-    #             result.fields[-1].write(fout, temp=result.temporary)
-    #     return result
-
-    # def nobitmap(self, val):
-    #     result = Fieldset(temporary=True)
-    #     with open(result.temporary.path, "wb") as fout:
-    #         for f in self.fields:
-    #             result._append_field(f.bitmap(val))
-    #             result.fields[-1].write(fout, temp=result.temporary)
-    #     return result
-
     @staticmethod
     def _list_or_single(lst):
         return lst if len(lst) != 1 else lst[0]
