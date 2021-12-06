@@ -11,6 +11,7 @@
 from inspect import signature
 from os import WEXITED
 import sys
+from typing import ValuesView
 
 import numpy as np
 import eccodes
@@ -28,13 +29,30 @@ BITS_PER_VALUE_FOR_WRITING = 24
 class CodesHandle:
     """Wraps an ecCodes handle"""
 
-    missing_value = 1e34
+    MISSING_VALUE = 1e34
+
+    STRING = ("s", eccodes.codes_get_string, eccodes.codes_set_string)
+    LONG = ("l", eccodes.codes_get_long, eccodes.codes_set_long)
+    DOUBLE = ("d", eccodes.codes_get_double, eccodes.codes_set_double)
+    LONG_ARRAY = ("la", eccodes.codes_get_long_array, eccodes.codes_set_long_array)
+    DOUBLE_ARRAY = (
+        "da",
+        eccodes.codes_get_double_array,
+        eccodes.codes_set_double_array,
+    )
+    NATIVE = ("n", eccodes.codes_get, eccodes.codes_set)
+    NATIVE_ARRAY = ("na", eccodes.codes_get_array, eccodes.codes_set_array)
+
+    _STR_TYPES = {
+        v[0]: tuple(v[1:3])
+        for v in [STRING, LONG, DOUBLE, LONG_ARRAY, DOUBLE_ARRAY, NATIVE, NATIVE_ARRAY]
+    }
 
     def __init__(self, handle, path, offset):
         self.handle = handle
         self.path = path
         self.offset = offset
-        eccodes.codes_set(handle, "missingValue", CodesHandle.missing_value)
+        eccodes.codes_set(handle, "missingValue", CodesHandle.MISSING_VALUE)
 
     def __del__(self):
         # print("CodesHandle:release ", self)
@@ -47,6 +65,29 @@ class CodesHandle:
     # def __str__(self):
     #    s = "CodesHandle("
     #    return s + str(self.handle) + "," + self.path + "," + str(self.offset) + ")"
+
+    def get_any(self, keys, key_type=None):
+        # single key with key_type specified
+        if key_type is not None:
+            assert isinstance(keys, str)
+            func = key_type[1]
+            return func(self.handle, keys)
+        # list of keys
+        else:
+            result = []
+            for key in keys:
+                key_type_str = "s"
+                parts = key.split(":")
+                if len(parts) == 2:
+                    key, key_type_str = parts
+                    if (
+                        key_type_str == "n"
+                        and eccodes.codes_get_size(self.handle, key) > 1
+                    ):
+                        key_type_str = "na"
+                func = CodesHandle._STR_TYPES.get(key_type_str, None)[0]
+                result.append(func(self.handle, key))
+            return result
 
     def get_string(self, key):
         return eccodes.codes_get_string(self.handle, key)
@@ -63,17 +104,23 @@ class CodesHandle:
     def get_double_array(self, key):
         return eccodes.codes_get_double_array(self.handle, key)
 
-    def get_native(self, key):
-        if eccodes.codes_get_size(self.handle, key) > 1:
-            return eccodes.codes_get_array(self.handle, key)
-        else:
-            return eccodes.codes_get(self.handle, key)
-
     def get_values(self):
         vals = eccodes.codes_get_values(self.handle)
         if self.get_long("bitmapPresent"):
-            vals[vals == CodesHandle.missing_value] = np.nan
+            vals[vals == CodesHandle.MISSING_VALUE] = np.nan
         return vals
+
+    def set_any(self, keys_and_vals, key_type=None):
+        for key, v in zip(keys_and_vals[0::2], keys_and_vals[1::2]):
+            if key_type is not None:
+                func = key_type[2]
+            else:
+                key_type_str = "s"  # default is str
+                parts = key.split(":")
+                if len(parts) == 2:
+                    key, key_type_str = parts
+                func = CodesHandle._STR_TYPES.get(key_type_str, None)[1]
+            func(self.handle, key, v)
 
     def set_string(self, key, value):
         eccodes.codes_set_string(self.handle, key, value)
@@ -90,7 +137,7 @@ class CodesHandle:
     def set_values(self, value):
         # replace nans with missing values
         values_nans_replaced = np.nan_to_num(
-            value, copy=True, nan=CodesHandle.missing_value
+            value, copy=True, nan=CodesHandle.MISSING_VALUE
         )
         self.set_long("bitsPerValue", BITS_PER_VALUE_FOR_WRITING)
         self.set_double_array("values", values_nans_replaced)
@@ -137,15 +184,6 @@ class GribFile:
 class Field:
     """Encapsulates single GRIB message"""
 
-    KEY_TYPES = {
-        "s": "grib_get_string",
-        "d": "grib_get_double",
-        "l": "grib_get_long",
-        "la": "grib_get_long_array",
-        "da": "grib_get_double_array",
-        "n": "grib_get_native",
-    }
-
     def __init__(self, handle, gribfile, keep_values_in_memory=False, temp=None):
         self.handle = handle
         self.gribfile = gribfile
@@ -153,23 +191,8 @@ class Field:
         self.vals = None
         self.keep_values_in_memory = keep_values_in_memory
 
-    def grib_get_string(self, key):
-        return self.handle.get_string(key)
-
-    def grib_get_long(self, key):
-        return self.handle.get_long(key)
-
-    def grib_get_double(self, key):
-        return self.handle.get_double(key)
-
-    def grib_get_long_array(self, key):
-        return self.handle.get_long_array(key)
-
-    def grib_get_double_array(self, key):
-        return self.handle.get_double_array(key)
-
-    def grib_get_native(self, key):
-        return self.handle.get_native(key)
+    def grib_get(self, *args, **kwargs):
+        return self.handle.get_any(*args, **kwargs)
 
     def values(self):
         if self.vals is None:
@@ -186,42 +209,10 @@ class Field:
     def longitudes(self):
         return self.handle.get_double_array("longitudes")
 
-    def grib_get(self, keys, grouping):
-        result = []
-        for key in keys:
-            ktype = "s"  # default is str
-            parts = key.split(":")
-            if len(parts) == 2:
-                key = parts[0]
-                ktype = parts[1]
-            try:
-                funcname = Field.KEY_TYPES[ktype]
-            except Exception as e:
-                print("Invalid key type: ", ktype)
-                raise e
-            func = getattr(self, funcname)
-            result.append(func(key))
-        return result
-
-    def grib_set_string(self, key, value):
+    def grib_set(self, *args, **kwargs):
         result = self.clone()
-        result.handle.set_string(key, value)
+        result.handle.set_any(*args, **kwargs)
         return result
-
-    def grib_set_long(self, key, value):
-        result = self.clone()
-        result.handle.set_long(key, value)
-        return result
-
-    def grib_set_double(self, key, value):
-        result = self.clone()
-        result.handle.set_double(key, value)
-        return result
-
-    # def grib_set_double_array(self, key, value):
-    #    result = self.clone()
-    #    result.handle.set_double_array(key, value)
-    #    return result
 
     def encode_values(self, value):
         self.handle.set_long("bitmapPresent", 1)
@@ -372,51 +363,52 @@ class Fieldset:
         s = "s" if n > 1 else ""
         return f"Fieldset ({n} field{s})"
 
+    def _grib_get(self, *args, as_list=False, **kwargs):
+        ret = [x.grib_get(*args, **kwargs) for x in self.fields]
+        return ret if as_list else Fieldset._list_or_single(ret)
+
     def grib_get_string(self, key):
-        ret = [x.grib_get_string(key) for x in self.fields]
-        return Fieldset._list_or_single(ret)
+        return self._grib_get(key, key_type=CodesHandle.STRING)
 
     def grib_get_long(self, key):
-        ret = [x.grib_get_long(key) for x in self.fields]
-        return Fieldset._list_or_single(ret)
+        return self._grib_get(key, key_type=CodesHandle.LONG)
 
     def grib_get_double(self, key):
-        ret = [x.grib_get_double(key) for x in self.fields]
-        return Fieldset._list_or_single(ret)
+        return self._grib_get(key, key_type=CodesHandle.DOUBLE)
 
     def grib_get_long_array(self, key):
-        ret = [x.grib_get_long_array(key) for x in self.fields]
-        return Fieldset._list_or_single(ret)
+        return self._grib_get(key, key_type=CodesHandle.LONG_ARRAY)
 
     def grib_get_double_array(self, key):
-        ret = [x.grib_get_double_array(key) for x in self.fields]
-        return Fieldset._list_or_single(ret)
+        return self._grib_get(key, key_type=CodesHandle.DOUBLE_ARRAY)
 
     def grib_get(self, keys, grouping="field"):
-        if grouping != "field" and grouping != "key":
-            raise ValueError("grib_get: grouping must be field or key, not " + grouping)
-        ret = [x.grib_get(keys, grouping) for x in self.fields]
+        if grouping not in ["field", "key"]:
+            raise ValueError(f"grib_get: grouping must be field or key, not {grouping}")
+        ret = self._grib_get(keys, as_list=True)
         if grouping == "key":
             ret = list(map(list, zip(*ret)))  # transpose lists of lists
         return ret
 
-    def _grib_set_any(self, key, value, funcname):
+    def _grib_set(self, *args, **kwargs):
         result = Fieldset(temporary=True)
         with open(result.temporary.path, "wb") as fout:
             for f in self.fields:
-                func = getattr(f, funcname)
-                result._append_field(func(key, value))
+                result._append_field(f.grib_set(*args, **kwargs))
                 result.fields[-1].write(fout, temp=result.temporary)
         return result
 
-    def grib_set_string(self, key, value):
-        return self._grib_set_any(key, value, "grib_set_string")
+    def grib_set_string(self, keys_and_vals):
+        return self._grib_set(keys_and_vals, key_type=CodesHandle.STRING)
 
-    def grib_set_long(self, key, value):
-        return self._grib_set_any(key, value, "grib_set_long")
+    def grib_set_long(self, keys_and_vals):
+        return self._grib_set(keys_and_vals, key_type=CodesHandle.LONG)
 
-    def grib_set_double(self, key, value):
-        return self._grib_set_any(key, value, "grib_set_double")
+    def grib_set_double(self, keys_and_vals):
+        return self._grib_set(keys_and_vals, key_type=CodesHandle.DOUBLE)
+
+    def grib_set(self, keys_and_vals):
+        return self._grib_set(keys_and_vals)
 
     # def grib_set_double_array(self, key, value):
     #    return self._grib_set_any(key, value, "grib_set_double_array")
@@ -562,7 +554,7 @@ class Fieldset:
         if len(self.fields) > 0:
             result = []
             for f in self.fields:
-                md = f.grib_get(["dataDate", "dataTime"], "field")
+                md = f.grib_get(["dataDate", "dataTime"])
                 result.append(
                     utils.date_from_ecc_keys(md[0], md[1]) if len(md) == 2 else None
                 )
@@ -572,7 +564,7 @@ class Fieldset:
         if len(self.fields) > 0:
             result = []
             for f in self.fields:
-                md = f.grib_get(["validityDate", "validityTime"], "field")
+                md = f.grib_get(["validityDate", "validityTime"])
                 result.append(
                     utils.date_from_ecc_keys(md[0], md[1]) if len(md) == 2 else None
                 )

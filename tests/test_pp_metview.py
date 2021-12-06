@@ -273,27 +273,70 @@ def test_values_with_missing():
 
 def test_grib_set_string():
     f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))[0:2]
-    g = f.grib_set_string("pressureUnits", "silly")
+    g = f.grib_set_string(["pressureUnits", "silly"])
     assert g.grib_get_string("pressureUnits") == ["silly"] * 2
     assert f.grib_get_string("pressureUnits") == ["hPa"] * 2
+    g = f.grib_set_string(["pressureUnits", "silly", "shortName", "q"])
+    assert g.grib_get_string("pressureUnits") == ["silly"] * 2
+    assert g.grib_get_string("shortName") == ["q", "q"]
+    assert f.grib_get_string("pressureUnits") == ["hPa"] * 2
+    assert f.grib_get_string("shortName") == ["t", "u"]
 
 
 def test_grib_set_long():
     f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))[0:2]
-    g = f.grib_set_long("level", 95)
+    g = f.grib_set_long(["level", 95])
     assert g.grib_get_long("level") == [95] * 2
     assert f.grib_get_long("level") == [1000] * 2
+    g = f.grib_set_long(["level", 95, "time", 1800])
+    assert g.grib_get_long("level") == [95] * 2
+    assert g.grib_get_long("time") == [1800] * 2
+    assert f.grib_get_long("level") == [1000] * 2
+    assert f.grib_get_long("time") == [1200] * 2
 
 
 def test_grib_set_double():
     f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))[0:2]
-    g = f.grib_set_double("level", 95)
+    g = f.grib_set_double(["level", 95])
     assert g.grib_get_double("level") == [95] * 2
     assert f.grib_get_double("level") == [1000] * 2
     orig_point = f.grib_get_double("longitudeOfFirstGridPointInDegrees")
-    g = f.grib_set_double("longitudeOfFirstGridPointInDegrees", 95.6)
+    g = f.grib_set_double(["longitudeOfFirstGridPointInDegrees", 95.6])
     assert g.grib_get_double("longitudeOfFirstGridPointInDegrees") == [95.6] * 2
     assert f.grib_get_double("longitudeOfFirstGridPointInDegrees") == orig_point
+
+
+def test_grib_set_generic():
+    f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))[0:2]
+    g = f.grib_set(["shortName", "r"])
+    assert g.grib_get_string("shortName") == ["r"] * 2
+    assert f.grib_get_string("shortName") == ["t", "u"]
+    g = f.grib_set(["shortName:s", "q"])
+    assert g.grib_get_string("shortName") == ["q"] * 2
+    assert f.grib_get_string("shortName") == ["t", "u"]
+
+    g = f.grib_set(["level:l", 500, "shortName", "z"])
+    assert g.grib_get_long("level") == [500] * 2
+    assert g.grib_get_string("shortName") == ["z"] * 2
+    assert f.grib_get_long("level") == [1000] * 2
+    assert f.grib_get_string("shortName") == ["t", "u"]
+
+    g = f.grib_set(["level:d", 500])
+    np.testing.assert_allclose(
+        np.array(g.grib_get_double("level")), np.array([500] * 2)
+    )
+    np.testing.assert_allclose(
+        np.array(f.grib_get_double("level")), np.array([1000] * 2)
+    )
+
+    g = f.grib_set_double(["longitudeOfFirstGridPointInDegrees", 95.6])
+    np.testing.assert_allclose(
+        np.array(g.grib_get_double("longitudeOfFirstGridPointInDegrees")),
+        np.array([95.6] * 2),
+    )
+    np.testing.assert_allclose(
+        np.array(f.grib_get_double("longitudeOfFirstGridPointInDegrees")), [0, 0]
+    )
 
 
 def test_write_fieldset():
