@@ -111,6 +111,12 @@ def test_fieldset_create_from_glob_paths():
     assert par_ref == f.grib_get(["shortName", "level"])
 
 
+def test_read_1():
+    f = mv.read(os.path.join(PATH, "test.grib"))
+    assert type(f) is mv.Fieldset
+    assert len(f) == 1
+
+
 def test_grib_get_string_1():
     f = mv.Fieldset(path=os.path.join(PATH, "test.grib"))
     sn = f.grib_get_string("shortName")
@@ -735,6 +741,17 @@ def test_fieldset_multiple_funcs():
     f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
     g = 1 - ((f[0] + f[3]) - 5)
     np.testing.assert_allclose(g.values(), 1 - ((f[0].values() + f[3].values()) - 5))
+
+
+def test_fieldset_funs_with_read():
+    f = mv.read(os.path.join(PATH, "tuv_pl.grib"))
+    assert isinstance(f, mv.Fieldset)
+    g = f + 18
+    assert isinstance(g, mv.Fieldset)
+    diff = g - f
+    assert isinstance(diff, mv.Fieldset)
+    assert np.isclose(diff.minvalue(), 18)
+    assert np.isclose(diff.maxvalue(), 18)
 
 
 def test_field_maths_funcs():

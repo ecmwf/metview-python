@@ -775,6 +775,10 @@ class FieldCF:
         return value
 
 
+def read(p):
+    return Fieldset(path=p)
+
+
 # expose all Fieldset functions as a module level function
 def _make_module_func(name):
     def wrapped(fs, *args):
