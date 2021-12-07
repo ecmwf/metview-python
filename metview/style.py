@@ -536,6 +536,7 @@ class MapConf:
     items = []
     areas = []
     BUILTIN_AREAS = [
+        "AFRICA",
         "ANTARCTIC",
         "ARCTIC",
         "AUSTRALASIA",
