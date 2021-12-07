@@ -108,7 +108,12 @@ def test_style_object():
     assert s.visdefs[0].params["symbol_advanced_table_text_font_colour"] == "black"
     assert ns.visdefs[0].params["symbol_advanced_table_text_font_colour"] == "red"
 
-    ns = s.update({"graph_line_colour": "yellow",}, verb="mgraph",)
+    ns = s.update(
+        {
+            "graph_line_colour": "yellow",
+        },
+        verb="mgraph",
+    )
     assert id(ns) != id(s)
     assert s.visdefs[1].params["graph_line_colour"] == "blue"
     assert ns.visdefs[1].params["graph_line_colour"] == "yellow"
@@ -116,7 +121,12 @@ def test_style_object():
 
 def test_style_set_grib_id():
     # mcont
-    vd = Visdef("mcont", {"legend": "on",},)
+    vd = Visdef(
+        "mcont",
+        {
+            "legend": "on",
+        },
+    )
 
     s = Style("super", vd)
     ns = s.set_data_id("11")
@@ -126,7 +136,12 @@ def test_style_set_grib_id():
     assert s.visdefs[0].params.get("grib_id", None) is None
 
     # mwind
-    vd = Visdef("mwind", {"legend": "on",},)
+    vd = Visdef(
+        "mwind",
+        {
+            "legend": "on",
+        },
+    )
 
     s = Style("super", vd)
     ns = s.set_data_id("12")
@@ -136,7 +151,12 @@ def test_style_set_grib_id():
     assert s.visdefs[0].params.get("grib_id", None) is None
 
     # other
-    vd = Visdef("msymb", {"legend": "on",},)
+    vd = Visdef(
+        "msymb",
+        {
+            "legend": "on",
+        },
+    )
 
     s = Style("super", vd)
     ns = s.set_data_id("10")

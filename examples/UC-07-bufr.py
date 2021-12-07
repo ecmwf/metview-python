@@ -54,7 +54,11 @@ t2m_gpt = mv.obsfilter(parameter="012004", output="geopoints", data=obs_3day)
 
 diff = t2m_grib - t2m_gpt
 
-diff_symb = mv.msymb(legend=True, symbol_type="marker", symbol_table_mode="advanced",)
+diff_symb = mv.msymb(
+    legend=True,
+    symbol_type="marker",
+    symbol_table_mode="advanced",
+)
 
 mv.setoutput(mv.png_output(output_width=1000, output_name="./obsdiff1"))
 mv.plot(area_view, diff, diff_symb)
