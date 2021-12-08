@@ -544,7 +544,6 @@ class MapConf:
         "CENTRAL_EUROPE",
         "EAST_TROPIC",
         "EASTERN_ASIA",
-        "EQUATORIAL_PACIFIC",
         "EURASIA",
         "EUROPE",
         "GLOBAL",
