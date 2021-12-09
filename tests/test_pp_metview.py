@@ -1332,3 +1332,13 @@ def test_grib_index_3():
     assert isinstance(gi, list)
     assert len(gi) == 5
     assert gi == [(gp1, 5760), (gp1, 7200), (gp1, 8640), (gp2, 5520), (gp1, 2880)]
+
+
+def test_deacc():
+    f = mv.Fieldset(path=os.path.join(PATH, "t_time_series.grib"))[:3]
+    r = f.deacc()
+    assert len(r) == len(f)
+    assert r.grib_get_long("generatingProcessIdentifier") == [148] * len(r)
+    for i in range(len(f)):
+        v_ref = f[0].values() * 0 if i == 0 else f[i].values() - f[i - 1].values()
+        np.testing.assert_allclose(r[i].values(), v_ref, rtol=1e-03)

@@ -228,7 +228,11 @@ class Field:
         return (self.handle.path, self.grib_get("offset", key_type=CodesHandle.LONG))
 
     def clone(self):
-        c = Field(self.handle.clone(), self.gribfile, self.keep_values_in_memory,)
+        c = Field(
+            self.handle.clone(),
+            self.gribfile,
+            self.keep_values_in_memory,
+        )
         c.vals = None
         return c
 
@@ -734,6 +738,17 @@ class Fieldset:
     def ls(self, **kwargs):
         return self._get_db().ls(**kwargs)
 
+    def deacc(self, skip_first=False, mark_derived=False):
+        if len(self.fields) > 1:
+            v = self[1:] - self[:-1]
+            if not skip_first:
+                r = self[0]*0
+                r = r.merge(v)
+            else:
+                r = v
+            if not mark_derived:
+                r = r.grib_set_long(["generatingProcessIdentifier", 148])
+            return r
 
 class FieldsetCF:
     def __init__(self, fs):
