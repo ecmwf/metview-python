@@ -224,6 +224,9 @@ class Field:
         self.temp = temp  # store a reference to the temp file object for persistence
         self.handle.write(fout)
 
+    def grib_index(self):
+        return (self.handle.path, self.grib_get("offset", key_type=CodesHandle.LONG))
+
     def clone(self):
         c = Field(self.handle.clone(), self.gribfile, self.keep_values_in_memory,)
         c.vals = None
@@ -437,6 +440,9 @@ class Fieldset:
         with open(path, "wb") as fout:
             for f in self.fields:
                 f.write(fout)
+
+    def grib_index(self):
+        return [i.grib_index() for i in self.fields]
 
     def _append_field(self, field):
         self.fields.append(field)

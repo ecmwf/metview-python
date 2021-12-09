@@ -1290,3 +1290,45 @@ def test_nobitmap():
         v_ref = f[i].values()
         v_ref[np.isnan(v_ref)] = 1
         np.testing.assert_allclose(r[i].values(), v_ref)
+
+
+def test_grib_index_0():
+    # empty fieldset
+    fs = mv.Fieldset()
+    gi = fs.grib_index()
+    assert gi == []
+
+
+def test_grib_index_1():
+    # single field
+    grib_path = os.path.join(PATH, "test.grib")
+    fs = mv.Fieldset(path=grib_path)
+    gi = fs.grib_index()
+    assert gi == [(grib_path, 0)]
+
+
+def test_grib_index_2():
+    # multiple fields
+    grib_path = os.path.join(PATH, "tuv_pl.grib")
+    fs = mv.Fieldset(path=grib_path)
+    gi = fs.grib_index()
+    assert isinstance(gi, list)
+    assert len(gi) == 18
+    for f, g in zip(fs, gi):
+        assert g == (grib_path, f.grib_get_long("offset"))
+    assert gi[5] == (grib_path, 7200)
+
+
+def test_grib_index_3():
+    # merged fields from different files
+    gp1 = os.path.join(PATH, "tuv_pl.grib")
+    gp2 = os.path.join(PATH, "t_time_series.grib")
+    fs1 = mv.Fieldset(path=gp1)
+    fs2 = mv.Fieldset(path=gp2)
+    fs3 = fs1[4:7]
+    fs3.append(fs2[1])
+    fs3.append(fs1[2])
+    gi = fs3.grib_index()
+    assert isinstance(gi, list)
+    assert len(gi) == 5
+    assert gi == [(gp1, 5760), (gp1, 7200), (gp1, 8640), (gp2, 5520), (gp1, 2880)]
