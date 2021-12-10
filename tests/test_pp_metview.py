@@ -1014,19 +1014,24 @@ def test_longitudes():
 
 
 def test_coslat():
-    fs = mv.Fieldset(path=os.path.join(PATH, "t1000_LL_7x7.grb"))
+    fs = mv.Fieldset(path=os.path.join(PATH, "t_time_series.grib"))
 
-    f = fs
-    v = mv.coslat(f)
-    assert isinstance(v, np.ndarray)
-    assert len(v) == 1404
-    np.testing.assert_allclose(v, np.cos(np.deg2rad(f.latitudes())))
+    # WARN: it is important that the data should be at least 16 bit
+    #  to keep accuracy in resulting fields
 
-    f = fs.merge(fs)
-    lst = mv.coslat(f)
-    assert len(lst) == 2
-    for i, v in enumerate(lst):
-        np.testing.assert_allclose(v, np.cos(np.deg2rad(f[i].latitudes())))
+    f = fs[0]
+    r = mv.coslat(f)
+    np.testing.assert_allclose(
+        r.values(), np.cos(np.deg2rad(f.latitudes())), rtol=1e-06
+    )
+
+    f = fs[:2]
+    r = mv.coslat(f)
+    assert len(r) == 2
+    for i in range(len(r)):
+        np.testing.assert_allclose(
+            r[i].values(), np.cos(np.deg2rad(f[i].latitudes())), rtol=1e-06
+        )
 
 
 def test_mean():
@@ -1071,35 +1076,53 @@ def test_minvalue():
 
 
 def test_sinlat():
-    fs = mv.Fieldset(path=os.path.join(PATH, "t1000_LL_7x7.grb"))
+    fs = mv.Fieldset(path=os.path.join(PATH, "t_time_series.grib"))
 
-    f = fs
-    v = mv.sinlat(f)
-    assert isinstance(v, np.ndarray)
-    assert len(v) == 1404
-    np.testing.assert_allclose(v, np.sin(np.deg2rad(f.latitudes())))
+    # WARN: it is important that the data should be at least 16 bit
+    #  to keep accuracy in resulting fields
 
-    f = fs.merge(fs)
-    lst = mv.sinlat(f)
-    assert len(lst) == 2
-    for i, v in enumerate(lst):
-        np.testing.assert_allclose(v, np.sin(np.deg2rad(f[i].latitudes())))
+    f = fs[0]
+    r = mv.sinlat(f)
+    np.testing.assert_allclose(
+        r.values(), np.sin(np.deg2rad(f.latitudes())), rtol=1e-06
+    )
+
+    f = fs[:2]
+    r = mv.sinlat(f)
+    assert len(r) == 2
+    for i in range(len(r)):
+        np.testing.assert_allclose(
+            r[i].values(), np.sin(np.deg2rad(f[i].latitudes())), rtol=1e-06
+        )
 
 
 def test_tanlat():
-    fs = mv.Fieldset(path=os.path.join(PATH, "t1000_LL_7x7.grb"))
+    fs = mv.Fieldset(path=os.path.join(PATH, "t_time_series.grib"))
 
-    f = fs
-    v = mv.tanlat(f)
-    assert isinstance(v, np.ndarray)
-    assert len(v) == 1404
-    np.testing.assert_allclose(v, np.tan(np.deg2rad(f.latitudes())))
+    # WARN: it is important that the data should be at least 16 bit
+    #  to keep accuracy in resulting fields
 
-    f = fs.merge(fs)
-    lst = mv.tanlat(f)
-    assert len(lst) == 2
-    for i, v in enumerate(lst):
-        np.testing.assert_allclose(v, np.tan(np.deg2rad(f[i].latitudes())))
+    # TODO: use pole_limit value from fieldset
+
+    pole_limit = 90.0 - 1e-06
+
+    f = fs[0]
+    r = mv.tanlat(f)
+    lat = f.latitudes()
+    lat[np.fabs(lat) > pole_limit] = np.nan
+    np.testing.assert_allclose(
+        r.values(), np.tan(np.deg2rad(lat)), rtol=1e-06, atol=1e-06
+    )
+
+    f = fs[:2]
+    r = mv.tanlat(f)
+    assert len(r) == 2
+    for i in range(len(r)):
+        lat = f[i].latitudes()
+        lat[np.fabs(lat) > pole_limit] = np.nan
+        np.testing.assert_allclose(
+            r[i].values(), np.tan(np.deg2rad(lat)), rtol=1e-06, atol=1e-06
+        )
 
 
 def test_stdev():

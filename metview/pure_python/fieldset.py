@@ -9,7 +9,7 @@
 
 
 from inspect import signature
-from os import WEXITED
+from os import WEXITED, lstat
 import sys
 from typing import ValuesView
 
@@ -232,7 +232,11 @@ class Field:
         # return (self.handle.path, self.grib_get("offset", key_type=CodesHandle.LONG))
 
     def clone(self):
-        c = Field(self.handle.clone(), self.gribfile, self.keep_values_in_memory,)
+        c = Field(
+            self.handle.clone(),
+            self.gribfile,
+            self.keep_values_in_memory,
+        )
         c.vals = None
         return c
 
@@ -516,7 +520,7 @@ class Fieldset:
     def field_func(self, func):
         """Applies a function to all values in all fields"""
         result = Fieldset(temporary=True)
-        with open(path, "wb") as fout:
+        with open(result.temporary.path, "wb") as fout:
             for f in self.fields:
                 result._append_field(f.field_func(func))
                 result.fields[-1].write(
@@ -676,17 +680,31 @@ class Fieldset:
         v = [x.longitudes() for x in self.fields]
         return Fieldset._make_2d_array(v)
 
+    def _lat_func(self, func, bitmap_poles=False):
+        result = Fieldset(temporary=True)
+        pole_limit = 90.0 - 1e-06
+        with open(result.temporary.path, "wb") as fout:
+            for f in self.fields:
+                lat = f.latitudes()
+                if bitmap_poles:
+                    lat[np.fabs(lat) > pole_limit] = np.nan
+                v = func(np.deg2rad(lat))
+                c = f.clone()
+                c.encode_values(v)
+                result._append_field(c)
+                result.fields[-1].write(
+                    fout, result.temporary.path, temp=result.temporary
+                )
+        return result
+
     def coslat(self):
-        v = [np.cos(np.deg2rad(x.latitudes())) for x in self.fields]
-        return Fieldset._make_2d_array(v)
+        return self._lat_func(np.cos)
 
     def sinlat(self):
-        v = [np.sin(np.deg2rad(x.latitudes())) for x in self.fields]
-        return Fieldset._make_2d_array(v)
+        return self._lat_func(np.sin)
 
     def tanlat(self):
-        v = [np.tan(np.deg2rad(x.latitudes())) for x in self.fields]
-        return Fieldset._make_2d_array(v)
+        return self._lat_func(np.tan, bitmap_poles=True)
 
     @staticmethod
     def _list_or_single(lst):

@@ -156,8 +156,6 @@ def mod(x, y):
 
 
 def bitmap(x, y):
-    print(f"x={x}")
-    print(f"y={y}")
     if isinstance(y, (int, float)):
         x[x == y] = np.nan
         return x
