@@ -17,8 +17,8 @@ from pathlib import Path
 
 import yaml
 import metview as mv
-from metview.param import ParamInfo
-from metview.ipython import is_ipython_active
+from metviewpy.param import ParamInfo
+from metviewpy.ipython import is_ipython_active
 
 # logging.basicConfig(level=logging.DEBUG)
 LOG = logging.getLogger(__name__)

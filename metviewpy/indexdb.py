@@ -14,10 +14,9 @@ import os
 
 import pandas as pd
 
-import metview as mv
-from metview.indexer import GribIndexer, FieldsetIndexer
-from metview.param import ParamInfo, ParamNameDesc, ParamIdDesc, init_pandas_options
-from metview.ipython import is_ipython_active
+from metviewpy.indexer import GribIndexer, FieldsetIndexer
+from metviewpy.param import ParamInfo, ParamNameDesc, ParamIdDesc, init_pandas_options
+from metviewpy.ipython import is_ipython_active
 
 
 # logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
@@ -114,11 +113,8 @@ class IndexDb:
         return fs
 
     def _get_fields(self, dims, max_count=-1):
-        # TODO: make it work with bot fieldset implementations
-        # res = mv.Fieldset()
-        from metview.pure_python import fieldset as FS
 
-        res = FS.Fieldset()
+        res = self.fieldset_class()
         dfs = {}
         LOG.debug(f"dims={dims}")
         for key in self.blocks.keys():
@@ -310,6 +306,7 @@ class FieldsetDb(IndexDb):
     def __init__(self, fs, name="", **kwargs):
         super().__init__(name, **kwargs)
         self.fs = fs
+        self.fieldset_class = fs.__class__
         self._indexer = None
 
     @property

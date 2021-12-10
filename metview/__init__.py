@@ -33,7 +33,7 @@ if len(sys.argv) != 2 or sys.argv[0] != "-m" or sys.argv[1] != "selfcheck":
 
 from . import gallery
 from . import style
-from . import indexer
+from metviewpy import indexer
 from . import title
 from . import layout
 from . import ui

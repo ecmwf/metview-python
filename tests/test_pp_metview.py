@@ -12,9 +12,9 @@ import numpy as np
 import os
 import pytest
 
-import metview.pure_python as mv
-from metview import utils
-from metview.pure_python.temporary import is_temp_file
+import metviewpy as mv
+from metviewpy import utils
+from metviewpy.temporary import is_temp_file
 
 PATH = os.path.dirname(__file__)
 

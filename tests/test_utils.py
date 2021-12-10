@@ -10,7 +10,7 @@
 
 import datetime
 
-from metview import utils
+from metviewpy import utils
 
 
 def test_utils_date():

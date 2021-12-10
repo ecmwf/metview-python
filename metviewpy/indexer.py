@@ -16,8 +16,7 @@ import logging
 import os
 from pathlib import Path
 
-import metview as mv
-from metview import utils
+from metviewpy import utils
 import numpy as np
 import pandas as pd
 import yaml
@@ -453,9 +452,7 @@ class FieldsetIndexer(GribIndexer):
         LOG.info(f" scan fields ...")
         data = {}
         # print(f"fs_len={len(fs)}")
-        # TODO: allow to check if fs is a fieldset
-        # if isinstance(fs, mv.Fieldset) and len(fs) > 0:
-        if len(fs) > 0:
+        if utils.is_fieldset_type(fs) and len(fs) > 0:
             md_vals = fs.grib_get(self.keys_ecc, "key")
             if mapped_params:
                 for i in range(len(fs)):
@@ -618,12 +615,12 @@ class ExperimentIndexer(GribIndexer):
             input_dir, file_name_pattern=file_name_pattern
         ):
             # LOG.debug(f"  f_path={f_path}")
-            fs = mv.read(f_path)
-            if isinstance(fs, mv.Fieldset) and len(fs) > 0:
+            fs = self.db.fieldset_class(path=f_path)
+            if utils.is_fieldset_type(fs) and len(fs) > 0:
                 cnt += 1
                 input_files_tmp.append(f_path)
                 file_index = len(input_files) + len(input_files_tmp) - 1
-                md_vals = mv.grib_get(fs, self.keys_ecc, "key")
+                md_vals = fs.grib_get(self.keys_ecc, "key")
 
                 if mapped_params:
                     for i in range(len(fs)):

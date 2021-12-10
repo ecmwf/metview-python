@@ -87,6 +87,11 @@ def date_from_ecc_keys(d, t):
         return None
 
 
+def is_fieldset_type(thing):
+    # will return True for binary or python fieldset objects
+    return "Fieldset" in thing.__class__.__name__
+
+
 def get_file_list(path, file_name_pattern=None):
     m = None
     # if isinstance(file_name_pattern, re.Pattern):
@@ -133,7 +138,11 @@ def download(url, target):
     resp = requests.get(url, stream=True)
     total = int(resp.headers.get("content-length", 0))
     with open(target, "wb") as file, tqdm(
-        desc=target, total=total, unit="iB", unit_scale=True, unit_divisor=1024,
+        desc=target,
+        total=total,
+        unit="iB",
+        unit_scale=True,
+        unit_divisor=1024,
     ) as bar:
         for data in resp.iter_content(chunk_size=1024):
             size = file.write(data)

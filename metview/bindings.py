@@ -21,7 +21,7 @@ import cffi
 import numpy as np
 from numpy.lib.arraysetops import _setxor1d_dispatcher, isin
 
-from metview.indexdb import FieldsetDb
+from metviewpy.indexdb import FieldsetDb
 from metview.dataset import Dataset
 from metview.style import (
     GeoView,
@@ -32,8 +32,8 @@ from metview.style import (
     make_geoview,
 )
 from metview import plotting
-from metview.ipython import is_ipython_active, import_widgets
-from metview import utils
+from metviewpy.ipython import is_ipython_active, import_widgets
+from metviewpy import utils
 
 __version__ = "1.9.0"
 

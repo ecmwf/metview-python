@@ -16,8 +16,8 @@ import numpy as np
 import pandas as pd
 
 import metview as mv
-from metview.param import ParamInfo
-from metview.indexer import GribIndexer
+from metviewpy.param import ParamInfo
+from metviewpy.indexer import GribIndexer
 
 PATH = os.path.dirname(__file__)
 

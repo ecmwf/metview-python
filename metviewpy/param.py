@@ -12,9 +12,9 @@ import logging
 import re
 import pandas as pd
 
-import metview as mv
-from metview.indexer import GribIndexer
-from metview.ipython import is_ipython_active
+from metviewpy.indexer import GribIndexer
+from metviewpy.ipython import is_ipython_active
+from metviewpy.utils import is_fieldset_type
 
 # logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
@@ -151,7 +151,7 @@ class ParamInfo:
 
     @staticmethod
     def build_from_fieldset(fs):
-        assert isinstance(fs, mv.Fieldset)
+        assert is_fieldset_type(fs)
         f = fs[0:3] if len(fs) >= 3 else fs
         m = ParamInfo._grib_get(f, GribIndexer.DEFAULT_ECC_KEYS)
         name = level = lev_type = ""
@@ -221,7 +221,7 @@ class ParamInfo:
 
     @staticmethod
     def _grib_get(f, keys):
-        md = mv.grib_get(f, keys, "key")
+        md = f.grib_get(keys, "key")
         m = {}
         for k, v in zip(keys, md):
             key_val = k.split(":")[0]
