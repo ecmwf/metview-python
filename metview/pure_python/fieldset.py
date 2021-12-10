@@ -857,3 +857,12 @@ module_obj = sys.modules[__name__]
 for fn in dir(Fieldset):
     if callable(getattr(Fieldset, fn)) and not fn.startswith("_"):
         setattr(module_obj, fn, _make_module_func(fn))
+
+
+def bind_functions(namespace, module_name=None):
+    """Add to the module globals all metview functions except operators like: +, &, etc."""
+    namespace["read"] = read
+    for fn in dir(Fieldset):
+        if callable(getattr(Fieldset, fn)) and not fn.startswith("_"):
+            namespace[fn] = _make_module_func(fn)
+        namespace["Fieldset"] = Fieldset

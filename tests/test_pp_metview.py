@@ -12,7 +12,7 @@ import numpy as np
 import os
 import pytest
 
-from metview.pure_python import fieldset as mv
+import metview.pure_python as mv
 from metview import utils
 from metview.pure_python.temporary import is_temp_file
 
