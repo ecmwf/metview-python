@@ -14,6 +14,7 @@ import pytest
 
 from metview.pure_python import fieldset as mv
 from metview import utils
+from metview.pure_python.temporary import is_temp_file
 
 PATH = os.path.dirname(__file__)
 
@@ -1331,7 +1332,31 @@ def test_grib_index_3():
     gi = fs3.grib_index()
     assert isinstance(gi, list)
     assert len(gi) == 5
-    assert gi == [(gp1, 5760), (gp1, 7200), (gp1, 8640), (gp2, 5520), (gp1, 2880)]
+    # assert gi == [(gp1, 5760), (gp1, 7200), (gp1, 8640), (gp2, 5520), (gp1, 2880)]
+    assert gi == [(gp1, 5760), (gp1, 7200), (gp1, 8640), (gp2, 5436), (gp1, 2880)]
+
+
+def test_grib_index_4():
+    # test with a derived fieldset
+    fs = mv.Fieldset(os.path.join(PATH, "t_time_series.grib"))[0:4]
+    fs1 = fs + 1
+    gi = fs1.grib_index()
+    for i in gi:
+        assert is_temp_file(i[0])
+    offsets = [i[1] for i in gi]
+    assert offsets == [0, 8440, 16880, 25320]
+
+
+def test_grib_index_5():
+    # test with grib written with write() function
+    f_orig = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+    f = (f_orig[0:4]).merge(f_orig[7])
+    p = "written_tuv_pl.grib"
+    f.write(p)
+    gi = f.grib_index()
+    assert gi == [(p, 0), (p, 1440), (p, 2880), (p, 4320), (p, 5760)]
+    f = 0
+    os.remove(p)
 
 
 def test_deacc():

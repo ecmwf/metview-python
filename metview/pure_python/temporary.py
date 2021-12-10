@@ -57,6 +57,10 @@ def temp_file(extension=".tmp"):
     return TmpFile(path)
 
 
+def is_temp_file(path):
+    return tempfile.gettempdir() in path
+
+
 # class TmpDirectory(tempfile.TemporaryDirectory):
 #    @property
 #    def path(self):

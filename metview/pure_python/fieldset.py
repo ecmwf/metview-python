@@ -142,8 +142,11 @@ class CodesHandle:
         self.set_long("bitsPerValue", BITS_PER_VALUE_FOR_WRITING)
         self.set_double_array("values", values_nans_replaced)
 
-    def write(self, fout):
+    def write(self, fout, path):
+        self.offset = fout.tell()
         eccodes.codes_write(self.handle, fout)
+        if path:
+            self.path = path
 
 
 class GribFile:
@@ -220,19 +223,16 @@ class Field:
         if not self.keep_values_in_memory:
             self.vals = None
 
-    def write(self, fout, temp=None):
+    def write(self, fout, path, temp=None):
         self.temp = temp  # store a reference to the temp file object for persistence
-        self.handle.write(fout)
+        self.handle.write(fout, path)
 
     def grib_index(self):
-        return (self.handle.path, self.grib_get("offset", key_type=CodesHandle.LONG))
+        return (self.handle.path, self.handle.offset)
+        # return (self.handle.path, self.grib_get("offset", key_type=CodesHandle.LONG))
 
     def clone(self):
-        c = Field(
-            self.handle.clone(),
-            self.gribfile,
-            self.keep_values_in_memory,
-        )
+        c = Field(self.handle.clone(), self.gribfile, self.keep_values_in_memory,)
         c.vals = None
         return c
 
@@ -399,10 +399,11 @@ class Fieldset:
 
     def _grib_set(self, *args, **kwargs):
         result = Fieldset(temporary=True)
-        with open(result.temporary.path, "wb") as fout:
+        path = result.temporary.path
+        with open(path, "wb") as fout:
             for f in self.fields:
                 result._append_field(f.grib_set(*args, **kwargs))
-                result.fields[-1].write(fout, temp=result.temporary)
+                result.fields[-1].write(fout, path, temp=result.temporary)
         return result
 
     def grib_set_string(self, keys_and_vals):
@@ -443,7 +444,7 @@ class Fieldset:
     def write(self, path):
         with open(path, "wb") as fout:
             for f in self.fields:
-                f.write(fout)
+                f.write(fout, path)
 
     def grib_index(self):
         return [i.grib_index() for i in self.fields]
@@ -515,10 +516,12 @@ class Fieldset:
     def field_func(self, func):
         """Applies a function to all values in all fields"""
         result = Fieldset(temporary=True)
-        with open(result.temporary.path, "wb") as fout:
+        with open(path, "wb") as fout:
             for f in self.fields:
                 result._append_field(f.field_func(func))
-                result.fields[-1].write(fout, temp=result.temporary)
+                result.fields[-1].write(
+                    fout, result.temporary.path, temp=result.temporary
+                )
         return result
 
     def fieldset_other_func(
@@ -537,7 +540,7 @@ class Fieldset:
         def _process_one(f, g, result):
             new_field = f.field_other_func(func, g, reverse_args=reverse_args)
             result._append_field(new_field)
-            result.fields[-1].write(fout, temp=result.temporary)
+            result.fields[-1].write(fout, result.temporary.path, temp=result.temporary)
 
         result = Fieldset(temporary=True)
         with open(result.temporary.path, "wb") as fout:
@@ -615,7 +618,7 @@ class Fieldset:
             f = self.fields[0].clone()
             f.encode_values(v)
             result._append_field(f)
-            result.fields[-1].write(fout, temp=result.temporary)
+            result.fields[-1].write(fout, result.temporary.path, temp=result.temporary)
         return result
 
     def mean(self):
@@ -742,13 +745,14 @@ class Fieldset:
         if len(self.fields) > 1:
             v = self[1:] - self[:-1]
             if not skip_first:
-                r = self[0]*0
+                r = self[0] * 0
                 r = r.merge(v)
             else:
                 r = v
             if not mark_derived:
                 r = r.grib_set_long(["generatingProcessIdentifier", 148])
             return r
+
 
 class FieldsetCF:
     def __init__(self, fs):
