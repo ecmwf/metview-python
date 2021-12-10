@@ -771,6 +771,29 @@ class Fieldset:
                 r = r.grib_set_long(["generatingProcessIdentifier", 148])
             return r
 
+    def speed(self, other):
+        result = Fieldset(temporary=True)
+        param_ids = {
+            131: 10,  # atmospheric wind
+            165: 207,  # 10m wind
+            228246: 228249,  # 100m wind
+            228239: 228241,  # 200m wind
+        }
+        with open(result.temporary.path, "wb") as fout:
+            for f, g in zip(self.fields, other.fields):
+                sp = np.sqrt(np.square(f.values()) + np.square(g.values()))
+                c = f.clone()
+                c.encode_values(sp)
+                param_id_u = f.grib_get("paramId", CodesHandle.LONG)
+                param_id_sp = param_ids.get(param_id_u, None)
+                if param_id_sp is not None:
+                    c = c.grib_set(["paramId", param_id_sp], CodesHandle.LONG)
+                result._append_field(c)
+                result.fields[-1].write(
+                    fout, result.temporary.path, temp=result.temporary
+                )
+        return result
+
 
 class FieldsetCF:
     def __init__(self, fs):

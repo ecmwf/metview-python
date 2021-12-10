@@ -1390,3 +1390,34 @@ def test_deacc():
     for i in range(len(f)):
         v_ref = f[0].values() * 0 if i == 0 else f[i].values() - f[i - 1].values()
         np.testing.assert_allclose(r[i].values(), v_ref, rtol=1e-03)
+
+
+def test_speed():
+    # test with grib written with write() function
+    fs = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+
+    fs_u = fs.select(shortName="u")
+    fs_v = fs.select(shortName="v")
+
+    # single field
+    u = fs_u[0]
+    v = fs_v[0]
+    r = mv.speed(u, v)
+    assert len(r) == 1
+    np.testing.assert_allclose(
+        r.values(), np.sqrt(np.square(u.values()) + np.square(v.values())), rtol=1e-05
+    )
+    assert r.grib_get_long("paramId") == 10
+
+    # multi fields
+    u = fs_u[:2]
+    v = fs_v[:2]
+    r = mv.speed(u, v)
+    assert len(r) == 2
+    for i in range(len(r)):
+        np.testing.assert_allclose(
+            r[i].values(),
+            np.sqrt(np.square(u[i].values()) + np.square(v[i].values())),
+            rtol=1e-05,
+        )
+    assert r.grib_get_long("paramId") == [10, 10]
