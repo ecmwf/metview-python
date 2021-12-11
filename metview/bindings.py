@@ -672,6 +672,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         if self.val_pointer is not None:  #  we will overwrite ourselves, so delete
             lib.p_destroy_value(self.val_pointer)
         self.steal_val_pointer(temp)
+        self._db =  None
 
     def to_dataset(self, **kwarg):
         # soft dependency on cfgrib

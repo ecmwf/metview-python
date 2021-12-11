@@ -455,6 +455,7 @@ class Fieldset:
 
     def _append_field(self, field):
         self.fields.append(field)
+        self._db = None
 
     def __getitem__(self, index):
         try:
@@ -490,6 +491,7 @@ class Fieldset:
 
     def append(self, other):
         self.fields = self.fields + other.fields
+        self._db = None
 
     def merge(self, other):
         result = Fieldset(fields=self.fields, temporary=True)

@@ -858,6 +858,7 @@ def test_describe():
         "type": {"t": "an", "u": "an", "v": "an"},
         "experimentVersionNumber": {"t": "0001", "u": "0001", "v": "0001"},
     }
+    ref_full = ref
 
     assert ref == df.to_dict()
 
@@ -924,6 +925,33 @@ def test_describe():
     df = f.describe(param=130)
     assert ref == df.to_dict()
 
+    # append
+    g = f + 0
+    df = g.describe(no_print=True)
+    assert ref_full == df.to_dict()
+
+    g.append(f[0].grib_set_long(["level", 25]))
+    df = g.describe(no_print=True)
+
+    ref = {
+        "typeOfLevel": {
+            "t": "isobaricInhPa",
+            "u": "isobaricInhPa",
+            "v": "isobaricInhPa",
+        },
+        "level": {"t": "25,300,...", "u": "300,400,...", "v": "300,400,..."},
+        "date": {"t": 20180801, "u": 20180801, "v": 20180801},
+        "time": {"t": 1200, "u": 1200, "v": 1200},
+        "step": {"t": "0", "u": "0", "v": "0"},
+        "paramId": {"t": 130, "u": 131, "v": 132},
+        "class": {"t": "od", "u": "od", "v": "od"},
+        "stream": {"t": "oper", "u": "oper", "v": "oper"},
+        "type": {"t": "an", "u": "an", "v": "an"},
+        "experimentVersionNumber": {"t": "0001", "u": "0001", "v": "0001"},
+    }
+
+    assert ref == df.to_dict()
+
 
 def test_ls():
 
@@ -987,6 +1015,54 @@ def test_ls():
         "stepRange": {3: "0", 5: "0"},
         "dataType": {3: "an", 5: "an"},
         "gridType": {3: "regular_ll", 5: "regular_ll"},
+    }
+
+    assert ref == df.to_dict()
+
+    # append
+    g = f[:2]
+    df = g.ls(no_print=True)
+
+    ref = {
+        "centre": {0: "ecmf", 1: "ecmf"},
+        "shortName": {0: "t", 1: "u"},
+        "typeOfLevel": {
+            0: "isobaricInhPa",
+            1: "isobaricInhPa",
+        },
+        "level": {0: 1000, 1: 1000},
+        "dataDate": {0: 20180801, 1: 20180801},
+        "dataTime": {0: 1200, 1: 1200},
+        "stepRange": {0: "0", 1: "0"},
+        "dataType": {0: "an", 1: "an"},
+        "gridType": {
+            0: "regular_ll",
+            1: "regular_ll",
+        },
+    }
+
+    assert ref == df.to_dict()
+
+    g.append(f[2].grib_set_long(["level", 500]))
+    df = g.ls(no_print=True)
+    ref = {
+        "centre": {0: "ecmf", 1: "ecmf", 2: "ecmf"},
+        "shortName": {0: "t", 1: "u", 2: "v"},
+        "typeOfLevel": {
+            0: "isobaricInhPa",
+            1: "isobaricInhPa",
+            2: "isobaricInhPa",
+        },
+        "level": {0: 1000, 1: 1000, 2: 500},
+        "dataDate": {0: 20180801, 1: 20180801, 2: 20180801},
+        "dataTime": {0: 1200, 1: 1200, 2: 1200},
+        "stepRange": {0: "0", 1: "0", 2: "0"},
+        "dataType": {0: "an", 1: "an", 2: "an"},
+        "gridType": {
+            0: "regular_ll",
+            1: "regular_ll",
+            2: "regular_ll",
+        },
     }
 
     assert ref == df.to_dict()
