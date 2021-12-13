@@ -866,6 +866,14 @@ def test_datainfo():
     assert di3["proportion_missing"] == 0
 
 
+def test_grib_get_key_not_exist():
+    a = mv.read(os.path.join(PATH, "tuv_pl.grib"))[0:2]
+    kv = a.grib_get(["silly"])
+    assert kv == [[None], [None]]
+    with pytest.raises(Exception):
+        kv = a.grib_get_long(["silly"])
+
+
 def test_empty_fieldset_contructor():
     f = mv.Fieldset()
     assert type(f) == mv.Fieldset

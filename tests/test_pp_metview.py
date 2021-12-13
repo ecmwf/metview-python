@@ -238,6 +238,14 @@ def test_grib_get_generic():
     assert vn[0][0][5] == 25
 
 
+def test_grib_get_generic_key_not_exist():
+    a = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))[0:2]
+    kv = a.grib_get(["silly"])
+    assert kv == [[None], [None]]
+    with pytest.raises(Exception):
+        kv = a.grib_get_long(["silly"])
+
+
 def test_values_1():
     f = mv.Fieldset(path=os.path.join(PATH, "test.grib"))
     v = f.values()

@@ -64,6 +64,16 @@ class CodesHandle:
     #    s = "CodesHandle("
     #    return s + str(self.handle) + "," + self.path + "," + str(self.offset) + ")"
 
+    def call_get_func(self, func, key, default=False):
+        try:
+            result = func(self.handle, key)
+        except Exception as exp:
+            if default != False:
+                return default
+            else:
+                raise exp
+        return result
+
     def get_any(self, keys, key_type=None):
         # single key with key_type specified
         if key_type is not None:
@@ -84,7 +94,7 @@ class CodesHandle:
                     ):
                         key_type_str = "na"
                 func = CodesHandle._STR_TYPES.get(key_type_str, None)[0]
-                result.append(func(self.handle, key))
+                result.append(self.call_get_func(func, key, default=None))
             return result
 
     def get_string(self, key):
