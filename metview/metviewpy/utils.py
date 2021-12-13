@@ -101,7 +101,7 @@ def get_file_list(path, file_name_pattern=None):
         if file_name_pattern.startswith('re"'):
             m = re.compile(file_name_pattern[3:-1]).match
 
-    print(f"path={path} file_name_pattern={file_name_pattern}")
+    # print(f"path={path} file_name_pattern={file_name_pattern}")
 
     if m is not None:
         return [os.path.join(path, f) for f in filter(m, os.listdir(path=path))]
