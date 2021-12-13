@@ -463,10 +463,12 @@ class FieldsetDb(IndexDb):
         return df
 
     def speed(self):
-        r = mv.Fieldset()
+        r = self.fieldset_class()
         if len(self.fs) >= 2:
             for i in range(len(self.fs) // 2):
-                r.append(mv.sqrt(self.fs[2 * i] ** 2 + self.fs[2 * i + 1] ** 2))
+                # TODO: refactor speed computations
+                v = self.fs[2 * i] ** 2 + self.fs[2 * i + 1] ** 2
+                r.append(v.sqrt())
             pnf = self.fs.param_info
             LOG.debug(f"speed pnf={pnf}")
             param_id = 10
@@ -487,7 +489,7 @@ class FieldsetDb(IndexDb):
                 if not skip_first:
                     r = v * 0
                 else:
-                    r = mv.Fieldset()
+                    r = self.fieldset_class()
                 for i in range(1, len(step)):
                     v_next = self.select(step=step[i])
                     r.append(v_next - v)
