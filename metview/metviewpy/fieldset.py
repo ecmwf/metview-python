@@ -9,9 +9,7 @@
 
 
 from inspect import signature
-from os import WEXITED, lstat
 import sys
-from typing import ValuesView
 
 import numpy as np
 import eccodes

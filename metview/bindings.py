@@ -35,7 +35,7 @@ from metview import plotting
 from metview.metviewpy.ipython import is_ipython_active, import_widgets
 from metview.metviewpy import utils
 
-__version__ = "1.10.0"
+__version__ = "1.10.1"
 
 
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
