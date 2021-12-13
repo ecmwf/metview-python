@@ -2,6 +2,11 @@
 Changelog for Metview's Python interface
 ========================================
 
+1.10.0
+------------------
+- experimental pure Python implementation of Fieldset - for internal testing at the moment
+
+
 1.9.0
 ------------------
 - the plot functions now automatically plot inline if running inside a Jupyter notebook
