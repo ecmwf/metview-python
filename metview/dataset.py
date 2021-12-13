@@ -18,12 +18,11 @@ import requests
 import yaml
 
 import metview as mv
-from metviewpy import param
-from metviewpy.indexer import ExperimentIndexer
-from metviewpy.indexdb import IndexDb
+from metview.metviewpy.indexer import ExperimentIndexer
+from metview.metviewpy.indexdb import IndexDb
 from metview.track import Track
-from metviewpy.param import init_pandas_options
-from metviewpy import utils
+from metview.metviewpy.param import init_pandas_options
+from metview.metviewpy import utils
 
 
 ETC_PATH = os.path.join(os.path.dirname(__file__), "etc")

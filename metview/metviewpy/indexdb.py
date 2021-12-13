@@ -14,9 +14,14 @@ import os
 
 import pandas as pd
 
-from metviewpy.indexer import GribIndexer, FieldsetIndexer
-from metviewpy.param import ParamInfo, ParamNameDesc, ParamIdDesc, init_pandas_options
-from metviewpy.ipython import is_ipython_active
+from .indexer import GribIndexer, FieldsetIndexer
+from .param import (
+    ParamInfo,
+    ParamNameDesc,
+    ParamIdDesc,
+    init_pandas_options,
+)
+from .ipython import is_ipython_active
 
 
 # logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")

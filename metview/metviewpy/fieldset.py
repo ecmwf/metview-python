@@ -16,11 +16,11 @@ from typing import ValuesView
 import numpy as np
 import eccodes
 
-import metviewpy.maths as maths
+from . import maths
 from .temporary import temp_file
 
-import metviewpy.indexdb as indexdb
-import metviewpy.utils as utils
+from . import indexdb as indexdb
+from . import utils
 
 
 BITS_PER_VALUE_FOR_WRITING = 24

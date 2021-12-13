@@ -21,7 +21,7 @@ import cffi
 import numpy as np
 from numpy.lib.arraysetops import _setxor1d_dispatcher, isin
 
-from metviewpy.indexdb import FieldsetDb
+from metview.metviewpy.indexdb import FieldsetDb
 from metview.dataset import Dataset
 from metview.style import (
     GeoView,
@@ -32,8 +32,8 @@ from metview.style import (
     make_geoview,
 )
 from metview import plotting
-from metviewpy.ipython import is_ipython_active, import_widgets
-from metviewpy import utils
+from metview.metviewpy.ipython import is_ipython_active, import_widgets
+from metview.metviewpy import utils
 
 __version__ = "1.10.0"
 
@@ -103,11 +103,14 @@ class MetviewInvoker:
         try:
             subprocess.Popen(metview_flags)
         except Exception as exp:  # pragma: no cover
-            print(
-                "Could not run the Metview executable ('" + metview_startup_cmd + "'); "
-                "check that the binaries for Metview (version 5 at least) are installed "
-                "and are in the PATH."
-            )
+            if "METVIEW_PYTHON_ONLY" not in os.environ:
+                print(
+                    "Could not run the Metview executable ('"
+                    + metview_startup_cmd
+                    + "'); "
+                    "check that the binaries for Metview (version 5 at least) are installed "
+                    "and are in the PATH."
+                )
             raise exp
 
         # wait for Metview to respond...
@@ -672,7 +675,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         if self.val_pointer is not None:  #  we will overwrite ourselves, so delete
             lib.p_destroy_value(self.val_pointer)
         self.steal_val_pointer(temp)
-        self._db =  None
+        self._db = None
 
     def to_dataset(self, **kwarg):
         # soft dependency on cfgrib

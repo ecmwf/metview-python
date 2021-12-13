@@ -16,7 +16,7 @@ import logging
 import os
 from pathlib import Path
 
-from metviewpy import utils
+from . import utils
 import numpy as np
 import pandas as pd
 import yaml

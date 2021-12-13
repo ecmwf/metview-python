@@ -8,6 +8,7 @@
 # nor does it submit to any jurisdiction.
 
 # requires a Python 3 interpreter
+import os
 import sys
 
 if sys.version_info[0] < 3:  # pragma: no cover
@@ -23,17 +24,21 @@ if sys.version_info[0] < 3:  # pragma: no cover
 
 if len(sys.argv) != 2 or sys.argv[0] != "-m" or sys.argv[1] != "selfcheck":
 
-    from . import bindings as _bindings
+    try:
+        from . import bindings as _bindings
 
-    _bindings.bind_functions(globals(), module_name=__name__)
+        _bindings.bind_functions(globals(), module_name=__name__)
 
-    # Remove "_bindings" from the public API.
-    del _bindings
+        # Remove "_bindings" from the public API.
+        del _bindings
 
+        from . import gallery
+        from . import style
+        from metview.metviewpy import indexer
+        from . import title
+        from . import layout
+        from . import ui
 
-from . import gallery
-from . import style
-from metviewpy import indexer
-from . import title
-from . import layout
-from . import ui
+    except Exception as exp:
+        if "METVIEW_PYTHON_ONLY" not in os.environ:
+            raise exp

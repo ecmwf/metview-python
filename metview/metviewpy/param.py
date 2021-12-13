@@ -12,9 +12,9 @@ import logging
 import re
 import pandas as pd
 
-from metviewpy.indexer import GribIndexer
-from metviewpy.ipython import is_ipython_active
-from metviewpy.utils import is_fieldset_type
+from .indexer import GribIndexer
+from .ipython import is_ipython_active
+from .utils import is_fieldset_type
 
 # logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
