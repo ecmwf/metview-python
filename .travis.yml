@@ -52,7 +52,7 @@ install:
 script:
   - cd ${METVIEW_PYTHON_SRC}
   - black --check .
-  - METVIEW_PYTHON_ONLY=1 pytest --cov=metview --cov-report term-missing $EXTRA_FLAGS tests/
+  - pytest --cov=metview --cov-report term-missing $EXTRA_FLAGS tests/
 
 
 after_success:
