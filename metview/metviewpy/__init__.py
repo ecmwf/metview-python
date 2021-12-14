@@ -10,7 +10,19 @@
 
 import os
 
-if "METVIEW_PYTHON_ONLY" in os.environ:
+
+# if we're running pytest, it will need the fieldset functionality, so detect if it
+# is running and if so, import the user-facing functions
+
+
+def running_from_pytest():
+    from inspect import stack
+
+    call_stack = [s.function for s in stack()]
+    return "pytest_collection" in call_stack
+
+
+if "METVIEW_PYTHON_ONLY" in os.environ or running_from_pytest():
 
     from . import fieldset
 
