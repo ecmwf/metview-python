@@ -8,6 +8,10 @@
 # nor does it submit to any jurisdiction.
 #
 
-from . import fieldset
+import os
 
-fieldset.bind_functions(globals(), module_name=__name__)
+if "METVIEW_PYTHON_ONLY" in os.environ:
+
+    from . import fieldset
+
+    fieldset.bind_functions(globals(), module_name=__name__)
