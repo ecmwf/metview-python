@@ -57,6 +57,7 @@ setuptools.setup(
         "requests",
     ],
     tests_require=[
+        "eccodes",
         "pytest",
     ],
     test_suite="tests",
