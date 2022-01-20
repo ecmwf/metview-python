@@ -226,7 +226,10 @@ class IndexDb:
     def _make_param_info(self):
         m = self._first_index_row()
         if m:
-            pnf = ParamInfo(m["shortName"], meta=dict(m))
+            name = m["shortName"]
+            pnf = ParamInfo(
+                name, meta=dict(m), scalar=not name in ParamInfo.VECTOR_NAMES
+            )
             return pnf
         return None
 

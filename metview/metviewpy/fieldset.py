@@ -490,7 +490,8 @@ class Fieldset:
             #     # if isinstance(value, float):
             #     #    return int(value)
             #     return value
-
+            elif isinstance(index, str):
+                return self._get_db().select_with_name(index)
             else:
                 return Fieldset(fields=self._always_list(self.fields[index]))
         except IndexError as ide:
