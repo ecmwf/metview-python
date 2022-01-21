@@ -59,8 +59,27 @@ class ParamInfo:
     NUM_RE = re.compile(r"[0-9]+")
     SURF_RE = re.compile(r"^\d+\w+")
     # SURF_NAME_MAPPER = {"t2": "2t", "q2": "2q", "u10": "10u", "v10": "10v"}
-    KNOWN_SURF_NAMES = ["2t", "2q", "10u", "10v", "msl", "wind10m"]
-    VECTOR_NAMES = ["wind10m", "wind3d", "wind"]  # the longest ones first
+    KNOWN_SURF_NAMES = [
+        "2t",
+        "2q",
+        "10u",
+        "10v",
+        "100u",
+        "100v",
+        "200u",
+        "200v",
+        "msl",
+        "wind10m",
+        "wind100m",
+        "wind200m",
+    ]
+    VECTOR_NAMES = [
+        "wind100m",
+        "wind200m",
+        "wind10m",
+        "wind3d",
+        "wind",
+    ]  # the longest ones first
 
     def __init__(self, name, meta=None, scalar=None):
         self.name = name

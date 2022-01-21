@@ -217,7 +217,6 @@ class TrackConf:
     def describe(self):
         self.load_data_file_list()
         init_pandas_options()
-        print("Tracks:")
         t = {"Name": [], "Suffix": []}
         for f in self.data_files:
             n, s = os.path.splitext(os.path.basename(f))

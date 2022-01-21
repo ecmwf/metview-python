@@ -31,6 +31,8 @@ NEWER = True
 class GribIndexer:
     VECTOR_PARAMS = {
         "wind10m": ["10u", "10v"],
+        "wind100m": ["100u", "100v"],
+        "wind200m": ["200u", "200v"],
         "wind": ["u", "v"],
         "wind3d": ["u", "v", "w"],
     }
