@@ -244,45 +244,6 @@ def test_fieldset_select_single_file():
         "mars.param:s",
     ]
 
-    # -------------------------
-    # wind
-    # -------------------------
-    f = mv.read(file_in_testdir("tuv_pl.grib"))
-    assert f._db is None
-
-    g = f.select(shortName="wind", level=700)
-    assert len(g) == 2
-    assert mv.grib_get(g, ["shortName", "level:l"]) == [
-        ["u", 700],
-        ["v", 700],
-    ]
-
-    assert g._db is not None
-    assert len(g._db.blocks) == 1
-    assert "wind" in g._db.blocks
-    md = [
-        ["wind"],
-        [131],
-        [20180801],
-        [1200],
-        [0],
-        [700],
-        ["isobaricInhPa"],
-        ["0"],
-        ["0001"],
-        ["od"],
-        ["oper"],
-        ["an"],
-        [0],
-        [1],
-    ]
-
-    df_ref = build_index_db_dataframe(md, key_def=DB_COLUMNS_WIND2)
-    df = g._db.blocks["wind"]
-    if not df.equals(df_ref):
-        print(df.compare(df_ref))
-        assert False
-
 
 def test_fieldset_select_date():
     # date and time

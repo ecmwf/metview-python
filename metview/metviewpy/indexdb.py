@@ -84,7 +84,9 @@ class IndexDb:
             self.load(vector=True)
         pnf = ParamInfo.build_from_name(name, param_level_types=self.param_types)
         if pnf is not None:
-            fs = self._select_fs(**pnf.make_filter())
+            fs = self._select_fs(
+                **pnf.make_filter(), _named_vector_param=(not pnf.scalar)
+            )
             if fs is not None:
                 pnf.update_meta(fs._db._first_index_row())
                 fs._param_info = pnf
@@ -101,14 +103,25 @@ class IndexDb:
         """
         LOG.debug(f"kwargs={kwargs}")
 
+        vector = kwargs.pop("_named_vector_param", False)
         max_count = kwargs.pop("max_count", -1)
 
         # print(f"kwargs={kwargs}")
         # LOG.debug(f"blocks={self.blocks}")
         dims = self._make_dims(kwargs)
+
+        # We can only have a vector param when the fs["wind"]-like operator is
+        # invoked and we deduce the shortName from the specified name
+        if vector:
+            short_name = dims.get("shortName", [])
+            if isinstance(short_name, list):
+                assert len(short_name) == 1
+
         # print(f"dims={dims}")
-        self.load(keys=list(dims.keys()), vector=("wind" in dims.get("shortName", "")))
-        db, fs = self._get_fields(dims, max_count=max_count)
+        # self.load(keys=list(dims.keys()), vector=("wind" in dims.get("shortName", "")))
+        self.load(keys=list(dims.keys()), vector=vector)
+
+        db, fs = self._get_fields(dims, max_count=max_count, vector=vector)
         # for f in r:
         #     fs.append(f)
         fs._db = db
@@ -117,15 +130,21 @@ class IndexDb:
         # print(f"blocks={fs._db.blocks}")
         return fs
 
-    def _get_fields(self, dims, max_count=-1):
+    def _get_fields(self, dims, max_count=-1, vector=False):
 
         res = self.fieldset_class()
         dfs = {}
         LOG.debug(f"dims={dims}")
-        for key in self.blocks.keys():
-            self._get_fields_for_block(key, dims, dfs, res, max_count)
-            if max_count != -1 and len(res) >= max_count:
-                break
+
+        name_filter = "shortName" in dims or "paramId" in dims
+        if not vector and name_filter:
+            if "scalar" in self.blocks.keys():
+                self._get_fields_for_block("scalar", dims, dfs, res, max_count)
+        else:
+            for key in self.blocks.keys():
+                self._get_fields_for_block(key, dims, dfs, res, max_count)
+                if max_count != -1 and len(res) >= max_count:
+                    break
 
         # LOG.debug(f"len_res={len(res)}")
         # LOG.debug(f"dfs={dfs}")
