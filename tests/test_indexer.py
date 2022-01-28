@@ -17,16 +17,11 @@ import pandas as pd
 
 if "METVIEW_PYTHON_ONLY" not in os.environ:
     import metview as mv
-    from metview.metviewpy.param import ParamInfo
-    from metview.metviewpy.indexer import GribIndexer
 else:
     import metview.metviewpy as mv
-    from metview.metviewpy.param import ParamInfo
-    from metview.metviewpy.indexer import GribIndexer
 
-    # from metview.metviewpy.indexdb import FieldsetDb
-    # from metview.metviewpy import utils
-    # from metview.metviewpy.temporary import is_temp_file
+from metview.metviewpy.param import ParamInfo
+from metview.metviewpy.indexer import GribIndexer
 
 PATH = os.path.dirname(__file__)
 
