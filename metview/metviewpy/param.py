@@ -280,6 +280,7 @@ class ParamDesc:
             df = pd.DataFrame(md)
             md.pop("typeOfLevel")
             md.pop("level")
+
             for md_key in list(md.keys()):
                 d = df[md_key].unique().tolist()
                 self.md[md_key] = d
@@ -293,6 +294,12 @@ class ParamDesc:
                 dft = df.query(q)
                 if dft is not None:
                     self.levels[t] = dft["level"].unique().tolist()
+
+            for k, v in self.md.items():
+                self.md[k] = sorted(v)
+
+            for k, v in self.levels.items():
+                self.levels[k] = sorted(v)
 
     @property
     def short_name(self):

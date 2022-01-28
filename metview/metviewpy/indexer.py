@@ -241,7 +241,7 @@ class GribIndexer:
                     i += 1
         return r
 
-    def _make_dataframe(self, data, columns=None):
+    def _make_dataframe(self, data, sort=False, columns=None):
         if columns is not None:
             df = pd.DataFrame(data, columns=columns)
         else:
@@ -251,7 +251,8 @@ class GribIndexer:
             if self.pd_types.get(c, "") in ["Int32", "Int64"]:
                 df[c].fillna(value=np.nan, inplace=True)
             df = df.astype(self.pd_types)
-        df = GribIndexer._sort_dataframe(df)
+        if sort:
+            df = GribIndexer._sort_dataframe(df)
 
         return df
 
@@ -285,7 +286,6 @@ class GribIndexer:
     @staticmethod
     def read_dataframe(key, dir_name):
         # assert len(key) == len(GribIndexer.BLOCK_KEYS)
-        # name = "_".join(key)
         name = key
         f_name = os.path.join(dir_name, f"{name}.csv.gz")
         # LOG.debug("f_name={}".format(f_name))
@@ -310,18 +310,6 @@ class GribIndexer:
     def _convert_query_value(v, col_type):
         # print(f"v={v} {type(v)} {col_type}")
         return v if col_type != "object" else str(v)
-        # if isinstance(v, datetime.datetime):
-        #     t = v.strftime("%Y%m%d%H%M")
-        #     # print(f"  -> {t}")
-        #     return int(t) if col_type != "object" else t
-        # elif isinstance(v, datetime.date):
-        #     t = v.strftime("%Y%m%d")
-        #     return int(t) if col_type != "object" else t
-        # elif isinstance(v, datetime.time):
-        #     t = v.strftime("%H%M")
-        #     return int(t) if col_type != "object" else t
-        # else:
-        #     return v if col_type != "object" else str(v)
 
     @staticmethod
     def _check_datetime_in_filter_input(keys):
@@ -333,7 +321,7 @@ class GribIndexer:
                 keys.get(name_date, []) or keys.get(name_time, [])
             ):
                 raise Exception(
-                    "Cannot specify {name} together with {name_date} and {name_time}!"
+                    f"Cannot specify {name} together with {name_date} and {name_time}!"
                 )
 
     @staticmethod
@@ -374,7 +362,7 @@ class GribIndexer:
                     v[i] = pt_type(t)
                     # print(f" t={t} -> {v[i]}")
 
-        # remap some names to ones already in the default set of indexer keys
+        # remap some names to the ones already in the default set of indexer keys
         if name in ["type", "mars.type"]:
             name = "marsType"
         elif name in ["stream", "mars.stream"]:
@@ -445,7 +433,7 @@ class FieldsetIndexer(GribIndexer):
     def scan(self, vector=False):
         data = self._scan(self.db.fs, mapped_params=self.db.mapped_params)
         if data:
-            df = self._make_dataframe(data)
+            df = self._make_dataframe(data, sort=False)
             self.db.blocks["scalar"] = df
             if vector:
                 self._scan_vector()
@@ -479,7 +467,7 @@ class FieldsetIndexer(GribIndexer):
                     cols = [*self.keys]
                     for i in range(comp_num):
                         cols.extend([f"_msgIndex{i+1}"])
-                    w_df = self._make_dataframe(r, columns=cols)
+                    w_df = self._make_dataframe(r, sort=False, columns=cols)
                     self.db.blocks[v_name] = w_df
                     # self._write_dataframe(w_df, v_name, out_dir)
                 else:
@@ -574,7 +562,7 @@ class ExperimentIndexer(GribIndexer):
 
             # scalar
             LOG.info(f"generate scalar fields index ...")
-            df = self._make_dataframe(data)
+            df = self._make_dataframe(data, sort=True)
             self.db.blocks["scalar"] = df
             self._write_dataframe(df, "scalar", out_dir)
 
@@ -587,7 +575,7 @@ class ExperimentIndexer(GribIndexer):
                     cols = [*self.keys]
                     for i in range(comp_num):
                         cols.extend([f"_msgIndex{i+1}", f"_fileIndex{i+1}"])
-                    w_df = self._make_dataframe(r, columns=cols)
+                    w_df = self._make_dataframe(r, sort=True, columns=cols)
                     # print(f"wind_len={len(w_df.index)}")
                     self.db.blocks[v_name] = w_df
                     self._write_dataframe(w_df, v_name, out_dir)

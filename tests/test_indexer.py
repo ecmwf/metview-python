@@ -15,9 +15,18 @@ import os
 import numpy as np
 import pandas as pd
 
-import metview as mv
-from metview.metviewpy.param import ParamInfo
-from metview.metviewpy.indexer import GribIndexer
+if "METVIEW_PYTHON_ONLY" not in os.environ:
+    import metview as mv
+    from metview.metviewpy.param import ParamInfo
+    from metview.metviewpy.indexer import GribIndexer
+else:
+    import metview.metviewpy as mv
+    from metview.metviewpy.param import ParamInfo
+    from metview.metviewpy.indexer import GribIndexer
+
+    # from metview.metviewpy.indexdb import FieldsetDb
+    # from metview.metviewpy import utils
+    # from metview.metviewpy.temporary import is_temp_file
 
 PATH = os.path.dirname(__file__)
 
@@ -48,8 +57,7 @@ def test_fieldset_select_single_file():
     g = f.select(shortName="u", level=700)
     assert len(g) == 1
     assert mv.grib_get(g, ["shortName", "level:l"]) == [["u", 700]]
-
-    g1 = mv.read(data=f, param="u", levelist=700)
+    g1 = f[7]
     d = g - g1
     assert np.allclose(d.values(), np.zeros(len(d.values())))
 
@@ -87,8 +95,7 @@ def test_fieldset_select_single_file():
     g = f.select(paramId=131, level=700)
     assert len(g) == 1
     assert mv.grib_get(g, ["paramId:l", "level:l"]) == [[131, 700]]
-
-    g1 = mv.read(data=f, param="131.128", levelist=700)
+    g1 = f[7]
     d = g - g1
     assert np.allclose(d.values(), np.zeros(len(d.values())))
 
@@ -126,22 +133,22 @@ def test_fieldset_select_single_file():
     g = f.select(shortName=["t", "u"], level=[700, 500])
     assert len(g) == 4
     assert mv.grib_get(g, ["shortName", "level:l"]) == [
-        ["t", 500],
         ["t", 700],
-        ["u", 500],
         ["u", 700],
+        ["t", 500],
+        ["u", 500],
     ]
 
     assert g._db is not None
     assert len(g._db.blocks) == 1
     assert "scalar" in g._db.blocks
     md = [
-        ["t", "t", "u", "u"],
-        [130, 130, 131, 131],
+        ["t", "u", "t", "u"],
+        [130, 131, 130, 131],
         [20180801] * 4,
         [1200] * 4,
         [0] * 4,
-        [500, 700, 500, 700],
+        [700, 700, 500, 500],
         ["isobaricInhPa"] * 4,
         ["0"] * 4,
         ["0001"] * 4,
@@ -182,15 +189,15 @@ def test_fieldset_select_single_file():
     g = f.select(shortName=["t"], level=[500, 700], marsType="an")
     assert len(g) == 2
     assert mv.grib_get(g, ["shortName", "level:l", "marsType"]) == [
-        ["t", 500, "an"],
         ["t", 700, "an"],
+        ["t", 500, "an"],
     ]
 
     g = f.select(shortName=["t"], level=[500, 700], type="an")
     assert len(g) == 2
     assert mv.grib_get(g, ["shortName", "level:l", "type"]) == [
-        ["t", 500, "an"],
         ["t", 700, "an"],
+        ["t", 500, "an"],
     ]
     # check the index db contents. "type" must be mapped to the "marsType" column of the
     # db so no rescanning should happen. The db should only contain the default set of columns.
@@ -205,8 +212,8 @@ def test_fieldset_select_single_file():
     g = f.select({"shortName": "t", "level": [500, 700], "mars.type": "an"})
     assert len(g) == 2
     assert mv.grib_get(g, ["shortName", "level:l", "mars.type"]) == [
-        ["t", 500, "an"],
         ["t", 700, "an"],
+        ["t", 500, "an"],
     ]
 
     # -------------------------
@@ -218,15 +225,15 @@ def test_fieldset_select_single_file():
     g = f.select(shortName=["t"], level=[500, 700], gridType="regular_ll")
     assert len(g) == 2
     assert mv.grib_get(g, ["shortName", "level:l", "gridType"]) == [
-        ["t", 500, "regular_ll"],
         ["t", 700, "regular_ll"],
+        ["t", 500, "regular_ll"],
     ]
 
     g = f.select({"shortName": ["t"], "level": [500, 700], "mars.param:s": "130.128"})
     assert len(g) == 2
     assert mv.grib_get(g, ["shortName", "level:l", "mars.param"]) == [
-        ["t", 500, "130.128"],
         ["t", 700, "130.128"],
+        ["t", 500, "130.128"],
     ]
 
     assert g._db is not None
@@ -318,8 +325,8 @@ def test_fieldset_select_date():
 
     ref = [
         ["t", "20201221", "1200", "3"],
-        ["t", "20201221", "1200", "9"],
         ["z", "20201221", "1200", "3"],
+        ["t", "20201221", "1200", "9"],
         ["z", "20201221", "1200", "9"],
     ]
 
@@ -396,7 +403,7 @@ def test_fieldset_select_multi_file():
         ["t", 61, "hybrid"]
     ]
 
-    g1 = mv.read(data=f, param="t", levelist=61, levtype="ml")
+    g1 = f[34]
     d = g - g1
     assert np.allclose(d.values(), np.zeros(len(d.values())))
 
@@ -613,9 +620,13 @@ def test_param_info():
 
 
 def test_param_info_from_fs_single_file():
+    if "METVIEW_PYTHON_ONLY" in os.environ:
+        return
+
     f = mv.read(file_in_testdir("tuv_pl.grib"))
     g = f["u700"]
     p = g.param_info
+    assert len(g) == 1
     assert p.name == "u"
     assert p.scalar == True
     md = {
@@ -637,6 +648,7 @@ def test_param_info_from_fs_single_file():
 
     g = f["wind500"]
     p = g.param_info
+    assert len(g) == 2
     assert p.name == "wind"
     assert p.scalar == False
     md = {
@@ -660,6 +672,7 @@ def test_param_info_from_fs_single_file():
     # we lose the db
     g = g + 0
     p = g.param_info
+    assert len(g) == 2
     assert p.name == "wind"
     assert p.scalar == False
     md = {
@@ -680,6 +693,7 @@ def test_param_info_from_fs_single_file():
 
     g = f["t"]
     p = g.param_info
+    assert len(g) == 6
     assert p.name == "t"
     assert p.scalar == True
     md = {
@@ -702,6 +716,7 @@ def test_param_info_from_fs_single_file():
     # we lose the db
     g = g + 0
     p = g.param_info
+    assert len(g) == 6
     assert p.name == "t"
     assert p.scalar == True
     md = {
@@ -710,7 +725,7 @@ def test_param_info_from_fs_single_file():
         "date": 20180801,
         "time": 1200,
         "step": "0",
-        "level": 300,
+        "level": 1000,
         "typeOfLevel": "isobaricInhPa",
         "number": "0",
         "experimentVersionNumber": "0001",
@@ -730,19 +745,19 @@ def test_fieldset_select_operator_single_file():
     assert len(g) == 1
     assert mv.grib_get(g, ["shortName", "level:l"]) == [["u", 700]]
 
-    g1 = mv.read(data=f, param="u", levelist=700)
+    g1 = f[7]
     d = g - g1
     assert np.allclose(d.values(), np.zeros(len(d.values())))
 
     g = f["t"]
     assert len(g) == 6
     assert mv.grib_get(g, ["shortName", "level:l"]) == [
-        ["t", 300],
-        ["t", 400],
-        ["t", 500],
-        ["t", 700],
-        ["t", 850],
         ["t", 1000],
+        ["t", 850],
+        ["t", 700],
+        ["t", 500],
+        ["t", 400],
+        ["t", 300],
     ]
 
     try:
@@ -766,7 +781,7 @@ def test_fieldset_select_operator_multi_file():
         ["t", 61, "hybrid"]
     ]
 
-    g1 = mv.read(data=f, param="t", levelist=61, levtype="ml")
+    g1 = f[34]
     d = g - g1
     assert np.allclose(d.values(), np.zeros(len(d.values())))
 
