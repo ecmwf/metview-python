@@ -501,15 +501,50 @@ class FieldsetDb(IndexDb):
             print(df)
         return df
 
-    def sort_new(self, *args, ascending=True):
+    def sort_new(self, *args, **kwargs):
+        # handle arguments
         keys = []
-        if len(args) == 1:
+        asc = None
+        if len(args) >= 1:
             keys = args[0]
             if not isinstance(keys, list):
                 keys = [keys]
+            # optional positional argument - we only implement it to provide
+            # backward compability for the sort() Macro function
+            if len(args) == 2:
+                asc = args[1]
+                if isinstance(asc, list):
+                    if len(keys) != len(asc):
+                        raise ValueError(
+                            f"When order is specified as a list it must have the same number of elements as keys! {len(keys)} != {len(asc)}"
+                        )
+                    for i, v in enumerate(asc):
+                        if v not in [">", "<"]:
+                            raise ValueError(
+                                f'Invalid value={v} in order! Only ">" and "<" are allowed!'
+                            )
+                        asc[i] = True if v == "<" else False
+                else:
+                    if asc not in [">", "<"]:
+                        raise ValueError(
+                            f'Invalid value={asc} in order! Only ">" and "<" are allowed!'
+                        )
+                    asc = True if asc == "<" else False
+
+        if "ascending" in kwargs:
+            if asc is not None:
+                raise ValueError(
+                    "sort() cannot take both a second positional argument and the ascending keyword argument!"
+                )
+            asc = kwargs.pop("ascending")
+
+        if asc is None:
+            asc = True
 
         if len(keys) == 0:
             keys = self.indexer.DEFAULT_SORT_KEYS
+
+        print(f"keys={keys} asc={asc}")
 
         # get metadata
         self.load(keys=keys, vector=False)
@@ -518,6 +553,7 @@ class FieldsetDb(IndexDb):
         if scalar_df is not None:
             dfs = scalar_df.sort_values(
                 keys,
+                ascending=asc,
                 key=lambda col: col.str.pad(7, side="left", fillchar="0")
                 if col.name == "step"
                 else col,

@@ -50,13 +50,22 @@ def build_md_dataframe(fs, keys):
     return pd.DataFrame.from_dict(md)
 
 
-def sort_md_dataframe(md, keys):
-    md_s = md.sort_values(
-        keys,
-        key=lambda col: col.str.pad(7, side="left", fillchar="0")
-        if col.name == "step"
-        else col,
-    )
+def sort_md_dataframe(md, keys, ascending=None):
+    if ascending is None:
+        md_s = md.sort_values(
+            keys,
+            key=lambda col: col.str.pad(7, side="left", fillchar="0")
+            if col.name == "step"
+            else col,
+        )
+    else:
+        md_s = md.sort_values(
+            keys,
+            ascending=ascending,
+            key=lambda col: col.str.pad(7, side="left", fillchar="0")
+            if col.name == "step"
+            else col,
+        )
     return md_s.reset_index(drop=True)
 
 
@@ -1062,38 +1071,196 @@ def test_sort():
 
     fs = mv.read(file_in_testdir("sort_data.grib"))
 
-    # get metadata in original order as a dataframe
-    keys = ["date", "time", "step", "number", "level", "paramId"]
+    # get metadata in original order as a dataframe. Note: shortName and units are non-default
+    # sort keys!
+    keys = ["date", "time", "step", "number", "level", "paramId", "shortName", "units"]
     md_ori = build_md_dataframe(fs, keys)
 
     # default sorting
-    date = ["20190603", "20190604", "20190605"]
-    time = ["0000", "1200"]
-    step = ["0", "6", "12", "18"]
-    number = ["1", "2", "3"]
-    level = ["300", "500", "700"]
-    param = ["130", "131", "133"]  # (t,u,q)
-    md_ref = itertools.product(date, time, step, number, level, param)
-
-    # when sorting the metadata with pandas we should get the same order as with
-    # product
-    md_ref_pd = sort_md_dataframe(md_ori, keys)
-    for d, d_ref in zip(md_ref, md_ref_pd.itertuples()):
-        assert d == d_ref[1:]
-
     r = fs.sort_new()
     assert len(fs) == len(r)
     md = build_md_dataframe(r, keys)
-    if not md.equals(md_ref_pd):
-        print(md.compare(md_ref_pd))
+    md_ref = sort_md_dataframe(md_ori, keys)
+    if not md.equals(md_ref):
+        print(md.compare(md_ref))
         assert False
 
-    # custom order - single key
-    for key in keys:
+    # -----------------------------
+    # default sorting direction
+    # -----------------------------
+
+    sort_keys = [
+        "date",
+        "time",
+        "step",
+        "number",
+        "level",
+        "paramId",
+        "shortName",
+        "units",
+        ["level"],
+        ["date", "level"],
+        ["level", "units"],
+        keys,
+    ]
+
+    for key in sort_keys:
         r = fs.sort_new(key)
         assert len(fs) == len(r)
         md = build_md_dataframe(r, keys)
         md_ref = sort_md_dataframe(md_ori, key)
         if not md.equals(md_ref):
             print(md.compare(md_ref))
-            assert False
+            assert False, f"key={key}"
+
+    # -----------------------------
+    # custom sorting direction
+    # -----------------------------
+
+    # default keys
+
+    # ascending
+    r = fs.sort_new(ascending=True)
+    assert len(fs) == len(r)
+    md = build_md_dataframe(r, keys)
+    md_ref = sort_md_dataframe(md_ori, key, ascending=True)
+    if not md.equals(md_ref):
+        print(md.compare(md_ref))
+        assert False, f"key={key}"
+
+    # descending
+    r = fs.sort_new(ascending=False)
+    assert len(fs) == len(r)
+    md = build_md_dataframe(r, keys)
+    md_ref = sort_md_dataframe(md_ori, key, ascending=False)
+    if not md.equals(md_ref):
+        print(md.compare(md_ref))
+        assert False, f"key={key}"
+
+    # single key
+    key = "level"
+
+    # ascending
+    r = fs.sort_new(key, "<")
+    assert len(fs) == len(r)
+    md = build_md_dataframe(r, keys)
+    md_ref = sort_md_dataframe(md_ori, key, ascending=True)
+    if not md.equals(md_ref):
+        print(md.compare(md_ref))
+        assert False, f"key={key}"
+
+    r = fs.sort_new(key, ["<"])
+    assert len(fs) == len(r)
+    md = build_md_dataframe(r, keys)
+    if not md.equals(md_ref):
+        print(md.compare(md_ref))
+        assert False, f"key={key}"
+
+    r = fs.sort_new(key, ascending=True)
+    assert len(fs) == len(r)
+    md = build_md_dataframe(r, keys)
+    if not md.equals(md_ref):
+        print(md.compare(md_ref))
+        assert False, f"key={key}"
+
+    # descending
+    r = fs.sort_new(key, ">")
+    assert len(fs) == len(r)
+    md = build_md_dataframe(r, keys)
+    md_ref = sort_md_dataframe(md_ori, key, ascending=False)
+    if not md.equals(md_ref):
+        print(md.compare(md_ref))
+        assert False, f"key={key}"
+
+    r = fs.sort_new(key, [">"])
+    assert len(fs) == len(r)
+    md = build_md_dataframe(r, keys)
+    if not md.equals(md_ref):
+        print(md.compare(md_ref))
+        assert False, f"key={key}"
+
+    r = fs.sort_new(key, ascending=False)
+    assert len(fs) == len(r)
+    md = build_md_dataframe(r, keys)
+    if not md.equals(md_ref):
+        print(md.compare(md_ref))
+        assert False, f"key={key}"
+
+    # multiple keys
+    key = ["level", "paramId", "date"]
+
+    r = fs.sort_new(key, "<")
+    assert len(fs) == len(r)
+    md = build_md_dataframe(r, keys)
+    md_ref = sort_md_dataframe(md_ori, key, ascending=True)
+    if not md.equals(md_ref):
+        print(md.compare(md_ref))
+        assert False, f"key={key}"
+
+    r = fs.sort_new(key, ascending=True)
+    assert len(fs) == len(r)
+    md = build_md_dataframe(r, keys)
+    if not md.equals(md_ref):
+        print(md.compare(md_ref))
+        assert False, f"key={key}"
+
+    r = fs.sort_new(key, ">")
+    assert len(fs) == len(r)
+    md = build_md_dataframe(r, keys)
+    md_ref = sort_md_dataframe(md_ori, key, ascending=False)
+    if not md.equals(md_ref):
+        print(md.compare(md_ref))
+        assert False, f"key={key}"
+
+    r = fs.sort_new(key, ascending=False)
+    assert len(fs) == len(r)
+    md = build_md_dataframe(r, keys)
+    if not md.equals(md_ref):
+        print(md.compare(md_ref))
+        assert False, f"key={key}"
+
+    r = fs.sort_new(key, ["<", ">", "<"])
+    assert len(fs) == len(r)
+    md = build_md_dataframe(r, keys)
+    md_ref = sort_md_dataframe(md_ori, key, ascending=[True, False, True])
+    if not md.equals(md_ref):
+        print(md.compare(md_ref))
+        assert False, f"key={key}"
+
+    r = fs.sort_new(key, ascending=[True, False, True])
+    assert len(fs) == len(r)
+    md = build_md_dataframe(r, keys)
+    if not md.equals(md_ref):
+        print(md.compare(md_ref))
+        assert False, f"key={key}"
+
+    # invalid arguments
+    try:
+        r = fs.sort_new(key, [">", "<"])
+        assert False
+    except ValueError:
+        pass
+
+    try:
+        r = fs.sort_new(key, "1")
+        assert False
+    except ValueError:
+        pass
+
+    try:
+        r = fs.sort_new(key, ascending=["True", "False"])
+        assert False
+    except ValueError:
+        pass
+
+    try:
+        r = fs.sort_new(key, ">", ascending="True")
+        assert False
+    except ValueError:
+        pass
+
+    try:
+        r = fs.sort_new(key, ">", ascending=["True", "False"])
+        assert False
+    except ValueError:
+        pass
