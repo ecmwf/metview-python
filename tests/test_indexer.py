@@ -15,6 +15,7 @@ import os
 
 import numpy as np
 import pandas as pd
+import pytest
 
 if "METVIEW_PYTHON_ONLY" not in os.environ:
     import metview as mv
@@ -1056,6 +1057,7 @@ def test_ls():
     assert ref == df.to_dict()
 
 
+@pytest.mark.skip(reason="development")
 def test_sort():
 
     fs = mv.read(file_in_testdir("sort_data.grib"))
