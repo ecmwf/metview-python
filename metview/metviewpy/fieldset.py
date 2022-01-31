@@ -770,6 +770,9 @@ class Fieldset:
     def ls(self, **kwargs):
         return self._get_db().ls(**kwargs)
 
+    def sort_new(self, *args, **kwargs):
+        return self._get_db().sort_new(*args, **kwargs)
+
     def deacc(self, skip_first=False, mark_derived=False):
         if len(self.fields) > 1:
             v = self[1:] - self[:-1]

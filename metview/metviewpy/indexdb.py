@@ -104,7 +104,7 @@ class IndexDb:
         LOG.debug(f"kwargs={kwargs}")
 
         vector = kwargs.pop("_named_vector_param", False)
-        max_count = kwargs.pop("max_count", -1)
+        max_count = kwargs.pop("_max_count", -1)
 
         # print(f"kwargs={kwargs}")
         # LOG.debug(f"blocks={self.blocks}")
@@ -118,14 +118,10 @@ class IndexDb:
                 assert len(short_name) == 1
 
         # print(f"dims={dims}")
-        # self.load(keys=list(dims.keys()), vector=("wind" in dims.get("shortName", "")))
         self.load(keys=list(dims.keys()), vector=vector)
 
         db, fs = self._get_fields(dims, max_count=max_count, vector=vector)
-        # for f in r:
-        #     fs.append(f)
         fs._db = db
-        # fs._param_info = self.get_param_info()
         # LOG.debug(f"fs={fs}")
         # print(f"blocks={fs._db.blocks}")
         return fs
@@ -138,6 +134,7 @@ class IndexDb:
 
         name_filter = "shortName" in dims or "paramId" in dims
         if not vector and name_filter:
+            # in this case filtering can only be done on the scalar block
             if "scalar" in self.blocks.keys():
                 self._get_fields_for_block("scalar", dims, dfs, res, max_count)
         else:
@@ -230,10 +227,12 @@ class IndexDb:
             return df_res
 
     def _get_fields_for_block(self, key, dims, dfs, res, max_count):
+        # print(f"key={key} dims={dims}")
         # LOG.debug(f"block={self.blocks[key]}")
         if self.blocks[key] is None:
             self._load_block(key)
         df = self._filter_df(df=self.blocks[key], dims=dims)
+        # print(f"df={df}")
         # LOG.debug(f"df={df}")
         if df is not None and not df.empty:
             df_fs = self._extract_fields(df, res, max_count)
@@ -376,11 +375,11 @@ class FieldsetDb(IndexDb):
             return None
 
         # print(f"comp_num={comp_num}")
-
         idx = [[] for k in range(comp_num)]
         comp_lst = list(range(comp_num))
         cnt = 0
         for row in df.itertuples():
+            # print(f"{row}")
             if max_count == -1 or len(fs) < max_count:
                 for comp in comp_lst:
                     fs.append(self.fs[row[-1 - (comp_num - comp - 1)]])
@@ -398,6 +397,24 @@ class FieldsetDb(IndexDb):
         for k, v in enumerate(idx):
             df[f"_msgIndex{k+1}"] = v
         return df
+
+    def _extract_scalar_fields(self, df):
+        if df.empty:
+            return None, None
+
+        assert "_msgIndex1" in df.columns
+        assert "_msgIndex2" not in df.columns
+        assert "_msgIndex3" not in df.columns
+
+        fs = self.fieldset_class()
+        for row in df.itertuples():
+            fs.append(self.fs[row[-1]])
+
+        assert len(fs) == len(df.index)
+        # generate a new dataframe
+        df = df.copy()
+        df["_msgIndex1"] = list(range(len(df.index)))
+        return df, fs
 
     def _clone(self):
         db = FieldsetDb(self.name, label=self.label, regrid_from=self.regrid_from)
@@ -484,6 +501,48 @@ class FieldsetDb(IndexDb):
             print(df)
         return df
 
+    def sort_new(self, *args, ascending=True):
+        keys = []
+        if len(args) == 1:
+            keys = args[0]
+            if not isinstance(keys, list):
+                keys = [keys]
+
+        if len(keys) == 0:
+            keys = self.indexer.DEFAULT_SORT_KEYS
+
+        # get metadata
+        self.load(keys=keys, vector=False)
+
+        scalar_df = self.blocks.get("scalar")
+        if scalar_df is not None:
+            dfs = scalar_df.sort_values(
+                keys,
+                key=lambda col: col.str.pad(7, side="left", fillchar="0")
+                if col.name == "step"
+                else col,
+            )
+            # print(f"dfs={dfs.iloc[0:5]}")
+            # print(dfs)
+
+            df, res = self._extract_scalar_fields(dfs)
+            # print(f"df={df.iloc[0:5]}")
+
+            # LOG.debug(f"len_res={len(res)}")
+            # LOG.debug(f"dfs={dfs}")
+            # LOG.debug(f"res={res}")
+            c = FieldsetDb(
+                res,
+                name=self.name,
+                blocks={"scalar": df},
+                label=self.label,
+                mapped_params=self.mapped_params,
+                regrid_from=self.regrid_from,
+            )
+
+            res._db = c
+        return res
+
     def speed(self):
         r = self.fieldset_class()
         if len(self.fs) >= 2:
@@ -534,7 +593,7 @@ class FieldsetDb(IndexDb):
         if param_id:
             a["paramId"] = param_id
         if a:
-            a["max_count"] = 1
+            a["_max_count"] = 1
             r = self.select(**a)
             if r is not None and len(r) > 0:
                 md = r[0].grib_get(["name", "units"])

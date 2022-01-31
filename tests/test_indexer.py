@@ -10,6 +10,7 @@
 
 import copy
 import datetime
+import itertools
 import os
 
 import numpy as np
@@ -40,6 +41,22 @@ def build_index_db_dataframe(column_data, key_def=None):
     c = {v: column_data[i] for i, v in enumerate(list(key_def.keys()))}
     pd_types = {k: v[1] for k, v in key_def.items()}
     return pd.DataFrame(c).astype(pd_types)
+
+
+def build_md_dataframe(fs, keys):
+    val = fs.grib_get(keys, "key")
+    md = {k: v for k, v in zip(keys, val)}
+    return pd.DataFrame.from_dict(md)
+
+
+def sort_md_dataframe(md, keys):
+    md_s = md.sort_values(
+        keys,
+        key=lambda col: col.str.pad(7, side="left", fillchar="0")
+        if col.name == "step"
+        else col,
+    )
+    return md_s.reset_index(drop=True)
 
 
 def test_fieldset_select_single_file():
@@ -857,7 +874,7 @@ def test_describe():
         }
     }
 
-    assert ref == df.to_dict()
+    assert ref["val"] == df["val"].to_dict()
 
     df = f.describe(param="t", no_print=True)
     assert ref == df.to_dict()
@@ -1037,3 +1054,44 @@ def test_ls():
     }
 
     assert ref == df.to_dict()
+
+
+def test_sort():
+
+    fs = mv.read(file_in_testdir("sort_data.grib"))
+
+    # get metadata in original order as a dataframe
+    keys = ["date", "time", "step", "number", "level", "paramId"]
+    md_ori = build_md_dataframe(fs, keys)
+
+    # default sorting
+    date = ["20190603", "20190604", "20190605"]
+    time = ["0000", "1200"]
+    step = ["0", "6", "12", "18"]
+    number = ["1", "2", "3"]
+    level = ["300", "500", "700"]
+    param = ["130", "131", "133"]  # (t,u,q)
+    md_ref = itertools.product(date, time, step, number, level, param)
+
+    # when sorting the metadata with pandas we should get the same order as with
+    # product
+    md_ref_pd = sort_md_dataframe(md_ori, keys)
+    for d, d_ref in zip(md_ref, md_ref_pd.itertuples()):
+        assert d == d_ref[1:]
+
+    r = fs.sort_new()
+    assert len(fs) == len(r)
+    md = build_md_dataframe(r, keys)
+    if not md.equals(md_ref_pd):
+        print(md.compare(md_ref_pd))
+        assert False
+
+    # custom order - single key
+    for key in keys:
+        r = fs.sort_new(key)
+        assert len(fs) == len(r)
+        md = build_md_dataframe(r, keys)
+        md_ref = sort_md_dataframe(md_ori, key)
+        if not md.equals(md_ref):
+            print(md.compare(md_ref))
+            assert False

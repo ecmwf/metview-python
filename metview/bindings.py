@@ -718,6 +718,11 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             self._db = FieldsetDb(fs=self)
         return self._db.ls(**kwargs)
 
+    def sort_new(self, *args, **kwargs):
+        if self._db is None:
+            self._db = FieldsetDb(fs=self)
+        return self._db.sort_new(*args, **kwargs)
+
     @property
     def param_info(self):
         if self._param_info is None:

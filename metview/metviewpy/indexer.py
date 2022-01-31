@@ -56,6 +56,15 @@ class GribIndexer:
     DEFAULT_ECC_KEYS = [f"{k}:{v[0]}" for k, v in DEFAULT_KEYS.items()]
     BLOCK_KEYS = ["shortName", "typeOfLevel"]
 
+    DEFAULT_SORT_KEYS = [
+        "date",
+        "time",
+        "step",
+        "number",
+        "level",
+        "typeOfLevel",
+        "paramId",
+    ]
     DATE_KEYS = {
         k: ("l", "Int64", int)
         for k in ["date", "dataDate", "validityDate", "mars.date", "marsDate"]
@@ -442,6 +451,8 @@ class FieldsetIndexer(GribIndexer):
         LOG.info(f" scan fields ...")
         data = {}
         # print(f"fs_len={len(fs)}")
+        # print(f"keys_ecc={self.keys_ecc}")
+        # assert 1 == 2
         if utils.is_fieldset_type(fs) and len(fs) > 0:
             md_vals = fs.grib_get(self.keys_ecc, "key")
             if mapped_params:
