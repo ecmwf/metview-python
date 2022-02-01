@@ -10,12 +10,12 @@
 
 import copy
 import datetime
-import itertools
 import os
+from black import assert_equivalent
 
 import numpy as np
 import pandas as pd
-import pytest
+
 
 if "METVIEW_PYTHON_ONLY" not in os.environ:
     import metview as mv
@@ -44,29 +44,24 @@ def build_index_db_dataframe(column_data, key_def=None):
     return pd.DataFrame(c).astype(pd_types)
 
 
-def build_md_dataframe(fs, keys):
+def file_in_sort_dir(filename):
+    return os.path.join(PATH, "sort", filename)
+
+
+def build_metadata_dataframe(fs, keys):
     val = fs.grib_get(keys, "key")
     md = {k: v for k, v in zip(keys, val)}
     return pd.DataFrame.from_dict(md)
 
 
-def sort_md_dataframe(md, keys, ascending=None):
-    if ascending is None:
-        md_s = md.sort_values(
-            keys,
-            key=lambda col: col.str.pad(7, side="left", fillchar="0")
-            if col.name == "step"
-            else col,
-        )
-    else:
-        md_s = md.sort_values(
-            keys,
-            ascending=ascending,
-            key=lambda col: col.str.pad(7, side="left", fillchar="0")
-            if col.name == "step"
-            else col,
-        )
-    return md_s.reset_index(drop=True)
+def read_sort_meta_from_csv(name):
+    f_name = file_in_sort_dir(f"{name}.csv.gz")
+    return pd.read_csv(f_name, index_col=None, dtype=str)
+
+
+def write_sort_meta_to_csv(name, md):
+    f_name = file_in_sort_dir(f"{name}.csv.gz")
+    md.to_csv(path_or_buf=f_name, header=True, index=False, compression="gzip")
 
 
 def test_fieldset_select_single_file():
@@ -1066,30 +1061,17 @@ def test_ls():
     assert ref == df.to_dict()
 
 
-@pytest.mark.skip(reason="development")
 def test_sort():
 
-    fs = mv.read(file_in_testdir("sort_data.grib"))
+    # In each message the message index (1 based) is encoded
+    # into latitudeOfLastGridPoint!
+    fs = mv.read(file_in_sort_dir("sort_data.grib"))
 
-    # get metadata in original order as a dataframe. Note: shortName and units are non-default
-    # sort keys!
-    keys = ["date", "time", "step", "number", "level", "paramId", "shortName", "units"]
-    md_ori = build_md_dataframe(fs, keys)
+    default_sort_keys = ["date", "time", "step", "number", "level", "paramId"]
+    assert GribIndexer.DEFAULT_SORT_KEYS == default_sort_keys
 
-    # default sorting
-    r = fs.sort_new()
-    assert len(fs) == len(r)
-    md = build_md_dataframe(r, keys)
-    md_ref = sort_md_dataframe(md_ori, keys)
-    if not md.equals(md_ref):
-        print(md.compare(md_ref))
-        assert False
-
-    # -----------------------------
-    # default sorting direction
-    # -----------------------------
-
-    sort_keys = [
+    # Note: shortName, units and latitudeOfLastGridPoint are non-default sort keys!
+    keys = [
         "date",
         "time",
         "step",
@@ -1098,20 +1080,67 @@ def test_sort():
         "paramId",
         "shortName",
         "units",
-        ["level"],
-        ["date", "level"],
-        ["level", "units"],
-        keys,
+        "latitudeOfLastGridPoint",
     ]
 
-    for key in sort_keys:
-        r = fs.sort_new(key)
+    # the reference csv files were generated like this:
+    #   write_sort_meta_to_csv(f_name, md)
+    #
+    # the correctness of the reference was tested by generating md_ref using
+    # the GribIndexer and comparing it to md. E.g.:
+    #   md_ori = build_metadata_dataframe(fs, keys)
+    #   md_ref = GribIndexer._sort_dataframe(md_ori, columns=default_sort_keys)
+    #   assert md.equals(md_ref)
+
+    # default sorting
+    f_name = "default"
+    r = fs.sort()
+    assert len(fs) == len(r)
+    md = build_metadata_dataframe(r, keys)
+    md_ref = read_sort_meta_from_csv(f_name)
+    if not md.equals(md_ref):
+        print(md.compare(md_ref))
+        assert False
+
+    # -----------------------------
+    # default sorting direction
+    # -----------------------------
+
+    sort_keys = {
+        k: k
+        for k in [
+            "date",
+            "time",
+            "step",
+            "number",
+            "level",
+            "paramId",
+            "shortName",
+            "units",
+        ]
+    }
+    sort_keys["date_level"] = ["date", "level"]
+    sort_keys["level_units"] = ["level", "units"]
+    sort_keys["keys"] = keys
+
+    for f_name, key in sort_keys.items():
+        r = fs.sort(key)
         assert len(fs) == len(r)
-        md = build_md_dataframe(r, keys)
-        md_ref = sort_md_dataframe(md_ori, key)
+        md = build_metadata_dataframe(r, keys)
+        md_ref = read_sort_meta_from_csv(f_name)
         if not md.equals(md_ref):
             print(md.compare(md_ref))
             assert False, f"key={key}"
+
+    # single key as list
+    key = f_name = "level"
+    r = fs.sort([key])
+    assert len(fs) == len(r)
+    md = build_metadata_dataframe(r, keys)
+    md_ref = read_sort_meta_from_csv(f_name)
+    if not md.equals(md_ref):
+        print(md.compare(md_ref))
+        assert False, f"key={key}"
 
     # -----------------------------
     # custom sorting direction
@@ -1120,68 +1149,72 @@ def test_sort():
     # default keys
 
     # ascending
-    r = fs.sort_new(ascending=True)
+    f_name = "default"
+    r = fs.sort(ascending=True)
     assert len(fs) == len(r)
-    md = build_md_dataframe(r, keys)
-    md_ref = sort_md_dataframe(md_ori, key, ascending=True)
+    md = build_metadata_dataframe(r, keys)
+    md_ref = read_sort_meta_from_csv(f_name)
     if not md.equals(md_ref):
         print(md.compare(md_ref))
-        assert False, f"key={key}"
+        assert False, "default ascending"
 
     # descending
-    r = fs.sort_new(ascending=False)
+    f_name = "default_desc"
+    r = fs.sort(ascending=False)
     assert len(fs) == len(r)
-    md = build_md_dataframe(r, keys)
-    md_ref = sort_md_dataframe(md_ori, key, ascending=False)
+    md = build_metadata_dataframe(r, keys)
+    md_ref = read_sort_meta_from_csv(f_name)
     if not md.equals(md_ref):
         print(md.compare(md_ref))
-        assert False, f"key={key}"
+        assert False, "default descending"
 
     # single key
     key = "level"
 
     # ascending
-    r = fs.sort_new(key, "<")
+    f_name = f"{key}_asc"
+    r = fs.sort(key, "<")
     assert len(fs) == len(r)
-    md = build_md_dataframe(r, keys)
-    md_ref = sort_md_dataframe(md_ori, key, ascending=True)
+    md = build_metadata_dataframe(r, keys)
+    md_ref = read_sort_meta_from_csv(f_name)
     if not md.equals(md_ref):
         print(md.compare(md_ref))
         assert False, f"key={key}"
 
-    r = fs.sort_new(key, ["<"])
+    r = fs.sort(key, ["<"])
     assert len(fs) == len(r)
-    md = build_md_dataframe(r, keys)
+    md = build_metadata_dataframe(r, keys)
     if not md.equals(md_ref):
         print(md.compare(md_ref))
         assert False, f"key={key}"
 
-    r = fs.sort_new(key, ascending=True)
+    r = fs.sort(key, ascending=True)
     assert len(fs) == len(r)
-    md = build_md_dataframe(r, keys)
+    md = build_metadata_dataframe(r, keys)
     if not md.equals(md_ref):
         print(md.compare(md_ref))
         assert False, f"key={key}"
 
     # descending
-    r = fs.sort_new(key, ">")
+    f_name = f"{key}_desc"
+    r = fs.sort(key, ">")
     assert len(fs) == len(r)
-    md = build_md_dataframe(r, keys)
-    md_ref = sort_md_dataframe(md_ori, key, ascending=False)
+    md = build_metadata_dataframe(r, keys)
+    md_ref = read_sort_meta_from_csv(f_name)
     if not md.equals(md_ref):
         print(md.compare(md_ref))
         assert False, f"key={key}"
 
-    r = fs.sort_new(key, [">"])
+    r = fs.sort(key, [">"])
     assert len(fs) == len(r)
-    md = build_md_dataframe(r, keys)
+    md = build_metadata_dataframe(r, keys)
     if not md.equals(md_ref):
         print(md.compare(md_ref))
         assert False, f"key={key}"
 
-    r = fs.sort_new(key, ascending=False)
+    r = fs.sort(key, ascending=False)
     assert len(fs) == len(r)
-    md = build_md_dataframe(r, keys)
+    md = build_metadata_dataframe(r, keys)
     if not md.equals(md_ref):
         print(md.compare(md_ref))
         assert False, f"key={key}"
@@ -1189,78 +1222,81 @@ def test_sort():
     # multiple keys
     key = ["level", "paramId", "date"]
 
-    r = fs.sort_new(key, "<")
+    f_name = "multi_asc"
+    r = fs.sort(key, "<")
     assert len(fs) == len(r)
-    md = build_md_dataframe(r, keys)
-    md_ref = sort_md_dataframe(md_ori, key, ascending=True)
+    md = build_metadata_dataframe(r, keys)
+    md_ref = read_sort_meta_from_csv(f_name)
     if not md.equals(md_ref):
         print(md.compare(md_ref))
         assert False, f"key={key}"
 
-    r = fs.sort_new(key, ascending=True)
+    r = fs.sort(key, ascending=True)
     assert len(fs) == len(r)
-    md = build_md_dataframe(r, keys)
+    md = build_metadata_dataframe(r, keys)
     if not md.equals(md_ref):
         print(md.compare(md_ref))
         assert False, f"key={key}"
 
-    r = fs.sort_new(key, ">")
+    f_name = "multi_desc"
+    r = fs.sort(key, ">")
     assert len(fs) == len(r)
-    md = build_md_dataframe(r, keys)
-    md_ref = sort_md_dataframe(md_ori, key, ascending=False)
+    md = build_metadata_dataframe(r, keys)
+    md_ref = read_sort_meta_from_csv(f_name)
     if not md.equals(md_ref):
         print(md.compare(md_ref))
         assert False, f"key={key}"
 
-    r = fs.sort_new(key, ascending=False)
+    r = fs.sort(key, ascending=False)
     assert len(fs) == len(r)
-    md = build_md_dataframe(r, keys)
+    md = build_metadata_dataframe(r, keys)
     if not md.equals(md_ref):
         print(md.compare(md_ref))
         assert False, f"key={key}"
 
-    r = fs.sort_new(key, ["<", ">", "<"])
+    f_name = "multi_mixed"
+    r = fs.sort(key, ["<", ">", "<"])
     assert len(fs) == len(r)
-    md = build_md_dataframe(r, keys)
-    md_ref = sort_md_dataframe(md_ori, key, ascending=[True, False, True])
+    md = build_metadata_dataframe(r, keys)
+    md_ref = read_sort_meta_from_csv(f_name)
     if not md.equals(md_ref):
         print(md.compare(md_ref))
         assert False, f"key={key}"
 
-    r = fs.sort_new(key, ascending=[True, False, True])
+    r = fs.sort(key, ascending=[True, False, True])
     assert len(fs) == len(r)
-    md = build_md_dataframe(r, keys)
+    md = build_metadata_dataframe(r, keys)
     if not md.equals(md_ref):
         print(md.compare(md_ref))
         assert False, f"key={key}"
 
     # invalid arguments
     try:
-        r = fs.sort_new(key, [">", "<"])
+        r = fs.sort(key, [">", "<"])
         assert False
     except ValueError:
         pass
 
     try:
-        r = fs.sort_new(key, "1")
+        r = fs.sort(key, "1")
         assert False
     except ValueError:
         pass
 
     try:
-        r = fs.sort_new(key, ascending=["True", "False"])
+        r = fs.sort(key, ascending=["True", "False"])
         assert False
     except ValueError:
         pass
 
     try:
-        r = fs.sort_new(key, ">", ascending="True")
+        r = fs.sort(key, ">", ascending="True")
         assert False
     except ValueError:
         pass
 
     try:
-        r = fs.sort_new(key, ">", ascending=["True", "False"])
+        r = fs.sort(key, ">", ascending=["True", "False"])
         assert False
     except ValueError:
         pass

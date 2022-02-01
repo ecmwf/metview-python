@@ -465,6 +465,17 @@ def valid_date(*args, base=None, step=None, step_units=None):
         return [base + step_units * int(x) for x in step]
 
 
+def sort(*args, **kwargs):
+    if len(args) != 0 and isinstance(args[0], Fieldset):
+        if len(args) == 1:
+            return args[0].sort(**kwargs)
+        else:
+            args = args[1:]
+            return args[0].sort(*args, **kwargs)
+    else:
+        return call("sort", *args)
+
+
 class File(Value):
     def __init__(self, val_pointer):
         Value.__init__(self, val_pointer)
@@ -718,10 +729,10 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             self._db = FieldsetDb(fs=self)
         return self._db.ls(**kwargs)
 
-    def sort_new(self, *args, **kwargs):
+    def sort(self, *args, **kwargs):
         if self._db is None:
             self._db = FieldsetDb(fs=self)
-        return self._db.sort_new(*args, **kwargs)
+        return self._db.sort(*args, **kwargs)
 
     @property
     def param_info(self):
@@ -1243,6 +1254,7 @@ def bind_functions(namespace, module_name=None):
     namespace["merge"] = merge
     namespace["dataset_to_fieldset"] = dataset_to_fieldset
     namespace["valid_date"] = valid_date
+    namespace["sort"] = sort
     namespace["load_dataset"] = Dataset.load_dataset
     namespace["plot_maps"] = plotting.plot_maps
     namespace["plot_diff_maps"] = plotting.plot_diff_maps

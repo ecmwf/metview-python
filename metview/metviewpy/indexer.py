@@ -62,7 +62,6 @@ class GribIndexer:
         "step",
         "number",
         "level",
-        "typeOfLevel",
         "paramId",
     ]
     DATE_KEYS = {
@@ -266,11 +265,18 @@ class GribIndexer:
         return df
 
     @staticmethod
-    def _sort_dataframe(df):
+    def _sort_dataframe(df, columns=None, ascending=True):
+        if columns is None:
+            columns = list(df.columns)
+        elif not isinstance(columns, list):
+            columns = [columns]
+
         # the key argument is available from pandas 1.1.0
         if StrictVersion(pd.__version__) >= StrictVersion("1.1.0"):
             df = df.sort_values(
-                by=list(df.columns),
+                by=columns,
+                ascending=ascending,
+                kind="mergesort",
                 key=lambda col: col.str.pad(7, side="left", fillchar="0")
                 if col.name == "step"
                 else col,
@@ -278,10 +284,10 @@ class GribIndexer:
         # for an older pandas version we use this ad hoc method
         else:
             step_ori = []
-            if "step" in list(df.columns):
+            if "step" in columns:
                 step_ori = list(df.step)
                 df.step = df.step.str.pad(7, side="left", fillchar="0")
-            df = df.sort_values(by=list(df.columns))
+            df = df.sort_values(by=columns, ascending=ascending, kind="mergesort")
             if step_ori:
                 df.step = [step_ori[idx] for idx in df.index]
 
@@ -452,7 +458,6 @@ class FieldsetIndexer(GribIndexer):
         data = {}
         # print(f"fs_len={len(fs)}")
         # print(f"keys_ecc={self.keys_ecc}")
-        # assert 1 == 2
         if utils.is_fieldset_type(fs) and len(fs) > 0:
             md_vals = fs.grib_get(self.keys_ecc, "key")
             if mapped_params:
