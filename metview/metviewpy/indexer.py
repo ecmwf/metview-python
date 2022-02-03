@@ -363,7 +363,13 @@ class GribIndexer:
         # we convert dates to int
         elif valid_name in GribIndexer.DATE_KEYS:
             for i, t in enumerate(v):
-                v[i] = int(GribIndexer._to_date(name, t).strftime("%Y%m%d"))
+                d = GribIndexer._to_date(name, t)
+                # for daily climatologies dates where the year is missing the
+                # the a tuple is returned
+                if not isinstance(d, tuple):
+                    v[i] = int(d.strftime("%Y%m%d"))
+                else:
+                    v[i] = d[0] * 100 + d[1]
         # we convert times to int
         elif valid_name in GribIndexer.TIME_KEYS:
             for i, t in enumerate(v):
@@ -415,9 +421,11 @@ class GribIndexer:
             elif isinstance(v, datetime.date):
                 return v
             elif isinstance(v, str):
-                return utils.date_from_str(v).date()
+                d = utils.date_from_str(v)
+                return d.date() if not isinstance(d, tuple) else d
             elif isinstance(v, (int, float)):
-                return utils.date_from_str(str(v)).date()
+                d = utils.date_from_str(str(v))
+                return d.date() if not isinstance(d, tuple) else d
             else:
                 raise
         except:

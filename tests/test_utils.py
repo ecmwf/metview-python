@@ -33,6 +33,30 @@ def test_utils_date():
     d = utils.date_from_str("20210204.25")
     assert d == datetime.datetime(2021, 2, 4, 6, 0, 0)
 
+    d = utils.date_from_str("402")
+    assert d == (4, 2)
+
+    d = utils.date_from_str("0402")
+    assert d == (4, 2)
+
+    try:
+        d = utils.date_from_str("0432")
+        assert False
+    except:
+        pass
+
+    d = utils.date_from_str("apr-02")
+    assert d == (4, 2)
+
+    d = utils.date_from_str("Apr-02")
+    assert d == (4, 2)
+
+    try:
+        d = utils.date_from_str("afr-02")
+        assert False
+    except:
+        pass
+
 
 def test_utils_time():
 

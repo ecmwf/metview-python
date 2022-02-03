@@ -13,6 +13,7 @@ import datetime
 import getpass
 import glob
 import logging
+import math
 from pathlib import Path
 import shutil
 import os
@@ -52,6 +53,36 @@ def date_from_str(d_str):
             return datetime.datetime.strptime(d_str[:8], "%Y%m%d") + datetime.timedelta(
                 seconds=int(f * 86400)
             )
+    # mmdd or mdd (as in daily climatologies)
+    elif len(d_str) in [3, 4]:
+        # try to convert to datatime to see if it is valid date
+        d = datetime.datetime.strptime("0004" + d_str.rjust(4, "0"), "%Y%m%d")
+        # we just return a tuple since datetime cannot have an invalid date
+        return (d.month, d.day)
+    # b-dd e.g. apr-02 (as in daily climatologies)
+    elif len(d_str) == 6 and d_str[3] == "-":
+        months = [
+            "jan",
+            "feb",
+            "mar",
+            "apr",
+            "may",
+            "jun",
+            "jul",
+            "aug",
+            "sep",
+            "nov",
+            "dec",
+        ]
+        m = d_str[0:3].lower()
+        try:
+            m_num = months.index(m) + 1
+        except:
+            raise ValueError(f"Invalid month={m} specified in date={d_str}!")
+        # try to convert to datatime to see if it is valid date
+        d = datetime.datetime.strptime("0004" + f"{m_num:02}" + d_str[4:6], "%Y%m%d")
+        # we just return a tuple since datetime cannot have an invalid date
+        return (d.month, d.day)
 
 
 def time_from_str(t_str):

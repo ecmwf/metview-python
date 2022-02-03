@@ -406,6 +406,40 @@ def test_fieldset_select_date():
     g = f.select(validityDate="2020-12-21", validityTime=18)
     assert len(g) == 0
 
+    # ------------------------------------
+    # daily climatology dates (no year)
+    # ------------------------------------
+
+    f = mv.read(file_in_testdir("daily_clims.grib"))
+
+    g = f.select(date="apr-01")
+    assert len(g) == 1
+    assert int(mv.grib_get_long(g, "date")) == 401
+
+    g = f.select(date="Apr-02")
+    assert len(g) == 1
+    assert int(mv.grib_get_long(g, "date")) == 402
+
+    g = f.select(date="402")
+    assert len(g) == 1
+    assert int(mv.grib_get_long(g, "date")) == 402
+
+    g = f.select(date="0402")
+    assert len(g) == 1
+    assert int(mv.grib_get_long(g, "date")) == 402
+
+    g = f.select(date=401)
+    assert len(g) == 1
+    assert int(mv.grib_get_long(g, "date")) == 401
+
+    g = f.select(date=[401, 402])
+    assert len(g) == 2
+    assert [int(v) for v in mv.grib_get_long(g, "date")] == [402, 401]
+
+    g = f.select(dataDate="apr-01")
+    assert len(g) == 1
+    assert int(mv.grib_get_long(g, "dataDate")) == 401
+
 
 def test_fieldset_select_multi_file():
     f = mv.read(file_in_testdir("tuv_pl.grib"))
