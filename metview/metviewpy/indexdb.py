@@ -522,7 +522,7 @@ class FieldsetDb(IndexDb):
         if "ascending" in kwargs:
             if asc is not None:
                 raise ValueError(
-                    "sort() cannot take both a second positional argument and the ascending keyword argument!"
+                    "sort(): cannot take both a second positional argument and the ascending keyword argument!"
                 )
             asc = kwargs.pop("ascending")
 
@@ -532,7 +532,7 @@ class FieldsetDb(IndexDb):
         if len(keys) == 0:
             keys = self.indexer.DEFAULT_SORT_KEYS
 
-        print(f"keys={keys} asc={asc}")
+        # print(f"keys={keys} asc={asc}")
 
         # get metadata
         self.load(keys=keys, vector=False)
