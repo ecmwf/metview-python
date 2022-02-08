@@ -36,7 +36,7 @@ class GribIndexer:
         "wind3d": ["u", "v", "w"],
     }
 
-    # 0: ecCodes type, 1: pandas type, 2: use in duplicate check
+    # tuple-> 0: ecCodes type, 1: pandas type, 2: Python type 3: use in duplicate check
     DEFAULT_KEYS = {
         "shortName": ("s", str, str, False),
         "paramId": ("l", "Int32", int, False),
