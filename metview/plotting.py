@@ -671,7 +671,7 @@ def plot_rmse(*args, ref=None, area=None, title_font_size=0.4, y_max=None):
         if isinstance(layer["data"], mv.Fieldset):
             # determine ens number
             members = layer["data"].unique("number")
-            print(f"members={members}")
+            # print(f"members={members}")
             # ens forecast
             if len(members) > 1:
                 if has_ef:
@@ -714,7 +714,7 @@ def plot_rmse(*args, ref=None, area=None, title_font_size=0.4, y_max=None):
         y_tick, _, _ = Layout.compute_axis_range(0, y_max)
     y_title = "RMSE [" + mv.grib_get_string(ref[0], "units") + "]"
 
-    print(f"y_tick={y_tick} y_max={y_max}")
+    # print(f"y_tick={y_tick} y_max={y_max}")
 
     # define the view
     view = Layout().build_rmse(
@@ -745,7 +745,7 @@ def plot_rmse(*args, ref=None, area=None, title_font_size=0.4, y_max=None):
             line_width = 3
             colour_idx = (colour_idx + 1) % len(fc_colour)
             line_colour = fc_colour[colour_idx]
-            print(f"label={data[i][1][0].label}")
+            # print(f"label={data[i][1][0].label}")
             vd["legend_user_text"] = data[i][1].label
             vd["legend"] = "on"
             legend_item_count += 1
@@ -851,13 +851,13 @@ def plot_cdf(*args, location=None, title_font_size=0.4, x_range=None):
                 for step in steps:
                     v = layer["data"].select(step=step)
                     v = mv.nearest_gridpoint(v, location)
-                    print(f"step={step}")
+                    # print(f"step={step}")
                     x = np.percentile(v, y_values)
                     if units_scaler is not None:
                         x = units_scaler.scale_value(x)
                     # print(f" x={x}")
                     cdf_data.append(x)
-                    cdf_label.append(layer["data"].label + " +" + step + "h")
+                    cdf_label.append(layer["data"].label + f" +{step}h")
 
             # deterministic forecast
             else:
@@ -881,7 +881,7 @@ def plot_cdf(*args, location=None, title_font_size=0.4, x_range=None):
     else:
         raise Exception(f"plot_cdf: invalid x_range={x_range} specified!")
 
-    print(f"x_tick={x_tick} x_min={x_min} x_max={x_max}")
+    # print(f"x_tick={x_tick} x_min={x_min} x_max={x_max}")
     x_title = f"[{plot_units}]"
 
     # define y axis params

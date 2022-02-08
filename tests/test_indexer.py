@@ -87,7 +87,7 @@ def test_fieldset_select_single_file():
         [131],
         [20180801],
         [1200],
-        ["0"],
+        [0],
         [700],
         ["isobaricInhPa"],
         ["0"],
@@ -125,7 +125,7 @@ def test_fieldset_select_single_file():
         [131],
         [20180801],
         [1200],
-        ["0"],
+        [0],
         [700],
         ["isobaricInhPa"],
         ["0"],
@@ -196,6 +196,55 @@ def test_fieldset_select_single_file():
     g = f.select(INVALIDKEY="w")
     assert isinstance(g, mv.Fieldset)
     assert len(g) == 0
+
+    # -------------------------
+    # str or int values
+    # -------------------------
+    f = mv.read(file_in_testdir("tuv_pl.grib"))
+    assert f._db is None
+
+    g = f.select(shortName=["t"], level=["500", 700], marsType="an")
+    assert len(g) == 2
+    assert mv.grib_get(g, ["shortName", "level:l", "marsType"]) == [
+        ["t", 700, "an"],
+        ["t", 500, "an"],
+    ]
+
+    f = mv.read(file_in_testdir("t_time_series.grib"))
+    assert f._db is None
+
+    g = f.select(shortName=["t"], step=[3, 6])
+    assert len(g) == 2
+    assert mv.grib_get(g, ["shortName", "level:l", "step:l"]) == [
+        ["t", 1000, 3],
+        ["t", 1000, 6],
+    ]
+
+    g = f.select(shortName=["t"], step=["3", "06"])
+    assert len(g) == 2
+    assert mv.grib_get(g, ["shortName", "level:l", "step:l"]) == [
+        ["t", 1000, 3],
+        ["t", 1000, 6],
+    ]
+
+    # -------------------------
+    # repeated use
+    # -------------------------
+    f = mv.read(file_in_testdir("tuv_pl.grib"))
+    assert f._db is None
+
+    g = f.select(shortName=["t"], level=[500, 700], marsType="an")
+    assert len(g) == 2
+    assert mv.grib_get(g, ["shortName", "level:l", "marsType"]) == [
+        ["t", 700, "an"],
+        ["t", 500, "an"],
+    ]
+
+    g = f.select(shortName=["t"], level=[500], marsType="an")
+    assert len(g) == 1
+    assert mv.grib_get(g, ["shortName", "level:l", "marsType"]) == [
+        ["t", 500, "an"],
+    ]
 
     # -------------------------
     # mars keys
@@ -685,7 +734,7 @@ def test_param_info_from_fs_single_file():
         "paramId": 131,
         "date": 20180801,
         "time": 1200,
-        "step": "0",
+        "step": 0,
         "level": 700,
         "typeOfLevel": "isobaricInhPa",
         "number": "0",
@@ -707,7 +756,7 @@ def test_param_info_from_fs_single_file():
         "paramId": 131,
         "date": 20180801,
         "time": 1200,
-        "step": "0",
+        "step": 0,
         "level": 500,
         "typeOfLevel": "isobaricInhPa",
         "number": "0",
@@ -731,7 +780,7 @@ def test_param_info_from_fs_single_file():
         "paramId": 131,
         "date": 20180801,
         "time": 1200,
-        "step": "0",
+        "step": 0,
         "level": 500,
         "typeOfLevel": "isobaricInhPa",
         "number": "0",
@@ -752,7 +801,7 @@ def test_param_info_from_fs_single_file():
         "paramId": 130,
         "date": 20180801,
         "time": 1200,
-        "step": "0",
+        "step": 0,
         "level": None,
         "typeOfLevel": "isobaricInhPa",
         "number": "0",
@@ -775,7 +824,7 @@ def test_param_info_from_fs_single_file():
         "paramId": 130,
         "date": 20180801,
         "time": 1200,
-        "step": "0",
+        "step": 0,
         "level": 1000,
         "typeOfLevel": "isobaricInhPa",
         "number": "0",
@@ -842,14 +891,14 @@ def test_indexer_dataframe_sort_value_with_key():
     md = {
         "paramId": [1, 2, 1, 2, 3],
         "level": [925, 850, 925, 850, 850],
-        "step": ["12", "110", "1", "3", "1"],
+        "step": [12, 110, 1, 3, 1],
         "rest": ["1", "2", "aa", "b1", "1b"],
     }
 
     md_ref = {
         "paramId": [1, 1, 2, 2, 3],
         "level": [925, 925, 850, 850, 850],
-        "step": ["1", "12", "3", "110", "1"],
+        "step": [1, 12, 3, 110, 1],
         "rest": ["aa", "1", "b1", "2", "1b"],
     }
 
@@ -878,7 +927,7 @@ def test_describe():
         "level": {"t": "300,400,...", "u": "300,400,...", "v": "300,400,..."},
         "date": {"t": 20180801, "u": 20180801, "v": 20180801},
         "time": {"t": 1200, "u": 1200, "v": 1200},
-        "step": {"t": "0", "u": "0", "v": "0"},
+        "step": {"t": 0, "u": 0, "v": 0},
         "paramId": {"t": 130, "u": 131, "v": 132},
         "class": {"t": "od", "u": "od", "v": "od"},
         "stream": {"t": "oper", "u": "oper", "v": "oper"},
@@ -969,7 +1018,7 @@ def test_describe():
         "level": {"t": "25,300,...", "u": "300,400,...", "v": "300,400,..."},
         "date": {"t": 20180801, "u": 20180801, "v": 20180801},
         "time": {"t": 1200, "u": 1200, "v": 1200},
-        "step": {"t": "0", "u": "0", "v": "0"},
+        "step": {"t": 0, "u": 0, "v": 0},
         "paramId": {"t": 130, "u": 131, "v": 132},
         "class": {"t": "od", "u": "od", "v": "od"},
         "stream": {"t": "oper", "u": "oper", "v": "oper"},

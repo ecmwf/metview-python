@@ -282,10 +282,10 @@ class ParamDesc:
             md.pop("level")
 
             for md_key in list(md.keys()):
-                d = df[md_key].unique().tolist()
+                d = list(df[md_key].unique())
                 self.md[md_key] = d
 
-            lev_types = df["typeOfLevel"].unique().tolist()
+            lev_types = list(df["typeOfLevel"].unique())
             for t in lev_types:
                 # print(f" t={t}")
                 self.levels[t] = []
@@ -293,7 +293,7 @@ class ParamDesc:
                 # print(q)
                 dft = df.query(q)
                 if dft is not None:
-                    self.levels[t] = dft["level"].unique().tolist()
+                    self.levels[t] = list(dft["level"].unique())
 
             for k, v in self.md.items():
                 self.md[k] = sorted(v)

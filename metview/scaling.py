@@ -137,7 +137,7 @@ class Scaling:
 
         # load rules defining when to apply scaling on a parameter
         file_name = os.path.join(ETC_PATH, "scaling_ecmwf.yaml")
-        print(f"file_name={file_name}")
+        # print(f"file_name={file_name}")
         with open(file_name) as f:
             data = yaml.load(f, Loader=yaml.SafeLoader)
             for to_units, item in data.items():

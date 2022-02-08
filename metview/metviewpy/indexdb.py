@@ -290,15 +290,11 @@ class IndexDb:
             # print(self._param_types)
         return self._param_types
 
-    def unique(self, key, param=None):
-        r = set()
-        if param is not None:
-            for _, v in self.blocks.items():
-                df_res = v.query(f"shortName = {param}")
-        else:
-            for _, v in self.blocks.items():
-                r.update(v[key].unique().tolist())
-        return sorted(list(r))
+    def unique(self, key):
+        for _, v in self.blocks.items():
+            if key in v.columns:
+                return list(v[key].unique())
+        return []
 
     @property
     def param_meta(self):
@@ -432,18 +428,6 @@ class FieldsetDb(IndexDb):
         else:
             return ParamInfo.build_from_fieldset(fs)
 
-    def unique(self, key):
-        r = list()
-        for _, v in self.blocks.items():
-            r.extend(v[key].unique().tolist())
-        return list(dict.fromkeys(r))
-
-        # r = set()
-        # for _, v in self.blocks.items():
-        #     r.update(v[key].unique().tolist())
-        # # return sorted(list(r))
-        # return r
-
     def ls(self, extra_keys=None, filter=None, no_print=False):
         default_keys = [
             "centre",
@@ -478,7 +462,7 @@ class FieldsetDb(IndexDb):
         keys = list(ls_keys)
         keys.append("_msgIndex1")
         df = df[keys]
-        df = df.sort_values(by="_msgIndex1")
+        df = df.sort_values("_msgIndex1")
         df = df.rename(columns={"_msgIndex1": "Message"})
         df = df.set_index("Message")
 

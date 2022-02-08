@@ -11,7 +11,6 @@
 
 import copy
 import datetime
-from distutils.version import StrictVersion
 import logging
 import os
 from pathlib import Path
@@ -43,7 +42,7 @@ class GribIndexer:
         "paramId": ("l", "Int32", int, False),
         "date": ("l", "Int64", int, True),
         "time": ("l", "Int64", int, True),
-        "step": ("s", str, str, True),
+        "step": ("l", "Int32", int, True),
         "level": ("l", "Int32", int, True),
         "typeOfLevel": ("s", str, str, False),
         "number": ("s", str, str, True),
@@ -271,26 +270,8 @@ class GribIndexer:
         elif not isinstance(columns, list):
             columns = [columns]
 
-        # the key argument is available from pandas 1.1.0
-        if StrictVersion(pd.__version__) >= StrictVersion("1.1.0"):
-            df = df.sort_values(
-                by=columns,
-                ascending=ascending,
-                kind="mergesort",
-                key=lambda col: col.str.pad(7, side="left", fillchar="0")
-                if col.name == "step"
-                else col,
-            )
-        # for an older pandas version we use this ad hoc method
-        else:
-            step_ori = []
-            if "step" in columns:
-                step_ori = list(df.step)
-                df.step = df.step.str.pad(7, side="left", fillchar="0")
-            df = df.sort_values(by=columns, ascending=ascending, kind="mergesort")
-            if step_ori:
-                df.step = [step_ori[idx] for idx in df.index]
-
+        # mergesoft is a stable sorting algorithm
+        df = df.sort_values(by=columns, ascending=ascending, kind="mergesort")
         df = df.reset_index(drop=True)
         return df
 

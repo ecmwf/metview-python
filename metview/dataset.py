@@ -267,7 +267,7 @@ class Dataset:
             self.path = ""
 
         assert self.name
-        LOG.debug(f"name={self.name}")
+        # print(f"name={self.name}")
 
         # set local path
         if self.path == "":
