@@ -78,6 +78,15 @@ class GribIndexer:
         "_validityDateTime": ("validityDate", "validityTime"),
     }
 
+    KEYS_TO_REPLACE = {
+        ("type", "mars.type"): "marsType",
+        ("stream", "mars.stream"): "marsStream",
+        ("class", "mars.class", "class_"): "marsClass",
+        ("perturbationNumber"): "number",
+        ("mars.date", "marsDate"): "date",
+        ("mars.time", "marsTime"): "time",
+    }
+
     PREDEF_KEYS = copy.deepcopy(DEFAULT_KEYS)
     PREDEF_KEYS.update(DATE_KEYS)
     PREDEF_KEYS.update(TIME_KEYS)
@@ -321,7 +330,7 @@ class GribIndexer:
                 )
 
     @staticmethod
-    def _convert_filter_value(name, v):
+    def _convert_filter_value(name, val):
         """
         Analyse the filter key-value pairs and perform the necessary conversions
         """
@@ -333,100 +342,91 @@ class GribIndexer:
             valid_name = "_" + valid_name
             name_date = GribIndexer.DATETIME_KEYS[valid_name][0]
             name_time = GribIndexer.DATETIME_KEYS[valid_name][1]
-            for i, t in enumerate(v):
-                v[i] = GribIndexer._to_datetime(name, t)
-                # print(f"t={t} -> {v[i]}")
+            for i, t in enumerate(val):
+                val[i] = GribIndexer._to_datetime(name, t)
+                # print(f"t={t} -> {val[i]}")
             # We add the date and time components with an empty value. So they will be
             # added to the scan, but they will be ignored by the query. Conversely,
             # the datetime key itself will be ignored in the scan, but will be used
             # in the query.
-            return [("_" + name, v), (name_date, []), (name_time, [])]
+            return [("_" + name, val), (name_date, []), (name_time, [])]
         # we convert dates to int
         elif valid_name in GribIndexer.DATE_KEYS:
-            for i, t in enumerate(v):
+            for i, t in enumerate(val):
                 d = GribIndexer._to_date(name, t)
                 # for daily climatologies dates where the year is missing the
                 # the a tuple is returned
                 if not isinstance(d, tuple):
-                    v[i] = int(d.strftime("%Y%m%d"))
+                    val[i] = int(d.strftime("%Y%m%d"))
                 else:
-                    v[i] = d[0] * 100 + d[1]
+                    val[i] = d[0] * 100 + d[1]
         # we convert times to int
         elif valid_name in GribIndexer.TIME_KEYS:
-            for i, t in enumerate(v):
-                v[i] = int(GribIndexer._to_time(name, t).strftime("%H%M"))
-                # print(f"t={t} -> {v[i]}")
+            for i, t in enumerate(val):
+                val[i] = int(GribIndexer._to_time(name, t).strftime("%H%M"))
+                # print(f"t={t} -> {val[i]}")
         else:
             pt_type = GribIndexer.PREDEF_PT_TYPES.get(name, None)
             # print(f"name={name} {pt_type}")
             if pt_type is not None:
-                for i, t in enumerate(v):
-                    v[i] = pt_type(t)
-                    # print(f" t={t} -> {v[i]}")
+                for i, t in enumerate(val):
+                    val[i] = pt_type(t)
+                    # print(f" t={t} -> {val[i]}")
 
         # remap some names to the ones already in the default set of indexer keys
-        if name in ["type", "mars.type"]:
-            name = "marsType"
-        elif name in ["stream", "mars.stream"]:
-            name = "marsStream"
-        elif name in ["class", "mars.class", "class_"]:
-            name = "marsClass"
-        elif name in ["perturbationNumber"]:
-            name = "number"
-        elif name in ["mars.date", "marsDate"]:
-            name = "date"
-        elif name in ["mars.time", "marsTime"]:
-            name = "time"
+        for k, v in GribIndexer.KEYS_TO_REPLACE.items():
+            if name in k:
+                name = v
 
-        return [(name, v)]
+        return [(name, val)]
 
     @staticmethod
-    def _to_datetime(param, v):
+    def _to_datetime(param, val):
         try:
-            if isinstance(v, datetime.datetime):
-                return v
-            elif isinstance(v, str):
-                return utils.date_from_str(v)
-            elif isinstance(v, (int, float)):
-                return utils.date_from_str(str(v))
+            if isinstance(val, datetime.datetime):
+                return val
+            elif isinstance(val, str):
+                return utils.date_from_str(val)
+            elif isinstance(val, (int, float)):
+                return utils.date_from_str(str(val))
             else:
                 raise
         except:
-            raise Exception(f"Invalid datetime value={v} specified for key={param}")
+            raise Exception(f"Invalid datetime value={val} specified for key={param}")
 
     @staticmethod
-    def _to_date(param, v):
+    def _to_date(param, val):
         try:
-            if isinstance(v, datetime.datetime):
-                return v.date()
-            elif isinstance(v, datetime.date):
-                return v
-            elif isinstance(v, str):
-                d = utils.date_from_str(v)
+            if isinstance(val, datetime.datetime):
+                return val.date()
+            elif isinstance(val, datetime.date):
+                return val
+            elif isinstance(val, str):
+                d = utils.date_from_str(val)
                 return d.date() if not isinstance(d, tuple) else d
-            elif isinstance(v, (int, float)):
-                d = utils.date_from_str(str(v))
+            elif isinstance(val, (int, float)):
+                d = utils.date_from_str(str(val))
                 return d.date() if not isinstance(d, tuple) else d
             else:
                 raise
         except:
-            raise Exception(f"Invalid date value={v} specified for key={param}")
+            raise Exception(f"Invalid date value={val} specified for key={param}")
 
     @staticmethod
-    def _to_time(param, v):
+    def _to_time(param, val):
         try:
-            if isinstance(v, (datetime.datetime)):
-                return v.time()
-            elif isinstance(v, datetime.time):
-                return v
-            elif isinstance(v, str):
-                return utils.time_from_str(v)
-            elif isinstance(v, int):
-                return utils.time_from_str(str(v))
+            if isinstance(val, (datetime.datetime)):
+                return val.time()
+            elif isinstance(val, datetime.time):
+                return val
+            elif isinstance(val, str):
+                return utils.time_from_str(val)
+            elif isinstance(val, int):
+                return utils.time_from_str(str(val))
             else:
                 raise
         except:
-            raise Exception(f"Invalid time value={v} specified for key={param}")
+            raise Exception(f"Invalid time value={val} specified for key={param}")
 
 
 class FieldsetIndexer(GribIndexer):
