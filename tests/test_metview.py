@@ -1262,6 +1262,49 @@ def test_geopoints_nonequality_operator():
     assert vdiff[15] == 1
 
 
+def _optional_check_create_geo_inline():
+    # creates geopoints using numpy arrays and lists
+    # values are valid, np.nan and None
+    # - the ability to handle np.nan in lists is only available
+    #   in Metview 5.15.0 and above
+    g = mv.create_geo(
+        type="ncols",
+        latitudes=np.array([4, 5, np.nan]),
+        longitudes=[2.3, np.nan, 6.5],
+        levels=850,  # all rows will have 850 as their level
+        dates=[20180808, 20170707, 20160606],  # dates as numbers
+        times=None,
+        stnids=["aberdeen", "aviemore", "edinburgh"],
+        elevations=np.array([np.nan, 14.1, np.nan]),
+        temp=[273.15, np.nan, 281.45],
+        precip=[None, np.nan, 1],
+        speed=np.array([2, 3, 5]),
+    )
+
+    def check_columns(gpt):
+        aeq = np.testing.assert_array_equal
+        aeq(mv.latitudes(gpt), np.array([4, 5, np.nan]))
+        aeq(mv.longitudes(gpt), np.array([2.3, np.nan, 6.5]))
+        aeq(mv.levels(gpt), np.array([850, 850, 850]))
+        aeq(mv.elevations(gpt), np.array([np.nan, 14.1, np.nan]))
+        aeq(gpt["temp"], np.array([273.15, np.nan, 281.45]))
+        aeq(gpt["precip"], np.array([4, np.nan, 1]))
+
+    check_columns(g)
+    temp_file = file_in_testdir("created_geo.gpts")
+    # check that it's written to disk ok
+    g.write(temp_file)
+    h = mv.read(temp_file)
+    check_columns(h)
+    os.remove(temp_file)
+
+
+def test_create_geo_inline():
+    version = mv.version_info()
+    if version["metview_version"] >= 51500.0:
+        _optional_check_create_geo_inline()
+
+
 def test_geopoints_set_dates():
     g = mv.create_geo(3)
 
