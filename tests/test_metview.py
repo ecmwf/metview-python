@@ -1288,7 +1288,7 @@ def _optional_check_create_geo_inline():
         aeq(mv.levels(gpt), np.array([850, 850, 850]))
         aeq(mv.elevations(gpt), np.array([np.nan, 14.1, np.nan]))
         aeq(gpt["temp"], np.array([273.15, np.nan, 281.45]))
-        aeq(gpt["precip"], np.array([4, np.nan, 1]))
+        aeq(gpt["precip"], np.array([np.nan, np.nan, 1]))
 
     check_columns(g)
     temp_file = file_in_testdir("created_geo.gpts")
