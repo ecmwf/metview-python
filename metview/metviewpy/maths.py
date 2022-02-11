@@ -42,7 +42,7 @@ def div(x, y):
 
 
 def pow(x, y):
-    return x ** y
+    return x**y
 
 
 def ge(x, y):

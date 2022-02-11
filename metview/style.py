@@ -411,7 +411,7 @@ class StyleDb:
         return None
 
     def style(self, fs, plot_type="map", data_id=None):
-        param_info = fs.param_info
+        param_info = fs.ds_param_info
         if param_info is not None:
             vd = self.get_param_style(
                 param_info,
@@ -428,7 +428,7 @@ class StyleDb:
         return vd.to_request() if vd is not None else None
 
     def style_list(self, fs, plot_type="map"):
-        param_info = fs.param_info
+        param_info = fs.ds_param_info
         if param_info is not None:
             return self.get_param_style_list(
                 param_info, scalar=param_info.scalar, plot_type=plot_type

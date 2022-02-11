@@ -13,6 +13,7 @@ import sys
 
 import numpy as np
 import eccodes
+from pint import util
 
 from . import maths
 from .temporary import temp_file
@@ -758,6 +759,9 @@ class Fieldset:
         assert self._db is not None
         return self._db
 
+    def _unique_metadata(self, key):
+        return self._get_db().unique(key)
+
     def select(self, *args, **kwargs):
         if len(args) == 1 and isinstance(args[0], dict):
             return self._get_db().select(**args[0])
@@ -773,40 +777,45 @@ class Fieldset:
     def sort(self, *args, **kwargs):
         return self._get_db().sort(*args, **kwargs)
 
-    def deacc(self, skip_first=False, mark_derived=False):
-        if len(self.fields) > 1:
-            v = self[1:] - self[:-1]
-            if not skip_first:
-                r = self[0] * 0
-                r = r.merge(v)
-            else:
-                r = v
-            if not mark_derived:
-                r = r.grib_set_long(["generatingProcessIdentifier", 148])
-            return r
+    def deacc(self, **kwargs):
+        return utils.deacc(self, **kwargs)
 
-    def speed(self, other):
-        result = Fieldset(temporary=True)
-        param_ids = {
-            131: 10,  # atmospheric wind
-            165: 207,  # 10m wind
-            228246: 228249,  # 100m wind
-            228239: 228241,  # 200m wind
-        }
-        with open(result.temporary.path, "wb") as fout:
-            for f, g in zip(self.fields, other.fields):
-                sp = np.sqrt(np.square(f.values()) + np.square(g.values()))
-                c = f.clone()
-                c.encode_values(sp)
-                param_id_u = f.grib_get("paramId", CodesHandle.LONG)
-                param_id_sp = param_ids.get(param_id_u, None)
-                if param_id_sp is not None:
-                    c = c.grib_set(["paramId", param_id_sp], CodesHandle.LONG)
-                result._append_field(c)
-                result.fields[-1].write(
-                    fout, result.temporary.path, temp=result.temporary
+    def speed(self, *args):
+        if len(args) == 0:
+            u = self[0::2]
+            v = self[1::2]
+            if len(u) != len(v):
+                raise Exception(
+                    f"Fieldsets must contain an even number of fields for this operation! len={len(self.fields)} is not even!"
                 )
-        return result
+            return u.speed(v)
+        elif len(args) == 1:
+            other = args[0]
+            result = Fieldset(temporary=True)
+            param_ids = {
+                131: 10,  # atmospheric wind
+                165: 207,  # 10m wind
+                228246: 228249,  # 100m wind
+                228239: 228241,  # 200m wind
+            }
+            if len(self.fields) != len(other):
+                raise Exception(
+                    f"Fieldsets must have the same number of fields for this operation! {len(self.fields)} != {len(other)}"
+                )
+            with open(result.temporary.path, "wb") as fout:
+                for f, g in zip(self.fields, other.fields):
+                    sp = np.sqrt(np.square(f.values()) + np.square(g.values()))
+                    c = f.clone()
+                    c.encode_values(sp)
+                    param_id_u = f.grib_get("paramId", CodesHandle.LONG)
+                    param_id_sp = param_ids.get(param_id_u, None)
+                    if param_id_sp is not None:
+                        c = c.grib_set(["paramId", param_id_sp], CodesHandle.LONG)
+                    result._append_field(c)
+                    result.fields[-1].write(
+                        fout, result.temporary.path, temp=result.temporary
+                    )
+            return result
 
 
 class FieldsetCF:

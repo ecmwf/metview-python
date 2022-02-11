@@ -659,7 +659,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             support_slicing=True,
         )
         self._db = None
-        self._param_info = None
+        self._ds_param_info = None
         self._label = ""
 
         if (path is not None) and (fields is not None):
@@ -709,36 +709,32 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             self._db = FieldsetDb(fs=self)
             self._db.scan()
 
-    def select(self, *args, **kwargs):
+    def _get_db(self):
         if self._db is None:
             self._db = FieldsetDb(fs=self)
-        # LOG.debug(f"kwargs={kwargs}")
         assert self._db is not None
+        return self._db
+
+    def select(self, *args, **kwargs):
         if len(args) == 1 and isinstance(args[0], dict):
-            return self._db.select(**args[0])
+            return self._get_db().select(**args[0])
         else:
-            return self._db.select(**kwargs)
+            return self._get_db().select(**kwargs)
 
     def describe(self, *args, **kwargs):
-        if self._db is None:
-            self._db = FieldsetDb(fs=self)
-        return self._db.describe(*args, **kwargs)
+        return self._get_db().describe(*args, **kwargs)
 
     def ls(self, **kwargs):
-        if self._db is None:
-            self._db = FieldsetDb(fs=self)
-        return self._db.ls(**kwargs)
+        return self._get_db().ls(**kwargs)
 
     def sort(self, *args, **kwargs):
-        if self._db is None:
-            self._db = FieldsetDb(fs=self)
-        return self._db.sort(*args, **kwargs)
+        return self._get_db().sort(*args, **kwargs)
 
     @property
-    def param_info(self):
-        if self._param_info is None:
-            self._param_info = FieldsetDb.make_param_info(self)
-        return self._param_info
+    def ds_param_info(self):
+        if self._ds_param_info is None:
+            self._ds_param_info = FieldsetDb.make_param_info(self)
+        return self._ds_param_info
 
     @property
     def label(self):
@@ -762,35 +758,42 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
 
         self._label = value
 
-    def unique(self, key):
-        if self._db:
-            return self._db.unique(key)
-        else:
-            return []
+    def _unique_metadata(self, key):
+        return self._get_db().unique(key)
 
-    def style(self, plot_type="map"):
+    def ds_style(self, plot_type="map"):
         from metview import style
 
         return style.get_db().style(self, plot_type=plot_type)
 
-    def style_list(self, plot_type="map"):
+    def ds_style_list(self, plot_type="map"):
         from metview import style
 
         return style.get_db().style_list(self, plot_type=plot_type)
 
-    def speed(self):
-        if self._db is not None:
-            fs = self._db.speed()
-            return fs
+    def speed(self, *args):
+        if len(args) == 0:
+            u = self[0::2]
+            v = self[1::2]
+            if len(u) != len(v):
+                raise Exception(
+                    f"Fieldsets must contain an even number of fields for this operation! len={len(self)} is not even!"
+                )
+            sp = u.speed(v)
+            sp._init_db_from(self)
+            return sp
         else:
-            return None
+            return call("speed", self, *args)
 
-    def deacc(self, skip_first=None):
-        if self._db is None:
-            self._db = FieldsetDb(fs=self)
-        assert self._db is not None
-        fs = self._db.deacc(skip_first=skip_first)
-        return fs
+    def deacc(self, **kwargs):
+        r = utils.deacc(self, **kwargs)
+        r._init_db_from(self)
+        return r
+
+    def _init_db_from(self, other):
+        if self._db is None and other._db is not None:
+            self._db = FieldsetDb(self, other.label)
+            self._db.load()
 
     def __getitem__(self, key):
         if isinstance(key, str):

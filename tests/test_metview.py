@@ -414,19 +414,19 @@ def test_division_fieldsets():
 
 
 def test_power():
-    raised_two = TEST_FIELDSET ** 2
+    raised_two = TEST_FIELDSET**2
     maximum = mv.maxvalue(raised_two)
-    assert np.isclose(maximum, MAX_VALUE ** 2)
+    assert np.isclose(maximum, MAX_VALUE**2)
 
 
 def test_power_reverse():
     mask = TEST_FIELDSET > 290
     FS_3_AND_4 = (mask * 3) + (1 - mask) * 4
-    raised = 2 ** FS_3_AND_4
+    raised = 2**FS_3_AND_4
     minimum = mv.minvalue(raised)
     maximum = mv.maxvalue(raised)
-    assert np.isclose(minimum, 2 ** 3)
-    assert np.isclose(maximum, 2 ** 4)
+    assert np.isclose(minimum, 2**3)
+    assert np.isclose(maximum, 2**4)
 
 
 def test_mod():
@@ -2371,3 +2371,34 @@ def test_download_gallery_data_bad_fname():
     fname = "zzz_for_spectra.grib"
     with pytest.raises(Exception):
         g = mv.gallery.load_dataset(fname)
+
+
+def test_speed():
+    # test with grib written with write() function
+    fs = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+
+    fs_u = fs.select(shortName="u")
+    fs_v = fs.select(shortName="v")
+
+    # single field
+    u = fs_u[0]
+    v = fs_v[0]
+    r = mv.speed(u, v)
+    assert len(r) == 1
+    np.testing.assert_allclose(
+        r.values(), np.sqrt(np.square(u.values()) + np.square(v.values())), rtol=1e-05
+    )
+    assert r.grib_get_long("paramId") == 10
+
+    # multi fields
+    u = fs_u[:2]
+    v = fs_v[:2]
+    r = mv.speed(u, v)
+    assert len(r) == 2
+    for i in range(len(r)):
+        np.testing.assert_allclose(
+            r[i].values(),
+            np.sqrt(np.square(u[i].values()) + np.square(v[i].values())),
+            rtol=1e-05,
+        )
+    assert r.grib_get_long("paramId") == [10, 10]

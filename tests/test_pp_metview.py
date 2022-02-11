@@ -637,7 +637,7 @@ def test_field_scalar_func():
     np.testing.assert_allclose(m.values(), f.values() * 1.5)
     d = f / 3.0
     np.testing.assert_allclose(d.values(), f.values() / 3.0, 0.0001)
-    p = f ** 2
+    p = f**2
     np.testing.assert_allclose(p.values(), f.values() ** 2)
     first_val = f.values()[0][0]  # 272
     ge = f >= first_val
@@ -705,7 +705,7 @@ def test_field_scalar_func():
     np.testing.assert_allclose(mr.values(), f.values() * 3)
     dr = 200 / f
     np.testing.assert_allclose(dr.values(), 200 / f.values(), 0.0001)
-    pr = 2 ** f
+    pr = 2**f
     np.testing.assert_allclose(pr.values(), 2 ** f.values(), 1)
 
 
@@ -1388,44 +1388,3 @@ def test_grib_index_5():
     assert gi == [(p, 0), (p, 1440), (p, 2880), (p, 4320), (p, 5760)]
     f = 0
     os.remove(p)
-
-
-def test_deacc():
-    f = mv.Fieldset(path=os.path.join(PATH, "t_time_series.grib"))[:3]
-    r = f.deacc()
-    assert len(r) == len(f)
-    assert r.grib_get_long("generatingProcessIdentifier") == [148] * len(r)
-    for i in range(len(f)):
-        v_ref = f[0].values() * 0 if i == 0 else f[i].values() - f[i - 1].values()
-        np.testing.assert_allclose(r[i].values(), v_ref, rtol=1e-03)
-
-
-def test_speed():
-    # test with grib written with write() function
-    fs = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
-
-    fs_u = fs.select(shortName="u")
-    fs_v = fs.select(shortName="v")
-
-    # single field
-    u = fs_u[0]
-    v = fs_v[0]
-    r = mv.speed(u, v)
-    assert len(r) == 1
-    np.testing.assert_allclose(
-        r.values(), np.sqrt(np.square(u.values()) + np.square(v.values())), rtol=1e-05
-    )
-    assert r.grib_get_long("paramId") == 10
-
-    # multi fields
-    u = fs_u[:2]
-    v = fs_v[:2]
-    r = mv.speed(u, v)
-    assert len(r) == 2
-    for i in range(len(r)):
-        np.testing.assert_allclose(
-            r[i].values(),
-            np.sqrt(np.square(u[i].values()) + np.square(v[i].values())),
-            rtol=1e-05,
-        )
-    assert r.grib_get_long("paramId") == [10, 10]

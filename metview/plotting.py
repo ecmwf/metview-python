@@ -250,7 +250,7 @@ def plot_maps(
                 else:
                     data_items.append(data)
                 if frame != -1:
-                    if data.param_info.scalar:
+                    if data.ds_param_info.scalar:
                         data = data[frame]
                     else:
                         data = data[2 * frame : 2 * frame + 2]
@@ -367,7 +367,7 @@ def plot_diff_maps(
     data["0"], data["1"] = _prepare_grid(data["0"], data["1"])
     data["d"] = data["0"] - data["1"]
 
-    data["d"]._param_info = data["1"].param_info
+    data["d"]._ds_param_info = data["1"].ds_param_info
     if data["0"].label and data["1"].label:
         data["d"]._label = "{}-{}".format(data["0"].label, data["1"].label)
     else:
@@ -384,7 +384,7 @@ def plot_diff_maps(
             d = data[k]
         else:
             d = data[k][frame]
-            d._param_info = data[k]._param_info
+            d._ds_param_info = data[k]._ds_param_info
             d._label = data[k]._label
 
         desc.append(d)
@@ -452,7 +452,7 @@ def plot_xs(
     for layer in layers:
         data = layer["data"]
         vd = _make_visdef(data, layer["vd"], plot_type="xs")
-        param_info = data.param_info
+        param_info = data.ds_param_info
         # print(f"param_info={param_info}")
         data_items.append(data)
         # print(f"data={len(data)}")
@@ -592,7 +592,7 @@ def plot_stamp(
     # determine ens number
     members = []
     if "ens" in data:
-        members = data["ens"].unique("number")
+        members = data["ens"]._unique_metadata("number")
         LOG.debug(f"members={members}")
         if len(members) == 0:
             raise Exceception("No ENS data found in input!")
@@ -670,7 +670,7 @@ def plot_rmse(*args, ref=None, area=None, title_font_size=0.4, y_max=None):
     for layer in layers:
         if isinstance(layer["data"], mv.Fieldset):
             # determine ens number
-            members = layer["data"].unique("number")
+            members = layer["data"]._unique_metadata("number")
             # print(f"members={members}")
             # ens forecast
             if len(members) > 1:
@@ -843,8 +843,8 @@ def plot_cdf(*args, location=None, title_font_size=0.4, x_range=None):
                         plot_units = meta.get("units", "")
 
             # determine ens number and steps
-            members = layer["data"].unique("number")
-            steps = layer["data"].unique("step")
+            members = layer["data"]._unique_metadata("number")
+            steps = layer["data"]._unique_metadata("step")
             # print(f"members={members}")
             # ens forecast
             if len(members) > 1:

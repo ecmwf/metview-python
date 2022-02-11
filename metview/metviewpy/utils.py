@@ -26,6 +26,39 @@ LOG = logging.getLogger(__name__)
 CACHE_DIR = os.path.join(tempfile.gettempdir(), f"mpy-{getpass.getuser()}")
 
 
+def deacc(fs, use_step=True, skip_first=False, mark_derived=False):
+    r = None
+    if not use_step:
+        if len(fs) > 1:
+            v = fs[1:] - fs[:-1]
+        if not skip_first:
+            r = fs[0] * 0
+            r = r.merge(v)
+        else:
+            r = v
+    else:
+        fs._get_db().load()
+        step = fs._unique_metadata("step")
+        if step:
+            v = fs.select(step=step[0])
+            r = None
+            if not skip_first:
+                r = v * 0
+            for i in range(1, len(step)):
+                v_next = fs.select(step=step[i])
+                if r is None:
+                    r = v_next - v
+                else:
+                    # print(f"i={i}")
+                    # v.ls()
+                    # v_next.ls()
+                    r.append(v_next - v)
+                v = v_next
+    if not mark_derived:
+        r = r.grib_set_long(["generatingProcessIdentifier", 148])
+    return r
+
+
 def date_from_str(d_str):
     # yyyymmdd
     if len(d_str) == 8:

@@ -725,7 +725,7 @@ def test_param_info_from_fs_single_file():
 
     f = mv.read(file_in_testdir("tuv_pl.grib"))
     g = f["u700"]
-    p = g.param_info
+    p = g.ds_param_info
     assert len(g) == 1
     assert p.name == "u"
     assert p.scalar == True
@@ -747,7 +747,7 @@ def test_param_info_from_fs_single_file():
     assert md == p.meta
 
     g = f["wind500"]
-    p = g.param_info
+    p = g.ds_param_info
     assert len(g) == 2
     assert p.name == "wind"
     assert p.scalar == False
@@ -771,7 +771,7 @@ def test_param_info_from_fs_single_file():
 
     # we lose the db
     g = g + 0
-    p = g.param_info
+    p = g.ds_param_info
     assert len(g) == 2
     assert p.name == "wind"
     assert p.scalar == False
@@ -792,7 +792,7 @@ def test_param_info_from_fs_single_file():
     assert md == p.meta
 
     g = f["t"]
-    p = g.param_info
+    p = g.ds_param_info
     assert len(g) == 6
     assert p.name == "t"
     assert p.scalar == True
@@ -815,7 +815,7 @@ def test_param_info_from_fs_single_file():
 
     # we lose the db
     g = g + 0
-    p = g.param_info
+    p = g.ds_param_info
     assert len(g) == 6
     assert p.name == "t"
     assert p.scalar == True
@@ -1383,3 +1383,89 @@ def test_sort():
         assert False
     except ValueError:
         pass
+
+
+def test_speed():
+    # test with grib written with write() function
+    fs = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
+
+    fs_u = fs.select(shortName="u")
+    fs_v = fs.select(shortName="v")
+
+    # single field
+    u = fs_u[0]
+    v = fs_v[0]
+    r = mv.speed(u, v)
+    assert len(r) == 1
+    np.testing.assert_allclose(
+        r.values(), np.sqrt(np.square(u.values()) + np.square(v.values())), rtol=1e-05
+    )
+    assert r.grib_get_long("paramId") == 10
+
+    # multi fields
+    u = fs_u[:2]
+    v = fs_v[:2]
+    r = mv.speed(u, v)
+    assert len(r) == 2
+    for i in range(len(r)):
+        np.testing.assert_allclose(
+            r[i].values(),
+            np.sqrt(np.square(u[i].values()) + np.square(v[i].values())),
+            rtol=1e-05,
+        )
+    assert r.grib_get_long("paramId") == [10, 10]
+
+    # no arguments
+    u = fs_u
+    v = fs_v
+    r = fs["wind"].speed()
+    assert len(r) == 6
+    for i in range(len(r)):
+        np.testing.assert_allclose(
+            r[i].values(),
+            np.sqrt(np.square(u[i].values()) + np.square(v[i].values())),
+            rtol=1e-05,
+        )
+    assert r.grib_get_long("paramId") == [10] * 6
+
+
+def test_deacc():
+    f = mv.Fieldset(path=os.path.join(PATH, "t_time_series.grib"))[:3]
+
+    r = f.deacc(use_step=False)
+    assert len(r) == len(f)
+    assert r.grib_get_long("generatingProcessIdentifier") == [148] * len(r)
+    for i in range(len(f)):
+        v_ref = f[0].values() * 0 if i == 0 else f[i].values() - f[i - 1].values()
+        np.testing.assert_allclose(r[i].values(), v_ref, rtol=1e-03)
+
+    r = f.deacc(use_step=False, skip_first=True)
+    assert len(r) == len(f) - 1
+    assert r.grib_get_long("generatingProcessIdentifier") == [148] * len(r)
+    for i in range(len(r)):
+        v_ref = f[i + 1].values() - f[i].values()
+        np.testing.assert_allclose(r[i].values(), v_ref, rtol=1e-03)
+
+    r = f.deacc(use_step=False, skip_first=True, mark_derived=True)
+    assert len(r) == len(f) - 1
+    # assert r.grib_get_long("generatingProcessIdentifier") == [254] * len(r)
+    for i in range(len(r)):
+        v_ref = f[i + 1].values() - f[i].values()
+        np.testing.assert_allclose(r[i].values(), v_ref, rtol=1e-03)
+
+    # using grouping by step
+    f = mv.Fieldset(path=os.path.join(PATH, "t_time_series.grib"))[:6]
+    r = f.deacc()
+    assert len(r) == 6
+    assert r.grib_get_long("generatingProcessIdentifier") == [148] * len(r)
+
+    v_ref = f[0].values() * 0
+    np.testing.assert_allclose(r[0].values(), v_ref, rtol=1e-03)
+    v_ref = f[1].values() * 0
+    np.testing.assert_allclose(r[1].values(), v_ref, rtol=1e-03)
+
+    steps = {2: (2, 0), 3: (3, 1), 4: (4, 2), 5: (5, 3)}
+
+    for idx, steps in steps.items():
+        v_ref = f[steps[0]].values() - f[steps[1]].values()
+        np.testing.assert_allclose(r[idx].values(), v_ref, rtol=1e-03)

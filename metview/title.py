@@ -47,7 +47,7 @@ class Title:
                     d = d_item
                     data_id = None
 
-                param = d.param_info
+                param = d.ds_param_info
                 if param is not None:
                     if param.meta.get("typeOfLevel", "") == "surface":
                         # lines.append(self.build_surface_fc(d.experiment.label, d.param.name, condition=cond))
@@ -105,7 +105,7 @@ class Title:
             for d in data:
                 line = d.label
                 # print(f"label={d.label}")
-                param = d.param_info
+                param = d.ds_param_info
                 if param is not None:
                     # print(f"meta={param.meta}")
                     line += f" Par: {param.name}"
@@ -165,7 +165,7 @@ class Title:
                     line += f" {d.label}"
 
                 # print(f"label={d.label}")
-                param = d.param_info
+                param = d.ds_param_info
                 if param is not None:
                     # print(f"meta={param.meta}")
                     line += f" Par: {param.name}"
@@ -190,7 +190,7 @@ class Title:
             for d in data:
                 line = f"CDF {d.label}"
                 # print(f"label={d.label}")
-                param = d.param_info
+                param = d.ds_param_info
                 if param is not None:
                     # print(f"meta={param.meta}")
                     line += f" Par: {param.name}"

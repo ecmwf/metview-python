@@ -89,7 +89,7 @@ class IndexDb:
             )
             if fs is not None:
                 pnf.update_meta(fs._db._first_index_row())
-                fs._param_info = pnf
+                fs._ds_param_info = pnf
                 return fs
         return None
 
@@ -291,6 +291,7 @@ class IndexDb:
         return self._param_types
 
     def unique(self, key):
+        self.load()
         for _, v in self.blocks.items():
             if key in v.columns:
                 return list(v[key].unique())
@@ -560,46 +561,6 @@ class FieldsetDb(IndexDb):
 
             res._db = c
         return res
-
-    def speed(self):
-        r = self.fieldset_class()
-        if len(self.fs) >= 2:
-            for i in range(len(self.fs) // 2):
-                # TODO: refactor speed computations
-                v = self.fs[2 * i] ** 2 + self.fs[2 * i + 1] ** 2
-                r.append(v.sqrt())
-            pnf = self.fs.param_info
-            LOG.debug(f"speed pnf={pnf}")
-            param_id = 10
-            if pnf is not None:
-                param_ids = {"wind10m": 207, "wind": 10}
-                param_id = param_ids.get(pnf.name, param_id)
-            r = r.grib_set_long(["paramId", param_id])
-            r._db = FieldsetDb(r, label=self.label)
-            r._db.load()
-        return r
-
-    def deacc(self, skip_first=False):
-        if len(self.fs) > 1:
-            self.load()
-            step = self.unique("step")
-            if step:
-                v = self.select(step=step[0])
-                if not skip_first:
-                    r = v * 0
-                else:
-                    r = self.fieldset_class()
-                for i in range(1, len(step)):
-                    v_next = self.select(step=step[i])
-                    r.append(v_next - v)
-                    v = v_next
-                r = r.grib_set_long(["generatingProcessIdentifier", 148])
-                r._db = FieldsetDb(
-                    r, label=self.label, mapped_params=self.mapped_params
-                )
-                r._db.load()
-                return r
-        return None
 
     def get_longname_and_units(self, short_name, param_id):
         # The name and units keys are not included in the default set of keys for the
