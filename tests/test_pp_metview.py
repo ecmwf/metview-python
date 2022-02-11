@@ -637,7 +637,7 @@ def test_field_scalar_func():
     np.testing.assert_allclose(m.values(), f.values() * 1.5)
     d = f / 3.0
     np.testing.assert_allclose(d.values(), f.values() / 3.0, 0.0001)
-    p = f ** 2
+    p = f**2
     np.testing.assert_allclose(p.values(), f.values() ** 2)
     first_val = f.values()[0][0]  # 272
     ge = f >= first_val
@@ -705,7 +705,7 @@ def test_field_scalar_func():
     np.testing.assert_allclose(mr.values(), f.values() * 3)
     dr = 200 / f
     np.testing.assert_allclose(dr.values(), 200 / f.values(), 0.0001)
-    pr = 2 ** f
+    pr = 2**f
     np.testing.assert_allclose(pr.values(), 2 ** f.values(), 1)
 
 

@@ -414,19 +414,19 @@ def test_division_fieldsets():
 
 
 def test_power():
-    raised_two = TEST_FIELDSET ** 2
+    raised_two = TEST_FIELDSET**2
     maximum = mv.maxvalue(raised_two)
-    assert np.isclose(maximum, MAX_VALUE ** 2)
+    assert np.isclose(maximum, MAX_VALUE**2)
 
 
 def test_power_reverse():
     mask = TEST_FIELDSET > 290
     FS_3_AND_4 = (mask * 3) + (1 - mask) * 4
-    raised = 2 ** FS_3_AND_4
+    raised = 2**FS_3_AND_4
     minimum = mv.minvalue(raised)
     maximum = mv.maxvalue(raised)
-    assert np.isclose(minimum, 2 ** 3)
-    assert np.isclose(maximum, 2 ** 4)
+    assert np.isclose(minimum, 2**3)
+    assert np.isclose(maximum, 2**4)
 
 
 def test_mod():
