@@ -13,7 +13,6 @@ import sys
 
 import numpy as np
 import eccodes
-from pint import util
 
 from . import maths
 from .temporary import temp_file
