@@ -291,7 +291,7 @@ class IndexDb:
         return self._param_types
 
     def unique(self, key):
-        self.load()
+        self.load([key])
         for _, v in self.blocks.items():
             if key in v.columns:
                 return list(v[key].unique())

@@ -1432,40 +1432,51 @@ def test_speed():
 def test_deacc():
     f = mv.Fieldset(path=os.path.join(PATH, "t_time_series.grib"))[:3]
 
-    r = f.deacc(use_step=False)
+    r = f.deacc()
     assert len(r) == len(f)
     assert r.grib_get_long("generatingProcessIdentifier") == [148] * len(r)
     for i in range(len(f)):
         v_ref = f[0].values() * 0 if i == 0 else f[i].values() - f[i - 1].values()
         np.testing.assert_allclose(r[i].values(), v_ref, rtol=1e-03)
 
-    r = f.deacc(use_step=False, skip_first=True)
+    r = f.deacc(key="")
+    assert len(r) == len(f)
+    assert r.grib_get_long("generatingProcessIdentifier") == [148] * len(r)
+    for i in range(len(f)):
+        v_ref = f[0].values() * 0 if i == 0 else f[i].values() - f[i - 1].values()
+        np.testing.assert_allclose(r[i].values(), v_ref, rtol=1e-03)
+
+    r = f.deacc(skip_first=True)
     assert len(r) == len(f) - 1
     assert r.grib_get_long("generatingProcessIdentifier") == [148] * len(r)
     for i in range(len(r)):
         v_ref = f[i + 1].values() - f[i].values()
         np.testing.assert_allclose(r[i].values(), v_ref, rtol=1e-03)
 
-    r = f.deacc(use_step=False, skip_first=True, mark_derived=True)
+    r = f.deacc(skip_first=True, mark_derived=True)
     assert len(r) == len(f) - 1
     # assert r.grib_get_long("generatingProcessIdentifier") == [254] * len(r)
     for i in range(len(r)):
         v_ref = f[i + 1].values() - f[i].values()
         np.testing.assert_allclose(r[i].values(), v_ref, rtol=1e-03)
 
-    # using grouping by step
+    # use grouping by step
     f = mv.Fieldset(path=os.path.join(PATH, "t_time_series.grib"))[:6]
-    r = f.deacc()
-    assert len(r) == 6
-    assert r.grib_get_long("generatingProcessIdentifier") == [148] * len(r)
 
-    v_ref = f[0].values() * 0
-    np.testing.assert_allclose(r[0].values(), v_ref, rtol=1e-03)
-    v_ref = f[1].values() * 0
-    np.testing.assert_allclose(r[1].values(), v_ref, rtol=1e-03)
+    # only "step" is part of the default indexing keys!
+    keys = ["step", "startStep", "stepRange"]
+    for key in keys:
+        r = f.deacc(key=key)
+        assert len(r) == 6
+        assert r.grib_get_long("generatingProcessIdentifier") == [148] * len(r)
 
-    steps = {2: (2, 0), 3: (3, 1), 4: (4, 2), 5: (5, 3)}
+        v_ref = f[0].values() * 0
+        np.testing.assert_allclose(r[0].values(), v_ref, rtol=1e-03)
+        v_ref = f[1].values() * 0
+        np.testing.assert_allclose(r[1].values(), v_ref, rtol=1e-03)
 
-    for idx, steps in steps.items():
-        v_ref = f[steps[0]].values() - f[steps[1]].values()
-        np.testing.assert_allclose(r[idx].values(), v_ref, rtol=1e-03)
+        steps = {2: (2, 0), 3: (3, 1), 4: (4, 2), 5: (5, 3)}
+
+        for idx, steps in steps.items():
+            v_ref = f[steps[0]].values() - f[steps[1]].values()
+            np.testing.assert_allclose(r[idx].values(), v_ref, rtol=1e-03)

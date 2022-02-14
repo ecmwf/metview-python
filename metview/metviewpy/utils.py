@@ -26,9 +26,9 @@ LOG = logging.getLogger(__name__)
 CACHE_DIR = os.path.join(tempfile.gettempdir(), f"mpy-{getpass.getuser()}")
 
 
-def deacc(fs, use_step=True, skip_first=False, mark_derived=False):
+def deacc(fs, key=None, skip_first=False, mark_derived=False):
     r = None
-    if not use_step:
+    if key is None or key == "":
         if len(fs) > 1:
             v = fs[1:] - fs[:-1]
         if not skip_first:
@@ -37,15 +37,22 @@ def deacc(fs, use_step=True, skip_first=False, mark_derived=False):
         else:
             r = v
     else:
-        fs._get_db().load()
-        step = fs._unique_metadata("step")
-        if step:
-            v = fs.select(step=step[0])
+        if not isinstance(key, str):
+            raise TypeError(f"deacc(): key must be a str (got {type(key)})!")
+        fs._get_db().load([key])
+        key_vals = fs._unique_metadata(key)
+        if key_vals:
+            v = fs.select({key: key_vals[0]})
+            gr_num = len(v)
             r = None
             if not skip_first:
                 r = v * 0
-            for i in range(1, len(step)):
-                v_next = fs.select(step=step[i])
+            for i in range(1, len(key_vals)):
+                v_next = fs.select({key: key_vals[i]})
+                if len(v_next) != gr_num:
+                    raise ValueError(
+                        f"deacc(): unexpected number of fields (={len(v_next)}) found for {key}={key_vals[i]}! For each {key} value the number of fields must be the same as for {key}={key_vals[0]} (={gr_num})!"
+                    )
                 if r is None:
                     r = v_next - v
                 else:
