@@ -38,7 +38,7 @@ before_install:
   # auto-yes for conda
   - conda config --set always_yes yes
   # update conda
-  #- conda update -n base -c conda-forge conda
+  - conda update -n base -c conda-forge conda
 
 install:
   # install deps
