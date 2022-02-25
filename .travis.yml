@@ -43,7 +43,7 @@ before_install:
 install:
   # install deps
   - pip install pytest pytest-cov black coveralls PyYAML
-  - conda install -c conda-forge libffi==3.3 python-eccodes cfgrib metview-batch
+  - conda install -c conda-forge libffi==3.3 python-eccodes cfgrib metview-batch>=5.14.1
 
 #---------------------------------#
 #       build configuration       #
