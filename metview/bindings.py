@@ -292,7 +292,6 @@ class Request(dict, Value):
             self.verb = myverb
         if isinstance(req, dict):
             self.create_new(self.verb, req)
-            self.update(req)  # copy into dict
             return
 
         # initialise from a Macro pointer
@@ -380,7 +379,9 @@ class Request(dict, Value):
             push_arg(new_key)
             push_arg(new_val)
             lib.p_set_subvalue_from_arg_stack(self.val_pointer)
-        dict.__setitem__(self, index, value)
+            dict.__setitem__(self, new_key, new_val)
+        else:
+            dict.__setitem__(self, index, value)
 
 
 def push_bytes(b):

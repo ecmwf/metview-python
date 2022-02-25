@@ -103,6 +103,24 @@ def test_definitions_as_dict():
     assert mcont_dict["CONTOUR_MIN_LEVEL"] == 4.9
 
 
+def test_definitions_as_args():
+    mcont_def = mv.mcont(
+        legend=True,
+        contour_line_thickness=7,
+        contour_level_selection_type="level_list",
+        contour_level_list=[5, 7, 8.8, 9],
+        contour_hi_text="My high text",
+        CONTOUR_MIN_LEVEL=4.9,
+    )
+    mcont_dict = mcont_def.copy()
+    assert mcont_dict["LEGEND"] == "ON"
+    assert mcont_def["CONTOUR_LINE_THICKNESS"] == 7
+    assert mcont_def["CONTOUR_LEVEL_SELECTION_TYPE"] == "LEVEL_LIST"
+    assert mcont_def["CONTOUR_LEVEL_LIST"] == [5, 7, 8.8, 9]
+    assert mcont_def["CONTOUR_HI_TEXT"] == "My high text"
+    assert mcont_def["CONTOUR_MIN_LEVEL"] == 4.9
+
+
 def test_modify_request():
     c = mv.mcont(
         {
