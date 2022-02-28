@@ -2,6 +2,18 @@
 Changelog for Metview's Python interface
 ========================================
 
+
+1.11.0
+------------------
+- make fieldset parameter selector operator work in pure Python Fieldset
+- make vector data extraction operator work for 100m and 200m wind
+- select(): do not try to interpret shortName values as vector field names
+- select(): do not apply sorting on results
+- Fieldsets: add sort method based on indexed metadata
+- select(): fixx issue where cannot filter by date when data date has no year component (e.g. monthly climatologies)
+- Requests: allow True/False as argument values when creating Requests
+
+
 1.10.0
 ------------------
 - experimental pure Python implementation of Fieldset - for internal testing at the moment
