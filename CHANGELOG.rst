@@ -10,7 +10,7 @@ Changelog for Metview's Python interface
 - select(): do not try to interpret shortName values as vector field names
 - select(): do not apply sorting on results
 - Fieldsets: add sort method based on indexed metadata
-- select(): fixx issue where cannot filter by date when data date has no year component (e.g. monthly climatologies)
+- select(): fix issue where cannot filter by date when data date has no year component (e.g. monthly climatologies)
 - Requests: allow True/False as argument values when creating Requests
 
 
