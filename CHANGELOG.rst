@@ -3,6 +3,10 @@ Changelog for Metview's Python interface
 ========================================
 
 
+1.12.0
+------------------
+
+
 1.11.0
 ------------------
 - make fieldset parameter selector operator work in pure Python Fieldset
