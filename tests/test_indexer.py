@@ -1460,10 +1460,10 @@ def test_deacc():
         v_ref = f[i + 1].values() - f[i].values()
         np.testing.assert_allclose(r[i].values(), v_ref, rtol=1e-03)
 
-    # use grouping by step
+    # use grouping by key
     f = mv.Fieldset(path=os.path.join(PATH, "t_time_series.grib"))[:6]
 
-    # only "step" is part of the default indexing keys!
+    # only "step" is part of the default set of indexing keys!
     keys = ["step", "startStep", "stepRange"]
     for key in keys:
         r = f.deacc(key=key)
