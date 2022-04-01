@@ -55,8 +55,10 @@ docs/_build/
 .docker-current
 .eggs
 
+# tests
 .pytest_cache
 tests/*.idx
+tests/data
 
 # vscode
 .vscode/

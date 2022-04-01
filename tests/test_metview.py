@@ -46,6 +46,16 @@ def file_in_testdir(filename):
     return os.path.join(PATH, filename)
 
 
+def get_test_data(filename):
+    d_path = os.path.join(PATH, "data")
+    os.makedirs(d_path, mode=0o755, exist_ok=True)
+    f_path = os.path.join(d_path, filename)
+    if not os.path.exists(f_path):
+        URL = "https://get.ecmwf.int/repository/test-data/metview/tests"
+        mv.download(url=f"{URL}/{filename}", target=f_path)
+    return f_path
+
+
 def test_version_info():
     out = mv.version_info()
     assert "metview_version" in out
@@ -2463,3 +2473,28 @@ def test_speed():
             rtol=1e-05,
         )
     assert r.grib_get_long("paramId") == [10, 10]
+
+
+def test_mvl_ml2hpa():
+    fs = mv.Fieldset(path=get_test_data("tq_ml137.grib"))
+    t = fs.select(shortName="t")
+    lnsp = fs.select(shortName="lnsp")
+
+    # this is not the same order as in t_ref!
+    pres = [100, 500, 925, 850, 1000]
+    t_ref = mv.Fieldset(path=get_test_data("ml2pl_ref.grib"))
+
+    r = mv.mvl_ml2hPa(lnsp, t, pres)
+
+    levels = r.grib_get_long("level")
+    np.testing.assert_allclose(levels, pres)
+
+    sh = r.grib_get_string("shortName")
+    assert sh == ["t"] * len(pres)
+
+    for p in pres:
+        np.testing.assert_allclose(
+            r.select(level=p).values(),
+            t_ref.select(level=p).values(),
+            err_msg=f"p={p}",
+        )
