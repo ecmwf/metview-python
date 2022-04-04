@@ -222,6 +222,13 @@ def download(url, target):
             bar.update(size)
 
 
+def simple_download(url, target):
+    import requests
+
+    r = requests.get(url, allow_redirects=True)
+    open(target, "wb").write(r.content)
+
+
 class Cache:
     ROOT_DIR = os.path.join(tempfile.gettempdir(), f"mpy_ds_{getpass.getuser()}")
 

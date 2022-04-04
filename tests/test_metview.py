@@ -18,6 +18,7 @@ import xarray as xr
 
 import metview as mv
 from metview import bindings
+from metview.metviewpy import utils
 
 
 PATH = os.path.dirname(__file__)
@@ -52,7 +53,7 @@ def get_test_data(filename):
     f_path = os.path.join(d_path, filename)
     if not os.path.exists(f_path):
         URL = "https://get.ecmwf.int/repository/test-data/metview/tests"
-        mv.download(url=f"{URL}/{filename}", target=f_path)
+        utils.simple_download(url=f"{URL}/{filename}", target=f_path)
     return f_path
 
 
