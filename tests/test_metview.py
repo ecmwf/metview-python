@@ -499,16 +499,58 @@ def test_distance():
     assert np.isclose(maximum, SEMI_EQUATOR)
 
 
-def test_fieldset_and():
+def test_fieldset_and_fieldset():
     t = (TEST_FIELDSET > 290) & (TEST_FIELDSET < 310)
     s = mv.accumulate(t)
     assert s == 43855
 
 
-def test_fieldset_or():
+def test_fieldset_and_bool():
+    t = (TEST_FIELDSET > 290) & (True)
+    s = mv.accumulate(t)
+    assert s == 45423
+    assert s == mv.accumulate(TEST_FIELDSET > 290)
+    t = (TEST_FIELDSET > 290) & (False)
+    s = mv.accumulate(t)
+    assert s == 0
+
+
+def test_bool_and_fieldset():
+    t = (True) & (TEST_FIELDSET > 290)
+    s = mv.accumulate(t)
+    assert s == 45423
+    assert s == mv.accumulate(TEST_FIELDSET > 290)
+    t = (False) & (TEST_FIELDSET > 290)
+    s = mv.accumulate(t)
+    assert s == 0
+
+
+def test_fieldset_or_fieldset():
     t = (TEST_FIELDSET < 250) | (TEST_FIELDSET > 310)
     s = mv.accumulate(t)
     assert s == 12427
+
+
+def test_fieldset_or_bool():
+    t = (TEST_FIELDSET < 250) | (True)
+    s = mv.accumulate(t)
+    assert s == 115680
+    assert s == len(TEST_FIELDSET.values())
+    t = (TEST_FIELDSET < 250) | (False)
+    s = mv.accumulate(t)
+    assert s == 10859
+    assert s == mv.accumulate(TEST_FIELDSET < 250)
+
+
+def test_bool_or_fieldset():
+    t = (True) | (TEST_FIELDSET < 250)
+    s = mv.accumulate(t)
+    assert s == 115680
+    assert s == len(TEST_FIELDSET.values())
+    t = (False) | (TEST_FIELDSET < 250)
+    s = mv.accumulate(t)
+    assert s == 10859
+    assert s == mv.accumulate(TEST_FIELDSET < 250)
 
 
 def test_fieldset_not():

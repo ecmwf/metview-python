@@ -5,6 +5,7 @@ Changelog for Metview's Python interface
 
 1.12.0
 ------------------
+- add 'reverse' and/or operators between Fieldsets and bools (e.g. 'True & my_fieldset')
 
 
 1.11.0

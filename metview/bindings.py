@@ -558,8 +558,14 @@ class FileBackedValueWithOperators(FileBackedValue):
     def __and__(self, other):
         return met_and(self, other)
 
+    def __rand__(self, other):
+        return met_and(other, self)
+
     def __or__(self, other):
         return met_or(self, other)
+
+    def __ror__(self, other):
+        return met_or(other, self)
 
     def __invert__(self):
         return met_not(self)
