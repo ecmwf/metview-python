@@ -1931,21 +1931,6 @@ def test_temporary_file_deletion(file_name):
     assert not (os.path.isfile(temp_filepath))
 
 
-def test_mvl_ml2hPa():
-    ml_data = mv.read(file_in_testdir("ml_data.grib"))
-    assert mv.type(ml_data) == "fieldset"
-    ml_t = mv.read(data=ml_data, param="t")
-    ml_lnsp = mv.read(data=ml_data, param="lnsp")
-    desired_pls = [1000, 900, 850, 500, 300, 100, 10, 1, 0.8, 0.5, 0.3, 0.1]
-    pl_data = mv.mvl_ml2hPa(ml_lnsp, ml_t, desired_pls)
-    assert mv.type(pl_data) == "fieldset"
-    pls = mv.grib_get_long(pl_data, "level")
-    lev_types = mv.grib_get_string(pl_data, "typeOfLevel")
-    lev_divisors = [1 if x == "isobaricInhPa" else 100 for x in lev_types]
-    pl_in_hpa = [a / b for a, b in zip(pls, lev_divisors)]
-    assert pl_in_hpa == desired_pls
-
-
 def test_push_nil():
     n = mv.nil()
     assert n is None
@@ -2519,6 +2504,8 @@ def test_speed():
 
 
 def test_mvl_ml2hpa():
+    # 1. test against reference fields
+
     fs = mv.Fieldset(path=get_test_data("tq_ml137.grib"))
     t = fs.select(shortName="t")
     lnsp = fs.select(shortName="lnsp")
@@ -2539,5 +2526,23 @@ def test_mvl_ml2hpa():
         np.testing.assert_allclose(
             r.select(level=p).values(),
             t_ref.select(level=p).values(),
+            rtol=1e-05,
             err_msg=f"p={p}",
         )
+
+    # 2. test pressure values
+
+    ml_data = mv.read(file_in_testdir("ml_data.grib"))
+    assert mv.type(ml_data) == "fieldset"
+    ml_t = mv.read(data=ml_data, param="t")
+    ml_lnsp = mv.read(data=ml_data, param="lnsp")
+    desired_pls = [1000, 900, 850, 500, 300, 100, 10, 1, 0.8, 0.5, 0.3, 0.1]
+
+    pl_data = mv.mvl_ml2hPa(ml_lnsp, ml_t, desired_pls)
+
+    assert mv.type(pl_data) == "fieldset"
+    pls = pl_data.grib_get_long("level")
+    lev_types = pl_data.grib_get_string("typeOfLevel")
+    lev_divisors = [1 if x == "isobaricInhPa" else 100 for x in lev_types]
+    pl_in_hpa = [a / b for a, b in zip(pls, lev_divisors)]
+    assert pl_in_hpa == desired_pls
