@@ -100,6 +100,8 @@ class ExperimentDb(IndexDb):
         self.load_data_file_list()
         if len(self.data_files) == 0:
             self.scan(vector=True)
+            self.load_data_file_list()
+
         if len(self.blocks) == 0:
             for key in ExperimentIndexer.get_storage_key_list(self.db_dir):
                 self.blocks[key] = ExperimentIndexer.read_dataframe(key, self.db_dir)
