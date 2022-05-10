@@ -2,6 +2,11 @@
 Changelog for Metview's Python interface
 ========================================
 
+1.10.5
+------------------
+- fix for automatic indexing of dataset
+
+
 1.10.0
 ------------------
 - experimental pure Python implementation of Fieldset - for internal testing at the moment
