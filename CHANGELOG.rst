@@ -6,6 +6,7 @@ Changelog for Metview's Python interface
 1.12.0
 ------------------
 - add 'reverse' and/or operators between Fieldsets and bools (e.g. 'True & my_fieldset')
+- fixed issue where automatic indexing of a dataset fails
 
 
 1.11.0
@@ -17,6 +18,11 @@ Changelog for Metview's Python interface
 - Fieldsets: add sort method based on indexed metadata
 - select(): fix issue where cannot filter by date when data date has no year component (e.g. monthly climatologies)
 - Requests: allow True/False as argument values when creating Requests
+
+
+1.10.5
+------------------
+- fix for automatic indexing of dataset
 
 
 1.10.0
