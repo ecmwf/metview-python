@@ -10,6 +10,7 @@
 
 
 import os
+import platform
 from resource import getrusage, RUSAGE_SELF
 
 import yaml
@@ -63,6 +64,16 @@ def get_ref_rss(name):
         return None
 
 
+def scale_to_bytes(v):
+    try:
+        if os.name == "posix" and platform.system() == "Darwin":
+            return int(v)
+        else:
+            return int(v) * 1024
+    except:
+        return 0
+
+
 def mem_usage(func):
     def wrapper():
         func()
@@ -76,7 +87,7 @@ def mem_usage(func):
 
         # get max rss
         rss = getrusage(RUSAGE_SELF).ru_maxrss
-        rss = int(rss)
+        rss = scale_to_bytes(rss)
         # LOG.info(" RSS: {} MB".format(int(rss / (1024 * 1024))))
 
         # check departure from ref
