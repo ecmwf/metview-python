@@ -20,6 +20,16 @@ import diag_util as diag
 # ------------------------------------
 
 
+def test_absolute_vorticity(benchmark):
+    def _target(t):
+        g = mv.absolute_vorticity(t)
+        return len(g)
+
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
+
+
 def test_accumulate(benchmark):
     def _target(t):
         g = mv.accumulate(t)

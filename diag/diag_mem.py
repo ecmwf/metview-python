@@ -101,6 +101,13 @@ def mem_usage(func):
 
 
 @mem_usage
+def test_absolute_vorticity():
+    t = diag.get_data(diag.TEST_FILE_2)
+    g = mv.absolute_vorticity(t)
+    assert len(g) == 20
+
+
+@mem_usage
 def test_accumulate():
     t = diag.get_data(diag.TEST_FILE_2)
     g = mv.accumulate(t)
@@ -323,7 +330,7 @@ def test_poly_mask():
 @mem_usage
 def test_rmask():
     t = diag.get_data(diag.TEST_FILE_2)
-    g = mv.rmask(t, 60, -30, 1500 * 000)
+    g = mv.rmask(t, 60, -30, 1500 * 1000)
     assert len(g) == 20
 
 
