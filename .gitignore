@@ -60,6 +60,11 @@ docs/_build/
 tests/*.idx
 tests/data
 
+# diagnostics
+diag/data
+diag/mem_result.yaml
+diag/.benchmarks
+
 # vscode
 .vscode/
 .env
