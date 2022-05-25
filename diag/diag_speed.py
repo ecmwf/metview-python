@@ -16,7 +16,7 @@ import diag_util as diag
 # -----------------------------------
 # Tests for execution speed
 # To run it use:
-# pytest diag_speed.py --benchmark-autosave  --benchmark-max-time=5 --benchmark-min-rounds=1
+# pytest diag_speed.py --benchmark-autosave  --benchmark-max-time=5 --benchmark-min-rounds=1 --benchmark-sort=name
 # ------------------------------------
 
 
