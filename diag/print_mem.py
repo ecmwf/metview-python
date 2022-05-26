@@ -19,96 +19,78 @@ MEMORY_REF_FILE = "mem_reference.yaml"
 MEMORY_RES_FILE = "mem_result.yaml"
 
 
-def _load_stats(fname):
+def load_stats(fname):
     f_path = fname
-    if os.path.exists(f_path):
-        with open(f_path, "rt") as f:
-            return yaml.safe_load(f)
+    try:
+        if os.path.exists(f_path):
+            with open(f_path, "rt") as f:
+                return yaml.safe_load(f)
+    except:
+        return dict()
+
+    return dict()
 
 
-def load_ref_stats():
-    return _load_stats(MEMORY_REF_FILE)
+def scale_to_mb(v):
+    try:
+        return int(int(v) / (1024 * 1024))
+    except:
+        return "???"
 
 
-def load_res_stats():
-    return _load_stats(MEMORY_RES_FILE)
-
-
-def print_one(d, label):
+def print_stats(files):
     x = PrettyTable()
-    x.field_names = ["Name", f"{label} RSS"]
+    labels = []
+    for name in files:
+        labels.append(name.replace(".yaml", "").replace("mem_", "") + " RSS")
+
+    x.field_names = ["Name", *labels]
     x.align["Name"] = "l"
-    x.align[f"{label} RSS"] = "r"
+    d = []
+    keys = []
+    for i, lbl in enumerate(labels):
+        x.align[lbl] = "r"
+        d.append(load_stats(files[i]))
+        keys.extend(list(d[i].keys()))
 
-    for k, v in d.items():
-        x.add_row([k.replace("test_", ""), f"{int(int(v)/(1024*1024))} MB"])
-
-    print(x)
-
-
-def print_both():
-    x = PrettyTable()
-    x.field_names = ["Name", "Res RSS", "Ref RSS"]
-    x.align["Name"] = "l"
-    x.align["Res RSS"] = "r"
-    x.align["Ref RSS"] = "r"
-
-    ref = load_ref_stats()
-    if ref is None:
-        ref = {}
-    res = load_res_stats()
-    if res is None:
-        res = {}
-
-    keys = list(ref.keys())
-    keys.extend(list(res.keys()))
     keys = list(set(keys))
     keys.sort()
 
     for k in keys:
-        v1 = res.get(k, None)
-        v2 = ref.get(k, None)
-        try:
-            v1 = int(int(v1) / (1024 * 1024))
-        except:
-            v1 = "???"
-        try:
-            v2 = int(int(v2) / (1024 * 1024))
-        except:
-            v2 = "???"
-        x.add_row([k.replace("test_", ""), f"{v1} MB", f"{v2} MB"])
+        row = [k.replace("test_", "")]
+        for dv in d:
+            row.append(f"{scale_to_mb(dv.get(k, None))} MB")
+
+        x.add_row(row)
 
     print(x)
 
 
-def print_ref():
-    d = load_ref_stats()
-    if d is None:
-        d = {}
-    print_one(d, "Ref")
-
-
-def print_res():
-    d = load_res_stats()
-    if d is None:
-        d = {}
-    print_one(d, "Res")
-
-
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--res", action="store_true", help=argparse.SUPPRESS)
-    parser.add_argument("--ref", action="store_true", help=argparse.SUPPRESS)
+    parser.add_argument("--res", action="store_true", help="print result")
+    parser.add_argument("--ref", action="store_true", help="print reference")
+    parser.add_argument("files", nargs="*", default=None)
 
     # on error this will write to stderr
     args = parser.parse_args()
 
-    if args.res:
-        print_res()
-    elif args.ref:
-        print_ref()
+    files = args.files
+
+    if len(files) > 0:
+        print_stats(files)
     else:
-        print_both()
+        if args.res:
+            files = [MEMORY_RES_FILE]
+            print_stats(files)
+
+        elif args.ref:
+            files = [MEMORY_REF_FILE]
+            print_stats(files)
+
+        else:
+            files = [MEMORY_RES_FILE, MEMORY_REF_FILE]
+            print_stats(files)
 
 
 main()
