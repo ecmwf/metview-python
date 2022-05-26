@@ -65,6 +65,7 @@ def get_ref_rss(name):
 
 
 def scale_to_bytes(v):
+    # print(f"os={os.name} platform={platform.system()}")
     try:
         if os.name == "posix" and platform.system() == "Darwin":
             return int(v)
@@ -87,9 +88,10 @@ def mem_usage(func):
 
         # get max rss
         rss = getrusage(RUSAGE_SELF).ru_maxrss
+        # print(f"rss: {rss}")
         rss = scale_to_bytes(rss)
-        # LOG.info(" RSS: {} MB".format(int(rss / (1024 * 1024))))
-
+        # print(f"scaled rss: {rss}")
+    
         # add rss to data and save it to file
         res[fn_name] = rss
         s = yaml.dump(res, default_flow_style=False)
@@ -98,6 +100,7 @@ def mem_usage(func):
 
         # check departure from ref
         ref_rss = get_ref_rss(fn_name)
+        # print(f"ref rss: {ref_rss}")
         if ref_rss is not None:
             delta = rss - ref_rss
             max_delta = MAX_INCREASE_PERCENT * ref_rss / 100.0

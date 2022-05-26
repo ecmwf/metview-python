@@ -10,7 +10,6 @@
 
 import argparse
 import os
-from regex import D
 
 import yaml
 from prettytable import PrettyTable
