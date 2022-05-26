@@ -90,18 +90,18 @@ def mem_usage(func):
         rss = scale_to_bytes(rss)
         # LOG.info(" RSS: {} MB".format(int(rss / (1024 * 1024))))
 
+        # add rss to data and save it to file
+        res[fn_name] = rss
+        s = yaml.dump(res, default_flow_style=False)
+        with open(MEMORY_RES_FILE, "w") as f:
+            f.write(s)
+
         # check departure from ref
         ref_rss = get_ref_rss(fn_name)
         if ref_rss is not None:
             delta = rss - ref_rss
             max_delta = MAX_INCREASE_PERCENT * ref_rss / 100.0
             assert delta < max_delta
-
-        # add rss to data and save it to file
-        res[fn_name] = rss
-        s = yaml.dump(res, default_flow_style=False)
-        with open(MEMORY_RES_FILE, "w") as f:
-            f.write(s)
 
     return wrapper
 
@@ -175,6 +175,13 @@ def test_bitmap():
 
 
 @mem_usage
+def test_cos():
+    t = diag.get_data(diag.TEST_FILE_2)
+    g = mv.cos(t)
+    assert len(g) == 20
+
+
+@mem_usage
 def test_coslat():
     t = diag.get_data(diag.TEST_FILE_2)
     g = mv.coslat(t)
@@ -217,7 +224,7 @@ def test_direction():
 def test_divergence():
     u = diag.get_data(diag.TEST_FILE_5)
     v = diag.get_data(diag.TEST_FILE_6)
-    g = mv.vorticity(u, v)
+    g = mv.divergence(u, v)
     assert len(g) == 20
 
 
@@ -253,6 +260,48 @@ def test_gradient():
     t = diag.get_data(diag.TEST_FILE_2)
     g = mv.gradient(t)
     assert len(g) == 40
+
+
+@mem_usage
+def test_grib_get():
+    t = diag.get_data(diag.TEST_FILE_2)
+    g = mv.grib_get(t, ["paramId", "shortName"])
+    assert len(g) == 20
+
+
+@mem_usage
+def test_grib_get_long():
+    t = diag.get_data(diag.TEST_FILE_2)
+    g = mv.grib_get_long(t, "paramId")
+    assert len(g) == 20
+
+
+@mem_usage
+def test_grib_get_string():
+    t = diag.get_data(diag.TEST_FILE_2)
+    g = mv.grib_get_string(t, "shortName")
+    assert len(g) == 20
+
+
+@mem_usage
+def test_grib_set():
+    t = diag.get_data(diag.TEST_FILE_2)
+    g = mv.grib_set(t, ["shortName", "z", "paramId", 129])
+    assert len(g) == 20
+
+
+@mem_usage
+def test_grib_set_long():
+    t = diag.get_data(diag.TEST_FILE_2)
+    g = mv.grib_set_long(t, ["paramId", 129])
+    assert len(g) == 20
+
+
+@mem_usage
+def test_grib_set_string():
+    t = diag.get_data(diag.TEST_FILE_2)
+    g = mv.grib_set_string(t, ["shortName", "z"])
+    assert len(g) == 20
 
 
 @mem_usage
@@ -313,7 +362,8 @@ def test_mean():
 @mem_usage
 def test_mean_ew():
     t = diag.get_data(diag.TEST_FILE_2)
-    g = mv.mean(t)
+    g = mv.mean_ew(t)
+    assert len(g) == 20
 
 
 @mem_usage
@@ -377,7 +427,7 @@ def test_shear_deformation():
 @mem_usage
 def test_sin():
     t = diag.get_data(diag.TEST_FILE_2)
-    g = mv.coslat(t)
+    g = mv.sin(t)
     assert len(g) == 20
 
 

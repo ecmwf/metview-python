@@ -81,246 +81,536 @@ def test_average(benchmark):
     assert r == 20
 
 
-# def test_average_ew():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.average_ew(t, [60, -180, -60, 180], 2)
+def test_average_ew(benchmark):
+    def _target(t):
+        g = mv.average_ew(t, [60, -180, -60, 180], 2)
+        return len(g)
 
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r > 1
 
-# def test_bearing(benchmark):
-#     def _target(t):
-#         g = mv.bearing(t, [45, 20])
-#         return len(g)
 
-#     t = diag.get_data(diag.TEST_FILE_2)
-#     r = benchmark(_target, t)
-#     assert r == 20
+def test_bearing(benchmark):
+    def _target(t):
+        g = mv.bearing(t, [45, 20])
+        return len(g)
 
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
 
-# def test_bitmap():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.bitmap(t, 273)
 
+def test_bitmap(benchmark):
+    def _target(t):
+        g = mv.bitmap(t, 273)
+        return len(g)
 
-# def test_coslat():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.coslat(t)
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
 
 
-# def test_corr_a():
-#     u = get_data(TEST_FILE_5)
-#     v = get_data(TEST_FILE_6)
-#     g = mv.corr_a(u, v, [50, -100, -80, 140])
+def test_cos(benchmark):
+    def _target(t):
+        g = mv.cos(t)
+        return len(g)
 
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
 
-# def test_covar():
-#     u = get_data(TEST_FILE_5)
-#     v = get_data(TEST_FILE_6)
-#     g = mv.covar(u, v)
 
+def test_coslat(benchmark):
+    def _target(t):
+        g = mv.coslat(t)
+        return len(g)
 
-# def test_covar_a():
-#     u = get_data(TEST_FILE_5)
-#     v = get_data(TEST_FILE_6)
-#     g = mv.covar_a(u, v, [50, -100, -80, 140])
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
 
 
-# def test_direction():
-#     u = get_data(TEST_FILE_5)
-#     v = get_data(TEST_FILE_6)
-#     g = mv.direction(u, v)
+def test_corr_a(benchmark):
+    def _target(u, v):
+        g = mv.corr_a(u, v, [50, -100, -80, 140])
+        return len(g)
 
+    u = diag.get_data(diag.TEST_FILE_5)
+    v = diag.get_data(diag.TEST_FILE_6)
+    r = benchmark(_target, u, v)
+    assert r == 20
 
-# def test_divergence():
-#     u = get_data(TEST_FILE_5)
-#     v = get_data(TEST_FILE_6)
-#     g = mv.vorticity(u, v)
 
+def test_covar(benchmark):
+    def _target(u, v):
+        g = mv.covar(u, v)
+        return len(g)
 
-# def test_filter_op():
-#     t = get_data(TEST_FILE_2)
-#     g = t > 273.16
+    u = diag.get_data(diag.TEST_FILE_5)
+    v = diag.get_data(diag.TEST_FILE_6)
+    r = benchmark(_target, u, v)
+    assert r == 1
 
 
-# def test_first_derivative_x():
-#     t = get_data(TEST_FILE_1)
-#     g = mv.first_derivative_x(t)
+def test_covar_a(benchmark):
+    def _target(u, v):
+        g = mv.covar_a(u, v, [50, -100, -80, 140])
+        return len(g)
 
+    u = diag.get_data(diag.TEST_FILE_5)
+    v = diag.get_data(diag.TEST_FILE_6)
+    r = benchmark(_target, u, v)
+    assert r == 20
 
-# def test_first_derivative_y():
-#     t = get_data(TEST_FILE_1)
-#     g = mv.first_derivative_y(t)
 
+def test_direction(benchmark):
+    def _target(u, v):
+        g = mv.direction(u, v)
+        return len(g)
 
-# def test_frequencies():
-#     t = get_data(TEST_FILE_1)
-#     g = mv.frequencies(t, list(range(220, 320, 10)))
+    u = diag.get_data(diag.TEST_FILE_5)
+    v = diag.get_data(diag.TEST_FILE_6)
+    r = benchmark(_target, u, v)
+    assert r == 20
 
 
-# def test_gradient():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.gradient(t)
+def test_divergence(benchmark):
+    def _target(u, v):
+        g = mv.divergence(u, v)
+        return len(g)
 
+    u = diag.get_data(diag.TEST_FILE_5)[:10]
+    v = diag.get_data(diag.TEST_FILE_6)[:10]
+    r = benchmark(_target, u, v)
+    assert r == 10
 
-# def test_grid_cell_area():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.grid_cell_area(t)
 
+def test_filter_op(benchmark):
+    def _target(t):
+        g = t > 273.16
+        return len(g)
 
-# def test_integral():
-#     t = get_data(TEST_FILE_1)
-#     g = mv.integral(t)
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
 
 
-# def test_integrate():
-#     t = get_data(TEST_FILE_1)
-#     g = mv.integral(t)
+def test_first_derivative_x(benchmark):
+    def _target(t):
+        g = mv.first_derivative_x(t)
+        return len(g)
 
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
 
-# # def test_laplacian():
-# #     t = get_data(TEST_FILE_1)
-# #     g = mv.laplacian(t)
 
+def test_first_derivative_y(benchmark):
+    def _target(t):
+        g = mv.first_derivative_y(t)
+        return len(g)
 
-# def test_mask():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.mask(t, [60, -30, 22, 45])
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
 
 
-# def test_max():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.max(t)
+def test_frequencies(benchmark):
+    def _target(t):
+        g = mv.frequencies(t, list(range(220, 320, 10)))
+        return len(g)
 
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r > 0
 
-# def test_maxvalue():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.maxvalue(t)
 
+def test_gradient(benchmark):
+    def _target(t):
+        g = mv.gradient(t)
+        return len(g)
 
-# def test_mean():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.mean(t)
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 40
 
 
-# def test_mean_ew():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.mean(t)
+def test_grib_get(benchmark):
+    def _target(t):
+        g = mv.grib_get(t, ["paramId", "shortName"])
+        return len(g)
 
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
 
-# def test_min():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.min(t)
 
+def test_grib_get_long(benchmark):
+    def _target(t):
+        g = mv.grib_get_long(t, "paramId")
+        return len(g)
 
-# def test_minvalue():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.minvalue(t)
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
 
 
-# def test_poly_mask():
-#     t = get_data(TEST_FILE_2)
-#     lon = np.array([-42, -24, 20, 27, -7, -17])
-#     lat = np.array([28, 60, 51, 24, 5, 30])
-#     g = mv.poly_mask(t, lat, lon)
+def test_grib_get_string(benchmark):
+    def _target(t):
+        g = mv.grib_get_string(t, "shortName")
+        return len(g)
 
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
 
-# def test_rmask():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.rmask(t, 60, -30, 1500 * 000)
 
+def test_grib_set(benchmark):
+    def _target(t):
+        g = mv.grib_set(t, ["shortName", "z", "paramId", 129])
+        return len(g)
 
-# def test_rms():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.rms(t)
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
 
 
-# # def test_second_derivative_x():
-# #     t = get_data(TEST_FILE_1)
-# #     g = mv.second_derivative_x(t)
+def test_grib_set_long(benchmark):
+    def _target(t):
+        g = mv.grib_set_long(t, ["paramId", 129])
+        return len(g)
 
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
 
-# # def test_second_derivative_y():
-# #     t = get_data(TEST_FILE_1)
-# #     g = mv.second_derivative_y(t)
 
+def test_grib_set_string(benchmark):
+    def _target(t):
+        g = mv.grib_set_string(t, ["shortName", "z"])
+        return len(g)
 
-# def test_shear_deformation():
-#     u = get_data(TEST_FILE_5)
-#     v = get_data(TEST_FILE_6)
-#     g = mv.shear_deformation(u, v)
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
 
 
-# def test_sin():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.coslat(t)
+def test_grid_cell_area(benchmark):
+    def _target(t):
+        g = mv.grid_cell_area(t)
+        return len(g)
 
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
 
-# def test_sinlat():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.sinlat(t)
 
+def test_integral(benchmark):
+    def _target(t):
+        g = mv.integral(t)
+        return len(g)
 
-# def test_speed():
-#     u = get_data(TEST_FILE_5)
-#     v = get_data(TEST_FILE_6)
-#     g = mv.speed(u, v)
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
 
 
-# def test_stdev():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.stdev(t)
+def test_integrate(benchmark):
+    def _target(t):
+        g = mv.integrate(t)
+        return len(g)
 
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
 
-# def test_stdev_a():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.stdev_a(t, [50, -100, -80, 140])
 
+def test_laplacian(benchmark):
+    def _target(t):
+        g = mv.laplacian(t)
+        return len(g)
 
-# def test_stretch_deformation():
-#     u = get_data(TEST_FILE_5)
-#     v = get_data(TEST_FILE_6)
-#     g = mv.stretch_deformation(u, v)
+    t = diag.get_data(diag.TEST_FILE_2)[:10]
+    r = benchmark(_target, t)
+    assert r == 10
 
 
-# def test_sum():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.sum(t)
+def test_mask(benchmark):
+    def _target(t):
+        g = mv.mask(t, [60, -30, 22, 45])
+        return len(g)
 
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
 
-# def test_tanlat():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.tanlat(t)
 
+def test_max(benchmark):
+    def _target(t):
+        g = mv.max(t)
+        return len(g)
 
-# def test_unipressure():
-#     f = get_data(TEST_FILE_1)
-#     lnsp = mv.read(data=f, param="lnsp")
-#     g = mv.unipressure(lnsp)
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 1
 
 
-# def test_unithickness():
-#     f = get_data(TEST_FILE_1)
-#     lnsp = mv.read(data=f, param="lnsp")
-#     g = mv.unithickness(lnsp)
+def test_maxvalue(benchmark):
+    def _target(t):
+        g = mv.maxvalue(t)
+        return g
 
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r is not None
 
-# def test_univertint():
-#     f = get_data(TEST_FILE_1)
-#     lnsp = mv.read(data=f, param="lnsp")
-#     t = mv.read(data=f, param="t")
-#     g = mv.univertint(lnsp, t)
 
+def test_mean(benchmark):
+    def _target(t):
+        g = mv.mean(t)
+        return len(g)
 
-# def test_var():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.var(t)
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 1
 
 
-# def test_var_a():
-#     t = get_data(TEST_FILE_2)
-#     g = mv.var_a(t, [50, -100, -80, 140])
+def test_mean_ew(benchmark):
+    def _target(t):
+        g = mv.mean_ew(t)
+        return len(g)
 
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
 
-# def test_vorticity():
-#     u = get_data(TEST_FILE_5)
-#     v = get_data(TEST_FILE_6)
-#     g = mv.vorticity(u, v)
+
+def test_min(benchmark):
+    def _target(t):
+        g = mv.min(t)
+        return len(g)
+
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 1
+
+
+def test_minvalue(benchmark):
+    def _target(t):
+        g = mv.minvalue(t)
+        return g
+
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r is not None
+
+
+def test_poly_mask(benchmark):
+    def _target(t, lat, lon):
+        g = mv.poly_mask(t, lat, lon)
+        return len(g)
+
+    t = diag.get_data(diag.TEST_FILE_2)
+    lon = np.array([-42, -24, 20, 27, -7, -17])
+    lat = np.array([28, 60, 51, 24, 5, 30])
+    r = benchmark(_target, t, lat, lon)
+    assert r == 20
+
+
+def test_rmask(benchmark):
+    def _target(t):
+        g = mv.rmask(t, 60, -30, 1500 * 1000)
+        return len(g)
+
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
+
+
+def test_rms(benchmark):
+    def _target(t):
+        g = mv.rms(t)
+        return len(g)
+
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 1
+
+
+def test_second_derivative_x(benchmark):
+    def _target(t):
+        g = mv.second_derivative_x(t)
+        return len(g)
+
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
+
+
+def test_second_derivative_y(benchmark):
+    def _target(t):
+        g = mv.second_derivative_y(t)
+        return len(g)
+
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
+
+
+def test_shear_deformation(benchmark):
+    def _target(u, v):
+        g = mv.shear_deformation(u, v)
+        return len(g)
+
+    u = diag.get_data(diag.TEST_FILE_5)[:10]
+    v = diag.get_data(diag.TEST_FILE_6)[:10]
+    r = benchmark(_target, u, v)
+    assert r == 10
+
+
+def test_sin(benchmark):
+    def _target(t):
+        g = mv.sin(t)
+        return len(g)
+
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
+
+
+def test_sinlat(benchmark):
+    def _target(t):
+        g = mv.sinlat(t)
+        return len(g)
+
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
+
+
+def test_speed(benchmark):
+    def _target(u, v):
+        g = mv.speed(u, v)
+        return len(g)
+
+    u = diag.get_data(diag.TEST_FILE_5)
+    v = diag.get_data(diag.TEST_FILE_6)
+    r = benchmark(_target, u, v)
+    assert r == 20
+
+
+def test_stdev(benchmark):
+    def _target(t):
+        g = mv.stdev(t)
+        return len(g)
+
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 1
+
+
+def test_stdev_a(benchmark):
+    def _target(t):
+        g = mv.stdev_a(t, [50, -100, -80, 140])
+        return len(g)
+
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
+
+
+def test_stretch_deformation(benchmark):
+    def _target(u, v):
+        g = mv.stretch_deformation(u, v)
+        return len(g)
+
+    u = diag.get_data(diag.TEST_FILE_5)[:10]
+    v = diag.get_data(diag.TEST_FILE_6)[:10]
+    r = benchmark(_target, u, v)
+    assert r == 10
+
+
+def test_sum(benchmark):
+    def _target(t):
+        g = mv.sum(t)
+        return len(g)
+
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 1
+
+
+def test_tanlat(benchmark):
+    def _target(t):
+        g = mv.tanlat(t)
+        return len(g)
+
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
+
+
+def test_unipressure(benchmark):
+    def _target(lnsp):
+        g = mv.unipressure(lnsp)
+        return len(g)
+
+    f = diag.get_data(diag.TEST_FILE_1)
+    lnsp = mv.read(data=f, param="lnsp")
+    r = benchmark(_target, lnsp)
+    assert r == 137
+
+
+def test_unithickness(benchmark):
+    def _target(lnsp):
+        g = mv.unithickness(lnsp)
+        return len(g)
+
+    f = diag.get_data(diag.TEST_FILE_1)
+    lnsp = mv.read(data=f, param="lnsp")
+    r = benchmark(_target, lnsp)
+    assert r == 137
+
+
+def test_univertint(benchmark):
+    def _target(lnsp, t):
+        g = mv.univertint(lnsp, t)
+        return len(g)
+
+    f = diag.get_data(diag.TEST_FILE_1)
+    lnsp = mv.read(data=f, param="lnsp")
+    t = mv.read(data=f, param="t")
+    r = benchmark(_target, lnsp, t)
+    assert r == 1
+
+
+def test_var(benchmark):
+    def _target(t):
+        g = mv.var(t)
+        return len(g)
+
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 1
+
+
+def test_var_a(benchmark):
+    def _target(t):
+        g = mv.var_a(t, [50, -100, -80, 140])
+        return len(g)
+
+    t = diag.get_data(diag.TEST_FILE_2)
+    r = benchmark(_target, t)
+    assert r == 20
+
+
+def test_vorticity(benchmark):
+    def _target(u, v):
+        g = mv.vorticity(u, v)
+        return len(g)
+
+    u = diag.get_data(diag.TEST_FILE_5)[:10]
+    v = diag.get_data(diag.TEST_FILE_6)[:10]
+    r = benchmark(_target, u, v)
+    assert r == 10
