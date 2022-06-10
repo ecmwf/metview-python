@@ -737,6 +737,18 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
     def sort(self, *args, **kwargs):
         return self._get_db().sort(*args, **kwargs)
 
+    def mean_over_dim(self, dim_to_mean, missing=False):
+        import itertools
+        other_dims = ["shortName", "level", "step", "number"]
+        other_dims.remove(dim_to_mean)
+        dim_combos = {k:unique(self.grib_get_string(k)) for k in other_dims}
+        keys, values = zip(*dim_combos.items())
+        perms = [dict(zip(keys, v)) for v in itertools.product(*values)]
+        # e.g. [{level=1000,shortName="t",date=20220101, time=6}, ...]
+        fieldsets_to_mean = [self.select(**x) for x in perms]
+        result = Fieldset(fields=[x.mean(missing=missing) for x in fieldsets_to_mean])
+        return result
+
     @property
     def ds_param_info(self):
         if self._ds_param_info is None:
@@ -1321,6 +1333,7 @@ met_or = make("or")
 met_not = make("not")
 met_version_info = make("version_info")
 _request = make("request")
+unique = make("unique")
 write = make("write")
 
 
