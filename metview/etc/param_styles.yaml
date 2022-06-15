@@ -109,6 +109,54 @@ z:
     contour_line_colour: black
     contour_line_thickness: 2
     contour_reference_level: 1010
+u_10m:
+  mcont:
+    legend: "on"
+    contour: "off"
+    contour_level_selection_type: "level_list"
+    contour_level_list: [-80,-30,-20,-10, -5, -2,0,2,5,10,20,30,80]
+    contour_label: "off"
+    contour_shade: "on"
+    contour_shade_colour_method: "palette"
+    contour_shade_method: "area_fill"
+    contour_shade_palette_name: "colorbrewer_PuOr"
+    contour_shade_colour_list_policy: "dynamic"
+u_700:
+  mcont:    
+    legend: "on"
+    contour: "off"
+    contour_level_selection_type: "level_list"
+    contour_level_list: [-90,-30,-25,-20,-15,-10,0,10,15,20,25,30,90]
+    contour_label: "off"
+    contour_shade: "on"
+    contour_shade_colour_method: "palette"
+    contour_shade_method: "area_fill"
+    contour_shade_palette_name: "colorbrewer_PuOr"
+    contour_shade_colour_list_policy: "dynamic"
+u_500:
+  mcont:    
+    legend: "on"
+    contour: "off"
+    contour_level_selection_type: "level_list"
+    contour_level_list: [-90,-50,-40,-30,-20,-10,0,10,20,30,40,50,90]
+    contour_label: "off"
+    contour_shade: "on"
+    contour_shade_colour_method: "palette"
+    contour_shade_method: "area_fill"
+    contour_shade_palette_name: "colorbrewer_PuOr"
+    contour_shade_colour_list_policy: "dynamic"
+u_200:
+  mcont:    
+    legend: "on"
+    contour: "off"
+    contour_level_selection_type: "level_list"
+    contour_level_list: [-120,-80,-60,-40,-20,-10,0,10,20,40,60,80,120]
+    contour_label: "off"
+    contour_shade: "on"
+    contour_shade_colour_method: "palette"
+    contour_shade_method: "area_fill"
+    contour_shade_palette_name: "colorbrewer_PuOr"
+    contour_shade_colour_list_policy: "dynamic"
 # ------------------------
 # VECTOR STYLES
 # ------------------------
@@ -118,6 +166,8 @@ arrow_black:
   mwind: &arrow_black
     legend: "off"
     wind_advanced_method: "off"
+    wind_thinning_method: "density"
+    wind_densisty: 2
     wind_arrow_colour: "black"
     wind_arrow_min_speed: 0
 # 10m
@@ -312,6 +362,7 @@ track:
 # ------------------------
 # DIFFERENCE STYLES
 # ------------------------
+# core definition for the positive range
 plus_core: 
   - mcont: &plus
       legend: "on"
@@ -414,6 +465,38 @@ diff_tp:
   - mcont:
       <<: *plus_shade
       contour_level_list: [0.5,5,10,20,200]
+# wind u/v component (m/s)
+diff_u_10:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-70,-10,-8,-5,-2,-1]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [1,2,5,8,10,70]
+# wind u/v component 700 hPa (m/s)
+diff_u_700:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-100,-20,-10,-5,-2]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [2,5,10,20,100]
+# wind u/v component 500 hPa (m/s)
+diff_u_500:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-100,-20,-10,-5,-2]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [2,5,10,20,100]    
+# wind u/v component 200 hPa(m/s)
+diff_u_200:
+  - mcont:
+      <<: *minus_shade
+      contour_level_list: [-100,-30,-20,-10,-5]
+  - mcont:
+      <<: *plus_shade
+      contour_level_list: [5,10,20,30,100]
 # wind speed (m/s)
 diff_speed_10:
   - mcont:
