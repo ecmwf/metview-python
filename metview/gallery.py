@@ -17,7 +17,7 @@ def load_dataset(filename, check_local=False):
     if check_local and os.path.exists(filename):
         return mv.read(filename)
 
-    base_url = "http://download.ecmwf.org/test-data/metview/gallery/"
+    base_url = "https://get.ecmwf.int/test-data/metview/gallery/"
     try:
         d = mv.download(url=base_url + filename, target=filename)
         if filename.endswith(".zip"):
