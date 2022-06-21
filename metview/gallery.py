@@ -14,17 +14,35 @@ import metview as mv
 
 
 def load_dataset(filename, check_local=False):
+    def _simple_download(url, target):
+        import requests
+
+        r = requests.get(url, allow_redirects=True)
+        r.raise_for_status()
+        open(target, "wb").write(r.content)
+
     if check_local and os.path.exists(filename):
-        return mv.read(filename)
+        try:
+            return mv.read(filename)
+        except:
+            return None
 
     base_url = "https://get.ecmwf.int/test-data/metview/gallery/"
     try:
-        d = mv.download(url=base_url + filename, target=filename)
-        if filename.endswith(".zip"):
-            with zipfile.ZipFile(filename, "r") as f:
-                f.extractall()
-        return d
-    except:
+        # d = mv.download(url=base_url + filename, target=filename)
+        _simple_download(os.path.join(base_url, filename), filename)
+    except Exception as e:
         raise Exception(
-            "Could not download file " + filename + " from the download server"
+            f"Could not download file={filename} from the download server. {e}"
         )
+
+    d = None
+    if filename.endswith(".zip"):
+        with zipfile.ZipFile(filename, "r") as f:
+            f.extractall()
+    else:
+        try:
+            d = mv.read(filename)
+        except:
+            pass
+    return d

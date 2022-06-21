@@ -59,6 +59,9 @@ docs/_build/
 .pytest_cache
 tests/*.idx
 tests/data
+major_basins_of_the_world_0_0_0*
+Major_Basins_of_the_World.*
+zzz_for_spectra.grib
 
 # diagnostics
 diag/data
