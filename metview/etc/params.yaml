@@ -45,6 +45,32 @@
       -
         shortName: 10si
         paramId: 207
+# 10m u wind component
+-
+  styles:
+    basic: 
+      - u_10m
+    diff: 
+      - diff_u_10
+  match:
+      - 
+        info_name: 10u
+      -
+        shortName: 10u
+        paramId: 165
+# 10m v wind component
+-
+  styles:
+    basic: 
+      - u_10m
+    diff: 
+      - diff_u_10
+  match:
+      - 
+        info_name: 10v
+      -
+        shortName: 10v
+        paramId: 166
 # absolute vorticity
 -
   styles:
@@ -207,6 +233,142 @@
       -
         shortName: w
         paramId: 135
+# u wind component 1000hPa
+-
+  styles:
+    basic: 
+      - u_10m
+    diff:
+      - diff_u_10
+  match:
+      - 
+        info_name: u
+        levtype: pl 
+        levelist: 1000
+      -
+        shortName: u
+        paramId: 131
+        levtype: pl 
+        levelist: 1000        
+# u wind component around 700 hPa
+-
+  styles:
+    basic: 
+      - u_700
+    diff:
+      - diff_u_700
+  match:
+      - 
+        info_name: u
+        levtype: pl 
+        levelist: [925, 850, 700]
+      -
+        shortName: u
+        paramId: 131
+        levtype: pl 
+        levelist: [925, 850, 700]
+# u wind component around 500 hPa + 100 hPa
+-
+  styles:
+    basic: 
+      - u_500
+    diff:
+      - diff_u_500
+  match:
+      - 
+        info_name: u
+        levtype: pl 
+        levelist: [600, 500, 100]
+      -
+        shortName: u
+        paramId: 131
+        levtype: pl 
+        levelist: [600, 500, 100]
+# u wind component around 200 hPa
+-
+  styles:
+    basic: 
+      - u_200
+    diff:
+      - diff_u_200
+  match:
+      - 
+        info_name: u
+        levtype: pl 
+        levelist: [400, 300, 250, 200, 150]
+      -
+        shortName: u
+        paramId: 131
+        levtype: pl 
+        levelist: [400, 300, 250, 200, 150]
+# v wind component 1000hPa
+-
+  styles:
+    basic: 
+      - u_10m
+    diff:
+      - diff_u_10
+  match:
+      - 
+        info_name: v
+        levtype: pl 
+        levelist: 1000
+      -
+        shortName: v
+        paramId: 132
+        levtype: pl 
+        levelist: 1000        
+# v wind component around 700 hPa
+-
+  styles:
+    basic: 
+      - u_700
+    diff:
+      - diff_u_700
+  match:
+      - 
+        info_name: v
+        levtype: pl 
+        levelist: [925, 850, 700]
+      -
+        shortName: v
+        paramId: 132
+        levtype: pl 
+        levelist: [925, 850, 700]
+# v wind component around 500 hPa + 100 hPa
+-
+  styles:
+    basic: 
+      - u_500
+    diff:
+      - diff_u_500
+  match:
+      - 
+        info_name: v
+        levtype: pl 
+        levelist: [600, 500, 100]
+      -
+        shortName: v
+        paramId: 132
+        levtype: pl 
+        levelist: [600, 500, 100]
+# v wind component around 200 hPa
+-
+  styles:
+    basic: 
+      - u_200
+    diff:
+      - diff_u_200
+  match:
+      - 
+        info_name: v
+        levtype: pl 
+        levelist: [400, 300, 250, 200, 150]
+      -
+        shortName: v
+        paramId: 132
+        levtype: pl 
+        levelist: [400, 300, 250, 200, 150]
 # wind speed 1000hPa
 -
   styles:

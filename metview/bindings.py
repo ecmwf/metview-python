@@ -741,7 +741,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         import itertools
         other_dims = ["shortName", "level", "step", "number", "date", "time"]
         other_dims.remove(dim_to_mean)
-        dim_combos = {k:unique(self.grib_get_string(k)) for k in other_dims}
+        dim_combos = {k: unique(self.grib_get_string(k)) for k in other_dims}
         keys, values = zip(*dim_combos.items())
         perms = [dict(zip(keys, v)) for v in itertools.product(*values)]
         # e.g. [{level=1000,shortName="t",date=20220101, time=6}, ...]
@@ -808,6 +808,15 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         r = utils.deacc(self, **kwargs)
         r._init_db_from(self)
         return r
+
+    def convolve(self, *args, **kwargs):
+        return utils.convolve(self, *args, **kwargs)
+
+    def smooth_n_point(self, *args, **kwargs):
+        return utils.smooth_n_point(self, *args, **kwargs)
+
+    def smooth_gaussian(self, *args, **kwargs):
+        return utils.smooth_gaussian(self, *args, **kwargs)
 
     def _init_db_from(self, other):
         if self._db is None and other._db is not None:
@@ -1296,7 +1305,16 @@ def bind_functions(namespace, module_name=None):
         namespace.pop(name)
 
     # add some object methods the to global namespace
-    for name in ["to_dataset", "to_dataframe", "ls", "describe", "select"]:
+    for name in [
+        "to_dataset",
+        "to_dataframe",
+        "ls",
+        "describe",
+        "select",
+        "convolve",
+        "smooth_n_point",
+        "smooth_gaussian",
+    ]:
         namespace[name] = _make_function_for_object(name)
 
 

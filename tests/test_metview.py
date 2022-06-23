@@ -14,6 +14,7 @@ import glob
 import pickle
 import pytest
 import pandas as pd
+from setuptools import find_namespace_packages
 import xarray as xr
 
 import metview as mv
@@ -2445,6 +2446,8 @@ def test_download():
 
 def test_download_gallery_data():
     fname = "z_for_spectra.grib"
+    if os.path.exists(fname):
+        os.remove(fname)
     assert not os.path.isfile(fname)
     g = mv.gallery.load_dataset(fname)
     assert mv.type(g) == "fieldset"
@@ -2455,7 +2458,11 @@ def test_download_gallery_data():
 def test_download_gallery_zipped_data():
     fname = "major_basins_of_the_world_0_0_0.zip"
     subname = "Major_Basins_of_the_World.prj"
+    if os.path.exists(fname):
+        os.remove(fname)
     assert not os.path.isfile(fname)
+    if os.path.exists(subname):
+        os.remove(subname)
     assert not os.path.isfile(subname)
     g = mv.gallery.load_dataset(fname)
     assert os.path.isfile(fname)

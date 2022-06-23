@@ -20,6 +20,8 @@ import os
 import re
 import tempfile
 
+import numpy as np
+
 LOG = logging.getLogger(__name__)
 
 
@@ -226,7 +228,82 @@ def simple_download(url, target):
     import requests
 
     r = requests.get(url, allow_redirects=True)
+    r.raise_for_status()
     open(target, "wb").write(r.content)
+
+
+def _smooth_core(fs, repeat, m_func, m_arg, m_kwargs):
+    """
+    Performs spatial smoothing on each field in fs with the given callable
+    """
+    # extract metadata for each field
+    meta = fs.grib_get(["gridType", "Ni"])
+
+    # the resulting fieldset. We cannot use the Fieldset constructor here!
+    res = type(fs)()
+
+    # build result in a loop
+    for fld, fld_meta in zip(fs, meta):
+        # smoothing only works for regular latlon grids
+        if fld_meta[0] == "regular_ll":
+            ncol = int(fld_meta[1])
+            val = fld.values()
+            val = np.reshape(val, (-1, ncol))
+            for _ in range(repeat):
+                val = m_func(val, m_arg, **m_kwargs)
+            res.append(fld.set_values(val.flatten()))
+        else:
+            raise ValueError(
+                f"Unsupported gridType={fld_meta[0]} in field={i}. Only regular_ll is accepted!"
+            )
+
+    return res
+
+
+def convolve(fs, weight, repeat=1, mode="reflect"):
+    """
+    Performs spatial smoothing on each field in fs with a convolution
+    """
+    from scipy.ndimage.filters import convolve
+
+    m_arg = weight
+    m_kwargs = {"mode": mode}
+    return _smooth_core(fs, repeat, convolve, m_arg, m_kwargs)
+
+
+def smooth_n_point(fs, n=9, repeat=1, mode="reflect"):
+    """
+    Performs spatial smoothing on each field in fs with an n-point averaging
+    """
+    from scipy.ndimage.filters import convolve
+
+    if n == 9:
+        weights = np.array(
+            [[0.0625, 0.125, 0.0625], [0.125, 0.25, 0.125], [0.0625, 0.125, 0.0625]],
+            dtype=float,
+        )
+        m_arg = weights
+    elif n == 5:
+        weights = np.array(
+            [[0.0, 0.125, 0.0], [0.125, 0.5, 0.125], [0.0, 0.125, 0.0]], dtype=float
+        )
+        m_arg = weights
+    else:
+        raise ValueError("smooth_n_point: n must be either 5 or 9!")
+
+    m_kwargs = {"mode": mode}
+    return _smooth_core(fs, repeat, convolve, m_arg, m_kwargs)
+
+
+def smooth_gaussian(fs, sigma, repeat=1, mode="reflect"):
+    """
+    Performs spatial smoothing on each field in fs with a Gaussian filter
+    """
+    from scipy.ndimage.filters import gaussian_filter
+
+    m_arg = sigma
+    m_kwargs = {"mode": mode}
+    return _smooth_core(fs, repeat, gaussian_filter, m_arg, m_kwargs)
 
 
 class Cache:
