@@ -739,7 +739,7 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
 
     def mean_over_dim(self, dim_to_mean, missing=False):
         import itertools
-        other_dims = ["shortName", "level", "step", "number"]
+        other_dims = ["shortName", "level", "step", "number", "date", "time"]
         other_dims.remove(dim_to_mean)
         dim_combos = {k:unique(self.grib_get_string(k)) for k in other_dims}
         keys, values = zip(*dim_combos.items())
