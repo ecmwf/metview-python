@@ -295,7 +295,7 @@ def smooth_n_point(fs, n=9, repeat=1, mode="reflect"):
     return _smooth_core(fs, repeat, convolve, m_arg, m_kwargs)
 
 
-def smooth_gaussian(fs, sigma, repeat=1, mode="reflect"):
+def smooth_gaussian(fs, sigma=1, repeat=1, mode="reflect"):
     """
     Performs spatial smoothing on each field in fs with a Gaussian filter
     """

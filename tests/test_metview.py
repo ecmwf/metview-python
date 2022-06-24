@@ -2553,3 +2553,30 @@ def test_mvl_ml2hpa():
     lev_divisors = [1 if x == "isobaricInhPa" else 100 for x in lev_types]
     pl_in_hpa = [a / b for a, b in zip(pls, lev_divisors)]
     assert pl_in_hpa == desired_pls
+
+
+def test_smoothing():
+    f = mv.read(file_in_testdir("tuv_pl.grib"))
+    t = f.select(shortName="t", level=[850, 700])
+
+    # TODO: we only test the interface. Value based tests will be added when
+    # decide on to release these functions.
+    r = t.smooth_n_point(n=5)
+    assert len(r) == 2
+    r = t.smooth_n_point(n=5, repeat=2)
+    assert len(r) == 2
+    r = t.smooth_n_point(n=9, repeat=2, mode="nearest")
+    assert len(r) == 2
+
+    r = t.smooth_gaussian(sigma=1)
+    assert len(r) == 2
+    r = t.smooth_gaussian(sigma=2, repeat=2, mode="nearest")
+    assert len(r) == 2
+
+    weights = np.array(
+        [[0.0625, 0.125, 0.0625], [0.125, 0.25, 0.125], [0.0625, 0.125, 0.0625]]
+    )
+    r = t.convolve(weights)
+    assert len(r) == 2
+    r = t.convolve(weights, repeat=2, mode="nearest")
+    assert len(r) == 2
