@@ -1191,6 +1191,73 @@ def test_fieldset_pickling():
     os.remove(pickled_fname)
 
 
+def test_fieldset_mean_over_dim_number():
+    # compute and check ensemble means
+    alldata = mv.read(file_in_testdir("ztu_multi_dim.grib"))
+    num_ens_members = len(mv.unique(alldata.grib_get_long("number")))
+    assert num_ens_members == 6
+    ens_mean = alldata.mean_over_dim("number")
+    # check general structure of the result
+    assert len(ens_mean) == len(alldata) / num_ens_members
+    assert mv.unique(ens_mean.grib_get_long("level")) == mv.unique(
+        alldata.grib_get_long("level")
+    )
+    assert mv.unique(ens_mean.grib_get_long("step")) == mv.unique(
+        alldata.grib_get_long("step")
+    )
+    assert mv.unique(ens_mean.grib_get_string("shortName")) == mv.unique(
+        alldata.grib_get_string("shortName")
+    )
+    assert len(mv.unique(ens_mean.grib_get_long("number"))) == 1
+    # check values for specific means #1
+    mean1_computed = ens_mean.select(shortName="z", level=1000, step=3)
+    mean1_verified = alldata.select(shortName="z", level=1000, step=3).mean()
+    assert np.array_equal(mean1_computed.values(), mean1_verified.values())
+    assert np.isclose(mean1_computed.values()[0], 1233.7)  # via calculator
+    # check values for specific means #2
+    mean2_computed = ens_mean.select(shortName="t", level=700, step=9)
+    mean2_verified = alldata.select(shortName="t", level=700, step=9).mean()
+    assert np.array_equal(mean2_computed.values(), mean2_verified.values())
+    assert np.isclose(mean2_computed.values()[2], 276.208)  # via calculator
+    # check values for specific means #3
+    mean3_computed = ens_mean.select(shortName="u", level=500, step=6)
+    mean3_verified = alldata.select(shortName="u", level=500, step=6).mean()
+    assert np.array_equal(mean3_computed.values(), mean3_verified.values())
+
+
+def test_fieldset_mean_over_dim_step():
+    # compute and check means over steps
+    alldata = mv.read(file_in_testdir("ztu_multi_dim.grib"))
+    num_steps = len(mv.unique(alldata.grib_get_long("step")))
+    assert num_steps == 4
+    step_mean = alldata.mean_over_dim("step")
+    # check general structure of the result
+    assert len(step_mean) == len(alldata) / num_steps
+    assert mv.unique(step_mean.grib_get_long("level")) == mv.unique(
+        alldata.grib_get_long("level")
+    )
+    assert mv.unique(step_mean.grib_get_long("number")) == mv.unique(
+        alldata.grib_get_long("number")
+    )
+    assert mv.unique(step_mean.grib_get_string("shortName")) == mv.unique(
+        alldata.grib_get_string("shortName")
+    )
+    assert len(mv.unique(step_mean.grib_get_long("step"))) == 1
+    # check values for specific means #1
+    mean1_computed = step_mean.select(shortName="z", level=1000, number=3)
+    mean1_verified = alldata.select(shortName="z", level=1000, number=3).mean()
+    assert np.array_equal(mean1_computed.values(), mean1_verified.values())
+    # check values for specific means #2
+    mean2_computed = step_mean.select(shortName="t", level=850, number=5)
+    mean2_verified = alldata.select(shortName="t", level=850, number=5).mean()
+    assert np.array_equal(mean2_computed.values(), mean2_verified.values())
+    assert np.isclose(mean2_computed.values()[1], 285.035)  # via calculator
+    # check values for specific means #3
+    mean3_computed = step_mean.select(shortName="u", level=500, number=1)
+    mean3_verified = alldata.select(shortName="u", level=500, number=1).mean()
+    assert np.array_equal(mean3_computed.values(), mean3_verified.values())
+
+
 def test_read_bufr():
     bufr = mv.read(file_in_testdir("obs_3day.bufr"))
     assert mv.type(bufr) == "observations"
