@@ -1258,6 +1258,40 @@ def test_fieldset_mean_over_dim_step():
     assert np.array_equal(mean3_computed.values(), mean3_verified.values())
 
 
+def test_fieldset_sum_over_dim_number():
+    # compute and check ensemble sums
+    alldata = mv.read(file_in_testdir("ztu_multi_dim.grib"))
+    num_ens_members = len(mv.unique(alldata.grib_get_long("number")))
+    assert num_ens_members == 6
+    ens_sum = alldata.sum_over_dim("number")
+    # check general structure of the result
+    assert len(ens_sum) == len(alldata) / num_ens_members
+    assert mv.unique(ens_sum.grib_get_long("level")) == mv.unique(
+        alldata.grib_get_long("level")
+    )
+    assert mv.unique(ens_sum.grib_get_long("step")) == mv.unique(
+        alldata.grib_get_long("step")
+    )
+    assert mv.unique(ens_sum.grib_get_string("shortName")) == mv.unique(
+        alldata.grib_get_string("shortName")
+    )
+    assert len(mv.unique(ens_sum.grib_get_long("number"))) == 1
+    # check values for specific sums #1
+    sum1_computed = ens_sum.select(shortName="z", level=1000, step=3)
+    sum1_verified = alldata.select(shortName="z", level=1000, step=3).sum()
+    assert np.array_equal(sum1_computed.values(), sum1_verified.values())
+    #assert np.isclose(sum1_computed.values()[0], 1233.7)  # via calculator
+    # check values for specific sums #2
+    sum2_computed = ens_sum.select(shortName="t", level=700, step=9)
+    sum2_verified = alldata.select(shortName="t", level=700, step=9).sum()
+    assert np.array_equal(sum2_computed.values(), sum2_verified.values())
+    #assert np.isclose(sum2_computed.values()[2], 276.208)  # via calculator
+    # check values for specific sums #3
+    sum3_computed = ens_sum.select(shortName="u", level=500, step=6)
+    sum3_verified = alldata.select(shortName="u", level=500, step=6).sum()
+    assert np.array_equal(sum3_computed.values(), sum3_verified.values())
+
+
 def test_read_bufr():
     bufr = mv.read(file_in_testdir("obs_3day.bufr"))
     assert mv.type(bufr) == "observations"

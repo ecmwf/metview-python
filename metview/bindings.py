@@ -737,18 +737,24 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
     def sort(self, *args, **kwargs):
         return self._get_db().sort(*args, **kwargs)
 
-    def mean_over_dim(self, dim_to_mean, missing=False):
+    def apply_function_over_dim(self, dim_to_use, function_to_run, **kwargs):
         import itertools
 
         other_dims = ["shortName", "level", "step", "number", "date", "time"]
-        other_dims.remove(dim_to_mean)
+        other_dims.remove(dim_to_use)
         dim_combos = {k: unique(self.grib_get_string(k)) for k in other_dims}
         keys, values = zip(*dim_combos.items())
         perms = [dict(zip(keys, v)) for v in itertools.product(*values)]
         # e.g. [{level=1000,shortName="t",date=20220101, time=6}, ...]
-        fieldsets_to_mean = [self.select(**x) for x in perms]
-        result = Fieldset(fields=[x.mean(missing=missing) for x in fieldsets_to_mean])
+        fieldsets_to_apply_function_to = [self.select(**x) for x in perms]
+        result = Fieldset(fields=[function_to_run(x, **kwargs) for x in fieldsets_to_apply_function_to])
         return result
+
+    def mean_over_dim(self, dim_to_use, missing=False):
+        return self.apply_function_over_dim(dim_to_use, met_mean, missing=missing)
+
+    def sum_over_dim(self, dim_to_use):
+        return self.apply_function_over_dim(dim_to_use, met_sum)
 
     @property
     def ds_param_info(self):
@@ -1333,6 +1339,7 @@ greater_than = make(">")
 _keywords = make("keywords")
 lower_equal_than = make("<=")
 lower_than = make("<")
+met_mean = make("mean")
 met_merge = make("&")
 met_not_eq = make("<>")
 met_plot = make("plot")
@@ -1347,6 +1354,7 @@ met_setoutput = make("setoutput")
 metzoom = make("metzoom")
 sub = make("-")
 subset = make("[]")
+met_sum = make("sum")
 met_and = make("and")
 met_or = make("or")
 met_not = make("not")
