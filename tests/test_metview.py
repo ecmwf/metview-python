@@ -58,6 +58,18 @@ def get_test_data(filename):
     return f_path
 
 
+def field_equal(f1, f2, **kwargs):
+    v1 = f1.values()
+    v2 = f2.values()
+    np.testing.assert_allclose(v1, v2, **kwargs)
+
+
+def fieldset_equal(fs1, fs2, rtol=1e-7):
+    assert len(fs1) == len(fs2)
+    for i in range(len(fs1)):
+        field_equal(fs1[i], fs2[i], rtol=rtol, err_msg=f"i={i}")
+
+
 def test_version_info():
     out = mv.version_info()
     assert "metview_version" in out
@@ -1280,12 +1292,12 @@ def test_fieldset_sum_over_dim_number():
     sum1_computed = ens_sum.select(shortName="z", level=1000, step=3)
     sum1_verified = alldata.select(shortName="z", level=1000, step=3).sum()
     assert np.array_equal(sum1_computed.values(), sum1_verified.values())
-    #assert np.isclose(sum1_computed.values()[0], 1233.7)  # via calculator
+    # assert np.isclose(sum1_computed.values()[0], 1233.7)  # via calculator
     # check values for specific sums #2
     sum2_computed = ens_sum.select(shortName="t", level=700, step=9)
     sum2_verified = alldata.select(shortName="t", level=700, step=9).sum()
     assert np.array_equal(sum2_computed.values(), sum2_verified.values())
-    #assert np.isclose(sum2_computed.values()[2], 276.208)  # via calculator
+    # assert np.isclose(sum2_computed.values()[2], 276.208)  # via calculator
     # check values for specific sums #3
     sum3_computed = ens_sum.select(shortName="u", level=500, step=6)
     sum3_verified = alldata.select(shortName="u", level=500, step=6).sum()
@@ -2656,28 +2668,64 @@ def test_mvl_ml2hpa():
     assert pl_in_hpa == desired_pls
 
 
-def test_smoothing():
-    f = mv.read(file_in_testdir("tuv_pl.grib"))
-    t = f.select(shortName="t", level=[850, 700])
+def test_smooth_n_point():
 
-    # TODO: we only test the interface. Value based tests will be added when
-    # decide on to release these functions.
-    r = t.smooth_n_point(n=5)
-    assert len(r) == 2
-    r = t.smooth_n_point(n=5, repeat=2)
-    assert len(r) == 2
-    r = t.smooth_n_point(n=9, repeat=2, mode="nearest")
-    assert len(r) == 2
+    f = mv.Fieldset(path=get_test_data("regular_ll_iPos_jNeg_iCons_multi.grib"))
+    f_ref = mv.Fieldset(path=get_test_data("ref_smooth_n_point.grib"))
 
-    r = t.smooth_gaussian(sigma=1)
-    assert len(r) == 2
-    r = t.smooth_gaussian(sigma=2, repeat=2, mode="nearest")
-    assert len(r) == 2
+    meta_ref = f.grib_get_long("generatingProcessIdentifier")
+
+    r = f.smooth_n_point(n=5)
+    fieldset_equal(r, f_ref[:2])
+    meta = r.grib_get_long("generatingProcessIdentifier")
+    np.testing.assert_allclose(meta, meta_ref)
+
+    r = f.smooth_n_point(n=5, repeat=2)
+    fieldset_equal(r, f_ref[2:4])
+    meta = r.grib_get_long("generatingProcessIdentifier")
+    np.testing.assert_allclose(meta, meta_ref)
+
+    r = f.smooth_n_point(n=9, repeat=2, mode="nearest")
+    fieldset_equal(r, f_ref[4:6])
+    meta = r.grib_get_long("generatingProcessIdentifier")
+    np.testing.assert_allclose(meta, meta_ref)
+
+
+def test_smooth_gaussian():
+
+    f = mv.Fieldset(path=get_test_data("regular_ll_iPos_jNeg_iCons_multi.grib"))
+    f_ref = mv.Fieldset(path=get_test_data("ref_smooth_gaussian.grib"))
+
+    meta_ref = f.grib_get_long("generatingProcessIdentifier")
+
+    r = f.smooth_gaussian(sigma=1)
+    fieldset_equal(r, f_ref[:2])
+    meta = r.grib_get_long("generatingProcessIdentifier")
+    np.testing.assert_allclose(meta, meta_ref)
+
+    r = f.smooth_gaussian(sigma=2, repeat=2, mode="nearest")
+    fieldset_equal(r, f_ref[2:4])
+    meta = r.grib_get_long("generatingProcessIdentifier")
+    np.testing.assert_allclose(meta, meta_ref)
+
+
+def test_convolve():
+
+    f = mv.Fieldset(path=get_test_data("regular_ll_iPos_jNeg_iCons_multi.grib"))
+    f_ref = mv.Fieldset(path=get_test_data("ref_convolve.grib"))
+
+    meta_ref = f.grib_get_long("generatingProcessIdentifier")
 
     weights = np.array(
         [[0.0625, 0.125, 0.0625], [0.125, 0.25, 0.125], [0.0625, 0.125, 0.0625]]
     )
-    r = t.convolve(weights)
-    assert len(r) == 2
-    r = t.convolve(weights, repeat=2, mode="nearest")
-    assert len(r) == 2
+
+    r = f.convolve(weights)
+    fieldset_equal(r, f_ref[:2])
+    meta = r.grib_get_long("generatingProcessIdentifier")
+    np.testing.assert_allclose(meta, meta_ref)
+
+    r = f.convolve(weights, repeat=2, mode="nearest")
+    fieldset_equal(r, f_ref[2:4])
+    meta = r.grib_get_long("generatingProcessIdentifier")
+    np.testing.assert_allclose(meta, meta_ref)
