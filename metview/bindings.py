@@ -737,24 +737,40 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
     def sort(self, *args, **kwargs):
         return self._get_db().sort(*args, **kwargs)
 
-    def apply_function_over_dim(self, dim_to_use, function_to_run, **kwargs):
+    def apply_function_over_dim(self, dim, preserve_dims, func_to_run, name, **kwargs):
+        if len(self) == 0:
+            raise ValueError(f"Input to function {name} is an empty Fieldset")
+
+        if dim is None:
+            return func_to_run(self, **kwargs)
+
         import itertools
 
-        other_dims = ["shortName", "level", "step", "number", "date", "time"]
-        other_dims.remove(dim_to_use)
-        dim_combos = {k: unique(self.grib_get_string(k)) for k in other_dims}
+        if preserve_dims:
+            _preserve_dims = preserve_dims
+        else:
+            _preserve_dims = ["shortName", "level", "step", "number", "date", "time"]
+        if dim in _preserve_dims:
+            _preserve_dims.remove(dim)
+        dim_combos = {k: unique(self.grib_get_string(k)) for k in _preserve_dims}
         keys, values = zip(*dim_combos.items())
         perms = [dict(zip(keys, v)) for v in itertools.product(*values)]
         # e.g. [{level=1000,shortName="t",date=20220101, time=6}, ...]
         fieldsets_to_apply_function_to = [self.select(**x) for x in perms]
-        result = Fieldset(fields=[function_to_run(x, **kwargs) for x in fieldsets_to_apply_function_to])
+        result = Fieldset(
+            fields=[func_to_run(x, **kwargs) for x in fieldsets_to_apply_function_to]
+        )
         return result
 
-    def mean_over_dim(self, dim_to_use, missing=False):
-        return self.apply_function_over_dim(dim_to_use, met_mean, missing=missing)
+    def mean(self, dim=None, preserve_dims=None, missing=False):
+        return self.apply_function_over_dim(
+            dim, preserve_dims, met_mean, "mean", missing=missing
+        )
 
-    def sum_over_dim(self, dim_to_use):
-        return self.apply_function_over_dim(dim_to_use, met_sum)
+    def sum(self, dim=None, preserve_dims=None, missing=False):
+        return self.apply_function_over_dim(
+            dim, preserve_dims, met_sum, "sum", missing=missing
+        )
 
     @property
     def ds_param_info(self):

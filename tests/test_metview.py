@@ -1205,7 +1205,11 @@ def test_fieldset_pickling():
 
 def test_fieldset_basic_mean():
     alldata = mv.read(file_in_testdir("ztu_multi_dim.grib"))
-    m = mv.mean(alldata)
+    m = mv.mean(alldata)  # as function
+    assert len(m) == 1
+    assert np.isclose(m.values()[0], 8619.0555)
+    assert np.isclose(m.values()[2], 8588.4003)
+    m = alldata.mean()  # as method
     assert len(m) == 1
     assert np.isclose(m.values()[0], 8619.0555)
     assert np.isclose(m.values()[2], 8588.4003)
@@ -1217,11 +1221,19 @@ def test_fieldset_basic_mean_with_missing_vals():
     f1vals = alldata[0].values()
     f1vals[:] = np.NaN
     alldata[0] = alldata[0].set_values(f1vals)
-    m = mv.mean(alldata)
+    m = mv.mean(alldata)  # function
     assert len(m) == 1
     assert np.isnan(m.values()[0])
     assert np.isnan(m.values()[2])
-    m = mv.mean(alldata, missing=True)
+    m = mv.mean(alldata, missing=True)  # function
+    assert len(m) == 1
+    assert np.isclose(m.values()[0], 8644.7534)
+    assert np.isclose(m.values()[2], 8614.7797)
+    m = alldata.mean()  # method
+    assert len(m) == 1
+    assert np.isnan(m.values()[0])
+    assert np.isnan(m.values()[2])
+    m = alldata.mean(missing=True)  # method
     assert len(m) == 1
     assert np.isclose(m.values()[0], 8644.7534)
     assert np.isclose(m.values()[2], 8614.7797)
@@ -1232,7 +1244,7 @@ def test_fieldset_mean_over_dim_number():
     alldata = mv.read(file_in_testdir("ztu_multi_dim.grib"))
     num_ens_members = len(mv.unique(alldata.grib_get_long("number")))
     assert num_ens_members == 6
-    ens_mean = alldata.mean_over_dim("number")
+    ens_mean = alldata.mean(dim="number")
     # check general structure of the result
     assert len(ens_mean) == len(alldata) / num_ens_members
     assert mv.unique(ens_mean.grib_get_long("level")) == mv.unique(
@@ -1266,7 +1278,7 @@ def test_fieldset_mean_over_dim_step():
     alldata = mv.read(file_in_testdir("ztu_multi_dim.grib"))
     num_steps = len(mv.unique(alldata.grib_get_long("step")))
     assert num_steps == 4
-    step_mean = alldata.mean_over_dim("step")
+    step_mean = alldata.mean(dim="step")
     # check general structure of the result
     assert len(step_mean) == len(alldata) / num_steps
     assert mv.unique(step_mean.grib_get_long("level")) == mv.unique(
@@ -1294,12 +1306,94 @@ def test_fieldset_mean_over_dim_step():
     assert np.array_equal(mean3_computed.values(), mean3_verified.values())
 
 
+def test_fieldset_mean_over_dim_step_with_expver():
+    # compute and check step means when we have a dimension that's not
+    # in our default list
+    alldata = mv.read(file_in_testdir("zt_multi_expvers.grib"))
+    num_steps = len(mv.unique(alldata.grib_get_long("step")))
+    assert num_steps == 4
+    step_mean = alldata.mean(
+        dim="step", preserve_dims=["shortName", "experimentVersionNumber"]
+    )
+    # check general structure of the result
+    assert len(step_mean) == len(alldata) / num_steps
+    assert mv.unique(step_mean.grib_get_long("level")) == mv.unique(
+        alldata.grib_get_long("level")
+    )
+    assert mv.unique(step_mean.grib_get_long("number")) == mv.unique(
+        alldata.grib_get_long("number")
+    )
+    assert mv.unique(step_mean.grib_get_string("shortName")) == mv.unique(
+        alldata.grib_get_string("shortName")
+    )
+    assert len(mv.unique(step_mean.grib_get_long("step"))) == 1
+    # check values for specific means #1
+    mean1_computed = step_mean.select(shortName="z", experimentVersionNumber="0001")
+    mean1_verified = alldata.select(
+        shortName="z", experimentVersionNumber="0001"
+    ).mean()
+    assert np.array_equal(mean1_computed.values(), mean1_verified.values())
+    # check values for specific means #2
+    mean2_computed = step_mean.select(shortName="t", experimentVersionNumber="xxyz")
+    mean2_verified = alldata.select(
+        shortName="t", experimentVersionNumber="xxyz"
+    ).mean()
+    assert np.array_equal(mean2_computed.values(), mean2_verified.values())
+    assert np.isclose(mean2_computed.values()[18], 312.2153)
+
+
+def test_fieldset_mean_over_dim_with_empty_fieldset():
+    alldata = mv.read(file_in_testdir("zt_multi_expvers.grib"))
+    with pytest.raises(ValueError):
+        alldata.select(shortName="t", level=850, number=5).mean()
+
+
+def test_fieldset_basic_sum():
+    alldata = mv.read(file_in_testdir("ztu_multi_dim.grib"))
+    m = mv.sum(alldata)  # as function
+    assert len(m) == 1
+    assert np.isclose(m.values()[0], 2482287.9922)
+    assert np.isclose(m.values()[2], 2473459.2813)
+    m = alldata.sum()  # as method
+    assert len(m) == 1
+    assert np.isclose(m.values()[0], 2482287.9922)
+    assert np.isclose(m.values()[2], 2473459.2813)
+
+
+def test_fieldset_basic_sum_with_missing_vals():
+    # replace first field with all missing values
+    alldata = mv.read(file_in_testdir("ztu_multi_dim.grib"))
+    f1vals = alldata[0].values()
+    f1vals[:] = np.NaN
+    alldata[0] = alldata[0].set_values(f1vals)
+    m = mv.sum(alldata)  # function
+    print(m.values()[0], m.values()[2])
+    assert len(m) == 1
+    assert np.isnan(m.values()[0])
+    assert np.isnan(m.values()[2])
+    m = mv.sum(alldata, missing=True)  # function
+    print(m.values()[0], m.values()[2])
+    assert len(m) == 1
+    assert np.isclose(m.values()[0], 2481044.2422)
+    assert np.isclose(m.values()[2], 2472441.8047)
+    m = alldata.sum()  # method
+    print(m.values()[0], m.values()[2])
+    assert len(m) == 1
+    assert np.isnan(m.values()[0])
+    assert np.isnan(m.values()[2])
+    m = alldata.sum(missing=True)  # method
+    print(m.values()[0], m.values()[2])
+    assert len(m) == 1
+    assert np.isclose(m.values()[0], 2481044.2422)
+    assert np.isclose(m.values()[2], 2472441.8047)
+
+
 def test_fieldset_sum_over_dim_number():
     # compute and check ensemble sums
     alldata = mv.read(file_in_testdir("ztu_multi_dim.grib"))
     num_ens_members = len(mv.unique(alldata.grib_get_long("number")))
     assert num_ens_members == 6
-    ens_sum = alldata.sum_over_dim("number")
+    ens_sum = alldata.sum(dim="number")
     # check general structure of the result
     assert len(ens_sum) == len(alldata) / num_ens_members
     assert mv.unique(ens_sum.grib_get_long("level")) == mv.unique(
