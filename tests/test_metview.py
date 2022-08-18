@@ -1203,6 +1203,30 @@ def test_fieldset_pickling():
     os.remove(pickled_fname)
 
 
+def test_fieldset_basic_mean():
+    alldata = mv.read(file_in_testdir("ztu_multi_dim.grib"))
+    m = mv.mean(alldata)
+    assert len(m) == 1
+    assert np.isclose(m.values()[0], 8619.0555)
+    assert np.isclose(m.values()[2], 8588.4003)
+
+
+def test_fieldset_basic_mean_with_missing_vals():
+    # replace first field with all missing values
+    alldata = mv.read(file_in_testdir("ztu_multi_dim.grib"))
+    f1vals = alldata[0].values()
+    f1vals[:] = np.NaN
+    alldata[0] = alldata[0].set_values(f1vals)
+    m = mv.mean(alldata)
+    assert len(m) == 1
+    assert np.isnan(m.values()[0])
+    assert np.isnan(m.values()[2])
+    m = mv.mean(alldata, missing=True)
+    assert len(m) == 1
+    assert np.isclose(m.values()[0], 8644.7534)
+    assert np.isclose(m.values()[2], 8614.7797)
+
+
 def test_fieldset_mean_over_dim_number():
     # compute and check ensemble means
     alldata = mv.read(file_in_testdir("ztu_multi_dim.grib"))
