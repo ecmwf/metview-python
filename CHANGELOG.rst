@@ -2,10 +2,13 @@
 Changelog for Metview's Python interface
 ========================================
 
+1.13.0
+------------------
+- Fieldset functions mean() and sum() now accept 'dim' argument to compute over given dimension
+
 
 1.12.0
 ------------------
-- Fieldset functions mean() and sum() now accept 'dim' argument to compute over given dimension
 - add 'reverse' and/or operators between Fieldsets and bools (e.g. 'True & my_fieldset')
 - fixed issue where automatic indexing of a dataset fails
 
