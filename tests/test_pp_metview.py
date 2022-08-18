@@ -1382,7 +1382,7 @@ def test_grib_index_5():
     # test with grib written with write() function
     f_orig = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
     f = (f_orig[0:4]).merge(f_orig[7])
-    p = "written_tuv_pl.grib"
+    p = "written_tuv_pl_5.grib"
     f.write(p)
     gi = f.grib_index()
     assert gi == [(p, 0), (p, 1440), (p, 2880), (p, 4320), (p, 5760)]
