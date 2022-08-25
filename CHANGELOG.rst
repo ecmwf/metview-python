@@ -5,6 +5,9 @@ Changelog for Metview's Python interface
 1.13.0
 ------------------
 - Fieldset functions mean() and sum() now accept 'dim' argument to compute over given dimension
+- function gallery.load_dataset() now downloads from a new server
+- added new functions smooth_n_point() and smooth_gaussian() to perform spatial smoothing on fieldsets with lat-lon grids
+- added new function convolve() to perform spatial 2D convolution on fieldsets with lat-lon grids
 
 
 1.12.0
