@@ -268,7 +268,7 @@ class Field:
         return result
 
 
-# docorator to implement math functions in Fieldset
+# decorator to implement math functions in Fieldset
 def wrap_maths(cls):
     def wrap_single_method(fn):
         def wrapper(self):
