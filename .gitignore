@@ -72,3 +72,5 @@ diag/.benchmarks
 .vscode/
 .env
 
+# mac
+.DS_Store
