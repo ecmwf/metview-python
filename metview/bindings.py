@@ -1152,7 +1152,9 @@ def handle_error(val):
 
 
 def string_from_metview(val):
-    return string_from_ffi(lib.p_value_as_string(val))
+    s = string_from_ffi(lib.p_value_as_string(val))
+    lib.p_destroy_value(val)
+    return s
 
 
 class MvRetVal(Enum):
