@@ -467,7 +467,9 @@ def valid_date(*args, base=None, step=None, step_units=None):
 
 
 def sort(*args, **kwargs):
-    if len(args) != 0 and isinstance(args[0], Fieldset):
+    if "_cpp_implementation" in kwargs:
+        return call("sort", *args)
+    elif len(args) != 0 and isinstance(args[0], Fieldset):
         if len(args) == 1:
             return args[0].sort(**kwargs)
         else:
