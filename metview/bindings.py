@@ -1112,9 +1112,9 @@ def list_from_metview(val):
 
 
 def datestring_from_metview(val):
-
     mdate = string_from_ffi(lib.p_value_as_datestring(val))
     dt = datetime.datetime.strptime(mdate, "%Y-%m-%dT%H:%M:%S")
+    lib.p_destroy_value(val)
     return dt
 
 
