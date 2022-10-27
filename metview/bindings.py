@@ -1157,6 +1157,12 @@ def string_from_metview(val):
     return s
 
 
+def number_from_metview(val):
+    n = lib.p_value_as_number(val)
+    lib.p_destroy_value(val)
+    return n
+
+
 class MvRetVal(Enum):
     tnumber = 0
     tstring = 1
@@ -1182,7 +1188,7 @@ class ValueReturner:
 
     def __init__(self):
         self.funcs = {}
-        self.funcs[MvRetVal.tnumber.value] = lambda val: lib.p_value_as_number(val)
+        self.funcs[MvRetVal.tnumber.value] = lambda val: number_from_metview(val)
         self.funcs[MvRetVal.tstring.value] = lambda val: string_from_metview(val)
         self.funcs[MvRetVal.tgrib.value] = lambda val: Fieldset(val)
         self.funcs[MvRetVal.trequest.value] = lambda val: Request(val)

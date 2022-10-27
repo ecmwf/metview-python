@@ -2,6 +2,12 @@
 Changelog for Metview's Python interface
 ========================================
 
+1.13.1
+------------------
+- fixed memory leack when passing strings from the binary layer to the Python layer
+- fixed memory leack when passing numbers from the binary layer to the Python layer
+
+
 1.13.0
 ------------------
 - Fieldset functions mean() and sum() now accept 'dim' argument to compute over given dimension
