@@ -2670,7 +2670,7 @@ def test_file():
 
 
 def test_download():
-    url = "http://download.ecmwf.org/test-data/metview/gallery/city_loc.gpt"
+    url = "http://get.ecmwf.int/test-data/metview/gallery/city_loc.gpt"
     g = mv.download(url=url)
     assert mv.type(g) == "geopoints"
 
