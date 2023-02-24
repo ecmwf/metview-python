@@ -1,6 +1,12 @@
 
 Changelog for Metview's Python interface
+
 ========================================
+
+1.14.0
+------------------
+- Fieldset function stdev() now accepts 'dim' argument to compute over given dimension
+
 
 1.13.1
 ------------------

@@ -1422,6 +1422,56 @@ def test_fieldset_sum_over_dim_number():
     assert np.array_equal(sum3_computed.values(), sum3_verified.values())
 
 
+def test_fieldset_basic_stdev():
+    alldata = mv.read(file_in_testdir("ztu_multi_dim.grib"))
+    z = alldata.select(shortName="z")
+    m = mv.stdev(z)  # as function
+    # for testing
+    # val5 = []
+    # for f in z:
+    #    val5.append(f.values()[5])
+    # print(np.std(h))
+    assert len(m) == 1
+    assert np.isclose(m.values()[5], 20948.418)
+    m = z.stdev()  # as method
+    assert len(m) == 1
+    assert np.isclose(m.values()[5], 20948.418)
+
+
+def test_fieldset_stdev_over_dim_number():
+    # compute and check ensemble stdevs
+    alldata = mv.read(file_in_testdir("ztu_multi_dim.grib"))
+    num_ens_members = len(mv.unique(alldata.grib_get_long("number")))
+    assert num_ens_members == 6
+    ens_stdev = alldata.stdev(dim="number")
+    # check general structure of the result
+    assert len(ens_stdev) == len(alldata) / num_ens_members
+    assert mv.unique(ens_stdev.grib_get_long("level")) == mv.unique(
+        alldata.grib_get_long("level")
+    )
+    assert mv.unique(ens_stdev.grib_get_long("step")) == mv.unique(
+        alldata.grib_get_long("step")
+    )
+    assert mv.unique(ens_stdev.grib_get_string("shortName")) == mv.unique(
+        alldata.grib_get_string("shortName")
+    )
+    assert len(mv.unique(ens_stdev.grib_get_long("number"))) == 1
+    # check values for specific stdevs #1
+    stdev1_computed = ens_stdev.select(shortName="z", level=1000, step=3)
+    stdev1_verified = alldata.select(shortName="z", level=1000, step=3).stdev()
+    assert np.array_equal(stdev1_computed.values(), stdev1_verified.values())
+    assert np.isclose(stdev1_computed.values()[0], 6.855, 0.0001)  # via spreadsheet
+    # check values for specific stdevs #2
+    stdev2_computed = ens_stdev.select(shortName="t", level=700, step=9)
+    stdev2_verified = alldata.select(shortName="t", level=700, step=9).stdev()
+    assert np.array_equal(stdev2_computed.values(), stdev2_verified.values())
+    assert np.isclose(stdev2_computed.values()[0], 0.02276, 0.001)  # via spreadsheet
+    # check values for specific stdevs #3
+    stdev3_computed = ens_stdev.select(shortName="u", level=500, step=6)
+    stdev3_verified = alldata.select(shortName="u", level=500, step=6).stdev()
+    assert np.array_equal(stdev3_computed.values(), stdev3_verified.values())
+
+
 def test_read_bufr():
     bufr = mv.read(file_in_testdir("obs_3day.bufr"))
     assert mv.type(bufr) == "observations"

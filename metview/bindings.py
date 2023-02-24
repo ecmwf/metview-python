@@ -774,6 +774,9 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
             dim, preserve_dims, met_sum, "sum", missing=missing
         )
 
+    def stdev(self, dim=None, preserve_dims=None, missing=False):
+        return self.apply_function_over_dim(dim, preserve_dims, met_stdev, "stdev")
+
     @property
     def ds_param_info(self):
         if self._ds_param_info is None:
@@ -1112,6 +1115,7 @@ def list_from_metview(val):
 
 
 def datestring_from_metview(val):
+
     mdate = string_from_ffi(lib.p_value_as_datestring(val))
     dt = datetime.datetime.strptime(mdate, "%Y-%m-%dT%H:%M:%S")
     lib.p_destroy_value(val)
@@ -1380,6 +1384,7 @@ met_setoutput = make("setoutput")
 metzoom = make("metzoom")
 sub = make("-")
 subset = make("[]")
+met_stdev = make("stdev")
 met_sum = make("sum")
 met_and = make("and")
 met_or = make("or")
