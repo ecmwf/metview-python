@@ -12,7 +12,7 @@ cfgrib==0.9.4.2
 cftime==1.0.3.4           # via netcdf4
 coverage==4.5.1           # via pytest-cov
 execnet==1.5.0            # via pytest-cache
-future==0.17.1            # via cfgrib
+future==0.18.3            # via cfgrib
 mccabe==0.6.1             # via pytest-mccabe
 more-itertools==4.2.0     # via pytest
 netcdf4==1.4.2
