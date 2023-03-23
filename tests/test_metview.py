@@ -2272,6 +2272,14 @@ def test_get_vector_from_multi_field_grib():
     assert v.shape == (6, 2664)
 
 
+def test_2d_numpy_to_vector():
+    np2d = np.array([[-1, -2, -3, -4], [-5, -6, -7, -8]])
+    absnp = mv.abs(np2d)
+    # we expect the result to be flattened, but all the values used
+    assert absnp.shape == (8,)
+    assert np.array_equal(absnp, np.array([1, 2, 3, 4, 5, 6, 7, 8]))
+
+
 def test_vector_sort():
     v1 = np.array([5, 3, 4, 9, 1, 4.2])
     vsortasc = mv.sort(v1)

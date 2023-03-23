@@ -427,18 +427,18 @@ def push_vector(npa):
     dtype = npa.dtype
     if dtype == np.float64:  #  can directly pass the data buffer
         cffi_buffer = ffi.cast("double*", npa.ctypes.data)
-        lib.p_push_vector_from_double_array(cffi_buffer, len(npa), np.nan)
+        lib.p_push_vector_from_double_array(cffi_buffer, npa.size, np.nan)
     elif dtype == np.float32:  #  can directly pass the data buffer
         cffi_buffer = ffi.cast("float*", npa.ctypes.data)
-        lib.p_push_vector_from_float32_array(cffi_buffer, len(npa), np.nan)
+        lib.p_push_vector_from_float32_array(cffi_buffer, npa.size, np.nan)
     elif dtype == bool:  # convert first to float32
         f32_array = npa.astype(np.float32)
         cffi_buffer = ffi.cast("float*", f32_array.ctypes.data)
-        lib.p_push_vector_from_float32_array(cffi_buffer, len(f32_array), np.nan)
+        lib.p_push_vector_from_float32_array(cffi_buffer, f32_array.size, np.nan)
     elif dtype == int:  # convert first to float64
         f64_array = npa.astype(np.float64)
         cffi_buffer = ffi.cast("double*", f64_array.ctypes.data)
-        lib.p_push_vector_from_double_array(cffi_buffer, len(f64_array), np.nan)
+        lib.p_push_vector_from_double_array(cffi_buffer, f64_array.size, np.nan)
     else:
         raise TypeError(
             "Only float32 and float64 numPy arrays can be passed to Metview, not ",
