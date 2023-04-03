@@ -114,6 +114,27 @@ class Layout:
         else:
             return mv.plot_superpage(pages=[page_1])
 
+    def build_xs_avg(
+        self,
+        area,
+        direction,
+        bottom_level,
+        top_level,
+        vertical_scaling,
+        axis_label_height=0.4,
+    ):
+        axis = mv.maxis(axis_tick_label_height=axis_label_height)
+
+        return mv.maverageview(
+            area=area,
+            direction=direction,
+            bottom_level=bottom_level,
+            top_level=top_level,
+            vertical_scaling=vertical_scaling,
+            horizontal_axis=axis,
+            vertical_axis=axis,
+        )
+
     def build_stamp(self, page_num=0, layout="", view=None):
 
         if True:

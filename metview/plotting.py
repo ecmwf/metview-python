@@ -192,6 +192,37 @@ def _y_min(data):
     return min([min(d) for d in data])
 
 
+def _scale_xs(name, data):
+    rules = {
+        "t": lambda x: x - 273.16,
+        "pv": lambda x: x * 1e6,
+        "q": lambda x: x * 1e3,
+        ("vo", "absv"): lambda x: x * 1e5,
+        ("co"): lambda x: x * 1e9,
+    }
+
+    def _in_rules():
+        if name in rules:
+            return True
+        else:
+            for x in rules:
+                if isinstance(x, tuple) and name in x:
+                    return True
+        return False
+
+    if _in_rules():
+        r = mv.Fieldset()
+        rule = rules[name]
+        for f in data:
+            if f.grib_get_string("shortName") != "lnsp":
+                r.append(rule(f))
+            else:
+                r.append(f)
+        return r
+    else:
+        return data
+
+
 def plot_maps(
     *args,
     layout=None,
@@ -471,14 +502,7 @@ def plot_xs(
             desc.append(xs_d)
         else:
             if param_info is not None:
-                if param_info.name == "t":
-                    data = data - 273.16
-                elif param_info.name == "pv":
-                    data = data * 1e6
-                elif param_info.name == "q":
-                    data = data * 1e3
-                elif param_info.name in ["vo", "absv"]:
-                    data = data * 1e5
+                data = _scale_xs(param_info.name, data)
             desc.append(data)
 
         if vd:
@@ -955,3 +979,70 @@ def plot_cdf(*args, location=None, title_font_size=0.4, x_range=None):
     desc.append(legend)
 
     mv.plot(desc, animate=False)
+
+
+def plot_xs_avg(
+    *args,
+    area=None,
+    direction="ew",
+    vertical_scaling="linear",
+    title_font_size=0.3,
+    legend_font_size=0.2,
+    axis_font_size=0.3,
+    animate="auto",
+):
+    """
+    Plot average cross section
+    """
+
+    if area is None:
+        area = [90, -180, -90, 180]
+
+    assert isinstance(args[0], mv.Fieldset)
+    layers = _make_layers(*args, form_layout=False)
+    assert len(layers) > 0
+
+    view = Layout().build_xs_avg(
+        area=area,
+        direction=direction,
+        bottom_level=1000,
+        top_level=50,
+        vertical_scaling=vertical_scaling,
+        axis_label_height=axis_font_size,
+    )
+
+    # the plot description
+    desc = []
+
+    title = Title(font_size=title_font_size)
+    data_items = []
+
+    # build cross section plot
+    desc.append(view)
+    for layer in layers:
+        data = layer["data"]
+
+        vd = _make_visdef(data, layer["vd"], plot_type="xs")
+        param_info = data.ds_param_info
+        # print(f"param_info={param_info}")
+        data_items.append(data)
+        # print(f"data={len(data)}")
+
+        if param_info is not None:
+            data = _scale_xs(param_info.name, data)
+        desc.append(data)
+
+        if vd:
+            desc.extend(vd)
+        # print(f"vd={vd}")
+
+    t = title.build_xs(data_items)
+    desc.append(t)
+
+    legend = mv.mlegend(legend_text_font_size=legend_font_size)
+    desc.append(legend)
+    desc.append(t)
+
+    LOG.debug(f"desc={desc}")
+
+    return mv.plot(desc, animate=animate)

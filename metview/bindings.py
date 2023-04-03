@@ -1327,6 +1327,7 @@ def bind_functions(namespace, module_name=None):
     namespace["plot_maps"] = plotting.plot_maps
     namespace["plot_diff_maps"] = plotting.plot_diff_maps
     namespace["plot_xs"] = plotting.plot_xs
+    namespace["plot_xs_avg"] = plotting.plot_xs_avg
     namespace["plot_stamp"] = plotting.plot_stamp
     namespace["plot_rmse"] = plotting.plot_rmse
     namespace["plot_cdf"] = plotting.plot_cdf

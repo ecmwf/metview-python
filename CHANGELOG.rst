@@ -6,6 +6,7 @@ Changelog for Metview's Python interface
 1.14.0
 ------------------
 - Fieldset function stdev() now accepts 'dim' argument to compute over given dimension
+- added new function plot_xs_avg() to provide high-level plotting interface for average cross sections
 - Fixed issue where functions that take numpy arrays as input did not work properly with multi-dimensional arrays
 
 
