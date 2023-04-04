@@ -19,6 +19,7 @@ import yaml
 import metview as mv
 from metview.metviewpy.param import ParamInfo
 from metview.metviewpy.ipython import is_ipython_active
+from metview.scaling import Scaling
 
 # logging.basicConfig(level=logging.DEBUG)
 LOG = logging.getLogger(__name__)
@@ -287,6 +288,8 @@ class ParamStyle:
         self.xs_style = s.get("xs", self.style)
         self.diff_style = s.get("diff", [db.DIFF_DEFAULT_STYLE_NAME])
 
+        self.scaling = conf.get("scaling", [])
+
     def match(self, param):
         return max([d.match(param) for d in self.cond])
 
@@ -434,6 +437,17 @@ class StyleDb:
                 param_info, scalar=param_info.scalar, plot_type=plot_type
             )
         return []
+
+    def units_scaler(self, fs, plot_type="map"):
+        param_info = fs.ds_param_info
+        if param_info is not None:
+            p = self._best_param_match(param_info)
+            if p is not None and ("all" in p.scaling or plot_type in p.scaling):
+                return Scaling.find_item(
+                    ParamInfo._grib_get(
+                        fs[0], ["units", "shortName"], single_value_as_list=False
+                    )
+                )
 
     def _make_defaults(self):
         d = {

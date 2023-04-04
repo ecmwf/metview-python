@@ -78,6 +78,8 @@
         - vo
     diff:
         - diff_vo
+  scaling:
+    - xs
   match:
       - 
         info_name: absv
@@ -143,6 +145,8 @@
       - pv
     diff:
       - diff_pv
+  scaling:
+    - xs
   match:
       - 
         info_name: pv
@@ -172,6 +176,8 @@
       -
         shortName: vo
         paramId: 138
+  scaling:
+    - xs 
 # specific humidity
 -
   styles:
@@ -179,12 +185,14 @@
       - diff_q
     xs:
       - xs_q
+  scaling:
+    - xs
   match:
       - 
         info_name: q
       -
         shortName: q
-        paramId: 133 
+        paramId: 133
 # sea surface temperature
 -
   styles:
@@ -203,12 +211,14 @@
       - diff_t
     xs:
       - xs_t
+  scaling:
+    - xs
   match:
       - 
         info_name: t
       -
         shortName: t
-        paramId: 130  
+        paramId: 130   
 # total precipitation
 -
   styles:

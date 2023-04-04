@@ -192,35 +192,29 @@ def _y_min(data):
     return min([min(d) for d in data])
 
 
+def _scale_data(data, style_db="param", plot_type="map"):
+    if isinstance(data, mv.Fieldset):
+        scaler = mv.style.get_db(name=style_db).units_scaler(data, plot_type=plot_type)
+        if scaler is not None:
+            return scaler.scale_value(data)
+    return data
+
+
 def _scale_xs(name, data):
-    rules = {
-        "t": lambda x: x - 273.16,
-        "pv": lambda x: x * 1e6,
-        "q": lambda x: x * 1e3,
-        ("vo", "absv"): lambda x: x * 1e5,
-        ("co"): lambda x: x * 1e9,
-    }
-
-    def _in_rules():
-        if name in rules:
-            return True
-        else:
-            for x in rules:
-                if isinstance(x, tuple) and name in x:
-                    return True
-        return False
-
-    if _in_rules():
-        r = mv.Fieldset()
-        rule = rules[name]
+    if isinstance(data, mv.Fieldset):
+        scaler = None
         for f in data:
             if f.grib_get_string("shortName") != "lnsp":
-                r.append(rule(f))
-            else:
-                r.append(f)
-        return r
-    else:
-        return data
+                scaler = mv.style.get_db(name="param").units_scaler(f, plot_type="xs")
+        if scaler is not None:
+            r = mv.Fieldset()
+            for f in data:
+                if f.grib_get_string("shortName") != "lnsp":
+                    r.append(scaler.scale_value(f))
+                else:
+                    r.append(f)
+            return r
+    return data
 
 
 def plot_maps(
@@ -285,6 +279,8 @@ def plot_maps(
                         data = data[frame]
                     else:
                         data = data[2 * frame : 2 * frame + 2]
+
+                data = _scale_data(data, style_db="param", plot_type="map")
             elif isinstance(data, Track):
                 data = data.build(style=vd)
 

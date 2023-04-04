@@ -3,8 +3,10 @@
   paramId:
   - '138'
   - '155'
+  - '3041'
   shortName:
   - vo
+  - absv
   - d
 C:
   match:
@@ -135,6 +137,29 @@ g/kg:
   - '247'
   shortName:
   - q
+μg/kg:
+  match: []
+  paramId:
+  - '217004'
+  - '210123'
+  - '210203'
+  - '210124'
+  - '217006'
+  - '217028'
+  - '210121'
+  - '217027'
+  - '217030' 
+  shortName:
+  - ch4_c
+  - co 
+  - go3
+  - hcho
+  - hno3
+  - ho2
+  - no2
+  - no
+  - oh
+  - so2
 hPa:
   match: []
   paramId:

@@ -37,6 +37,20 @@
             "scaling" : 1000.0
         }    
     ],
+    "μg/kg" : [
+        {    
+            "from" : "kg kg**-1",
+            "to" : "μg/kg",
+            "offset" : -0.0,
+            "scaling" : 1e9
+        },
+        {
+            "from" : "1",
+            "to" : "μgr kg-1",
+            "offset" : 0.0,
+            "scaling" : 1e9
+        }    
+    ],
     "mm" : [
         {    
             "from" : "m",

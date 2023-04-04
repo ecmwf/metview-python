@@ -239,7 +239,7 @@ class ParamInfo:
         self.meta = {**meta, **self.meta}
 
     @staticmethod
-    def _grib_get(f, keys):
+    def _grib_get(f, keys, single_value_as_list=True):
         md = f.grib_get(keys, "key")
         m = {}
         for k, v in zip(keys, md):
@@ -252,6 +252,8 @@ class ParamInfo:
                         val.append(int(x))
                     except:
                         val.append(None)
+            if not single_value_as_list and len(val) == 1:
+                val = val[0]
             m[key_val] = val
         return m
 
