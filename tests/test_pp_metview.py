@@ -371,7 +371,7 @@ def test_write_fieldset():
 def test_write_modified_fieldset_binop():
     f = mv.Fieldset(path=os.path.join(PATH, "tuv_pl.grib"))
     fp20 = f + 20
-    temp_path = "written_tuv_pl.grib"
+    temp_path = "written_tuv_pl_binop.grib"
     fp20.write(temp_path)
     assert os.path.isfile(temp_path)
     g = mv.Fieldset(path=temp_path)
