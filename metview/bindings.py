@@ -1334,6 +1334,7 @@ def bind_functions(namespace, module_name=None):
     namespace["map_style_gallery"] = map_style_gallery
     namespace["map_area_gallery"] = map_area_gallery
     namespace["make_geoview"] = make_geoview
+    namespace["arguments"] = arguments
     namespace["Fieldset"] = Fieldset
     namespace["Request"] = Request
 
@@ -1643,3 +1644,18 @@ def setoutput(*args, **kwargs):
     else:
         plot.plot_to_jupyter = False
         met_setoutput(*args)
+
+
+
+def arguments():
+    """Emulate the Macro arguments() function"""
+    import sys
+
+    args = sys.argv[1:]
+    # these will all come in as strings; but Macro does a little processing on them
+    # in order to intelligently decide whether their types or string or number;
+    # creating a Request with these values will simulate this behaviour
+    args_dict = {i: i for i in args}
+    modified_args_dict = Request(args_dict).to_dict()
+    modified_args = [modified_args_dict[j] for j in modified_args_dict]
+    return modified_args
