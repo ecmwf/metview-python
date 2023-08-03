@@ -3,6 +3,11 @@ Changelog for Metview's Python interface
 
 ========================================
 
+1.15.0 (to be released)
+------------------
+- Added arguments() function to mimic the behaviour of the Macro function of the same name
+
+
 1.14.0
 ------------------
 - Fieldset function stdev() now accepts 'dim' argument to compute over given dimension
