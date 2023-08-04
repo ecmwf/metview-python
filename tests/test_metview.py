@@ -2905,3 +2905,38 @@ def test_convolve():
     fieldset_equal(r, f_ref[2:4])
     meta = r.grib_get_long("generatingProcessIdentifier")
     np.testing.assert_allclose(meta, meta_ref)
+
+
+# subprocess.run does not work well with Metview, so we use another method
+# to run a Python process that uses Metview and returns the output
+def _run_external_python_command(cmd, args):
+    import subprocess
+    import sys
+    import tempfile
+
+    fd, path = tempfile.mkstemp()
+
+    run_args = [sys.executable]  # the Python executable
+    run_args.append(cmd)
+    run_args.extend(args)
+
+    # create a clean environment to avoid clashes with the current session
+    env = {"PATH": os.environ["PATH"]}
+    mv_start_cmd = os.environ.get("METVIEW_PYTHON_START_CMD", None)
+    if mv_start_cmd is not None:
+        env.update({"METVIEW_PYTHON_START_CMD": mv_start_cmd})
+
+    with os.fdopen(fd, "w") as f:
+        subprocess.call(run_args, stdout=f, env=env)
+    f = open(path, "r")
+    a = f.read()
+    f.close()
+    return a
+
+
+def test_arguments():
+
+    output = _run_external_python_command(
+        file_in_testdir("args.py"), ["arg1", "arg 2", "59.35", "99.9000"]
+    )
+    assert output == "['arg1', 'arg 2', 59.35, 99.9]\n"
