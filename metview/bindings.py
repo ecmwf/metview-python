@@ -1334,7 +1334,7 @@ def bind_functions(namespace, module_name=None):
     namespace["map_style_gallery"] = map_style_gallery
     namespace["map_area_gallery"] = map_area_gallery
     namespace["make_geoview"] = make_geoview
-    namespace["arguments"] = arguments
+    namespace["arguments"] = met_arguments
     namespace["Fieldset"] = Fieldset
     namespace["Request"] = Request
 
@@ -1647,7 +1647,7 @@ def setoutput(*args, **kwargs):
 
 
 
-def arguments():
+def met_arguments():
     """Emulate the Macro arguments() function"""
     import sys
 

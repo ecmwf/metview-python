@@ -2925,6 +2925,9 @@ def _run_external_python_command(cmd, args):
     mv_start_cmd = os.environ.get("METVIEW_PYTHON_START_CMD", None)
     if mv_start_cmd is not None:
         env.update({"METVIEW_PYTHON_START_CMD": mv_start_cmd})
+    ppath = os.environ.get("PYTHONPATH", None)
+    if ppath is not None:
+        env.update({"PYTHONPATH": ppath})
 
     with os.fdopen(fd, "w") as f:
         subprocess.call(run_args, stdout=f, env=env)
