@@ -6,7 +6,7 @@ Changelog for Metview's Python interface
 1.15.0
 ------------------
 - Added arguments() function to mimic the behaviour of the Macro function of the same name
-- Fixed case of mean*(dim=...) where the input fieldset is not a complete hypercube
+- Fixed case of mean(dim=...) where the input fieldset is not a complete hypercube
 
 
 1.14.0
