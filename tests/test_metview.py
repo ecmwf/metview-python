@@ -1348,6 +1348,48 @@ def test_fieldset_mean_over_dim_with_empty_fieldset():
         alldata.select(shortName="t", level=850, number=5).mean()
 
 
+def test_fieldset_mean_over_dim_number_with_holes():
+    # compute and check ensemble means when there are holes in the hypercube
+    alldata = mv.read(file_in_testdir("ztu_multi_dim.grib"))
+    a = alldata.select(shortName=["z", "u"])
+    t = alldata.select(shortName="t")
+    t = t.select(level=[850, 500])  # remove some levels from 't'
+    alldata = mv.Fieldset(fields=[a, t])
+
+    num_ens_members = len(mv.unique(alldata.grib_get_long("number")))
+    assert num_ens_members == 6
+    ens_mean = alldata.mean(dim="number")
+    # check general structure of the result
+    assert len(ens_mean) == len(alldata) / num_ens_members
+    assert mv.unique(ens_mean.grib_get_long("level")) == mv.unique(
+        alldata.grib_get_long("level")
+    )
+    assert mv.unique(ens_mean.grib_get_long("step")) == mv.unique(
+        alldata.grib_get_long("step")
+    )
+    assert mv.unique(ens_mean.grib_get_string("shortName")) == mv.unique(
+        alldata.grib_get_string("shortName")
+    )
+    assert len(mv.unique(ens_mean.grib_get_long("number"))) == 1
+    # check values for specific means #1
+    mean1_computed = ens_mean.select(shortName="z", level=1000, step=3)
+    mean1_verified = alldata.select(shortName="z", level=1000, step=3).mean()
+    assert np.array_equal(mean1_computed.values(), mean1_verified.values())
+    assert np.isclose(mean1_computed.values()[0], 1233.7)  # via calculator
+    # check values for specific means #2
+    mean2_computed = ens_mean.select(shortName="t", level=850, step=9)
+    mean2_verified = alldata.select(shortName="t", level=850, step=9).mean()
+    assert np.array_equal(mean2_computed.values(), mean2_verified.values())
+    assert np.isclose(mean2_computed.values()[2], 285.548)  # via calculator
+    # check values for specific means #3
+    mean3_computed = ens_mean.select(shortName="u", level=500, step=6)
+    mean3_verified = alldata.select(shortName="u", level=500, step=6).mean()
+    assert np.array_equal(mean3_computed.values(), mean3_verified.values())
+    # check that missing means are not present
+    mean_missing = ens_mean.select(shortName="t", level=1000)
+    assert len(mean_missing) == 0
+
+
 def test_fieldset_basic_sum():
     alldata = mv.read(file_in_testdir("ztu_multi_dim.grib"))
     m = mv.sum(alldata)  # as function

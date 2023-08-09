@@ -760,7 +760,11 @@ class Fieldset(FileBackedValueWithOperators, ContainerValue):
         # e.g. [{level=1000,shortName="t",date=20220101, time=6}, ...]
         fieldsets_to_apply_function_to = [self.select(**x) for x in perms]
         result = Fieldset(
-            fields=[func_to_run(x, **kwargs) for x in fieldsets_to_apply_function_to]
+            fields=[
+                func_to_run(x, **kwargs)
+                for x in fieldsets_to_apply_function_to
+                if len(x) != 0
+            ]
         )
         return result
 
@@ -1644,7 +1648,6 @@ def setoutput(*args, **kwargs):
     else:
         plot.plot_to_jupyter = False
         met_setoutput(*args)
-
 
 
 def met_arguments():
