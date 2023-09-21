@@ -3049,7 +3049,7 @@ def test_macro_python_compat_concat_bufr():
         (0, 6, 1, 1, [0, 1, 2, 3, 4, 5]),
     ],
 )
-def test_macro_python_compat_slice4(start, stop, step, num, ref):
+def test_macro_python_compat_index4(start, stop, step, num, ref):
     vals = np.array(list(range(12)))
-    res = mv.compat.slice4(vals, start, stop, step, num)
+    res = mv.compat.index4(vals, start, stop, step, num)
     np.allclose(vals[res], np.array(ref))

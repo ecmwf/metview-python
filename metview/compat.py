@@ -44,7 +44,7 @@ def concat(*args):
     raise ValueError(f"concat failed to handle the specified arguments={args}")
 
 
-def slice4(vals, start, stop, step, num):
+def index4(vals, start, stop, step, num):
     """
     Return a boolean index ndarray to select a subset of elements from ``vals``.
 
@@ -72,7 +72,7 @@ def slice4(vals, start, stop, step, num):
     >>> import numpy as np
     >>> import metview
     >>> vals = np.array(list(range(12)))
-    >>> r = slice4(vals, 0, 11, 4, 2)
+    >>> r = index4(vals, 0, 11, 4, 2)
     [ True  True  True  True  True  True False False False False False False]
     a[]
     >>> vals[r]
