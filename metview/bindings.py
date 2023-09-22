@@ -1325,6 +1325,7 @@ def bind_functions(namespace, module_name=None):
     namespace["dialog"] = make("dialog")
     namespace["div"] = div
     namespace["mod"] = mod
+    namespace["string"] = make("string")
     # override some functions that need special treatment
     # FIXME: this needs to be more structured
     namespace["plot"] = plot

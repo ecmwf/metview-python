@@ -1895,6 +1895,12 @@ def test_date_second():
     assert mv.second(d1) == 0
 
 
+def test_date_string():
+    npd1 = np.datetime64("2017-04-27T06:18:02")
+    assert mv.string(npd1, "yyyy-mm-dd") == "2017-04-27"
+    assert mv.string(npd1, "dd-mm-yyyy") == "27-04-2017"
+
+
 def test_numpy_numeric_args():
     # we don't test them all here, but hopefully a representative sample
     assert mv.call("+", np.int32(5), 1) == 6

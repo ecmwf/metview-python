@@ -5,7 +5,8 @@ Changelog for Metview's Python interface
 
 1.16.0 (unreleased)
 -------------------
-- Added support for reading PNG files
+- added support for reading PNG files
+- added string() function from Metview
 
 
 1.15.0
