@@ -216,6 +216,11 @@ def test_modify_embedded_request_via_update():
     # mv.plot(a, gv)
 
 
+def test_read_png():
+    p = mv.read(file_in_testdir("MVPROFILEVIEW.png"))
+    assert p.get_verb() == "PNG"
+
+
 def test_print():
     mv.print("Start ", 7, 1, 3, " Finished!")
     mv.print(6, 2, " Middle ", 6)

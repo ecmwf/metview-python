@@ -3,6 +3,11 @@ Changelog for Metview's Python interface
 
 ========================================
 
+1.16.0 (unreleased)
+-------------------
+- Added support for reading PNG files
+
+
 1.15.0
 ------------------
 - Added arguments() function to mimic the behaviour of the Macro function of the same name
