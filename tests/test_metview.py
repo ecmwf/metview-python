@@ -215,6 +215,11 @@ def test_modify_embedded_request_via_update():
     # mv.plot(a, gv)
 
 
+def test_read_png():
+    p = mv.read(file_in_testdir("MVPROFILEVIEW.png"))
+    assert p.get_verb() == "PNG"
+
+
 def test_print():
     mv.print("Start ", 7, 1, 3, " Finished!")
     mv.print(6, 2, " Middle ", 6)
@@ -1887,6 +1892,12 @@ def test_date_second():
 
     d1 = datetime.date(2017, 4, 27)
     assert mv.second(d1) == 0
+
+
+def test_date_string():
+    npd1 = np.datetime64("2017-04-27T06:18:02")
+    assert mv.string(npd1, "yyyy-mm-dd") == "2017-04-27"
+    assert mv.string(npd1, "dd-mm-yyyy") == "27-04-2017"
 
 
 def test_numpy_numeric_args():

@@ -1218,9 +1218,17 @@ class ValueReturner:
         try:
             return self.funcs[rt](val)
         except Exception:
-            raise Exception(
-                "value_from_metview got an unhandled return type: " + str(rt)
-            )
+            # if the type is unknown, it might be a type that is actually stored
+            # as a request rather than as a MARS type, e.g. PNG
+            try:
+                if rt == 99:
+                    rt = MvRetVal.trequest.value
+                    return self.funcs[rt](val)
+            except Exception:
+                raise Exception(
+                    "value_from_metview got an unhandled return type and could not convert to a Request: "
+                    + str(rt)
+                )
 
 
 vr = ValueReturner()
@@ -1317,6 +1325,7 @@ def bind_functions(namespace, module_name=None):
     namespace["dialog"] = make("dialog")
     namespace["div"] = div
     namespace["mod"] = mod
+    namespace["string"] = make("string")
     # override some functions that need special treatment
     # FIXME: this needs to be more structured
     namespace["plot"] = plot
