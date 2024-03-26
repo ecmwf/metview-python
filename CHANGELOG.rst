@@ -3,8 +3,9 @@ Changelog for Metview's Python interface
 
 ========================================
 
-1.16.0 (unreleased)
+1.16.0
 -------------------
+- added helper functions to aid automatic conversion from Macro to Python
 - added support for reading PNG files
 - added string() function from Metview
 - fixed warning message in select() method with pandas 2.2
