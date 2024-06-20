@@ -19,7 +19,6 @@ import tempfile
 
 import cffi
 import numpy as np
-from numpy.lib.arraysetops import _setxor1d_dispatcher, isin
 
 from metview.metviewpy.indexdb import FieldsetDb
 from metview.dataset import Dataset

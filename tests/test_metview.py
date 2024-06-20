@@ -1224,7 +1224,7 @@ def test_fieldset_basic_mean_with_missing_vals():
     # replace first field with all missing values
     alldata = mv.read(file_in_testdir("ztu_multi_dim.grib"))
     f1vals = alldata[0].values()
-    f1vals[:] = np.NaN
+    f1vals[:] = np.nan
     alldata[0] = alldata[0].set_values(f1vals)
     m = mv.mean(alldata)  # function
     assert len(m) == 1
@@ -1411,7 +1411,7 @@ def test_fieldset_basic_sum_with_missing_vals():
     # replace first field with all missing values
     alldata = mv.read(file_in_testdir("ztu_multi_dim.grib"))
     f1vals = alldata[0].values()
-    f1vals[:] = np.NaN
+    f1vals[:] = np.nan
     alldata[0] = alldata[0].set_values(f1vals)
     m = mv.sum(alldata)  # function
     print(m.values()[0], m.values()[2])
