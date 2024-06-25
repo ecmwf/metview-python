@@ -77,6 +77,7 @@ def test_version_info():
 
 def test_version_info_python():
     out = mv.version_info()
+    print(out)
     assert "metview_python_version" in out
     assert isinstance(out["metview_python_version"], str)
 
@@ -186,7 +187,6 @@ def test_modify_request_via_update():
 
 
 def test_modify_embedded_request_via_update():
-
     coastlines = mv.mcoast(
         map_coastline_thickness=3,
         map_coastline_land_shade="on",
@@ -214,6 +214,11 @@ def test_modify_embedded_request_via_update():
     # mv.setoutput(mv.png_output(output_name="gg"))
     # a = mv.read(os.path.join(PATH, "test.grib"))
     # mv.plot(a, gv)
+
+
+def test_read_png():
+    p = mv.read(file_in_testdir("MVPROFILEVIEW.png"))
+    assert p.get_verb() == "PNG"
 
 
 def test_print():
@@ -1219,7 +1224,7 @@ def test_fieldset_basic_mean_with_missing_vals():
     # replace first field with all missing values
     alldata = mv.read(file_in_testdir("ztu_multi_dim.grib"))
     f1vals = alldata[0].values()
-    f1vals[:] = np.NaN
+    f1vals[:] = np.nan
     alldata[0] = alldata[0].set_values(f1vals)
     m = mv.mean(alldata)  # function
     assert len(m) == 1
@@ -1406,7 +1411,7 @@ def test_fieldset_basic_sum_with_missing_vals():
     # replace first field with all missing values
     alldata = mv.read(file_in_testdir("ztu_multi_dim.grib"))
     f1vals = alldata[0].values()
-    f1vals[:] = np.NaN
+    f1vals[:] = np.nan
     alldata[0] = alldata[0].set_values(f1vals)
     m = mv.sum(alldata)  # function
     print(m.values()[0], m.values()[2])
@@ -1888,6 +1893,12 @@ def test_date_second():
 
     d1 = datetime.date(2017, 4, 27)
     assert mv.second(d1) == 0
+
+
+def test_date_string():
+    npd1 = np.datetime64("2017-04-27T06:18:02")
+    assert mv.string(npd1, "yyyy-mm-dd") == "2017-04-27"
+    assert mv.string(npd1, "dd-mm-yyyy") == "27-04-2017"
 
 
 def test_numpy_numeric_args():
@@ -2887,7 +2898,6 @@ def test_mvl_ml2hpa():
 
 
 def test_smooth_n_point():
-
     f = mv.Fieldset(path=get_test_data("regular_ll_iPos_jNeg_iCons_multi.grib"))
     f_ref = mv.Fieldset(path=get_test_data("ref_smooth_n_point.grib"))
 
@@ -2910,7 +2920,6 @@ def test_smooth_n_point():
 
 
 def test_smooth_gaussian():
-
     f = mv.Fieldset(path=get_test_data("regular_ll_iPos_jNeg_iCons_multi.grib"))
     f_ref = mv.Fieldset(path=get_test_data("ref_smooth_gaussian.grib"))
 
@@ -2928,7 +2937,6 @@ def test_smooth_gaussian():
 
 
 def test_convolve():
-
     f = mv.Fieldset(path=get_test_data("regular_ll_iPos_jNeg_iCons_multi.grib"))
     f_ref = mv.Fieldset(path=get_test_data("ref_convolve.grib"))
 
@@ -2980,8 +2988,80 @@ def _run_external_python_command(cmd, args):
 
 
 def test_arguments():
-
     output = _run_external_python_command(
         file_in_testdir("args.py"), ["arg1", "arg 2", "59.35", "99.9000"]
     )
     assert output == "['arg1', 'arg 2', 59.35, 99.9]\n"
+
+
+@pytest.mark.parametrize(
+    "arg,ref",
+    [
+        (["a", "b"], "ab"),
+        (["a", "b", "c"], "abc"),
+        ([None, "a"], "a"),
+        ([None, "a", "b"], "ab"),
+        ([np.array([1, 2, 3]), np.array([4, 5, 6])], np.array([1, 2, 3, 4, 5, 6])),
+        ([None, np.array([1, 2, 3])], np.array([1, 2, 3])),
+        (
+            [None, np.array([1, 2, 3]), np.array([4, 5, 6])],
+            np.array([1, 2, 3, 4, 5, 6]),
+        ),
+        ([[1, 2], [3, 4]], [1, 2, 3, 4]),
+        ([[1, 2], 3], [1, 2, 3]),
+        ([[1, 2], "a"], [1, 2, "a"]),
+        ([None, [1, 2]], [1, 2]),
+        ([None, [1, 2], [3, 4]], [1, 2, 3, 4]),
+        ([None, 1], 1),
+    ],
+)
+def test_macro_python_compat_concat(arg, ref):
+    res = mv.compat.concat(*arg)
+    if isinstance(ref, np.ndarray):
+        np.allclose(res, ref)
+    else:
+        assert res == ref
+
+
+def test_macro_python_compat_concat_fieldset():
+    f1 = mv.Fieldset(path=file_in_testdir("t1000_LL_2x2.grb"))
+    f2 = mv.Fieldset(path=file_in_testdir("t1000_LL_7x7.grb"))
+
+    res = mv.compat.concat(f1, f2)
+    assert isinstance(res, mv.Fieldset)
+    assert len(res) == len(f1) + len(f2)
+    assert res[0].grib_get_long("iDirectionIncrementInDegrees") == 2
+    assert res[1].grib_get_long("iDirectionIncrementInDegrees") == 7
+
+    res = mv.compat.concat(None, f1)
+    assert isinstance(res, mv.Fieldset)
+    assert len(res) == len(f1)
+    assert res[0].grib_get_long("iDirectionIncrementInDegrees") == 2
+
+
+def test_macro_python_compat_concat_gpt():
+    f = mv.read(file_in_testdir("xyv.gpt"))
+
+    res = mv.compat.concat(None, f)
+    assert isinstance(res, mv.bindings.Geopoints)
+    assert len(res) == len(f)
+
+
+def test_macro_python_compat_concat_bufr():
+    f = mv.read(file_in_testdir("obs_3day.bufr"))
+
+    res = mv.compat.concat(None, f)
+    assert isinstance(res, mv.bindings.Bufr)
+
+
+@pytest.mark.parametrize(
+    "start,stop,step,num,ref",
+    [
+        (0, 11, 4, 2, [0, 1, 4, 5, 8, 9]),
+        (0, 6, 1, 1, [0, 1, 2, 3, 4, 5]),
+    ],
+)
+def test_macro_python_compat_index4(start, stop, step, num, ref):
+    vals = np.array(list(range(12)))
+    res = mv.compat.index4(vals, start, stop, step, num)
+    np.allclose(vals[res], np.array(ref))

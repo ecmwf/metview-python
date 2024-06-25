@@ -12,7 +12,7 @@ cfgrib==0.9.4.2
 cftime==1.0.3.4           # via netcdf4
 coverage==4.5.1           # via pytest-cov
 execnet==1.5.0            # via pytest-cache
-future==0.17.1            # via cfgrib
+future==0.18.3            # via cfgrib
 mccabe==0.6.1             # via pytest-mccabe
 more-itertools==4.2.0     # via pytest
 netcdf4==1.4.2
@@ -20,7 +20,7 @@ numpy==1.22
 pandas==0.23.0
 pep8==1.7.1               # via pytest-pep8
 pluggy==0.6.0             # via pytest
-py==1.10.0                # via pytest
+py==1.11.0                # via pytest
 pycparser==2.18           # via cffi
 pyflakes==2.0.0           # via pytest-flakes
 pytest-cache==1.0         # via pytest-flakes, pytest-mccabe, pytest-pep8

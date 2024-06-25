@@ -265,7 +265,7 @@ class GribIndexer:
 
         for c in df.columns:
             if self.pd_types.get(c, "") in ["Int32", "Int64"]:
-                df[c].fillna(value=np.nan, inplace=True)
+                df.fillna(value={c: np.nan}, inplace=True)
             df = df.astype(self.pd_types)
         if sort:
             df = GribIndexer._sort_dataframe(df)

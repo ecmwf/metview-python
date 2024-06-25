@@ -19,7 +19,6 @@ import tempfile
 
 import cffi
 import numpy as np
-from numpy.lib.arraysetops import _setxor1d_dispatcher, isin
 
 from metview.metviewpy.indexdb import FieldsetDb
 from metview.dataset import Dataset
@@ -35,7 +34,7 @@ from metview import plotting
 from metview.metviewpy.ipython import is_ipython_active, import_widgets
 from metview.metviewpy import utils
 
-__version__ = "1.15.0"
+__version__ = "1.16.1"
 
 
 # logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")
@@ -1218,9 +1217,17 @@ class ValueReturner:
         try:
             return self.funcs[rt](val)
         except Exception:
-            raise Exception(
-                "value_from_metview got an unhandled return type: " + str(rt)
-            )
+            # if the type is unknown, it might be a type that is actually stored
+            # as a request rather than as a MARS type, e.g. PNG
+            try:
+                if rt == 99:
+                    rt = MvRetVal.trequest.value
+                    return self.funcs[rt](val)
+            except Exception:
+                raise Exception(
+                    "value_from_metview got an unhandled return type and could not convert to a Request: "
+                    + str(rt)
+                )
 
 
 vr = ValueReturner()
@@ -1317,6 +1324,7 @@ def bind_functions(namespace, module_name=None):
     namespace["dialog"] = make("dialog")
     namespace["div"] = div
     namespace["mod"] = mod
+    namespace["string"] = make("string")
     # override some functions that need special treatment
     # FIXME: this needs to be more structured
     namespace["plot"] = plot

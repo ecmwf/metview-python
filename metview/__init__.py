@@ -23,7 +23,6 @@ if sys.version_info[0] < 3:  # pragma: no cover
 # catch errors differently
 
 if len(sys.argv) != 2 or sys.argv[0] != "-m" or sys.argv[1] != "selfcheck":
-
     try:
         from . import bindings as _bindings
 
@@ -38,6 +37,7 @@ if len(sys.argv) != 2 or sys.argv[0] != "-m" or sys.argv[1] != "selfcheck":
         from . import title
         from . import layout
         from . import ui
+        from . import compat
 
     except Exception as exp:
         if "METVIEW_PYTHON_ONLY" not in os.environ:
