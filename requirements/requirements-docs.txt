@@ -32,7 +32,7 @@ pytest-runner==4.2
     # via -r requirements-docs.in
 pytz==2018.3
     # via babel
-requests==2.31.0
+requests==2.32.2
     # via sphinx
 six==1.11.0
     # via
