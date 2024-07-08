@@ -44,5 +44,5 @@ sphinx==1.7.2
     # via -r requirements-docs.in
 sphinxcontrib-websupport==1.0.1
     # via sphinx
-urllib3==1.26.17
+urllib3==1.26.19
     # via requests
