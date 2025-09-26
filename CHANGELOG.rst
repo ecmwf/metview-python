@@ -3,6 +3,11 @@ Changelog for Metview's Python interface
 
 ========================================
 
+1.16.2
+-------------------
+- changed URL for downloading sample data from get.ecmwf.int to sites.ecmwf.int
+
+
 1.16.1
 -------------------
 - added support for numpy 2.0
