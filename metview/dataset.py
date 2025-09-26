@@ -251,7 +251,7 @@ class Dataset:
     Represents a Dataset
     """
 
-    URL = "https://get.ecmwf.int/repository/test-data/metview/dataset"
+    URL = "https://sites.ecmwf.int/repository/metview/test-data/dataset"
     LOCAL_ROOT = os.getenv(
         "MPY_DATASET_ROOT", os.path.join(os.getenv("HOME", ""), "mpy_dataset")
     )

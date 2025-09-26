@@ -27,7 +27,7 @@ def load_dataset(filename, check_local=False):
         except:
             return None
 
-    base_url = "https://get.ecmwf.int/test-data/metview/gallery/"
+    base_url = "https://sites.ecmwf.int/repository/metview/test-data/gallery/"
     try:
         # d = mv.download(url=base_url + filename, target=filename)
         _simple_download(os.path.join(base_url, filename), filename)

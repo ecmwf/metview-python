@@ -53,7 +53,7 @@ def get_test_data(filename):
     os.makedirs(d_path, mode=0o755, exist_ok=True)
     f_path = os.path.join(d_path, filename)
     if not os.path.exists(f_path):
-        URL = "https://get.ecmwf.int/repository/test-data/metview/tests"
+        URL = "https://sites.ecmwf.int/repository/metview/test-data/tests"
         utils.simple_download(url=f"{URL}/{filename}", target=f_path)
     return f_path
 
@@ -2781,7 +2781,7 @@ def test_file():
 
 
 def test_download():
-    url = "http://get.ecmwf.int/test-data/metview/gallery/city_loc.gpt"
+    url = "https://sites.ecmwf.int/repository/metview/test-data/gallery/city_loc.gpt"
     g = mv.download(url=url)
     assert mv.type(g) == "geopoints"
 
