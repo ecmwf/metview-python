@@ -737,7 +737,7 @@ def test_param_info_from_fs_single_file():
         "step": 0,
         "level": 700,
         "typeOfLevel": "isobaricInhPa",
-        "number": "0",
+        "number": 0,
         "experimentVersionNumber": "0001",
         "marsClass": "od",
         "marsStream": "oper",
@@ -759,7 +759,7 @@ def test_param_info_from_fs_single_file():
         "step": 0,
         "level": 500,
         "typeOfLevel": "isobaricInhPa",
-        "number": "0",
+        "number": 0,
         "experimentVersionNumber": "0001",
         "marsClass": "od",
         "marsStream": "oper",
@@ -783,7 +783,7 @@ def test_param_info_from_fs_single_file():
         "step": 0,
         "level": 500,
         "typeOfLevel": "isobaricInhPa",
-        "number": "0",
+        "number": 0,
         "experimentVersionNumber": "0001",
         "marsClass": "od",
         "marsStream": "oper",
@@ -804,7 +804,7 @@ def test_param_info_from_fs_single_file():
         "step": 0,
         "level": None,
         "typeOfLevel": "isobaricInhPa",
-        "number": "0",
+        "number": 0,
         "experimentVersionNumber": "0001",
         "marsClass": "od",
         "marsStream": "oper",
@@ -827,7 +827,7 @@ def test_param_info_from_fs_single_file():
         "step": 0,
         "level": 1000,
         "typeOfLevel": "isobaricInhPa",
-        "number": "0",
+        "number": 0,
         "experimentVersionNumber": "0001",
         "marsClass": "od",
         "marsStream": "oper",
@@ -901,6 +901,31 @@ def test_indexer_dataframe_sort_value_with_key():
         "step": [1, 12, 3, 110, 1],
         "rest": ["aa", "1", "b1", "2", "1b"],
     }
+
+    df = pd.DataFrame(md)
+    df = GribIndexer._sort_dataframe(df)
+    df_ref = pd.DataFrame(md_ref)
+
+    if not df.equals(df_ref):
+        print(df.compare(df_ref))
+        assert False
+
+
+def test_indexer_dataframe_sort_ens():
+
+    md = {
+        "paramId": [5, 5, 5, 5],
+        "level": [925, 925, 925, 925],
+        "step": [12, 12, 12, 12],
+        "number": [1, 9, 10, 20],
+    }
+
+    md_ref = {
+        "paramId": [5, 5, 5, 5],
+        "level": [925, 925, 925, 925],
+        "step": [12, 12, 12, 12],
+        "number": [1, 9, 10, 20],
+   }
 
     df = pd.DataFrame(md)
     df = GribIndexer._sort_dataframe(df)

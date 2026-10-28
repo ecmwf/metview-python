@@ -349,7 +349,7 @@ class ParamDesc:
             t = {"parameter": [], "typeOfLevel": [], "level": []}
             need_number = False
             for k, v in db.param_meta.items():
-                if not v.md.get("number", None) in [["0"], [None]]:
+                if not v.md.get("number", None) in [[0], ["0"], [None]]:
                     need_number = True
                     break
 
@@ -437,7 +437,7 @@ class ParamDesc:
                 cnt += 1
 
             for kk, md_v in v.md.items():
-                if kk == "number" and md_v == ["0"]:
+                if kk == "number" and md_v == [0]:
                     continue
                 if not kk in ["shortName", "paramId"]:
                     t["key"].append(labels.get(kk, kk))

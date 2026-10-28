@@ -473,7 +473,7 @@ class FieldsetDb(IndexDb):
             r = df["number"].unique()
             skip = False
             if len(r) == 1:
-                skip = r[0] in ["0", None]
+                skip = r[0] in [0, "0", None]
             if skip:
                 df.drop("number", axis=1, inplace=True)
 

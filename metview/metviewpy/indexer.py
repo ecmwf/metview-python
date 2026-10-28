@@ -45,7 +45,7 @@ class GribIndexer:
         "step": ("l", "Int32", int, True),
         "level": ("l", "Int32", int, True),
         "typeOfLevel": ("s", str, str, False),
-        "number": ("s", str, str, True),
+        "number": ("l", "Int32", int, True),
         "experimentVersionNumber": ("s", str, str, False),
         "marsClass": ("s", str, str, False),
         "marsStream": ("s", str, str, False),
