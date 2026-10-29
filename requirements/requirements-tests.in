@@ -1,3 +1,4 @@
+certifi>=2026.10.23
 cfgrib
 netCDF4
 pytest

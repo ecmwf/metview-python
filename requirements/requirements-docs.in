@@ -1,2 +1,3 @@
+certifi>=2026.10.23
 Sphinx
 pytest-runner

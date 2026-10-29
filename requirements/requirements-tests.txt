@@ -8,8 +8,9 @@ attrs==26.1.0
     # via
     #   cfgrib
     #   eccodes
-certifi==2026.6.17
+certifi==2026.10.23
     # via
+    #   -r requirements/requirements-tests.in
     #   netcdf4
     #   requests
 cffi==2.0.0
