@@ -2618,19 +2618,19 @@ def test_table_to_dataframe():
     dt0_iloc = df.iloc[0]["h1"]
     assert isinstance(dt0_iloc, np.int64)
     assert dt0_iloc == 1
-    dt0_iloc = df.iloc[0][0]
+    dt0_iloc = df.iloc[0, 0]
     assert isinstance(dt0_iloc, np.int64)
     assert dt0_iloc == 1
     dt3_iloc = df.iloc[3]["h1"]
     assert isinstance(dt3_iloc, np.int64)
     assert dt3_iloc == 4
-    dt3_iloc = df.iloc[3][0]
+    dt3_iloc = df.iloc[3, 0]
     assert isinstance(dt3_iloc, np.int64)
     assert dt3_iloc == 4
     dt2_iloc = df.iloc[2]["name"]
     assert isinstance(dt2_iloc, str)
     assert dt2_iloc == "charlie"
-    dt2_iloc = df.iloc[2][3]
+    dt2_iloc = df.iloc[2, 3]
     assert isinstance(dt2_iloc, str)
     assert dt2_iloc == "charlie"
     assert np.array_equal(df["h2"], np.array([4, 5, 6, 7, 8, 9]))
