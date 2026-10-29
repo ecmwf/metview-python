@@ -3,6 +3,12 @@ Changelog for Metview's Python interface
 
 ========================================
 
+1.16.3
+-------------------
+- fixed issue where the sort() method on a fieldset gave alphabetical insterad of numerical sorting on ensemble members
+- fixed test that was failing with pandas 3.0
+
+
 1.16.2
 -------------------
 - changed URL for downloading sample data from get.ecmwf.int to sites.ecmwf.int
